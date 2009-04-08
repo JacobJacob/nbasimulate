@@ -7,7 +7,7 @@ public class PlayerDaoImpl   {
 
 	public void save(Player player) {
 		// TODO Auto-generated method stub
-		Session session = Session.getInstance();
+		Session session = new Session();
 		session.beginTransaction();
 		try {
 			session.save(player);

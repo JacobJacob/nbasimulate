@@ -15,7 +15,7 @@ public class Persistence implements Persistable {
 
 	public boolean save() {
 		// TODO Auto-generated method stub
-		Session session = Session.getInstance();
+		Session session = new Session();
 		boolean result = true;
 		try {
 			session.save(this);
@@ -34,7 +34,7 @@ public class Persistence implements Persistable {
 	public void load(long id) {
 		// TODO Auto-generated method stub
 		this.id = id;
-		Session session = Session.getInstance();
+		Session session = new Session();
 		try {
 			session.load(this);
 		} catch (Exception e) {
