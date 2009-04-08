@@ -1,0 +1,132 @@
+package com.dt.bottle.sql;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Hashtable;
+
+import com.dt.bottle.constants.Constants;
+
+public class SqlHelper {
+
+	public static Hashtable<String, Object> createInsertSql(Object obj) {
+
+		Hashtable<String, Object> table = new Hashtable<String, Object>();
+
+		StringBuffer insert = new StringBuffer();
+		StringBuffer attribute = new StringBuffer();
+		StringBuffer parameters = new StringBuffer();
+		ArrayList<Object> values = new ArrayList<Object>();
+
+		insert.append("INSERT INTO ");
+		insert.append(className2TableName(obj));
+
+		Field[] fields = obj.getClass().getDeclaredFields();
+
+		for (int i = 0; i < fields.length; i++) {
+
+			Field field = fields[i];
+			if ("serialVersionUID".equals(field.getName())) {
+				continue;
+			}
+			Object value = getValueByField(obj, field.getName());
+
+			if (value != null) {
+				attribute.append(",");
+				attribute.append(field.getName());
+				parameters.append(",?");
+				values.add(value);
+			}
+		}
+		String attributeStr = attribute.substring(1, attribute.length());
+		String parametersStr = parameters.substring(1, parameters.length());
+
+		insert.append("(");
+		insert.append(attributeStr);
+		insert.append(")");
+		insert.append(" VALUES ");
+		insert.append("(");
+		insert.append(parametersStr);
+		insert.append(")");
+
+		Object[] parm = values.toArray();
+		table.put(Constants.DB_SQL, insert.toString());
+		table.put(Constants.DB_PARM, parm);
+		return table;
+
+	}
+
+	public static String getLoaderSql(Object obj) {
+
+		StringBuffer load = new StringBuffer();
+
+		load.append(" SELECT * FROM ");
+		load.append(className2TableName(obj));
+		load.append(" WHERE ID = ? ");
+
+		return load.toString();
+	}
+
+	public static String className2TableName(Object obj) {
+
+		String className = obj.getClass().getName();
+		className = className.substring(className.lastIndexOf(".") + 1,
+				className.length());
+
+		char[] chs = className.toCharArray();
+
+		StringBuffer tableName = new StringBuffer();
+		tableName.append(chs[0]);
+		for (int i = 1; i < chs.length; i++) {
+			byte bt = (byte) chs[i];
+			if (bt >= 65 && bt <= 90) {
+				tableName.append("_");
+				tableName.append(chs[i]);
+			} else {
+				tableName.append(chs[i]);
+			}
+		}
+
+		return tableName.toString();
+	}
+
+	public static String fieldName2ColumnName(String fieldName) {
+
+		char[] chs = fieldName.toCharArray();
+
+		StringBuffer columnName = new StringBuffer();
+		columnName.append(chs[0]);
+		for (int i = 1; i < chs.length; i++) {
+			byte bt = (byte) chs[i];
+			if (bt >= 65 && bt <= 90) {
+				columnName.append("_");
+				columnName.append(chs[i]);
+			} else {
+				columnName.append(chs[i]);
+			}
+		}
+		return columnName.toString();
+	}
+
+	public static Object getValueByField(Object obj, String field) {
+		Object value = null;
+		try {
+			String methodName = fieldName2GetMethod(field);
+			Method method = obj.getClass().getMethod(methodName, null);
+			value = method.invoke(obj, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
+
+	public static String fieldName2GetMethod(String fieldName) {
+		return "get" + fieldName.substring(0, 1).toUpperCase()
+				+ fieldName.substring(1, fieldName.length());
+	}
+
+	public static String fieldName2SetMethod(String fieldName) {
+		return "set" + fieldName.substring(0, 1).toUpperCase()
+				+ fieldName.substring(1, fieldName.length());
+	}
+}
