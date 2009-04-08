@@ -6,7 +6,7 @@ import com.ts.dt.dao.imp.PlayerDaoImpl;
 import com.ts.dt.po.Player;
 
 public class TestDataFactory {
-	public static Player[] players = new Player[10];
+	public static final Player[] players = new Player[10];
 
 	static {
 
