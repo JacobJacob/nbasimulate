@@ -6,10 +6,9 @@ import com.ts.dt.po.MatchDetail;
 
 public class MatchDetailDaoImpl implements MatchDetailDao {
 
-	@Override
 	public void save(MatchDetail matchDetail) {
 		// TODO Auto-generated method stub
-		Session session = Session.getInstance();
+		Session session = new Session();
 		session.beginTransaction();
 		try {
 			session.save(matchDetail);

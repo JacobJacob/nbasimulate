@@ -14,7 +14,6 @@ public class TransactionService extends AbstractService implements ICommand {
 		super(persistenceManager);
 	}
 
-	@Override
 	public void execute(RequestContext reqCtx, ResponseContext resCtx) {
 		// TODO Auto-generated method stub
 		Transaction transaction = new Transaction();

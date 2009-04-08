@@ -6,10 +6,9 @@ import com.ts.dt.po.MatchMain;
 
 public class MatchDaoImpl implements MatchDao {
 
-	@Override
 	public void save(MatchMain match) {
 		// TODO Auto-generated method stub
-		Session session = Session.getInstance();
+		Session session = new Session();
 		session.beginTransaction();
 		try {
 			if (match.getId() > 0) {

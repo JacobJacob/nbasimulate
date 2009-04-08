@@ -6,10 +6,9 @@ import com.ts.dt.po.MatchStat;
 
 public class MatchStatDaoImpl implements MatchStatDao {
 
-	@Override
 	public void save(MatchStat matchStat) {
 		// TODO Auto-generated method stub
-		Session session = Session.getInstance();
+		Session session = new Session();
 		session.beginTransaction();
 		try {
 			session.save(matchStat);

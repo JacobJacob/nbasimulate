@@ -18,7 +18,6 @@ public class ServiceFacadeBeanImp implements ServiceFacadeBean {
 	@PersistenceContext
 	public EntityManager em;
 
-	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ResponseContext processRequest(RequestContext reqCtx) throws Exception {
 		// TODO Auto-generated method stub

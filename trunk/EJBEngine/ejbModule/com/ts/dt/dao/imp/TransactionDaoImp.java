@@ -36,7 +36,7 @@ public class TransactionDaoImp implements TransactionDao {
 	public Transaction loadByTxnIdTxnCode(String txnId, String txnCode) {
 
 		Object[] parms = { txnId, txnCode };
-		Session session = Session.getInstance();
+		Session session = new Session();
 		long id = -1;
 		try {
 			id = session.getIdBySql(SQL_LOAD_BY_TXNID_TXNCODE, parms);

@@ -33,7 +33,7 @@ public class ActionDescDaoImpl implements ActionDescDao {
 
 	public List<Persistence> findWithActionAndResultAndFlg(String actionNm, String result, String flg) {
 		// TODO Auto-generated method stub
-		Session session = Session.getInstance();
+		Session session = new Session();
 		String[] parm = { actionNm, result, flg };
 		List<Persistence> list = null;
 		try {
