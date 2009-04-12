@@ -1,0 +1,61 @@
+body
+{
+    font-size: 12px;
+}
+.container
+{
+    float: left;
+    width: 800px;
+    border: 1px solid #000000;
+}
+
+.navcontainer ul
+{
+    background-color: #999999;
+    border-bottom:1px solid #000;
+    border-top:1px solid #000;
+    float:left;
+    font-size:12px;
+    margin:0pt;
+    padding:0pt;
+    width:100%;
+}
+.navcontainer ul li
+{
+    display: inline;
+    text-align: center;
+}
+.navcontainer ul li a:hover
+{
+    background-color:#CCCCCC;
+    color:#FFFFFF;
+}
+.navcontainer ul li a
+{
+    background-color: #99CCFF;
+    font-weight: bold;
+    color:#FFFFFF;
+    float:left;
+    padding:10px;
+    text-decoration:none;
+    width: 100px;
+    height: 30px;
+    border-right:1px solid #000;
+}
+#tabcontent
+{
+    min-height: 300px;
+    padding-top: 80px;
+    padding-left: 10px;
+}
+#preloader
+{
+    position: absolute;
+    top: 150px;
+    left: 100px;
+    z-index: 100;
+    padding: 5px;
+    text-align: center;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+}
