@@ -19,7 +19,7 @@ public class SqlHelper {
 		ArrayList<Object> values = new ArrayList<Object>();
 
 		insert.append("INSERT INTO ");
-		insert.append(className2TableName(obj));
+		insert.append("`" + className2TableName(obj) + "`");
 
 		Field[] fields = obj.getClass().getDeclaredFields();
 
@@ -33,7 +33,7 @@ public class SqlHelper {
 
 			if (value != null) {
 				attribute.append(",");
-				attribute.append(field.getName());
+				attribute.append(fieldName2ColumnName(field.getName()));
 				parameters.append(",?");
 				values.add(value);
 			}
@@ -56,6 +56,58 @@ public class SqlHelper {
 
 	}
 
+	public static Hashtable<String, Object> createUpdateSql(Object obj) {
+
+		Hashtable<String, Object> table = new Hashtable<String, Object>();
+
+		StringBuffer update = new StringBuffer();
+		StringBuffer attribute = new StringBuffer();
+		ArrayList<Object> values = new ArrayList<Object>();
+
+		update.append("UPDATE ");
+		update.append("`" + className2TableName(obj) + "`");
+		update.append("SET ");
+
+		Field[] fields = obj.getClass().getDeclaredFields();
+
+		for (int i = 0; i < fields.length; i++) {
+
+			Field field = fields[i];
+			if ("serialVersionUID".equals(field.getName())) {
+				continue;
+			}
+			Object value = getValueByField(obj, field.getName());
+
+			if (value != null) {
+				attribute.append(" ");
+				attribute.append(fieldName2ColumnName(field.getName()));
+				attribute.append(" = ? ,");
+
+				values.add(value);
+			}
+		}
+		Object id = getValueByField(obj,"id");
+		values.add(id);
+		
+		String attributeStr = attribute.substring(0, attribute.length() - 1);
+
+		update.append(attributeStr);
+		update.append(" WHERE ID = ? ");
+
+		Object[] parm = values.toArray();
+		table.put(Constants.DB_SQL, update.toString());
+		table.put(Constants.DB_PARM, parm);
+		return table;
+
+	}
+
+	public static String getLastInsertSql(Object obj) {
+
+		String sql = "select LAST_INSERT_ID() as id from `~` limit 1";
+
+		return sql.replaceAll("~", className2TableName(obj));
+	}
+
 	public static String getLoaderSql(Object obj) {
 
 		StringBuffer load = new StringBuffer();
@@ -70,8 +122,7 @@ public class SqlHelper {
 	public static String className2TableName(Object obj) {
 
 		String className = obj.getClass().getName();
-		className = className.substring(className.lastIndexOf(".") + 1,
-				className.length());
+		className = className.substring(className.lastIndexOf(".") + 1, className.length());
 
 		char[] chs = className.toCharArray();
 
@@ -112,8 +163,8 @@ public class SqlHelper {
 		Object value = null;
 		try {
 			String methodName = fieldName2GetMethod(field);
-			Method method = obj.getClass().getMethod(methodName, null);
-			value = method.invoke(obj, null);
+			Method method = obj.getClass().getMethod(methodName, new Class[0]);
+			value = method.invoke(obj, new Object[0]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -121,12 +172,10 @@ public class SqlHelper {
 	}
 
 	public static String fieldName2GetMethod(String fieldName) {
-		return "get" + fieldName.substring(0, 1).toUpperCase()
-				+ fieldName.substring(1, fieldName.length());
+		return "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
 	}
 
 	public static String fieldName2SetMethod(String fieldName) {
-		return "set" + fieldName.substring(0, 1).toUpperCase()
-				+ fieldName.substring(1, fieldName.length());
+		return "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
 	}
 }

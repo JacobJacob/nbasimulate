@@ -36,7 +36,7 @@ public class Persistence implements Persistable {
 		this.id = id;
 		Session session = new Session();
 		try {
-			session.load(this);
+			session.load(this.getClass(),id);
 		} catch (Exception e) {
 
 			e.printStackTrace();

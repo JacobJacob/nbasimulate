@@ -4,17 +4,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 
 import com.dt.bottle.logger.Logger;
+import com.dt.bottle.util.DateConverter;
 
 public class DBConnection {
 
 	private Connection conn = null;
+	private PreparedStatement prepareStatement = null;
 
-	public void connect() {
+	public synchronized void connect() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/xba?user=root&password=821015");
+			conn = DriverManager
+					.getConnection("jdbc:mysql://localhost/xba?user=root&password=821015");
 			conn.setAutoCommit(false);
 
 		} catch (Exception e) {
@@ -22,7 +26,7 @@ public class DBConnection {
 		}
 	}
 
-	public void execute(String sql, Object[] parm) {
+	public synchronized void execute(String sql, Object[] parm) {
 
 		Logger.logger("SQL: " + sql);
 		if (conn == null) {
@@ -30,15 +34,27 @@ public class DBConnection {
 		}
 
 		try {
-			PreparedStatement prepareStatement = conn.prepareStatement(sql);
+			prepareStatement = conn.prepareStatement(sql);
 			for (int i = 1; i <= parm.length; i++) {
-				prepareStatement.setObject(i, parm[i - 1]);
+
+				if (parm[i - 1] instanceof Date) {
+					prepareStatement.setTimestamp(i, DateConverter
+							.utilDate2Timestamp((Date) parm[i - 1]));
+				} else {
+					prepareStatement.setObject(i, parm[i - 1]);
+				}
 
 			}
 			prepareStatement.execute();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				prepareStatement.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -46,7 +62,7 @@ public class DBConnection {
 	/*
 	 * 
 	 */
-	public ResultSet executeQuery(String sql, Object[] parm) {
+	public synchronized ResultSet executeQuery(String sql, Object[] parm) {
 
 		Logger.logger("SQL: " + sql);
 
@@ -56,7 +72,7 @@ public class DBConnection {
 			connect();
 		}
 		try {
-			PreparedStatement prepareStatement = conn.prepareStatement(sql);
+			prepareStatement = conn.prepareStatement(sql);
 			for (int i = 1; i <= parm.length; i++) {
 
 				prepareStatement.setObject(i, parm[i - 1]);
@@ -71,7 +87,7 @@ public class DBConnection {
 		return resultSet;
 	}
 
-	public void commit() {
+	public synchronized void commit() {
 
 		try {
 			conn.commit();
@@ -81,7 +97,7 @@ public class DBConnection {
 
 	}
 
-	public void rollback() {
+	public synchronized void rollback() {
 
 		try {
 			conn.rollback();
@@ -90,4 +106,15 @@ public class DBConnection {
 		}
 	}
 
+	public synchronized void destory() {
+
+		try {
+			if (prepareStatement != null && !prepareStatement.isClosed()) {
+				prepareStatement.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }

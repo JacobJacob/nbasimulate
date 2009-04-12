@@ -1,13 +1,12 @@
 package com.dt.bottle.util;
 
-import javax.security.auth.login.Configuration;
-
 import com.dt.bottle.factory.SessionFactory;
 import com.dt.bottle.session.Session;
 
 public class BottleUtil {
 
 	public static final SessionFactory sessionFactory;
+
 	static {
 		try {
 			sessionFactory = SessionFactory.getInstance();
@@ -23,6 +22,8 @@ public class BottleUtil {
 			s = sessionFactory.getSession();
 			session.set(s);
 		}
+		System.out.println("Thread is " + Thread.currentThread()
+				+ "/ Session :" + s);
 		return s;
 	}
 

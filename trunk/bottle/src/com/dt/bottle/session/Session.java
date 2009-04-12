@@ -15,6 +15,7 @@ import com.dt.bottle.logger.Logger;
 import com.dt.bottle.persistence.Persistence;
 import com.dt.bottle.pool.ConnectionPool;
 import com.dt.bottle.sql.SqlHelper;
+import com.dt.bottle.util.StringConverter;
 
 public class Session {
 
@@ -33,6 +34,8 @@ public class Session {
 
 	public void save(Object obj) throws SessionException {
 
+		long id = 0;
+
 		if (!success) {
 			return;
 		}
@@ -47,29 +50,66 @@ public class Session {
 			e.printStackTrace();
 			throw new SessionException();
 		}
+		String getIdSql = SqlHelper.getLastInsertSql(obj);
+		try {
+			ResultSet resultSet = conn.executeQuery(getIdSql, new Object[0]);
+			if (!resultSet.next()) {
+				throw new Exception("error occor while get last id");
+			}
+			id = resultSet.getLong("id");
+			((Persistence) obj).setId(id);
+		} catch (Exception e) {
+			success = false;
+			e.printStackTrace();
+			throw new SessionException();
+		}
 		Logger.logger("finish save");
+
 	}
 
-	public Persistence load(Persistence pesist) throws Exception {
+	public void update(Object obj) throws SessionException {
+
+		if (!success) {
+			return;
+		}
+		Logger.logger("start updaet");
+		Hashtable<String, Object> table = SqlHelper.createUpdateSql(obj);
+		String sql = (String) table.get(Constants.DB_SQL);
+		Object[] parm = (Object[]) table.get(Constants.DB_PARM);
+		try {
+			conn.execute(sql, parm);
+		} catch (Exception e) {
+			success = false;
+			e.printStackTrace();
+			throw new SessionException();
+		}
+		Logger.logger("finish update");
+
+	}
+
+	public Persistence load(Class<?> cls, long id) throws Exception {
+
+		Persistence persistence = (Persistence) cls.newInstance();
 
 		if (cacheActive) {
-			if (cache.containObject(pesist.getClass(), pesist.getId())) {
-				return cache.load(pesist.getClass(), pesist.getId());
+			if (cache.containObject(cls, id)) {
+				return cache.load(cls, id);
 			}
 		}
-		conn = ConnectionPool.instance().connection();
+		DBConnection conn = ConnectionPool.instance().connection();
 
-		Logger.logger("start to load Object[" + pesist.getClass().getName() + "] id :" + pesist.getId());
+		Logger.logger("start to load Object[" + cls.getClass().getName()
+				+ "] id :" + id);
 
-		String sql = SqlHelper.getLoaderSql(pesist);
-		Object[] parm = { String.valueOf(pesist.getId()) };
+		String sql = SqlHelper.getLoaderSql(persistence);
+		Object[] parm = { String.valueOf(id) };
 
 		try {
 			ResultSet resultSet = conn.executeQuery(sql, parm);
 			if (!resultSet.next()) {
 				throw new ObjectNotFoundException();
 			}
-			ObjectBuilder.builderObjFromResultSet(pesist, resultSet);
+			ObjectBuilder.builderObjFromResultSet(persistence, resultSet);
 
 		} catch (Exception e) {
 			success = false;
@@ -81,14 +121,15 @@ public class Session {
 		}
 		if (cacheActive) {
 
-			cache.store(pesist, pesist.getId());
+			cache.store(persistence, id);
 
 		}
 
-		return pesist;
+		return persistence;
 	}
 
-	public List<Persistence> query(Class<?> cla, String sql, Object[] parm) throws Exception {
+	public List<Persistence> query(Class<?> cla, String sql, Object[] parm)
+			throws Exception {
 
 		conn = ConnectionPool.instance().connection();
 
@@ -96,23 +137,29 @@ public class Session {
 
 		try {
 			ResultSet resultSet = conn.executeQuery(sql, parm);
+
+			int rows = 0;
 			while (resultSet.next()) {
+				rows++;
 				Persistence pesist = (Persistence) cla.newInstance();
 				ObjectBuilder.builderObjFromResultSet(pesist, resultSet);
 				result.add(pesist);
 			}
+			Logger.logger("Query:" + sql
+					+ StringConverter.parmArray2String(parm)
+					+ " select rows : " + rows);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SessionException();
 		} finally {
 			ConnectionPool.instance().disConnection(conn);
-			conn = null;
 		}
 		return result;
 	}
 
-	public long getIdBySql(String sql, Object[] parm) throws ObjectNotFoundException, SessionException {
+	public synchronized long getIdBySql(String sql, Object[] parm)
+			throws ObjectNotFoundException, SessionException {
 
 		long id = -1;
 		conn = ConnectionPool.instance().connection();
@@ -130,7 +177,6 @@ public class Session {
 			throw new SessionException();
 		} finally {
 			ConnectionPool.instance().disConnection(conn);
-			conn = null;
 		}
 
 		return id;
@@ -138,6 +184,9 @@ public class Session {
 
 	public void beginTransaction() {
 		conn = ConnectionPool.instance().connection();
+		if (conn == null) {
+			System.out.println("get a null connection!");
+		}
 	}
 
 	public void endTransaction() {
@@ -148,7 +197,7 @@ public class Session {
 		}
 
 		ConnectionPool.instance().disConnection(conn);
-		conn = null;
+		// conn = null;
 	}
 
 	public void readCacheStatus() {
