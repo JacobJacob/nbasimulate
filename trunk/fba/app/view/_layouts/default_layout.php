@@ -11,13 +11,13 @@
       <frame src="<?php echo url("menu/info");?>" name="mainFrame">
       <frameset rows="*,0" cols="600,236">
         <frame src="UntitledFrame-6.htm" name="center">
-        <frame src="UntitledFrame-5.htm">
+        <frame src="UntitledFrame-5.htm" name="left">
       </frameset>
     </frameset>
   </frameset>
 </frameset>
 <noframes>
-<body>
+<body style="width:1000px">
 </body>
 </noframes>
 </body>

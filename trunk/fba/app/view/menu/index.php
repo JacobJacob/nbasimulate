@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-type" content="text/html; charset=utf8" />
 <script type="text/javascript" src="<?php echo $_BASE_DIR; ?>public/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $_BASE_DIR; ?>public/js/jquery.dimensions.js"></script>
 <script type="text/javascript" src="<?php echo $_BASE_DIR; ?>public/js/jquery.accordion.js"></script> 
@@ -23,58 +23,58 @@
 <div  style="height:250px;margin-bottom:1em;">
  <ul id="navigation">
     <li><a href="#"> 
-       <a class="head">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a> 
+       <a class="head">¾º¼¼ÖÐÐÄ</a> 
        <ul>
-        <li><a href="#">ï¿½ï¿½ï¿½ß¾ï¿½ï¿½ï¿½</a></li>
-        <li><a href="#">ï¿½ÒµÄ±ï¿½ï¿½ï¿½</a></li>
-        <li><a href="#">Ñµwï¿½ï¿½ï¿½ï¿½</a></li>
-        <li><a href="#">Ê¤ï¿½ï¿½Îªï¿½ï¿½</a></li>
+        <li><a href="#">ÎÒµÄ±ÈÈü</a></li>
+        <li><a href="#">ÑµÁ·ÖÐÐÄ</a></li>
+        <li><a href="#">Ê¤ÕßÎªÍõ</a></li>
+        <li><a href="#">ÊµÁ¦ÅÅÐÐ</a></li>
       </ul>
     </li>  
      <li>
-       <a class="head">ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½</a>
+       <a class="head">Çò¶Ó¹ÜÀí</a>
          <ul> 
-           <li><a href="<?php echo url('player/index');?>" target="center">ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½ï¿½wï¿½ï¿½ï¿½ï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½ï¿½Ô±Ñµw</a></li>
-           <li><a href="#">ï¿½ï¿½Ó²ï¿½ï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½ï¿½Ó½ï¿½ï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a></li>
+           <li><a href="<?php echo url('player/index');?>" target="center">ÇòÔ±¹ÜÀí</a></li>
+           <li><a href="#">½ÌÁ·×éÔ±</a></li>
+           <li><a href="#">ÇòÔ±ÑµÁ·</a></li>
+           <li><a href="#">Çò¶Ó²ÆÕþ</a></li>
+           <li><a href="#">Çò¶Ó½¨Éè</a></li>
+           <li><a href="#">Çò¶ÓÈÙÓþ</a></li>
          </ul>
      </li>  
      <li>
-         <a class="head">ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½</a>
+         <a class="head">Èü³Ì¹ÜÀí</a>
          <ul> 
-           <li><a href="#">Ö°Òµjï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½ï¿½Ñ§jï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½Ú¾ï¿½ï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½</a></li>
+           <li><a href="#">FBAÁªÈü</a></li>
+           <li><a href="#">CFBAÁªÈü</a></li>
+           <li><a href="#">¹Ú¾ü±­Èü</a></li>
+           <li><a href="#">×Ô½¨±­Èü</a></li>
+           <li><a href="#">Ê¤ÕßÎªÍõ</a></li>
          </ul>
      </li> 
      <li>
-         <a class="head">Õ½ï¿½ï¿½ï¿½ï¿½ï¿½</a> 
+         <a class="head">Õ½ÊõÉè¶¨</a> 
          <ul> 
-           <li><a href="#">Ö°ÒµÕ½ï¿½ï¿½</a></li>
-           <li><a href="#">ï¿½ï¿½Ñ§Õ½ï¿½ï¿½</a></li>
+           <li><a href="#">Ö°ÒµÕ½Êõ</a></li>
+           <li><a href="#">¶þ¶ÓÕ½Êõ</a></li>
          </ul>
      </li> 
      <li>
-         <a class="head">:ï¿½ï¿½jï¿½ï¿½</a> 
+         <a class="head">ÀºÇòÁªÃË</a> 
          <ul> 
-           <li><a href="#">jï¿½ï¿½ï¿½Ð±ï¿½</a></li>
-           <li><a href="#">ï¿½Òµï¿½jï¿½ï¿½</a></li>
-           <li><a href="#">jï¿½ï¿½Õ½ï¿½ï¿½</a></li>
+           <li><a href="#">ÎÒµÄÁªÃË</a></li>
+           <li><a href="#">ÁªÃËÕ½Êõ</a></li>
+           <li><a href="#">ÁªÃËÁÐ±í</a></li>
          </ul>
      </li>   
       <li>
-         <a class="head">×ªï¿½ï¿½ï¿½Ð³ï¿½</a>
+         <a class="head">×ª»áÊÐ³¡</a>
          <ul> 
-           <li><a href="#">ï¿½ï¿½×¢ï¿½ï¿½Ô±</a></li>
-           <li><a href="#">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±</a></li>
-           <li><a href="#">ï¿½ï¿½Ñ§ï¿½ï¿½Ô±</a></li>
-           <li><a href="#">Ö°Òµï¿½ï¿½Ô±</a></li>
-           <li><a href="#">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±</a></li>
+           <li><a href="#">Ö°Òµ×ª»á</a></li>
+           <li><a href="#">Ö°ÒµÑ¡Ðã</a></li>
+           <li><a href="#">ÍâÊÚÊÐ³¡</a></li>
+           <li><a href="#">×ÔÓÉÇòÔ±</a></li>
+           <li><a href="#">¸ßÖÐÇòÔ±</a></li>
          </ul>
      </li> 
    </ul>
