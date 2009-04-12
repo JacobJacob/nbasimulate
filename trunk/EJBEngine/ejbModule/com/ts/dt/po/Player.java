@@ -2,13 +2,12 @@ package com.ts.dt.po;
 
 import com.dt.bottle.persistence.Persistence;
 
-
-public class Player extends Persistence{
+public class Player extends Persistence {
 
 	private long id;
 	private String name;
 	private int age;
-	private int position;
+	private String position;
 	private int stature;
 	private int avoirdupois;
 	private long teamId;
@@ -41,11 +40,11 @@ public class Player extends Persistence{
 		this.age = age;
 	}
 
-	public int getPosition() {
+	public String getPosition() {
 		return position;
 	}
 
-	public void setPosition(int position) {
+	public void setPosition(String position) {
 		this.position = position;
 	}
 
@@ -176,5 +175,5 @@ public class Player extends Persistence{
 	public void setBlocked(double blocked) {
 		this.blocked = blocked;
 	}
-    
+
 }

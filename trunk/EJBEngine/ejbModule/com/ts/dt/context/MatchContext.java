@@ -17,6 +17,12 @@ public class MatchContext {
 
 	private DataStat dataStat;
 
+	private long homeTeamId;
+	private long visitingTeamId;
+
+	private String matchType; // 比赛类型
+	private int seq;
+
 	private int currentOffensiveCostTime = 0; // 当前进攻所使用了的时间,以毫秒算
 
 	private int currentTeam = MatchConstant.CURRENT_TEAM_A; // 0代表主队控球
@@ -153,7 +159,8 @@ public class MatchContext {
 	}
 
 	public String currentScore() {
-		return "[" + getInt(MatchConstant.POINT_TEAM_A) + " : " + getInt(MatchConstant.POINT_TEAM_B) + "]";
+		return "[" + getInt(MatchConstant.POINT_TEAM_A) + " : "
+				+ getInt(MatchConstant.POINT_TEAM_B) + "]";
 	}
 
 	public boolean isHomeTeamController(String controllerName) {
@@ -455,7 +462,8 @@ public class MatchContext {
 		return (String) get(MatchConstant.SCRIMMAGE_ACTION_RESULT);
 	}
 
-	public Controller getControllerWithIndx(int indx) throws ArrayIndexOutOfBoundsException {
+	public Controller getControllerWithIndx(int indx)
+			throws ArrayIndexOutOfBoundsException {
 
 		Hashtable<String, Controller> controllers = this.getControllers();
 		if (indx > 10 || indx < 1) {
@@ -539,6 +547,38 @@ public class MatchContext {
 
 	public void saveStatToDB() {
 		dataStat.saveToDB(matchId);
+	}
+
+	public long getHomeTeamId() {
+		return homeTeamId;
+	}
+
+	public void setHomeTeamId(long homeTeamId) {
+		this.homeTeamId = homeTeamId;
+	}
+
+	public long getVisitingTeamId() {
+		return visitingTeamId;
+	}
+
+	public void setVisitingTeamId(long visitingTeamId) {
+		this.visitingTeamId = visitingTeamId;
+	}
+
+	public String getMatchType() {
+		return matchType;
+	}
+
+	public void setMatchType(String matchType) {
+		this.matchType = matchType;
+	}
+
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 
 }

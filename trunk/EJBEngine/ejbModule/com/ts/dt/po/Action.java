@@ -1,6 +1,5 @@
 package com.ts.dt.po;
 
-import javax.persistence.Entity;
 
 import com.dt.bottle.persistence.Persistence;
 

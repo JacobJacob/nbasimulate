@@ -16,7 +16,7 @@ import com.ts.dt.po.Team;
 
 public class MatchEngineImpl implements MatchEngine {
 
-	public void execute(long homeTeamId, long visitingTeamId) {
+	public void execute(long homeTeamId, long visitingTeamId, String matchType) {
 
 		MatchContext context = new MatchContext();
 
@@ -36,6 +36,9 @@ public class MatchEngineImpl implements MatchEngine {
 		matchDao.save(match);
 
 		context.setMatchId(match.getId());
+		context.setMatchType(matchType);
+		context.setHomeTeamId(homeTeamId);
+		context.setVisitingTeamId(visitingTeamId);
 
 		// TODO Auto-generated method stub
 		Nodosity nodosity = new Nodosity();
@@ -60,7 +63,7 @@ public class MatchEngineImpl implements MatchEngine {
 	}
 
 	public static void main(String[] args) {
-		new MatchEngineImpl().execute(1, 2);
+		new MatchEngineImpl().execute(1, 2,"CAR");
 	}
 
 }

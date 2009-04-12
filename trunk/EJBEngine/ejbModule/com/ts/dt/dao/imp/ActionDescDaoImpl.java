@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dt.bottle.persistence.Persistence;
 import com.dt.bottle.session.Session;
+import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.dao.ActionDescDao;
 import com.ts.dt.po.ActionDesc;
 
@@ -31,9 +32,10 @@ public class ActionDescDaoImpl implements ActionDescDao {
 
 	}
 
-	public List<Persistence> findWithActionAndResultAndFlg(String actionNm, String result, String flg) {
+	public List<Persistence> findWithActionAndResultAndFlg(String actionNm,
+			String result, String flg) {
 		// TODO Auto-generated method stub
-		Session session = new Session();
+		Session session = BottleUtil.currentSession();
 		String[] parm = { actionNm, result, flg };
 		List<Persistence> list = null;
 		try {

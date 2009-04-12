@@ -48,9 +48,7 @@ public class MovementDescFactory {
 	}
 	public String getMovementDesc(Player player,Tactics tactics){
 		
-		if(player.getPosition() == MovementDescConstant.LOCATION_PG){
-			
-		}
+
 		return null;
 		
 	}

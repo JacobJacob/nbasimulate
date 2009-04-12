@@ -20,7 +20,7 @@ public class TechnicallyTraitHelper {
 
 		int[] percents = { 0, 0, 0, 0, 0 };
 
-		int location = player.getPosition();
+		int location = changePosition2Int(player.getPosition());
 		switch (location) {
 		case MatchConstant.POSITION_PG:
 			percents[0] = 60;
@@ -62,7 +62,8 @@ public class TechnicallyTraitHelper {
 
 		}
 		Random random = new Random();
-		int total = percents[0] + percents[1] + percents[2] + percents[3] + percents[4];
+		int total = percents[0] + percents[1] + percents[2] + percents[3]
+				+ percents[4];
 		int a = random.nextInt(total);
 		if (a < percents[0]) {
 			trait = TECHNICALLY_TRAIT_OUT;
@@ -77,5 +78,20 @@ public class TechnicallyTraitHelper {
 		}
 
 		return trait;
+	}
+
+	public static int changePosition2Int(String position) {
+
+		if (position == MatchConstant.LOCATION_C) {
+			return MatchConstant.POSITION_C;
+		} else if (position == MatchConstant.LOCATION_PF) {
+			return MatchConstant.POSITION_PF;
+		} else if (position == MatchConstant.LOCATION_SF) {
+			return MatchConstant.POSITION_SF;
+		} else if (position == MatchConstant.LOCATION_SG) {
+			return MatchConstant.POSITION_SG;
+		} else {
+			return MatchConstant.POSITION_PG;
+		}
 	}
 }
