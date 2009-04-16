@@ -1,0 +1,196 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Diagram version="1.0" type="MySQL" versionMajor="5" versionMinor="0">
+   <Table id="0" name="team" schema="" database="">
+      <Column id="1" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="2" name="team_name" type="varchar" length="30" nulls="false"/>
+      <Column id="3" name="user_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+   </Table>
+   <Table id="4" name="tournament_schedule" schema="" database="">
+      <Column id="5" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="6" name="season_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="7" name="turn" type="int" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="8" name="division_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="9" name="competition_date " type="date" length="25" nulls="false"/>
+   </Table>
+   <Table id="10" name="tournament_schedule_detail" schema="" database="">
+      <Column id="11" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="12" name="tournament_schedule_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="13" name="host_team_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="14" name="visiting_team_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="15" name="match_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+   </Table>
+   <Table id="16" name="match" schema="" database="">
+      <Column id="17" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="18" name="Result" type="varchar" length="25" nulls="false"/>
+      <Column id="19" name="host_team_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="20" name="visiting_team_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+   </Table>
+   <Table id="21" name="match_report_detail" schema="" database="">
+      <Column id="22" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="23" name="seq" type="int" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="24" name="time" type="long" length="25" nulls="false"/>
+      <Column id="25" name="match_nodosity_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+   </Table>
+   <Table id="26" name="match_nodosity" schema="" database="">
+      <Column id="27" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="28" name="match_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="29" name="seq" type="int" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="30" name="nodosity_result" type="varchar" length="25" nulls="false"/>
+   </Table>
+   <Table id="31" name="nodosity_players" schema="" database="">
+      <Column id="32" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="33" name="nodosity_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="34" name="positions" type="char" length="2" nulls="false"/>
+      <Column id="35" name="is_home_team" type="int" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+   </Table>
+   <Table id="36" name="nodosity_statistic" schema="" database="">
+      <Column id="37" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="38" name="nodosity_id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+   </Table>
+   <Table id="39" name="user" schema="" database="">
+      <Column id="40" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="41" name="user_name" type="varchar" length="25" nulls="false"/>
+      <Column id="42" name="password" type="varchar" length="25" nulls="false"/>
+   </Table>
+   <Table id="43" name="player" schema="" database="">
+      <Column id="44" name="id" type="bigint" length="25" nulls="false">
+         <CP name="PRECISION">15</CP>
+      </Column>
+      <Column id="45" name="no" type="varchar" length="25" nulls="false"/>
+      <Column id="46" name="name" type="varchar" length="25" nulls="false"/>
+   </Table>
+   <Relation id="47" name="schedule_detail" cardinality="-2" identifying="true" nulls="false">
+      <FK>5</FK>
+      <PK>12</PK>
+      <Text></Text>
+   </Relation>
+   <Relation id="48" name="match" cardinality="1" identifying="true" nulls="false">
+      <FK>14</FK>
+      <PK>1</PK>
+      <Text></Text>
+   </Relation>
+   <Relation id="49" name="tournament_match" cardinality="1" identifying="true" nulls="false">
+      <FK>15</FK>
+      <PK>17</PK>
+      <Text></Text>
+   </Relation>
+   <Relation id="50" name="match_nodosity" cardinality="-2" identifying="true" nulls="false">
+      <FK>17</FK>
+      <PK>28</PK>
+      <Text></Text>
+   </Relation>
+   <Relation id="51" name="nodosity_players" cardinality="-2" identifying="true" nulls="false">
+      <FK>27</FK>
+      <PK>33</PK>
+      <Text></Text>
+   </Relation>
+   <Relation id="52" name="nodosity_detail" cardinality="-2" identifying="true" nulls="false">
+      <FK>27</FK>
+      <PK>25</PK>
+      <Text></Text>
+   </Relation>
+   <Relation id="53" name="nodosity_statistic" cardinality="-2" identifying="true" nulls="false">
+      <FK>27</FK>
+      <PK>38</PK>
+      <Text></Text>
+   </Relation>
+   <Constraint table="0" name="id" type="PrimKey">
+      <ConstraintColumn id="1"></ConstraintColumn>
+   </Constraint>
+   <Constraint table="4" name="id" type="PrimKey">
+      <ConstraintColumn id="5"></ConstraintColumn>
+   </Constraint>
+   <Constraint table="10" name="id" type="PrimKey">
+      <ConstraintColumn id="11"></ConstraintColumn>
+   </Constraint>
+   <Constraint table="16" name="id" type="PrimKey">
+      <ConstraintColumn id="17"></ConstraintColumn>
+   </Constraint>
+   <Constraint table="21" name="id" type="PrimKey">
+      <ConstraintColumn id="22"></ConstraintColumn>
+   </Constraint>
+   <Constraint table="26" name="id" type="PrimKey">
+      <ConstraintColumn id="27"></ConstraintColumn>
+   </Constraint>
+   <Constraint table="31" name="id" type="PrimKey">
+      <ConstraintColumn id="32"></ConstraintColumn>
+   </Constraint>
+   <Constraint table="36" name="id" type="PrimKey">
+      <ConstraintColumn id="37"></ConstraintColumn>
+   </Constraint>
+   <Sheet name="FBA" id="54" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+      <Place id="10" visible="true">360,190,230,110</Place>
+      <Place id="47" visible="true">500,0,0,0</Place>
+      <Place id="31" visible="true">20,630,170,90</Place>
+      <Place id="36" visible="true">430,630,190,91</Place>
+      <Place id="48" visible="true">500,0,0,0</Place>
+      <Place id="51" visible="true">500,0,0,0</Place>
+      <Place id="26" visible="true">200,500,220,90</Place>
+      <Place id="16" visible="true">90,360,190,90</Place>
+      <Place id="0" visible="true">340,30,220,101</Place>
+      <Place id="49" visible="true">500,0,0,0</Place>
+      <Place id="50" visible="true">500,0,0,0</Place>
+      <Place id="21" visible="true">210,630,210,90</Place>
+      <Place id="4" visible="true">90,190,200,111</Place>
+      <Place id="52" visible="true">500,0,0,0</Place>
+      <Place id="53" visible="true">500,0,0,0</Place>
+   </Sheet>
+   <Sheet name="FBA_2" id="55" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+      <Place id="39" visible="true">100,160,191,80</Place>
+      <Place id="43" visible="true">100,450,160,80</Place>
+      <Place id="0" visible="true">100,300,180,80</Place>
+   </Sheet>
+   <Settings sheet="55" zoom="1.0"></Settings>
+</Diagram>
