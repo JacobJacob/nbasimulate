@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="ejbModule"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/bottle"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bottle"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="E:/EclipseWorkspace/NBASimulate/WebContent/WEB-INF/lib/jdom.jar"/>
-	<classpathentry kind="lib" path="E:/EclipseWorkspace/NBASimulate/WebContent/WEB-INF/lib/log4j.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
