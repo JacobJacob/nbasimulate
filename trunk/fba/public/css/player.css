@@ -11,7 +11,6 @@ body
 
 .navcontainer ul
 {
-    background-color: #999999;
     border-bottom:1px solid #000;
     border-top:1px solid #000;
     float:left;
@@ -32,20 +31,19 @@ body
 }
 .navcontainer ul li a
 {
-    background-color: #99CCFF;
     font-weight: bold;
-    color:#FFFFFF;
+
     float:left;
     padding:10px;
     text-decoration:none;
     width: 100px;
-    height: 30px;
+    height: 10px;
     border-right:1px solid #000;
 }
 #tabcontent
 {
     min-height: 300px;
-    padding-top: 80px;
+    padding-top: 10px;
     padding-left: 10px;
 }
 #preloader
@@ -58,4 +56,25 @@ body
     text-align: center;
     background-color: #FFFFFF;
     border: 1px solid #000000;
+}
+.player_list{
+ width:600px;
+}
+.player_list td{
+ line-height: 20px;
+ height: auto;
+ font-size: 14px;
+ border-bottom-width: 1px;
+ border-bottom-style: solid;
+ border-bottom-color: #CCCCCC;
+ font-weight: bold;
+ color: #0066CC;
+}
+#player_list{
+  float:left;
+  width:650px;
+}
+#player_detail{
+  float:left;
+  width:220px;
 }

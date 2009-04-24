@@ -39,5 +39,5 @@ CREATE TABLE `player` (
 -- ----------------------------
 -- Records 
 -- ----------------------------
-INSERT INTO `player` VALUES ('1', '姚明', '27', 'PG', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, '11');
-INSERT INTO `player` VALUES ('2', '科比', '29', 'SG', null, null, '1', null, null, null, null, null, null, null, null, null, null, null, null, '23');
+INSERT INTO `player` VALUES (`1`, `姚明`, `27`, `PG`, null, null, `1`, null, null, null, null, null, null, null, null, null, null, null, null, `11`);
+INSERT INTO `player` VALUES (`2`, `科比`, `29`, `SG`, null, null, `1`, null, null, null, null, null, null, null, null, null, null, null, null, `23`);
