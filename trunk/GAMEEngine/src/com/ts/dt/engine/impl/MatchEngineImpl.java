@@ -13,9 +13,18 @@ import com.ts.dt.match.Nodosity;
 import com.ts.dt.match.test.TestDataFactory;
 import com.ts.dt.po.MatchMain;
 import com.ts.dt.po.Team;
-
+/*
+ * 比赛引擎,实现比赛引擎接口
+ */
 public class MatchEngineImpl implements MatchEngine {
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.ts.dt.engine.MatchEngine#execute(long, long, java.lang.String)
+	 * @homeTeamId 主队ID
+	 * @visitingTeamId 客队ID
+	 * @matchType 比赛类型
+	 */
 	public void execute(long homeTeamId, long visitingTeamId, String matchType) {
 
 		MatchContext context = new MatchContext();

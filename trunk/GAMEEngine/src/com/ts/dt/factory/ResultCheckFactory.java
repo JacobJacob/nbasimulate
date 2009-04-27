@@ -1,8 +1,8 @@
 package com.ts.dt.factory;
 
-import com.ts.dt.check.ResultCheck;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.match.action.Action;
+import com.ts.dt.match.check.ResultCheck;
 import com.ts.dt.util.StringUtil;
 
 public class ResultCheckFactory {

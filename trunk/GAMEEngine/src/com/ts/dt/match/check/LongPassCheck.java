@@ -1,4 +1,4 @@
-package com.ts.dt.check;
+package com.ts.dt.match.check;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
@@ -6,11 +6,11 @@ import com.ts.dt.helper.PassHelper;
 import com.ts.dt.helper.RandomCheckHelper;
 import com.ts.dt.po.Player;
 
-public class ShortPassCheck implements ResultCheck {
+public class LongPassCheck implements ResultCheck {
 
 	public void check(MatchContext context) {
 		// TODO Auto-generated method stub
-		int percent = 90;
+		int percent = 80;
 		Player currtPlayer = context.getCurrentController().getPlayer();
 		Player currtDefender = context.getCurrentDefender().getPlayer();
 		int passPower = PassHelper.checkPlayerPassPower(currtPlayer);
@@ -27,4 +27,5 @@ public class ShortPassCheck implements ResultCheck {
 			}
 		}
 	}
+
 }

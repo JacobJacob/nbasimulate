@@ -1,4 +1,4 @@
-package com.ts.dt.check;
+package com.ts.dt.match.check;
 
 import java.util.Random;
 
@@ -6,14 +6,13 @@ import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.po.Player;
 
-public class LongShootCheck implements ResultCheck {
+public class FoulShootCheck implements ResultCheck {
 
 	public void check(MatchContext context) {
-		// TODO Auto-generated method stub
 
 		String result = MatchConstant.RESULT_FAILURE;
 
-		int pointOfDivision = 30;
+		int pointOfDivision = 60;
 
 		Player player = context.getCurrentControllerPlayer();
 
