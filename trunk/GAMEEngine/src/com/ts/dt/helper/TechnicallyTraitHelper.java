@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.po.Player;
-import com.ts.dt.util.Logger;
+
 
 public class TechnicallyTraitHelper {
 
@@ -58,7 +58,7 @@ public class TechnicallyTraitHelper {
 			percents[4] = 20;
 			break;
 		default:
-			Logger.error("position error ");
+			//Logger.error("position error ");
 
 		}
 		Random random = new Random();

@@ -1,7 +1,7 @@
 package com.ts.dt.stat;
 
 import com.ts.dt.dao.MatchStatDao;
-import com.ts.dt.dao.imp.MatchStatDaoImpl;
+import com.ts.dt.dao.impl.MatchStatDaoImpl;
 import com.ts.dt.po.MatchStat;
 import com.ts.dt.po.Player;
 

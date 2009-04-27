@@ -2,7 +2,7 @@ package com.ts.dt.helper;
 
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.MatchDetailDao;
-import com.ts.dt.dao.imp.MatchDetailDaoImpl;
+import com.ts.dt.dao.impl.MatchDetailDaoImpl;
 import com.ts.dt.po.MatchDetail;
 import com.ts.dt.util.TimeUtil;
 

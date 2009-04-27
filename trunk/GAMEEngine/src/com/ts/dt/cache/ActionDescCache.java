@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.ts.dt.key.ActionDescKey;
 import com.ts.dt.po.ActionDesc;
-
+/*
+ * ¶¯×÷ÃèÊö»º´æÀà
+ */
 public class ActionDescCache {
 
 	public static final String nameingMethod = "ACTION_RESULT_FLG";

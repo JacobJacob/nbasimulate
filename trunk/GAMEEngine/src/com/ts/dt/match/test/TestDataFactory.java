@@ -2,7 +2,7 @@ package com.ts.dt.match.test;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.dao.PlayerDao;
-import com.ts.dt.dao.imp.PlayerDaoImpl;
+import com.ts.dt.dao.impl.PlayerDaoImpl;
 import com.ts.dt.po.Player;
 
 public class TestDataFactory {

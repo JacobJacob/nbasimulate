@@ -7,7 +7,7 @@ import java.util.Random;
 import com.dt.bottle.persistence.Persistence;
 import com.ts.dt.cache.ActionDescCache;
 import com.ts.dt.dao.ActionDescDao;
-import com.ts.dt.dao.imp.ActionDescDaoImpl;
+import com.ts.dt.dao.impl.ActionDescDaoImpl;
 import com.ts.dt.key.ActionDescKey;
 import com.ts.dt.po.ActionDesc;
 

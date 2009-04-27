@@ -1,5 +1,7 @@
 package com.ts.dt.dao;
 
-public interface TeamDao {
+import com.ts.dt.po.Team;
 
+public interface TeamDao {
+  public Team load(long id);
 }

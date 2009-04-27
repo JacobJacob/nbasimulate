@@ -5,6 +5,9 @@ import com.ts.dt.match.action.Action;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.util.StringUtil;
 
+/*
+ * 动作描述工厂类
+ */
 public class ActionDescriptionFactory {
 
 	public static final String CHECK_CLASS_SUFFIXAL = "Description";
