@@ -31,8 +31,8 @@ public class Nodosity {
 		context.put(MatchConstant.CURRENT_CONTROLLER_NAME, "CA");
 		context.put(MatchConstant.HAS_PASS_TIMES, 0);
 		context.put(MatchConstant.CURRENT_CONTROLLERS, controllers);
-		// loadControllers();
-		loadControllersFromDb();
+		loadControllers();
+		// loadControllersFromDb();
 		Controller currentController = controllers.get(context
 				.get(MatchConstant.CURRENT_CONTROLLER_NAME));
 		Controller currentDefender = controllers.get("CB");
@@ -155,93 +155,93 @@ public class Nodosity {
 		controllers.put("PGB", controller_pgb);
 	}
 
-	private void loadControllersFromDb() {
+// private void loadControllersFromDb() {
+//
+// TacticsDao tacticsDao = new TacticsDaoImpl();
+// PlayerDao playerDao = new PlayerDaoImpl();
+//
+// TeamTactics homeTeamTactics = tacticsDao.loadTeamTactics(context
+// .getHomeTeamId(), context.getMatchType());
+// TeamTactics visitingTeamTactics = tacticsDao.loadTeamTactics(context
+// .getVisitingTeamId(), context.getMatchType());
+//
+// TeamTacticsDetail homeTeamTacticsDetail = tacticsDao
+// .loadTeamTacticsDetail(homeTeamTactics.getId(), context
+// .getSeq());
+// TeamTacticsDetail visitingTeamTacticsDetail = tacticsDao
+// .loadTeamTacticsDetail(visitingTeamTactics.getId(), context
+// .getSeq());
+//
+// Controller controller_ca = new Controller();
+// controller_ca.setTeamFlg("A");
+// controller_ca.setControllerName("CA");
+// controller_ca.setPlayer(playerDao.load(homeTeamTacticsDetail.getCId()));
+// controllers.put("CA", controller_ca);
+//
+// Controller controller_pfa = new Controller();
+// controller_pfa.setTeamFlg("A");
+// controller_pfa.setControllerName("PFA");
+// controller_pfa.setPlayer(playerDao
+// .load(homeTeamTacticsDetail.getPfId()));
+// controllers.put("PFA", controller_pfa);
+//
+// Controller controller_sfa = new Controller();
+// controller_sfa.setTeamFlg("A");
+// controller_sfa.setControllerName("SFA");
+// controller_sfa.setPlayer(playerDao
+// .load(homeTeamTacticsDetail.getSfId()));
+// controllers.put("SFA", controller_sfa);
+//
+// Controller controller_sga = new Controller();
+// controller_sga.setTeamFlg("A");
+// controller_sga.setControllerName("SGA");
+// controller_sga.setPlayer(playerDao
+// .load(homeTeamTacticsDetail.getSgId()));
+// controllers.put("SGA", controller_sga);
+//
+// Controller controller_pga = new Controller();
+// controller_pga.setTeamFlg("A");
+// controller_pga.setControllerName("PGA");
+// controller_pga.setPlayer(playerDao
+// .load(homeTeamTacticsDetail.getPgId()));
+// controllers.put("PGA", controller_pga);
+//
+// Controller controller_cb = new Controller();
+// controller_cb.setTeamFlg("B");
+// controller_cb.setControllerName("CB");
+// controller_cb.setPlayer(playerDao.load(visitingTeamTacticsDetail
+// .getCId()));
+// controllers.put("CB", controller_cb);
+//
+// Controller controller_pfb = new Controller();
+// controller_pfb.setTeamFlg("B");
+// controller_pfb.setControllerName("PFB");
+// controller_pfb.setPlayer(playerDao.load(visitingTeamTacticsDetail
+// .getPfId()));
+// controllers.put("PFB", controller_pfb);
+//
+// Controller controller_sfb = new Controller();
+// controller_sfb.setTeamFlg("B");
+// controller_sfb.setControllerName("SFB");
+// controller_sfb.setPlayer(playerDao.load(visitingTeamTacticsDetail
+// .getSfId()));
+// controllers.put("SFB", controller_sfb);
+//
+// Controller controller_sgb = new Controller();
+// controller_sgb.setTeamFlg("B");
+// controller_sgb.setControllerName("SGB");
+// controller_sgb.setPlayer(playerDao.load(visitingTeamTacticsDetail
+// .getSgId()));
+// controllers.put("SGB", controller_sgb);
+//
+// Controller controller_pgb = new Controller();
+// controller_pgb.setTeamFlg("B");
+// controller_pgb.setControllerName("PGB");
+// controller_pgb.setPlayer(playerDao.load(visitingTeamTacticsDetail
+// .getPgId()));
+// controllers.put("PGB", controller_pgb);
 
-		TacticsDao tacticsDao = new TacticsDaoImpl();
-		PlayerDao playerDao = new PlayerDaoImpl();
-
-		TeamTactics homeTeamTactics = tacticsDao.loadTeamTactics(context
-				.getHomeTeamId(), context.getMatchType());
-		TeamTactics visitingTeamTactics = tacticsDao.loadTeamTactics(context
-				.getVisitingTeamId(), context.getMatchType());
-
-		TeamTacticsDetail homeTeamTacticsDetail = tacticsDao
-				.loadTeamTacticsDetail(homeTeamTactics.getId(), context
-						.getSeq());
-		TeamTacticsDetail visitingTeamTacticsDetail = tacticsDao
-				.loadTeamTacticsDetail(visitingTeamTactics.getId(), context
-						.getSeq());
-
-		Controller controller_ca = new Controller();
-		controller_ca.setTeamFlg("A");
-		controller_ca.setControllerName("CA");
-		controller_ca.setPlayer(playerDao.load(homeTeamTacticsDetail.getCId()));
-		controllers.put("CA", controller_ca);
-
-		Controller controller_pfa = new Controller();
-		controller_pfa.setTeamFlg("A");
-		controller_pfa.setControllerName("PFA");
-		controller_pfa.setPlayer(playerDao
-				.load(homeTeamTacticsDetail.getPfId()));
-		controllers.put("PFA", controller_pfa);
-
-		Controller controller_sfa = new Controller();
-		controller_sfa.setTeamFlg("A");
-		controller_sfa.setControllerName("SFA");
-		controller_sfa.setPlayer(playerDao
-				.load(homeTeamTacticsDetail.getSfId()));
-		controllers.put("SFA", controller_sfa);
-
-		Controller controller_sga = new Controller();
-		controller_sga.setTeamFlg("A");
-		controller_sga.setControllerName("SGA");
-		controller_sga.setPlayer(playerDao
-				.load(homeTeamTacticsDetail.getSgId()));
-		controllers.put("SGA", controller_sga);
-
-		Controller controller_pga = new Controller();
-		controller_pga.setTeamFlg("A");
-		controller_pga.setControllerName("PGA");
-		controller_pga.setPlayer(playerDao
-				.load(homeTeamTacticsDetail.getPgId()));
-		controllers.put("PGA", controller_pga);
-
-		Controller controller_cb = new Controller();
-		controller_cb.setTeamFlg("B");
-		controller_cb.setControllerName("CB");
-		controller_cb.setPlayer(playerDao.load(visitingTeamTacticsDetail
-				.getCId()));
-		controllers.put("CB", controller_cb);
-
-		Controller controller_pfb = new Controller();
-		controller_pfb.setTeamFlg("B");
-		controller_pfb.setControllerName("PFB");
-		controller_pfb.setPlayer(playerDao.load(visitingTeamTacticsDetail
-				.getPfId()));
-		controllers.put("PFB", controller_pfb);
-
-		Controller controller_sfb = new Controller();
-		controller_sfb.setTeamFlg("B");
-		controller_sfb.setControllerName("SFB");
-		controller_sfb.setPlayer(playerDao.load(visitingTeamTacticsDetail
-				.getSfId()));
-		controllers.put("SFB", controller_sfb);
-
-		Controller controller_sgb = new Controller();
-		controller_sgb.setTeamFlg("B");
-		controller_sgb.setControllerName("SGB");
-		controller_sgb.setPlayer(playerDao.load(visitingTeamTacticsDetail
-				.getSgId()));
-		controllers.put("SGB", controller_sgb);
-
-		Controller controller_pgb = new Controller();
-		controller_pgb.setTeamFlg("B");
-		controller_pgb.setControllerName("PGB");
-		controller_pgb.setPlayer(playerDao.load(visitingTeamTacticsDetail
-				.getPgId()));
-		controllers.put("PGB", controller_pgb);
-
-	}
+	//}
 
 	public int getNodosityNo() {
 		return nodosityNo;
