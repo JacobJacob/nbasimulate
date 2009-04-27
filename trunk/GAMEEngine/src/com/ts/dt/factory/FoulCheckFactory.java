@@ -1,9 +1,9 @@
 package com.ts.dt.factory;
 
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.foul.DefaultFoulCheck;
-import com.ts.dt.foul.FoulCheck;
 import com.ts.dt.match.action.Action;
+import com.ts.dt.match.check.foul.DefaultFoulCheck;
+import com.ts.dt.match.check.foul.FoulCheck;
 import com.ts.dt.util.StringUtil;
 
 public class FoulCheckFactory {
