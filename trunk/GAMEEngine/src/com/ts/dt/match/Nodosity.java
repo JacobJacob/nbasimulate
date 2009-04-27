@@ -6,8 +6,12 @@ import com.dt.bottle.logger.Logger;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.PlayerDao;
+import com.ts.dt.dao.TacticsDao;
 import com.ts.dt.dao.impl.PlayerDaoImpl;
+import com.ts.dt.dao.impl.TacticsDaoImpl;
 import com.ts.dt.match.test.TestDataFactory;
+import com.ts.dt.po.TeamTactics;
+import com.ts.dt.po.TeamTacticsDetail;
 
 public class Nodosity {
 
@@ -20,10 +24,6 @@ public class Nodosity {
 
 	private Hashtable<String, Controller> controllers;
 	private MatchContext context;
-
-	public Nodosity() {
-
-	}
 
 	public void init() {
 

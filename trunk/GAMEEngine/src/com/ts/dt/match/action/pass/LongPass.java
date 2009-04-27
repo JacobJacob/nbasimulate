@@ -6,7 +6,7 @@ import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.ResultCheckFactory;
 import com.ts.dt.helper.MatchInfoHelper;
 import com.ts.dt.match.desc.ActionDescription;
-import com.ts.dt.util.Logger;
+//import com.ts.dt.util.Logger;
 import com.ts.dt.util.MessagesUtil;
 
 public class LongPass implements Pass {
@@ -34,7 +34,7 @@ public class LongPass implements Pass {
 
 		String desc = description.load(context);
 		if (desc == null) {
-			Logger.error("desc is null");
+
 		}
 		String currentTeamNm = context.getCurrentController().getTeamFlg();
 		String previousTeamNm = "";

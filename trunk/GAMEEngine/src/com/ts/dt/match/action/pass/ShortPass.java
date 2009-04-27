@@ -6,7 +6,7 @@ import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.ResultCheckFactory;
 import com.ts.dt.helper.MatchInfoHelper;
 import com.ts.dt.match.desc.ActionDescription;
-import com.ts.dt.util.Logger;
+//import com.ts.dt.util.Logger;
 import com.ts.dt.util.MessagesUtil;
 
 public class ShortPass implements Pass {
@@ -34,13 +34,13 @@ public class ShortPass implements Pass {
 
 		String desc = description.load(context);
 		if (desc == null) {
-			Logger.error("desc is null");
+			//Logger.error("desc is null");
 		}
 		if (currtPlayerNm.trim().equals(currtDefenderNm.trim())) {
-			Logger.error("why occor this?");
+			//Logger.error("why occor this?");
 		}
 		if (currtPlayerNm.trim().equals(previousPlayerNm.trim())) {
-			Logger.error("why occor this?");
+			//Logger.error("why occor this?");
 		}
 		desc = desc.replace("~1~", currtPlayerNm.trim());
 		desc = desc.replace("~2~", currtDefenderNm.trim());

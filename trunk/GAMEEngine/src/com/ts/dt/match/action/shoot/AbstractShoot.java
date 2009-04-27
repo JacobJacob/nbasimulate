@@ -2,17 +2,13 @@ package com.ts.dt.match.action.shoot;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.dao.MatchDetailDao;
-import com.ts.dt.dao.impl.MatchDetailDaoImpl;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.FoulCheckFactory;
 import com.ts.dt.factory.ResultCheckFactory;
 import com.ts.dt.helper.MatchInfoHelper;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.match.desc.ActionDescription;
-import com.ts.dt.po.MatchDetail;
 import com.ts.dt.po.Player;
-import com.ts.dt.util.Logger;
 import com.ts.dt.util.MessagesUtil;
 
 public abstract class AbstractShoot implements Action {
@@ -39,7 +35,7 @@ public abstract class AbstractShoot implements Action {
 
 		String desc = description.load(context);
 		if (desc == null) {
-			Logger.error("desc is null");
+			//Logger.error("desc is null");
 		}
 		String currentTeamNm = context.getCurrentController().getTeamFlg();
 		String previousTeamNm = "";

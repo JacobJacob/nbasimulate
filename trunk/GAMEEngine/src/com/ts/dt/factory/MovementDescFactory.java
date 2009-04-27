@@ -3,7 +3,6 @@ package com.ts.dt.factory;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ts.dt.constants.MovementDescConstant;
 import com.ts.dt.po.Player;
 import com.ts.dt.po.Tactics;
 

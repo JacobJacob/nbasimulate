@@ -4,7 +4,7 @@ import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.po.Player;
-import com.ts.dt.util.Logger;
+//import com.ts.dt.util.Logger;
 import com.ts.dt.util.MessagesUtil;
 
 public class DefaultService implements Service {
@@ -26,7 +26,7 @@ public class DefaultService implements Service {
 
 		String desc = description.load(context);
 		if (desc == null) {
-			Logger.error("desc is null");
+			//Logger.error("desc is null");
 		}
 		String currentTeamNm = context.getCurrentController().getTeamFlg();
 		String previousTeamNm = "";

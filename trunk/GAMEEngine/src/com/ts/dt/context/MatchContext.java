@@ -7,7 +7,6 @@ import com.ts.dt.match.Controller;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.po.Player;
 import com.ts.dt.stat.DataStat;
-import com.ts.dt.util.Logger;
 
 public class MatchContext {
 
@@ -435,7 +434,7 @@ public class MatchContext {
 	}
 
 	public void outPutMatchMessage() {
-		Logger.log(dataStat.toString());
+		//Logger.log(dataStat.toString());
 	}
 
 	public int getFoulShootRemain() {
