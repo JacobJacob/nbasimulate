@@ -15,7 +15,7 @@ import com.dt.bottle.logger.Logger;
 import com.dt.bottle.persistence.Persistence;
 import com.dt.bottle.pool.ConnectionPool;
 import com.dt.bottle.sql.SqlHelper;
-import com.dt.bottle.util.StringConverter;
+
 
 public class Session {
 
@@ -145,9 +145,6 @@ public class Session {
 				ObjectBuilder.builderObjFromResultSet(pesist, resultSet);
 				result.add(pesist);
 			}
-			Logger.logger("Query:" + sql
-					+ StringConverter.parmArray2String(parm)
-					+ " select rows : " + rows);
 
 		} catch (Exception e) {
 			e.printStackTrace();

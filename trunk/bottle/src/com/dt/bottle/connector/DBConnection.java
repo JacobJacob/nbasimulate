@@ -109,7 +109,7 @@ public class DBConnection {
 	public synchronized void destory() {
 
 		try {
-			if (prepareStatement != null && !prepareStatement.isClosed()) {
+			if (prepareStatement != null) {
 				prepareStatement.close();
 			}
 		} catch (Exception e) {
