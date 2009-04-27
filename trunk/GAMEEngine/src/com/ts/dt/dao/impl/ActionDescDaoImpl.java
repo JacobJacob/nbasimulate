@@ -1,4 +1,4 @@
-package com.ts.dt.dao.imp;
+package com.ts.dt.dao.impl;
 
 import java.util.List;
 

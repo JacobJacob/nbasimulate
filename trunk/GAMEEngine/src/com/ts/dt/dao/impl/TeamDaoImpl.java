@@ -1,4 +1,4 @@
-package com.ts.dt.dao.imp;
+package com.ts.dt.dao.impl;
 
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;

@@ -1,18 +1,23 @@
-package com.ts.dt.dao.imp;
+package com.ts.dt.dao.impl;
 
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
-import com.ts.dt.dao.MatchDetailDao;
-import com.ts.dt.po.MatchDetail;
+import com.ts.dt.dao.MatchDao;
+import com.ts.dt.po.MatchMain;
 
-public class MatchDetailDaoImpl implements MatchDetailDao {
+public class MatchDaoImpl implements MatchDao {
 
-	public void save(MatchDetail matchDetail) {
+	public void save(MatchMain match) {
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
 		session.beginTransaction();
 		try {
-			session.save(matchDetail);
+			if (match.getId() > 0) {
+				session.update(match);
+			} else {
+				session.save(match);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
