@@ -8,7 +8,7 @@ import com.ts.dt.util.StringUtil;
 public class ResultCheckFactory {
 
 	public static final String CHECK_CLASS_SUFFIXAL = "Check";
-	public static final String CHECK_CLASS_PACKAGE_NAME = "com.ts.dt.check";
+	public static final String CHECK_CLASS_PACKAGE_NAME = "com.ts.dt.match.check";
 
 	private static ResultCheckFactory checkFactory;
 
