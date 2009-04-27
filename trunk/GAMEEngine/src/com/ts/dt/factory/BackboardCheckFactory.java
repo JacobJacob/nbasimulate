@@ -2,8 +2,8 @@ package com.ts.dt.factory;
 
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.match.action.Action;
-import com.ts.dt.rebound.BackboardCheck;
-import com.ts.dt.rebound.DefaultBackboardCheck;
+import com.ts.dt.match.check.rebound.BackboardCheck;
+import com.ts.dt.match.check.rebound.DefaultBackboardCheck;
 import com.ts.dt.util.StringUtil;
 
 public class BackboardCheckFactory {
