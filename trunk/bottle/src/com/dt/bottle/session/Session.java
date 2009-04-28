@@ -194,7 +194,7 @@ public class Session {
 		}
 
 		ConnectionPool.instance().disConnection(conn);
-		// conn = null;
+
 	}
 
 	public void readCacheStatus() {

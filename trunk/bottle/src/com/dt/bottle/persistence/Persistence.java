@@ -1,7 +1,5 @@
 package com.dt.bottle.persistence;
 
-import java.util.List;
-
 import com.dt.bottle.session.Session;
 
 public class Persistence implements Persistable {

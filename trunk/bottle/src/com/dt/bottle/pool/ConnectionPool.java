@@ -12,9 +12,6 @@ public class ConnectionPool {
 
 	private ArrayList<DBConnection> pools;
 
-	private int getTimes = 0;
-	private int putTimes = 0;
-
 	private ConnectionPool() {
 		pools = new ArrayList<DBConnection>();
 	}
@@ -49,13 +46,7 @@ public class ConnectionPool {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("a connection out !..............");
 		conn = pools.remove(pools.size() - 1);
-		if (conn == null) {
-			System.out.println("conn is null.............");
-		}
-		getTimes++;
-		System.out.println("has get times " + getTimes);
 		return conn;
 	}
 
@@ -66,10 +57,6 @@ public class ConnectionPool {
 		} else {
 			conn.destory();
 		}
-		putTimes++;
-		System.out.println("has put times " + putTimes);
-
-		System.out.println("a connection in !..............");
 		pools.add(conn);
 	}
 
