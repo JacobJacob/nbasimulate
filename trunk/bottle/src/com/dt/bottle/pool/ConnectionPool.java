@@ -12,6 +12,8 @@ public class ConnectionPool {
 
 	private ArrayList<DBConnection> pools;
 
+	private Object lock = new Object();
+
 	private ConnectionPool() {
 		pools = new ArrayList<DBConnection>();
 	}
@@ -34,30 +36,40 @@ public class ConnectionPool {
 
 	}
 
-	public synchronized DBConnection connection() {
+	public DBConnection connection() {
 
 		DBConnection conn = null;
-		while (pools.size() <= 0) {
+		synchronized (lock) {
+			while (conn == null) {
+				if (pools.size() > 0) {
 
-			try {
-				System.out.println("waiting...............");
-				wait(10000);
-			} catch (Exception e) {
-				e.printStackTrace();
+					conn = pools.remove(pools.size() - 1);
+					lock.notifyAll();
+
+				} else {
+					try {
+						lock.wait();
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+				}
 			}
 		}
-		conn = pools.remove(pools.size() - 1);
 		return conn;
 	}
 
-	public synchronized void disConnection(DBConnection conn) {
+	public void disConnection(DBConnection conn) {
 
-		if (conn == null) {
-			System.out.println("add a null conn!");
-		} else {
-			conn.destory();
+		synchronized (lock) {
+			if (conn == null) {
+				System.out.println("add a null conn!");
+			} else {
+				conn.destory();
+			}
+			pools.add(conn);
+			lock.notifyAll();
 		}
-		pools.add(conn);
+
 	}
 
 }

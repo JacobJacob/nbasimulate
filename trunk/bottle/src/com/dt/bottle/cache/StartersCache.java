@@ -5,6 +5,12 @@ import java.util.Hashtable;
 import com.dt.bottle.logger.Logger;
 import com.dt.bottle.persistence.Persistence;
 
+/**
+ * 
+ * @author Jacky Shi
+ * Class StartersCache is a Starters Cache
+ *
+ */
 public class StartersCache {
 
 	private Hashtable<Class<?>, Hashtable<String, Persistence>> cache;
