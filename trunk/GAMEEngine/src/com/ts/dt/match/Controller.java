@@ -64,6 +64,7 @@ public class Controller {
 	public void foul(MatchContext context) {
 		Foul foul = FoulFactory.getInstance().createFoulAction(context);
 		foul.execute(context);
+		//reset 24 offensive cost time
 		context.currentOffensiveCostTimeReset();
 	}
 

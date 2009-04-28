@@ -18,13 +18,11 @@ import com.ts.dt.po.Team;
  */
 public class MatchEngineImpl implements MatchEngine {
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.ts.dt.engine.MatchEngine#execute(long, long, java.lang.String)
-	 * @homeTeamId 主队ID
-	 * @visitingTeamId 客队ID
-	 * @matchType 比赛类型
-	 */
+	/**
+	 * @param homeTeamId the home team id
+	 * @param visitingTeamId the visiting team id
+	 * @param matchType the match type
+	 **/
 	public void execute(long homeTeamId, long visitingTeamId, String matchType) {
 
 		MatchContext context = new MatchContext();

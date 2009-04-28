@@ -393,16 +393,18 @@ public class NodosityEngine {
 		context.setNextActionType(MatchConstant.ACTION_TYPE_SERVICE);
 		return controller;
 	}
-
+    //判断投篮动作后的下一个控球者
 	public Controller checkNextControllerForShootAction() {
 
 		Controller controller = null;
+		//如果是罚篮,并且尚未罚完,则继续
 		if (context.getFoulShootRemain() > 0) {
 			controller = context.getCurrentController();
 			context.setNextActionType(MatchConstant.ACTION_TYPE_SHOUT);
 			context.setNextAction(new FoulShoot());
 			return controller;
 		}
+		//如果投篮投中,则是对方控卫发球
 		if (context.getShootActionResult() == MatchConstant.RESULT_SUCCESS) {
 			if (context.isHomeTeam()) {
 				controller = (Controller) context.getControllers().get("PGB");
@@ -493,7 +495,7 @@ public class NodosityEngine {
 		}
 	}
 
-	// 判断是否犯规
+	// check whether 
 	public void checkWhetherFoulBeforeShoot() {
 		int percent = FoulHelper.checkDefensiveFoulAfterShoot(context);
 		if (RandomCheckHelper.defaultCheck(percent)) {

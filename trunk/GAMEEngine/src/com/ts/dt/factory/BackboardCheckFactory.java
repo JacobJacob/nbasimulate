@@ -9,14 +9,14 @@ import com.ts.dt.util.StringUtil;
 public class BackboardCheckFactory {
 
 	public static final String CHECK_CLASS_SUFFIXAL = "BackboardCheck";
-	public static final String CHECK_CLASS_PACKAGE_NAME = "com.ts.dt.rebound";
+	public static final String CHECK_CLASS_PACKAGE_NAME = "com.ts.dt.match.check.rebound";
 
 	private static BackboardCheckFactory backboardCheckFactory;
 
 	private BackboardCheckFactory() {
 
 	}
-
+   
 	public static BackboardCheckFactory getInstance() {
 
 		if (backboardCheckFactory == null) {
@@ -24,7 +24,7 @@ public class BackboardCheckFactory {
 		}
 		return backboardCheckFactory;
 	}
-
+    //根据各种投篮动作返回不同的篮板争夺判断对象
 	public BackboardCheck createBackboardCheckFactory(MatchContext context) {
 
 		BackboardCheck backboardCheck = null;
