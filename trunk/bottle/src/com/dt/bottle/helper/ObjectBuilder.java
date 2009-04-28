@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 import com.dt.bottle.persistence.Persistence;
-import com.dt.bottle.sql.SqlHelper;
 
 public class ObjectBuilder {
 
