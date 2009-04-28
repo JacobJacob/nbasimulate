@@ -8,6 +8,7 @@ import java.util.Date;
 
 import com.dt.bottle.logger.Logger;
 import com.dt.bottle.util.DateConverter;
+import com.dt.bottle.util.StringConverter;
 
 public class DBConnection {
 
@@ -17,8 +18,7 @@ public class DBConnection {
 	public synchronized void connect() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			conn = DriverManager
-					.getConnection("jdbc:mysql://localhost/xba?user=root&password=821015");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/xba?user=root&password=821015&characterEncoding=utf-8");
 			conn.setAutoCommit(false);
 
 		} catch (Exception e) {
@@ -29,6 +29,7 @@ public class DBConnection {
 	public synchronized void execute(String sql, Object[] parm) {
 
 		Logger.logger("SQL: " + sql);
+		Logger.logger("PARAM:" + StringConverter.parmArray2String(parm));
 		if (conn == null) {
 			connect();
 		}
@@ -38,8 +39,7 @@ public class DBConnection {
 			for (int i = 1; i <= parm.length; i++) {
 
 				if (parm[i - 1] instanceof Date) {
-					prepareStatement.setTimestamp(i, DateConverter
-							.utilDate2Timestamp((Date) parm[i - 1]));
+					prepareStatement.setTimestamp(i, DateConverter.utilDate2Timestamp((Date) parm[i - 1]));
 				} else {
 					prepareStatement.setObject(i, parm[i - 1]);
 				}
