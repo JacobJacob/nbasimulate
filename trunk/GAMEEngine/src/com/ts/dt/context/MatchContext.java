@@ -433,6 +433,15 @@ public class MatchContext {
 	public void playerAddFoulTimes(Player player, boolean isHomeTeam) {
 		dataStat.playerFoulTimesInc(player, isHomeTeam);
 	}
+	/**
+	 * check foul out
+	 * @param player
+	 * @param isHomeTeam
+	 * @return
+	 */
+	public boolean checkFoulOut(Player player,boolean isHomeTeam){
+		return dataStat.checkFoulOut(player, isHomeTeam);
+	}
 
 	public void addDefensiveRebound(boolean isHomeTeam) {
 
