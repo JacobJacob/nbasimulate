@@ -169,7 +169,9 @@ public class MatchContext {
 	public boolean isHomeTeam() {
 		return isHomeTeamController(getCurrentController().getControllerName());
 	}
-
+    /**
+     * setting the ball right in which team
+     */
 	public void setBallRight() {
 		Controller controller = getCurrentController();
 		if (controller.getControllerName().endsWith("A")) {
@@ -179,7 +181,9 @@ public class MatchContext {
 		}
 
 	}
-
+    /**
+     * exchange the ball right
+     */
 	public void exchangeBallRight() {
 		if (currentTeam == MatchConstant.CURRENT_TEAM_A) {
 			currentTeam = MatchConstant.CURRENT_TEAM_B;
@@ -191,11 +195,16 @@ public class MatchContext {
 	public int getCurrentTeam() {
 		return currentTeam;
 	}
-
+    /**
+     *get current action 
+     **/
 	public Action getCurrentAction() {
 		return (Action) get(MatchConstant.CURRENT_ACTION);
 	}
-
+    /**
+     * set current action
+     * @param action
+     */
 	public void setCurrentAction(Action action) {
 		put(MatchConstant.CURRENT_ACTION, action);
 	}
@@ -203,7 +212,7 @@ public class MatchContext {
 	public void setShootActionResult(String result) {
 		put(MatchConstant.SHOOT_ACTION_RESULT, result);
 	}
-
+    
 	public void setPassActionResult(String result) {
 		put(MatchConstant.PASS_ACTION_RESULT, result);
 	}

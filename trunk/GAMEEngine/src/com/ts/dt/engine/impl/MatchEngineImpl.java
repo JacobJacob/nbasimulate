@@ -13,6 +13,7 @@ import com.ts.dt.match.Nodosity;
 import com.ts.dt.match.test.TestDataFactory;
 import com.ts.dt.po.MatchMain;
 import com.ts.dt.po.Team;
+import com.ts.dt.util.Logger;
 /*
  * 比赛引擎,实现比赛引擎接口
  */
@@ -52,6 +53,7 @@ public class MatchEngineImpl implements MatchEngine {
 		nodosity.setNodosityNo(1);
 
 		boolean go = true;
+		Logger.info("match start......");
 		while (go) {
 			context.put(MatchConstant.CURRT_CONT_TIME, 0L);
 			nodosity.execute(context);

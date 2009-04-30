@@ -6,6 +6,7 @@ import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.BackboardCheckFactory;
 import com.ts.dt.helper.FoulHelper;
+import com.ts.dt.helper.DefenderHelper;
 import com.ts.dt.helper.RandomCheckHelper;
 import com.ts.dt.helper.ReboundHelper;
 import com.ts.dt.match.action.pass.Pass;
@@ -83,6 +84,9 @@ public class NodosityEngine {
 		checkNextDefender();
 	}
 
+	/**
+	 * next action
+	 */
 	public void next() {
 
 		Controller currentController = context.getCurrentController();
@@ -125,128 +129,20 @@ public class NodosityEngine {
 		context.setNextController(nextController);
 	}
 
+	/**
+	 * check who is the next defender
+	 */
 	public void checkNextDefender() {
 
-		Controller nextController = context.getNextController();
-		String nextControllerNm = nextController.getControllerName();
-		int pg = 0;
-		int sg = 0;
-		int sf = 0;
-		int pf = 0;
-		int c = 0;
-
-		if (nextControllerNm.startsWith(MatchConstant.LOCATION_PG)) {
-			pg = 70;
-			sg = 15;
-			sf = 5;
-			pf = 5;
-			c = 5;
-		} else if (nextControllerNm.startsWith(MatchConstant.LOCATION_SG)) {
-			pg = 15;
-			sg = 70;
-			sf = 5;
-			pf = 5;
-			c = 5;
-		} else if (nextControllerNm.startsWith(MatchConstant.LOCATION_SF)) {
-			pg = 5;
-			sg = 10;
-			sf = 70;
-			pf = 10;
-			c = 5;
-		} else if (nextControllerNm.startsWith(MatchConstant.LOCATION_PF)) {
-			pg = 5;
-			sg = 5;
-			sf = 15;
-			pf = 70;
-			c = 5;
-		} else {
-			pg = 5;
-			sg = 5;
-			sf = 10;
-			pf = 15;
-			c = 65;
-		}
-		Random random = new Random();
-		int a = random.nextInt(pg + sg + sf + pf + c);
-		int index = -1;
-		if (a < pg) {
-			index = 1;
-		} else if (a < pg + sg) {
-			index = 2;
-		} else if (a < pg + sg + sf) {
-			index = 3;
-		} else if (a < pg + sg + sf + pf) {
-			index = 4;
-		} else {
-			index = 5;
-		}
-		if (nextControllerNm.endsWith("A")) {
-			index += 5;
-		}
-		Controller nextefender = context.getControllerWithIndx(index);
-		context.setNextDefender(nextefender);
+		DefenderHelper.checkNextDefender(context);
 	}
 
+	/**
+	 * check who is the current defender
+	 */
 	public void checkCurrentDefender() {
 
-		Controller currentController = context.getCurrentController();
-		String currentControllerNm = currentController.getControllerName();
-		int pg = 0;
-		int sg = 0;
-		int sf = 0;
-		int pf = 0;
-		int c = 0;
-
-		if (currentControllerNm.startsWith(MatchConstant.LOCATION_PG)) {
-			pg = 70;
-			sg = 15;
-			sf = 5;
-			pf = 5;
-			c = 5;
-		} else if (currentControllerNm.startsWith(MatchConstant.LOCATION_SG)) {
-			pg = 15;
-			sg = 70;
-			sf = 5;
-			pf = 5;
-			c = 5;
-		} else if (currentControllerNm.startsWith(MatchConstant.LOCATION_SF)) {
-			pg = 5;
-			sg = 10;
-			sf = 70;
-			pf = 10;
-			c = 5;
-		} else if (currentControllerNm.startsWith(MatchConstant.LOCATION_PF)) {
-			pg = 5;
-			sg = 5;
-			sf = 15;
-			pf = 70;
-			c = 5;
-		} else {
-			pg = 5;
-			sg = 5;
-			sf = 10;
-			pf = 15;
-			c = 65;
-		}
-		Random random = new Random();
-		int a = random.nextInt(pg + sg + sf + pf + c);
-		int index = -1;
-		if (a < pg) {
-			index = 1;
-		} else if (a < pg + sg) {
-			index = 2;
-		} else if (a < pg + sg + sf) {
-			index = 3;
-		} else if (a < pg + sg + sf + pf) {
-			index = 4;
-		} else {
-			index = 5;
-		}
-		if (currentControllerNm.endsWith("A")) {
-			index += 5;
-		}
-		Controller currentDefender = context.getControllerWithIndx(index);
-		context.setCurrentDefender(currentDefender);
+		DefenderHelper.checkCurrentDefender(context);
 	}
 
 	public Controller checkNextControllerForServiceAction() {
@@ -393,18 +289,19 @@ public class NodosityEngine {
 		context.setNextActionType(MatchConstant.ACTION_TYPE_SERVICE);
 		return controller;
 	}
-    //判断投篮动作后的下一个控球者
+
+	// 判断投篮动作后的下一个控球者
 	public Controller checkNextControllerForShootAction() {
 
 		Controller controller = null;
-		//如果是罚篮,并且尚未罚完,则继续
+		// 如果是罚篮,并且尚未罚完,则继续
 		if (context.getFoulShootRemain() > 0) {
 			controller = context.getCurrentController();
 			context.setNextActionType(MatchConstant.ACTION_TYPE_SHOUT);
 			context.setNextAction(new FoulShoot());
 			return controller;
 		}
-		//如果投篮投中,则是对方控卫发球
+		// 如果投篮投中,则是对方控卫发球
 		if (context.getShootActionResult() == MatchConstant.RESULT_SUCCESS) {
 			if (context.isHomeTeam()) {
 				controller = (Controller) context.getControllers().get("PGB");
@@ -495,7 +392,7 @@ public class NodosityEngine {
 		}
 	}
 
-	// check whether 
+	// check whether
 	public void checkWhetherFoulBeforeShoot() {
 		int percent = FoulHelper.checkDefensiveFoulAfterShoot(context);
 		if (RandomCheckHelper.defaultCheck(percent)) {

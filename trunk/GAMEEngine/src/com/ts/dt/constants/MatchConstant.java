@@ -34,9 +34,9 @@ public class MatchConstant {
 	public static final int POSITION_C = 5;
 
 	public static final String HAS_PASS_TIMES = "has_pass_times";
-	public static final String CURRENT_CONTROLLER = "controller_controller";
-	public static final String CURRENT_CONTROLLERS = "controller_controllers";
-	public static final String CURRENT_CONTROLLER_NAME = "controller_controller_name";
+	public static final String CURRENT_CONTROLLER = "current_controller";
+	public static final String CURRENT_CONTROLLERS = "current_controllers";
+	public static final String CURRENT_CONTROLLER_NAME = "current_controller_name";
 
 	public static final String NEXT_DEFENDER = "next_defender";
 	public static final String CURRENT_DEFENDER = "current_defender";
@@ -82,11 +82,11 @@ public class MatchConstant {
 	public static final int NULL_INTEGER = -1;
 
 	public static final String CURRENT_OFFENSIVE_COST_TIME = "current_offensive_cost_time";
-	
+
 	public static final String NULL_STRING = "NULL";
-	
-	public static final int FOUL_SHOOT_TYPE_ONE = 1 ; //加罚
-	public static final int FOUL_SHOOT_TYPE_TWO = 2 ; //两分罚
-	public static final int FOUL_SHOOT_TYPE_THREE = 3 ; //三分罚
+
+	public static final int FOUL_SHOOT_TYPE_ONE = 1; // 加罚
+	public static final int FOUL_SHOOT_TYPE_TWO = 2; // 两分罚
+	public static final int FOUL_SHOOT_TYPE_THREE = 3; // 三分罚
 
 }

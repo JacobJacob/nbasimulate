@@ -10,15 +10,16 @@ import com.ts.dt.dao.ActionDescDao;
 import com.ts.dt.dao.impl.ActionDescDaoImpl;
 import com.ts.dt.key.ActionDescKey;
 import com.ts.dt.po.ActionDesc;
+import com.ts.dt.util.Logger;
 
 /**
- *动作描述加载类 
+ * 动作描述加载类
  * 
-**/
+ */
 
 public class ActionDescLoaderImpl implements ActionDescLoader {
 
-	/**缓存**/
+	/** 缓存* */
 	private ActionDescCache cache;
 
 	private static ActionDescLoaderImpl actionDescLoaderImpl;
@@ -39,12 +40,16 @@ public class ActionDescLoaderImpl implements ActionDescLoader {
 		// TODO Auto-generated method stub
 		return null;
 	}
-    /**
-     * @param actionNm the action name
-     * @param result the action execute result
-     * @param flg the flag,eg.blocked
-     * @return ActionDesc
-     */
+
+	/**
+	 * @param actionNm
+	 *            the action name
+	 * @param result
+	 *            the action execute result
+	 * @param flg
+	 *            the flag,eg.blocked
+	 * @return ActionDesc
+	 */
 	public ActionDesc loadWithNameAndResultAndFlg(String actionNm, String result, String flg) {
 		// TODO Auto-generated method stub
 		ActionDesc actionDesc = null;
@@ -52,6 +57,7 @@ public class ActionDescLoaderImpl implements ActionDescLoader {
 		ActionDescKey key = new ActionDescKey(actionNm, result, flg);
 
 		if (cache.containKey(key)) {
+			Logger.info("catch hit on,get from cache;key:" + key.toString());
 			actionDesclist = cache.get(key);
 		} else {
 			actionDesclist = new ArrayList<ActionDesc>();
@@ -66,7 +72,7 @@ public class ActionDescLoaderImpl implements ActionDescLoader {
 		return actionDesc;
 	}
 
-	public ActionDesc selectWithPercent(List<ActionDesc> actionDesclist) {
+	private ActionDesc selectWithPercent(List<ActionDesc> actionDesclist) {
 
 		ActionDesc actionDesc = null;
 		boolean back = false;

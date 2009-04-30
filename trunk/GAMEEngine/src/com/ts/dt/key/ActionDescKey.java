@@ -68,4 +68,17 @@ public class ActionDescKey {
 		return result;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		StringBuffer sb = new StringBuffer();
+		sb.append("Action Name:");
+		sb.append(actionNm);
+		sb.append("|Result:");
+		sb.append(result);
+		sb.append("|Flg:");
+		sb.append(flg);
+		return sb.toString();
+	}
+
 }
