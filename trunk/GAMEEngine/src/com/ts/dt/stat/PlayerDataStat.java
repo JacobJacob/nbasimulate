@@ -57,6 +57,15 @@ public class PlayerDataStat {
 	public void foulTimesInc() {
 		foulTimes++;
 	}
+	
+	/**
+	 * check foul out
+	 * @return
+	 */
+	public boolean foulOut()
+	{
+	   return foulTimes >= 6;
+	}
 
 	public int getTotalPoint() {
 		return point1DoomTimes * 1 + point2DoomTimes * 2 + point3DoomTimes * 3;

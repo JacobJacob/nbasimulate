@@ -168,15 +168,12 @@ public class DataStat {
 		}
 
 		int homeTeamTotalPoint = homeTeam1DoomTimes * 1 + homeTeam2DoomTimes * 2 + homeTeam3DoomTimes * 3;
-		int visitingTeamTotalPoint = visitingTeam1DoomTimes * 1 + visitingTeam2DoomTimes * 2 + visitingTeam3DoomTimes
-				* 3;
+		int visitingTeamTotalPoint = visitingTeam1DoomTimes * 1 + visitingTeam2DoomTimes * 2 + visitingTeam3DoomTimes * 3;
 
 		StringBuffer sb = new StringBuffer();
-		sb
-				.append("=======================================================================================================\n");
+		sb.append("=======================================================================================================\n");
 		sb.append("球队       二分       二分命中率       三分       三分命中率        罚球      后场篮板     前场篮板    总篮板       得分  \n");
-		sb
-				.append("-------------------------------------------------------------------------------------------------------\n");
+		sb.append("-------------------------------------------------------------------------------------------------------\n");
 		sb.append(createHomePlayerDataStat());
 		sb.append("         " + homeTeam2DoomTimes + "\\" + homeTeam2ShootTimes);
 		sb.append("      " + homeTeam2Percent + "%");
@@ -188,8 +185,7 @@ public class DataStat {
 		sb.append("         " + (homeTeamOffensiveRebound + homeTeamDefensiveRebound));
 		sb.append("         " + homeTeamTotalPoint);
 		sb.append("\n");
-		sb
-				.append("=======================================================================================================\n");
+		sb.append("=======================================================================================================\n");
 		sb.append(createVisitingPlayerDataStat());
 		sb.append("         " + visitingTeam2DoomTimes + "\\" + visitingTeam2ShootTimes);
 		sb.append("      " + visiting2Percent + "%");
@@ -201,8 +197,7 @@ public class DataStat {
 		sb.append("        " + (visitingTeamOffensiveRebound + visitingTeamDefensiveRebound));
 		sb.append("         " + visitingTeamTotalPoint);
 		sb.append("\n");
-		sb
-				.append("=======================================================================================================\n");
+		sb.append("=======================================================================================================\n");
 		return sb.toString();
 	}
 
@@ -245,10 +240,22 @@ public class DataStat {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.defensiveReboundInc();
 	}
-	
-	public void playerFoulTimesInc(Player player,boolean isHomeTeam){
+
+	public void playerFoulTimesInc(Player player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.foulTimesInc();
+	}
+
+	/**
+	 * check foul out
+	 * 
+	 * @param player
+	 * @param isHomeTeam
+	 * @return
+	 */
+	public boolean checkFoulOut(Player player, boolean isHomeTeam) {
+		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
+		return playerDataStat.foulOut();
 	}
 
 	public PlayerDataStat getPlayerDataStatByPlayer(Player player, boolean isHomeTeam) {
