@@ -7,12 +7,14 @@ import com.ts.dt.helper.RandomCheckHelper;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.match.action.shoot.FoulShoot;
 import com.ts.dt.match.action.shoot.LongShoot;
+import com.ts.dt.po.Player;
 
 public class DefaultFoulCheck implements FoulCheck {
 
 	public void check(MatchContext context) {
 		// TODO Auto-generated method stub
 		Action action = context.getCurrentAction();
+		// Foul Shoot Not Exist Foul
 		if (action instanceof FoulShoot) {
 			return;
 		}
@@ -35,9 +37,12 @@ public class DefaultFoulCheck implements FoulCheck {
 					context.setFoulShootType(MatchConstant.FOUL_SHOOT_TYPE_TWO);
 				}
 			}
+			// statistical significance
+			Player defender = context.getCurrentDefender().getPlayer();
+			context.playerAddFoulTimes(defender, context.getCurrentDefender().getControllerName().startsWith("A"));
+
 		} else {
 			context.setFoul(false);
 		}
 	}
-
 }

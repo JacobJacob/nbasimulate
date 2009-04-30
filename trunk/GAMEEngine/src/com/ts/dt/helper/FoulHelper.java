@@ -5,7 +5,7 @@ import com.ts.dt.po.Player;
 
 public class FoulHelper {
 
-	// 判断犯规可能性
+	// check the foul possibility
 	public static int checkDefensiveFoulAfterShoot(MatchContext context) {
 
 		int percent = 5;
@@ -17,7 +17,11 @@ public class FoulHelper {
 
 		return percent;
 	}
-
+    /**
+     * implement this to check offensive power
+     * @param player
+     * @return
+     */
 	private static int checkOffensivePower(Player player) {
 		int power = 0;
 
@@ -26,7 +30,11 @@ public class FoulHelper {
 
 		return power;
 	}
-
+    /**
+     * implement this to check defensive power
+     * @param player
+     * @return
+     */
 	private static int checkDefensivePower(Player player) {
 		int power = 0;
 		power += player.getAvoirdupois();

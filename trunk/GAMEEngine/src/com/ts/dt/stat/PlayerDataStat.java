@@ -20,6 +20,8 @@ public class PlayerDataStat {
 	private int offensiveRebound;
 	private int defensiveRebound;
 
+	private int foulTimes;
+
 	public void point2ShootTimesInc() {
 		point2ShootTimes++;
 	}
@@ -52,6 +54,10 @@ public class PlayerDataStat {
 		defensiveRebound++;
 	}
 
+	public void foulTimesInc() {
+		foulTimes++;
+	}
+
 	public int getTotalPoint() {
 		return point1DoomTimes * 1 + point2DoomTimes * 2 + point3DoomTimes * 3;
 	}
@@ -79,8 +85,7 @@ public class PlayerDataStat {
 		sb.append("         " + (offensiveRebound + defensiveRebound));
 		sb.append("        " + getTotalPoint());
 		sb.append("\n");
-		sb
-				.append("-------------------------------------------------------------------------------------------------------\n");
+		sb.append("-------------------------------------------------------------------------------------------------------\n");
 
 		return sb.toString();
 	}
@@ -106,6 +111,7 @@ public class PlayerDataStat {
 		matchStat.setPoint2ShootTimes(point2ShootTimes);
 		matchStat.setPoint3DoomTimes(point3DoomTimes);
 		matchStat.setPoint3ShootTimes(point3ShootTimes);
+		matchStat.setFoul(foulTimes);
 
 		matchStat.setPlayerId(player.getId());
 		matchStat.setTeamId(player.getTeamId());

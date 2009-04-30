@@ -245,6 +245,11 @@ public class DataStat {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.defensiveReboundInc();
 	}
+	
+	public void playerFoulTimesInc(Player player,boolean isHomeTeam){
+		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
+		playerDataStat.foulTimesInc();
+	}
 
 	public PlayerDataStat getPlayerDataStatByPlayer(Player player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = null;
@@ -266,6 +271,7 @@ public class DataStat {
 		return playerDataStat;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String createHomePlayerDataStat() {
 
 		StringBuffer sb = new StringBuffer();
@@ -280,6 +286,7 @@ public class DataStat {
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	public String createVisitingPlayerDataStat() {
 
 		StringBuffer sb = new StringBuffer();

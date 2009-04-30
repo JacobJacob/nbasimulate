@@ -19,7 +19,7 @@ public class MatchContext {
 	private long homeTeamId;
 	private long visitingTeamId;
 
-	private String matchType; // 比赛类型
+	private String matchType; // match type
 	private int seq;
 
 	private int currentOffensiveCostTime = 0; // 当前进攻所使用了的时间,以毫秒算
@@ -30,9 +30,9 @@ public class MatchContext {
 
 	private int tacticsAffect = 0; // 战术对动作成功的影响
 
-	private boolean isOutside = false; // 是否出界
+	private boolean isOutside = false; // whether outside
 
-	private boolean isFoul = false; // 是否犯规
+	private boolean isFoul = false; // whether foul
 	private int foulShootRemain = -1;
 	private int foulShootType;
 
@@ -158,8 +158,7 @@ public class MatchContext {
 	}
 
 	public String currentScore() {
-		return "[" + getInt(MatchConstant.POINT_TEAM_A) + " : "
-				+ getInt(MatchConstant.POINT_TEAM_B) + "]";
+		return "[" + getInt(MatchConstant.POINT_TEAM_A) + " : " + getInt(MatchConstant.POINT_TEAM_B) + "]";
 	}
 
 	public boolean isHomeTeamController(String controllerName) {
@@ -169,9 +168,10 @@ public class MatchContext {
 	public boolean isHomeTeam() {
 		return isHomeTeamController(getCurrentController().getControllerName());
 	}
-    /**
-     * setting the ball right in which team
-     */
+
+	/**
+	 * setting the ball right in which team
+	 */
 	public void setBallRight() {
 		Controller controller = getCurrentController();
 		if (controller.getControllerName().endsWith("A")) {
@@ -181,9 +181,10 @@ public class MatchContext {
 		}
 
 	}
-    /**
-     * exchange the ball right
-     */
+
+	/**
+	 * exchange the ball right
+	 */
 	public void exchangeBallRight() {
 		if (currentTeam == MatchConstant.CURRENT_TEAM_A) {
 			currentTeam = MatchConstant.CURRENT_TEAM_B;
@@ -195,16 +196,19 @@ public class MatchContext {
 	public int getCurrentTeam() {
 		return currentTeam;
 	}
-    /**
-     *get current action 
-     **/
+
+	/**
+	 * get current action
+	 */
 	public Action getCurrentAction() {
 		return (Action) get(MatchConstant.CURRENT_ACTION);
 	}
-    /**
-     * set current action
-     * @param action
-     */
+
+	/**
+	 * set current action
+	 * 
+	 * @param action
+	 */
 	public void setCurrentAction(Action action) {
 		put(MatchConstant.CURRENT_ACTION, action);
 	}
@@ -212,7 +216,7 @@ public class MatchContext {
 	public void setShootActionResult(String result) {
 		put(MatchConstant.SHOOT_ACTION_RESULT, result);
 	}
-    
+
 	public void setPassActionResult(String result) {
 		put(MatchConstant.PASS_ACTION_RESULT, result);
 	}
@@ -426,6 +430,10 @@ public class MatchContext {
 
 	}
 
+	public void playerAddFoulTimes(Player player, boolean isHomeTeam) {
+		dataStat.playerFoulTimesInc(player, isHomeTeam);
+	}
+
 	public void addDefensiveRebound(boolean isHomeTeam) {
 
 		if (isHomeTeam) {
@@ -443,7 +451,7 @@ public class MatchContext {
 	}
 
 	public void outPutMatchMessage() {
-		//Logger.log(dataStat.toString());
+		// Logger.log(dataStat.toString());
 	}
 
 	public int getFoulShootRemain() {
@@ -470,8 +478,7 @@ public class MatchContext {
 		return (String) get(MatchConstant.SCRIMMAGE_ACTION_RESULT);
 	}
 
-	public Controller getControllerWithIndx(int indx)
-			throws ArrayIndexOutOfBoundsException {
+	public Controller getControllerWithIndx(int indx) throws ArrayIndexOutOfBoundsException {
 
 		Hashtable<String, Controller> controllers = this.getControllers();
 		if (indx > 10 || indx < 1) {

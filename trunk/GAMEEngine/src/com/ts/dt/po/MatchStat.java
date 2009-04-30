@@ -21,6 +21,8 @@ public class MatchStat extends Persistence {
 
 	private int offensiveRebound;
 	private int defensiveRebound;
+	
+	private int foul;
 
 	public long getTeamId() {
 		return teamId;
@@ -110,4 +112,12 @@ public class MatchStat extends Persistence {
 		this.matchId = matchId;
 	}
 
+	public int getFoul() {
+		return foul;
+	}
+
+	public void setFoul(int foul) {
+		this.foul = foul;
+	}
+    
 }
