@@ -6,7 +6,7 @@ package com.ts.dt.match.action.shoot;
 import java.util.Random;
 
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.helper.TechnicallyTraitHelper;
+import com.ts.dt.match.helper.TechnicallyTraitHelper;
 import com.ts.dt.po.Player;
 
 /**

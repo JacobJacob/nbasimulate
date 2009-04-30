@@ -2,8 +2,8 @@ package com.ts.dt.match.check;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.helper.PassHelper;
-import com.ts.dt.helper.RandomCheckHelper;
+import com.ts.dt.match.helper.PassHelper;
+import com.ts.dt.match.helper.RandomCheckHelper;
 import com.ts.dt.po.Player;
 
 public class ShortPassCheck implements ResultCheck {

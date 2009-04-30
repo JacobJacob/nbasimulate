@@ -2,11 +2,12 @@ package com.ts.dt.match.check.foul;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.helper.FoulHelper;
-import com.ts.dt.helper.RandomCheckHelper;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.match.action.shoot.FoulShoot;
 import com.ts.dt.match.action.shoot.LongShoot;
+import com.ts.dt.match.helper.FoulHelper;
+import com.ts.dt.match.helper.RandomCheckHelper;
+import com.ts.dt.match.helper.SubstitutionHelper;
 import com.ts.dt.po.Player;
 
 public class DefaultFoulCheck implements FoulCheck {
@@ -39,8 +40,12 @@ public class DefaultFoulCheck implements FoulCheck {
 			}
 			// statistical significance
 			Player defender = context.getCurrentDefender().getPlayer();
-			context.playerAddFoulTimes(defender, context.getCurrentDefender().getControllerName().startsWith("A"));
-
+			boolean isHomeTeam = context.getCurrentDefender().getControllerName().startsWith("A");
+			context.playerAddFoulTimes(defender, isHomeTeam);
+			if (context.checkFoulOut(defender, isHomeTeam)) {
+				// substitution
+				SubstitutionHelper.FoulOutSubstitution(context);
+			}
 		} else {
 			context.setFoul(false);
 		}

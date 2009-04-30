@@ -4,8 +4,8 @@ import java.util.Random;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.helper.TechnicallyTraitHelper;
 import com.ts.dt.match.desc.ActionDescription;
+import com.ts.dt.match.helper.TechnicallyTraitHelper;
 import com.ts.dt.po.Player;
 
 public class ShortShootDescription implements ActionDescription {

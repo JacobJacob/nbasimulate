@@ -2,8 +2,8 @@ package com.ts.dt.match.check;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.helper.RandomCheckHelper;
-import com.ts.dt.helper.ScrimmageHelper;
+import com.ts.dt.match.helper.RandomCheckHelper;
+import com.ts.dt.match.helper.ScrimmageHelper;
 import com.ts.dt.po.Player;
 
 public class StartScrimmageCheck implements ResultCheck {

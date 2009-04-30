@@ -1,7 +1,7 @@
 package com.ts.dt.match.action.pass;
 
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.helper.RandomCheckHelper;
+import com.ts.dt.match.helper.RandomCheckHelper;
 
 public class PassFactory {
 	private static PassFactory passFactory;
