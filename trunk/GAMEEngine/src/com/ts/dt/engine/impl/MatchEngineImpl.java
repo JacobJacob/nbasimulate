@@ -14,16 +14,20 @@ import com.ts.dt.match.test.TestDataFactory;
 import com.ts.dt.po.MatchMain;
 import com.ts.dt.po.Team;
 import com.ts.dt.util.Logger;
+
 /*
  * 比赛引擎,实现比赛引擎接口
  */
 public class MatchEngineImpl implements MatchEngine {
 
 	/**
-	 * @param homeTeamId the home team id
-	 * @param visitingTeamId the visiting team id
-	 * @param matchType the match type
-	 **/
+	 * @param homeTeamId
+	 *            the home team id
+	 * @param visitingTeamId
+	 *            the visiting team id
+	 * @param matchType
+	 *            the match type
+	 */
 	public void execute(long homeTeamId, long visitingTeamId, String matchType) {
 
 		MatchContext context = new MatchContext();
@@ -56,7 +60,10 @@ public class MatchEngineImpl implements MatchEngine {
 		Logger.info("match start......");
 		while (go) {
 			context.put(MatchConstant.CURRT_CONT_TIME, 0L);
+			int nodosityNo = nodosity.getNodosityNo();
+			Logger.info("The" + nodosityNo + "nodosity start...");
 			nodosity.execute(context);
+			Logger.info("The" + nodosityNo + "nodosity end");
 			go = nodosity.hasNextNodosity();
 			nodosity = nodosity.getNextNodosity();
 		}
@@ -72,7 +79,7 @@ public class MatchEngineImpl implements MatchEngine {
 	}
 
 	public static void main(String[] args) {
-		new MatchEngineImpl().execute(1, 2,"CAR");
+		new MatchEngineImpl().execute(1, 2, "CAR");
 	}
 
 }
