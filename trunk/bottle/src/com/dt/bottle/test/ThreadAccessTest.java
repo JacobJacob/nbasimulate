@@ -6,7 +6,7 @@ import com.dt.bottle.util.BottleUtil;
 public class ThreadAccessTest {
 
 	public static void main(String[] args) {
-		for (int i = 0; i < 2000; i++) {
+		for (int i = 0; i < 100; i++) {
 			new ExecuteThread("Thread-" + i).start();
 		}
 	}
