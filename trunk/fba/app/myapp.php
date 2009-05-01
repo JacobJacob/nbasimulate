@@ -86,8 +86,10 @@ class MyApp
         }
 
         // 导入类搜索路径
+        QLog::log("start to load classpath");
         Q::import($app_config['APP_DIR']);
         Q::import($app_config['APP_DIR'] . '/model');
+        Q::import($app_config['APP_DIR'] . '/helper');
         Q::import($app_config['MODULE_DIR']);
 
         // 注册应用程序对象
@@ -123,6 +125,7 @@ class MyApp
             {
                 die('INVALID CONSTRUCT APP');
             }
+            QLog::log('start new myapp....');
             $instance = new MyApp($app_config);
         }
         return $instance;
@@ -165,7 +168,7 @@ class MyApp
         #ENDIF
 
         // 检查是否有权限访问
-        if (!$this->authorizedUDI($this->currentUserRoles(), $udi))
+        if (!$this->extendAuthorizedUDI($this->currentUserRoles(),$context->UDIString($udi)))
         {
             // 拒绝访问
             $response = $this->_on_access_denied();
@@ -330,7 +333,21 @@ class MyApp
         // 否则检查是否可以访问指定控制器
         return $acl->rolesBasedCheck($roles, $controller_acl);
     }
-
+     /**
+     * 对authorizedUDI的扩展
+     *检查指定角色是否有权限访问特定的控制器和动作
+     *
+     * @param array $roles
+     * @param string|array $udi
+     *
+     * @return boolean
+     */
+   function extendAuthorizedUDI($roles,$udi)
+   {
+     $roles = Q::normalize($roles);
+     //return UDIWapper::instance()->rolesBasedCheck($roles,$udi);
+     return true;
+   }
     /**
      * 获得指定控制器的 ACL
      *

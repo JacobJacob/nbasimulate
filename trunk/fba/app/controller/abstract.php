@@ -99,6 +99,12 @@ abstract class Controller_Abstract extends QController_Abstract
      */
     protected function _after_execute(& $response)
     {
+    	/*将当前用户的角色列表提供给视图,在视图层面的权限控制
+    	*控制器中同样需要增加访问控制,防止非法提交
+    	*/
+    	$g = array();
+    	$g['roles']	= $this->_app->currentUserRoles();
+		$this->_view['g']		= $g;
     }
 
     /**
