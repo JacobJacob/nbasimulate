@@ -41,5 +41,38 @@ CREATE TABLE "player" (
 	"blocked_max"    	int(15) NULL,
 	PRIMARY KEY("id")
 )
+CREATE TABLE free_player ( 
+    id         	bigint(20) AUTO_INCREMENT NOT NULL,
+    name       	varchar(255) NULL,
+    age        	int(11) NULL,
+    position   	varchar(2) NULL,
+    stature    	int(11) NULL,
+    avoirdupois	int(11) NULL,
+    team_Id    	bigint(20) NULL,
+    ability    	double NULL,
+    shooting   	smallint(6) NULL,
+    speed      	smallint(6) NULL,
+    strength   	smallint(6) NULL,
+    bounce     	smallint(6) NULL,
+    stamina    	smallint(6) NULL,
+    trisection 	smallint(6) NULL,
+    dribble    	smallint(6) NULL,
+    pass       	smallint(6) NULL,
+    backboard  	smallint(6) NULL,
+    steal      	smallint(6) NULL,
+    blocked    	smallint(6) NULL,
+    shooting_max   	smallint(6) NULL,
+	speed_max    	smallint(6) NULL,
+	strength_max   	smallint(6) NULL,
+	bounce_max    	smallint(6) NULL,
+	stamina_max    	smallint(6) NULL,
+	trisection_max 	smallint(6) NULL,
+	dribble_max   	smallint(6) NULL,
+	pass_max     	smallint(6) NULL,
+	backboard_max  	smallint(6) NULL,
+	steal_max     	smallint(6) NULL,
+	blocked_max    	smallint(6) NULL,
+    PRIMARY KEY(id)
+)
 GO
 

@@ -34,9 +34,9 @@
                     <li><a href="<?php echo url('admin::role/index'); ?>">角色管理</a></li>
                     <li><a href="<?php echo url('admin::udi/index'); ?>">UDI管理</a></li>
                     <li><a href="<?php echo url('admin::actionDesc/index'); ?>">动作描述管理</a></li>
-                    <li><a href="#">球员管理</a></li>
+                    <li><a href="<?php echo url('admin::player/index'); ?>">球员生成</a></li>
                     <li><a href="#">球队管理</a></li>
-                    <li><a href="#">比赛管理</a></li>
+                    <li><a href="<?php echo url('admin::match/index'); ?>">比赛管理</a></li>
                 </ul>
             </div>
         </div>
