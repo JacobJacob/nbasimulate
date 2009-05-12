@@ -74,13 +74,13 @@ public class MatchEngineImpl implements MatchEngine {
 		match.setPoint(context.currentScore());
 		matchDao.save(match);
 
-		// TestDataFactory.saveTestDateToDB();
+		 TestDataFactory.saveTestDateToDB();
 
 	}
 
 	public static void main(String[] args) {
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 1; i++) {
 			new Test().start();
 		}
 	}
@@ -90,7 +90,7 @@ public class MatchEngineImpl implements MatchEngine {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < 1; i++) {
 				new MatchEngineImpl().execute(1, 2, "CAR");
 			}
 		}
