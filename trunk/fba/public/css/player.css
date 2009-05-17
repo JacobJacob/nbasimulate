@@ -9,7 +9,7 @@ body
     border: 1px solid #000000;
 }
 
-.navcontainer ul
+.navcontainer  ul
 {
     border-bottom:1px solid #000;
     border-top:1px solid #000;
@@ -61,9 +61,9 @@ body
  width:600px;
 }
 .player_list td{
- line-height: 20px;
+ line-height: 16px;
  height: auto;
- font-size: 14px;
+ font-size: 13px;
  border-bottom-width: 1px;
  border-bottom-style: solid;
  border-bottom-color: #CCCCCC;
@@ -77,4 +77,20 @@ body
 #player_detail{
   float:left;
   width:220px;
+}
+
+.navigation  ul
+{
+    border-bottom:1px solid #000;
+    border-top:1px solid #000;
+    float:left;
+    font-size:12px;
+    margin:0pt;
+    padding:0pt;
+    width:100%;
+}
+.navigation ul li
+{
+    display: inline;
+    text-align: center;
 }

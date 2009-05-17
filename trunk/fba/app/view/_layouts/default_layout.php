@@ -29,6 +29,7 @@
             <li><a href="<?php echo url('passport','reg','','member'); ?>">注册</a></li>
             <li><a href="<?php echo url('passport','login','','member'); ?>">登录</a></li>
             <?php endif?>
+            <li><a href="<?php echo url('admin::default/index'); ?>">后台管理</a></li>
         </ul>
 
         <div id="headmain">
@@ -109,7 +110,7 @@
 	                    <li><a href="#">自由球员</a></li>
 	                    <li><a href="#">受限自由球员</a></li>
 	                    <li><a href="#">交易转会</a></li>
-	                    <li><a href="#">职业选秀</a></li>
+	                    <li><a href="<?php echo url('member::profselect/index');?>" target="center">职业选秀</a></li>
 	                    <li><a href="#">苗子选拔</a></li>
 	                </ul>
 	        </div>

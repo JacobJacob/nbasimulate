@@ -7,73 +7,73 @@
 class FreePlayer extends QDB_ActiveRecord_Abstract
 {
 
-    /**
+	/**
      * 返回对象的定义
      *
      * @static
      *
      * @return array
      */
-    static function __define()
-    {
-        return array
-        (
-            // 指定该 ActiveRecord 要使用的行为插件
-            'behaviors' => '',
+	static function __define()
+	{
+		return array
+		(
+		// 指定该 ActiveRecord 要使用的行为插件
+		'behaviors' => '',
 
-            // 指定行为插件的配置
-            'behaviors_settings' => array
-            (
-                # '插件名' => array('选项' => 设置),
-            ),
+		// 指定行为插件的配置
+		'behaviors_settings' => array
+		(
+		# '插件名' => array('选项' => 设置),
+		),
 
-            // 用什么数据表保存对象
-            'table_name' => 'free_player',
+		// 用什么数据表保存对象
+		'table_name' => 'free_player',
 
-            // 指定数据表记录字段与对象属性之间的映射关系
-            // 没有在此处指定的属性，QeePHP 会自动设置将属性映射为对象的可读写属性
-            'props' => array
-            (
-                // 主键应该是只读，确保领域对象的“不变量”
-                'id' => array('readonly' => true),
+		// 指定数据表记录字段与对象属性之间的映射关系
+		// 没有在此处指定的属性，QeePHP 会自动设置将属性映射为对象的可读写属性
+		'props' => array
+		(
+		// 主键应该是只读，确保领域对象的“不变量”
+		'id' => array('readonly' => true),
 
-                /**
+		/**
                  *  可以在此添加其他属性的设置
                  */
-                # 'other_prop' => array('readonly' => true),
+		# 'other_prop' => array('readonly' => true),
 
-                /**
+		/**
                  * 添加对象间的关联
                  */
-                # 'other' => array('has_one' => 'Class'),
+		# 'other' => array('has_one' => 'Class'),
 
-            ),
+		),
 
-            /**
+		/**
              * 允许使用 mass-assignment 方式赋值的属性
              *
              * 如果指定了 attr_accessible，则忽略 attr_protected 的设置。
              */
-            'attr_accessible' => '',
+             'attr_accessible' => '',
 
-            /**
+             /**
              * 拒绝使用 mass-assignment 方式赋值的属性
              */
-            'attr_protected' => 'id',
+             'attr_protected' => 'id',
 
-            /**
+             /**
              * 指定在数据库中创建对象时，哪些属性的值不允许由外部提供
              *
              * 这里指定的属性会在创建记录时被过滤掉，从而让数据库自行填充值。
              */
-            'create_reject' => '',
+             'create_reject' => '',
 
-            /**
+             /**
              * 指定更新数据库中的对象时，哪些属性的值不允许由外部提供
              */
-            'update_reject' => '',
+             'update_reject' => '',
 
-            /**
+             /**
              * 指定在数据库中创建对象时，哪些属性的值由下面指定的内容进行覆盖
              *
              * 如果填充值为 self::AUTOFILL_TIMESTAMP 或 self::AUTOFILL_DATETIME，
@@ -81,22 +81,22 @@ class FreePlayer extends QDB_ActiveRecord_Abstract
              *
              * 如果填充值为一个数组，则假定为 callback 方法。
              */
-            'create_autofill' => array
-            (
-                # 属性名 => 填充值
-                # 'is_locked' => 0,
-            ),
+             'create_autofill' => array
+             (
+             # 属性名 => 填充值
+             # 'is_locked' => 0,
+             ),
 
-            /**
+             /**
              * 指定更新数据库中的对象时，哪些属性的值由下面指定的内容进行覆盖
              *
              * 填充值的指定规则同 create_autofill
              */
-            'update_autofill' => array
-            (
-            ),
+             'update_autofill' => array
+             (
+             ),
 
-            /**
+             /**
              * 在保存对象时，会按照下面指定的验证规则进行验证。验证失败会抛出异常。
              *
              * 除了在保存时自动验证，还可以通过对象的 ::meta()->validate() 方法对数组数据进行验证。
@@ -113,219 +113,182 @@ class FreePlayer extends QDB_ActiveRecord_Abstract
              *
              * 该方法返回 true 表示通过验证。
              */
-            'validations' => array
-            (
-                'name' => array
-                (
-                    array('max_length', 255, 'name不能超过 255 个字符'),
+             'validations' => array
+             (
+             'name' => array
+             (
+             array('skip_empty'),
+             array('max_length', 255, 'name不能超过 255 个字符'),
 
-                ),
+             ),
 
-                'age' => array
-                (
-                    array('is_int', 'age必须是一个整数'),
+             'age' => array
+             (
+             array('skip_empty'),
+             array('is_int', 'age必须是一个整数'),
+             ),
 
-                ),
+             'position' => array
+             (
+             array('skip_empty'),
+             array('max_length', 2, 'position不能超过 2 个字符'),
+             ),
 
-                'position' => array
-                (
-                    array('max_length', 2, 'position不能超过 2 个字符'),
+             'stature' => array
+             (
+             array('skip_empty'),
+             array('is_int', 'stature必须是一个整数'),
+             ),
 
-                ),
+             'avoirdupois' => array
+             (
+             array('skip_empty'),
+             array('is_int', 'avoirdupois必须是一个整数'),
+             ),
 
-                'stature' => array
-                (
-                    array('is_int', 'stature必须是一个整数'),
+             'ability' => array
+             (
+             array('skip_empty'),
+             array('is_float', 'ability必须是一个浮点数'),
+             )
 
-                ),
-
-                'avoirdupois' => array
-                (
-                    array('is_int', 'avoirdupois必须是一个整数'),
-
-                ),
-
-                'ability' => array
-                (
-                    array('is_float', 'ability必须是一个浮点数'),
-
-                ),
-
-                'shooting' => array
-                (
-                    array('is_int', 'shooting必须是一个整数'),
-
-                ),
-
-                'speed' => array
-                (
-                    array('is_int', 'speed必须是一个整数'),
-
-                ),
-
-                'strength' => array
-                (
-                    array('is_int', 'strength必须是一个整数'),
-
-                ),
-
-                'bounce' => array
-                (
-                    array('is_int', 'bounce必须是一个整数'),
-
-                ),
-
-                'stamina' => array
-                (
-                    array('is_int', 'stamina必须是一个整数'),
-
-                ),
-
-                'trisection' => array
-                (
-                    array('is_int', 'trisection必须是一个整数'),
-
-                ),
-
-                'dribble' => array
-                (
-                    array('is_int', 'dribble必须是一个整数'),
-
-                ),
-
-                'pass' => array
-                (
-                    array('is_int', 'pass必须是一个整数'),
-
-                ),
-
-                'backboard' => array
-                (
-                    array('is_int', 'backboard必须是一个整数'),
-
-                ),
-
-                'steal' => array
-                (
-                    array('is_int', 'steal必须是一个整数'),
-
-                ),
-
-                'blocked' => array
-                (
-                    array('is_int', 'blocked必须是一个整数'),
-
-                ),
-
-                'shooting_max' => array
-                (
-                    array('is_int', 'shooting_max必须是一个整数'),
-
-                ),
-
-                'speed_max' => array
-                (
-                    array('is_int', 'speed_max必须是一个整数'),
-
-                ),
-
-                'strength_max' => array
-                (
-                    array('is_int', 'strength_max必须是一个整数'),
-
-                ),
-
-                'bounce_max' => array
-                (
-                    array('is_int', 'bounce_max必须是一个整数'),
-
-                ),
-
-                'stamina_max' => array
-                (
-                    array('is_int', 'stamina_max必须是一个整数'),
-
-                ),
-
-                'trisection_max' => array
-                (
-                    array('is_int', 'trisection_max必须是一个整数'),
-
-                ),
-
-                'dribble_max' => array
-                (
-                    array('is_int', 'dribble_max必须是一个整数'),
-
-                ),
-
-                'pass_max' => array
-                (
-                    array('is_int', 'pass_max必须是一个整数'),
-
-                ),
-
-                'backboard_max' => array
-                (
-                    array('is_int', 'backboard_max必须是一个整数'),
-
-                ),
-
-                'steal_max' => array
-                (
-                    array('is_int', 'steal_max必须是一个整数'),
-
-                ),
-
-                'blocked_max' => array
-                (
-                    array('is_int', 'blocked_max必须是一个整数'),
-
-                ),
+             ),
+             );
+	}
 
 
-            ),
-        );
-    }
+	/* ------------------ 以下是自动生成的代码，不能修改 ------------------ */
 
-
-/* ------------------ 以下是自动生成的代码，不能修改 ------------------ */
-
-    /**
+	/**
      * 开启一个查询，查找符合条件的对象或对象集合
      *
      * @static
      *
      * @return QDB_Select
      */
-    static function find()
-    {
-        $args = func_get_args();
-        return QDB_ActiveRecord_Meta::instance(__CLASS__)->findByArgs($args);
-    }
+	static function find()
+	{
+		$args = func_get_args();
+		return QDB_ActiveRecord_Meta::instance(__CLASS__)->findByArgs($args);
+	}
 
-    /**
+	/**
      * 返回当前 ActiveRecord 类的元数据对象
      *
      * @static
      *
      * @return QDB_ActiveRecord_Meta
      */
-    static function meta()
-    {
-        return QDB_ActiveRecord_Meta::instance(__CLASS__);
-    }
+	static function meta()
+	{
+		return QDB_ActiveRecord_Meta::instance(__CLASS__);
+	}
 
 
-/* ------------------ 以上是自动生成的代码，不能修改 ------------------ */
-     static function build($_POST)
-     {
-     	$number = 100;
-     	for( $i = 0 ; $i < $number;$i++ )
-     	{
-     	   $free_payer = new FreePlayer();
-     	   $free_payer->save();
-     	}
-     }
+	/* ------------------ 以上是自动生成的代码，不能修改 ------------------ */
+	function colligate()
+	{
+		$total = 0 ;
+		$total += $this->shooting ;
+		$total += $this->speed ;
+		$total += $this->strength ;
+		$total += $this->bounce ;
+		$total += $this->stamina ;
+		$total += $this->trisection ;
+		$total += $this->dribble ;
+		$total += $this->pass ;
+		$total += $this->backboard ;
+		$total += $this->steal ;
+		$total += $this->blocked ;
+
+		$total = $total / 11 ;
+
+		return $total;
+
+	}
+	static function build($_POST)
+	{
+		$number = 1;
+		//读取球员属性配置信息
+		$config = ConfigHelper::readFreePlayerConfig();
+		//生成不同极别球员
+		$level_map = array(
+		'A1' => 0,
+		'A2' => 1,
+		'A3' => 2,
+		'B1' => 3,
+		'B2' => 4,
+		'B3' => 5,
+		'C1' => 6,
+		'C2' => 7,
+		'C3' => 8,
+		);
+		$level_key = array_keys($level_map);
+		$position = $_POST['position'];
+		foreach ($level_key as $key){
+			$a1_count = $_POST[$key];
+			for( $i = 0 ; $i < $a1_count;$i++ )
+			{
+				$free_payer = new FreePlayer();
+				$free_payer->position = $position;
+				$free_payer->name = Common::create_name();
+				$free_payer->no = Common::create_no();
+				$free_payer->age = Common::create_age();
+				$free_payer->stature= Common::create_stature($position);
+				$free_payer->avoirdupois = Common::create_avoirdupois($position);
+				FreePlayer::init($free_payer,$config,array('position'=>$position,'level'=>$level_map[$key]));
+				$free_payer->save();
+			}
+		}
+
+	}
+	//初始化球员
+	private static function init($freeplayer,$config,array $parm)
+	{
+		$level = $parm['level'];
+		$ponsition = $parm['position'];
+		if($ponsition= 'C'){
+			FreePlayer::setAttrs($freeplayer,$config,ConfigHelper::ATTR_CONFIG_C ,$level);
+		}else if($ponsition = 'PF'){
+			FreePlayer::setAttrs($freeplayer,$config,ConfigHelper::ATTR_CONFIG_PF ,$level);
+		}else if($ponsition= 'SF'){
+			FreePlayer::setAttrs($freeplayer,$config,ConfigHelper::ATTR_CONFIG_SF ,$level);
+		}else if($ponsition= 'SG'){
+			FreePlayer::setAttrs($freeplayer,$config,ConfigHelper::ATTR_CONFIG_SG ,$level);
+		}else if($ponsition = 'PG'){
+			FreePlayer::setAttrs($freeplayer,$config,ConfigHelper::ATTR_CONFIG_PG ,$level);
+		}else{
+			return;
+		}
+	}
+	private static function setAttrs($freeplayer,$config,$ponsition,$level){
+
+		QLog::log('start set attributes');
+		FreePlayer::setAttr($freeplayer,'shooting',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'speed',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'strength',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'bounce',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'stamina',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'trisection',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'dribble',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'pass',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'backboard',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'steal',$config,$ponsition,$level);
+		FreePlayer::setAttr($freeplayer,'blocked',$config,$ponsition,$level);
+
+	}
+	private static function setAttr($freeplayer,$attr_name,$config,$ponsition,$level){
+
+		$rand = rand(0,300) / 10 ;
+		QLog::log('the random value is:'.$rand);
+		$max_attr_name = $attr_name.'_max';
+		QLog::log('the attribute is:'.$attr_name);
+		$attr_config =  $config[$attr_name];
+		$base_value = $attr_config[$ponsition][$level] ;
+		QLog::log('the base value is:'.$base_value);
+		$max_value = $rand + $base_value;
+		$freeplayer->$max_attr_name = $max_value;
+		$freeplayer->$attr_name = $max_value * rand(0,100) / 100 ;
+	}
 }
 

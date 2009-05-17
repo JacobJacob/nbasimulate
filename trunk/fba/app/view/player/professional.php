@@ -30,7 +30,7 @@
       <td><a href="javascript:view('<?php echo url("player/view",array("id"=>$player->id));?>');"><?php echo $player->name;?></a></td>
       <td><?php echo $player->age;?></td>
       <td><?php echo $player->position;?></td>
-      <td><?php echo $player->them;?></td>
+      <td><?php echo $player->thew;?></td>
       <td><?php echo $player->status;?></td>
       <td><?php echo $player->stature;?></td>
       <td><?php echo $player->avoirdupois;?></td>
