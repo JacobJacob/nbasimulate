@@ -16,7 +16,6 @@ import com.dt.bottle.logger.Logger;
 import com.dt.bottle.persistence.Persistence;
 import com.dt.bottle.pool.ConnectionPool;
 
-
 public class Session {
 
 	private DBConnection conn;
@@ -98,8 +97,7 @@ public class Session {
 		}
 		DBConnection conn = ConnectionPool.instance().connection();
 
-		Logger.logger("start to load Object[" + cls.getClass().getName()
-				+ "] id :" + id);
+		Logger.logger("start to load Object[" + cls.getClass().getName() + "] id :" + id);
 
 		String sql = SqlHelper.getLoaderSql(persistence);
 		Object[] parm = { String.valueOf(id) };
@@ -128,8 +126,7 @@ public class Session {
 		return persistence;
 	}
 
-	public List<Persistence> query(Class<?> cla, String sql, Object[] parm)
-			throws Exception {
+	public List<Persistence> query(Class<?> cla, String sql, Object[] parm) throws Exception {
 
 		conn = ConnectionPool.instance().connection();
 
@@ -155,8 +152,7 @@ public class Session {
 		return result;
 	}
 
-	public synchronized long getIdBySql(String sql, Object[] parm)
-			throws ObjectNotFoundException, SessionException {
+	public synchronized long getIdBySql(String sql, Object[] parm) throws ObjectNotFoundException, SessionException {
 
 		long id = -1;
 		conn = ConnectionPool.instance().connection();
@@ -203,6 +199,10 @@ public class Session {
 
 	public void close() {
 
+	}
+
+	public void closeCache() {
+		cacheActive = false;
 	}
 
 }

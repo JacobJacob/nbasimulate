@@ -18,7 +18,12 @@ public class StartersCache {
 	public StartersCache() {
 		cache = new Hashtable<Class<?>, Hashtable<String, Persistence>>();
 	}
-
+    /**
+     * check the object exist in cache
+     * @param cls the persistence class 
+     * @param id  the persistence id
+     * @return boolean
+     */
 	public boolean containObject(Class<?> cls, long id) {
 		if (cache.containsKey(cls)) {
 			Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache

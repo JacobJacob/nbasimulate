@@ -1,6 +1,9 @@
 package com.dt.bottle.persistence;
 
+import java.util.List;
+
 import com.dt.bottle.session.Session;
+import com.dt.bottle.util.BottleUtil;
 
 public class Persistence implements Persistable {
 
@@ -8,12 +11,20 @@ public class Persistence implements Persistable {
 
 	public boolean delete() {
 		// TODO Auto-generated method stub
-		return false;
+		// Session session = BottleUtil.currentSession();
+		boolean result = true;
+		try {
+			// session.(this);
+		} catch (Exception e) {
+			result = false;
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public boolean save() {
 		// TODO Auto-generated method stub
-		Session session = new Session();
+		Session session = BottleUtil.currentSession();
 		boolean result = true;
 		try {
 			session.save(this);
@@ -26,19 +37,33 @@ public class Persistence implements Persistable {
 
 	public boolean update() {
 		// TODO Auto-generated method stub
-		return false;
+		Session session = BottleUtil.currentSession();
+		boolean result = true;
+		try {
+			session.update(this);
+		} catch (Exception e) {
+			result = false;
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public void load(long id) {
 		// TODO Auto-generated method stub
 		this.id = id;
-		Session session = new Session();
+		Session session = BottleUtil.currentSession();
 		try {
-			session.load(this.getClass(),id);
+			session.load(this.getClass(), id);
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
+	}
+
+	public static List<Persistence> query(Class<?> cls, Object... where) throws Exception {
+		Session session = BottleUtil.currentSession();
+		session.query(cls, where[0].toString(), null);
+		return null;
 	}
 
 	public long getId() {
