@@ -131,9 +131,9 @@ public class Session {
 
 		conn = ConnectionPool.instance().connection();
 		List<Persistence> result = new ArrayList<Persistence>();
-
+		ResultSet resultSet = null;
 		try {
-			ResultSet resultSet = conn.executeQuery(sql, parm);
+			resultSet = conn.executeQuery(sql, parm);
 
 			int rows = 0;
 			while (resultSet.next()) {
@@ -147,6 +147,11 @@ public class Session {
 			e.printStackTrace();
 			throw new SessionException();
 		} finally {
+			try {
+				resultSet.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			ConnectionPool.instance().disConnection(conn);
 		}
 		return result;
