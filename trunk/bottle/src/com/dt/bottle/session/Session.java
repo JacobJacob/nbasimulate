@@ -147,6 +147,7 @@ public class Session {
 			e.printStackTrace();
 			throw new SessionException();
 		} finally {
+			conn.commit();
 			try {
 				resultSet.close();
 			} catch (Exception e) {
