@@ -40,6 +40,8 @@ public class DBConnection {
 
 				if (parm[i - 1] instanceof Date) {
 					prepareStatement.setTimestamp(i, DateConverter.utilDate2Timestamp((Date) parm[i - 1]));
+				} else if (parm[i - 1] instanceof Character) {
+					prepareStatement.setString(i, parm[i - 1].toString());
 				} else {
 					prepareStatement.setObject(i, parm[i - 1]);
 				}
@@ -82,6 +84,12 @@ public class DBConnection {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				//prepareStatement.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		return resultSet;

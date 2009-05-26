@@ -126,10 +126,10 @@ public class Session {
 		return persistence;
 	}
 
-	public List<Persistence> query(Class<?> cla, String sql, Object[] parm) throws Exception {
+	@SuppressWarnings("unchecked")
+	public List query(Class<? extends Persistence> cla, String sql, Object[] parm) throws Exception {
 
 		conn = ConnectionPool.instance().connection();
-
 		List<Persistence> result = new ArrayList<Persistence>();
 
 		try {

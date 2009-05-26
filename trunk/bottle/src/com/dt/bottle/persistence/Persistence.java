@@ -1,7 +1,5 @@
 package com.dt.bottle.persistence;
 
-import java.util.List;
-
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
 
@@ -59,13 +57,6 @@ public class Persistence implements Persistable {
 			e.printStackTrace();
 		}
 	}
-
-	public static List<Persistence> query(Class<?> cls, Object... where) throws Exception {
-		Session session = BottleUtil.currentSession();
-		session.query(cls, where[0].toString(), null);
-		return null;
-	}
-
 	public long getId() {
 		return id;
 	}

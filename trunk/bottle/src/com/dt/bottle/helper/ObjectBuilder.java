@@ -9,8 +9,7 @@ import com.dt.bottle.persistence.Persistence;
 
 public class ObjectBuilder {
 
-	public static void builderObjFromResultSet(Object obj, ResultSet resultSet)
-			throws Exception {
+	public static void builderObjFromResultSet(Object obj, ResultSet resultSet) throws Exception {
 
 		Class<?> cls = obj.getClass();
 
@@ -28,8 +27,7 @@ public class ObjectBuilder {
 			Class<?>[] parmTypes = { field.getType() };
 			Object value = getValueWithField(field, resultSet);
 			Object[] args = { value };
-			Method method = cls.getMethod(SqlHelper
-					.fieldName2SetMethod(fieldName), parmTypes);
+			Method method = cls.getMethod(SqlHelper.fieldName2SetMethod(fieldName), parmTypes);
 
 			method.invoke(obj, args);
 
@@ -38,40 +36,30 @@ public class ObjectBuilder {
 
 	}
 
-	public static Object getValueWithField(Field field, ResultSet resultSet)
-			throws Exception {
+	public static Object getValueWithField(Field field, ResultSet resultSet) throws Exception {
 
 		// if(!resultSet.next()){
 		// throw new ObjectNotFoundException();
 		// }
 		Class<?> fieldType = field.getType();
 		String fieldTypeName = fieldType.getName();
+		String columnName = SqlHelper.fieldName2ColumnName(field.getName());
 		if (fieldTypeName.endsWith("String")) {
-			return resultSet.getString(SqlHelper.fieldName2ColumnName(field
-					.getName()));
-		} else if (fieldTypeName.endsWith("Integer")
-				|| fieldTypeName.endsWith("int")) {
-			return resultSet.getInt(SqlHelper.fieldName2ColumnName(field
-					.getName()));
-		} else if (fieldTypeName.endsWith("Long")
-				|| fieldTypeName.endsWith("long")) {
-			return resultSet.getLong(SqlHelper.fieldName2ColumnName(field
-					.getName()));
-		} else if (fieldTypeName.endsWith("Double")
-				|| fieldTypeName.endsWith("double")) {
-			return resultSet.getDouble(SqlHelper.fieldName2ColumnName(field
-					.getName()));
-		} else if (fieldTypeName.endsWith("Float")
-				|| fieldTypeName.endsWith("float")) {
-			return resultSet.getFloat(SqlHelper.fieldName2ColumnName(field
-					.getName()));
-		} else if (fieldTypeName.endsWith("Boolean")
-				|| fieldTypeName.endsWith("boolean")) {
-			return resultSet.getBoolean(SqlHelper.fieldName2ColumnName(field
-					.getName()));
+			return resultSet.getString(columnName);
+		} else if (fieldTypeName.endsWith("char")) {
+			return resultSet.getString(columnName).charAt(0);
+		} else if (fieldTypeName.endsWith("Integer") || fieldTypeName.endsWith("int")) {
+			return resultSet.getInt(columnName);
+		} else if (fieldTypeName.endsWith("Long") || fieldTypeName.endsWith("long")) {
+			return resultSet.getLong(columnName);
+		} else if (fieldTypeName.endsWith("Double") || fieldTypeName.endsWith("double")) {
+			return resultSet.getDouble(columnName);
+		} else if (fieldTypeName.endsWith("Float") || fieldTypeName.endsWith("float")) {
+			return resultSet.getFloat(columnName);
+		} else if (fieldTypeName.endsWith("Boolean") || fieldTypeName.endsWith("boolean")) {
+			return resultSet.getBoolean(columnName);
 		} else if (fieldTypeName.endsWith("Date")) {
-			Date date = new Date(resultSet.getTimestamp(
-					SqlHelper.fieldName2ColumnName(field.getName())).getTime());
+			Date date = new Date(resultSet.getTimestamp(columnName).getTime());
 			return date;
 		}
 		return "";

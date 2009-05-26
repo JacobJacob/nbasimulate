@@ -22,8 +22,8 @@ public class BottleUtil {
 			s = sessionFactory.getSession();
 			session.set(s);
 		}
-		System.out.println("Thread is " + Thread.currentThread()
-				+ "/ Session :" + s);
+		// System.out.println("Thread is " + Thread.currentThread()
+		// + "/ Session :" + s);
 		return s;
 	}
 
