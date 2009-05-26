@@ -6,7 +6,7 @@ import com.ts.dt.po.MatchReq;
 
 public interface MatchReqDao {
 
-	public List<MatchReq> filter(String condition, Object[] parms);
+	public List<MatchReq> getAllNewReq();
 
 	public void remove(MatchReq matchReq);
 }
