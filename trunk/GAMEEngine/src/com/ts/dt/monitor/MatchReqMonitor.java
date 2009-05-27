@@ -31,7 +31,7 @@ public class MatchReqMonitor extends Thread {
 				req.setFlag('F');
 				Session session = BottleUtil.currentSession();
 				session.beginTransaction();
-				req.update();
+				req.save();
 				session.endTransaction();
 				MatchReqPool.put(req);
 			}
