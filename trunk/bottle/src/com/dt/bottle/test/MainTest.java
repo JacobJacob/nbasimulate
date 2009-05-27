@@ -6,12 +6,20 @@ import com.dt.bottle.util.BottleUtil;
 public class MainTest {
 
 	public static void main(String[] args) {
-		long start = System.currentTimeMillis();
-		for (int i = 0; i < 1000; i++) {
-			load();
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("USE TIME IS:" + (end - start));
+
+		A a = new A();
+		B b = new B();
+
+		b.setName("B");
+		a.setName("A");
+		a.setB(b);
+
+		Session session = BottleUtil.currentSession();
+		session.beginTransaction();
+		a.save();
+
+		session.endTransaction();
+
 	}
 
 	private static void load() {

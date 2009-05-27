@@ -4,8 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import com.dt.bottle.constants.Constants;
+import com.dt.bottle.persistence.Persistence;
 
 public class SqlHelper {
 
@@ -16,10 +18,12 @@ public class SqlHelper {
 		StringBuffer insert = new StringBuffer();
 		StringBuffer attribute = new StringBuffer();
 		StringBuffer parameters = new StringBuffer();
-		ArrayList<Object> values = new ArrayList<Object>();
+		List<Object> values = new ArrayList<Object>();
+		List<Persistence> oneToOne = new ArrayList<Persistence>();
 
 		insert.append("INSERT INTO ");
-		insert.append("`" + className2TableName(obj) + "`");
+		String tableName = className2TableName(obj);
+		insert.append("`" + tableName + "`");
 
 		Field[] fields = obj.getClass().getDeclaredFields();
 
@@ -30,6 +34,10 @@ public class SqlHelper {
 				continue;
 			}
 			Object value = getValueByField(obj, field.getName());
+
+			if (value instanceof Persistence) {
+				oneToOne.add((Persistence) value);
+			}
 
 			if (value != null) {
 				attribute.append(",");
@@ -52,6 +60,8 @@ public class SqlHelper {
 		Object[] parm = values.toArray();
 		table.put(Constants.DB_SQL, insert.toString());
 		table.put(Constants.DB_PARM, parm);
+		table.put(Constants.ONE_TO_ONE_ASSOC, oneToOne);
+		table.put(Constants.TABLE_NAME, tableName);
 		return table;
 
 	}
@@ -86,9 +96,9 @@ public class SqlHelper {
 				values.add(value);
 			}
 		}
-		Object id = getValueByField(obj,"id");
+		Object id = getValueByField(obj, "id");
 		values.add(id);
-		
+
 		String attributeStr = attribute.substring(0, attribute.length() - 1);
 
 		update.append(attributeStr);

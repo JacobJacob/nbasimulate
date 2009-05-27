@@ -1,8 +1,10 @@
 package com.dt.bottle.session;
 
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
 import com.dt.bottle.cache.StartersCache;
@@ -31,7 +33,8 @@ public class Session {
 		}
 	}
 
-	public void save(Object obj) throws SessionException {
+	@SuppressWarnings("unchecked")
+	public void save(Persistence persist) throws SessionException {
 
 		long id = 0;
 
@@ -39,7 +42,7 @@ public class Session {
 			return;
 		}
 		Logger.logger("start save");
-		Hashtable<String, Object> table = SqlHelper.createInsertSql(obj);
+		Hashtable<String, Object> table = SqlHelper.createInsertSql(persist);
 		String sql = (String) table.get(Constants.DB_SQL);
 		Object[] parm = (Object[]) table.get(Constants.DB_PARM);
 		try {
@@ -49,18 +52,33 @@ public class Session {
 			e.printStackTrace();
 			throw new SessionException();
 		}
-		String getIdSql = SqlHelper.getLastInsertSql(obj);
+		String getIdSql = SqlHelper.getLastInsertSql(persist);
 		try {
 			ResultSet resultSet = conn.executeQuery(getIdSql, new Object[0]);
 			if (!resultSet.next()) {
 				throw new Exception("error occor while get last id");
 			}
 			id = resultSet.getLong("id");
-			((Persistence) obj).setId(id);
+			((Persistence) persist).setId(id);
 		} catch (Exception e) {
 			success = false;
 			e.printStackTrace();
 			throw new SessionException();
+		}
+		// save one to one assoc
+		String tableName = (String) table.get(Constants.TABLE_NAME);
+		List<Persistence> one2one = (List) table.get(Constants.ONE_TO_ONE_ASSOC);
+		Iterator<Persistence> iterator = one2one.iterator();
+		while (iterator.hasNext()) {
+			Persistence one2onepersist = iterator.next();
+			Class cls = one2onepersist.getClass();
+			try {
+				Method method = cls.getMethod(tableName + "_id", new Class[] { Long.class });
+				method.invoke(one2onepersist, id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			one2onepersist.save();
 		}
 		Logger.logger("finish save");
 
@@ -147,7 +165,6 @@ public class Session {
 			e.printStackTrace();
 			throw new SessionException();
 		} finally {
-			conn.commit();
 			try {
 				resultSet.close();
 			} catch (Exception e) {

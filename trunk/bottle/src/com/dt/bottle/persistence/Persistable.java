@@ -1,12 +1,9 @@
 package com.dt.bottle.persistence;
 
-
 public interface Persistable {
 	public long id = 0;
 
 	public boolean save();
-
-	public boolean update();
 
 	public boolean delete();
 
