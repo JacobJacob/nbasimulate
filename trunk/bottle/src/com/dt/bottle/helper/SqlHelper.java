@@ -11,6 +11,7 @@ import com.dt.bottle.persistence.Persistence;
 
 public class SqlHelper {
 
+	@SuppressWarnings("unchecked")
 	public static Hashtable<String, Object> createInsertSql(Object obj) {
 
 		Hashtable<String, Object> table = new Hashtable<String, Object>();
@@ -20,6 +21,7 @@ public class SqlHelper {
 		StringBuffer parameters = new StringBuffer();
 		List<Object> values = new ArrayList<Object>();
 		List<Persistence> oneToOne = new ArrayList<Persistence>();
+		List<List<Persistence>> oneToMany = new ArrayList<List<Persistence>>();
 
 		insert.append("INSERT INTO ");
 		String tableName = className2TableName(obj);
@@ -35,8 +37,15 @@ public class SqlHelper {
 			}
 			Object value = getValueByField(obj, field.getName());
 
+			// one to one
 			if (value instanceof Persistence) {
 				oneToOne.add((Persistence) value);
+				continue;
+			}
+			// one to many
+			if (value instanceof List) {
+				oneToMany.add((List) value);
+				continue;
 			}
 
 			if (value != null) {
@@ -61,6 +70,7 @@ public class SqlHelper {
 		table.put(Constants.DB_SQL, insert.toString());
 		table.put(Constants.DB_PARM, parm);
 		table.put(Constants.ONE_TO_ONE_ASSOC, oneToOne);
+		table.put(Constants.ONE_TO_MANY_ASSOC, oneToMany);
 		table.put(Constants.TABLE_NAME, tableName);
 		return table;
 

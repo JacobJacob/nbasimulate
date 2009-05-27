@@ -65,23 +65,50 @@ public class Session {
 			e.printStackTrace();
 			throw new SessionException();
 		}
-		// save one to one assoc
+		saveOneToOneAssoc(id, table);
+		saveOneToManyAssoc(id, table);
+		Logger.logger("finish save");
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private void saveOneToOneAssoc(long id, Hashtable<String, Object> table) {
+		// save one to one associate
 		String tableName = (String) table.get(Constants.TABLE_NAME);
 		List<Persistence> one2one = (List) table.get(Constants.ONE_TO_ONE_ASSOC);
 		Iterator<Persistence> iterator = one2one.iterator();
 		while (iterator.hasNext()) {
 			Persistence one2onepersist = iterator.next();
-			Class cls = one2onepersist.getClass();
-			try {
-				Method method = cls.getMethod(tableName + "_id", new Class[] { Long.class });
-				method.invoke(one2onepersist, id);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			one2onepersist.save();
+			saveSingleObject(id, tableName, one2onepersist);
 		}
-		Logger.logger("finish save");
+	}
 
+	@SuppressWarnings("unchecked")
+	private void saveOneToManyAssoc(long id, Hashtable<String, Object> table) {
+
+		// save one to many associate
+		String tableName = (String) table.get(Constants.TABLE_NAME);
+		List<List<Persistence>> one2many = (List) table.get(Constants.ONE_TO_MANY_ASSOC);
+		Iterator<List<Persistence>> iterator = one2many.iterator();
+		while (iterator.hasNext()) {
+			List<Persistence> one2onepersistList = iterator.next();
+			Iterator<Persistence> innerIter = one2onepersistList.iterator();
+			while (innerIter.hasNext()) {
+				saveSingleObject(id, tableName, innerIter.next());
+			}
+		}
+	}
+
+	private void saveSingleObject(long assocId, String assocObjNm, Persistence persist) {
+
+		Class<?> cls = persist.getClass();
+		try {
+			Method method = cls.getMethod("set" + assocObjNm + "Id", new Class[] { long.class });
+			method.invoke(persist, assocId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		persist.save();
 	}
 
 	public void update(Object obj) throws SessionException {

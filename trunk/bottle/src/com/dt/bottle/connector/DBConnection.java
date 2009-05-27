@@ -67,9 +67,8 @@ public class DBConnection {
 	public synchronized ResultSet executeQuery(String sql, Object[] parm) {
 
 		Logger.logger("SQL: " + sql);
-		setAutoCommit(true);
 		ResultSet resultSet = null;
-
+		setAutoCommit(true);
 		if (conn == null) {
 			connect();
 		}
@@ -85,7 +84,7 @@ public class DBConnection {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-
+			setAutoCommit(false);
 		}
 
 		return resultSet;
