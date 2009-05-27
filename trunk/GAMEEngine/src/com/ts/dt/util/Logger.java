@@ -7,4 +7,8 @@ public class Logger {
 	public static void info(Object msg) {
 		logger.info(msg);
 	}
+
+	public static void error(Object msg) {
+		logger.error(msg);
+	}
 }
