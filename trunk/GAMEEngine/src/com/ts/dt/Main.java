@@ -9,5 +9,7 @@ public class Main {
 
 		new MatchReqMonitor().start();
 		new MatchReqHandle().start();
+		new MatchReqHandle().start();
+		new MatchReqHandle().start();
 	}
 }
