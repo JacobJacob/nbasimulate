@@ -12,6 +12,8 @@ public class MatchReq extends Persistence {
 
 	private char flag;
 
+	private long matchId;
+
 	public long getHomeTeamId() {
 		return homeTeamId;
 	}
@@ -34,6 +36,14 @@ public class MatchReq extends Persistence {
 
 	public void setFlag(char flag) {
 		this.flag = flag;
+	}
+
+	public long getMatchId() {
+		return matchId;
+	}
+
+	public void setMatchId(long matchId) {
+		this.matchId = matchId;
 	}
 
 }

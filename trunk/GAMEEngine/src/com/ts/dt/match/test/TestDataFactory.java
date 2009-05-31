@@ -16,7 +16,7 @@ public class TestDataFactory {
 		player.setAvoirdupois(212);
 		player.setName("姚明    ");
 		player.setPosition(MatchConstant.LOCATION_C);
-		player.setTeamId(2);
+		player.setTeamid(2);
 		players[0] = player;
 
 		player = new Player();
@@ -25,7 +25,7 @@ public class TestDataFactory {
 		player.setName("期科拉  ");
 		player.setPosition(MatchConstant.LOCATION_PF);
 		player.setAvoirdupois(210);
-		player.setTeamId(2);
+		player.setTeamid(2);
 		players[1] = player;
 
 		player = new Player();
@@ -34,7 +34,7 @@ public class TestDataFactory {
 		player.setName("阿泰斯特");
 		player.setPosition(MatchConstant.LOCATION_SF);
 		player.setAvoirdupois(200);
-		player.setTeamId(2);
+		player.setTeamid(2);
 		players[2] = player;
 
 		player = new Player();
@@ -43,7 +43,7 @@ public class TestDataFactory {
 		player.setPosition(MatchConstant.LOCATION_SG);
 		player.setName("麦迪    ");
 		player.setShooting(80);
-		player.setTeamId(2);
+		player.setTeamid(2);
 		players[3] = player;
 
 		player = new Player();
@@ -52,7 +52,7 @@ public class TestDataFactory {
 		player.setName("阿尔斯通");
 		player.setPosition(MatchConstant.LOCATION_PG);
 		player.setAvoirdupois(180);
-		player.setTeamId(2);
+		player.setTeamid(2);
 		players[4] = player;
 
 		player = new Player();
@@ -61,7 +61,7 @@ public class TestDataFactory {
 		player.setName("布泽尔  ");
 		player.setPosition(MatchConstant.LOCATION_C);
 		player.setAvoirdupois(210);
-		player.setTeamId(1);
+		player.setTeamid(1);
 		players[5] = player;
 
 		player = new Player();
@@ -70,7 +70,7 @@ public class TestDataFactory {
 		player.setName("小奥尼尔");
 		player.setPosition(MatchConstant.LOCATION_PF);
 		player.setAvoirdupois(200);
-		player.setTeamId(1);
+		player.setTeamid(1);
 		players[6] = player;
 
 		player = new Player();
@@ -79,7 +79,7 @@ public class TestDataFactory {
 		player.setPosition(MatchConstant.LOCATION_SF);
 		player.setName("安东尼  ");
 		player.setAvoirdupois(190);
-		player.setTeamId(1);
+		player.setTeamid(1);
 		players[7] = player;
 
 		player = new Player();
@@ -88,7 +88,7 @@ public class TestDataFactory {
 		player.setName("科比    ");
 		player.setPosition(MatchConstant.LOCATION_SG);
 		player.setAvoirdupois(180);
-		player.setTeamId(1);
+		player.setTeamid(1);
 		players[8] = player;
 
 		player = new Player();
@@ -97,7 +97,7 @@ public class TestDataFactory {
 		player.setName("保罗    ");
 		player.setPosition(MatchConstant.LOCATION_PG);
 		player.setAvoirdupois(180);
-		player.setTeamId(1);
+		player.setTeamid(1);
 		players[9] = player;
 
 	}

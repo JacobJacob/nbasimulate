@@ -28,7 +28,7 @@ public class MatchEngineImpl implements MatchEngine {
 	 * @param matchType
 	 *            the match type
 	 */
-	public void execute(long homeTeamId, long visitingTeamId, String matchType) {
+	public long execute(long homeTeamId, long visitingTeamId, String matchType) {
 
 		MatchContext context = new MatchContext();
 
@@ -74,7 +74,9 @@ public class MatchEngineImpl implements MatchEngine {
 		match.setPoint(context.currentScore());
 		matchDao.save(match);
 
-		 TestDataFactory.saveTestDateToDB();
+		TestDataFactory.saveTestDateToDB();
+
+		return match.getId();
 
 	}
 

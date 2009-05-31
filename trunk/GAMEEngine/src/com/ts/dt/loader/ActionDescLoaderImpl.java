@@ -10,7 +10,6 @@ import com.ts.dt.dao.ActionDescDao;
 import com.ts.dt.dao.impl.ActionDescDaoImpl;
 import com.ts.dt.key.ActionDescKey;
 import com.ts.dt.po.ActionDesc;
-import com.ts.dt.util.Logger;
 
 /**
  * 动作描述加载类

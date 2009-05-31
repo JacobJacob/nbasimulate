@@ -10,7 +10,7 @@ public class Player extends Persistence {
 	private String position;
 	private int stature;
 	private int avoirdupois;
-	private long teamId;
+	private long teamid;
 	private double ability;
 	private double shooting;
 	private double speed;
@@ -64,12 +64,12 @@ public class Player extends Persistence {
 		this.avoirdupois = avoirdupois;
 	}
 
-	public long getTeamId() {
-		return teamId;
+	public long getTeamid() {
+		return teamid;
 	}
 
-	public void setTeamId(long teamId) {
-		this.teamId = teamId;
+	public void setTeamid(long teamId) {
+		this.teamid = teamId;
 	}
 
 	public double getAbility() {

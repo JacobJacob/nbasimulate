@@ -123,7 +123,7 @@ public class PlayerDataStat {
 		matchStat.setFoul(foulTimes);
 
 		matchStat.setPlayerId(player.getId());
-		matchStat.setTeamId(player.getTeamId());
+		matchStat.setTeamId(player.getTeamid());
 		matchStat.setMatchId(matchId);
 
 		matchStatDao.save(matchStat);
