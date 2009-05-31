@@ -57,7 +57,7 @@
 	        <div id="tabnav_div_1" class="submenu">
 	                <ul>
 	                    <li><a href="#">在线经理</a></li>
-	                    <li><a href="#">我的比赛</a></li>
+	                    <li><a href="<?php echo url('member::match/index');?>" target="center">我的比赛</a></li>
 	                    <li><a href="#">训练中心</a></li>
 	                    <li><a href="#">球队争霸</a></li>
 	                    <li><a href="#">实力排行</a></li>
@@ -66,7 +66,7 @@
 	        <div id="tabnav_div_2" class="submenu">
 	                <ul>
 	                    <li><a href="#">在线经理</a></li>
-	                    <li><a href="#">我的比赛</a></li>
+	                    <li><a href="<?php echo url('member::match/index');?>" target="center">我的比赛</a></li>
 	                    <li><a href="#">训练中心</a></li>
 	                    <li><a href="#">球队争霸</a></li>
 	                    <li><a href="#">实力排行</a></li>

@@ -44,7 +44,7 @@ CREATE TABLE `player` (
   `steal_max` int(15) default NULL,
   `blocked_max` int(15) default NULL,
   `teamid` int(15) default NULL,
-  `them` int(15) default NULL,
+  `thew` int(15) default NULL,
   `status` int(15) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

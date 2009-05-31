@@ -1,5 +1,5 @@
 <?php
-class common{
+class Common{
 
 	const FIRST_NAME_KEY = 'FIRST_NAMES';
 	const LAST_NAME_KEY = 'LAST_NAMES';
@@ -71,6 +71,45 @@ class common{
 			case 'PG':$base = 70;break;
 		}
 		return $inc + $base;
+	}
+
+	static function check_color($player,$attr){
+
+		$curr_val = $player->$attr;
+		$max_attr = $attr.'_max';
+		$max_val = $player->$max_attr;
+
+		$potential = $max_val - $curr_val;
+
+		if($potential>25){
+			return 1 ;
+		}elseif ($potential>20){
+			return 2;
+		}elseif ($potential>16){
+			return 3;
+		}elseif ($potential>12.5){
+			return 4;
+		}
+		elseif ($potential>9.5){
+			return 5;
+		}
+		elseif ($potential>7.0){
+			return 6;
+		}
+		elseif ($potential>4.8){
+			return 7;
+		}
+		elseif ($potential>3.0){
+			return 8;
+		}
+		elseif ($potential>1.5){
+			return 9;
+		}
+		elseif ($potential>0.7){
+			return 10;
+		}else{
+			return 11;
+		}
 	}
 
 }

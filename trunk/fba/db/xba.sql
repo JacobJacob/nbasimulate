@@ -122,7 +122,7 @@ CREATE TABLE `player` (
   `position` varchar(2) default NULL,
   `stature` int(11) default NULL,
   `avoirdupois` int(11) default NULL,
-  `team_Id` bigint(20) default NULL,
+  `teamId` bigint(20) default NULL,
   `ability` double default NULL,
   `shooting` smallint(6) default NULL,
   `speed` smallint(6) default NULL,
