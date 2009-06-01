@@ -71,6 +71,7 @@ class Controller_Member_Match extends Controller_Abstract
 			}
 		}
 		$home_bulletins = Helper_Array::sortByMultiCols($home_bulletins,array('total_point'=>SORT_DESC,'total_rebound'=>SORT_DESC));
+		$visiting_bulletins = Helper_Array::sortByMultiCols($visiting_bulletins,array('total_point'=>SORT_DESC,'total_rebound'=>SORT_DESC));
 
 		$this->_view['match'] = $match;
 		$this->_view['home_total'] = $home_total;

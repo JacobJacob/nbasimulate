@@ -94,7 +94,7 @@
 	        </div>
 	        <div id="tabnav_div_5" class="submenu">
 	                <ul>
-	                    <li><a href="#">职业战术</a></li>
+	                    <li><a href="<?php echo url('member::proftactics/index');?>" target="center">职业战术</a></li>
 	                    <li><a href="#">二队战术</a></li>
 	                </ul>
 	        </div>

@@ -50,6 +50,16 @@ class MatchReq extends QDB_ActiveRecord_Abstract
                   'has_one' => 'Match',
                   'source_key' => 'match_id',
 		          'target_key' => 'id'
+                ),
+                'home_team'=>array(
+                  'has_one' => 'Team',
+                  'source_key' => 'home_team_id',
+		          'target_key' => 'id'
+                ),
+                'visiting_team'=>array(
+                  'has_one' => 'Team',
+                  'source_key' => 'visiting_team_id',
+		          'target_key' => 'id'
                 )
 
             ),

@@ -45,8 +45,8 @@ function view(id)
   </tr>
 <?php foreach($matchs as $match):?>
    <tr>
-      <td><?php echo $match->home_team_id;?></td>
-      <td><?php echo $match->visiting_team_id;?></td>
+      <td><?php echo $match->home_team->name;?></td>
+      <td><?php echo $match->visiting_team->name;?></td>
       <td><?php echo $match->match->point;?></td>
       <td>
         <a href="<?php echo url('member::match/matchdetail',array('id'=>$match->match->id));?>" target="_blank">比赛战报</a>
