@@ -20,7 +20,8 @@ public class DefaultFoulCheck implements FoulCheck {
 			return;
 		}
 
-		if (RandomCheckHelper.defaultCheck(FoulHelper.checkDefensiveFoulAfterShoot(context))) {
+		if (RandomCheckHelper.defaultCheck(FoulHelper
+				.checkDefensiveFoulAfterShoot(context))) {
 			context.setFoul(true);
 			if (context.isSuccess()) {
 
@@ -31,7 +32,8 @@ public class DefaultFoulCheck implements FoulCheck {
 				if (action instanceof LongShoot) {
 
 					context.setFoulShootRemain(3);
-					context.setFoulShootType(MatchConstant.FOUL_SHOOT_TYPE_THREE);
+					context
+							.setFoulShootType(MatchConstant.FOUL_SHOOT_TYPE_THREE);
 				} else {
 
 					context.setFoulShootRemain(2);
@@ -40,7 +42,8 @@ public class DefaultFoulCheck implements FoulCheck {
 			}
 			// statistical significance
 			Player defender = context.getCurrentDefender().getPlayer();
-			boolean isHomeTeam = context.getCurrentDefender().getControllerName().startsWith("A");
+			boolean isHomeTeam = context.getCurrentDefender()
+					.getControllerName().endsWith("A");
 			context.playerAddFoulTimes(defender, isHomeTeam);
 			if (context.checkFoulOut(defender, isHomeTeam)) {
 				// substitution
