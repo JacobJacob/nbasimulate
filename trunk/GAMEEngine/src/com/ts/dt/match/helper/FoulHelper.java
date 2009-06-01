@@ -8,7 +8,7 @@ public class FoulHelper {
 	// check the foul possibility
 	public static int checkDefensiveFoulAfterShoot(MatchContext context) {
 
-		int percent = 50;
+		int percent = 10;
 
 		Player player = context.getCurrentController().getPlayer();
 		Player defender = context.getCurrentDefender().getPlayer();
