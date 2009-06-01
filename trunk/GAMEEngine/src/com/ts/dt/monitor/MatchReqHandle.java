@@ -20,7 +20,7 @@ public class MatchReqHandle extends Thread {
 			req.setMatchId(matchId);
 			session.beginTransaction();
 			try {
-				session.save(req);
+				req.save();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
