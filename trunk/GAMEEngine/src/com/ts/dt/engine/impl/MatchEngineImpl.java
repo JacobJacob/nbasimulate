@@ -74,7 +74,7 @@ public class MatchEngineImpl implements MatchEngine {
 		match.setPoint(context.currentScore());
 		matchDao.save(match);
 
-		TestDataFactory.saveTestDateToDB();
+		//TestDataFactory.saveTestDateToDB();
 
 		return match.getId();
 

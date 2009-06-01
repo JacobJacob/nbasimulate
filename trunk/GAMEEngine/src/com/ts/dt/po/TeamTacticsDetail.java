@@ -8,11 +8,11 @@ public class TeamTacticsDetail extends Persistence {
 	private long tacticsId;
 	private long seq;
 
-	private long cId;
-	private long pfId;
-	private long sfId;
-	private long sgId;
-	private long pgId;
+	private long cid;
+	private long pfid;
+	private long sfid;
+	private long sgid;
+	private long pgid;
 
 	public long getTeamTacticsId() {
 		return teamTacticsId;
@@ -38,44 +38,44 @@ public class TeamTacticsDetail extends Persistence {
 		this.seq = seq;
 	}
 
-	public long getCId() {
-		return cId;
+	public long getCid() {
+		return cid;
 	}
 
-	public void setCId(long id) {
-		cId = id;
+	public void setCid(long id) {
+		cid = id;
 	}
 
-	public long getPfId() {
-		return pfId;
+	public long getPfid() {
+		return pfid;
 	}
 
-	public void setPfId(long pfId) {
-		this.pfId = pfId;
+	public void setPfid(long pfId) {
+		this.pfid = pfId;
 	}
 
-	public long getSfId() {
-		return sfId;
+	public long getSfid() {
+		return sfid;
 	}
 
-	public void setSfId(long sfId) {
-		this.sfId = sfId;
+	public void setSfid(long sfId) {
+		this.sfid = sfId;
 	}
 
-	public long getSgId() {
-		return sgId;
+	public long getSgid() {
+		return sgid;
 	}
 
-	public void setSgId(long sgId) {
-		this.sgId = sgId;
+	public void setSgid(long sgId) {
+		this.sgid = sgId;
 	}
 
-	public long getPgId() {
-		return pgId;
+	public long getPgid() {
+		return pgid;
 	}
 
-	public void setPgId(long pgId) {
-		this.pgId = pgId;
+	public void setPgid(long pgId) {
+		this.pgid = pgId;
 	}
 
 }
