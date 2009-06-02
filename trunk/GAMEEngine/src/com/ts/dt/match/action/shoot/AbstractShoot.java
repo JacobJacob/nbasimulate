@@ -32,7 +32,11 @@ public abstract class AbstractShoot implements Action {
 		// check whether block
 		BlockCheckFactory.getInstance().createBlockCheckFactory(context);
 		// check the shoot result
-		ResultCheckFactory.getInstance().createResultCheck(context).check(context);
+		if (context.isBlock()) {
+			context.setShootActionResult(MatchConstant.RESULT_FAILURE_BLOCKED);
+		} else {
+			ResultCheckFactory.getInstance().createResultCheck(context).check(context);
+		}
 		// check whether foul
 		FoulCheckFactory.getInstance().createFoulCheckFactory(context).check(context);
 
