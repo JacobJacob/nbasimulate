@@ -24,6 +24,12 @@ public class Player extends Persistence {
 	private double steal;
 	private double blocked;
 
+	private double defencons;
+	private double offencons;
+	private double buildupcons;
+	private double leadcons;
+	private double backbone;
+
 	public String getName() {
 		return name;
 	}
@@ -174,6 +180,46 @@ public class Player extends Persistence {
 
 	public void setBlocked(double blocked) {
 		this.blocked = blocked;
+	}
+
+	public double getDefencons() {
+		return defencons;
+	}
+
+	public void setDefencons(double defencons) {
+		this.defencons = defencons;
+	}
+
+	public double getOffencons() {
+		return offencons;
+	}
+
+	public void setOffencons(double offencons) {
+		this.offencons = offencons;
+	}
+
+	public double getBuildupcons() {
+		return buildupcons;
+	}
+
+	public void setBuildupcons(double buildupcons) {
+		this.buildupcons = buildupcons;
+	}
+
+	public double getLeadcons() {
+		return leadcons;
+	}
+
+	public void setLeadcons(double leadcons) {
+		this.leadcons = leadcons;
+	}
+
+	public double getBackbone() {
+		return backbone;
+	}
+
+	public void setBackbone(double backbone) {
+		this.backbone = backbone;
 	}
 
 }
