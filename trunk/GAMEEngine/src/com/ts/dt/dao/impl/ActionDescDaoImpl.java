@@ -32,6 +32,7 @@ public class ActionDescDaoImpl implements ActionDescDao {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Persistence> findWithActionAndResultAndFlg(String actionNm,
 			String result, String flg) {
 		// TODO Auto-generated method stub

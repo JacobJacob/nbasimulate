@@ -3,6 +3,7 @@ package com.ts.dt.match.action.shoot;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.ActionDescriptionFactory;
+import com.ts.dt.factory.BlockCheckFactory;
 import com.ts.dt.factory.FoulCheckFactory;
 import com.ts.dt.factory.ResultCheckFactory;
 import com.ts.dt.match.action.Action;
@@ -28,10 +29,11 @@ public abstract class AbstractShoot implements Action {
 		if (context.getPreviousController() != null) {
 			previousPlayerNm = context.getPreviousController().getPlayer().getName();
 		}
-
-		// 判断投篮结果
+		// check whether block
+		BlockCheckFactory.getInstance().createBlockCheckFactory(context);
+		// check the shoot result
 		ResultCheckFactory.getInstance().createResultCheck(context).check(context);
-		// 判断是否犯规
+		// check whether foul
 		FoulCheckFactory.getInstance().createFoulCheckFactory(context).check(context);
 
 		String desc = description.load(context);
