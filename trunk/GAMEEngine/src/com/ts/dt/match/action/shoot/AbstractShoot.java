@@ -73,36 +73,38 @@ public abstract class AbstractShoot implements Action {
 		desc = desc.replace("~3~", previousPlayerNm.trim());
 		desc = desc.replace("~6~", currentShootNo);
 
+		boolean isHomeTeam = currtContrNm.endsWith("A");
+
 		Action currentAction = context.getCurrentAction();
 		if (currentAction instanceof LongShoot) {
 			if (context.isSuccess()) {
-				context.pointInc(MatchConstant.INC_THREE_POINT, currtContrNm.endsWith("A"));
-				context.doomTimesInc(MatchConstant.INC_THREE_POINT, currtContrNm.endsWith("A"));
-				context.playerDoomTimesInc(MatchConstant.INC_THREE_POINT, player, currtContrNm.endsWith("A"));
+				context.pointInc(MatchConstant.INC_THREE_POINT, isHomeTeam);
+				context.doomTimesInc(MatchConstant.INC_THREE_POINT, isHomeTeam);
+				context.playerDoomTimesInc(MatchConstant.INC_THREE_POINT, player, isHomeTeam);
 				// handle for assit
 				handleAssit(context);
 			}
-			context.shootTimesInc(MatchConstant.INC_THREE_POINT, currtContrNm.endsWith("A"));
-			context.playerShootTimesInc(MatchConstant.INC_THREE_POINT, player, currtContrNm.endsWith("A"));
+			context.shootTimesInc(MatchConstant.INC_THREE_POINT, isHomeTeam);
+			context.playerShootTimesInc(MatchConstant.INC_THREE_POINT, player, isHomeTeam);
 		} else if (currentAction instanceof FoulShoot) {
 			if (context.isSuccess()) {
-				context.pointInc(MatchConstant.INC_ONE_POINT, currtContrNm.endsWith("A"));
-				context.doomTimesInc(MatchConstant.INC_ONE_POINT, currtContrNm.endsWith("A"));
-				context.playerDoomTimesInc(MatchConstant.INC_ONE_POINT, player, currtContrNm.endsWith("A"));
+				context.pointInc(MatchConstant.INC_ONE_POINT, isHomeTeam);
+				context.doomTimesInc(MatchConstant.INC_ONE_POINT, isHomeTeam);
+				context.playerDoomTimesInc(MatchConstant.INC_ONE_POINT, player, isHomeTeam);
 			}
-			context.shootTimesInc(MatchConstant.INC_ONE_POINT, currtContrNm.endsWith("A"));
-			context.playerShootTimesInc(MatchConstant.INC_ONE_POINT, player, currtContrNm.endsWith("A"));
+			context.shootTimesInc(MatchConstant.INC_ONE_POINT, isHomeTeam);
+			context.playerShootTimesInc(MatchConstant.INC_ONE_POINT, player, isHomeTeam);
 			context.foulShootRemainDec();
 		} else {
 
 			if (context.isSuccess()) {
-				context.pointInc(MatchConstant.INC_TWO_POINT, currtContrNm.endsWith("A"));
-				context.doomTimesInc(MatchConstant.INC_TWO_POINT, currtContrNm.endsWith("A"));
-				context.playerDoomTimesInc(MatchConstant.INC_TWO_POINT, player, currtContrNm.endsWith("A"));
+				context.pointInc(MatchConstant.INC_TWO_POINT, isHomeTeam);
+				context.doomTimesInc(MatchConstant.INC_TWO_POINT, isHomeTeam);
+				context.playerDoomTimesInc(MatchConstant.INC_TWO_POINT, player, isHomeTeam);
 			}
-			context.shootTimesInc(MatchConstant.INC_TWO_POINT, currtContrNm.endsWith("A"));
-			context.playerShootTimesInc(MatchConstant.INC_TWO_POINT, player, currtContrNm.endsWith("A"));
-			// handle for assit
+			context.shootTimesInc(MatchConstant.INC_TWO_POINT, isHomeTeam);
+			context.playerShootTimesInc(MatchConstant.INC_TWO_POINT, player, isHomeTeam);
+			// handle for assist
 			handleAssit(context);
 		}
 
