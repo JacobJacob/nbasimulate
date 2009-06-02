@@ -21,7 +21,11 @@ public class MatchStat extends Persistence {
 
 	private int offensiveRebound;
 	private int defensiveRebound;
-	
+
+	private int assist;
+	private int misplay;
+	private int block;
+
 	private int foul;
 
 	public long getTeamId() {
@@ -119,5 +123,29 @@ public class MatchStat extends Persistence {
 	public void setFoul(int foul) {
 		this.foul = foul;
 	}
-    
+
+	public int getAssist() {
+		return assist;
+	}
+
+	public void setAssist(int assist) {
+		this.assist = assist;
+	}
+
+	public int getMisplay() {
+		return misplay;
+	}
+
+	public void setMisplay(int misplay) {
+		this.misplay = misplay;
+	}
+
+	public int getBlock() {
+		return block;
+	}
+
+	public void setBlock(int block) {
+		this.block = block;
+	}
+
 }

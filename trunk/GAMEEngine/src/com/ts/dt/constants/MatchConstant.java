@@ -71,7 +71,7 @@ public class MatchConstant {
 	public static final int CURRENT_TEAM_B = 1;
 
 	public static final String SHOOT_ACTION_RESULT = "shoot_action_result";
-	public static final String PREVIOUS_ACTION_TYPE = "current_action_type";
+	public static final String PREVIOUS_ACTION_TYPE = "previous_action_type";
 	public static final String CURRENT_ACTION_TYPE = "current_action_type";
 
 	public static final String PASS_ACTION_RESULT = "pass_action_result";

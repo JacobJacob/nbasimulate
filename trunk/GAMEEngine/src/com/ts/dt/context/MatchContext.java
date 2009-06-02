@@ -12,7 +12,7 @@ public class MatchContext {
 
 	private long matchId;
 
-	private Hashtable<String, Object> msData;
+	private Hashtable<String, Object> data;
 
 	private DataStat dataStat;
 
@@ -53,7 +53,7 @@ public class MatchContext {
 	private long currentSeq = 0;
 
 	public MatchContext() {
-		msData = new Hashtable<String, Object>();
+		data = new Hashtable<String, Object>();
 		init();
 	}
 
@@ -67,11 +67,11 @@ public class MatchContext {
 
 	public void put(String key, Object value) {
 
-		msData.put(key, value);
+		data.put(key, value);
 	}
 
 	public Object get(String key) {
-		return msData.get(key);
+		return data.get(key);
 	}
 
 	public Integer getInt(String key) {
@@ -130,7 +130,7 @@ public class MatchContext {
 	}
 
 	public void removeNextAction() {
-		msData.remove(MatchConstant.NEXT_ACTION);
+		data.remove(MatchConstant.NEXT_ACTION);
 	}
 
 	public void setNextAction(Action action) {
@@ -330,6 +330,20 @@ public class MatchContext {
 		return MatchConstant.NULL_INTEGER;
 	}
 
+	// set previous action type
+	public void setPreviousActionType(int actionType) {
+		put(MatchConstant.PREVIOUS_ACTION_TYPE, actionType);
+	}
+
+	// get previous action type
+	public int getPreviousActionType() {
+		Object obj = get(MatchConstant.PREVIOUS_ACTION_TYPE);
+		if (obj != null) {
+			return (Integer) obj;
+		}
+		return MatchConstant.NULL_INTEGER;
+	}
+
 	public void setCurrentActionType(int actionType) {
 		put(MatchConstant.CURRENT_ACTION_TYPE, actionType);
 	}
@@ -414,6 +428,10 @@ public class MatchContext {
 
 	}
 
+	public void playerAssitTimesInc(Player player, boolean isHomeTeam) {
+		dataStat.playerAssitTimesInc(player, isHomeTeam);
+	}
+
 	public void addOffensiveRebound(boolean isHomeTeam) {
 
 		if (isHomeTeam) {
@@ -433,13 +451,15 @@ public class MatchContext {
 	public void playerAddFoulTimes(Player player, boolean isHomeTeam) {
 		dataStat.playerFoulTimesInc(player, isHomeTeam);
 	}
+
 	/**
 	 * check foul out
+	 * 
 	 * @param player
 	 * @param isHomeTeam
 	 * @return
 	 */
-	public boolean checkFoulOut(Player player,boolean isHomeTeam){
+	public boolean checkFoulOut(Player player, boolean isHomeTeam) {
 		return dataStat.checkFoulOut(player, isHomeTeam);
 	}
 

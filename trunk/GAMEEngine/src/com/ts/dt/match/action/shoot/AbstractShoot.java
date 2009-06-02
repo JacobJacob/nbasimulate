@@ -14,6 +14,7 @@ import com.ts.dt.util.MessagesUtil;
 public abstract class AbstractShoot implements Action {
 
 	public String execute(MatchContext context) {
+
 		String result = null;
 
 		context.setCurrentAction(this);
@@ -35,7 +36,7 @@ public abstract class AbstractShoot implements Action {
 
 		String desc = description.load(context);
 		if (desc == null) {
-			//Logger.error("desc is null");
+			// Logger.error("desc is null");
 		}
 		String currentTeamNm = context.getCurrentController().getTeamFlg();
 		String previousTeamNm = "";
@@ -78,6 +79,8 @@ public abstract class AbstractShoot implements Action {
 				context.pointInc(MatchConstant.INC_THREE_POINT, currtContrNm.endsWith("A"));
 				context.doomTimesInc(MatchConstant.INC_THREE_POINT, currtContrNm.endsWith("A"));
 				context.playerDoomTimesInc(MatchConstant.INC_THREE_POINT, player, currtContrNm.endsWith("A"));
+				// handle for assit
+				handleAssit(context);
 			}
 			context.shootTimesInc(MatchConstant.INC_THREE_POINT, currtContrNm.endsWith("A"));
 			context.playerShootTimesInc(MatchConstant.INC_THREE_POINT, player, currtContrNm.endsWith("A"));
@@ -99,12 +102,24 @@ public abstract class AbstractShoot implements Action {
 			}
 			context.shootTimesInc(MatchConstant.INC_TWO_POINT, currtContrNm.endsWith("A"));
 			context.playerShootTimesInc(MatchConstant.INC_TWO_POINT, player, currtContrNm.endsWith("A"));
+			// handle for assit
+			handleAssit(context);
 		}
 
-		MatchInfoHelper.save(context,desc);
+		MatchInfoHelper.save(context, desc);
 
 		MessagesUtil.showLine(context, desc);
 
 		return result;
+	}
+
+	final private void handleAssit(MatchContext context) {
+
+		String previousControllerNm = context.getPreviousController().getControllerName();
+		int previousActionType = context.getPreviousActionType();
+		if (previousActionType == MatchConstant.ACTION_TYPE_PASS) {
+			Player previousPlayer = context.getPreviousController().getPlayer();
+			context.playerAssitTimesInc(previousPlayer, previousControllerNm.endsWith("A"));
+		}
 	}
 }

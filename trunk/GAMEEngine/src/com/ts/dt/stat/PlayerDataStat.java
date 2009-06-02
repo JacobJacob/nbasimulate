@@ -20,6 +20,10 @@ public class PlayerDataStat {
 	private int offensiveRebound;
 	private int defensiveRebound;
 
+	private int assist;
+	private int misplay;
+	private int block;
+
 	private int foulTimes;
 
 	public void point2ShootTimesInc() {
@@ -54,17 +58,29 @@ public class PlayerDataStat {
 		defensiveRebound++;
 	}
 
+	public void assistTimesInc() {
+		assist++;
+	}
+
+	public void misplayTimesInc() {
+		misplay++;
+	}
+
+	public void blockTimesInc() {
+		block++;
+	}
+
 	public void foulTimesInc() {
 		foulTimes++;
 	}
-	
+
 	/**
 	 * check foul out
+	 * 
 	 * @return
 	 */
-	public boolean foulOut()
-	{
-	   return foulTimes >= 6;
+	public boolean foulOut() {
+		return foulTimes >= 6;
 	}
 
 	public int getTotalPoint() {
@@ -121,6 +137,9 @@ public class PlayerDataStat {
 		matchStat.setPoint3DoomTimes(point3DoomTimes);
 		matchStat.setPoint3ShootTimes(point3ShootTimes);
 		matchStat.setFoul(foulTimes);
+		matchStat.setAssist(assist);
+		matchStat.setMisplay(misplay);
+		matchStat.setBlock(block);
 
 		matchStat.setPlayerId(player.getId());
 		matchStat.setTeamId(player.getTeamid());

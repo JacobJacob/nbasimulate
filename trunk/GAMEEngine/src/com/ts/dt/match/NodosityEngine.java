@@ -98,8 +98,13 @@ public class NodosityEngine {
 		Controller nextDefender = context.getNextDefender();
 		context.setCurrentDefender(nextDefender);
 
+		/***********************************************************************
+		 * move action type: next => current; current => previous ;clear next
+		 **********************************************************************/
+		int currentActionType = context.getCurrentActionType();
 		int nextActionType = context.getNextActionType();
 
+		context.setPreviousActionType(currentActionType);
 		context.setCurrentActionType(nextActionType);
 		context.setNextActionType(MatchConstant.NULL_INTEGER);
 
@@ -400,6 +405,7 @@ public class NodosityEngine {
 		}
 	}
 
+	// check next action type
 	public void checkNextActionType() {
 
 		int hasPassTimes = (Integer) context.get(MatchConstant.HAS_PASS_TIMES);
