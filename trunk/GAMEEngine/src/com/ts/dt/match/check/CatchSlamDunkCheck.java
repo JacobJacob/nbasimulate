@@ -18,8 +18,6 @@ public class CatchSlamDunkCheck implements ResultCheck {
 
 		if (a > pointOfDivision) {
 			result = MatchConstant.RESULT_SUCCESS;
-		} else if (a > 15) {
-			result = MatchConstant.RESULT_FAILURE_BLOCKED;
 		} else {
 			result = MatchConstant.RESULT_FAILURE;
 		}
