@@ -33,6 +33,9 @@ public class MatchContext {
 	private boolean isOutside = false; // whether outside
 
 	private boolean isFoul = false; // whether foul
+
+	private boolean isBlock = false; // whether block;
+
 	private int foulShootRemain = -1;
 	private int foulShootType;
 
@@ -623,6 +626,14 @@ public class MatchContext {
 
 	public void setSeq(int seq) {
 		this.seq = seq;
+	}
+
+	public boolean isBlock() {
+		return isBlock;
+	}
+
+	public void setBlock(boolean isBlock) {
+		this.isBlock = isBlock;
 	}
 
 }
