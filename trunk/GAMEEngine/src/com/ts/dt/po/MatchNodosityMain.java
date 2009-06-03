@@ -14,6 +14,7 @@ public class MatchNodosityMain extends Persistence {
 	private String point;
 
 	private List<MatchNodosityDetail> list;
+	private List<MatchDetail> detail;
 
 	public void addDetail(MatchNodosityDetail detail) {
 		if (list == null) {
@@ -21,6 +22,13 @@ public class MatchNodosityMain extends Persistence {
 		}
 		list.add(detail);
 
+	}
+
+	public void addMatchDetailLog(MatchDetail matchdetail) {
+		if (detail == null) {
+			detail = new ArrayList<MatchDetail>();
+		}
+		detail.add(matchdetail);
 	}
 
 	public int getSeq() {
@@ -69,6 +77,14 @@ public class MatchNodosityMain extends Persistence {
 
 	public void setList(List<MatchNodosityDetail> list) {
 		this.list = list;
+	}
+
+	public List<MatchDetail> getDetail() {
+		return detail;
+	}
+
+	public void setDetail(List<MatchDetail> detail) {
+		this.detail = detail;
 	}
 
 }

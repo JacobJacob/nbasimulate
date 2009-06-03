@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.match.Controller;
 import com.ts.dt.match.action.Action;
+import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.Player;
 import com.ts.dt.stat.DataStat;
 
@@ -54,6 +55,8 @@ public class MatchContext {
 	private int totalBBackboardB = 0;
 
 	private long currentSeq = 0;
+
+	private MatchNodosityMain nodosityMain;
 
 	public MatchContext() {
 		data = new Hashtable<String, Object>();
@@ -161,7 +164,8 @@ public class MatchContext {
 	}
 
 	public String currentScore() {
-		return "[" + getInt(MatchConstant.POINT_TEAM_A) + " : " + getInt(MatchConstant.POINT_TEAM_B) + "]";
+		return "[" + getInt(MatchConstant.POINT_TEAM_A) + " : "
+				+ getInt(MatchConstant.POINT_TEAM_B) + "]";
 	}
 
 	public boolean isHomeTeamController(String controllerName) {
@@ -510,7 +514,8 @@ public class MatchContext {
 		return (String) get(MatchConstant.SCRIMMAGE_ACTION_RESULT);
 	}
 
-	public Controller getControllerWithIndx(int indx) throws ArrayIndexOutOfBoundsException {
+	public Controller getControllerWithIndx(int indx)
+			throws ArrayIndexOutOfBoundsException {
 
 		Hashtable<String, Controller> controllers = this.getControllers();
 		if (indx > 10 || indx < 1) {
@@ -634,6 +639,14 @@ public class MatchContext {
 
 	public void setBlock(boolean isBlock) {
 		this.isBlock = isBlock;
+	}
+
+	public MatchNodosityMain getNodosityMain() {
+		return nodosityMain;
+	}
+
+	public void setNodosityMain(MatchNodosityMain nodosityMain) {
+		this.nodosityMain = nodosityMain;
 	}
 
 }

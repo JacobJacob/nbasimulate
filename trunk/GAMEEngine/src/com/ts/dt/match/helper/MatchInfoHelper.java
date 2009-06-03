@@ -7,13 +7,14 @@ import com.ts.dt.po.MatchDetail;
 import com.ts.dt.util.TimeUtil;
 
 public class MatchInfoHelper {
-	
+
 	public static void save(MatchContext context, String desc) {
 
 		MatchDetail matchDetail = new MatchDetail();
-		MatchDetailDao matchDetailDao = new MatchDetailDaoImpl();
+		// MatchDetailDao matchDetailDao = new MatchDetailDaoImpl();
 
-		String timeMsg = TimeUtil.timeMillis2TimeFormat(context.getContinueTime());
+		String timeMsg = TimeUtil.timeMillis2TimeFormat(context
+				.getContinueTime());
 		String pointMsg = context.currentScore();
 
 		matchDetail.setMatchId(context.getMatchId());
@@ -21,6 +22,7 @@ public class MatchInfoHelper {
 		matchDetail.setSeq(context.getCurrentSeq());
 		matchDetail.setTimeMsg(timeMsg);
 		matchDetail.setPointMsg(pointMsg);
-		matchDetailDao.save(matchDetail);
+		// matchDetailDao.save(matchDetail);
+		context.getNodosityMain().addMatchDetailLog(matchDetail);
 	}
 }

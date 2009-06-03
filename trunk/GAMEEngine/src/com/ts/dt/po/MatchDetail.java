@@ -5,16 +5,16 @@ import java.io.Serializable;
 import com.dt.bottle.persistence.Persistence;
 
 public class MatchDetail extends Persistence implements Serializable {
-	
+
 	public static final long serialVersionUID = -2805454678543427093L;
 
-    private long matchId ;
-    private long seq;
-    private String description;
-    private String timeMsg;
-    private String pointMsg;
-    
-	
+	private long matchId;
+	private long seq;
+	private String description;
+	private String timeMsg;
+	private String pointMsg;
+	private long matchNodosityMainId;
+
 	public boolean delete() {
 		// TODO Auto-generated method stub
 		return false;
@@ -70,7 +70,12 @@ public class MatchDetail extends Persistence implements Serializable {
 		this.pointMsg = pointMsg;
 	}
 
-	
-	
-   
+	public long getMatchNodosityMainId() {
+		return matchNodosityMainId;
+	}
+
+	public void setMatchNodosityMainId(long matchNodosityMainId) {
+		this.matchNodosityMainId = matchNodosityMainId;
+	}
+
 }
