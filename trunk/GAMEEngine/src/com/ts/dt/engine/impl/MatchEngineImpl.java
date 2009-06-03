@@ -64,6 +64,7 @@ public class MatchEngineImpl implements MatchEngine {
 			nodosity.execute(context);
 			Logger.info("The" + nodosityNo + "nodosity end");
 			go = nodosity.hasNextNodosity();
+
 			nodosity = nodosity.getNextNodosity();
 		}
 
@@ -73,7 +74,7 @@ public class MatchEngineImpl implements MatchEngine {
 		match.setPoint(context.currentScore());
 		matchDao.save(match);
 
-		//TestDataFactory.saveTestDateToDB();
+		// TestDataFactory.saveTestDateToDB();
 
 		return match.getId();
 
