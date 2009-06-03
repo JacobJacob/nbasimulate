@@ -8,5 +8,6 @@ public class Constants {
 	public final static String ONE_TO_ONE_ASSOC = "ONE2ONE";
 	public final static String ONE_TO_MANY_ASSOC = "ONE2MANY";
 	public final static String TABLE_NAME = "TABLE_NAME";
+	public final static String CLASS_NAME = "CLASS_NAME";
 
 }

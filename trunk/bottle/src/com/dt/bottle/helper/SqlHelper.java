@@ -25,6 +25,7 @@ public class SqlHelper {
 
 		insert.append("INSERT INTO ");
 		String tableName = className2TableName(obj);
+		String className = getShortName(obj);
 		insert.append("`" + tableName + "`");
 
 		Field[] fields = obj.getClass().getDeclaredFields();
@@ -72,6 +73,7 @@ public class SqlHelper {
 		table.put(Constants.ONE_TO_ONE_ASSOC, oneToOne);
 		table.put(Constants.ONE_TO_MANY_ASSOC, oneToMany);
 		table.put(Constants.TABLE_NAME, tableName);
+		table.put(Constants.CLASS_NAME, className);
 		return table;
 
 	}
@@ -177,6 +179,14 @@ public class SqlHelper {
 			}
 		}
 		return columnName.toString();
+	}
+
+	public static String getShortName(Object obj) {
+
+		String className = obj.getClass().getName();
+		className = className.substring(className.lastIndexOf(".") + 1, className.length());
+		return className;
+
 	}
 
 	public static Object getValueByField(Object obj, String field) {

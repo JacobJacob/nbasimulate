@@ -74,12 +74,12 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	private void saveOneToOneAssoc(long id, Hashtable<String, Object> table) {
 		// save one to one associate
-		String tableName = (String) table.get(Constants.TABLE_NAME);
+		String className = (String) table.get(Constants.CLASS_NAME);
 		List<Persistence> one2one = (List) table.get(Constants.ONE_TO_ONE_ASSOC);
 		Iterator<Persistence> iterator = one2one.iterator();
 		while (iterator.hasNext()) {
 			Persistence one2onepersist = iterator.next();
-			saveSingleObject(id, tableName, one2onepersist);
+			saveSingleObject(id, className, one2onepersist);
 		}
 	}
 
@@ -87,14 +87,14 @@ public class Session {
 	private void saveOneToManyAssoc(long id, Hashtable<String, Object> table) {
 
 		// save one to many associate
-		String tableName = (String) table.get(Constants.TABLE_NAME);
+		String className = (String) table.get(Constants.CLASS_NAME);
 		List<List<Persistence>> one2many = (List) table.get(Constants.ONE_TO_MANY_ASSOC);
 		Iterator<List<Persistence>> iterator = one2many.iterator();
 		while (iterator.hasNext()) {
 			List<Persistence> one2onepersistList = iterator.next();
 			Iterator<Persistence> innerIter = one2onepersistList.iterator();
 			while (innerIter.hasNext()) {
-				saveSingleObject(id, tableName, innerIter.next());
+				saveSingleObject(id, className, innerIter.next());
 			}
 		}
 	}
