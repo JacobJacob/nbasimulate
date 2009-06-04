@@ -36,9 +36,11 @@ public abstract class AbstractShoot implements Action {
 			context.setShootActionResult(MatchConstant.RESULT_FAILURE_BLOCKED);
 		} else {
 			ResultCheckFactory.getInstance().createResultCheck(context).check(context);
+			if (!context.isSuccess()) {
+				// check whether foul
+				FoulCheckFactory.getInstance().createFoulCheckFactory(context).check(context);
+			}
 		}
-		// check whether foul
-		FoulCheckFactory.getInstance().createFoulCheckFactory(context).check(context);
 
 		String desc = description.load(context);
 		if (desc == null) {
