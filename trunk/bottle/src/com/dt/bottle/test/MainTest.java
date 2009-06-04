@@ -33,16 +33,17 @@ public class MainTest {
 		//
 		// session.endTransaction();
 		Session session = BottleUtil.currentSession();
-		//session.beginTransaction();
+		session.beginTransaction();
 		long start = System.currentTimeMillis();
-		for (int i = 0; i < 2000; i++) {
-			Test test = new Test();
-			test.setValue("Value-" + i);
-			test.save();
-		}
+
+		Test test = new Test();
+		test.setValue("Value-");
+		test.setB(false);
+		test.save();
+
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
-		//session.endTransaction();
+		session.endTransaction();
 
 	}
 

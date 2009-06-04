@@ -19,7 +19,7 @@ public class DBConnection {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/xba?user=root&password=821015&characterEncoding=utf-8");
-
+			setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -27,7 +27,6 @@ public class DBConnection {
 
 	public synchronized void execute(String sql, Object[] parm) {
 
-		setAutoCommit(false);
 		Logger.logger("SQL: " + sql);
 		Logger.logger("PARAM:" + StringConverter.parmArray2String(parm));
 		if (conn == null) {
