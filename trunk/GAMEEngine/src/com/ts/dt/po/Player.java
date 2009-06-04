@@ -30,6 +30,10 @@ public class Player extends Persistence {
 	private double leadcons;
 	private double backbone;
 
+	public float getColligate() {
+		return 0;
+	}
+
 	public String getName() {
 		return name;
 	}
