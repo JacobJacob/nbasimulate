@@ -79,7 +79,7 @@ public class ActionDesc extends Persistence implements Serializable {
 		return isAssist;
 	}
 
-	public void setAssist(boolean isAssist) {
+	public void setIsAssist(boolean isAssist) {
 		this.isAssist = isAssist;
 	}
 
