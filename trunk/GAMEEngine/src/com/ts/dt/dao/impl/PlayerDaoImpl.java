@@ -1,12 +1,16 @@
 package com.ts.dt.dao.impl;
 
+import java.util.List;
+
 import com.dt.bottle.session.Session;
+import com.dt.bottle.exception.SessionException;
 import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.dao.PlayerDao;
 import com.ts.dt.po.Player;
 
 public class PlayerDaoImpl implements PlayerDao {
 
+	private static final String QUERY_SQL = "SELECT * FROM player WHERE team_id = ? ";
 
 	public void save(Player player) {
 		// TODO Auto-generated method stub
@@ -30,5 +34,19 @@ public class PlayerDaoImpl implements PlayerDao {
 			e.printStackTrace();
 		}
 		return player;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Player> getPlayerWithTeamId(long teamId) {
+
+		Session session = BottleUtil.currentSession();
+
+		List<Player> list = null;
+		try {
+			list = (List<Player>) session.query(Player.class, QUERY_SQL, new Object[] { teamId });
+		} catch (SessionException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

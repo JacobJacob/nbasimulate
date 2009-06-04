@@ -65,6 +65,12 @@ public class MatchConstant {
 	public static final String PREVIOUS_ACTION = "previous_action";
 	public static final String PREVIOUS_CONTROLLER = "previous_controller";
 
+	public static final String FOUL_OUT_CONTROLLER = "fout_out_controller";
+	public static final String BRUISE_OUT_CONTROLLER = "bruise_out_controller";
+
+	// the players has on court
+	public static final String ON_COURT_PLAYERS = "on_court_players";
+
 	public static final String PREVIOUS_CONTROLLER_NAME = "previous_controller_name";
 
 	public static final int CURRENT_TEAM_A = 0;

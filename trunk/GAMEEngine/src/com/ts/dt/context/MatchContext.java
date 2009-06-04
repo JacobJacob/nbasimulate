@@ -1,6 +1,8 @@
 package com.ts.dt.context;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.match.Controller;
@@ -16,6 +18,7 @@ public class MatchContext {
 	private Hashtable<String, Object> data;
 
 	private DataStat dataStat;
+	private List<Long> onCourtPlayers = new ArrayList<Long>();
 
 	private long homeTeamId;
 	private long visitingTeamId;
@@ -107,6 +110,14 @@ public class MatchContext {
 		return (Controller) get(MatchConstant.CURRENT_DEFENDER);
 	}
 
+	public void setFoutOutController(Controller controller) {
+		put(MatchConstant.FOUL_OUT_CONTROLLER, controller);
+	}
+
+	public Controller getFoulOutController() {
+		return (Controller) get(MatchConstant.FOUL_OUT_CONTROLLER);
+	}
+
 	public void setCurrentController(Controller controller) {
 		put(MatchConstant.CURRENT_CONTROLLER, controller);
 	}
@@ -164,8 +175,7 @@ public class MatchContext {
 	}
 
 	public String currentScore() {
-		return "[" + getInt(MatchConstant.POINT_TEAM_A) + " : "
-				+ getInt(MatchConstant.POINT_TEAM_B) + "]";
+		return "[" + getInt(MatchConstant.POINT_TEAM_A) + " : " + getInt(MatchConstant.POINT_TEAM_B) + "]";
 	}
 
 	public boolean isHomeTeamController(String controllerName) {
@@ -514,8 +524,7 @@ public class MatchContext {
 		return (String) get(MatchConstant.SCRIMMAGE_ACTION_RESULT);
 	}
 
-	public Controller getControllerWithIndx(int indx)
-			throws ArrayIndexOutOfBoundsException {
+	public Controller getControllerWithIndx(int indx) throws ArrayIndexOutOfBoundsException {
 
 		Hashtable<String, Controller> controllers = this.getControllers();
 		if (indx > 10 || indx < 1) {
@@ -647,6 +656,22 @@ public class MatchContext {
 
 	public void setNodosityMain(MatchNodosityMain nodosityMain) {
 		this.nodosityMain = nodosityMain;
+	}
+
+	// check the give player whether on court
+	public boolean hasOnCourt(long playerId) {
+		if (onCourtPlayers.contains(playerId)) {
+			return true;
+		}
+		return false;
+	}
+
+	// add a player to the on court players list
+	public void addOnCourtPlayer(long playerId) {
+		if (onCourtPlayers.contains(playerId)) {
+			return;
+		}
+		onCourtPlayers.add(playerId);
 	}
 
 }
