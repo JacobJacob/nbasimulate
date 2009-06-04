@@ -36,10 +36,13 @@ public class MainTest {
 		session.beginTransaction();
 		long start = System.currentTimeMillis();
 
-		Test test = new Test();
-		test.setValue("Value-");
-		test.setB(false);
-		test.save();
+		// Test test = new Test();
+		// test.setValue("Value-");
+		// test.setB(false);
+		// test.save();
+		for (int i = 0; i < 2000; i++) {
+           // MatchReq req = new MatchReq();
+		}
 
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
