@@ -38,7 +38,9 @@ public class MatchContext {
 
 	private boolean isFoul = false; // whether foul
 
-	private boolean isBlock = false; // whether block;
+	private boolean isBlock = false; // whether block
+
+	private boolean isAssist = false;// whether is a assist
 
 	private int foulShootRemain = -1;
 	private int foulShootType;
@@ -644,6 +646,16 @@ public class MatchContext {
 
 	public boolean isBlock() {
 		return isBlock;
+	}
+	
+	
+
+	public boolean isAssist() {
+		return isAssist;
+	}
+
+	public void setAssist(boolean isAssist) {
+		this.isAssist = isAssist;
 	}
 
 	public void setBlock(boolean isBlock) {

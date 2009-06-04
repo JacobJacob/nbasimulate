@@ -89,8 +89,6 @@ public abstract class AbstractShoot implements Action {
 				context.pointInc(MatchConstant.INC_THREE_POINT, isHomeTeam);
 				context.doomTimesInc(MatchConstant.INC_THREE_POINT, isHomeTeam);
 				context.playerDoomTimesInc(MatchConstant.INC_THREE_POINT, player, isHomeTeam);
-				// handle for assit
-				handleAssit(context);
 			}
 			context.shootTimesInc(MatchConstant.INC_THREE_POINT, isHomeTeam);
 			context.playerShootTimesInc(MatchConstant.INC_THREE_POINT, player, isHomeTeam);
@@ -112,8 +110,13 @@ public abstract class AbstractShoot implements Action {
 			}
 			context.shootTimesInc(MatchConstant.INC_TWO_POINT, isHomeTeam);
 			context.playerShootTimesInc(MatchConstant.INC_TWO_POINT, player, isHomeTeam);
+
+		}
+
+		if (context.isAssist()) {
 			// handle for assist
 			handleAssit(context);
+			context.setAssist(false);
 		}
 
 		MatchInfoHelper.save(context, desc);

@@ -34,8 +34,12 @@ public class CatchSlamDunkDescription implements ActionDescription {
 		// TODO Auto-generated method stub
 		String desc = null;
 
-		ActionDesc actionDesc = ActionDescLoaderImpl.getInstance().loadWithNameAndResultAndFlg("CatchSlamDunk",
-				"success", "not_foul");
+		ActionDesc actionDesc = ActionDescLoaderImpl.getInstance().loadWithNameAndResultAndFlg("CatchSlamDunk", "success",
+				"not_foul");
+
+		if (actionDesc.getIsAssist() == true) {
+			context.setAssist(true);
+		}
 
 		desc = actionDesc.getActionDesc();
 		if (context.isFoul()) {

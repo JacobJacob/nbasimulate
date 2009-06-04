@@ -5,13 +5,14 @@ import java.io.Serializable;
 import com.dt.bottle.persistence.Persistence;
 
 public class ActionDesc extends Persistence implements Serializable {
-	
+
 	public static final long serialVersionUID = -2805454657233427093L;
 
 	private String actionName;
 	private String actionDesc;
 	private String result;
 	private String flg;
+	private boolean isAssist;
 	private int percent;
 
 	public boolean delete() {
@@ -73,4 +74,13 @@ public class ActionDesc extends Persistence implements Serializable {
 	public void setPercent(int percent) {
 		this.percent = percent;
 	}
+
+	public boolean getIsAssist() {
+		return isAssist;
+	}
+
+	public void setAssist(boolean isAssist) {
+		this.isAssist = isAssist;
+	}
+
 }
