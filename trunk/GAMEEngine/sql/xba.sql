@@ -130,3 +130,30 @@ CREATE TABLE match_req (
     flag            	char(1) NULL,
     PRIMARY KEY(id)
 )
+-- ----------------------------
+-- Table structure for match_nodosity_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `match_nodosity_detail`;
+CREATE TABLE `match_nodosity_detail` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `match_nodosity_main_id` bigint(20) default NULL,
+  `position` varchar(3) default NULL,
+  `player_id` bigint(20) default NULL,
+  `player_name` varchar(255) default NULL,
+  `colligate` float default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+-- ----------------------------
+-- Table structure for match_nodosity_main
+-- ----------------------------
+DROP TABLE IF EXISTS `match_nodosity_main`;
+CREATE TABLE `match_nodosity_main` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `seq` smallint(6) default NULL,
+  `match_id` bigint(20) default NULL,
+  `home_tactic_id` bigint(20) default NULL,
+  `visiting_tactic_id` bigint(20) default NULL,
+  `point` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=UTF8;
