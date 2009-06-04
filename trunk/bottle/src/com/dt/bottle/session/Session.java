@@ -56,7 +56,7 @@ public class Session {
 		try {
 			ResultSet resultSet = conn.executeQuery(getIdSql, new Object[0]);
 			if (!resultSet.next()) {
-				throw new Exception("error occor while get last id");
+				throw new SessionException("error occor while get last id");
 			}
 			id = resultSet.getLong("id");
 			((Persistence) persist).setId(id);
