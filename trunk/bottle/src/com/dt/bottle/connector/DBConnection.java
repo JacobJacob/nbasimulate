@@ -18,7 +18,7 @@ public class DBConnection {
 	public synchronized void connect() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/fba?user=root&password=821015&characterEncoding=utf-8");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/xba?user=root&password=821015&characterEncoding=utf-8");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,7 +68,6 @@ public class DBConnection {
 
 		Logger.logger("SQL: " + sql);
 		ResultSet resultSet = null;
-		setAutoCommit(true);
 		if (conn == null) {
 			connect();
 		}
@@ -84,7 +83,7 @@ public class DBConnection {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			setAutoCommit(false);
+			commit();
 		}
 
 		return resultSet;
