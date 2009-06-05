@@ -5,21 +5,21 @@ import com.ts.dt.match.action.Action;
 import com.ts.dt.match.check.ResultCheck;
 import com.ts.dt.util.StringUtil;
 
-public class ResultCheckFactory {
+public class PassResultCheckFactory {
 
 	public static final String CHECK_CLASS_SUFFIXAL = "Check";
-	public static final String CHECK_CLASS_PACKAGE_NAME = "com.ts.dt.match.check";
+	public static final String CHECK_CLASS_PACKAGE_NAME = "com.ts.dt.match.check.pass";
 
-	private static ResultCheckFactory checkFactory;
+	private static PassResultCheckFactory checkFactory;
 
-	private ResultCheckFactory() {
+	private PassResultCheckFactory() {
 
 	}
 
-	public static ResultCheckFactory getInstance() {
+	public static PassResultCheckFactory getInstance() {
 
 		if (checkFactory == null) {
-			checkFactory = new ResultCheckFactory();
+			checkFactory = new PassResultCheckFactory();
 		}
 		return checkFactory;
 	}

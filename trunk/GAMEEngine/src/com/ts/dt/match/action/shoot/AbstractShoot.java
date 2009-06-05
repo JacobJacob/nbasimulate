@@ -5,7 +5,7 @@ import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.BlockCheckFactory;
 import com.ts.dt.factory.FoulCheckFactory;
-import com.ts.dt.factory.ResultCheckFactory;
+import com.ts.dt.factory.ShootResultCheckFactory;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
@@ -35,7 +35,7 @@ public abstract class AbstractShoot implements Action {
 		if (context.isBlock()) {
 			context.setShootActionResult(MatchConstant.RESULT_FAILURE_BLOCKED);
 		} else {
-			ResultCheckFactory.getInstance().createResultCheck(context).check(context);
+			ShootResultCheckFactory.getInstance().createResultCheck(context).check(context);
 			if (!context.isSuccess()) {
 				// check whether foul
 				FoulCheckFactory.getInstance().createFoulCheckFactory(context).check(context);
