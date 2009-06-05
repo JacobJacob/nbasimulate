@@ -3,7 +3,7 @@ package com.ts.dt.match.action.scrimmage;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.ActionDescriptionFactory;
-import com.ts.dt.factory.ShootResultCheckFactory;
+import com.ts.dt.factory.ScrimmageResultCheckFactory;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
 import com.ts.dt.util.MessagesUtil;
@@ -15,7 +15,7 @@ public class StartScrimmage implements Scrimmage {
 		// TODO Auto-generated method stub
 		String result = null;
 		context.setCurrentAction(this);
-		ShootResultCheckFactory.getInstance().createResultCheck(context).check(context);
+		ScrimmageResultCheckFactory.getInstance().createResultCheck(context).check(context);
 
 		return result;
 	}
@@ -44,7 +44,7 @@ public class StartScrimmage implements Scrimmage {
 		desc = desc.replaceAll("~4~", nextControllerNm.trim());
 
 		MessagesUtil.showLine(context, desc);
-		MatchInfoHelper.save(context,desc);
+		MatchInfoHelper.save(context, desc);
 		return result;
 	}
 }

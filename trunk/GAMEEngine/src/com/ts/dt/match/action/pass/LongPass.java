@@ -3,9 +3,9 @@ package com.ts.dt.match.action.pass;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.ActionDescriptionFactory;
-import com.ts.dt.factory.ShootResultCheckFactory;
+import com.ts.dt.factory.PassResultCheckFactory;
 import com.ts.dt.match.desc.ActionDescription;
-import com.ts.dt.match.helper.MatchInfoHelper; //import com.ts.dt.util.Logger;
+import com.ts.dt.match.helper.MatchInfoHelper;
 import com.ts.dt.util.MessagesUtil;
 
 public class LongPass implements Pass {
@@ -57,7 +57,7 @@ public class LongPass implements Pass {
 	public String before(MatchContext context) {
 		// TODO Auto-generated method stub
 		context.setCurrentAction(this);
-		ShootResultCheckFactory.getInstance().createResultCheck(context).check(context);
+		PassResultCheckFactory.getInstance().createResultCheck(context).check(context);
 		return null;
 	}
 

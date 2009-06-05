@@ -3,10 +3,9 @@ package com.ts.dt.match.action.pass;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.ActionDescriptionFactory;
-import com.ts.dt.factory.ShootResultCheckFactory;
+import com.ts.dt.factory.PassResultCheckFactory;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
-//import com.ts.dt.util.Logger;
 import com.ts.dt.util.MessagesUtil;
 
 public class ShortPass implements Pass {
@@ -34,13 +33,13 @@ public class ShortPass implements Pass {
 
 		String desc = description.load(context);
 		if (desc == null) {
-			//Logger.error("desc is null");
+			// Logger.error("desc is null");
 		}
 		if (currtPlayerNm.trim().equals(currtDefenderNm.trim())) {
-			//Logger.error("why occor this?");
+			// Logger.error("why occor this?");
 		}
 		if (currtPlayerNm.trim().equals(previousPlayerNm.trim())) {
-			//Logger.error("why occor this?");
+			// Logger.error("why occor this?");
 		}
 		desc = desc.replace("~1~", currtPlayerNm.trim());
 		desc = desc.replace("~2~", currtDefenderNm.trim());
@@ -49,7 +48,7 @@ public class ShortPass implements Pass {
 
 		if (!context.getPassActionResult().equals(MatchConstant.RESULT_SUCCESS)) {
 			MessagesUtil.showLine(context, desc);
-			MatchInfoHelper.save(context,desc);
+			MatchInfoHelper.save(context, desc);
 		}
 
 		return result;
@@ -58,7 +57,7 @@ public class ShortPass implements Pass {
 	public String before(MatchContext context) {
 		// TODO Auto-generated method stub
 		context.setCurrentAction(this);
-		ShootResultCheckFactory.getInstance().createResultCheck(context).check(context);
+		PassResultCheckFactory.getInstance().createResultCheck(context).check(context);
 		return null;
 	}
 
