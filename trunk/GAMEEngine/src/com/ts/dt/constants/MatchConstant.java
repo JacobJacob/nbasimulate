@@ -95,4 +95,9 @@ public class MatchConstant {
 	public static final int FOUL_SHOOT_TYPE_TWO = 2; // 两分罚
 	public static final int FOUL_SHOOT_TYPE_THREE = 3; // 三分罚
 
+	public static final String CURRENT_PLAYER_NAME_PLACEHOLDER = "~1~";
+	public static final String CURRENT_DEFENDER_NAME_PLACEHOLDER = "~2~";
+	public static final String PREVIOUS_PLAYER_NAME_PLACEHOLDER = "~3~";
+	public static final String NEXT_PLAYER_NAME_PLACEHOLDER = "~4~";
+
 }

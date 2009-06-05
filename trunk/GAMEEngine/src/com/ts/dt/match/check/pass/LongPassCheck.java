@@ -1,7 +1,8 @@
-package com.ts.dt.match.check;
+package com.ts.dt.match.check.pass;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.match.check.ResultCheck;
 import com.ts.dt.match.helper.PassHelper;
 import com.ts.dt.match.helper.RandomCheckHelper;
 import com.ts.dt.po.Player;

@@ -28,7 +28,7 @@ public class MatchReqMonitor extends Thread {
 			}
 			while (iterator.hasNext()) {
 				MatchReq req = iterator.next();
-				req.setFlag('F');
+				req.setFlag('O');
 				Session session = BottleUtil.currentSession();
 				session.beginTransaction();
 				req.save();

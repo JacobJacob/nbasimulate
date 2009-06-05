@@ -25,7 +25,7 @@ public class MatchReqPool {
 			while (pool.size() == 0) {
 
 				try {
-					System.out.println("Thread:" + Thread.currentThread() + " start to wati....");
+					System.out.println("Thread:" + Thread.currentThread() + " start to wait....");
 					lock.wait();
 				} catch (Exception e) {
 					e.printStackTrace();
