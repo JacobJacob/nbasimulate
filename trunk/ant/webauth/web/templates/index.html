@@ -1,0 +1,10 @@
+{% extends "master.html" %}
+
+{% block title %}金山云安全{% endblock %}
+{% block content %}
+<h1>输入URL</h1>
+<form id="url_serach_form" action="{% url url-search %}">
+	<input type="text" size="120" name="url" maxlength="2048" value="" />
+	<input type="submit" value="URL Search" />
+</form>
+{% endblock %}

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta name="Copyright" content="This site's design and contents Copyright &copy; Kingsoft." />
+    <meta name="keywords" content="Kingsoft, Webauth" />
+    <meta name="description" content="Kingsoft Cloud Security is a excellent information security tool for all of you." />    
+    
+    <link href="/site_media/css/base.css" rel="stylesheet" type="text/css"/>
+    
+    <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/site_media/js/jquery/jquery.utils.min.js"></script>
+    <script type="text/javascript" src="/site_media/js/base.js"></script>
+    <script type="text/javascript" src="/site_media/js/menu.js"></script>
+    {% block head_ext %}{% endblock %}
+    <title>{% block title %}{{title}}{% endblock %} - 网址认证  </title>
+	
+</head>
+<body>
+<div id="container">
+    
+    <div id="logo"><img src="/site_media/images/logo.gif"/></div>
+	<div class="totalInfoBar" style="float:left">
+		<table  border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+			<td class="totalInfoTitle">URL:</td>
+			<td class="totalInfoValue">{{data_total.url_count}}&nbsp;</td>
+			<td class="totalInfoTitle">Black URL:</td>
+			<td class="totalInfoValue">{{data_total.black_url_count}}&nbsp;</td>
+			<td class="totalInfoTitle">URL Check Result:</td>
+			<td class="totalInfoValue">{{data_total.url_check_result_count}}&nbsp;</td>
+			<td class="totalInfoTitle">URL Check Tasks:</td>
+			<td class="totalInfoValue">{{data_total.url_task_count}}&nbsp;</td>
+			<td class="totalInfoTitle">URL Check Histories:</td>
+			<td class="totalInfoValue">{{data_total.url_task_history_count}}&nbsp;</td>
+			<td class="totalInfoTitle">Third Datas:</td>
+			<td class="totalInfoValue">{{data_total.url_third_data_count}}&nbsp;</td>
+		  </tr>
+		</table>		
+	</div>
+	{% block user %}
+    <div id="headUserInfo">
+    {% if user.is_authenticated %}
+    {{ user.first_name }}{{ user.last_name }}|<a href="/accounts/logout/?next={{request.path|urlencode}}">注销</a>|<a href="/webobserver/admin/password_change/">修改密码</a>
+    {% else %}
+	{% if request %}
+	欢迎您，请<a href="/accounts/login/?next={{request.path|urlencode}}">登录</a>
+	{% else %}
+	欢迎您，请<a href="/accounts/login/?next=/">登录</a>
+	{% endif %}
+    {% endif %}
+    </div>
+    {% endblock %}
+    
+    <br style="clear:both;" />
+    {% block message %}
+    <div align="center">
+        <span class="literal-block">{{message}}</span>
+    </div>
+    {% endblock %}
+
+    {% block navigation %}
+    <div id="nav">
+    	{% include "links.html" %}
+    </div>
+    {% endblock %}
+    
+    <div id="rightmain">
+	    <div id="content">
+	    {% block content%}{% endblock %}
+		</div>
+    </div>
+    
+    <div id="footer">
+	    <p>
+	    Copyright &copy; 2009 - {% now "Y" %}
+	    <a target="_blank" href="http://www.kingsoft.com/">Kingsoft</a> Corp All Rights Reserved <a target="_blank" href="http://www.pc120.com/">金山云安全</a>
+	    </p>
+    </div>
+</div>
+<div id="debug"></div>
+</body>
+</html>

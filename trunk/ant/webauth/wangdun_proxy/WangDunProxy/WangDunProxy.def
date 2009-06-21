@@ -1,0 +1,9 @@
+; WangDunProxy.def : Declares the module parameters.
+
+LIBRARY      "WangDunProxy.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

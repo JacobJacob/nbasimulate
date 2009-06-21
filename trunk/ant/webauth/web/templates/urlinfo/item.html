@@ -1,0 +1,269 @@
+{% extends "master.html" %}
+{% load common_extras %}
+
+{% block title %}{{request.GET.url}}{% endblock %}
+{% block head_ext %}
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	var service = new rpc.ServiceProxy("/services/url/", 
+			{asynchronous:false, methods: ['add_url']});
+	var task_service = new rpc.ServiceProxy("/services/url_task/", 
+			{asynchronous:false, methods: ['add_emergency_tasks']});
+
+	$('#submit_url_button').click(function() {
+		var url = $('#current_url a').text();
+		//console.log(url);
+		var r = service.add_url(url, null);
+		//console.log(r);
+		window.location = window.location;
+	});
+	
+	$('#recheck_url_button').click(function() {
+		var url = $('#current_url a').text();
+		var r = task_service.add_emergency_tasks(url, null);
+		alert('add ' + r + ' tasks.');
+	});
+});
+
+</script>
+{% endblock %}
+{% block content %}
+<h2 id="current_url"><a href="{% url url-search %}?url={{request.GET.url|urlencode}}">{{current_url|safe}}</a></h2>
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th class="name">检测结果:</th>
+		<th class="value" colspan="3">{{url_check_info|url_result}} <input id="recheck_url_button" type="button" value="重新检测" /></th>
+	</tr>
+	</thead>
+	<tbody>
+	{% if url_info %}
+	<tr>
+		<td class="name">MD5:</td>
+		<td class="value">{{url_info.url_md5}}</td>
+		<td class="name">来源:</td>
+		<td class="value">{{url_info.from_type|url_from_type}}</td>
+	</tr>
+	<tr>
+		<td class="name">Host:</td>
+		<td class="value">{{url_info.host}}</td>
+		<td class="name">Host MD5:</td>
+		<td class="value">{{url_info.host_md5}}</td>
+	</tr>
+	<tr>
+		<td class="name">Domain:</td>
+		<td class="value">{{url_info.domain}}</td>
+		<td class="name">Domain: MD5:</td>
+		<td class="value">{{url_info.domain_md5}}</td>
+	</tr>
+	<tr>
+		<td class="name">标题:</td>
+		<td class="value" colspan="3">{{url_info.title}}</td>
+	</tr>
+	<tr>
+		<td class="name">描述:</td>
+		<td class="value" colspan="3">{{url_info.description}}</td>
+	</tr>
+	<tr>
+		<td class="name">收录时间:</td>
+		<td class="value">{{url_info.created_time}}</td>
+		<td class="name">最后更新:</td>
+		<td class="value">{{url_info.updated_time}}</td>
+	</tr>
+	{% else %}
+	<tr>
+		<td class="value" colspan="4">该URL未收录, <input id="submit_url_button" type="button" value="收录入库" /></td>
+	</tr>
+	{% endif %}
+	</tbody>
+</table>
+
+{% if check_histories %}
+<h3>检测历史</h3>
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th>检测时间</th>
+		<th>客户端IP</th>
+		<th>耗时</th>
+		<th>状态码</th>
+		<th>访问</th>
+		<th>超时</th>
+		<th>优先级</th>
+		<th>来源</th>
+		<th>结果</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for info in check_histories %}
+	<tr>
+		<td class="value">{{info.created_time}}</td>
+		<td class="value">{{info.client_ip}}</td>
+		<td class="value">{{info.usetime|floatformat}}</td>
+		<td class="value">{{info.status_code}}</td>
+		<td class="value">{% if info.visit_success %}True{% else %}False{% endif %}</td>
+		<td class="value">{% if info.is_timeout %}True{% else %}False{% endif %}</td>
+		<td class="value">{{info.priority}}</td>
+		<td class="value">{{info.from_type|url_from_type}}</td>
+		<td class="value">{{info.reason}}</td>
+	</tr>
+	<tr>
+		<td class="name">其他信息</td>
+		<td class="value" colspan="8">实际访问url: {{info.real_url}}<br />标题: {{info.title}}<br />描述: {{info.description}}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+
+{% if third_datas %}
+<h3>第三方信息</h3>
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th>key</th>
+		<th>Google PR</th>
+		<th>Alexa Rank</th>
+		<th>Alexa Title</th>
+		<th>Alexa Description</th>
+		<th>Alexa Category</th>
+		<th>Alexa Address</th>
+		<th>Alexa Create Date</th>
+		<th>Alexa Phone</th>
+		<th>Alexa Owner</th>
+		<th>Alexa Email</th>
+		<th>Alexa Country</th>
+		<th>Alexa Linksin</th>
+		<th>Alexa Speed</th>
+		<th>Alexa Child</th>
+		<th>Alexa Reach</th>
+		<th>Alexa Encode</th>
+		<th>Last Updated</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for third_data in third_datas %}
+	<tr>
+		<td class="value">{{third_data.host}}</td>
+		<td class="value">{{third_data.google_pr}}</td>
+		<td class="value">{{third_data.alexa_rank}}</td>
+		<td class="value">{{third_data.alexa_title}}</td>
+		<td class="value">{{third_data.alexa_desc}}</td>
+		<td class="value">{{third_data.alexa_cat}}</td>
+		<td class="value">{{third_data.alexa_addr}}</td>
+		<td class="value">{{third_data.alexa_created}}</td>
+		<td class="value">{{third_data.alexa_phone}}</td>
+		<td class="value">{{third_data.alexa_owner}}</td>
+		<td class="value">{{third_data.alexa_email}}</td>
+		<td class="value">{{third_data.alexa_country}}</td>
+		<td class="value">{{third_data.alexa_linksin}}</td>
+		<td class="value">{{third_data.alexa_speed}}</td>
+		<td class="value">{{third_data.alexa_child}}</td>
+		<td class="value">{{third_data.alexa_reach}}</td>
+		<td class="value">{{third_data.alexa_encode}}</td>
+		<td class="value">{{third_data.updated_time}}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+
+{% if host_info %}
+<h2><a href="{% url url-search %}?url={{host_info.url|urlencode}}">{{host_info.url}}</a></h2>
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th class="name">检测结果:</th>
+		<th class="value" colspan="3">{{host_check_info|url_result}}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td class="name">MD5:</td>
+		<td class="value">{{host_info.url_md5}}</td>
+		<td class="name">来源:</td>
+		<td class="value">{{host_info.from_type|url_from_type}}</td>
+	</tr>
+	<tr>
+		<td class="name">Domain:</td>
+		<td class="value">{{host_info.domain}}</td>
+		<td class="name">Domain: MD5:</td>
+		<td class="value">{{host_info.domain_md5}}</td>
+	</tr>
+	<tr>
+		<td class="name">标题:</td>
+		<td class="value" colspan="3">{{host_info.title}}</td>
+	</tr>
+	<tr>
+		<td class="name">描述:</td>
+		<td class="value" colspan="3">{{host_info.description}}</td>
+	</tr>
+	<tr>
+		<td class="name">收录时间:</td>
+		<td class="value">{{host_info.created_time}}</td>
+		<td class="name">最后更新:</td>
+		<td class="value">{{host_info.updated_time}}</td>
+	</tr>
+	</tbody>
+</table>
+{% endif %}
+
+{% if domain_info %}
+<h2><a href="{% url url-search %}?url={{domain_info.url|urlencode}}">{{domain_info.url}}</a></h2>
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th class="name">检测结果:</th>
+		<th class="value" colspan="3">{{domain_check_info|url_result}}</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td class="name">MD5:</td>
+		<td class="value">{{domain_info.url_md5}}</td>
+		<td class="name">来源:</td>
+		<td class="value">{{domain_info.from_type|url_from_type}}</td>
+	</tr>
+	<tr>
+		<td class="name">标题:</td>
+		<td class="value" colspan="3">{{domain_info.title}}</td>
+	</tr>
+	<tr>
+		<td class="name">描述:</td>
+		<td class="value" colspan="3">{{domain_info.description}}</td>
+	</tr>
+	<tr>
+		<td class="name">收录时间:</td>
+		<td class="value">{{domain_info.created_time}}</td>
+		<td class="name">最后更新:</td>
+		<td class="value">{{domain_info.updated_time}}</td>
+	</tr>
+	</tbody>
+</table>
+{% endif %}
+
+{% if related_blackurls %}
+<h2>相关黑url</h2>
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th>URL</th>
+		<th>更新时间</th>
+		<th>来源</th>
+		<th>结果</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for info in related_blackurls %}
+	<tr>
+		<td><a href="{% url url-search %}?url={{info.url|urlencode}}">{{info.url}}</a></td>
+		<td>{{info.updated_time}}</td>
+		<td>{{info.from_type|url_from_type}}</td>
+		<td>{{info.reason}}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endblock %}

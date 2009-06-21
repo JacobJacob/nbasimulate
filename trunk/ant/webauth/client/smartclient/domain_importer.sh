@@ -1,0 +1,1 @@
+python main.py DOMAIN_IMPORTER

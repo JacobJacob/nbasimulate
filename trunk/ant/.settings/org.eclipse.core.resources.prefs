@@ -1,0 +1,9 @@
+#Thu Jun 11 16:41:47 CST 2009
+eclipse.preferences.version=1
+encoding//webauth/common/db/connection_pool.py=UTF-8
+encoding//webauth/common/proxyutil.py=UTF-8
+encoding//webauth/web/app/__init__.py=UTF-8
+encoding//webauth/web/app/proxy/source.py=UTF-8
+encoding//webauth/web/app/proxy/source_test.py=UTF-8
+encoding//webauth/web/app/proxy/startup.py=UTF-8
+encoding/<project>=UTF-8

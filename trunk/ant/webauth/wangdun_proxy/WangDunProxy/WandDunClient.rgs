@@ -1,0 +1,27 @@
+HKCR
+{
+	WangDunProxy.WandDunClient.1 = s 'WandDunClient Class'
+	{
+		CLSID = s '{7131E933-5B8B-4ED0-BD55-A055D246162A}'
+	}
+	WangDunProxy.WandDunClient = s 'WandDunClient Class'
+	{
+		CLSID = s '{7131E933-5B8B-4ED0-BD55-A055D246162A}'
+		CurVer = s 'WangDunProxy.WandDunClient.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7131E933-5B8B-4ED0-BD55-A055D246162A} = s 'WandDunClient Class'
+		{
+			ProgID = s 'WangDunProxy.WandDunClient.1'
+			VersionIndependentProgID = s 'WangDunProxy.WandDunClient'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{B65DE695-B606-4781-B207-F85498A5329C}'
+		}
+	}
+}
