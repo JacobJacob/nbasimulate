@@ -67,7 +67,7 @@ def visit(site):
 def is_net_ok():
     try:
         data = visit("http://www.kingsoft.com")
-        print " ".join(data[:1000].split())
+        # print " ".join(data[:1000].split())
         return data.find("WPS Office") != -1
     except Exception:
         return False
