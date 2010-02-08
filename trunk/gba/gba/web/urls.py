@@ -5,9 +5,6 @@ urlpatterns = patterns('',
     # Example:
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_PATH}), 
     url(r'^$', 'views.index', name='index'),
-    (r'^spider/', include('web.spider.urls')),
-    (r'^monitor/', include('web.monitor.urls')),
-    (r'^module/', include('web.module.urls')),
     (r'^admin/', include('web.admin.urls')),
 )
 

@@ -55,8 +55,8 @@ import django
 from django.http import HttpResponse
 
 #import simplejson as json
-from common import json
-from common import exception_mgr
+from gba.common import json
+from gba.common import exception_mgr
 
 _dispatchers_dict = {}
 

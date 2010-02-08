@@ -7,19 +7,19 @@ def init():
     _local_folder = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     sys.path.insert(0, os.path.dirname(_local_folder))
     project_module = __import__(os.path.basename(_local_folder), {}, {}, [''])
-    sys.modules["spiderproxy"] = project_module
+    sys.modules["gba"] = project_module
     del sys.path[0]
 
     #set django path
     for k in [k for k in sys.modules if k.startswith('django')]:
         del sys.modules[k]
-    import common.django as _local_django
+    import gba.common.django as _local_django
     sys.modules["django"] = _local_django
     
     #set flup path
     for k in [k for k in sys.modules if k.startswith('flup')]:
         del sys.modules[k]
-    from common import flup as _local_flup
+    from gba.common import flup as _local_flup
     sys.modules["flup"] = _local_flup
 
 if __name__ == '__main__':

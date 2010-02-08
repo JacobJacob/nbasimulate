@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response as _render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
 
-from common import json
+from gba.common import json
 
 
 def render_to_response(request, template_name, dictionary=None, context_instance=None, mimetype=None):
