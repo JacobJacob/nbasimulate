@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="imagetoolbar" content="no" />
+		<meta name="Copyright" content="This site's design and contents Copyright &copy; 2007 Kingsoft." />
+		<title>网站安全认证客户端监控</title>
+	    <style type="text/css">
+	        body{
+	            font-size:12px;
+				font-family:"ￋￎￌ￥", Verdana, Arial, Helvetica, sans-serif;
+	            color:#000;
+	            margin:0;
+	            background-color:#fff;
+	        }
+	        .summary{
+	            margin:5px 10px 10px 10px;
+	            padding: 18px 8px 8px 8px;
+	            background:#E0ECFF;
+	            overflow:hidden;
+	        }
+	        legend{
+	            font-weight:bold;
+	            font-size:18px
+	        }
+	        fieldset table{
+	            margin:0 3px;
+	        }
+	        fieldset{
+	            border:1px solid #bbb;
+	            background-color:white;
+	            padding:10px 10px 15px 10px;
+	        }
+	        * html legend{
+	            margin: -26px 0 0 0;
+	            position:fixed;
+	        }
+
+	        .spec{
+	            padding-left:8px;
+	            color:#888;
+	        }
+	        h1{
+	            font-size:28px;
+	            margin:10px 0 0;
+	        }
+	        h2{
+	            font-size:18px;
+	            margin:10px 0 0;
+	        }
+	        h3{
+	            padding-top:10px;
+	            padding-left:3px;
+	            font-size:14px;
+	            margin:0px 0 0;
+	        }
+
+	        #content{
+	            background:#C3D9FF;
+	            padding:10px;
+	        }
+
+	        h1{
+	            font-size:28px;
+	            font-family:"ￎﾢ￈￭￑ￅﾺￚ";
+	            margin:10px 0 0;
+	        }
+
+	        .reportclass{
+	            margin:10px 0;
+	            border-collapse:collapse;
+	            width:98%;
+	        }
+	        .reportclass th{
+	            color:#333;
+	            font-size:12px;
+	            background:#f7f7f7;
+	            font-weight:bold;
+	        }
+	        .reportclass td, th{
+	            padding:2px;
+	            font-size:12px;
+	            border:1px solid #bbb;
+	        }
+
+			.reportclassth{
+			background-color:#F7F7F7;
+			border:1px;
+			border-color:#bbb;
+			}
+
+	        .reporttime{
+	            text-align:right;
+	            padding-right:15px;
+	        }
+
+	        .fieldsetcss{
+	            background-color:#FFFFFF;
+	            padding:15px;
+	            padding-left:2px;
+
+	        }
+
+	        .focus{
+	            font-style:normal;
+	            color:red;
+	            font-weight:bold;
+	        }
+	        .focus2{
+	            font-style:normal;
+	            color:green;
+	            font-weight:bold;
+	        }
+	    </style>
+	    <script type="text/javascript">
+			var timer_count = 60;
+			function one_second(){
+				timer_count --;
+				if(timer_count <= 0){
+					timer_count = 60;
+					self.location = '{% url client-monitor-open %}';
+				}
+				time_span.innerText = timer_count <= 9 ? '0' + timer_count: timer_count;
+			}
+			setInterval("one_second();", 1000);
+		</script>
+	</head>
+	<body>
+	<div style="padding:8px;background-color:#C3D9FF;">
+		<div id="header">
+			<div align="center"><h3>网站安全认证客户端监控</h3></div>
+		</div>
+		<div class="summary">
+			<fieldset class="fieldsetcss">
+				<div align="center">
+				<div align="center"><b>最后刷新时间 {% now "Y-m-d H:i:s" %}--每秒检测{{url_check_stat_info.all_check_speed}}个URL--<font color="red">timing:<span id="time_span">60</span></font></b></div>
+						<table align="left" width="100%" border="0">
+						<tr><td><br/></td></tr>
+						{% for client_ip, client_info in url_check_clients_info %}
+						{% if client_info.new_line %}
+						<tr align="center">
+						{% endif %}
+						<td>
+						<table align="center"><tr align="center"><td align="center"><img src="/site_media/images/client_{{client_info.img_label}}.gif"/></td></tr>
+						<tr align="center"><td align="center">{{client_ip}}</td></tr></table></td>
+						{% if client_info.end_new_line %}
+						</tr>
+						{% endif %}
+						{% endfor %}
+						</table>
+					</div>
+			</fieldset>
+			<br>
+		</div>
+	</div>
+	</body>
+</html>

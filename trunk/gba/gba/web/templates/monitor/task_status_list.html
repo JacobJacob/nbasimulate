@@ -1,0 +1,41 @@
+{% extends "master.html" %}
+{% block title %}数据同步任务运行日志{% endblock %}
+{% block content %}
+<h1>数据同步任务运行日志</h1>
+{% if tasks %}
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th>id</th>
+		<th>任务名</th>
+		<th>状态</th>
+		<th>客户端IP</th>
+		<th>详细信息</th>
+		<th>开始时间</th>
+		<th>更新时间</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for task in tasks %}
+	<tr>
+		<td>{{task.id}}</td>
+		<td>{{task.name}}</td>
+		<td>{{task.status}}</td>
+		<td>{{task.client_ip}}</td>
+		<td>{{task.description|linebreaksbr}}</td>
+		<td>{{task.start_time}}</td>
+		<td>{{task.update_time}}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<p>
+	{% if hasprev %}
+	<a href="{% url list-task-status %}?index={{prev}}&size={{size}}">Prev</a>
+	{% endif %}
+	<a href="{% url list-task-status %}?index={{next}}&size={{size}}">Next</a>
+</p>
+{% else %}
+<p>暂无任何数据</p>
+{% endif %}
+{% endblock %}

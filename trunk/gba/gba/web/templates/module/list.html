@@ -1,0 +1,43 @@
+{% extends "master.html" %}
+{% load common_extras %}
+
+{% block head_ext %}
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.draggable.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.droppable.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.resizable.js"></script>
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+{% endblock %}
+{% block title %}模型列表{% endblock %}
+{% block content %}
+<a href="{% url module-edit module %}">创建</a>
+{% autoescape off %}
+<table cellspacing="1" class="tablesorter">
+  {{ module|display_header}}
+  {% for module in modules %}
+     {{ module|display_row }}
+  {% endfor %}
+  <tr>
+		<td colspan="8">
+		总{{ page }}/{{ totalpage }}页
+		{% ifnotequal page 1 %}
+		 <a href="{% url module-list module %}?page=1">首页</a>
+		 <a href="{% url module-list module %}?page={{prevpage}}">上一页</a>
+		{% else %}
+		首页
+		上一页
+		{% endifnotequal %}
+		{% ifnotequal page totalpage %}
+		 <a href="{% url module-list module %}?page={{nextpage}}">下一页</a>
+		 <a href="{% url module-list module %}?page={{totalpage}}">尾页</a>
+	    {% else %}
+	           下一页
+	           末页
+	    {% endifnotequal %}
+	    </td>
+	</tr>
+</table>
+{% endautoescape %}
+{% endblock %}

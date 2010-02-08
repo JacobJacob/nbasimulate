@@ -1,0 +1,81 @@
+{% extends "master.html" %}
+{% block head_ext %}
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.draggable.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.droppable.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.resizable.js"></script>
+<script>
+  $(document).ready(function(){
+      $('#add_col_btn').click(function() {
+		 show_dialog();
+	  });
+  })
+  
+  function show_dialog() {
+	$("#add_column").show().dialog({
+		height: 300, width: 450, modal: true,
+	    title: 'add column',
+		overlay: {
+            opacity: 0.5, 
+            background: "black" 
+        }
+	});
+    $("#add_column").dialog('open');
+   }
+</script>
+{% endblock %}
+{% block title %}table list{% endblock %}
+{% block content %}
+<form id="add_table" method="post" action="{% url table-add %}">
+<table cellspacing="1" class="tablesorter">
+  <tr>
+    <td width="30%">table name:</td>
+    <td>
+      <input type="text" name="name" value="{{ name }}" size="60"/>
+      <input type="text" name="id" value="{{ id }}"/>
+      <input type="hidden" name="action" value="save"/>
+    </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+     <input type="submit" id="submit_btn" value="save"/>
+     <input type="button" id="add_col_btn" value="add column"/>
+     <input type="button" id="add_idx_btn" value="add index"/>
+   </td>
+  </tr>
+</table>
+</form>
+<div id="add_column" class="flora" style="display: none;">
+    <form id="add_column_form">
+        <input type="hidden" id="host_md5" value="">
+        <table cellspacing="1" class="tablesorter">
+          <tr>
+            <td>column</td>
+            <td>
+               <input name="name" type="text" size="50"/>
+            </td>
+          </tr>
+          <tr>
+            <td>type</td>
+            <td>
+                <select>
+                  <option value="varchar">char</option>
+                  <option value="varchar">varchar</option>
+                </select>
+            </td>
+          </tr>
+          <tr>
+            <td>length</td>
+            <td>
+               <input name="name" type="text"/>
+            </td>
+          </tr>
+          <tr>
+           <td colspan="2"><input type="button" value="submit"/></td>
+          </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends "master.html" %}
+{% load common_extras %}
+
+{% block head_ext %}
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.draggable.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.droppable.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.resizable.js"></script>
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+
+<style type="text/css">
+h1#title {color:white;}
+.mytr1 {background:#D9F9D0}
+.mytr2 {background:#C1F8BA}
+.myth {background:#003333}
+.th_text {color:#ffffff}
+</style>
+
+<script type="text/javascript">
+	var timer_count = 60;
+	function one_second(){
+		timer_count --;
+		if(timer_count <= 0){
+			timer_count = 60;
+			self.location = '{% url client-monitor %}';
+		}
+		time_span.innerText = timer_count <= 9 ? '0' + timer_count: timer_count;
+	}
+	setInterval("one_second();", 1000);
+</script>
+{% endblock %}
+{% block title %}客户端工作状态监控{% endblock %}
+{% block content %}
+<div align="center">
+	<b>最后刷新时间 {% now "Y-m-d H:i:s" %} 
+	<font color="red">timing:<span id="time_span">60</span></font>
+	</b>
+</div>
+<table align="center" width="100%" border= "0">
+<tr><td>
+	<table align="left" width="100%" border="0">
+	<tr align="left"><td colspan="7"><b>URL检测客户端监控</b></td></tr>
+	<tr align="center" class="myth"><td></td><td class="th_text">扫描机IP</td><td class="th_text">版本</td>
+	<td class="th_text">网盾版本</td><td class="th_text">更新</td><td class="th_text">机</td><td align="left" class="th_text">沙箱状态--共计{{url_check_stat_info.all_client_count}}个活跃--每秒检测{{url_check_stat_info.all_check_speed}}个URL</td></tr>
+	{% for client_ip, client_info in url_check_clients_info %}
+	<tr align="center" class="{% cycle mytr1,mytr2 %}">
+	<td align="center" width="18px">{{forloop.counter}}</td>
+	<td align="center" width="90px">{{client_ip}}</td>
+	<td align="center" width="30px">{{client_info.code_version}}</td>
+	<td align="center" width="30px">{{client_info.kws_version}}</td>
+	<td align="center" width="40px">{{client_info.update_time|date:"H:i"}}</td>
+	<td align="center" width="25px"><img height="15" src="/site_media/images/client_{{client_info.img_label}}.gif" /></td>
+	<td align="left">{% for client in client_info.clients_info %}{{client.client_id}}<img src="/site_media/images/sandbox_{{client.img_label}}.gif" />{{client.worker_speed}}|{% endfor %}
+	</td>
+	</tr>
+	{% endfor %}
+	</table>
+</td></tr>
+<tr><td>
+	<table align="left" width="100%" border="0">
+	<tr align="left"><td colspan="10"><b>ALEXA爬取客户端监控（以小时为单位统计）</b></td></tr>
+	<tr align="center" class="myth">
+	<td></td><td class="th_text">客户端ID</td><td class="th_text">客户端IP</td>
+	<td class="th_text">最后更新时间</td><td class="th_text">状态</td>
+	<td align="center" class="th_text">共计用时(秒)</td><td align="center" class="th_text">共计个数</td><td align="center" class="th_text">信息完整个数</td>
+	<td align="center" class="th_text">信息不完整个数</td><td align="center" class="th_text">出错个数</td></tr>
+	
+	{% for client_id, client_info in alexa_spider_info %}
+	<tr align="center" class="{% cycle mytr1,mytr2 %}">
+	<td align="center" width="20px">{{forloop.counter}}</td>
+	<td align="center" width="150px">{{client_id}}</td>
+	<td align="center" width="90px">{{client_info.ip}}</td>
+	<td align="center" width="120px">{{client_info.update_time|date:"Y-m-d H:i:s"}}</td>
+	<td align="center" width="40px"><img src="/site_media/images/sandbox_{{client_info.img_label}}.gif" /></td>
+	<td align="center">{{client_info.lapse_seconds}}</td>
+	<td align="center">{{client_info.total}}</td>
+	<td align="center">{{client_info.count1}}</td>
+	<td align="center">{{client_info.count3}}</td>
+	<td align="center">{{client_info.count2}}</td>
+	</tr>
+	{% endfor %}
+	</table>
+</td></tr>
+<tr><td>
+	<table align="left" width="100%" border="0">
+	<tr align="left"><td colspan="9"><b>GOOGLE PR 爬取客户端监控（以小时为单位统计）</b></td></tr>
+	<tr align="center" class="myth">
+	<td></td><td class="th_text">客户端ID</td><td class="th_text">客户端IP</td>
+	<td class="th_text">最后更新时间</td><td class="th_text">状态</td>
+	<td align="center" class="th_text">共计用时(秒)</td><td align="center" class="th_text">共计个数</td>
+	<td align="center" class="th_text">完成个数</td><td align="center" class="th_text">出错个数</td></tr>
+	{% for client_id, client_info in google_pr_spider_info %}
+	<tr align="center" class="{% cycle mytr1,mytr2 %}">
+	<td align="center" width="20px">{{forloop.counter}}</td>
+	<td align="center" width="150px">{{client_id}}</td>
+	<td align="center" width="90px">{{client_info.ip}}</td>
+	<td align="center" width="120px">{{client_info.update_time|date:"Y-m-d H:i:s"}}</td>
+	<td align="center" width="40px"><img src="/site_media/images/sandbox_{{client_info.img_label}}.gif" /></td>
+	<td align="center">{{client_info.lapse_seconds}}</td>
+	<td align="center">{{client_info.total}}</td>
+	<td align="center">{{client_info.count1}}</td>
+	<td align="center">{{client_info.count2}}</td>
+	</tr>
+	{% endfor %}
+	</table>
+</td></tr>
+<tr><td>
+	<table align="left" width="100%" border="0">
+	<tr align="left"><td colspan="10"><b>网盾数据导入客户端监控（以小时为单位统计）</b></td></tr>
+	<tr align="center" class="myth">
+	<td></td><td class="th_text">客户端ID</td><td class="th_text">客户端IP</td>
+	<td class="th_text">最后更新时间</td><td class="th_text">状态</td>
+	<td align="center" class="th_text">用时(秒)</td><td align="center" class="th_text">总URL数</td>
+	<td align="center" class="th_text">有效URL数</td>	<td align="center" class="th_text">无效URL数</td>
+	<td align="center" class="th_text">异常URL数</td></tr>
+	{% for client_id, client_info in webshield_url_importer_info %}
+	<tr align="center" class="{% cycle mytr1,mytr2 %}">
+	<td align="center" width="20px">{{forloop.counter}}</td>
+	<td align="center" width="150px">{{client_id}}</td>
+	<td align="center" width="90px">{{client_info.ip}}</td>
+	<td align="center" width="120px">{{client_info.update_time|date:"Y-m-d H:i:s"}}</td>
+	<td align="center" width="40px"><img src="/site_media/images/sandbox_{{client_info.img_label}}.gif" /></td>
+	<td align="center">{{client_info.lapse_seconds}}</td>
+	<td align="center">{{client_info.count1}}</td>
+	<td align="center">{{client_info.count2}}</td>
+	<td align="center">{{client_info.count3}}</td>
+	<td align="center">{{client_info.count4}}</td>
+	</tr>
+	{% endfor %}
+	</table>
+</td></tr>
+</table>
+</div>
+{% endblock %}
