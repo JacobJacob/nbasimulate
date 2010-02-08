@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """客户端基础服务"""
-from common.jsonrpcserver import jsonrpc_function
-from business import common_business
+from gba.common.jsonrpcserver import jsonrpc_function
+from gba.business import common_business
 
 @jsonrpc_function
 def get_runtime_config(request, config_key, program=None, ip="all"):
