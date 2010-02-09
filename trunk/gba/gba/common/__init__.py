@@ -9,7 +9,7 @@ import sys
 
 import memcache
 
-from gba.web.config import SYSLOG_HOST, PathSettings, COMMON_CACHE
+from gba.config import SYSLOG_HOST, PathSettings, COMMON_CACHE
 
 cache = memcache.Client(COMMON_CACHE)
 

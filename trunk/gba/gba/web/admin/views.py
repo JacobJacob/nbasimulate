@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 """"""
 
-from web.render import render_to_response
+from gba.web.render import render_to_response
 from gba.common.db import connection
 from gba.common import json
 
-def list(request):
+def index(request):
     """list"""
     datas = {}
-    return render_to_response(request, 'admin/list.html', datas)
+    return render_to_response(request, 'admin/index.html', datas)
 
 def add(request):
     data = {}

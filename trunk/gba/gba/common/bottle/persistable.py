@@ -5,10 +5,10 @@ import unittest
 
 from _mysql_exceptions import ProgrammingError
 
-from common import md5mgr
-from common.db import connection
-from common.db.reserve_convertor import ReserveLiteral
-from common.bottle import cache
+from gba.common import md5mgr
+from gba.common.db import connection
+from gba.common.db.reserve_convertor import ReserveLiteral
+from gba.common.bottle import cache
  
 def format_now():
     now = datetime.now()
@@ -84,8 +84,7 @@ class Persistable(object):
                 meta.add_column(column)
                 cls._cache.set(cls._table, meta)
                 Persistable._meta_cache[cls._table] = meta
-                info(meta)
-                    
+
         finally:
             cursor.close()
         cls.inited = True

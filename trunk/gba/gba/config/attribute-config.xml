@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attributes>
+    <!-- ���� -->
+    <attribute name="dribble">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- ���� -->
+    <attribute name="backboard">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- ��� -->
+    <attribute name="blocked">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- ���� -->
+    <attribute name="bounce">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- Ͷ�� -->
+    <attribute name="shooting">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- �ٶ� -->
+    <attribute name="speed">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- ���� -->
+    <attribute name="pass">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- ��� -->
+    <attribute name="trisection">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- ���� -->
+    <attribute name="stamina">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- �ƶ� -->
+    <attribute name="steal">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!-- ǿ׳ -->
+    <attribute name="strength">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+</attributes>
