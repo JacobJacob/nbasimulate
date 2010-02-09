@@ -40,7 +40,7 @@ class Persistable(object):
         if not hasattr(cls, '_table') or getattr(cls, '_table') is None:
             cls._table = cls._parse_table()
         meta = cls._cache.get(cls._table)
-        if meta:
+        if meta and False:
             #try get from cache
             info('meta hit in cache, use it!!!')
             Persistable._meta_cache[cls._table] = meta
@@ -120,7 +120,7 @@ class Persistable(object):
         if cache_key:
             self._cache.delete(cache_key)
         data = {}
-        update_skip_columns = ['id', 'created_at', 'updated_at']
+        update_skip_columns = ['id', 'created_time', 'updated_time']
         cursor = connection.cursor()
         meta = Persistable._meta_cache[self._table]
         columns = meta.columns
@@ -128,8 +128,8 @@ class Persistable(object):
             field_name = column.field     
             if hasattr(self, field_name):
                 data[field_name] = getattr(self, field_name)
-            elif field_name == 'created_at':
-                data['created_at'] = ReserveLiteral('now()')
+            elif field_name == 'created_time':
+                data['created_time'] = ReserveLiteral('now()')
                     
         try:
             cursor.insert(data, self._table, True, update_skip_columns)

@@ -1,6 +1,6 @@
 #coding=utf-8
 # Django settings for webauth project.
-from config import DjangoSettings, DEBUG
+from gba.config import DjangoSettings, DEBUG
 import os
 
 TEMPLATE_DEBUG = DEBUG
