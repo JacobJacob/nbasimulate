@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 from filelocker import FileLocker
-from web.config import PathSettings
+from gba.web.config import PathSettings
 import file_utility
 
 class ExceptionManager:

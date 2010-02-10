@@ -6,6 +6,7 @@ urlpatterns = patterns('',
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_PATH}), 
     url(r'^$', 'views.index', name='index'),
     (r'^admin/', include('web.admin.urls')),
+    (r'^player/', include('web.player.urls')),
 )
 
 # json rpc settings

@@ -1,0 +1,77 @@
+{% extends "master.html" %}
+{% load common_extras %}
+{% block title %}free player{% endblock %}
+{% block head_ext %}
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+{% endblock %}
+{% block content %}
+<a href="{% url free-players %}?position=C">C</a>
+<a href="{% url free-players %}?position=PF">PF</a>
+<a href="{% url free-players %}?position=SF">SF</a>
+<a href="{% url free-players %}?position=SG">SG</a>
+<a href="{% url free-players %}?position=PG">PG</a>
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+	    <th>no</th>
+	    <th>name</th>
+	    <th>age</th>
+	    <th></th>
+		<th></th>
+		<th></th>
+	</tr>
+	</thead>
+	<tbody>
+	{% if infos %}
+	  {% for info in infos %}
+	    <tr>
+	     <td> 
+	      {{ info.player_no }}
+	     </td>
+	     <td> 
+	      {{ info.name }}
+	     </td>
+	     <td> 
+	      {{ info.age }}
+	     </td>
+	     <td> 
+	        {% ifequal host_info.enable 1%}
+	           true
+	        {% else %}
+	           false
+	        {% endifequal %}
+	     </td>
+	     <td> {{ host_info.created_time }}</td>
+	     <td> 
+
+	     </td>
+	    </tr> 
+	  {% endfor %}
+	  <tr>
+		<td colspan="7">
+		总{{ page }}/{{ totalpage }}页
+		{% ifnotequal page 1 %}
+		 <a href="?page=1&type={{type}}">首页</a>
+		 <a href="?page={{prevpage}}&type={{type}}">上一页</a>
+		{% else %}
+		首页
+		上一页
+		{% endifnotequal %}
+		{% ifnotequal page totalpage %}
+		 <a href="?page={{nextpage}}&type={{type}}">下一页</a>
+		 <a href="?page={{totalpage}}&type={{type}}">尾页</a>
+	    {% else %}
+	           下一页
+	           末页
+	    {% endifnotequal %}
+	    </td>
+	</tr>
+	{% else %}
+	<tr>
+		<td colspan="7">暂无数据.</td>
+	</tr>
+	{% endif %}
+	</tbody>
+</table>
+{% endblock %}

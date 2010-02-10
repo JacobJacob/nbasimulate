@@ -5,7 +5,6 @@
 import datetime
 
 from django import template
-from entity.module import module_admin_list
 
 register = template.Library()
 
