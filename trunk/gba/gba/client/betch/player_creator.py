@@ -88,6 +88,28 @@ class NameFactory():
     @classmethod
     def create_name(cls):
         return 'player name'
+    
+class AgeFactory():
+    
+    @classmethod
+    def create(cls):
+        return random.randint(19, 30)
+    
+class StatureFactory():
+    
+    _BASE_VALUE = {'C': 195, 'PF': 190, 'SF': 185, 'SG': 180, 'PG': 160}
+    
+    @classmethod
+    def create(cls, location):
+        return random.randint(0, 30) + cls._BASE_VALUE[location.upper()]
+        
+class AvoirdupoisFactory():
+    
+    _BASE_VALUE = {'C': 90, 'PF': 85, 'SF': 70, 'SG': 60, 'PG': 55}
+    
+    @classmethod
+    def create(cls, location):
+        return random.randint(0, 50) + cls._BASE_VALUE[location.upper()]
                     
 class PlayerCreator(object):
     
@@ -128,6 +150,9 @@ class PlayerCreator(object):
                     self._created_total += 1
                     player = self._create(location, level)
                     setattr(player, 'betch_no', self._betch_no)
+                    setattr(player, 'age', AgeFactory.create())
+                    setattr(player, 'stature', StatureFactory.create(location))
+                    setattr(player, 'avoirdupois', AvoirdupoisFactory.create(location))
                     player.persist()
             if count >= getattr(Config, 'FREE_PLAERY_TOTAL_%s' % location):
                 break
@@ -151,6 +176,7 @@ class PlayerCreator(object):
 if __name__ == '__main__':
     creator = PlayerCreator()
     creator.run()
+    #AvoirdupoisFactory.create('C')
     #print AttributeConfig.get_attribute_config('shooting', 'c', 1)
     
     

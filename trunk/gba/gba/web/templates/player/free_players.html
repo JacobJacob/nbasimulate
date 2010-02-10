@@ -37,10 +37,11 @@
 	<thead>
 	<tr>
 	    <th>no</th>
+	    <th>position</th>
 	    <th>name</th>
 	    <th>age</th>
-	    <th></th>
-		<th></th>
+	    <th>stature</th>
+		<th>avoirdupois</th>
 		<th></th>
 	</tr>
 	</thead>
@@ -51,6 +52,7 @@
 	     <td> 
 	      {{ info.player_no }}
 	     </td>
+	     <td>{{ info.position }}</td>
 	     <td> 
 	      <a href="#" class="view_player">{{ info.name }}</a>
 	     </td>
@@ -58,15 +60,11 @@
 	      {{ info.age }}
 	     </td>
 	     <td> 
-	        {% ifequal host_info.enable 1%}
-	           true
-	        {% else %}
-	           false
-	        {% endifequal %}
+	        {{ info.stature }}
 	     </td>
-	     <td> {{ host_info.created_time }}</td>
+	     <td> {{ info.avoirdupois }}</td>
 	     <td> 
-
+         
 	     </td>
 	    </tr> 
 	  {% endfor %}
