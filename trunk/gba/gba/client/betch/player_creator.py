@@ -4,13 +4,14 @@
 import os
 import random
 import time
+import traceback
 
 from xml.dom.minidom import parse, parseString
 from xml.dom.minidom import Element
 
 from gba.config import PathSettings
-from gba.common import md5mgr
-from gba.entity import FreePlayer
+from gba.common import md5mgr, json
+from gba.entity import FreePlayer, PlayerBetchLog
 
 class AttributeConfig(object):
     '''格式:{'shoot': {'grade-c': [xx, xx xx, xx, xx, xx, xx, xx, xx]}}'''
@@ -96,11 +97,25 @@ class PlayerCreator(object):
     
     def __init__(self):
         self._betch_no = '%s' % int(time.time())
+        self._info = {}
+        self._created_total = 0
         
     def run(self):
         '''run'''
-        for location in ['C', 'PF', 'SF', 'SG', 'PG']:
-            self._run(location)
+        betch_log = PlayerBetchLog()
+        betch_log.betch_no = self._betch_no
+        try:
+            for location in ['C', 'PF', 'SF', 'SG', 'PG']:
+                self._run(location)
+        except:
+            betch_log.is_success = 0
+            self._info['error_msg'] = traceback.format_exc(3)
+        else:
+            betch_log.is_success = 1
+        
+        self._info['created_total'] = self._created_total   
+        betch_log.info = json.dumps(self._info)
+        betch_log.persist()
                 
     def _run(self, location):
         count = 0 
@@ -110,6 +125,7 @@ class PlayerCreator(object):
                 total = int(getattr(Config, 'FREE_PLAERY_TOTAL_%s' % location) * percent / getattr(Config, 'FREE_PLAYER_TOTAL_PERCENT_%s' % location))
                 for i in range(total):
                     count += 1
+                    self._created_total += 1
                     player = self._create(location, level)
                     setattr(player, 'betch_no', self._betch_no)
                     player.persist()

@@ -1,4 +1,4 @@
-{% extends "master.html" %}
+{% extends "admin/master.html" %}
 {% load common_extras %}
 {% block title %}free player{% endblock %}
 {% block head_ext %}
@@ -7,41 +7,19 @@
 <script type="text/javascript">
   $(document).ready(function(){
 	 $('a.view_player').click(function() {
-	     var id = $(this).parent().parent().attr('id');
-	     $.ajax({
-		    url: '{% url freeplayer-detail %}?id=' + id,
-		    type: 'GET',
-		    dataType: 'html',
-		    timeout: 1000,
-		    error: function(error){
-		        alert(error);
-		    },
-		    success: function(html){
-		        $('#play_detail').html(html);
-		    }
-		});
+         
 	 });
   });
 </script>
 {% endblock %}
 {% block content %}
-<a href="{% url free-players %}?position=C">C</a>
-<a href="{% url free-players %}?position=PF">PF</a>
-<a href="{% url free-players %}?position=SF">SF</a>
-<a href="{% url free-players %}?position=SG">SG</a>
-<a href="{% url free-players %}?position=PG">PG</a>
-<table>
-<tr>
-  <td width="650"> 
 <table cellspacing="1" class="tablesorter">
 	<thead>
 	<tr>
-	    <th>no</th>
-	    <th>name</th>
-	    <th>age</th>
+	    <th>betch no</th>
+	    <th>info</th>
+	    <th>created time</th>
 	    <th></th>
-		<th></th>
-		<th></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -49,29 +27,21 @@
 	  {% for info in infos %}
 	    <tr id="{{ info.id }}">
 	     <td> 
-	      {{ info.player_no }}
+	      {{ info.betch_no }}
 	     </td>
 	     <td> 
-	      <a href="#" class="view_player">{{ info.name }}</a>
+	      {{ info.info }}
 	     </td>
 	     <td> 
-	      {{ info.age }}
+	      {{ info.created_time }}
 	     </td>
-	     <td> 
-	        {% ifequal host_info.enable 1%}
-	           true
-	        {% else %}
-	           false
-	        {% endifequal %}
-	     </td>
-	     <td> {{ host_info.created_time }}</td>
 	     <td> 
 
 	     </td>
 	    </tr> 
 	  {% endfor %}
 	  <tr>
-		<td colspan="7">
+		<td colspan="4">
 		总{{ page }}/{{ totalpage }}页
 		{% ifnotequal page 1 %}
 		 <a href="?page=1&type={{type}}">首页</a>
@@ -91,18 +61,9 @@
 	</tr>
 	{% else %}
 	<tr>
-		<td colspan="7">暂无数据.</td>
+		<td colspan="4">暂无数据.</td>
 	</tr>
 	{% endif %}
 	</tbody>
 </table>
-</td>
-<td>
-  <div id="play_detail">
-  
-  </div>
-</td>
-</tr>
-</table>
-
 {% endblock %}
