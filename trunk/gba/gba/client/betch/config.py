@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 import random
 
 from xml.dom.minidom import parse, parseString
@@ -13,7 +14,7 @@ attriubtes = ['dribble', 'backboard', 'blocked', 'bounce', 'shooting',
 
 
 def random_attribute(position):
-    pass
+    return attriubtes[random.randint(1, 11)]
 
 def random_diathesis(position):
     pass

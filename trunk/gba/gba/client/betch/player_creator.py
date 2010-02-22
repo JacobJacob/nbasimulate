@@ -8,6 +8,7 @@ import traceback
 
 from gba.common import md5mgr, json
 from gba.entity import FreePlayer, PlayerBetchLog
+from gba.client.betch.config import AttributeConfig
   
 class Config(object):
     
@@ -90,6 +91,7 @@ class PlayerCreator(object):
         except:
             betch_log.is_success = 0
             self._info['error_msg'] = traceback.format_exc(3)
+            print self._info['error_msg']
         else:
             betch_log.is_success = 1
         
