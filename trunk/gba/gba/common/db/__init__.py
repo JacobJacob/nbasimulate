@@ -4,7 +4,7 @@ from connection_wrapper import Connection as __Connection
 
 connection = __Connection(
                           user = 'root',
-                          db = 'ant',
+                          db = 'gba',
                           passwd = '821015',
                           host = 'localhost',
                           port = 3306,

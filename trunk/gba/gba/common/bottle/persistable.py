@@ -361,37 +361,24 @@ class Column(object):
     
     @property
     def field(self):
-        if self._args.has_key('field'):
-            return self._args['field']
-        return None
+        return self._args.get('field')
     
     @property
     def type(self):
-        if self._args.has_key('type'):
-            return self._args['type']
-        return None
-    
+        return self._args.get('type')
+
     @property
     def length(self):
-        if self._args.has_key('length'):
-            return self._args['length']
-        return None
+        return self._args.get('length')
     
     @property
     def is_unique(self):
-        if self._args.has_key('is_unique'):
-            return self._args['is_unique']
-        return None
+        return self._args.get('is_unique')
     
     @property
     def default(self):
-        if self._args.has_key('default'):
-            return self._args['default']
-        return None
+        return self._args.get('default')
     
     @property
     def extra(self):
-        if self._args.has_key('extra'):
-            return self._args['extra']
-        return None
-
+        return self._args.get('extra')

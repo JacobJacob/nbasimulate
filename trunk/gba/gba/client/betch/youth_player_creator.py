@@ -6,9 +6,51 @@ import random
 import time
 import traceback
 
+from xml.dom.minidom import parse, parseString
+from xml.dom.minidom import Element
+
+from gba.config import PathSettings
 from gba.common import md5mgr, json
-from gba.entity import FreePlayer, PlayerBetchLog
-  
+from gba.entity import FreePlayer, PlayerBetchLog, YouthFreePlayer
+
+class AttributeConfig(object):
+    '''格式:{'shoot': {'grade-c': [xx, xx xx, xx, xx, xx, xx, xx, xx]}}'''
+    
+    _LOADED = False
+    _DATA = {}
+    
+    
+    @classmethod
+    def get_attribute_config(cls, attribute, location, level=1):
+        if level > 9 or level < 1:
+            return None
+        index = level - 1
+        location = 'grade-%s' % location.lower() 
+        if not cls._LOADED:
+            cls._load()
+        if attribute in cls._DATA:
+            if location in cls._DATA[attribute]:
+                return int(cls._DATA[attribute][location][index])
+        return None
+
+    @classmethod
+    def _load(cls):
+        config_dom = parse(os.path.join(PathSettings.PROJECT_FOLDER, 'config', 'attribute-config.xml'))
+        root = config_dom._get_firstChild()
+        for node in root.childNodes:
+            if not isinstance(node, Element):
+                continue
+            name = node.getAttribute('name')
+            child_map = {}
+            for child_node in node.childNodes:
+                if not isinstance(child_node, Element):
+                    continue
+                child_name = child_node.tagName
+                text_node = child_node._get_firstChild()
+                attributes = text_node.data.split(';')
+                child_map[child_name] = attributes
+            cls._DATA[name] = child_map
+                
 class Config(object):
     
     FREE_PLAERY_TOTAL_C = 10
@@ -51,7 +93,7 @@ class AgeFactory():
     
     @classmethod
     def create(cls):
-        return random.randint(19, 30)
+        return random.randint(16, 21)
     
 class StatureFactory():
     
@@ -69,7 +111,7 @@ class AvoirdupoisFactory():
     def create(cls, location):
         return random.randint(0, 50) + cls._BASE_VALUE[location.upper()]
                     
-class PlayerCreator(object):
+class YauthPlayerCreator(object):
     
     _attributes = ['dribble', 'backboard', 'blocked', 'bounce', 
                    'shooting', 'speed', 'pass', 'trisection',
@@ -117,7 +159,7 @@ class PlayerCreator(object):
     
     def _create(self, location, level):
         '''create player'''
-        player = FreePlayer()
+        player = YouthFreePlayer()
         for attribute in self._attributes:
             base = AttributeConfig.get_attribute_config(attribute, location, level)
             value = 30 * random.random() + base
@@ -132,7 +174,7 @@ class PlayerCreator(object):
         return player
 
 if __name__ == '__main__':
-    creator = PlayerCreator()
+    creator = YauthPlayerCreator()
     creator.run()
     #AvoirdupoisFactory.create('C')
     #print AttributeConfig.get_attribute_config('shooting', 'c', 1)
