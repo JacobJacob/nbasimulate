@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+
 from gba.common.db import connection
 
 _SELECT_FREE_PLAYER = 'select * from free_player where position="%s" order by %s %s limit %s, %s '
