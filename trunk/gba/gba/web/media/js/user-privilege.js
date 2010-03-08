@@ -266,7 +266,7 @@ Ext.onReady(function(){
     		var result = check_user_exist_service(user_id_temp);
     		if(!result){
     			store_user_privilege_info.removeAll();
-    			Ext.MessageBox.alert(user_id_temp+ "不是webauth授权用户。");
+    			Ext.MessageBox.alert(user_id_temp+ "不是from gba授权用户。");
     			return;
     		}
     	}

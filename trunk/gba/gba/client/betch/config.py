@@ -8,13 +8,11 @@ from xml.dom.minidom import parse, parseString
 from xml.dom.minidom import Element
 
 from gba.config import PathSettings
-
-attriubtes = ['dribble', 'backboard', 'blocked', 'bounce', 'shooting', 
-              'speed', 'pass', 'trisection', 'stamina', 'steal', 'strength']
+from gba.common.constants import attriubtes
 
 
 def random_attribute(position):
-    return attriubtes[random.randint(1, 11)]
+    return attriubtes[random.randint(1, len(attriubtes))]
 
 def random_diathesis(position):
     pass

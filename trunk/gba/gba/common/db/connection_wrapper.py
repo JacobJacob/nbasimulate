@@ -7,8 +7,8 @@ from _mysql_exceptions import MySQLError, Warning, Error, InterfaceError, DataEr
      DatabaseError, OperationalError, IntegrityError, InternalError, \
      NotSupportedError, ProgrammingError
 
-from webauth.config import DEBUG
-from webauth.common import cache
+from gba.config import DEBUG
+from gba.common import cache
 from cursor_wrapper import Cursor
 from reserve_convertor import ReserveLiteral
 

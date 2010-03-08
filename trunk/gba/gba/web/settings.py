@@ -1,5 +1,5 @@
 #coding=utf-8
-# Django settings for webauth project.
+# Django settings for from gba project.
 from gba.config import DjangoSettings, DEBUG
 import os
 
@@ -86,8 +86,8 @@ URL_PREFIX = DjangoSettings.URL_PREFIX
 
 TEMPLATE_CONTEXT_PROCESSORS = (
    'django.core.context_processors.request',
- #  'webauth.business.context_processors.data_total',
- #  'webauth.business.context_processors.user_info',
+ #  'from gba.business.context_processors.data_total',
+ #  'from gba.business.context_processors.user_info',
 )
 
 #-------------------------

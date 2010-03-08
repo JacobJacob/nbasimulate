@@ -8,7 +8,7 @@ DEBUG = True
 
 class PathSettings:
     if os.name == 'nt':
-        WORKING_FOLDER = "d:/appdatas/spiderproxy_working"
+        WORKING_FOLDER = "e:/appdatas/spiderproxy_working"
         if not os.path.exists('d:/'):
             WORKING_FOLDER = "c:/appdatas/spiderproxy_working"
     else:
@@ -34,13 +34,13 @@ class PathSettings:
     
 class DjangoSettings:
     DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-    DATABASE_NAME = 'webauth'
-    #DATABASE_USER = 'webauth'             # Not used with sqlite3.
-    #DATABASE_PASSWORD = 'webauth.123'
+    DATABASE_NAME = 'from gba'
+    #DATABASE_USER = 'from gba'             # Not used with sqlite3.
+    #DATABASE_PASSWORD = 'from gba.123'
     #DATABASE_HOST = '10.20.238.169'
-    DATABASE_USER = 'root'
-    DATABASE_PASSWORD = '821015'
-    DATABASE_HOST = '127.0.0.1'
+    DATABASE_USER = 'gba'
+    DATABASE_PASSWORD = 'gba123'
+    DATABASE_HOST = '192.168.1.158'
     DATABASE_PORT = 3306
         
     URL_PREFIX = ''
@@ -54,7 +54,7 @@ class DjangoSettings:
         os.makedirs(WEB_ROOT + '/rrd')
 
 COMMON_CACHE = ["127.0.0.1:11212"]
-COMMON_CACHE_CMD = 'memcached -d -m 1024 -p 11212 -u webauth'
+COMMON_CACHE_CMD = 'memcached -d -m 1024 -p 11212 -u from gba'
 
 MinDiskSize = 10 * 1024 * 1024 * 1024
 

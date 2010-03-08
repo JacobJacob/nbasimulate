@@ -11,13 +11,13 @@ from django.http import HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.utils.http import urlquote
 from django.core.urlresolvers import reverse
 
-from webauth.business.dboperator import DBOperator
-from webauth.common import md5mgr
-from webauth.common import cache
-from webauth.common.constants import User
-from webauth.common import log_execption
-from webauth.common.ksso_auth import User_authentication, Check_user_exist
-from webauth.common import exception_mgr
+from from gba.business.dboperator import DBOperator
+from from gba.common import md5mgr
+from from gba.common import cache
+from from gba.common.constants import User
+from from gba.common import log_execption
+from from gba.common.ksso_auth import User_authentication, Check_user_exist
+from from gba.common import exception_mgr
 
 SESSION_KEY = '_auth_user_id'
 BACKEND_SESSION_KEY = '_auth_user_backend'
@@ -87,7 +87,7 @@ class UserManager(DBOperator):
         
             r =  cursor.fetchone(self.CHECK_USER, (username,))
             if not r:
-                return -1, "您不是webauth的授权用户，请联系相关人员授权。"
+                return -1, "您不是from gba的授权用户，请联系相关人员授权。"
             try:
 #                if r:
                     cursor.execute(self.UPDATE_LOGIN_INFO,(session_id, password, username))
@@ -106,7 +106,7 @@ class UserManager(DBOperator):
         with self.cursor() as cursor:
             r =  cursor.fetchone(self.CHECK_USER, (user_name,))
             if not r:
-                return -1, "您不是webauth的授权用户，请联系相关人员授权。"
+                return -1, "您不是from gba的授权用户，请联系相关人员授权。"
             try:
                 cursor.execute(self.UPDATE_LOGIN_INFO,(session_id, password, user_name))
             except Exception, e:

@@ -26,6 +26,6 @@ if __name__ == '__main__':
     init()
     import django
     print django
-    from webauth import web
+    from gba import web
     import flup
     print flup

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """客户端基础服务"""
 
-from common.jsonrpcserver import jsonrpc_function
-from common.constants import CLIENT_STATUS_NAMES
-from business.client import ClientManager
+from gba.common.jsonrpcserver import jsonrpc_function
+from gba.common.constants import CLIENT_STATUS_NAMES
+from gba.business.client import ClientManager
 
 @jsonrpc_function
 def register(request, id, client_type, version):

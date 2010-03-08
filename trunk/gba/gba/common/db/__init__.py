@@ -3,10 +3,10 @@
 from connection_wrapper import Connection as __Connection
 
 connection = __Connection(
-                          user = 'root',
+                          user = 'gba',
                           db = 'gba',
-                          passwd = '821015',
-                          host = 'localhost',
+                          passwd = 'gba123',
+                          host = '192.168.1.158',
                           port = 3306,
                           charset = "utf8",
                           init_command = "set wait_timeout = 300"

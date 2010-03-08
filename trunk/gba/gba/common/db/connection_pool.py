@@ -2,7 +2,7 @@
 from threading import Lock, Condition
 
 from connection_wrapper import Connection
-from webauth.config import DjangoSettings
+from gba.config import DjangoSettings
     
 class ConnectionPool(object):
     """线程安全的数据库连接池"""

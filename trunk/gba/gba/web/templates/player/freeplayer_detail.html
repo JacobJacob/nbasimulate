@@ -1,1 +1,194 @@
-palyer_detail {{ id }}
+{% load common_extras %}
+<table>
+<tr>
+<td>
+<table>
+  <tr>
+    <td>球员姓名:</td><td>{{player.name}}</td>
+  </tr>
+  <tr>
+    <td>年龄:</td><td>{{player.age}}</td>
+  </tr>
+  <tr>
+    <td>球衣号码:</td><td>{{player.player_no}}</td>
+  </tr>
+  <tr>
+    <td>位置</td><td>{{player.position}}</td>
+  </tr>
+  <tr>
+    <td>综合</td><td>{{player.total}}</td>
+  </tr>
+</table>
+</td>
+<td>
+<TABLE id="tblDetail" cellSpacing="0" cellPadding="0" width="201" border="0">
+      <TBODY>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >速度</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.speed_oten|check_attr}}.gif" width="{{player.speed}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.speed}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >弹跳</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.bounce_oten|check_attr}}.gif" width="{{player.bounce}}" />
+                    </TD>
+                    <TD align="center" width="41"><A >{{player.bounce}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >强壮</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.strength_oten|check_attr}}.gif" width="{{player.strength}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.strength}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >耐力</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.stamina_oten|check_attr}}.gif" width="{{player.stamina}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.stamina}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >投篮</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.shooting_oten|check_attr}}.gif" width="{{player.shooting}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.shooting}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >三分</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.trisection_oten|check_attr}}.gif" width="{{player.trisection}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.trisection}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >运球</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.dribble_oten|check_attr}}.gif" width="{{player.dribble}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.dribble}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >传球</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.pass_oten|check_attr}}.gif" width="{{player.pass}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.pass}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >篮板</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.backboard_oten|check_attr}}.gif" width="{{player.backboard}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7" >{{player.backboard}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >抢断</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.steal_oten|check_attr}}.gif" width="{{player.steal}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.steal}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+        <TR>
+          <TD align="center" width="44" height="22"><A title="" >封盖</A></TD>
+          <TD width="157">
+             <TABLE cellSpacing="0" cellPadding="0" width="157" border="0">
+               <TBODY>
+                 <TR>
+                    <TD width="116" bgColor="#eeeeee" height="18">
+                      <IMG height="8" src="http://xbam1.web.17173.com/Images/Player/Ability/Color{{player.blocked_sub_oten|check_attr}}.gif" width="{{player.blocked}}" />
+                    </TD>
+                    <TD align="center" width="41"><A title="85.7+11.5" >{{player.blocked}}</A></TD>
+                 </TR>
+               </TBODY>
+            </TABLE>
+          </TD>
+        </TR>
+   </TABLE>
+ </td>
+ </tr>
+</table>

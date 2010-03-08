@@ -146,7 +146,7 @@ class BaseClient(object):
         self.work_thread.start()
         
     def _svnup(self):
-        logging.warning("%s[Source Version = %s] SVNUP, exit 43" % (self.client_type, webauth.VERSION))
+        logging.warning("%s[Source Version = %s] SVNUP, exit 43" % (self.client_type, from gba.VERSION))
         raise SystemExit(SmartClientCommand.SVNUP_RESTART) # 升级重启进程
         
     def _quit(self):
@@ -282,7 +282,7 @@ class BaseClient(object):
         """模块注册，并得到由服务器端分配的 Client ID。"""
         while True:
             try:
-                self.client_id = self.service.register(self._id, self.client_type, webauth.VERSION)
+                self.client_id = self.service.register(self._id, self.client_type, from gba.VERSION)
                 logging.info('%s REGISTER SUCCEED(client_id %s)' % \
                                 (self.client_type, self.client_id))
                 return True
@@ -301,7 +301,7 @@ class BaseClient(object):
         """客户端的主循环入口"""
         self._id = self._get_id()
         logging.info("%s[Source Version = %s] START" % (self.client_type, 
-                                                        webauth.VERSION))
+                                                        from gba.VERSION))
         if not self._register(): # 只有注册成功，才能进入主循环
             return
         while True:

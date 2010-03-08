@@ -10,11 +10,11 @@ from django.http import HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.utils.http import urlquote
 from django.core.urlresolvers import reverse
 
-from webauth.business.dboperator import DBOperator
-from webauth.common import md5mgr
-from webauth.common import cache
-from webauth.common.constants import User
-from webauth.common import log_execption
+from from gba.business.dboperator import DBOperator
+from from gba.common import md5mgr
+from from gba.common import cache
+from from gba.common.constants import User
+from from gba.common import log_execption
 
 SESSION_KEY = '_auth_user_id'
 BACKEND_SESSION_KEY = '_auth_user_backend'
