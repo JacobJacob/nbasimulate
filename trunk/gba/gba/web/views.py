@@ -15,3 +15,7 @@ def right(request):
 
 def admin_top(request):
     return render_to_response("admin_top.html", locals())
+
+def login(request):
+    content = u'用户登录'
+    return render_to_response("login.html", locals())

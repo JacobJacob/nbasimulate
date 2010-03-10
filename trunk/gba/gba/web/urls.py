@@ -1,10 +1,11 @@
 from django.conf import settings
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
 
 urlpatterns = patterns('',
     # Example:
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_PATH}), 
     url(r'^$', 'views.index', name='index'),
+    url(r'^login/$', 'views.login', name='login-page'),
     url(r'^left/$', 'views.left', name='left'),
     url(r'^right/$', 'views.right', name='right'),
     url(r'^admintop/$', 'views.admin_top', name='admin-top'),
