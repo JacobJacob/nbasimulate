@@ -5,7 +5,7 @@
 from gba.web.render import render_to_response
 from gba.common.db import connection
 from gba.common import json
-from gba.business import free_player
+from gba.business import player_operator
 
 def index(request):
     """list"""
@@ -15,7 +15,7 @@ def index(request):
     order_by = request.GET.get('order_by', 'id')
     order = request.GET.get('order', 'desc')
     
-    infos, total = free_player.get_free_palyer(page, pagesize, position, order_by, order)
+    infos, total = player_operator.get_free_palyer(page, pagesize, position, order_by, order)
     
     if total == 0:
         totalpage = 0

@@ -3,8 +3,8 @@
 """数据库操作基类
 """
 
-from common import cache as _data_cache
-from common.db import connection
+from gba.common import cache as _data_cache
+from gba.common.db import connection
 
 _get_cache_table_key = lambda table_name: '%s%s' % (table_name, 
                                                    "$current_table")
