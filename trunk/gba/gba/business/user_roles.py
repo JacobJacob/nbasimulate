@@ -11,13 +11,12 @@ from django.http import HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.utils.http import urlquote
 from django.core.urlresolvers import reverse
 
-from from gba.business.dboperator import DBOperator
-from from gba.common import md5mgr
-from from gba.common import cache
-from from gba.common.constants import User
-from from gba.common import log_execption
-from from gba.common.ksso_auth import User_authentication, Check_user_exist
-from from gba.common import exception_mgr
+from gba.business.dboperator import DBOperator
+from gba.common import md5mgr
+from gba.common import cache
+from gba.common.constants import User
+from gba.common import log_execption
+from gba.common import exception_mgr
 
 SESSION_KEY = '_auth_user_id'
 BACKEND_SESSION_KEY = '_auth_user_backend'
@@ -74,7 +73,7 @@ class UserManager(DBOperator):
         if not username or not password:
             return -1, LOGIN_ERROR
         
-        user_info = User_authentication(username,password)
+        user_info = None
         password = md5mgr.mksha1fromstr(password)
         if not user_info:
             with self.cursor() as cursor:                
@@ -396,7 +395,7 @@ def login_required(input_function):
         else:
             path = urlquote(request.get_full_path())
             response = HttpResponseRedirect('%s?%s=%s' % \
-                                            (reverse('login'), REDIRECT_FIELD_NAME, path))
+                                            (reverse('login-page'), REDIRECT_FIELD_NAME, path))
 #            response.delete_cookie(SESSION_KEY) # 清楚cookies中的session_id
             return response
     replace_function.func_name = input_function.func_name
