@@ -160,7 +160,7 @@ public class SqlHelper {
 			}
 		}
 
-		return tableName.toString();
+		return tableName.toString().toLowerCase();
 	}
 
 	public static String fieldName2ColumnName(String fieldName) {
