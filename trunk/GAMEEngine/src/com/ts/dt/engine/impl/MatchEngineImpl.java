@@ -10,7 +10,7 @@ import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.dao.impl.TeamDaoImpl;
 import com.ts.dt.engine.MatchEngine;
 import com.ts.dt.match.Nodosity;
-import com.ts.dt.po.MatchMain;
+import com.ts.dt.po.Matchs;
 import com.ts.dt.po.Team;
 import com.ts.dt.util.Logger;
 
@@ -35,15 +35,13 @@ public class MatchEngineImpl implements MatchEngine {
 		Team homeTeam = teamDao.load(homeTeamId);
 		Team visitingTeam = teamDao.load(visitingTeamId);
 
-		MatchMain match = new MatchMain();
+		Matchs match = new Matchs();
 		MatchDao matchDao = new MatchDaoImpl();
 
 		match.setStartTime(new Date());
-		match.setVisitingTeamName(visitingTeam.getName());
-		match.setVisitingTeamId(visitingTeamId);
+		match.setGuestTeamId(visitingTeamId);
 
 		match.setHomeTeamId(homeTeamId);
-		match.setHomeTeamName(homeTeam.getName());
 		matchDao.save(match);
 
 		context.setMatchId(match.getId());

@@ -10,8 +10,8 @@ import com.ts.dt.po.TeamTacticsDetail;
 
 public class TacticsDaoImpl implements TacticsDao {
 
-	private static final String QUERY_TACTICS_SQL = "SELECT * FROM Team_Tactics WHERE team_id = ? AND flg =?";
-	private static final String QUERY_TACTICS_DETAIL_SQL = "SELECT * FROM Team_Tactics_Detail WHERE team_tactics_id = ? AND seq =?";
+	private static final String QUERY_TACTICS_SQL = "SELECT * FROM team_tactics WHERE team_id = ? AND flg =?";
+	private static final String QUERY_TACTICS_DETAIL_SQL = "SELECT * FROM team_tactics_detail WHERE team_tactics_id = ? AND seq =?";
 
 	@SuppressWarnings("unchecked")
 	public TeamTactics loadTeamTactics(long teamId, String matchType) {

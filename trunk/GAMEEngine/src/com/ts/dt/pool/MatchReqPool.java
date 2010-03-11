@@ -3,14 +3,14 @@ package com.ts.dt.pool;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.ts.dt.po.MatchReq;
+import com.ts.dt.po.Matchs;
 
 public class MatchReqPool {
 
-	private static List<MatchReq> pool = new LinkedList<MatchReq>();
+	private static List<Matchs> pool = new LinkedList<Matchs>();
 	private static Object lock = new Object();
 
-	public static void put(MatchReq req) {
+	public static void put(Matchs req) {
 		System.err.println("Thread:" + Thread.currentThread() + " start to put a obj....");
 		pool.add(req);
 		synchronized (lock) {
@@ -19,8 +19,8 @@ public class MatchReqPool {
 		}
 	}
 
-	public static MatchReq get() {
-		MatchReq req = null;
+	public static Matchs get() {
+		Matchs req = null;
 		synchronized (lock) {
 			while (pool.size() == 0) {
 

@@ -40,7 +40,7 @@ public class Nodosity {
 		context.put(MatchConstant.CURRENT_CONTROLLER_NAME, "CA");
 		context.put(MatchConstant.HAS_PASS_TIMES, 0);
 		context.put(MatchConstant.CURRENT_CONTROLLERS, controllers);
-		// loadControllers();
+		 loadControllers();
 		loadControllersFromDb();
 		Controller currentController = controllers.get(context
 				.get(MatchConstant.CURRENT_CONTROLLER_NAME));

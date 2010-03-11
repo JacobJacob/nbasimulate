@@ -2,11 +2,11 @@ package com.ts.dt.dao;
 
 import java.util.List;
 
-import com.ts.dt.po.MatchReq;
+import com.ts.dt.po.Matchs;
 
 public interface MatchReqDao {
 
-	public List<MatchReq> getAllNewReq();
+	public List<Matchs> getAllNewReq();
 
-	public void remove(MatchReq matchReq);
+	public void remove(Matchs matchReq);
 }

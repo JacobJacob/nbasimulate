@@ -3,6 +3,7 @@
 	<name>GAMEEngine</name>
 	<comment></comment>
 	<projects>
+		<project>bottle</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
