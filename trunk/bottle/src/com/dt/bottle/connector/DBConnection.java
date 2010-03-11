@@ -18,7 +18,7 @@ public class DBConnection {
 	public synchronized void connect() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/xba?user=root&password=821015&characterEncoding=utf-8");
+			conn = DriverManager.getConnection("jdbc:mysql://192.168.1.158/gba?user=gba&password=gba123&characterEncoding=utf-8");
 			setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
