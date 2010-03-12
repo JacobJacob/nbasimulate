@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from gba.common.db import connection
+from gba.common.db.reserve_convertor import ReserveLiteral
+from gba.common.constants import MatchStatus, MatchTypes
 
 _SELECT_MATCH = 'select * from matchs where %s order by id desc limit %s, %s'
                 
@@ -29,6 +31,20 @@ def get_match(team_id, type, page=1, pagesize=15):
         
     return infos, total
 
-def send_match_request(guest_team_id, type):
+def send_match_request(home_team_id, guest_team_id, type):
     '''发送比赛请求'''
-    pass
+    info = {}
+    info['home_team_id'] = home_team_id
+    info['guest_team_id'] = guest_team_id
+    info['type'] = type
+    info['status'] = MatchStatus.SEND
+    info['created_time'] = ReserveLiteral('now()')
+    info['send_time'] = ReserveLiteral('now()')
+    cursor = connection.cursor()
+    try:
+        cursor.insert(info, 'matchs')
+    finally:
+        cursor.close()
+        
+if __name__ == '__main__':
+    send_match_request(0, 1, MatchTypes.FRIENDLY)
