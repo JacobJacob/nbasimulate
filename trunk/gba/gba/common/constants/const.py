@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from constant_base import ConstantBase
+
 attriubtes = ['dribble', 'backboard', 'blocked', 'bounce', 'shooting', 
               'speed', 'pass', 'trisection', 'stamina', 'steal', 'strength']
 
@@ -18,3 +20,12 @@ oten_color_map = [
    [0.7, 10],
    [0, 11],             
 ]
+
+class MatchStatus(ConstantBase):
+    SEND = 0
+    START = 1
+    FINISH = 2
+    CANCEL = 3
+    
+class MatchTypes(ConstantBase):
+    FRIENDLY = 0
