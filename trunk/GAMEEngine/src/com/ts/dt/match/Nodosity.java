@@ -10,14 +10,14 @@ import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.PlayerDao;
-import com.ts.dt.dao.TacticsDao;
+import com.ts.dt.dao.TacticalDao;
 import com.ts.dt.dao.impl.PlayerDaoImpl;
-import com.ts.dt.dao.impl.TacticsDaoImpl;
+import com.ts.dt.dao.impl.TacticalDaoImpl;
 import com.ts.dt.match.test.TestDataFactory;
 import com.ts.dt.po.MatchNodosityDetail;
 import com.ts.dt.po.MatchNodosityMain;
-import com.ts.dt.po.TeamTactics;
-import com.ts.dt.po.TeamTacticsDetail;
+import com.ts.dt.po.TeamTactical;
+import com.ts.dt.po.TeamTacticalDetail;
 
 public class Nodosity {
 
@@ -28,8 +28,8 @@ public class Nodosity {
 	private boolean hasNextNodosity = true;
 	private Nodosity nextNodosity;
 
-	private TeamTactics homeTeamTactics;
-	private TeamTactics visitingTeamTactics;
+	private TeamTactical homeTeamTactics;
+	private TeamTactical visitingTeamTactics;
 
 	private Hashtable<String, Controller> controllers;
 	private MatchContext context;
@@ -202,19 +202,19 @@ public class Nodosity {
 
 	private void loadControllersFromDb() {
 
-		TacticsDao tacticsDao = new TacticsDaoImpl();
+		TacticalDao tacticsDao = new TacticalDaoImpl();
 		PlayerDao playerDao = new PlayerDaoImpl();
 
-		homeTeamTactics = tacticsDao.loadTeamTactics(context.getHomeTeamId(),
+		homeTeamTactics = tacticsDao.loadTeamTactical(context.getHomeTeamId(),
 				context.getMatchType());
-		visitingTeamTactics = tacticsDao.loadTeamTactics(context
+		visitingTeamTactics = tacticsDao.loadTeamTactical(context
 				.getVisitingTeamId(), context.getMatchType());
 
-		TeamTacticsDetail homeTeamTacticsDetail = tacticsDao
-				.loadTeamTacticsDetail(homeTeamTactics.getId(), context
+		TeamTacticalDetail homeTeamTacticsDetail = tacticsDao
+				.loadTeamTacticalDetail(homeTeamTactics.getId(), context
 						.getSeq());
-		TeamTacticsDetail visitingTeamTacticsDetail = tacticsDao
-				.loadTeamTacticsDetail(visitingTeamTactics.getId(), context
+		TeamTacticalDetail visitingTeamTacticsDetail = tacticsDao
+				.loadTeamTacticalDetail(visitingTeamTactics.getId(), context
 						.getSeq());
 
 		if (homeTeamTacticsDetail == null || visitingTeamTacticsDetail == null) {

@@ -4,23 +4,23 @@ import java.util.List;
 
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
-import com.ts.dt.dao.TacticsDao;
-import com.ts.dt.po.TeamTactics;
-import com.ts.dt.po.TeamTacticsDetail;
+import com.ts.dt.dao.TacticalDao;
+import com.ts.dt.po.TeamTactical;
+import com.ts.dt.po.TeamTacticalDetail;
 
-public class TacticsDaoImpl implements TacticsDao {
+public class TacticalDaoImpl implements TacticalDao {
 
 	private static final String QUERY_TACTICS_SQL = "SELECT * FROM team_tactics WHERE team_id = ? AND flg =?";
 	private static final String QUERY_TACTICS_DETAIL_SQL = "SELECT * FROM team_tactics_detail WHERE team_tactics_id = ? AND seq =?";
 
 	@SuppressWarnings("unchecked")
-	public TeamTactics loadTeamTactics(long teamId, String matchType) {
+	public TeamTactical loadTeamTactical(long teamId, String matchType) {
 
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
-		List<TeamTactics> list = null;
+		List<TeamTactical> list = null;
 		try {
-			list = (List<TeamTactics>) session.query(TeamTactics.class,
+			list = (List<TeamTactical>) session.query(TeamTactical.class,
 					QUERY_TACTICS_SQL, new Object[] { teamId, matchType });
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -33,13 +33,13 @@ public class TacticsDaoImpl implements TacticsDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public TeamTacticsDetail loadTeamTacticsDetail(long tacticsId, int seq) {
+	public TeamTacticalDetail loadTeamTacticalDetail(long tacticsId, int seq) {
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
-		List<TeamTacticsDetail> list = null;
+		List<TeamTacticalDetail> list = null;
 		try {
-			list = (List<TeamTacticsDetail>) session.query(
-					TeamTacticsDetail.class, QUERY_TACTICS_DETAIL_SQL,
+			list = (List<TeamTacticalDetail>) session.query(
+					TeamTacticalDetail.class, QUERY_TACTICS_DETAIL_SQL,
 					new Object[] { tacticsId, seq });
 		} catch (Exception e) {
 			e.printStackTrace();

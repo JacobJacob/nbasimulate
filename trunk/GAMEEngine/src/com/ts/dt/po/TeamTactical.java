@@ -2,7 +2,7 @@ package com.ts.dt.po;
 
 import com.dt.bottle.persistence.Persistence;
 
-public class TeamTactics extends Persistence {
+public class TeamTactical extends Persistence {
 
 	private long teamId;
 	private String teamName;

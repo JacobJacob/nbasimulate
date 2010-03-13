@@ -2,9 +2,8 @@ package com.ts.dt.po;
 
 import com.dt.bottle.persistence.Persistence;
 
-public class TeamTacticsDetail extends Persistence {
+public class TeamTacticalDetail extends Persistence {
 
-	private long teamTacticsId;
 	private long tacticsId;
 	private long seq;
 
@@ -13,14 +12,6 @@ public class TeamTacticsDetail extends Persistence {
 	private long sfid;
 	private long sgid;
 	private long pgid;
-
-	public long getTeamTacticsId() {
-		return teamTacticsId;
-	}
-
-	public void setTeamTacticsId(long teamTacticsId) {
-		this.teamTacticsId = teamTacticsId;
-	}
 
 	public long getTacticsId() {
 		return tacticsId;
