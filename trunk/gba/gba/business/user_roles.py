@@ -7,16 +7,18 @@
 from __future__ import with_statement
 from uuid import uuid4
 
-from django.http import HttpResponseRedirect, HttpRequest, HttpResponseForbidden, HttpResponseServerError
+from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.utils.http import urlquote
 from django.core.urlresolvers import reverse
 
 from gba.business.dboperator import DBOperator
+from gba.common.db import connection
 from gba.common import md5mgr
 from gba.common import cache
-from gba.common.constants import User
+#from gba.common.constants import User
 from gba.common import log_execption
 from gba.common import exception_mgr
+from gba.entity import Team
 
 SESSION_KEY = '_auth_user_id'
 BACKEND_SESSION_KEY = '_auth_user_backend'
@@ -62,6 +64,8 @@ class UserManager(DBOperator):
     MODIFY_PAGE = """UPDATE page_info SET page_name = %s, page_descript = %s  WHERE id = %s"""
     DELETE_PAGE = """DELETE FROM page_info WHERE id = %s"""
     
+    UPDATE_ACTIVE_TIME = """UPDATE user_info set last_active_time=now() WHERE username = %s"""
+    
     def login(self, username, password):
         """
          根据用户名和密码判断是否是合法用户
@@ -74,7 +78,7 @@ class UserManager(DBOperator):
             return -1, LOGIN_ERROR
         
         user_info = None
-        password = md5mgr.mksha1fromstr(password)
+        password = md5mgr.mkmd5fromstr(md5mgr.mkmd5fromstr(password))
         if not user_info:
             with self.cursor() as cursor:                
                 r =  cursor.fetchone(self.CHECK_USER_PASSWORD, (username, password,))
@@ -129,13 +133,22 @@ class UserManager(DBOperator):
             if r is None and not cache.get_stats(): # 只有cache挂了才从数据库中读取，防止恶意刷后台页面
                 # get from database
                 with self.cursor() as cursor:
-                    record = cursor.fetchone(self.SELECT_USER, (session_id,))
+                    record = cursor.fetchone(self.SELECT_USER, (session_id, ))
                 if record:
                     r = record.to_dict()
             if r is not None:
                 cache.set(session_id, r, SESSION_EXPIRE_TIME)
+                with self.cursor() as cursor:
+                    cursor.execute(self.UPDATE_ACTIVE_TIME, (r['username'], ))
                 return r
         return None
+    
+    def get_team_info(self, request):
+        '''获取球队信息'''
+        user_info = self.get_userinfo(request)
+        username = user_info['username']
+        team = Team.load(username=username)
+        return team
     
     def add_user(self, username):
         """判断用户是否在ksso中存在，如果存在，就增加到当前用户信息表
@@ -189,6 +202,25 @@ class UserManager(DBOperator):
         """
         with self.cursor() as cursor:
             return cursor.fetchall(self.SELECT_USERS)
+    
+    def register_user(self, username, password):
+        
+        password = md5mgr.mkmd5fromstr(md5mgr.mkmd5fromstr(password))
+        session_id = md5mgr.mkmd5fromstr('%s%s%s' % (uuid4(), username, password))
+        
+        user_info = {'username': username, 'password': password, 'session_id': session_id}
+        
+        cursor = connection.cursor()
+        try:
+            cursor.insert(user_info, 'user_info')
+        except:
+            return False, None
+        finally:
+            cursor.close()
+           
+        return True, session_id
+            
+            
     
     def get_page_info(self, page_id=0):
         """根据PAGE_ID，返回页面的描述信息
