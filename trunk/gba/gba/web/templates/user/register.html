@@ -1,0 +1,14 @@
+<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<head>
+   <title>注册新用户</title>
+</head>
+<body>
+<form name="register_form" action="{% url register %}" method="post">
+用户名:<input type="txet" name="username"/>
+密码:<input type="password" name="password"/>
+确认密码:<input type="password" name="password"/>
+<input type="submit" value="注册"/>
+</form>
+</body>

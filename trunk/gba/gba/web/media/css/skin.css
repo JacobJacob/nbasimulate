@@ -271,3 +271,61 @@ a:visited {
   font-size: 12px;
   border: 1px solid #B5D0D9;
 }
+
+.normal_link a{
+   CURSOR: hand;
+}
+.normal_link a:link {
+	font-size: 12px;
+	line-height: 18px;
+	color: #333333;
+	cursor:hand
+}
+.normal_link a:hover {
+	font-size: 12px;
+	line-height: 18px;
+	color: #666666;
+	cursor:hand;
+}
+.normal_link a:visited {
+	font-size: 12px;
+	line-height: 18px;
+	color: #333333;
+	cursor:hand;
+}
+
+.data_table{
+	COLOR: #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+}
+
+.data_table th{
+	border-top: 1px solid #B5D0D9;
+	border-bottom: 1px solid #B5D0D9;
+	border-left: 1px solid #B5D0D9;
+}
+
+.data_table td{
+	border-left: 1px solid #B5D0D9;
+	border-bottom: 1px solid #B5D0D9;
+}
+
+.align_center{
+   text-align:center;
+}
+
+#tactial_type{
+  padding:10px 0 0 10px;
+}
+
+#tactial_type li{
+  list-style-type:none;
+  line-height: 30px;
+}
+
+#defend_tactical_type, #offensive_tactical_type{
+  float: left;
+  width: 200px;
+}

@@ -59,6 +59,7 @@ from django.utils.encoding import smart_unicode, force_unicode
 from django.utils.translation import ugettext as _
 from django.utils.safestring import SafeData, EscapeData, mark_safe, mark_for_escaping
 from django.utils.html import escape
+from optparse import isbasestring
 
 __all__ = ('Template', 'Context', 'RequestContext', 'compile_string')
 
@@ -635,7 +636,6 @@ class Variable(object):
         self.literal = None
         self.lookups = None
         self.translate = False
-
         try:
             # First try to treat this variable as a number.
             #
@@ -673,7 +673,18 @@ class Variable(object):
         """Resolve this variable against a given context."""
         if self.lookups is not None:
             # We're dealing with a variable that needs to be resolved
+            temp_lookups = []
+            old_lookups = self.lookups
+            for r in self.lookups:
+                if isinstance(r, basestring) and r.endswith('_'):
+                    r = r[:-1]
+                    self.lookups = [r]
+                    r = self._resolve_lookup(context)
+                temp_lookups.append(r)
+     
+            self.lookups = temp_lookups
             value = self._resolve_lookup(context)
+            self.lookups = old_lookups
         else:
             # We're dealing with a literal, so it's already been "resolved"
             value = self.literal

@@ -5,8 +5,8 @@
 from gba.web.render import render_to_response
 from gba.common import playerutil
 from gba.business import player_operator
-from gba.business.user_roles import login_required
-
+from gba.business.user_roles import login_required, UserManager
+from gba.entity import Team
 
 def index(request):
     """list"""
@@ -43,9 +43,11 @@ def freeplayer_detail(request):
 def profession_player(request):
     '''profession player'''
 
-    team_id = 0
+    user_info = UserManager().get_userinfo(request)
     
-    infos = player_operator.get_profession_player(team_id)
+    team = Team.load(username=user_info['username'])
+    
+    infos = player_operator.get_profession_player(team.id)
     datas = {'infos': infos}
     
     return render_to_response(request, 'player/profession_player.html', datas)

@@ -13,7 +13,7 @@
 			    dataType: 'html',
 			    timeout: 1000,
 			    error: function(error){
-			        alert(error.message);
+			        alert(error);
 			    },
 			    success: function(html){
 			        $('#play_detail').html(html);
@@ -34,7 +34,6 @@ body {
 -->
 </style>
 <body>
-<br/>
 <table width="99%">
 <tr>
 <td width="60%" valign="top">

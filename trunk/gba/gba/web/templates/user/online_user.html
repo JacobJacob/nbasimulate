@@ -1,11 +1,13 @@
 <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
 <link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 <script type="text/javascript">
 
 	  $(document).ready(function(){
-	    
-		 $('a.player_name').click(function() {
+		 $('a.user_name').click(function() {
 		     var id = $(this).parent().parent().attr('id');
 		     $.ajax({
 			    url: '{% url freeplayer-detail %}?id=' + id,
@@ -20,7 +22,19 @@
 			    }
 			});
 		 });
+         
+         		 
+		 $('a.send_match_req').click(function() {
+		     var id = $(this).parent().parent().attr('id');
+		     show_dialog()
+		 });
+		
 	  });
+	  
+	  function show_dialog() {
+	    $("#send_req_dialog").dialog();
+
+      }
 </script>
 <style type="text/css">
 <!--
@@ -37,46 +51,27 @@ body {
 <table width="99%">
 <tr>
 <td width="60%">
-<TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 id=secTable>
-    <TBODY>
-      <TR align=middle height=20>
-        <TD align="center" class="{% ifequal position 'C' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=C">中锋<a></TD>
-        <TD align="center" class="{% ifequal position 'PF' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=PF">大前锋<a></TD>
-        <TD align="center" class="{% ifequal position 'SF' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=SF">小前锋<a></TD>
-        <TD align="center" class="{% ifequal position 'SG' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=SG">得分后卫<a></TD>
-        <TD align="center" class="{% ifequal position 'PG' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=PG">控球后卫<a></TD>
-      </TR>
-    </TBODY>
-</TABLE>
 <TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
   <thead>
-    <th>号码</th>
-    <th>位置</th>
-    <th>名字</th>
-    <th><a href="{% url free-players %}?position={{ position }}&order_by=age&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}">年龄<a></th>
-    <th><a href="{% url free-players %}?position={{ position }}&order_by=stature&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}">身高</a></th>
-    <th><a href="{% url free-players %}?position={{ position }}&order_by=avoirdupois&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}">体重</th>
-    <th>综合</th>
-    <th>体力</th>
+    <th>经理名</th>
+    <th>球队名</th>
+    <th>青年联赛</th>
+    <th>职业联赛</th>
     <th class="right">操作</th>
   </thead>
   <tbody>
     {% if infos %}
       {% for info in infos %}
-       <tr id="{{ info.id }}">
-        <td>{{ info.player_no }}</td>
-        <td>{{ info.position }}</td>
-        <td class="name"><a class="player_name">{{ info.name }}</a></td>
-        <td>{{ info.age }}</td>
-        <td>{{ info.stature }}</td>
-        <td>{{ info.avoirdupois }}</td>
+       <tr id="{{ info.username }}">
+        <td><a class="user_name">{{ info.username }}</a></td>
+        <td>{{ info.username }}</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td class="right">&nbsp;</td>
+        <td class="right"><a class="send_match_req">约战</a></td>
        </tr>
       {% endfor %}
       <tr>
-        <td colspan="9" class="right">
+        <td colspan="5" class="right">
           共{{page}}/{{totalpage}}页
           {% ifequal page 1 %}
             首页
@@ -103,4 +98,7 @@ body {
 </td>
 </tr>
 </table>
+<div id="send_req_dialog" class="flora" style="display: none;">
+   比赛请求
+</div>
 </body>

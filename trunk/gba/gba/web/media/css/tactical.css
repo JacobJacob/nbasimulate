@@ -1,0 +1,47 @@
+#tactical {
+    width:378px;
+    height:204px;
+	background-image: url(../images/tactical.png);
+	background-repeat:no-repeat;
+}
+
+#position_sg{
+    position:absolute ;
+    top:35px;
+    left:48px;
+}
+
+#position_pg {
+    position:absolute ;
+    top:73px;
+    left:95px;
+}
+
+#position_sf {
+    position:absolute ;
+    top:175px;
+    left:63px;
+}
+
+#position_c {
+    position:absolute ;
+    top:85px;
+    left:35px;
+}
+
+#position_pf {
+    position:absolute ;
+    top:159px;
+    left:12px;
+}
+
+.player_tactical_tp{
+    background-image: url(../images/playerbg.gif);
+	background-repeat:no-repeat;
+	width:26px;
+	height:26px;
+	text-align:center;
+	border:1px;
+	float:left;
+	line-height:26px;
+}
