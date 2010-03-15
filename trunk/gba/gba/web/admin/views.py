@@ -10,23 +10,9 @@ from gba.business.user_roles import login_required
 
 def index(request):
     """list"""
-    page = int(request.GET.get('page', 1))
-    pagesize = int(request.GET.get('pagesize', 15))
-    position = request.GET.get('position', 'C')
-    order_by = request.GET.get('order_by', 'id')
-    order = request.GET.get('order', 'asc')
-    
-    infos, total = player_operator.get_free_palyer(page, pagesize, position, order_by, order)
-    
-    print infos
-    
-    if total == 0:
-        totalpage = 0
-    else:
-        totalpage = (total -1) / pagesize + 1
-    
-    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
-            'nextpage': page + 1, 'prevpage': page - 1, 'position': position, 'order_by': order_by, 
-            'order': order}
-    
-    return render_to_response(request, 'player/free_players.html', datas)
+    datas = {}
+    return render_to_response(request, 'index/index.html', datas)
+
+def action_desc(request):
+    datas = {}
+    return render_to_response(request, 'admin/action_desc.html', datas)
