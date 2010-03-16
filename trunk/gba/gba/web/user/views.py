@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 
 from gba.web.render import render_to_response
 from gba.business.user_roles import UserManager
-from gba.business import user_operator
+from gba.business import user_operator, match_operator
 
 SESSION_KEY = '_auth_user_id'
 
@@ -51,6 +51,7 @@ def register(request):
     if success:
         response = HttpResponseRedirect('/')
         response.set_cookie(SESSION_KEY, session_id)
+        match_operator.init_team({'username': username})
         return response
     else:
         message = session_id
