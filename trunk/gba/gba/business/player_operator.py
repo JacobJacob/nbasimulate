@@ -53,13 +53,13 @@ def get_profession_player(team_id):
     finally:
         cursor.close()
         
-_LOAD_PROFESSION_PLAYER = 'select * from profession_player where id=%s'
+_LOAD_PROFESSION_PLAYER = 'select * from profession_player where no=%s'
 
-def get_profession_palyer_by_id(id):
+def get_profession_palyer_by_no(no):
     '''获取职业球员详细'''
     cursor = connection.cursor()
     try:
-        rs = cursor.fetchone(_LOAD_PROFESSION_PLAYER, (id, ))
+        rs = cursor.fetchone(_LOAD_PROFESSION_PLAYER, (no, ))
         if rs:
             return rs.to_dict()
     finally:
