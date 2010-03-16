@@ -5,7 +5,6 @@
 from gba.web.render import render_to_response
 from gba.business.user_roles import login_required, UserManager
 from gba.business import player_operator, match_operator
-from gba.common.constants import TacticalGroupType
 
 from gba.entity import Team
 
