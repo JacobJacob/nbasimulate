@@ -20,8 +20,6 @@ public class TacticalDaoImpl implements TacticalDao {
 		Session session = BottleUtil.currentSession();
 		List<TeamTactical> list = null;
 		try {
-			System.out.println(teamId);
-			System.out.println(matchType);
 			list = (List<TeamTactical>) session.query(TeamTactical.class, QUERY_TACTICS_SQL, new Object[] { teamId, matchType });
 		} catch (Exception e) {
 			e.printStackTrace();
