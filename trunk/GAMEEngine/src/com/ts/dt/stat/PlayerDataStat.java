@@ -21,7 +21,7 @@ public class PlayerDataStat {
 	private int defensiveRebound;
 
 	private int assist;
-	private int misplay;
+	private int lapsus;
 	private int block;
 
 	private int foulTimes;
@@ -63,7 +63,7 @@ public class PlayerDataStat {
 	}
 
 	public void misplayTimesInc() {
-		misplay++;
+		lapsus++;
 	}
 
 	public void blockTimesInc() {
@@ -138,7 +138,7 @@ public class PlayerDataStat {
 		matchStat.setPoint3ShootTimes(point3ShootTimes);
 		matchStat.setFoul(foulTimes);
 		matchStat.setAssist(assist);
-		matchStat.setMisplay(misplay);
+		matchStat.setLapsus(lapsus);
 		matchStat.setBlock(block);
 
 		matchStat.setPlayerId(player.getId());

@@ -40,15 +40,6 @@ public class ActionDescLoaderImpl implements ActionDescLoader {
 		return null;
 	}
 
-	/**
-	 * @param actionNm
-	 *            the action name
-	 * @param result
-	 *            the action execute result
-	 * @param flg
-	 *            the flag,eg.blocked
-	 * @return ActionDesc
-	 */
 	public ActionDesc loadWithNameAndResultAndFlg(String actionNm, String result, String flg) {
 		// TODO Auto-generated method stub
 		ActionDesc actionDesc = null;
@@ -66,6 +57,9 @@ public class ActionDescLoaderImpl implements ActionDescLoader {
 				actionDesclist.add((ActionDesc) p);
 			}
 			cache.put(key, actionDesclist);
+		}
+		if (actionDesclist.size() == 0) {
+			System.err.println("action:" + actionNm + "|result:" + result + "|flg:" + flg);
 		}
 		actionDesc = selectWithPercent(actionDesclist);
 		return actionDesc;

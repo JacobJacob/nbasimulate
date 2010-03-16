@@ -23,7 +23,7 @@ public class MatchStat extends Persistence {
 	private int defensiveRebound;
 
 	private int assist;
-	private int misplay;
+	private int lapsus;
 	private int block;
 
 	private int foul;
@@ -132,12 +132,12 @@ public class MatchStat extends Persistence {
 		this.assist = assist;
 	}
 
-	public int getMisplay() {
-		return misplay;
+	public int getLapsus() {
+		return lapsus;
 	}
 
-	public void setMisplay(int misplay) {
-		this.misplay = misplay;
+	public void setLapsus(int lapsus) {
+		this.lapsus = lapsus;
 	}
 
 	public int getBlock() {

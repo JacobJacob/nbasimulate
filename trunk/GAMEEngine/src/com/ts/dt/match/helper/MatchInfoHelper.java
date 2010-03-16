@@ -1,14 +1,14 @@
 package com.ts.dt.match.helper;
 
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.po.MatchDetail;
+import com.ts.dt.po.MatchNodosityDetail;
 import com.ts.dt.util.TimeUtil;
 
 public class MatchInfoHelper {
 
 	public static void save(MatchContext context, String desc) {
 
-		MatchDetail matchDetail = new MatchDetail();
+		MatchNodosityDetail matchDetail = new MatchNodosityDetail();
 		// MatchDetailDao matchDetailDao = new MatchDetailDaoImpl();
 
 		String timeMsg = TimeUtil.timeMillis2TimeFormat(context

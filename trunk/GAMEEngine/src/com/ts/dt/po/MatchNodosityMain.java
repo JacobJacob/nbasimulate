@@ -13,20 +13,20 @@ public class MatchNodosityMain extends Persistence {
 	private long visitingTacticId;
 	private String point;
 
-	private List<MatchNodosityDetail> list;
-	private List<MatchDetail> detail;
+	private List<MatchNodosityTacticalDetail> list;
+	private List<MatchNodosityDetail> detail;
 
-	public void addDetail(MatchNodosityDetail detail) {
+	public void addDetail(MatchNodosityTacticalDetail detail) {
 		if (list == null) {
-			list = new ArrayList<MatchNodosityDetail>();
+			list = new ArrayList<MatchNodosityTacticalDetail>();
 		}
 		list.add(detail);
 
 	}
 
-	public void addMatchDetailLog(MatchDetail matchdetail) {
+	public void addMatchDetailLog(MatchNodosityDetail matchdetail) {
 		if (detail == null) {
-			detail = new ArrayList<MatchDetail>();
+			detail = new ArrayList<MatchNodosityDetail>();
 		}
 		detail.add(matchdetail);
 	}
@@ -71,19 +71,19 @@ public class MatchNodosityMain extends Persistence {
 		this.point = point;
 	}
 
-	public List<MatchNodosityDetail> getList() {
+	public List<MatchNodosityTacticalDetail> getList() {
 		return list;
 	}
 
-	public void setList(List<MatchNodosityDetail> list) {
+	public void setList(List<MatchNodosityTacticalDetail> list) {
 		this.list = list;
 	}
 
-	public List<MatchDetail> getDetail() {
+	public List<MatchNodosityDetail> getDetail() {
 		return detail;
 	}
 
-	public void setDetail(List<MatchDetail> detail) {
+	public void setDetail(List<MatchNodosityDetail> detail) {
 		this.detail = detail;
 	}
 

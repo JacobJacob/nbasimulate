@@ -19,14 +19,6 @@ import com.ts.dt.util.Logger;
  */
 public class MatchEngineImpl implements MatchEngine {
 
-	/**
-	 * @param homeTeamId
-	 *            the home team id
-	 * @param visitingTeamId
-	 *            the visiting team id
-	 * @param matchType
-	 *            the match type
-	 */
 	public long execute(long matchid) {
 
 		MatchContext context = new MatchContext();
@@ -93,7 +85,7 @@ public class MatchEngineImpl implements MatchEngine {
 		public void run() {
 			// TODO Auto-generated method stub
 			for (int i = 0; i < 1; i++) {
-				
+
 			}
 		}
 

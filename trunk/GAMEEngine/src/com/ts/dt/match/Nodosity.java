@@ -14,7 +14,7 @@ import com.ts.dt.dao.TacticalDao;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TacticalDaoImpl;
 import com.ts.dt.match.test.TestDataFactory;
-import com.ts.dt.po.MatchNodosityDetail;
+import com.ts.dt.po.MatchNodosityTacticalDetail;
 import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.TeamTactical;
 import com.ts.dt.po.TeamTacticalDetail;
@@ -114,7 +114,7 @@ public class Nodosity {
 		main.setSeq(context.getSeq());
 		main.setMatchId(context.getMatchId());
 
-		MatchNodosityDetail detail = null;
+		MatchNodosityTacticalDetail detail = null;
 
 		Map<String, Controller> map = context.getControllers();
 
@@ -123,7 +123,7 @@ public class Nodosity {
 
 			String key = iterator.next();
 			Controller controller = map.get(key);
-			detail = new MatchNodosityDetail();
+			detail = new MatchNodosityTacticalDetail();
 			detail.setPlayerId(controller.getPlayer().getId());
 			detail.setPlayerName(controller.getPlayer().getName());
 			detail.setPosition(key);
