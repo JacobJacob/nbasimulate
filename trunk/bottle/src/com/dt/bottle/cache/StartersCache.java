@@ -7,9 +7,8 @@ import com.dt.bottle.persistence.Persistence;
 
 /**
  * 
- * @author Jacky Shi
- * Class StartersCache is a Starters Cache
- *
+ * @author Jacky Shi Class StartersCache is a Starters Cache
+ * 
  */
 public class StartersCache {
 
@@ -18,16 +17,19 @@ public class StartersCache {
 	public StartersCache() {
 		cache = new Hashtable<Class<?>, Hashtable<String, Persistence>>();
 	}
-    /**
-     * check the object exist in cache
-     * @param cls the persistence class 
-     * @param id  the persistence id
-     * @return boolean
-     */
+
+	/**
+	 * check the object exist in cache
+	 * 
+	 * @param cls
+	 *            the persistence class
+	 * @param id
+	 *            the persistence id
+	 * @return boolean
+	 */
 	public boolean containObject(Class<?> cls, long id) {
 		if (cache.containsKey(cls)) {
-			Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache
-					.get(cls);
+			Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache.get(cls);
 			if (tmpTable.containsKey(String.valueOf(id))) {
 				return true;
 			} else {
@@ -41,11 +43,9 @@ public class StartersCache {
 	public Persistence load(Class<?> cls, long id) {
 
 		if (cache.containsKey(cls)) {
-			Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache
-					.get(cls);
+			Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache.get(cls);
 			if (tmpTable.containsKey(String.valueOf(id))) {
-				Logger.logger("Building Object from Cache : " + cls.getName()
-						+ " : " + id);
+				Logger.logger("Building Object from Cache : " + cls.getName() + " : " + id);
 				return tmpTable.get(String.valueOf(id));
 			} else {
 				return null;
@@ -57,12 +57,11 @@ public class StartersCache {
 
 	public void store(Persistence obj, long id) {
 		Class<?> cls = obj.getClass();
-		if (containObject(obj.getClass(), id)) { 
+		if (containObject(obj.getClass(), id)) {
 			update(obj, id);
 		} else {
 			if (cache.containsKey(cls)) {
-				Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache
-						.get(cls);
+				Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache.get(cls);
 				tmpTable.put(String.valueOf(id), obj);
 			} else {
 				Hashtable<String, Persistence> tmpTable = new Hashtable<String, Persistence>();
@@ -74,8 +73,7 @@ public class StartersCache {
 	public void update(Persistence obj, long id) {
 
 		Class<?> cls = obj.getClass();
-		Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache
-				.get(cls);
+		Hashtable<String, Persistence> tmpTable = (Hashtable<String, Persistence>) cache.get(cls);
 		tmpTable.put(String.valueOf(id), obj);
 
 	}

@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Date;
 
 import com.dt.bottle.constants.Constants;
 import com.dt.bottle.persistence.Persistence;
@@ -36,6 +37,7 @@ public class SqlHelper {
 			if ("serialVersionUID".equals(field.getName())) {
 				continue;
 			}
+
 			Object value = getValueByField(obj, field.getName());
 
 			// one to one
@@ -56,6 +58,21 @@ public class SqlHelper {
 				values.add(value);
 			}
 		}
+
+		Field[] parentsFields = obj.getClass().getFields();
+
+		for (int i = 0; i < parentsFields.length; i++) {
+
+			Field field = parentsFields[i];
+
+			if ("createdTime".equals(field.getName())) {
+				attribute.append(",");
+				attribute.append(fieldName2ColumnName(field.getName()));
+				parameters.append(",?");
+				values.add(new Date());
+			}
+		}
+
 		String attributeStr = attribute.substring(1, attribute.length());
 		String parametersStr = parameters.substring(1, parameters.length());
 
@@ -141,6 +158,17 @@ public class SqlHelper {
 		return load.toString();
 	}
 
+	public static String getLoaderSql(Object obj, String condition) {
+
+		StringBuffer load = new StringBuffer();
+
+		load.append(" SELECT * FROM ");
+		load.append(className2TableName(obj));
+		load.append(" WHERE " + condition);
+
+		return load.toString();
+	}
+
 	public static String className2TableName(Object obj) {
 
 		String className = obj.getClass().getName();
@@ -178,7 +206,7 @@ public class SqlHelper {
 				columnName.append(chs[i]);
 			}
 		}
-		return columnName.toString();
+		return columnName.toString().toLowerCase();
 	}
 
 	public static String getShortName(Object obj) {

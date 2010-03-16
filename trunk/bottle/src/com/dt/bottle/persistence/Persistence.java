@@ -1,11 +1,14 @@
 package com.dt.bottle.persistence;
 
+import java.util.Date;
+
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
 
 public class Persistence implements Persistable {
 
 	private long id;
+	public Date createdTime;
 
 	public long getId() {
 		return id;
@@ -75,6 +78,14 @@ public class Persistence implements Persistable {
 
 			e.printStackTrace();
 		}
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 
 }

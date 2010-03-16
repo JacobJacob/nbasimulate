@@ -171,6 +171,36 @@ public class Session {
 		return persistence;
 	}
 
+	public Persistence load(Class<?> cls, String condition) throws Exception {
+
+		Persistence persistence = (Persistence) cls.newInstance();
+
+		DBConnection conn = ConnectionPool.instance().connection();
+
+		Logger.logger("start to load Object[" + condition + "]");
+
+		String sql = SqlHelper.getLoaderSql(persistence, condition);
+		Object[] parm = {};
+
+		try {
+			ResultSet resultSet = conn.executeQuery(sql, parm);
+			if (!resultSet.next()) {
+				throw new ObjectNotFoundException();
+			}
+			ObjectBuilder.builderObjFromResultSet(persistence, resultSet);
+
+		} catch (Exception e) {
+			success = false;
+			e.printStackTrace();
+			throw new SessionException();
+		} finally {
+			ConnectionPool.instance().disConnection(conn);
+			conn = null;
+		}
+
+		return persistence;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List query(Class<? extends Persistence> cla, String sql, Object[] parm) throws SessionException {
 
@@ -179,7 +209,6 @@ public class Session {
 		ResultSet resultSet = null;
 		try {
 			resultSet = conn.executeQuery(sql, parm);
-
 			int rows = 0;
 			while (resultSet.next()) {
 				rows++;
