@@ -25,106 +25,76 @@ class Period(object):
         if not context.current_action:
             check_current_action()
 
-        action = context.current_action;
+        action = self._context.current_action;
 
-        if action == MatchType.SHOUT:
-             if context.current_offensive_timeout:
-                current_controller.foul(context)
+        if action.type == MatchType.SHOUT:
+            if self._context.current_offensive_timeout:
+                current_controller.foul(self._context)
                 self.check_next_controller(MatchType.FOUL)
             else:
-                currentController.shout(context);
+                current_controller.shout(self._context);
+                #handle after shout
+                if not self._context.is_foul and not self._context.is_success and not self._context.is_outside:
+                    pass
+                    #BackboardCheckFactory.getInstance().createBackboardCheckFactory(context).check(context);
+                self.check_next_controller(MatchType.SHOUT);
+                context.has_pass_times = 0 #reset pass times
 
-                if (! context.isFoul() && ! context.isSuccess() && ! context.isOutside()) {
-                    BackboardCheckFactory.getInstance().createBackboardCheckFactory(context).check(context);
-                }
-                checkNextController(MatchConstant.ACTION_TYPE_SHOUT);
-                context.put(MatchConstant.HAS_PASS_TIMES, 0);
-
-        elif action == MatchType.PASS:
-        
+        elif action.type == MatchType.PASS:
+            if context.current_offensive_timeout:
+                current_controller.foul(self._context);
+                self.check_next_controller(MatchType.FOUL)
+            else:
+                current_controller.pass_(self._context);
+                self.check_next_controller(MatchType.PASS);
+                after_pass = self._context.current_action;
+                afterPass.after(self._context);
+                has_pass_times = self._context.has_pass_times
+                has_pass_times += 1
+                context.has_pass_times = has_pass_times
+                
         elif action == MatchType.REBOUND:
+            current_controller.recovery(self._context);
+            self.check_next_controller(MatchType.REBOUND);
             
         elif action == MatchType.SERVICE:
+            current_controller.service(self._context);
+            self.check_next_controller(MatchType.SERVICE);
             
         elif action == MatchType.SCRIMMAGE:
-            
+            current_controller.scrimmage(self._context);
+            self.check_next_controller(MatchType.SCRIMMAGE);
+            scrimmage = self._context.current_action;
+            scrimmage.after(self._context);
         else:
             raise 'not defind action %s' % action
-            
-        if (action == MatchConstant.ACTION_TYPE_SHOUT) {
-            if (context.currentOffensiveTimeOut()) {
-
-                currentController.foul(context);
-                checkNextController(MatchConstant.ACTION_TYPE_FOUL);
-            } else {
-                currentController.shout(context);
-
-                if (! context.isFoul() && ! context.isSuccess() && ! context.isOutside()) {
-                    BackboardCheckFactory.getInstance().createBackboardCheckFactory(context).check(context);
-                }
-                checkNextController(MatchConstant.ACTION_TYPE_SHOUT);
-                context.put(MatchConstant.HAS_PASS_TIMES, 0);
-            }
-
-        } else if (action == MatchConstant.ACTION_TYPE_PASS) {
-            if (context.currentOffensiveTimeOut()) {
-                currentController.foul(context);
-                checkNextController(MatchConstant.ACTION_TYPE_FOUL);
-            } else {
-                currentController.pass(context);
-                checkNextController(MatchConstant.ACTION_TYPE_PASS);
-                Pass afterPass = (Pass) context.getCurrentAction();
-                afterPass.after(context);
-                int hasPassTimes = (Integer) context.get(MatchConstant.HAS_PASS_TIMES);
-                hasPassTimes + +;
-                context.put(MatchConstant.HAS_PASS_TIMES, hasPassTimes);
-            }
-
-        } else if (action == MatchConstant.ACTION_TYPE_REBOUND) {
-            currentController.loose(context);
-            checkNextController(MatchConstant.ACTION_TYPE_REBOUND);
-
-        } else if (action == MatchConstant.ACTION_TYPE_SERVICE) {
-            currentController.service(context);
-            checkNextController(MatchConstant.ACTION_TYPE_SERVICE);
-        } else if (action == MatchConstant.ACTION_TYPE_SCRIMMAGE) {
-            currentController.scrimmage(context);
-            checkNextController(MatchConstant.ACTION_TYPE_SCRIMMAGE);
-            Scrimmage scrimmage = (Scrimmage) context.getCurrentAction();
-            scrimmage.after(context);
-        }
-        checkNextActionType();
-        checkNextDefender();
-    }
-
-
-    public void next() {
-
-        Controller currentController = context.getCurrentController();
-        Controller nextController = context.getNextController();
-        context.setPreviousController(currentController);
-        context.setCurrentController(nextController);
-        context.setBallRight();
-
-        Controller nextDefender = context.getNextDefender();
-        context.setCurrentDefender(nextDefender);
-
-        /*********************************************************************** 
-         * move action type: next = > current; current = > previous ;clear next
-         **********************************************************************/ 
-        int currentActionType = context.getCurrentActionType();
-        int nextActionType = context.getNextActionType();
-
-        context.setPreviousActionType(currentActionType);
-        context.setCurrentActionType(nextActionType);
-        context.setNextActionType(MatchConstant.NULL_INTEGER);
-
-        context.setFoul(false);
-        context.setOutside(false);
+        
+        self.check_next_action_type();
+        self.check_next_defender();
     
-    def next(self):
-        pass
-    
+    def next(self):       
+        '''next'''
+        current_controller = self._context.current_controller;
+        next_controller = self._context.next_controller;
+        self._context.setPreviousController(currentController);
+        self._context.setCurrentController(nextController);
+        self._context.setBallRight();
+
+        Controller nextDefender = self._context.getNextDefender();
+        self._context.setCurrentDefender(nextDefender);
+
+        #move action type: next = > current; current = > previous ;clear next
+
+        int currentActionType = self._context.getCurrentActionType();
+        int nextActionType = self._context.getNextActionType();
+
+        self._context.setPreviousActionType(currentActionType);
+        self._context.setCurrentActionType(nextActionType);
+        self._context.setNextActionType(MatchType.NULL_INTEGER);
+
+        self._context.setFoul(false);
+        self._context.setOutside(false);
+
     def _check_next_controller(action) {
 
 
