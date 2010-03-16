@@ -3,7 +3,7 @@
 
 from constant_base import ConstantBase
 
-attriubtes = ['dribble', 'backboard', 'blocked', 'bounce', 'shooting', 
+attributes = ['dribble', 'backboard', 'blocked', 'bounce', 'shooting', 
               'speed', 'pass', 'trisection', 'stamina', 'steal', 'strength']
 
 
