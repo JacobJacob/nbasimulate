@@ -49,6 +49,7 @@ def profession_player(request):
     
     infos = player_operator.get_profession_player(team.id)
     datas = {'infos': infos}
+    datas['nos'] = [i for i in range(30)]
     
     return render_to_response(request, 'player/profession_player.html', datas)
 
