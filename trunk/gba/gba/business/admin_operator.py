@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from gba.common.db import connection
+from gba.common.db.reserve_convertor import ReserveLiteral
 
 _SELECT_ACTION = 'select * from action_desc where %s limit %s, %s'        
 _SELECT_ACTION_TOTAL = 'select count(*) as count from action_desc where %s'
 
 def get_action_desc(action_name=None, page=1, pagesize=15):
-    '''获取比赛记录'''
+    ''''''
     if page <= 0:
         page = 1
     index = (page - 1) * pagesize
@@ -27,6 +28,15 @@ def get_action_desc(action_name=None, page=1, pagesize=15):
         cursor.close()
         
     return infos, total
- 
+
+def add_action_desc(info):
+    ''''''
+    info['created_time'] = ReserveLiteral('now()')
+    cursor = connection.cursor()
+    try:
+        cursor.insert(info, 'action_desc', True, ['created_time', ])
+    finally:
+        cursor.close()
+        
 if __name__ == '__main__':
     pass
