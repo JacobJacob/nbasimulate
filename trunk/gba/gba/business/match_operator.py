@@ -5,6 +5,8 @@ from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MatchStatus, MatchTypes, TacticalGroupTypeMap, TacticalSectionTypeMap
 from gba.common import log_execption
+from gba.common import playerutil
+from gba.entity import ProfessionPlayer, Team
 from gba.business import player_operator
 
 _SELECT_MATCH = 'select * from matchs where %s order by id desc limit %s, %s'
@@ -183,6 +185,28 @@ def save_tactical_main(infos):
     finally:
         cursor.close()
     return True
-        
+
+def init_team(team_info):
+    '''初始化一支球队'''
+    
+    team = Team()
+    team.username = team_info['username']
+
+    #先创建球员,8名职业球员1 c , 1pf 2 sf 2 sg 2 pg
+    locations = ['C', 'PF', 'SF', 'SF', 'SG', 'SG', 'PG', 'PG']
+    ProfessionPlayer.transaction()
+    try:
+        team.persist()
+        for location in locations:
+            player = playerutil.create_profession_player(location)
+            setattr(player, 'team_id', team.id)
+            player.persist()
+        ProfessionPlayer.commit()
+    except:
+        ProfessionPlayer.rollback()
+       
+    #创建默认阵容
+    create_team_default_tactical(team.id)
+       
 if __name__ == '__main__':
-    create_team_default_tactical(1)
+    send_match_request(1, 8, 1)
