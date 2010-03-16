@@ -1,56 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
 import random
 import time
 import traceback
 
-from xml.dom.minidom import parse, parseString
-from xml.dom.minidom import Element
-
-from gba.config import PathSettings
 from gba.common import md5mgr, json
-from gba.entity import FreePlayer, PlayerBetchLog, YouthFreePlayer
+from gba.entity import PlayerBetchLog, YouthFreePlayer
+from gba.client.betch.config import AttributeConfig
+from gba.common.attribute_factory import AvoirdupoisFactory, NameFactory, AgeFactory, StatureFactory
 
-class AttributeConfig(object):
-    '''格式:{'shoot': {'grade-c': [xx, xx xx, xx, xx, xx, xx, xx, xx]}}'''
-    
-    _LOADED = False
-    _DATA = {}
-    
-    
-    @classmethod
-    def get_attribute_config(cls, attribute, location, level=1):
-        if level > 9 or level < 1:
-            return None
-        index = level - 1
-        location = 'grade-%s' % location.lower() 
-        if not cls._LOADED:
-            cls._load()
-        if attribute in cls._DATA:
-            if location in cls._DATA[attribute]:
-                return int(cls._DATA[attribute][location][index])
-        return None
-
-    @classmethod
-    def _load(cls):
-        config_dom = parse(os.path.join(PathSettings.PROJECT_FOLDER, 'config', 'attribute-config.xml'))
-        root = config_dom._get_firstChild()
-        for node in root.childNodes:
-            if not isinstance(node, Element):
-                continue
-            name = node.getAttribute('name')
-            child_map = {}
-            for child_node in node.childNodes:
-                if not isinstance(child_node, Element):
-                    continue
-                child_name = child_node.tagName
-                text_node = child_node._get_firstChild()
-                attributes = text_node.data.split(';')
-                child_map[child_name] = attributes
-            cls._DATA[name] = child_map
-                
+      
 class Config(object):
     
     FREE_PLAERY_TOTAL_C = 10
@@ -82,38 +42,10 @@ class Config(object):
     FREE_PLAYER_TOTAL_PERCENT_PG = 0
     for r in FREE_PLAYER_PERCENT_PG:
         FREE_PLAYER_TOTAL_PERCENT_PG += r
-        
-class NameFactory():
-    
-    @classmethod
-    def create_name(cls):
-        return 'player name'
-    
-class AgeFactory():
-    
-    @classmethod
-    def create(cls):
-        return random.randint(16, 21)
-    
-class StatureFactory():
-    
-    _BASE_VALUE = {'C': 195, 'PF': 190, 'SF': 185, 'SG': 180, 'PG': 160}
-    
-    @classmethod
-    def create(cls, location):
-        return random.randint(0, 30) + cls._BASE_VALUE[location.upper()]
-        
-class AvoirdupoisFactory():
-    
-    _BASE_VALUE = {'C': 90, 'PF': 85, 'SF': 70, 'SG': 60, 'PG': 55}
-    
-    @classmethod
-    def create(cls, location):
-        return random.randint(0, 50) + cls._BASE_VALUE[location.upper()]
-                    
+                 
 class YauthPlayerCreator(object):
     
-    _attributes = ['dribble', 'backboard', 'blocked', 'bounce', 
+    _attributes = ['dribble', 'backboard', 'blocked', 'bounce',
                    'shooting', 'speed', 'pass', 'trisection',
                    'stamina', 'steal', 'strength']
     

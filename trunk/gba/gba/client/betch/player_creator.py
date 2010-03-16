@@ -1,14 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
 import random
 import time
 import traceback
 
 from gba.common import md5mgr, json
+from gba.common.constants import attributes
 from gba.entity import FreePlayer, PlayerBetchLog
 from gba.client.betch.config import AttributeConfig
+from gba.common.attribute_factory import AvoirdupoisFactory
+from gba.common.attribute_factory import NameFactory
+from gba.common.attribute_factory import AgeFactory
+from gba.common.attribute_factory import StatureFactory
   
 class Config(object):
     
@@ -42,44 +46,14 @@ class Config(object):
     for r in FREE_PLAYER_PERCENT_PG:
         FREE_PLAYER_TOTAL_PERCENT_PG += r
         
-class NameFactory():
-    
-    @classmethod
-    def create_name(cls):
-        return 'player name'
-    
-class AgeFactory():
-    
-    @classmethod
-    def create(cls):
-        return random.randint(19, 30)
-    
-class StatureFactory():
-    
-    _BASE_VALUE = {'C': 195, 'PF': 190, 'SF': 185, 'SG': 180, 'PG': 160}
-    
-    @classmethod
-    def create(cls, location):
-        return random.randint(0, 30) + cls._BASE_VALUE[location.upper()]
-        
-class AvoirdupoisFactory():
-    
-    _BASE_VALUE = {'C': 90, 'PF': 85, 'SF': 70, 'SG': 60, 'PG': 55}
-    
-    @classmethod
-    def create(cls, location):
-        return random.randint(0, 50) + cls._BASE_VALUE[location.upper()]
-                    
+                 
 class PlayerCreator(object):
-    
-    _attributes = ['dribble', 'backboard', 'blocked', 'bounce', 
-                   'shooting', 'speed', 'pass', 'trisection',
-                   'stamina', 'steal', 'strength']
     
     def __init__(self):
         self._betch_no = '%s' % int(time.time())
         self._info = {}
         self._created_total = 0
+        self._attributes = attributes
         
     def run(self):
         '''run'''

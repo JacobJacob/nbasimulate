@@ -8,11 +8,11 @@ from xml.dom.minidom import parse, parseString
 from xml.dom.minidom import Element
 
 from gba.config import PathSettings
-from gba.common.constants import attriubtes
+from gba.common.constants import attributes
 
 
 def random_attribute(position):
-    return attriubtes[random.randint(1, len(attriubtes))]
+    return attributes[random.randint(1, len(attributes))]
 
 def random_diathesis(position):
     pass
