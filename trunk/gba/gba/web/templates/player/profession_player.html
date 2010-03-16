@@ -1,7 +1,13 @@
 <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
 <link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 <script type="text/javascript">
+
+      service = new rpc.ServiceProxy("/services/player/", {asynchronous:false, methods: ['profession_player_detail',]});
 
 	  $(document).ready(function(){
 	    
@@ -20,6 +26,34 @@
 			    }
 			});
 		 });
+		 
+		 $('a.edit_player').click(function() {
+		      var no = $(this).parent().parent().attr('no');
+		      $("#edit_player_dialog").show().dialog({
+		         height: 250, width: 300, modal: false,
+	             title: '球员信息更改',
+		         overlay: {
+                   opacity: 0.5, 
+                   background: "black" 
+                 }
+	          });
+	          var data = service.profession_player_detail(no);
+	          var info = data[0];
+	          var in_use_nos = data[1];
+	          $('#player_name').val(info['name']);
+	          $('#player_no').val(info['player_no']);
+	          $('#player_position').val(info['position']);
+	          
+	          '#player_no')
+	          
+              $("#edit_player_dialog").dialog('open');
+
+		 });
+		 
+		 $('#update_button').click(function(){
+		     alert(1);
+		 });
+		 
 	  });
 </script>
 <style type="text/css">
@@ -52,37 +86,18 @@ body {
   <tbody>
     {% if infos %}
       {% for info in infos %}
-       <tr id="{{ info.id }}">
+       <tr id="{{ info.id }}" no="{{ info.no }}">
         <td>{{ info.player_no }}</td>
         <td>{{ info.position }}</td>
-        <td class="name"><a class="player_name">{{ info.name }}</a></td>
+        <td><a class="player_name">{{ info.name }}</a></td>
         <td>{{ info.age }}</td>
         <td>{{ info.stature }}</td>
         <td>{{ info.avoirdupois }}</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td class="right">&nbsp;</td>
+        <td class="right"><a class="edit_player">修改</a></td>
        </tr>
       {% endfor %}
-      <tr>
-        <td colspan="9" class="right">
-          共{{page}}/{{totalpage}}页
-          {% ifequal page 1 %}
-            首页
-            上一页
-          {% else %}
-             <a href="{% url free-players %}?page=1&position={{position}}&order={{order}}&order_by={{order_by}}">首页</a>
-             <a href="{% url free-players %}?page={{prevpage}}&position={{position}}&order={{order}}&order_by={{order_by}}">上一页</a>
-          {% endifequal %}
-          {% ifequal page totalpage %}
-            末页
-            下一页
-          {% else %}
-             <a href="{% url free-players %}?page={{totalpage}}&position={{position}}&order={{order}}&order_by={{order_by}}">末页</a>
-             <a href="{% url free-players %}?page={{nextpage}}&position={{position}}&order={{order}}&order_by={{order_by}}">下一页</a>
-          {% endifequal %}
-        </td>
-      </tr>
     {% endif %}
   </tbody>
 </table>
@@ -92,4 +107,37 @@ body {
 </td>
 </tr>
 </table>
+<div id="edit_player_dialog" class="flora" style="display: none;">
+    <form id="edit_player_form">
+    	<p>
+    		<label>名字:</label>
+			<span><input id="player_name" type="text"/></span>
+	    </p>
+	    <p>
+            <label>号码:</label>
+			<span>
+			  <select name="player_no" id="player_no">
+                 {% for i in nos %}
+                  <option value="{{i}}">{{i}}</option>
+			     {% endfor %}
+			  </select>
+			</span>
+	    </p>
+	    <p>
+			<label>位置:</label>
+			<span>
+			  <select name="position" id="position">
+			    <option value="PG">组织后卫</option>
+			    <option value="SG">得分后卫</option>
+			    <option value="SF">小前锋</option>
+			    <option value="PF">大前锋</option>
+			    <option value="C">中锋</option>
+			  </select>
+			</span>
+		</p>
+		<p>
+		  <input id="update_button" type="button" value="更新" />
+		</p>
+    </form>
+</div>
 </body>
