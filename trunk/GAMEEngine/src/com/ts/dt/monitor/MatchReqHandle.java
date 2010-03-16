@@ -12,15 +12,15 @@ public class MatchReqHandle extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (true) {
-			Matchs req = MatchReqPool.get();
-			long matchId = new MatchEngineImpl().execute(req.getHomeTeamId(), req.getHomeTeamId(), "CAR");
+			Matchs match = MatchReqPool.get();
+			long matchId = new MatchEngineImpl().execute(match.getId());
 
 			Session session = BottleUtil.currentSession();
-			//req.setMatchId(matchId);
-			req.setStatus(2);
+			// req.setMatchId(matchId);
+			match.setStatus(2);
 			session.beginTransaction();
 			try {
-				req.save();
+				match.save();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

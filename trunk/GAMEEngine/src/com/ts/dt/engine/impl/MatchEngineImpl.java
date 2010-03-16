@@ -27,16 +27,18 @@ public class MatchEngineImpl implements MatchEngine {
 	 * @param matchType
 	 *            the match type
 	 */
-	public long execute(long homeTeamId, long visitingTeamId, String matchType) {
+	public long execute(long matchid) {
 
 		MatchContext context = new MatchContext();
+
+		MatchDao matchDao = new MatchDaoImpl();
+		Matchs match = matchDao.load(matchid);
+		long homeTeamId = match.getHomeTeamId();
+		long visitingTeamId = match.getGuestTeamId();
 
 		TeamDao teamDao = new TeamDaoImpl();
 		Team homeTeam = teamDao.load(homeTeamId);
 		Team visitingTeam = teamDao.load(visitingTeamId);
-
-		Matchs match = new Matchs();
-		MatchDao matchDao = new MatchDaoImpl();
 
 		match.setStartTime(new Date());
 		match.setGuestTeamId(visitingTeamId);
@@ -45,7 +47,7 @@ public class MatchEngineImpl implements MatchEngine {
 		matchDao.save(match);
 
 		context.setMatchId(match.getId());
-		context.setMatchType(matchType);
+		context.setMatchType(match.getType());
 		context.setHomeTeamId(homeTeamId);
 		context.setVisitingTeamId(visitingTeamId);
 
@@ -91,7 +93,7 @@ public class MatchEngineImpl implements MatchEngine {
 		public void run() {
 			// TODO Auto-generated method stub
 			for (int i = 0; i < 1; i++) {
-				new MatchEngineImpl().execute(1, 2, "CAR");
+				
 			}
 		}
 

@@ -2,15 +2,16 @@ package com.ts.dt.po;
 
 import com.dt.bottle.persistence.Persistence;
 
-public class Player extends Persistence {
+public class ProfessionPlayer extends Persistence {
 
 	private long id;
+	private String no;
 	private String name;
 	private int age;
 	private String position;
 	private int stature;
 	private int avoirdupois;
-	private long teamid;
+	private long teamId;
 	private double ability;
 	private double shooting;
 	private double speed;
@@ -75,11 +76,11 @@ public class Player extends Persistence {
 	}
 
 	public long getTeamid() {
-		return teamid;
+		return teamId;
 	}
 
 	public void setTeamid(long teamId) {
-		this.teamid = teamId;
+		this.teamId = teamId;
 	}
 
 	public double getAbility() {
@@ -226,4 +227,20 @@ public class Player extends Persistence {
 		this.backbone = backbone;
 	}
 
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+	public long getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(long teamId) {
+		this.teamId = teamId;
+	}
+    
 }

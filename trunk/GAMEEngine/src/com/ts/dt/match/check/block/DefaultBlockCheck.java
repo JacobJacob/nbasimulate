@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.match.helper.BlockHelper;
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 
 public class DefaultBlockCheck implements BlockCheck {
 
@@ -12,8 +12,8 @@ public class DefaultBlockCheck implements BlockCheck {
 
 	public void check(MatchContext context) {
 		// TODO Auto-generated method stub
-		Player curtPlayer = context.getCurrentControllerPlayer();
-		Player curtDefender = context.getCurrentDefender().getPlayer();
+		ProfessionPlayer curtPlayer = context.getCurrentControllerPlayer();
+		ProfessionPlayer curtDefender = context.getCurrentDefender().getPlayer();
 
 		double blockPower = BlockHelper.checkBlockPower(curtPlayer);
 		double vsBlockPower = BlockHelper.checkVsBlockPower(curtDefender);

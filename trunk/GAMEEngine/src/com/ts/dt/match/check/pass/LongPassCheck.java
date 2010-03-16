@@ -5,15 +5,15 @@ import com.ts.dt.context.MatchContext;
 import com.ts.dt.match.check.ResultCheck;
 import com.ts.dt.match.helper.PassHelper;
 import com.ts.dt.match.helper.RandomCheckHelper;
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 
 public class LongPassCheck implements ResultCheck {
 
 	public void check(MatchContext context) {
 		// TODO Auto-generated method stub
 		int percent = 80;
-		Player currtPlayer = context.getCurrentController().getPlayer();
-		Player currtDefender = context.getCurrentDefender().getPlayer();
+		ProfessionPlayer currtPlayer = context.getCurrentController().getPlayer();
+		ProfessionPlayer currtDefender = context.getCurrentDefender().getPlayer();
 		int passPower = PassHelper.checkPlayerPassPower(currtPlayer);
 		int vsPassPower = PassHelper.checkPlayerPassPower(currtDefender);
 

@@ -3,7 +3,7 @@ package com.ts.dt.match.helper;
 import java.util.Random;
 
 import com.ts.dt.constants.MatchConstant;
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 
 
 public class TechnicallyTraitHelper {
@@ -14,7 +14,7 @@ public class TechnicallyTraitHelper {
 	public static final int TECHNICALLY_TRAIT_SWIPE = 4; // 内线强打型
 	public static final int TECHNICALLY_TRAIT_BREAK = 5; // 突破型
 
-	public static int check(Player player) {
+	public static int check(ProfessionPlayer player) {
 
 		int trait = -1;
 

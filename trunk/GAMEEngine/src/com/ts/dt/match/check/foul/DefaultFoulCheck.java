@@ -8,7 +8,7 @@ import com.ts.dt.match.action.shoot.LongShoot;
 import com.ts.dt.match.helper.FoulHelper;
 import com.ts.dt.match.helper.RandomCheckHelper;
 import com.ts.dt.match.helper.SubstitutionHelper;
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 
 public class DefaultFoulCheck implements FoulCheck {
 
@@ -39,7 +39,7 @@ public class DefaultFoulCheck implements FoulCheck {
 				}
 			}
 			// statistical significance
-			Player defender = context.getCurrentDefender().getPlayer();
+			ProfessionPlayer defender = context.getCurrentDefender().getPlayer();
 			boolean isHomeTeam = context.getCurrentDefender().getControllerName().endsWith("A");
 			context.playerAddFoulTimes(defender, isHomeTeam);
 			if (context.checkFoulOut(defender, isHomeTeam)) {

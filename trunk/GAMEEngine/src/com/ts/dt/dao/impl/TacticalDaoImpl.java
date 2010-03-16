@@ -10,18 +10,19 @@ import com.ts.dt.po.TeamTacticalDetail;
 
 public class TacticalDaoImpl implements TacticalDao {
 
-	private static final String QUERY_TACTICS_SQL = "SELECT * FROM team_tactics WHERE team_id = ? AND flg =?";
-	private static final String QUERY_TACTICS_DETAIL_SQL = "SELECT * FROM team_tactics_detail WHERE team_tactics_id = ? AND seq =?";
+	private static final String QUERY_TACTICS_SQL = "SELECT * FROM team_tactical WHERE team_id = ? AND type =? LIMIT 1";
+	private static final String QUERY_TACTICS_DETAIL_SQL = "SELECT * FROM team_tactical_detail WHERE id = ? LIMIT 1";
 
 	@SuppressWarnings("unchecked")
-	public TeamTactical loadTeamTactical(long teamId, String matchType) {
+	public TeamTactical loadTeamTactical(long teamId, int matchType) {
 
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
 		List<TeamTactical> list = null;
 		try {
-			list = (List<TeamTactical>) session.query(TeamTactical.class,
-					QUERY_TACTICS_SQL, new Object[] { teamId, matchType });
+			System.out.println(teamId);
+			System.out.println(matchType);
+			list = (List<TeamTactical>) session.query(TeamTactical.class, QUERY_TACTICS_SQL, new Object[] { teamId, matchType });
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -33,14 +34,12 @@ public class TacticalDaoImpl implements TacticalDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public TeamTacticalDetail loadTeamTacticalDetail(long tacticsId, int seq) {
+	public TeamTacticalDetail loadTeamTacticalDetail(long id) {
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
 		List<TeamTacticalDetail> list = null;
 		try {
-			list = (List<TeamTacticalDetail>) session.query(
-					TeamTacticalDetail.class, QUERY_TACTICS_DETAIL_SQL,
-					new Object[] { tacticsId, seq });
+			list = (List<TeamTacticalDetail>) session.query(TeamTacticalDetail.class, QUERY_TACTICS_DETAIL_SQL, new Object[] { id });
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -49,6 +48,10 @@ public class TacticalDaoImpl implements TacticalDao {
 		} else {
 			return null;
 		}
+	}
+
+	public static void main(String[] args) {
+		System.out.println(new TacticalDaoImpl().loadTeamTactical(1, 1));
 	}
 
 }

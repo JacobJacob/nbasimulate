@@ -24,4 +24,15 @@ public class MatchDaoImpl implements MatchDao {
 		session.endTransaction();
 	}
 
+	public Matchs load(long id) {
+		// TODO Auto-generated method stub
+		Session session = BottleUtil.currentSession();
+		try {
+			return (Matchs) session.load(Matchs.class, id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

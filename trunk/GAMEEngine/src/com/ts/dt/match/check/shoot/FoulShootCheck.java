@@ -5,7 +5,7 @@ import java.util.Random;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.match.check.ResultCheck;
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 
 public class FoulShootCheck implements ResultCheck {
 
@@ -15,7 +15,7 @@ public class FoulShootCheck implements ResultCheck {
 
 		int pointOfDivision = 60;
 
-		Player player = context.getCurrentControllerPlayer();
+		ProfessionPlayer player = context.getCurrentControllerPlayer();
 
 		double p = (player.getShooting() / 10) * 2;
 

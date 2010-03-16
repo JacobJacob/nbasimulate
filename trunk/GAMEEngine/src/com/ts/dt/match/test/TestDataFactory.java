@@ -1,16 +1,16 @@
 package com.ts.dt.match.test;
 
 import com.ts.dt.constants.MatchConstant;
-import com.ts.dt.dao.PlayerDao;
-import com.ts.dt.dao.impl.PlayerDaoImpl;
-import com.ts.dt.po.Player;
+import com.ts.dt.dao.ProfessionPlayerDao;
+import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
+import com.ts.dt.po.ProfessionPlayer;
 
 public class TestDataFactory {
-	public static Player[] players = new Player[10];
+	public static ProfessionPlayer[] players = new ProfessionPlayer[10];
 
 	static {
 
-		Player player = new Player();
+		ProfessionPlayer player = new ProfessionPlayer();
 		player.setId(1);
 		player.setShooting(80);
 		player.setAvoirdupois(212);
@@ -19,7 +19,7 @@ public class TestDataFactory {
 		player.setTeamid(2);
 		players[0] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(2);
 		player.setShooting(80);
 		player.setName("期科拉  ");
@@ -28,7 +28,7 @@ public class TestDataFactory {
 		player.setTeamid(2);
 		players[1] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(3);
 		player.setShooting(80);
 		player.setName("阿泰斯特");
@@ -37,7 +37,7 @@ public class TestDataFactory {
 		player.setTeamid(2);
 		players[2] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(4);
 		player.setAvoirdupois(190);
 		player.setPosition(MatchConstant.LOCATION_SG);
@@ -46,7 +46,7 @@ public class TestDataFactory {
 		player.setTeamid(2);
 		players[3] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(5);
 		player.setShooting(80);
 		player.setName("阿尔斯通");
@@ -55,7 +55,7 @@ public class TestDataFactory {
 		player.setTeamid(2);
 		players[4] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(6);
 		player.setShooting(70);
 		player.setName("布泽尔  ");
@@ -64,7 +64,7 @@ public class TestDataFactory {
 		player.setTeamid(1);
 		players[5] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(7);
 		player.setShooting(70);
 		player.setName("小奥尼尔");
@@ -73,7 +73,7 @@ public class TestDataFactory {
 		player.setTeamid(1);
 		players[6] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(8);
 		player.setShooting(70);
 		player.setPosition(MatchConstant.LOCATION_SF);
@@ -82,7 +82,7 @@ public class TestDataFactory {
 		player.setTeamid(1);
 		players[7] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(9);
 		player.setShooting(70);
 		player.setName("科比    ");
@@ -91,7 +91,7 @@ public class TestDataFactory {
 		player.setTeamid(1);
 		players[8] = player;
 
-		player = new Player();
+		player = new ProfessionPlayer();
 		player.setId(10);
 		player.setShooting(70);
 		player.setName("保罗    ");
@@ -103,7 +103,7 @@ public class TestDataFactory {
 	}
 
 	public static void saveTestDateToDB() {
-		PlayerDao playerDao = new PlayerDaoImpl();
+		ProfessionPlayerDao playerDao = new ProfessionPlayerDaoImpl();
 
 		for (int i = 0; i < players.length; i++) {
 			players[i].setId(0);

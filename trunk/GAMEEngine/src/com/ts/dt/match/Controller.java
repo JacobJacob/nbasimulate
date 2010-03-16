@@ -14,11 +14,11 @@ import com.ts.dt.match.action.service.ServiceFactory;
 import com.ts.dt.match.action.shoot.Shoot;
 import com.ts.dt.match.action.shoot.ShootFactory;
 import com.ts.dt.match.helper.ActionCostTimeHelper;
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 
 public class Controller {
 
-	private Player player;
+	private ProfessionPlayer player;
 	private String controllerName;
 	private String teamFlg;
 
@@ -73,11 +73,11 @@ public class Controller {
 		service.service(context);
 	}
 
-	public Player getPlayer() {
+	public ProfessionPlayer getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Player player) {
+	public void setPlayer(ProfessionPlayer player) {
 		this.player = player;
 	}
 

@@ -3,7 +3,7 @@ package com.ts.dt.factory;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 import com.ts.dt.po.Tactics;
 
 public class MovementDescFactory {
@@ -45,7 +45,7 @@ public class MovementDescFactory {
 		}
 		return descFactory;
 	}
-	public String getMovementDesc(Player player,Tactics tactics){
+	public String getMovementDesc(ProfessionPlayer player,Tactics tactics){
 		
 
 		return null;

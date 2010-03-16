@@ -9,7 +9,7 @@ import com.ts.dt.factory.ShootResultCheckFactory;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 import com.ts.dt.util.MessagesUtil;
 
 public abstract class AbstractShoot implements Action {
@@ -23,7 +23,7 @@ public abstract class AbstractShoot implements Action {
 
 		String currtContrNm = context.getCurrentController().getControllerName();
 		String currtPlayerNm = context.getCurrentController().getPlayer().getName();
-		Player player = context.getCurrentController().getPlayer();
+		ProfessionPlayer player = context.getCurrentController().getPlayer();
 		String currtDefenderNm = context.getCurrentDefender().getPlayer().getName();
 		String previousPlayerNm = "";
 		if (context.getPreviousController() != null) {
@@ -131,7 +131,7 @@ public abstract class AbstractShoot implements Action {
 		String previousControllerNm = context.getPreviousController().getControllerName();
 		int previousActionType = context.getPreviousActionType();
 		if (previousActionType == MatchConstant.ACTION_TYPE_PASS) {
-			Player previousPlayer = context.getPreviousController().getPlayer();
+			ProfessionPlayer previousPlayer = context.getPreviousController().getPlayer();
 			context.playerAssitTimesInc(previousPlayer, previousControllerNm.endsWith("A"));
 		}
 	}

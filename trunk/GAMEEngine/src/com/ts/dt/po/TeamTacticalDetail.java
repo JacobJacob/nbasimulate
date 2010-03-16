@@ -4,69 +4,97 @@ import com.dt.bottle.persistence.Persistence;
 
 public class TeamTacticalDetail extends Persistence {
 
-	private long tacticsId;
-	private long seq;
+	private int offensive_tactical_type;
+	private int defend_tactical_type;
+	private long team_id;
+	private String name;
 
-	private long cid;
-	private long pfid;
-	private long sfid;
-	private long sgid;
-	private long pgid;
+	private char seq;
 
-	public long getTacticsId() {
-		return tacticsId;
+	private String cid;
+	private String pfid;
+	private String sfid;
+	private String sgid;
+	private String pgid;
+
+	public int getOffensive_tactical_type() {
+		return offensive_tactical_type;
 	}
 
-	public void setTacticsId(long tacticsId) {
-		this.tacticsId = tacticsId;
+	public void setOffensive_tactical_type(int offensiveTacticalType) {
+		offensive_tactical_type = offensiveTacticalType;
 	}
 
-	public long getSeq() {
+	public int getDefend_tactical_type() {
+		return defend_tactical_type;
+	}
+
+	public void setDefend_tactical_type(int defendTacticalType) {
+		defend_tactical_type = defendTacticalType;
+	}
+
+	public long getTeam_id() {
+		return team_id;
+	}
+
+	public void setTeam_id(long teamId) {
+		team_id = teamId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public char getSeq() {
 		return seq;
 	}
 
-	public void setSeq(long seq) {
+	public void setSeq(char seq) {
 		this.seq = seq;
 	}
 
-	public long getCid() {
+	public String getCid() {
 		return cid;
 	}
 
-	public void setCid(long id) {
-		cid = id;
+	public void setCid(String cid) {
+		this.cid = cid;
 	}
 
-	public long getPfid() {
+	public String getPfid() {
 		return pfid;
 	}
 
-	public void setPfid(long pfId) {
-		this.pfid = pfId;
+	public void setPfid(String pfid) {
+		this.pfid = pfid;
 	}
 
-	public long getSfid() {
+	public String getSfid() {
 		return sfid;
 	}
 
-	public void setSfid(long sfId) {
-		this.sfid = sfId;
+	public void setSfid(String sfid) {
+		this.sfid = sfid;
 	}
 
-	public long getSgid() {
+	public String getSgid() {
 		return sgid;
 	}
 
-	public void setSgid(long sgId) {
-		this.sgid = sgId;
+	public void setSgid(String sgid) {
+		this.sgid = sgid;
 	}
 
-	public long getPgid() {
+	public String getPgid() {
 		return pgid;
 	}
 
-	public void setPgid(long pgId) {
-		this.pgid = pgId;
+	public void setPgid(String pgid) {
+		this.pgid = pgid;
 	}
 
 }

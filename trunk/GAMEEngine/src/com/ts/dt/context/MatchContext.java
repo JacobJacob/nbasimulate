@@ -8,7 +8,7 @@ import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.match.Controller;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.po.MatchNodosityMain;
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 import com.ts.dt.stat.DataStat;
 
 public class MatchContext {
@@ -18,12 +18,12 @@ public class MatchContext {
 	private Hashtable<String, Object> data;
 
 	private DataStat dataStat;
-	private List<Long> onCourtPlayers = new ArrayList<Long>();
+	private List<String> onCourtPlayers = new ArrayList<String>();
 
 	private long homeTeamId;
 	private long visitingTeamId;
 
-	private String matchType; // match type
+	private int matchType; // match type
 	private int seq;
 
 	private int currentOffensiveCostTime = 0; // 当前进攻所使用了的时间,以毫秒算
@@ -157,7 +157,7 @@ public class MatchContext {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Player getCurrentControllerPlayer() {
+	public ProfessionPlayer getCurrentControllerPlayer() {
 		String currtContrNm = (String) get(MatchConstant.CURRENT_CONTROLLER_NAME);
 		Hashtable<String, Controller> controllers = (Hashtable<String, Controller>) get(MatchConstant.CURRENT_CONTROLLERS);
 		return ((Controller) controllers.get(currtContrNm)).getPlayer();
@@ -399,7 +399,7 @@ public class MatchContext {
 
 	}
 
-	public void playerShootTimesInc(int point, Player player, boolean isHomeTeam) {
+	public void playerShootTimesInc(int point, ProfessionPlayer player, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
 			dataStat.playerPoint1ShootTimesInc(player, isHomeTeam);
@@ -435,7 +435,7 @@ public class MatchContext {
 
 	}
 
-	public void playerDoomTimesInc(int point, Player player, boolean isHomeTeam) {
+	public void playerDoomTimesInc(int point, ProfessionPlayer player, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
 			dataStat.playerPoint1DoomTimesInc(player, isHomeTeam);
@@ -447,7 +447,7 @@ public class MatchContext {
 
 	}
 
-	public void playerAssitTimesInc(Player player, boolean isHomeTeam) {
+	public void playerAssitTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		dataStat.playerAssitTimesInc(player, isHomeTeam);
 	}
 
@@ -461,13 +461,13 @@ public class MatchContext {
 
 	}
 
-	public void playerAddOffensiveRebound(Player player, boolean isHomeTeam) {
+	public void playerAddOffensiveRebound(ProfessionPlayer player, boolean isHomeTeam) {
 
 		dataStat.playerOffensiveReboundInc(player, isHomeTeam);
 
 	}
 
-	public void playerAddFoulTimes(Player player, boolean isHomeTeam) {
+	public void playerAddFoulTimes(ProfessionPlayer player, boolean isHomeTeam) {
 		dataStat.playerFoulTimesInc(player, isHomeTeam);
 	}
 
@@ -478,7 +478,7 @@ public class MatchContext {
 	 * @param isHomeTeam
 	 * @return
 	 */
-	public boolean checkFoulOut(Player player, boolean isHomeTeam) {
+	public boolean checkFoulOut(ProfessionPlayer player, boolean isHomeTeam) {
 		return dataStat.checkFoulOut(player, isHomeTeam);
 	}
 
@@ -492,7 +492,7 @@ public class MatchContext {
 
 	}
 
-	public void playerAddDefensiveRebound(Player player, boolean isHomeTeam) {
+	public void playerAddDefensiveRebound(ProfessionPlayer player, boolean isHomeTeam) {
 
 		dataStat.playerDefensiveReboundInc(player, isHomeTeam);
 
@@ -628,11 +628,11 @@ public class MatchContext {
 		this.visitingTeamId = visitingTeamId;
 	}
 
-	public String getMatchType() {
+	public int getMatchType() {
 		return matchType;
 	}
 
-	public void setMatchType(String matchType) {
+	public void setMatchType(int matchType) {
 		this.matchType = matchType;
 	}
 
@@ -647,8 +647,6 @@ public class MatchContext {
 	public boolean isBlock() {
 		return isBlock;
 	}
-	
-	
 
 	public boolean isAssist() {
 		return isAssist;
@@ -671,19 +669,19 @@ public class MatchContext {
 	}
 
 	// check the give player whether on court
-	public boolean hasOnCourt(long playerId) {
-		if (onCourtPlayers.contains(playerId)) {
+	public boolean hasOnCourt(String playerNo) {
+		if (onCourtPlayers.contains(playerNo)) {
 			return true;
 		}
 		return false;
 	}
 
 	// add a player to the on court players list
-	public void addOnCourtPlayer(long playerId) {
-		if (onCourtPlayers.contains(playerId)) {
+	public void addOnCourtPlayer(String playerNo) {
+		if (onCourtPlayers.contains(playerNo)) {
 			return;
 		}
-		onCourtPlayers.add(playerId);
+		onCourtPlayers.add(playerNo);
 	}
 
 }

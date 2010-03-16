@@ -5,7 +5,7 @@ import com.ts.dt.po.TeamTacticalDetail;
 
 public interface TacticalDao {
 
-	public TeamTactical loadTeamTactical(long teamId, String matchType);
+	public TeamTactical loadTeamTactical(long teamId, int matchType);
 
-	public TeamTacticalDetail loadTeamTacticalDetail(long teamId, int seq);
+	public TeamTacticalDetail loadTeamTacticalDetail(long id);
 }

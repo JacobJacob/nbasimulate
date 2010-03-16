@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 
 public class DataStat {
 
@@ -201,52 +201,52 @@ public class DataStat {
 		return sb.toString();
 	}
 
-	public void playerPoint2ShootTimesInc(Player player, boolean isHomeTeam) {
+	public void playerPoint2ShootTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.point2ShootTimesInc();
 	}
 
-	public void playerPoint2DoomTimesInc(Player player, boolean isHomeTeam) {
+	public void playerPoint2DoomTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.point2DoomTimesInc();
 	}
 
-	public void playerPoint3ShootTimesInc(Player player, boolean isHomeTeam) {
+	public void playerPoint3ShootTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.point3ShootTimesInc();
 	}
 
-	public void playerPoint3DoomTimesInc(Player player, boolean isHomeTeam) {
+	public void playerPoint3DoomTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.point3DoomTimesInc();
 	}
 
-	public void playerPoint1ShootTimesInc(Player player, boolean isHomeTeam) {
+	public void playerPoint1ShootTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.point1ShootTimesInc();
 	}
 
-	public void playerPoint1DoomTimesInc(Player player, boolean isHomeTeam) {
+	public void playerPoint1DoomTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.point1DoomTimesInc();
 	}
 
-	public void playerOffensiveReboundInc(Player player, boolean isHomeTeam) {
+	public void playerOffensiveReboundInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.offensiveReboundInc();
 	}
 
-	public void playerDefensiveReboundInc(Player player, boolean isHomeTeam) {
+	public void playerDefensiveReboundInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.defensiveReboundInc();
 	}
 
-	public void playerFoulTimesInc(Player player, boolean isHomeTeam) {
+	public void playerFoulTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.foulTimesInc();
 	}
 
-	public void playerAssitTimesInc(Player player, boolean isHomeTeam) {
+	public void playerAssitTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.assistTimesInc();
 	}
@@ -258,12 +258,12 @@ public class DataStat {
 	 * @param isHomeTeam
 	 * @return
 	 */
-	public boolean checkFoulOut(Player player, boolean isHomeTeam) {
+	public boolean checkFoulOut(ProfessionPlayer player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		return playerDataStat.foulOut();
 	}
 
-	public PlayerDataStat getPlayerDataStatByPlayer(Player player, boolean isHomeTeam) {
+	public PlayerDataStat getPlayerDataStatByPlayer(ProfessionPlayer player, boolean isHomeTeam) {
 		// debug
 		if (player.getId() == 0) {
 			System.out.println("error");

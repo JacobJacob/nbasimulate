@@ -1,6 +1,6 @@
 package com.ts.dt.match.helper;
 
-import com.ts.dt.po.Player;
+import com.ts.dt.po.ProfessionPlayer;
 
 /**
  * check the block power and vs block power
@@ -10,7 +10,7 @@ import com.ts.dt.po.Player;
  */
 public class BlockHelper {
 
-	public static double checkBlockPower(Player player) {
+	public static double checkBlockPower(ProfessionPlayer player) {
 
 		double power = 0;
 		double block = player.getBlocked();
@@ -24,7 +24,7 @@ public class BlockHelper {
 		return power;
 	}
 
-	public static double checkVsBlockPower(Player player) {
+	public static double checkVsBlockPower(ProfessionPlayer player) {
 
 		double power = 0;
 		double stature = player.getStature();
