@@ -6,7 +6,7 @@ from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MatchStatus, MatchTypes, TacticalGroupTypeMap, TacticalSectionTypeMap
 from gba.common import log_execption
 from gba.common import playerutil
-from gba.entity import ProfessionPlayer, Team
+from gba.entity import Team, ProfessionPlayer
 from gba.business import player_operator
 
 _SELECT_MATCH = 'select * from matchs where %s order by id desc limit %s, %s'
