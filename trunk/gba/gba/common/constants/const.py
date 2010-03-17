@@ -28,7 +28,8 @@ class MatchStatus(ConstantBase):
     CANCEL = 3
     
 class MatchTypes(ConstantBase):
-    FRIENDLY = 0
+    FRIENDLY = 1
+    TRAINING = 2
  
 class TacticalGroupType(ConstantBase):
     PROFESSION = 1

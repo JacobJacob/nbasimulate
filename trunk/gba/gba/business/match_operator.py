@@ -207,6 +207,41 @@ def init_team(team_info):
        
     #创建默认阵容
     create_team_default_tactical(team.id)
-       
+    
+_SELECT_MATCH = 'select * from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) order by id limit %s, %s '
+                       
+_SELECT_MATCH_TOTAL = 'select count(*) as count from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) '
+
+def get_match(team_id, type, page=1, pagesize=30):
+    '''获取比赛列表
+    '''
+    if page <= 0:
+        page = 1
+    index = (page - 1) * pagesize
+    total = 0
+    infos = []
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchall(_SELECT_MATCH % (type, team_id, team_id, index, pagesize))
+        if rs:
+            infos = rs.to_list()
+            rs = cursor.fetchone(_SELECT_MATCH_TOTAL, (type, team_id, team_id))
+            total = rs['count']
+    finally:
+        cursor.close()
+        
+    return infos, total
+
+_SELECT_MATCH_STAT = 'select * from match_stat where team_id=%s and match_id=%s'
+
+def get_match_stat(team_id, match_id):
+    '''获取比赛统计'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchall(_SELECT_MATCH_STAT, (team_id, match_id))
+        if rs:
+            return rs.to_list()
+    finally:
+        cursor.close()
 if __name__ == '__main__':
-    send_match_request(1, 8, 1)
+    print get_match(1, 1)

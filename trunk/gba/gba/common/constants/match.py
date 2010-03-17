@@ -4,7 +4,7 @@
 
 from constant_base import ConstantBase
 
-class MatchType(ConstantBase):
+class ActionType(ConstantBase):
     PASS = 1;
     SHOUT = 2;
     THROUGH = 3;

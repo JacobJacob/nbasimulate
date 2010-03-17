@@ -6,7 +6,8 @@ from gba.web.render import render_to_response
 from gba.business.user_roles import login_required, UserManager
 from gba.business import player_operator, match_operator
 
-from gba.entity import Team
+from gba.entity import Team, Matchs, ProfessionPlayer
+from gba.common.constants import MatchTypes
 
 @login_required
 def profession_tactical(request):
@@ -59,3 +60,46 @@ def profession_tactical_detail(request):
     datas['tactical_detail_name'] = tactical_info['name']
     datas['tactical_info'] = tactical_info
     return render_to_response(request, 'match/profession_tactical_detail.html', datas)
+
+@login_required
+def friendly_match(request):
+    
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 15))
+    
+    team = UserManager().get_team_info(request)
+    infos, total = match_operator.get_match(team.id, MatchTypes.FRIENDLY, page, pagesize)
+
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    
+    return render_to_response(request, 'match/friendly_match.html', datas)
+
+def match_stat(request):
+    '''比赛统计'''
+    match_id = request.GET.get('match_id')
+    if not match_id:
+        return None
+    
+    match = Matchs.load(id=match_id)
+    
+    home_stat = match_operator.get_match_stat(match.home_team_id, match_id)
+    
+    for stat in home_stat:
+        player_no = stat['player_no']
+        player = ProfessionPlayer.load(no=player_no)
+        stat['player'] = player
+    
+    guest_stat = match_operator.get_match_stat(match.guest_team_id, match_id)
+    
+    for stat in guest_stat:
+        player_no = stat['player_no']
+        player = ProfessionPlayer.load(no=player_no)
+        stat['player'] = player
+    
+    datas = {'home_stat': home_stat, 'guest_stat': guest_stat}
+    return render_to_response(request, 'match/match_stat.html', datas)

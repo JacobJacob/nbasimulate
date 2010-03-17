@@ -1,3 +1,4 @@
+{% load common_extras %}
 <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/site_media/js/rpc.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
@@ -120,29 +121,35 @@ body {
 <td width="60%" valign="top">
 <TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
   <thead>
-    <th>号码</th>
-    <th>位置</th>
-    <th>名字</th>
-    <th><a href="{% url free-players %}?position={{ position }}&order_by=age&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}">年龄<a></th>
-    <th><a href="{% url free-players %}?position={{ position }}&order_by=stature&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}">身高</a></th>
-    <th><a href="{% url free-players %}?position={{ position }}&order_by=avoirdupois&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}">体重</th>
-    <th>综合</th>
-    <th>体力</th>
+    <th>&nbsp;</th>
+    <th>主场</th>
+    <th>比分</th>
+    <th>客场</th>
+    <th>时间</th>
     <th class="right">操作</th>
   </thead>
   <tbody>
     {% if infos %}
       {% for info in infos %}
        <tr id="{{ info.id }}" no="{{ info.no }}">
-        <td>{{ info.player_no }}</td>
-        <td>{{ info.position }}</td>
-        <td><a class="player_name">{{ info.name }}</a></td>
-        <td>{{ info.age }}</td>
-        <td>{{ info.stature }}</td>
-        <td>{{ info.avoirdupois }}</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td class="right"><a class="edit_player">修改</a></td>
+        <td>{{ info.type }}</td>
+        <td>{{ info.home_team_id|team_name }}</td>
+        <td>
+           {% if info.point %}
+              {{ info.point }}
+           {% else %}
+              -- : --
+           {% endif %}
+        </td>
+        <td>{{ info.guest_team_id|team_name }}</td>
+        <td>{{ info.send_time }}</td>
+        <td class="right">
+           {% ifequal info.status 2 %}
+               <a href="{% url match-stat %}?match_id={{info.id}}" target="_blank">查看战报</a>
+           {% else %}
+             {{info.status|match_status}}|<a class="edit_player">取消</a>
+           {% endifequal %}
+        </td>
        </tr>
       {% endfor %}
     {% endif %}

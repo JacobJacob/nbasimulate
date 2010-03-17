@@ -1,0 +1,55 @@
+{% load common_extras %}
+<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #EEF2FB;
+}
+-->
+</style>
+<body>
+<table width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
+      {% for stat in home_stat %}
+       <tr>
+        <td>{{ stat.player.name }}</td>
+        <td>{{ info.home_team_id|team_name }}</td>
+        <td>
+           {% if info.point %}
+              {{ info.point }}
+           {% else %}
+              -- : --
+           {% endif %}
+        </td>
+        <td>{{ info.guest_team_id|team_name }}</td>
+        <td>{{ info.send_time }}</td>
+        <td class="right">{{info.status|match_status}}|<a class="edit_player">取消</a></td>
+       </tr>
+      {% endfor %}
+      {% for stat in guest_stat %}
+       <tr>
+        <td>{{ stat.player.name }}</td>
+        <td>{{ info.home_team_id|team_name }}</td>
+        <td>
+           {% if info.point %}
+              {{ info.point }}
+           {% else %}
+              -- : --
+           {% endif %}
+        </td>
+        <td>{{ info.guest_team_id|team_name }}</td>
+        <td>{{ info.send_time }}</td>
+        <td class="right">{{info.status|match_status}}|<a class="edit_player">取消</a></td>
+       </tr>
+      {% endfor %}
+</table>
+</body>

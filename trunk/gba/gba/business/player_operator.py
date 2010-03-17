@@ -1,5 +1,7 @@
 #-*- coding:utf-8 -*-
 
+import traceback
+
 from gba.common.db import connection
 
 _SELECT_FREE_PLAYER = 'select * from free_player where position="%s" order by %s %s limit %s, %s '
@@ -64,6 +66,46 @@ def get_profession_palyer_by_no(no):
             return rs.to_dict()
     finally:
         cursor.close()
+        
 
+def _check_player_is_in_team(team_id, no, cursor=None):
+    '''确认某球员在某队中'''
+    need_close = False
+    if not cursor:
+        need_close = True
+        cursor = connection.cursor()
+    try:
+        return cursor.fetchone('select 1 from profession_player where team_id=%s and no=%s', (team_id, no))
+    finally:
+        if need_close:
+            cursor.close()
+
+def update_profession_player(team_id, info):
+    '''更新职业球员信息，只能更新不位置，号码， 名字等信息
+    @return: 1 成功, 0 失败m -1 该球员不在队中
+    '''
+    data = {}
+    no = info['no']
+    data['no'] = no
+    if info.get('player_no'):
+        data['player_no'] = info.get('player_no')
+    if info.get('position'):
+        data['position'] = info.get('position')
+    if info.get('name'):
+        data['name'] = info.get('name')
+        
+    cursor = connection.cursor()
+    try:
+        if _check_player_is_in_team(team_id, no, cursor):
+            cursor.update(data, 'profession_player', ['no'])
+            return 1
+        else:
+            return -1
+    except:
+        print traceback.format_exc(3)
+        return 0
+    finally:
+        cursor.close()
+    
 if __name__ == '__main__':
     print get_free_palyer()[1]
