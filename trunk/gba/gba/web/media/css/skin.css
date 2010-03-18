@@ -306,3 +306,7 @@ a:visited {
   float: left;
   width: 200px;
 }
+
+.send_req_table tr td{
+   font-size: 12px;
+}

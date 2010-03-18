@@ -1,11 +1,14 @@
 <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
 <link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
 <link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 <script type="text/javascript">
-
+      
+      service = new rpc.ServiceProxy("/services/match/", {asynchronous:false, methods: ['send_match_request',]});
+      
 	  $(document).ready(function(){
 		 $('a.user_name').click(function() {
 		     var id = $(this).parent().parent().attr('id');
@@ -25,16 +28,40 @@
          
          		 
 		 $('a.send_match_req').click(function() {
-		     var id = $(this).parent().parent().attr('id');
-		     show_dialog()
+		     var username = $(this).parent().parent().attr('username');
+		     $('#manager_name').html(username);
+		     $('#username').attr('value', username);
+		     $("#send_req_dialog").show().dialog({
+		         height: 250, width: 300, modal: false,
+	             title: '比赛约战',
+		         overlay: {
+	               opacity: 0.5, 
+	               background: "black" 
+	             }
+	          });
+	          $("#send_req_dialogg").dialog('open');
+	      });
+	      
+	      $('#send_button').click(function(){
+		     var username = $('#username').val();
+		     var team_type = 1 ;//$('#team_type').val();
+	         var match_type = $('#match_type').val();
+	         data = {'team_type': team_type, 'match_type': match_type, 'username': username}
+	         try{
+	            var result = service.send_match_request(data);
+	            if(result[0]==1){
+	                alert('比赛请求发送成功');
+	            }else if(result[0]==0){
+	                alert(result[1]);
+	            }
+
+	         }catch(error){
+	            alert(error.message);
+	         }
+	         $("#edit_player_dialog").dialog('close');
 		 });
 		
-	  });
-	  
-	  function show_dialog() {
-	    $("#send_req_dialog").dialog();
-
-      }
+	 });
 </script>
 <style type="text/css">
 <!--
@@ -62,7 +89,7 @@ body {
   <tbody>
     {% if infos %}
       {% for info in infos %}
-       <tr id="{{ info.username }}">
+       <tr username="{{ info.username }}">
         <td><a class="user_name">{{ info.username }}</a></td>
         <td>{{ info.username }}</td>
         <td>&nbsp;</td>
@@ -99,6 +126,28 @@ body {
 </tr>
 </table>
 <div id="send_req_dialog" class="flora" style="display: none;">
-   比赛请求
+    <form id="send_match_req_form">
+        <input type="hidden" id="username"/>
+	       <p>
+    		经理名:
+			<span id="manager_name"></span>
+		   </p>
+		   <p>
+    		比赛类型:
+			<span>
+			   <select name="match_type" id="match_type">
+			    <option value="1">友谊比赛</option>
+			    <option value="2">训练比赛</option>
+			  </select>
+			</span>
+		   </p>
+		   <p>
+            附言:
+			<span>
+			  <textarea name="remark" rows="3" cols="30"></textarea>
+			</span>
+		   </p>
+		    <input id="send_button" type="button" value="约战" />
+    </form>
 </div>
 </body>

@@ -73,11 +73,28 @@ def friendly_match(request):
     if total == 0:
         totalpage = 0
     else:
-        totalpage = (total -1) / pagesize + 1
+        totalpage = (total - 1) / pagesize + 1
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
     
     return render_to_response(request, 'match/friendly_match.html', datas)
+
+def _create_total_stat(stat, total_stat):
+    total_stat['point2_doom_times'] = total_stat.get('point2_doom_times', 0) + stat['point2_doom_times']
+    total_stat['point3_doom_times'] = total_stat.get('point3_doom_times', 0) + stat['point3_doom_times'] 
+    total_stat['point1_doom_times'] = total_stat.get('point1_doom_times', 0) + stat['point1_doom_times']
+    total_stat['point2_shoot_times'] = total_stat.get('point2_shoot_times', 0) + stat['point2_shoot_times']
+    total_stat['point3_shoot_times'] = total_stat.get('point3_shoot_times', 0) + stat['point3_shoot_times'] 
+    total_stat['point1_shoot_times'] = total_stat.get('point1_shoot_times', 0) + stat['point1_shoot_times']
+    total_stat['offensive_rebound'] = total_stat.get('offensive_rebound', 0) + stat['offensive_rebound']
+    total_stat['defensive_rebound'] = total_stat.get('defensive_rebound', 0) + stat['defensive_rebound']
+    total_stat['total_rebound'] = total_stat.get('total_rebound', 0) + stat['total_rebound']
+    total_stat['assist'] = total_stat.get('assist', 0) + stat['assist']
+    total_stat['steals'] = total_stat.get('steals', 0) + stat['steals']
+    total_stat['foul'] = total_stat.get('foul', 0) + stat['foul']
+    total_stat['block'] = total_stat.get('block', 0) + stat['block']
+    total_stat['lapsus'] = total_stat.get('lapsus', 0) + stat['lapsus']
+    total_stat['total_point'] = total_stat.get('total_point', 0) + stat['total_point']
 
 def match_stat(request):
     '''比赛统计'''
@@ -89,17 +106,66 @@ def match_stat(request):
     
     home_stat = match_operator.get_match_stat(match.home_team_id, match_id)
     
+    home_team = Team.load(id=match.home_team_id)
+    guest_team = Team.load(id=match.guest_team_id)
+    
+    home_stat_total = {}
+    home_stat_total['times'] = 240
+    home_stat_total['name'] = u'合计'
     for stat in home_stat:
         player_no = stat['player_no']
         player = ProfessionPlayer.load(no=player_no)
-        stat['player'] = player
+        stat['name'] = player.name
+        total_point = 0
+        for i in range(1, 4):
+            total_point += stat.get('point%s_doom_times' % i, 0) * i
+        stat['total_point'] = total_point
+        stat['total_rebound'] = stat['defensive_rebound'] + stat['offensive_rebound']
+        _create_total_stat(stat, home_stat_total)
+        
+    home_stat = sorted(home_stat, cmp=lambda x, y: cmp(x['total_point'] * 1000 + x['total_rebound'] * 100 + x['assist'] * 10 + x['steals'], \
+                                                      y['total_point'] * 1000 + y['total_rebound'] * 100 + y['assist'] * 10 + y['steals']), reverse=True)
     
     guest_stat = match_operator.get_match_stat(match.guest_team_id, match_id)
     
+    guest_stat_total = {}
+    guest_stat_total['times'] = 240
+    guest_stat_total['name'] = u'合计'
     for stat in guest_stat:
         player_no = stat['player_no']
         player = ProfessionPlayer.load(no=player_no)
-        stat['player'] = player
+        stat['name'] = player.name
+        total_point = 0
+        for i in range(1, 4):
+            total_point += stat.get('point%s_doom_times' % i, 0) * i
+        stat['total_point'] = total_point
+        stat['total_rebound'] = stat['defensive_rebound'] + stat['offensive_rebound']
+        _create_total_stat(stat, guest_stat_total)
+        
+    guest_stat = sorted(guest_stat, cmp=lambda x, y: cmp(x['total_point'] * 1000 + x['total_rebound'] * 100 + x['assist'] * 10 + x['steals'], \
+                                                      y['total_point'] * 1000 + y['total_rebound'] * 100 + y['assist'] * 10 + y['steals']), reverse=True)
     
-    datas = {'home_stat': home_stat, 'guest_stat': guest_stat}
+    guest_stat.append(guest_stat_total)
+    home_stat.append(home_stat_total)
+     
+    datas = {'home_stat': home_stat, 'guest_stat': guest_stat, 'home_team_name': home_team.name, 'guest_team_name': guest_team.name}
     return render_to_response(request, 'match/match_stat.html', datas)
+
+def match_detail(request):
+    '''比赛战报'''
+    match_id = request.GET.get('match_id')
+    if not match_id:
+        return None
+    
+    #team = UserManager().get_team_info(request)
+    match_nodosity_mains = match_operator.get_match_nodosity_main(match_id)
+    
+    for match_nodosity_main in match_nodosity_mains:
+        match_nodosity_details = match_operator.get_match_nodosity_detail(match_nodosity_main['id'])
+        print match_nodosity_details
+        match_nodosity_main['details'] = match_nodosity_details
+        
+    datas = {'match_nodosity_mains': match_nodosity_mains}
+    return render_to_response(request, 'match/match_detail.html', datas)
+
+    

@@ -61,5 +61,23 @@ def save_tactical_main(request, infos):
     
     return '战术更新失败,请联系客服'
 
+@login_required
+@jsonrpc_function
+def send_match_request(request, info):
+    """保存战术配置"""
 
+    team = UserManager().get_team_info(request)
+    if not team:
+        return 0, u'无法获取球队信息'
+    
+    guest_team = Team.load(username=info['username'])
+    
+    if team.id == guest_team.id:
+        return 0, u'你无法和自己约战'
+    
+    try:
+        match_operator.send_match_request(team.id, guest_team.id, type=1)
+    except:
+        return 0, u'服务器异常'
+    return 1, None
 

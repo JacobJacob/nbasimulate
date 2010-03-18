@@ -1,3 +1,5 @@
+<html>
+<head>
 {% load common_extras %}
 <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/site_media/js/rpc.js"></script>
@@ -7,49 +9,94 @@
 <link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 <style type="text/css">
-<!--
 body {
 	margin-left: 0px;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
 	background-color: #EEF2FB;
+	text-align:center;
 }
--->
 </style>
+<title>比赛统计({{home_team_name }}--{{guest_team_name}})</title>
+</head>
 <body>
-<table width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
-      {% for stat in home_stat %}
-       <tr>
-        <td>{{ stat.player.name }}</td>
-        <td>{{ info.home_team_id|team_name }}</td>
-        <td>
-           {% if info.point %}
-              {{ info.point }}
-           {% else %}
-              -- : --
-           {% endif %}
-        </td>
-        <td>{{ info.guest_team_id|team_name }}</td>
-        <td>{{ info.send_time }}</td>
-        <td class="right">{{info.status|match_status}}|<a class="edit_player">取消</a></td>
-       </tr>
-      {% endfor %}
-      {% for stat in guest_stat %}
-       <tr>
-        <td>{{ stat.player.name }}</td>
-        <td>{{ info.home_team_id|team_name }}</td>
-        <td>
-           {% if info.point %}
-              {{ info.point }}
-           {% else %}
-              -- : --
-           {% endif %}
-        </td>
-        <td>{{ info.guest_team_id|team_name }}</td>
-        <td>{{ info.send_time }}</td>
-        <td class="right">{{info.status|match_status}}|<a class="edit_player">取消</a></td>
-       </tr>
-      {% endfor %}
+<div style="margin-top:40px;"></div>
+<table width="70%" border=0 cellPadding=0 cellSpacing=0 class="player">
+  <tr>
+   <td colspan="14" align="center" class="right">{{ home_team_name }}队技术统计</td>
+  </tr>
+  <tr>
+    <td>球员</td>
+    <td>时间</td>
+    <td>投篮</td>  	
+    <td>三分</td>	
+    <td>罚球</td>
+    <td>前篮板</td>
+    <td>后篮板</td>
+    <td>总篮板</td>	
+    <td>助攻</td> 
+    <td>抢断</td>
+    <td>盖帽</td> 
+    <td>失误</td>
+    <td>犯规</td>
+    <td class="right">得分</td>
+  </tr>
+  {% for stat in home_stat %}
+   <tr>
+    <td>{{ stat.name }} </td>
+    <td>34</td>
+    <td>{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
+    <td>{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
+    <td>{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
+    <td>{{stat.offensive_rebound}}</td>
+    <td>{{stat.defensive_rebound}}</td>
+    <td>{{stat.total_rebound}}</td>
+    <td>{{stat.assist}}</td>
+    <td>{{stat.steals}}</td>
+    <td>{{stat.block}}</td>
+    <td>{{stat.lapsus}}</td>
+    <td>{{stat.foul}}</td>
+    <td class="right">{{stat.total_point}}</td>
+   </tr>
+  {% endfor %}
+  <tr>
+   <td colspan="14" align="center" class="right">{{ guest_team_name }}队技术统计</td>
+  </tr>
+  <tr>
+    <td>球员</td>
+    <td>时间</td>
+    <td>投篮</td>  	
+    <td>三分</td>	
+    <td>罚球</td>
+    <td>前篮板</td>
+    <td>后篮板</td>
+    <td>总篮板</td>	
+    <td>助攻</td> 
+    <td>抢断</td>
+    <td>盖帽</td> 
+    <td>失误</td>
+    <td>犯规</td>
+    <td class="right">得分</td>
+  </tr>
+  {% for stat in guest_stat %}
+   <tr>
+    <td>{{ stat.name }} </td>
+    <td>34</td>
+    <td>{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
+    <td>{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
+    <td>{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
+    <td>{{stat.offensive_rebound}}</td>
+    <td>{{stat.defensive_rebound}}</td>
+    <td>{{stat.total_rebound}}</td>
+    <td>{{stat.assist}}</td>
+    <td>{{stat.steals}}</td>
+    <td>{{stat.block}}</td>
+    <td>{{stat.lapsus}}</td>
+    <td>{{stat.foul}}</td>
+    <td class="right">{{stat.total_point}}</td>
+   </tr>
+  {% endfor %}
 </table>
 </body>
+</html>

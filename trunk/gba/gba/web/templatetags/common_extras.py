@@ -23,7 +23,7 @@ def section_name(section):
 
 @register.filter
 def team_name(team_id):
-    team = Team.load(id=id)
+    team = Team.load(id=team_id)
     if team:
         return team.name
     

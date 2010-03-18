@@ -5,7 +5,7 @@
 from django.http import HttpResponseRedirect
 
 from gba.web.render import render_to_response
-from gba.business.user_roles import UserManager
+from gba.business.user_roles import UserManager, login_required
 from gba.business import user_operator, match_operator
 
 SESSION_KEY = '_auth_user_id'
@@ -57,6 +57,7 @@ def register(request):
         message = session_id
         return render_to_response(request, "user/register_error.html", locals())
     
+@login_required
 def online_user(request):
     '''在线经理'''
     

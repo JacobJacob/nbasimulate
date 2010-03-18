@@ -243,5 +243,30 @@ def get_match_stat(team_id, match_id):
             return rs.to_list()
     finally:
         cursor.close()
+        
+_SELECT_MATCH_NODOSITY_MAIN = 'select * from match_nodosity_main where match_id=%s order by seq asc'
+
+def get_match_nodosity_main(match_id):
+    '''获取比赛每节概要'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchall(_SELECT_MATCH_NODOSITY_MAIN, (match_id,))
+        if rs:
+            return rs.to_list()
+    finally:
+        cursor.close()
+        
+_SELECT_MATCH_NODOSITY_DETAIL = 'select * from match_nodosity_detail where match_nodosity_main_id=%s order by seq asc '
+
+def get_match_nodosity_detail(match_nodosity_main_id):
+    '''获取每节的比赛详细'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchall(_SELECT_MATCH_NODOSITY_DETAIL, (match_nodosity_main_id, ))
+        if rs:
+            return rs.to_list()
+    finally:
+        cursor.close()
+        
 if __name__ == '__main__':
     print get_match(1, 1)

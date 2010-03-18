@@ -8,101 +8,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 <script type="text/javascript">
 
-      service = new rpc.ServiceProxy("/services/player/", {asynchronous:false, methods: ['profession_player_detail', 'update_profession_player']});
-
-	  $(document).ready(function(){
-	    
-		 $('a.player_name').click(function() {
-		     var id = $(this).parent().parent().attr('id');
-		     $.ajax({
-			    url: '{% url freeplayer-detail %}?id=' + id,
-			    type: 'GET',
-			    dataType: 'html',
-			    timeout: 1000,
-			    error: function(error){
-			        alert(error);
-			    },
-			    success: function(html){
-			        $('#play_detail').html(html);
-			    }
-			});
-		 });
-		 
-		 $('a.edit_player').click(function() {
-		      var no = $(this).parent().parent().attr('no');
-	          try{
-	              var data = service.profession_player_detail(no);
-	          }catch(error){
-	              alert(error.message);
-	          }
-	          var info = data[0];
-	          var player_no = info['player_no'];
-	          var position = info['position'];
-	          var in_use_nos = data[1]
-	          
-	          $('#no').val(no);
-	          $('#player_name').val(info['name']);
-	          $('#player_no').val(player_no);
-	          
-	          $("select[name='player_no'] option").each(function(){
-	             $(this).remove();
-	          });
-	          for(var i=0; i <= 30; i++){
-	              if(i==player_no){
-	                  $("<option value='" + i + "' selected>" + i + "</option>").appendTo($("select[name='player_no']")); 
-	              }else{
-	                 var in_use = false;
-	                 for(j=0; j < in_use_nos.length;j++){
-	                    if(in_use_nos[j]==i){
-	                        in_use = true;
-	                        break
-	                    }
-	                 }
-	                 if(!in_use){
-	                    $("<option value='" + i + "'>" + i + "</option>").appendTo($("select[name='player_no']")); 
-	                 }
-	              }
-	          }
-	          
-	          $("select[name='position'] option").each(function(){
-	              if($(this).val()==position){
-	                 $(this).attr('selected', true);
-	              }
-	          });
-	          $("#edit_player_dialog").show().dialog({
-		         height: 250, width: 300, modal: false,
-	             title: '球员信息更改',
-		         overlay: {
-                   opacity: 0.5, 
-                   background: "black" 
-                 }
-	          });
-              $("#edit_player_dialog").dialog('open');
-
-		 });
-		 
-		 $('#update_button').click(function(){
-		     var no = $('#no').val();
-		     var name = $('#player_name').val();
-	         var player_no = $('#player_no').val();
-	         var position = $('#position').val();
-	         var data = {'no': no, 'name': name, 'player_no': player_no, 'position': position}
-	         try{
-	            var result = service.update_profession_player(data);
-	            if(result==1){
-	                alert('球员信息更新成功');
-	            }else if(result==0){
-	                alert('球员信息更新失败,请联系管理员');
-	            }else{
-	                alert('该球员不在您的队中，您无权更改');
-	            }
-	         }catch(error){
-	            alert(error.message);
-	         }
-	         $("#edit_player_dialog").dialog('close');
-		 });
-		 
-	  });
 </script>
 <style type="text/css">
 <!--
@@ -145,7 +50,8 @@ body {
         <td>{{ info.send_time }}</td>
         <td class="right">
            {% ifequal info.status 2 %}
-               <a href="{% url match-stat %}?match_id={{info.id}}" target="_blank">查看战报</a>
+               <a href="{% url match-stat %}?match_id={{info.id}}" target="_blank">比赛统计</a>
+               <a href="{% url match-detail %}?match_id={{info.id}}" target="_blank">比赛战报</a>
            {% else %}
              {{info.status|match_status}}|<a class="edit_player">取消</a>
            {% endifequal %}

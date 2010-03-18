@@ -1,0 +1,43 @@
+<html>
+<head>
+<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<style type="text/css">
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #EEF2FB;
+	text-align:center;
+}
+</style>
+<title>比赛统计({{home_team_name }}--{{guest_team_name}})</title>
+</head>
+<body>
+<div style="margin-top:40px;"></div>
+<table width="70%" border=0 cellPadding=0 cellSpacing=0 class="player">
+  {% for match_nodosity_main in match_nodosity_mains %}
+   <tr>
+     <td class="right">
+      {{match_nodosity_main.id}}
+     </td>
+   </tr>
+   <tr>
+    <td>
+     <table>
+      {{ match_nodosity.details}}
+      {% for detail in match_nodosity_main.details %}
+       <tr>
+         <td>{{ detail.time_msg }}</td>
+         <td>{{ detail.point_msg }}</td>
+         <td>{{ detail.description }}</td>
+       </tr>
+      {% endfor %}
+     </table>
+    </td>
+   </tr>
+  {% endfor %}
+</table>
+</body>
+</html>
