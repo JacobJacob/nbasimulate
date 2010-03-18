@@ -6,7 +6,7 @@ public class MatchStat extends Persistence {
 
 	private long teamId;
 
-	private long playerId;
+	private String playerNo;
 
 	private long matchId;
 
@@ -36,12 +36,12 @@ public class MatchStat extends Persistence {
 		this.teamId = teamId;
 	}
 
-	public long getPlayerId() {
-		return playerId;
+	public String getPlayerNo() {
+		return playerNo;
 	}
 
-	public void setPlayerId(long playerId) {
-		this.playerId = playerId;
+	public void setPlayerNo(String playerNo) {
+		this.playerNo = playerNo;
 	}
 
 	public int getPoint2ShootTimes() {
