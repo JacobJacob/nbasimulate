@@ -141,7 +141,7 @@ public class PlayerDataStat {
 		matchStat.setLapsus(lapsus);
 		matchStat.setBlock(block);
 
-		matchStat.setPlayerId(player.getId());
+		matchStat.setPlayerNo(player.getNo());
 		matchStat.setTeamId(player.getTeamid());
 		matchStat.setMatchId(matchId);
 
