@@ -2,13 +2,26 @@
 # -*- coding: utf-8 -*-
 
 import random
+from gba.entity import Names
+from gba.common import cache
 
 class NameFactory():
     
     @classmethod
     def create_name(cls):
-        return 'player name'
+        first_names = cache.get('first_names')
+        if not first_names:
+            first_names = Names.query(type=1)
+            cache.set('first_names', first_names, 60*60)
+        second_names = cache.get('second_names')
+        if not second_names:
+            second_names = Names.query(type=1)
+            cache.set('second_names', second_names, 60*60)
     
+        first_name = first_names[random.randint(0, len(first_names)-1)]
+        second_name = second_names[random.randint(0, len(second_names)-1)]
+        return '%s.%s' % (first_name.name, second_name.name)
+        
 class AgeFactory():
     
     @classmethod
@@ -30,3 +43,12 @@ class AvoirdupoisFactory():
     @classmethod
     def create(cls, location):
         return random.randint(0, 50) + cls._BASE_VALUE[location.upper()]
+    
+class PictrueFactory():
+    
+    @classmethod
+    def create(cls):
+        return random.randint(1, 40)
+    
+if __name__ == '__main__':
+    print NameFactory.create_name()

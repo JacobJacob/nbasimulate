@@ -5,14 +5,16 @@ import random
 import time
 import traceback
 
-from gba.common import md5mgr, json
-from gba.common.constants import attributes
+from gba.common.db.reserve_convertor import ReserveLiteral
+from gba.common import md5mgr, json, playerutil
+from gba.common.constants import attributes, hide_attributes
 from gba.entity import FreePlayer, PlayerBetchLog
 from gba.client.betch.config import AttributeConfig
 from gba.common.attribute_factory import AvoirdupoisFactory
 from gba.common.attribute_factory import NameFactory
 from gba.common.attribute_factory import AgeFactory
 from gba.common.attribute_factory import StatureFactory
+from gba.common.attribute_factory import PictrueFactory
   
 class Config(object):
     
@@ -87,6 +89,9 @@ class PlayerCreator(object):
                     setattr(player, 'age', AgeFactory.create())
                     setattr(player, 'stature', StatureFactory.create(location))
                     setattr(player, 'avoirdupois', AvoirdupoisFactory.create(location))
+                    setattr(player, 'expired_time', ReserveLiteral('date_add(now(), interval 2 day)'))
+                    setattr(player, 'picture', PictrueFactory.create())
+                    playerutil.calcul_ability(player)
                     player.persist()
             if count >= getattr(Config, 'FREE_PLAERY_TOTAL_%s' % location):
                 break
@@ -97,14 +102,21 @@ class PlayerCreator(object):
         for attribute in self._attributes:
             base = AttributeConfig.get_attribute_config(attribute, location, level)
             value = 30 * random.random() + base
-            setattr(player, attribute, value * random.random())
+            if attribute in hide_attributes:#隐藏属性不能太大
+                atr_value = value * random.random()
+#                while atr_value > 20:
+#                    atr_value -= 20
+                setattr(player, attribute, atr_value)
+            else:
+                setattr(player, attribute, value * random.random())
             setattr(player, '%s_max' % attribute, value)
+        name = NameFactory.create_name()
         setattr(player, 'position', location)
         setattr(player, 'position_base', location)
-        setattr(player, 'player_no', random.randint(0, 50))
+        setattr(player, 'player_no', random.randint(0, 30))
         setattr(player, 'no', md5mgr.mkmd5fromstr('%s_%s_%s' % (location, level, str(time.time()))))
-        setattr(player, 'name', NameFactory.create_name())
-        setattr(player, 'name_base', NameFactory.create_name())
+        setattr(player, 'name', name)
+        setattr(player, 'name_base', name)
         return player
 
 if __name__ == '__main__':

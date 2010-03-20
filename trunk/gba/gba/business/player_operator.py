@@ -4,7 +4,7 @@ import traceback
 
 from gba.common.db import connection
 
-_SELECT_FREE_PLAYER = 'select * from free_player where position="%s" order by %s %s limit %s, %s '
+_SELECT_FREE_PLAYER = 'select *, expired_time-now() as lave_time from free_player where position="%s" order by %s %s limit %s, %s '
                        
 _SELECT_FREE_PLAYER_TOTAL = 'select count(*) as count from free_player where position=%s'
 
@@ -16,28 +16,25 @@ def get_free_palyer(page=1, pagesize=30, position='C', order_by='id', order='des
     index = (page - 1) * pagesize
     total = 0
     infos = []
-    print _SELECT_FREE_PLAYER % (position, order_by, order, index, pagesize)
     cursor = connection.cursor()
     try:
         rs = cursor.fetchall(_SELECT_FREE_PLAYER % (position, order_by, order, index, pagesize))
         if rs:
             infos = rs.to_list()
-            print _SELECT_FREE_PLAYER_TOTAL % (position, )
             rs = cursor.fetchone(_SELECT_FREE_PLAYER_TOTAL, (position, ))
-            print rs
             total = rs['count']
     finally:
         cursor.close()
         
     return infos, total
 
-_LOAD_FREE_PLAYER = 'select * from free_player where id=%s'
+_LOAD_FREE_PLAYER = 'select * from free_player where no=%s'
 
-def get_free_palyer_by_id(id):
+def get_free_palyer_by_no(no):
     '''获取自由球员详细'''
     cursor = connection.cursor()
     try:
-        rs = cursor.fetchone(_LOAD_FREE_PLAYER, (id, ))
+        rs = cursor.fetchone(_LOAD_FREE_PLAYER, (no, ))
         if rs:
             return rs.to_dict()
     finally:

@@ -6,6 +6,6 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('web.admin',
     # clients
-     #url(r'^$', 'views.index', name='free-players'),
+     url(r'^$', 'views.index', name='admin-index'),
 #    url(r'^edit/$', 'views.edit', name='table-edit'),
 )

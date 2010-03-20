@@ -1,0 +1,83 @@
+<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<script type="text/javascript">
+
+	  $(document).ready(function(){
+	    
+		 $('a.player_name').click(function() {
+		     var id = $(this).parent().parent().attr('id');
+		     $.ajax({
+			    url: '{% url freeplayer-detail %}?id=' + id,
+			    type: 'GET',
+			    dataType: 'html',
+			    timeout: 1000,
+			    error: function(error){
+			        alert(error.message);
+			    },
+			    success: function(html){
+			        $('#play_detail').html(html);
+			    }
+			});
+		 });
+	  });
+</script>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #EEF2FB;
+}
+-->
+</style>
+<body>
+<div id="main">
+<div class="left_panel">
+<TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 id=secTable>
+    <TBODY>
+      <TR align=middle height=20>
+        <TD align="center" class="{% ifequal position 'C' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=C">联赛赛程<a></TD>
+        <TD align="center" class="{% ifequal position 'PF' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=PF">联赛排名<a></TD>
+        <TD align="center" class="{% ifequal position 'SF' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=SF">上轮本轮<a></TD>
+        <TD align="center" class="{% ifequal position 'SG' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=SG">技术统计<a></TD>
+      </TR>
+    </TBODY>
+</TABLE>
+<TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
+  <thead>
+    <th>轮次</th>
+    <th>主场</th>
+    <th>比分</th>
+    <th>客场</th>
+    <th>战术/战况</th>
+    <th>轮次</th>
+    <th>主场</th>
+    <th>比分</th>
+    <th>客场</th>
+    <th class="right">战术/战况</th>
+  </thead>
+  <tbody>
+    {% if infos %}
+      {% for info in infos %}
+       <tr id="{{ info.id }}">
+        <td>{{ info.player_no }}</td>
+        <td>{{ info.position }}</td>
+        <td class="name"><a class="player_name">{{ info.name }}</a></td>
+        <td>{{ info.age }}</td>
+        <td>{{ info.stature }}</td>
+        <td>{{ info.avoirdupois }}</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td class="right">&nbsp;</td>
+       </tr>
+      {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+</div>
+<div id="detail_panel">信息页面</div>
+</div>
+</body>

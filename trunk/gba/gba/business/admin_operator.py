@@ -3,6 +3,9 @@
 
 from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
+from gba.entity import ProfessionPlayer
+from gba.common.constants import attributes
+from gba.common import playerutil
 
 _SELECT_ACTION = 'select * from action_desc where %s limit %s, %s'        
 _SELECT_ACTION_TOTAL = 'select count(*) as count from action_desc where %s'
@@ -38,5 +41,16 @@ def add_action_desc(info):
     finally:
         cursor.close()
         
+def full_profession_player(no):
+    '''练满一个职业球员'''
+    
+    player = ProfessionPlayer.load(no=no)
+    
+    for attribute in attributes:
+        setattr(player, attribute, getattr(player, '%s_max' % attribute))
+    playerutil.calcul_ability(player)
+    player.persist()
+        
+        
 if __name__ == '__main__':
-    pass
+    full_profession_player('')

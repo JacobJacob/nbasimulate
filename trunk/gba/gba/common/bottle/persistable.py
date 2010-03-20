@@ -133,9 +133,10 @@ class Persistable(object):
                     
         try:
             cursor.insert(data, self._table, True, update_skip_columns)
-            data = cursor.fetchone('select last_insert_id() as id')
-            if data:
-                self.id = int(data['id']) 
+            if not hasattr(self, 'id'):
+                data = cursor.fetchone('select last_insert_id() as id')
+                if data:
+                    self.id = int(data['id']) 
         finally:
             cursor.close()
         info('finish save object....[table:%s]' % self._table)

@@ -246,6 +246,10 @@ a:visited {
 	border-right: 1px solid #B5D0D9;
 }
 
+.left{
+	border-left: 1px solid #B5D0D9;
+}
+
 .detail_td{
   width: 28%;
   font-size: 12px;
@@ -309,4 +313,152 @@ a:visited {
 
 .send_req_table tr td{
    font-size: 12px;
+}
+
+#main .left_panel{
+  width:800px;
+  float:left;
+}
+
+#detail_panel{
+  border: 1px solid #B5D0D9;
+}
+
+.match_stat {
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	margin:auto;
+}
+
+.match_stat th{
+	border-top: 1px solid #B5D0D9;
+	border-bottom: 1px solid #B5D0D9;
+	border-left: 1px solid #B5D0D9;
+	line-height: 25px;
+}
+
+.match_stat td{
+	border-left: 1px solid #B5D0D9;
+	border-bottom: 1px solid #B5D0D9;
+	line-height: 20px;
+}
+
+.number{
+    text-align:right;
+}
+
+.free_player {
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	margin:auto;
+	margin-left:0;
+}
+
+.free_player th{
+	border-top: 1px solid #B5D0D9;
+	border-bottom: 1px solid #B5D0D9;
+	line-height: 25px;
+}
+
+.free_player td{
+	border-bottom: 1px solid #B5D0D9;
+	line-height: 20px;
+}
+
+.normal_table {
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	margin:auto;
+	margin-left:0;
+}
+
+.normal_table th{
+	border-top: 1px solid #B5D0D9;
+	border-bottom: 1px solid #B5D0D9;
+	line-height: 25px;
+}
+
+.normal_table td{
+	border-bottom: 1px solid #B5D0D9;
+	line-height: 20px;
+}
+
+#left{
+  border: 1px solid #B5D0D9;
+  width: 800px;
+  height:410px;
+  float: left;
+}
+#side{
+  border: 1px solid #B5D0D9;
+  width: 230px;
+  height:410px;
+  float:left;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+}
+
+
+.player_detail_outer {
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	margin:auto;
+	margin-left:0;
+}
+
+.player_detail_outer th{
+	line-height: 25px;
+}
+
+.player_detail_outer td{
+	line-height: 20px;
+}
+
+.player_detail_inner {
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	margin:auto;
+	margin-left:0;
+}
+
+.player_detail_inner th{
+	line-height: 25px;
+}
+
+.player_detail_inner td{
+	line-height: 20px;
+}
+
+.float_left{
+    float:left;
+}
+
+.clear{
+   clear:both;
+}
+
+#player_info{
+   height: 100px;
+}
+
+.player_picture{
+   margin:8px 0 0 8px;
+}
+
+.player_detail{
+  margin:8 0 0 8px;
+}
+
+.player_detail p{
+  line-height: 14px;
+  margin: 2px;
+}
+
+.player_others_info{
+  margin: 0 0 0 8px;
 }

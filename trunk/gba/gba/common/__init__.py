@@ -61,9 +61,6 @@ class _InitLog(object):
         
         if not os.path.exists(logdir):
             os.makedirs(logdir)
-
-#        if os.name != 'posix':
-#            return os.path.join(logdir, 'log')
             
         i = 1
         while 1:
@@ -110,6 +107,8 @@ def log_execption(msg = None, track_index = 0):
     """自动记录异常信息"""
     init_log()
     backup = logging.currentframe
+    if not msg:
+        msg = traceback.format_exc(track_index)
     try:
         currentframe = lambda: sys._getframe(5)
         logging.currentframe = currentframe # hook, get the real frame
@@ -118,3 +117,9 @@ def log_execption(msg = None, track_index = 0):
         pass
     finally:
         logging.currentframe = backup
+        
+if __name__ == '__main__':
+    try:
+        a = 1 / 0
+    except:
+        log_execption()

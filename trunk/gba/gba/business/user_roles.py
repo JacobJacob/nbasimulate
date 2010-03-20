@@ -6,6 +6,7 @@
 
 from __future__ import with_statement
 from uuid import uuid4
+import traceback
 
 from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.utils.http import urlquote
@@ -203,17 +204,18 @@ class UserManager(DBOperator):
         with self.cursor() as cursor:
             return cursor.fetchall(self.SELECT_USERS)
     
-    def register_user(self, username, password):
+    def register_user(self, username, password, nickname):
         
         password = md5mgr.mkmd5fromstr(md5mgr.mkmd5fromstr(password))
         session_id = md5mgr.mkmd5fromstr('%s%s%s' % (uuid4(), username, password))
         
-        user_info = {'username': username, 'password': password, 'session_id': session_id}
+        user_info = {'username': username, 'password': password, 'session_id': session_id, 'nickname': nickname}
         
         cursor = connection.cursor()
         try:
             cursor.insert(user_info, 'user_info')
         except:
+            log_execption()
             return False, None
         finally:
             cursor.close()

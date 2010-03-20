@@ -7,6 +7,7 @@ from gba.common import playerutil
 from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
 from gba.entity import Team
+from gba.common.constants import attributes, hide_attributes
 
 def index(request):
     """list"""
@@ -17,8 +18,6 @@ def index(request):
     order = request.GET.get('order', 'asc')
     
     infos, total = player_operator.get_free_palyer(page, pagesize, position, order_by, order)
-    
-    print infos
     
     if total == 0:
         totalpage = 0
@@ -33,10 +32,22 @@ def index(request):
 
 def freeplayer_detail(request):
     """free player detail"""
-    id = request.GET.get('id', None)
-    player = player_operator.get_free_palyer_by_id(id)
+    no = request.GET.get('no', None)
+    print no
+    if not no:
+        return render_to_response(request, 'default_error.html', {'msg': u'球员id为空'})
+    player = player_operator.get_free_palyer_by_no(no)
+    if not player:
+        return render_to_response(request, 'default_error.html', {'msg': u'球员不存在'})
+    
     playerutil.calcul_otential(player)
-    datas = {'id': id, 'player': player}
+    show_attributes = [i for i in attributes if i not in hide_attributes]
+    
+    attributes_maps = {}
+    for attribute in show_attributes:
+        attributes_maps[attribute] = '%s_oten' % attribute
+    
+    datas = {'id': id, 'player': player, 'attributes': attributes_maps}
     return render_to_response(request, 'player/freeplayer_detail.html', datas)
 
 @login_required
@@ -54,9 +65,20 @@ def profession_player(request):
     return render_to_response(request, 'player/profession_player.html', datas)
 
 def professioplayer_detail(request):
-    """free player detail"""
-    id = request.GET.get('id', None)
-    player = player_operator.get_free_palyer_by_id(id)
+    """profession player detail"""
+    no = request.GET.get('no', None)
+    if not no:
+        return render_to_response(request, 'default_error.html', {'msg': u'球员id为空'})
+    player = player_operator.get_profession_palyer_by_no(no)
+    if not player:
+        return render_to_response(request, 'default_error.html', {'msg': u'球员不存在'})
+    
     playerutil.calcul_otential(player)
-    datas = {'id': id, 'player': player}
-    return render_to_response(request, 'player/freeplayer_detail.html', datas)
+    show_attributes = [i for i in attributes if i not in hide_attributes]
+    
+    attributes_maps = {}
+    for attribute in show_attributes:
+        attributes_maps[attribute] = '%s_oten' % attribute
+    
+    datas = {'id': id, 'player': player, 'attributes': attributes_maps}
+    return render_to_response(request, 'player/profession_player_detail.html', datas)

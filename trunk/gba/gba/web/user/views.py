@@ -42,16 +42,18 @@ def register(request):
     '''注册'''
     username = request.POST.get('username')
     password = request.POST.get('password')
+    nickname = request.POST.get('nickname')
+    teamname = request.POST.get('teamname')
     password_check = request.POST.get('password_check')
     
     user_manager = UserManager()
 
-    success, session_id = user_manager.register_user(username, password)
+    success, session_id = user_manager.register_user(username, password, nickname)
     
     if success:
         response = HttpResponseRedirect('/')
         response.set_cookie(SESSION_KEY, session_id)
-        match_operator.init_team({'username': username})
+        match_operator.init_team({'username': username, 'teamname': teamname})
         return response
     else:
         message = session_id

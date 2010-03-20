@@ -11,7 +11,7 @@ from gba.business.user_roles import login_required
 def index(request):
     """list"""
     datas = {}
-    return render_to_response(request, 'index/index.html', datas)
+    return render_to_response(request, 'admin/index.html', datas)
 
 def action_desc(request):
     datas = {}

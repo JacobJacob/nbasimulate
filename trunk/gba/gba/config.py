@@ -53,12 +53,12 @@ class DjangoSettings:
     if not os.path.exists(WEB_ROOT + '/rrd'): # rrd image path
         os.makedirs(WEB_ROOT + '/rrd')
 
-COMMON_CACHE = ["127.0.0.1:11212"]
+COMMON_CACHE = ["192.168.1.158:11211"]
 COMMON_CACHE_CMD = 'memcached -d -m 1024 -p 11212 -u from gba'
 
 MinDiskSize = 10 * 1024 * 1024 * 1024
 
-SYSLOG_HOST = '10.20.238.169'
+SYSLOG_HOST = '127.0.0.1'
 #SERVICE_HOST = '10.20.238.173'
 SERVICE_HOST = '127.0.0.1:1000'
 

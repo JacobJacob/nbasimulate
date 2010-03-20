@@ -4,7 +4,29 @@
 from constant_base import ConstantBase
 
 attributes = ['dribble', 'backboard', 'blocked', 'bounce', 'shooting', 
-              'speed', 'pass', 'trisection', 'stamina', 'steal', 'strength']
+              'speed', 'pass', 'trisection', 'stamina', 'steal', 'strength',
+              'defencons', 'offencons', 'buildupcons', 'leadcons', 'backbone']
+
+hide_attributes = ['defencons', 'offencons', 'buildupcons', 'leadcons', 'backbone',]
+
+AttributeMaps = {
+    attributes[0]: u'运球',
+    attributes[1]: u'篮板',
+    attributes[2]: u'封盖',
+    attributes[3]: u'弹跳',
+    attributes[4]: u'投篮',
+    attributes[5]: u'速度',
+    attributes[6]: u'传球',
+    attributes[7]: u'耐力',
+    attributes[8]: u'三分',
+    attributes[9]: u'抢断',
+    attributes[10]: u'强壮',
+    attributes[11]: u'防守意识',
+    attributes[12]: u'进攻意识',
+    attributes[13]: u'团队意识',
+    attributes[14]: u'领导力',
+    attributes[15]: u'毅力',                                   
+}
 
 
 oten_color_map = [
@@ -21,11 +43,20 @@ oten_color_map = [
    [0, 11],             
 ]
 
-class MatchStatus(ConstantBase):
-    SEND = 0
-    START = 1
-    FINISH = 2
-    CANCEL = 3
+class Position(ConstantBase):
+    PG = 'PG'
+    SG = 'SG'
+    SF = 'SF'
+    PF = 'PF'
+    C = 'C'
+    
+PositioneMap = {
+    Position.PG: u'组织后卫',
+    Position.SG: u'得分后卫',
+    Position.SF: u'小前锋',
+    Position.PF: u'大前锋',
+    Position.C: u'中锋',                                        
+}
     
 class MatchTypes(ConstantBase):
     FRIENDLY = 1

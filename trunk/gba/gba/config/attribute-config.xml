@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <attributes>
-    <!-- ���� -->
+    <!--运球-->
     <attribute name="dribble">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -8,7 +8,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- ���� -->
+    <!--篮板-->
     <attribute name="backboard">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -16,7 +16,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- ��� -->
+    <!--封盖-->
     <attribute name="blocked">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -24,7 +24,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- ���� -->
+    <!--弹跳-->
     <attribute name="bounce">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -32,7 +32,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- Ͷ�� -->
+    <!--投篮 -->
     <attribute name="shooting">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -40,7 +40,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- �ٶ� -->
+    <!--速度 -->
     <attribute name="speed">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -48,7 +48,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- ���� -->
+    <!--传球-->
     <attribute name="pass">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -56,7 +56,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- ��� -->
+    <!--三分-->
     <attribute name="trisection">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -64,7 +64,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- ���� -->
+    <!--耐力-->
     <attribute name="stamina">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -72,7 +72,7 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- �ƶ� -->
+    <!--抢断-->
     <attribute name="steal">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
@@ -80,8 +80,48 @@
             <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
             <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
     </attribute>
-    <!-- ǿ׳ -->
+    <!--强壮-->
     <attribute name="strength">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!--进攻意识-->
+    <attribute name="defencons">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!--防守意识-->
+    <attribute name="offencons">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!--团队意识-->
+    <attribute name="buildupcons">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!--领导意识-->
+    <attribute name="leadcons">
+            <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
+            <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
+            <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>
+            <grade-sg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sg>
+            <grade-pg>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pg>
+    </attribute>
+    <!--毅力-->
+    <attribute name="backbone">
             <grade-c>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-c>
             <grade-pf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-pf>
             <grade-sf>70; 60; 50; 45; 40; 35; 30; 25; 20</grade-sf>

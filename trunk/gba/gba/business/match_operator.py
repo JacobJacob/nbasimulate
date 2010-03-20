@@ -6,34 +6,34 @@ from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MatchStatus, MatchTypes, TacticalGroupTypeMap, TacticalSectionTypeMap
 from gba.common import log_execption
 from gba.common import playerutil
-from gba.entity import Team, ProfessionPlayer
+from gba.entity import Team, ProfessionPlayer, League, LeagueTeams
 from gba.business import player_operator
 
-_SELECT_MATCH = 'select * from matchs where %s order by id desc limit %s, %s'
-                
-_SELECT_MATCH_TOTAL = 'select count(*) as total from matchs where %s order by id desc limit %s, %s'
-
-def get_match(team_id, type, page=1, pagesize=15):
-    '''获取比赛记录'''
-    if page <= 0:
-        page = 1
-    index = (page - 1) * pagesize
-    total = 0
-    infos = []
-    
-    where = 'home_team_id=%s or guest_team_id=%s and type=%s' %  (team_id, team_id, type)
-    
-    cursor = connection.cursor()
-    try:
-        rs = cursor.fetchall(_SELECT_MATCH % (where, index, pagesize))
-        if rs:
-            infos = rs.to_list()
-            rs = cursor.fetchone(_SELECT_MATCH_TOTAL, (where, ))
-            total = rs['count']
-    finally:
-        cursor.close()
-        
-    return infos, total
+#_SELECT_MATCH = 'select * from matchs where %s order by id desc limit %s, %s'
+#                
+#_SELECT_MATCH_TOTAL = 'select count(*) as total from matchs where %s order by id desc limit %s, %s'
+#
+#def get_match(team_id, type, page=1, pagesize=15):
+#    '''获取比赛记录'''
+#    if page <= 0:
+#        page = 1
+#    index = (page - 1) * pagesize
+#    total = 0
+#    infos = []
+#    
+#    where = 'home_team_id=%s or guest_team_id=%s and type=%s' %  (team_id, team_id, type)
+#    
+#    cursor = connection.cursor()
+#    try:
+#        rs = cursor.fetchall(_SELECT_MATCH % (where, index, pagesize))
+#        if rs:
+#            infos = rs.to_list()
+#            rs = cursor.fetchone(_SELECT_MATCH_TOTAL, (where, ))
+#            total = rs['count']
+#    finally:
+#        cursor.close()
+#        
+#    return infos, total
 
 def send_match_request(home_team_id, guest_team_id, type):
     '''发送比赛请求'''
@@ -186,23 +186,46 @@ def save_tactical_main(infos):
         cursor.close()
     return True
 
+def assign_league():
+    '''分配联赛'''
+    leagues = League.query(condition='degree>=11 and team_count<14', order='id asc', limit=1)
+    if leagues:
+        league = leagues[0]
+        league.team_count += 1
+        league.persist()
+        return league
+    return None 
+
 def init_team(team_info):
     '''初始化一支球队'''
     
     team = Team()
     team.username = team_info['username']
-
+    team.name = team_info['teamname']
+    
     #先创建球员,8名职业球员1 c , 1pf 2 sf 2 sg 2 pg
     locations = ['C', 'PF', 'SF', 'SF', 'SG', 'SG', 'PG', 'PG']
     ProfessionPlayer.transaction()
     try:
+        league = assign_league()
+        team.youth_league = 0
+        team.profession_league_class = league.no
+        team.profession_league_evel = league.degree
         team.persist()
+        
+        league_team = LeagueTeams()
+        league_team.league_id = league.id
+        league_team.team_id = team.id
+        league_team.persist()
+        
         for location in locations:
             player = playerutil.create_profession_player(location)
             setattr(player, 'team_id', team.id)
             player.persist()
         ProfessionPlayer.commit()
     except:
+        log_execption()
+        return False
         ProfessionPlayer.rollback()
        
     #创建默认阵容
@@ -269,4 +292,10 @@ def get_match_nodosity_detail(match_nodosity_main_id):
         cursor.close()
         
 if __name__ == '__main__':
-    print get_match(1, 1)
+    League.transaction()
+    try:
+        assign_league()
+    except:
+        log_execption()
+    finally:
+        League.rollback()
