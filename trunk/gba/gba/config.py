@@ -12,8 +12,8 @@ class PathSettings:
         if not os.path.exists('d:/'):
             WORKING_FOLDER = "c:/appdatas/gba_working"
     else:
-        WORKING_FOLDER = "/data/gba_working"
-    LOG = WORKING_FOLDER + "/error_log"
+        WORKING_FOLDER = "/data/appdatas/gba_working"
+    LOG = WORKING_FOLDER + "/logs"
     EXCEPTION = WORKING_FOLDER + "/exception"
     FILE_LOCKER = WORKING_FOLDER + "/file_locker"
     WEB_STATIC_FILE = WORKING_FOLDER + "/static_file"
