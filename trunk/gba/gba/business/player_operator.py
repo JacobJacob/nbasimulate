@@ -151,6 +151,7 @@ def youth_freeplayer_auction(team_id, no, price):
     if not team:
         return -1
     funds = team.funds
+    print funds
     if funds < int(price):
         return -2
     youth_freeplayerauction_log = YouthFreeplayerAuctionLog.load(username=team.username)
