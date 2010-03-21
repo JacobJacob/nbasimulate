@@ -62,7 +62,7 @@ def handle_single_auction(player):
 
     auction_logs = YouthFreeplayerAuctionLog.query(condition='player_no="%s"' % player.no, order='price desc, id asc')
     if not auction_logs:#没人出价
-        price = None
+        price = -1
         username = None
     else:
         price = auction_logs[0].price
@@ -73,9 +73,9 @@ def handle_single_auction(player):
         if auction_logs:
             team = Team.load(username=username)
             player.team_id = team.id
-            player.price = price
             for auction_log in auction_logs:
                 auction_log.delete()
+        player.price = price
         player.delete_time = ReserveLiteral('date_add(now(), interval 5 minute)')
         player.persist() 
         YouthFreeplayerAuctionLog.commit()
