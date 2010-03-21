@@ -133,11 +133,11 @@ body {
              {% if info.price %}
                <a>成交详情</a>
              {% else %}
-                  {% ifless info.price 0 %}
+                  {% ifequal info.price -1 %}
                     未成交
                   {% else %}
                     结算中
-                  {% endifless %}
+                  {% endifequal %}
              {% endif %}
           {% else %}
              <a class="auction">出价</a>|
