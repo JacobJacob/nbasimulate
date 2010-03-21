@@ -8,11 +8,11 @@ DEBUG = True
 
 class PathSettings:
     if os.name == 'nt':
-        WORKING_FOLDER = "e:/appdatas/spiderproxy_working"
+        WORKING_FOLDER = "e:/appdatas/gba_working"
         if not os.path.exists('d:/'):
-            WORKING_FOLDER = "c:/appdatas/spiderproxy_working"
+            WORKING_FOLDER = "c:/appdatas/gba_working"
     else:
-        WORKING_FOLDER = "/data/spiderproxy_working"
+        WORKING_FOLDER = "/data/gba_working"
     LOG = WORKING_FOLDER + "/logs"
     EXCEPTION = WORKING_FOLDER + "/exception"
     FILE_LOCKER = WORKING_FOLDER + "/file_locker"
@@ -30,6 +30,8 @@ class PathSettings:
         os.makedirs(WEB_LOGS)
     if not os.path.exists(RRD_FOLDER):
         os.makedirs(RRD_FOLDER)
+    if not os.path.exists(LOG):
+        os.makedirs(LOG)
     PROJECT_FOLDER = os.path.dirname(os.path.realpath(__file__))
     
 class DjangoSettings:

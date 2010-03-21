@@ -28,4 +28,15 @@ def update_profession_player(request, info):
     team = UserManager().get_team_info(request)
     return player_operator.update_profession_player(team.id, info)
 
+@login_required
+@jsonrpc_function
+def youth_freeplayer_auction(request, no, price):
+    team = UserManager().get_team_info(request)
+    return player_operator.youth_freeplayer_auction(team.id, no, price)
 
+@login_required
+@jsonrpc_function
+def check_has_auction(request):
+    '''验证某个用户是否已经出过价'''
+    team = UserManager().get_team_info(request)
+    return player_operator.check_has_auction(team.username)

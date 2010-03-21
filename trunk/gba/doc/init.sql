@@ -1,0 +1,1 @@
+INSERT INTO `league_config` (`Id`,`season`,`round`,`created_time`,`updated_time`) VALUES (1,1,1,'2010-03-19 21:17:58','2010-03-19 21:18:09');

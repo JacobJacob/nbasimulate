@@ -23,3 +23,6 @@ def admin_top(request):
     
     return render_to_response(request, "admin_top.html", locals())
 
+def development(request):
+    return render_to_response(request, "development.html", locals())
+

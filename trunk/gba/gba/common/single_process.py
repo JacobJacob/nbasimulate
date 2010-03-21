@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import dtspider.common.filelocker as fileLocker
+import gba.common.filelocker as fileLocker
 
 class SingleProcess:
     def __init__(self, uniqueProcessName):

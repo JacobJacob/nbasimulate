@@ -3,10 +3,11 @@
 
 import random
 import time
+import copy
 
 from gba.common.constants import attributes
 from gba.common import md5mgr
-from gba.entity import ProfessionPlayer
+from gba.entity import ProfessionPlayer, YouthPlayer
 from gba.client.betch.config import AttributeConfig
 from gba.common.attribute_factory import AvoirdupoisFactory, NameFactory, AgeFactory, StatureFactory, PictrueFactory
 
@@ -17,15 +18,52 @@ def calcul_otential(player):
     for attr in attributes:
         if isinstance(player, dict):
             attr_value = player.get(attr, 0)
+            attr_value = attr_value if attr_value else 0
             attr_max_value = player.get('%s_max' % attr, 0)
+            attr_max_value = attr_max_value if attr_max_value else 0
             attr_otential = attr_max_value - attr_value
             player['%s_oten' % attr] = attr_otential
         else:
             attr_value = getattr(player, attr)
+            attr_value = attr_value if attr_value else 0
             attr_max_value = getattr(player, '%s_max' % attr)
+            attr_max_value = attr_max_value if attr_max_value else 0
             attr_otential = attr_max_value - attr_value
             setattr(player, '%s_oten' % attr, attr_otential)
+            
+def calcul_wage(player):
+    '''计算工资'''
+    if isinstance(player, dict):
+        ability = player['ability']
+        position = player['position']
+    else:
+        ability = getattr(player, 'ability')
+        position = getattr(player, 'position')
         
+    times = 1
+    if position == 'C':
+        times = 1.5
+    elif position == 'PF':
+        times = 1.4
+    elif position == 'SF':
+        times = 1.3
+    elif position == 'SG':
+        times = 1.2
+    else:
+        position = 1.1
+    
+    for i in range(3):
+        if random.randint(1, 2) == 1:
+            times += 0.1
+        else:
+            times -= 0.1
+    
+    wage = ability / 10 * times * 10000
+    if isinstance(player, dict):
+        player['wage'] = wage
+    else:
+        setattr(player, 'wage', wage)
+    
 def calcul_ability(player):
     '''计算一个球员的综合'''
     ability = 0
@@ -59,6 +97,22 @@ def create_profession_player(location):
     setattr(player, 'picture', PictrueFactory.create())
     setattr(player, 'power', 100) #体力100
     setattr(player, 'status', 1) #状态正常
+    setattr(player, 'contract', 26) #合同26轮
     calcul_ability(player)
+    calcul_wage(player)
     
     return player
+
+def copy_player(player, source='youth_free_player', to='youth_player'):
+    if source == 'youth_free_player' and to == 'youth_player':
+        youth_free_player = copy.deepcopy(player)
+        delattr(youth_free_player, 'price')
+        delattr(youth_free_player, 'bid_count')
+        delattr(youth_free_player, 'expired_time')
+        delattr(youth_free_player, 'delete_time')
+        delattr(youth_free_player, 'created_time')
+        delattr(youth_free_player, 'updated_time')
+        delattr(youth_free_player, 'id')
+        youth_free_player.__class__ = YouthPlayer
+        return youth_free_player
+    return None

@@ -40,7 +40,7 @@ class Persistable(object):
         if not hasattr(cls, '_table') or getattr(cls, '_table') is None:
             cls._table = cls._parse_table()
         meta = cls._cache.get(cls._table)
-        if meta and False:
+        if meta:
             #try get from cache
             info('meta hit in cache, use it!!!')
             Persistable._meta_cache[cls._table] = meta

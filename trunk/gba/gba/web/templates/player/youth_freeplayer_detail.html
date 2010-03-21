@@ -1,0 +1,37 @@
+{% load common_extras %}
+<div id="player_info" class="clear">
+    <div class="float_left player_picture">
+     <img src="/site_media/picture/{{player.picture}}.jpg"/>
+    </div>
+    <div class="float_left player_detail">
+    <p>年龄:{{player.age}}</p>
+    <p>球衣号码:{{player.player_no}}</p>
+    <p>位置:{{player.position}}</p>
+    <p>综合:{{player.ability|format_number}}</p>
+   </div>
+   <div class="float_left clear"></div>
+</div>
+<div class="player_others_info"><p>球员姓名:{{player.name}}</p></div>
+<div id="attribute_side">
+<table cellspacing="0" cellpadding="0" width="201" border="0" class="player_detail_outer">
+<tbody>
+{% for attribute, attribute_oten in attributes.items %}
+    <tr>
+      <td align="center" width="44" height="22"><a title="{{ attribute|display_attribute }}" >{{ attribute|display_attribute }}</a></td>
+      <td width="157">
+         <table cellspacing="0" cellpadding="0" width="157" border="0" class="player_detail_inner">
+           <tbody>
+             <tr>
+                <td width="116" bgcolor="#eeeeee" height="18">
+                  <img height="8" src="http://xbam1.web.17173.com/images/player/ability/color{{player.attribute_oten_|check_attr}}.gif" width="{{player.attribute_}}" />
+                </td>
+                <td align="center" width="41"><a title="{{player.attribute_|format_number}}">{{player.attribute_|format_number}}</a></td>
+             </tr>
+           </tbody>
+        </table>
+      </td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+

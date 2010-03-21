@@ -1,3 +1,4 @@
+{% load common_extras %}
 <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/site_media/js/rpc.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
@@ -12,9 +13,9 @@
 	  $(document).ready(function(){
 	    
 		 $('a.player_name').click(function() {
-		     var id = $(this).parent().parent().attr('no');
+		     var no = $(this).parent().parent().attr('no');
 		     $.ajax({
-			    url: '{% url freeplayer-detail %}?no=' + no,
+			    url: '{% url profession-player-detail %}?no=' + no,
 			    type: 'GET',
 			    dataType: 'html',
 			    timeout: 1000,
@@ -69,7 +70,7 @@
 	              }
 	          });
 	          $("#edit_player_dialog").show().dialog({
-		         height: 250, width: 300, modal: false,
+		         height: 180, width: 300, modal: false,
 	             title: '球员信息更改',
 		         overlay: {
                    opacity: 0.5, 
@@ -90,6 +91,7 @@
 	            var result = service.update_profession_player(data);
 	            if(result==1){
 	                alert('球员信息更新成功');
+	                $("#edit_player_dialog").dialog('close');
 	            }else if(result==0){
 	                alert('球员信息更新失败,请联系管理员');
 	            }else{
@@ -98,7 +100,7 @@
 	         }catch(error){
 	            alert(error.message);
 	         }
-	         $("#edit_player_dialog").dialog('close');
+	     
 		 });
 		 
 	  });
@@ -141,7 +143,7 @@ body {
         <td>{{ info.age }}</td>
         <td>{{ info.stature }}</td>
         <td>{{ info.avoirdupois }}</td>
-        <td>{{ info.ability }}</td>
+        <td>{{ info.ability|format_number }}</td>
         <td>{{ info.wage }}</td>
         <td>{{ info.contract }}</td>
         <td class="right"><a class="edit_player">修改</a></td>

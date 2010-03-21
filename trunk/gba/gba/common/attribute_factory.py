@@ -25,23 +25,31 @@ class NameFactory():
 class AgeFactory():
     
     @classmethod
-    def create(cls):
+    def create(cls, youth=False):
+        if youth:
+            return random.randint(16, 22)
         return random.randint(19, 30)
     
 class StatureFactory():
     
     _BASE_VALUE = {'C': 195, 'PF': 190, 'SF': 185, 'SG': 180, 'PG': 160}
+    _YOUTH_BASE_VALUE = {'C': 185, 'PF': 180, 'SF': 175, 'SG': 170, 'PG': 150}
     
     @classmethod
-    def create(cls, location):
+    def create(cls, location, youth=False):
+        if youth:
+            return random.randint(0, 30) + cls._YOUTH_BASE_VALUE[location.upper()]
         return random.randint(0, 30) + cls._BASE_VALUE[location.upper()]
         
 class AvoirdupoisFactory():
     
     _BASE_VALUE = {'C': 90, 'PF': 85, 'SF': 70, 'SG': 60, 'PG': 55}
+    _YOUTH_BASE_VALUE = {'C': 80, 'PF': 75, 'SF': 60, 'SG': 50, 'PG': 45}
     
     @classmethod
-    def create(cls, location):
+    def create(cls, location, youth=False):
+        if youth:
+            return random.randint(0, 50) + cls._YOUTH_BASE_VALUE[location.upper()]
         return random.randint(0, 50) + cls._BASE_VALUE[location.upper()]
     
 class PictrueFactory():

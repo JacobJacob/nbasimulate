@@ -22,6 +22,7 @@ class AttributeConfig(object):
     
     _LOADED = False
     _DATA = {}
+    config_file = 'attribute-config.xml'
     
     @classmethod
     def get_attribute_config(cls, attribute, location, level=1):
@@ -38,7 +39,7 @@ class AttributeConfig(object):
 
     @classmethod
     def _load(cls):
-        config_dom = parse(os.path.join(PathSettings.PROJECT_FOLDER, 'config', 'attribute-config.xml'))
+        config_dom = parse(os.path.join(PathSettings.PROJECT_FOLDER, 'config', cls.config_file))
         root = config_dom._get_firstChild()
         for node in root.childNodes:
             if not isinstance(node, Element):
@@ -53,3 +54,11 @@ class AttributeConfig(object):
                 attributes = text_node.data.split(';')
                 child_map[child_name] = attributes
             cls._DATA[name] = child_map
+            
+            
+class YouthAttributeConfig(AttributeConfig):
+    '''
+     年轻球员属性配置     
+          格式:{'shoot': {'grade-c': [xx, xx xx, xx, xx, xx, xx, xx, xx]}}
+    '''
+    config_file = 'outh-attribute-config.xml'

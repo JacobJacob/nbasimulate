@@ -1,8 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 
 __all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
            , 'YouthPlayer', 'Message', 'Team', 'ProfessionPlayer', 'Matchs',
-           'League', 'LeagueTeams', 'Names', 'UserInfo']
+           'League', 'LeagueTeams', 'Names', 'UserInfo', 'YouthFreeplayerAuctionLog',
+           'PlayerAuctionLog', ]
 
 from gba.common.bottle.persistable import Persistable
 
@@ -44,3 +47,11 @@ class Names(Persistable):
     
 class UserInfo(Persistable):
     CACHE_KEY = 'user_info:username'
+    
+#年轻球员出价表
+class YouthFreeplayerAuctionLog(Persistable):
+    CACHE_KEY = 'youth_freeplayer_auction_log:username'
+    
+#球员成交记录
+class PlayerAuctionLog(Persistable):
+    CACHE_KEY = 'player_auction_log:player_no'

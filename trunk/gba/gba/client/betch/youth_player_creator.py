@@ -5,11 +5,12 @@ import random
 import time
 import traceback
 
-from gba.common import md5mgr, json
+from gba.common.db.reserve_convertor import ReserveLiteral
+from gba.common import md5mgr, json, playerutil
 from gba.entity import PlayerBetchLog, YouthFreePlayer
 from gba.client.betch.config import AttributeConfig
-from gba.common.attribute_factory import AvoirdupoisFactory, NameFactory, AgeFactory, StatureFactory
-
+from gba.common.attribute_factory import AvoirdupoisFactory, NameFactory, AgeFactory, StatureFactory, PictrueFactory
+from gba.common.constants import attributes, hide_attributes
       
 class Config(object):
     
@@ -45,10 +46,6 @@ class Config(object):
                  
 class YauthPlayerCreator(object):
     
-    _attributes = ['dribble', 'backboard', 'blocked', 'bounce',
-                   'shooting', 'speed', 'pass', 'trisection',
-                   'stamina', 'steal', 'strength']
-    
     def __init__(self):
         self._betch_no = '%s' % int(time.time())
         self._info = {}
@@ -82,9 +79,14 @@ class YauthPlayerCreator(object):
                     self._created_total += 1
                     player = self._create(location, level)
                     setattr(player, 'betch_no', self._betch_no)
-                    setattr(player, 'age', AgeFactory.create())
-                    setattr(player, 'stature', StatureFactory.create(location))
-                    setattr(player, 'avoirdupois', AvoirdupoisFactory.create(location))
+                    setattr(player, 'age', AgeFactory.create(youth=True))
+                    setattr(player, 'stature', StatureFactory.create(location, youth=True))
+                    setattr(player, 'avoirdupois', AvoirdupoisFactory.create(location, youth=True))
+                    setattr(player, 'expired_time', ReserveLiteral('date_add(now(), interval 2 day)'))
+                    setattr(player, 'picture', PictrueFactory.create())
+                    name = NameFactory.create_name()
+                    setattr(player, 'name', name)
+                    setattr(player, 'name_base', name)
                     player.persist()
             if count >= getattr(Config, 'FREE_PLAERY_TOTAL_%s' % location):
                 break
@@ -92,23 +94,25 @@ class YauthPlayerCreator(object):
     def _create(self, location, level):
         '''create player'''
         player = YouthFreePlayer()
-        for attribute in self._attributes:
+        for attribute in attributes:
             base = AttributeConfig.get_attribute_config(attribute, location, level)
             value = 30 * random.random() + base
+            if attribute in hide_attributes:#隐藏属性不能太大
+                atr_value = value * random.random()
+                while atr_value > 20:
+                    atr_value -= 20
+                setattr(player, attribute, atr_value)
+            else:
+                setattr(player, attribute, value * random.random())
             setattr(player, attribute, value * random.random())
             setattr(player, '%s_max' % attribute, value)
         setattr(player, 'position', location)
         setattr(player, 'position_base', location)
-        setattr(player, 'player_no', random.randint(0, 50))
+        setattr(player, 'player_no', random.randint(0, 30))
         setattr(player, 'no', md5mgr.mkmd5fromstr('%s_%s_%s' % (location, level, str(time.time()))))
-        setattr(player, 'name', NameFactory.create_name())
-        setattr(player, 'name_base', NameFactory.create_name())
+        playerutil.calcul_ability(player)
         return player
 
 if __name__ == '__main__':
     creator = YauthPlayerCreator()
     creator.run()
-    #AvoirdupoisFactory.create('C')
-    #print AttributeConfig.get_attribute_config('shooting', 'c', 1)
-    
-    
