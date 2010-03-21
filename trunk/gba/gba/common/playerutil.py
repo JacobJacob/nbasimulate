@@ -69,6 +69,8 @@ def calcul_ability(player):
     ability = 0
     for attr in attributes:
         attr_value = getattr(player, attr)
+        if not attr_value:
+            attr_value = 0
         ability += attr_value
     player.ability = ability / len(attributes)
     
