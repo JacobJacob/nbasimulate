@@ -1,2 +1,2 @@
-*/1 * * * *  /usr/bin/python2.5 /data/apps/gba/gba/client/betch/freeplayer_auction_handler.py
+*/1 * * * * sh  /data/apps/gba/gba/client/betch/start_freeplayer_auction_handler.sh
 */2 * * * * sh /data/apps/dtspider/dtspider/client/smartclient/start_sanyaxunfang_spider.sh
