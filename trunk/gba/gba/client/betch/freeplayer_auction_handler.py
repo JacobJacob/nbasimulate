@@ -86,4 +86,7 @@ def handle_single_auction(player):
 if __name__ == '__main__':
     signle_process = SingleProcess('freeplayer_auction_handler')
     signle_process.check()
-    main()
+    try:
+        main()
+    except:
+        log_execption()
