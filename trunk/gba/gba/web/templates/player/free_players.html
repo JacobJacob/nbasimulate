@@ -19,7 +19,7 @@
 		    datatype: 'html',
 		    timeout: 1000,
 		    error: function(error){
-		        alert(error.info);
+		        alert(error.message);
 		    },
 		    success: function(html){
 		        $('#play_detail').html(html);
@@ -40,6 +40,7 @@
 	            return;
 	         }
 	     }catch(error){
+	         alert('出现未知异常!,请重试');
 	     }
 	     $("#no").val(no);
 	     $("#min_price").html(data[1]);
@@ -64,16 +65,18 @@
 	       return;
 	     }
          try{
-            var result = service.youth_freeplayer_auction(no, price);
+            var result = service.freeplayer_auction(no, price);
             if(result==1){
                 alert('竟拍成功!');
                 $("#auction_player_dialog").dialog('close');
             }else if(result==-2){
                 alert('您的资金不足!');
             }else if(result==-3){
-                alert('您已经出过价,不可以重复出价');
+                alert('您已经出过价,不可以重复出价!');
+            }else if(result==-5){
+                alert('您出的价格低于当前价格!');
             }else{
-                alert('球员竟拍出错,请重试');
+                alert('球员竟拍出错,请重试!');
             }
          }catch(error){
             alert(error.message);
@@ -138,8 +141,20 @@ body {
         </td>
         <td class="align_center">{{ info.lave_time|format_lave_time }}</td>
         <td class="right align_center">
-          <a class="auction">出价</a>|
-          <a>关注</a>
+          {% ifless info.lave_time 0 %}
+             {% ifequal info.auction_status 1 %}
+               <a>成交详情</a>
+             {% else %}
+                  {% ifequal info.auction_status 2 %}
+                    未成交
+                  {% else %}
+                    结算中
+                  {% endifequal %}
+             {% endifequal %}
+          {% else %}
+             <a class="auction">出价</a>|
+             <a>关注</a>
+          {% endifless %}
         </td>
        </tr>
       {% endfor %}

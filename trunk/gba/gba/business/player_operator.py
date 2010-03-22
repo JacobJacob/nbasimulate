@@ -202,10 +202,9 @@ def freeplayer_auction(team_id, no, price):
     
     current_price = free_player.current_price
     worth = free_player.worth
-    if (current_price and current_price >= price) or worth > price:
+    if (current_price and current_price >= int(price)) or worth > price:
         return -5
 
-        
     free_player.bid_count = free_player.bid_count + 1
     free_player.current_price = price
     free_player.current_team_id = team_id
@@ -238,7 +237,7 @@ def get_free_auction_info(username, no):
         res = -1
     elif team.hold_funds > 0:
         res = -2
-    return res, free_player.worth, team.funds - team.hold_funds
+    return res, free_player.worth, team.funds - (team.hold_funds if team.hold_funds else 0)
 
 if __name__ == '__main__':
     print get_free_palyer()[1]
