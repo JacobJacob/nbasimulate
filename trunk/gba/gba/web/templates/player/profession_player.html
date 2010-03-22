@@ -19,8 +19,9 @@
 			    type: 'GET',
 			    dataType: 'html',
 			    timeout: 1000,
+			    cache: false,
 			    error: function(error){
-			        alert(error);
+			        alert(error.message);
 			    },
 			    success: function(html){
 			        $('#play_detail').html(html);

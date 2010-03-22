@@ -1,10 +1,11 @@
 #-*- coding:utf-8 -*-
 
 import traceback
+from datetime import datetime
 
 from gba.common.db import connection
 from gba.common import log_execption
-from gba.entity import Team, YouthFreeplayerAuctionLog, YouthFreePlayer
+from gba.entity import Team, YouthFreeplayerAuctionLog, YouthFreePlayer, FreePlayer
 
 _SELECT_FREE_PLAYER = 'select *, unix_timestamp(expired_time)-unix_timestamp(now()) as lave_time from free_player where position="%s" order by %s %s limit %s, %s '
                        
@@ -146,7 +147,6 @@ def youth_freeplayer_auction(team_id, no, price):
     '''年轻球员出价
     @return price: -1 未知异常 - 2 资金不够  1 竞价成功 -3 已经竞过价  -4 球员信息不存在
     '''
-    print no, price
     team = Team.load(id=team_id)
     if not team:
         return -1
@@ -180,11 +180,65 @@ def youth_freeplayer_auction(team_id, no, price):
         log_execption()
         YouthFreeplayerAuctionLog.rollback()
         
+def freeplayer_auction(team_id, no, price):
+    '''职业球员出价
+    @return price:  1 竞价成功   -1 未知异常 - 2 资金不够    -3 已经竞过价  -4 球员信息不存在  -5 出价过底
+    '''
+    team = Team.load(id=team_id)
+    if not team:
+        return -1
+    funds = team.funds
+    hold_funds = team.hold_funds
+    if (funds-hold_funds) < int(price):
+        return -2
+
+    free_player = FreePlayer.load(no=no)
+    if not free_player:
+        return -4
+    
+    current_team_id = free_player.current_team_id
+    if current_team_id and current_team_id == team_id:
+        return -3
+    
+    current_price = free_player.current_price
+    worth = free_player.worth
+    if (current_price and current_price >= price) or worth > price:
+        return -5
+
+        
+    free_player.bid_count = free_player.bid_count + 1
+    free_player.current_price = price
+    free_player.current_team_id = team_id
+    
+    FreePlayer.transaction()
+    try:
+        free_player.persist()
+        FreePlayer.commit()
+        return 1
+    except:
+        log_execption()
+        FreePlayer.rollback()
+        
 def check_has_auction(username):
     '''验证某个用户是否已经出过价'''
     youth_freeplayerauction_log = YouthFreeplayerAuctionLog.load(username=username)
     if youth_freeplayerauction_log:
         return True
     return False
+
+def get_free_auction_info(username, no):
+    '''验证某个用户是否已经在自由球员那出过价,是否已经过了超时时间, 已及要出价球员的身价
+    判断hold_funds > 0
+    '''
+    team = Team.load(username=username)
+    free_player = FreePlayer.load(no=no)
+    expired_time = free_player.expired_time
+    res = 1
+    if expired_time < datetime.now():
+        res = -1
+    elif team.hold_funds > 0:
+        res = -2
+    return res, free_player.worth, team.funds - team.hold_funds
+
 if __name__ == '__main__':
     print get_free_palyer()[1]

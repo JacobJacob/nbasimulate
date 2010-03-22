@@ -9,7 +9,6 @@ from gba.business import player_operator
 @login_required
 @jsonrpc_function
 def profession_player_detail(request, player_no):
-    print player_no
     team = UserManager().get_team_info(request)
     player_info = player_operator.get_profession_palyer_by_no(player_no)
     players = player_operator.get_profession_player(team.id)
@@ -40,3 +39,18 @@ def check_has_auction(request):
     '''验证某个用户是否已经出过价'''
     team = UserManager().get_team_info(request)
     return player_operator.check_has_auction(team.username)
+
+@login_required
+@jsonrpc_function
+def get_free_auction_info(request, no):
+    '''验证某个用户是否已经在自由球员那出过价, 已及要出价球员的身价'''
+    team = UserManager().get_team_info(request)
+    return player_operator.get_free_auction_info(team.username, no)
+
+@login_required
+@jsonrpc_function
+def freeplayer_auction(request, no, price):
+    '''职业球员出价'''
+    team = UserManager().get_team_info(request)
+    return player_operator.freeplayer_auction(team.id, no, price)
+    

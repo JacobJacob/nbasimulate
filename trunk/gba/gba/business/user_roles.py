@@ -415,7 +415,6 @@ def login_required(input_function):
 
         user_manager = UserManager()
         userinfo = user_manager.get_userinfo(request)
-
         if userinfo:
             request.userinfo = userinfo
             try:

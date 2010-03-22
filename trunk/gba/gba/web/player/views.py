@@ -9,6 +9,7 @@ from gba.business.user_roles import login_required, UserManager
 from gba.entity import Team
 from gba.common.constants import attributes, hide_attributes
 
+@login_required
 def index(request):
     """list"""
     page = int(request.GET.get('page', 1))
@@ -30,6 +31,7 @@ def index(request):
     
     return render_to_response(request, 'player/free_players.html', datas)
 
+@login_required
 def freeplayer_detail(request):
     """free player detail"""
     no = request.GET.get('no', None)
@@ -64,6 +66,7 @@ def profession_player(request):
     
     return render_to_response(request, 'player/profession_player.html', datas)
 
+@login_required
 def profession_player_detail(request):
     """profession player detail"""
     no = request.GET.get('no', None)
@@ -83,6 +86,7 @@ def profession_player_detail(request):
     datas = {'id': id, 'player': player, 'attributes': attributes_maps}
     return render_to_response(request, 'player/profession_player_detail.html', datas)
 
+@login_required
 def youth_free_player(request):
     """list"""
     page = int(request.GET.get('page', 1))
@@ -104,6 +108,7 @@ def youth_free_player(request):
     
     return render_to_response(request, 'player/youth_free_players.html', datas)
 
+@login_required
 def youth_freeplayer_detail(request):
     """free player detail"""
     no = request.GET.get('no', None)
