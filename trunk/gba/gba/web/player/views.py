@@ -14,7 +14,7 @@ def index(request):
     """list"""
     page = int(request.GET.get('page', 1))
     pagesize = int(request.GET.get('pagesize', 15))
-    position = request.GET.get('position', 'C')
+    position = request.GET.get('position', 'c')
     order_by = request.GET.get('order_by', 'id')
     order = request.GET.get('order', 'asc')
     
