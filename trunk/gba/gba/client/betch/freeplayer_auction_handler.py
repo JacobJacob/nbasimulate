@@ -44,7 +44,7 @@ def handle_has_auction(player):
     
         player_auction_log = PlayerAuctionLog()
         player_auction_log.player_no = player.no
-        player_auction_log.content = u'交易成功 [球员:%s(%s)被经理%s以%s的价格购买]' % (player.name, player.no, team.username, player.price)
+        player_auction_log.content = u'交易成功 [球员:%s(%s)被经理%s以%s的价格购买]' % (player.name, player.no, team.username, player.current_price)
         player_auction_log.type = 2 #1代表自由球员接易
     
     FreePlayer.transaction()
