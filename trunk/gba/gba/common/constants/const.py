@@ -130,3 +130,8 @@ DefendTacticalTypeMap = {
     DefendTacticalType.MAN_MARKING_INSIDE: u'盯人内线',       
     DefendTacticalType.MAN_MARKING_OUTSIDE: u'盯人外线',                           
 }
+
+class MessageType(ConstantBase):
+    SYSTEM_MSG = 1 #系统消息
+    PLAYER_MSG = 2 #经理消息
+    AUCTION_MSG = 3 #购买球员消息
