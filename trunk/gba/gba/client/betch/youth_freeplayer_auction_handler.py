@@ -65,6 +65,7 @@ class YouthFreePlayerAuctionHandler(BaseBetchClient):
                 player_auction_log.persist()
                 message = Message()
                 message.type = MessageType.SYSTEM_MSG
+                message.from_team_id = 0 #系统
                 message.to_team_id = player.team_id
                 message.is_new = 1
                 user_info = UserInfo.load(username=team.username)
