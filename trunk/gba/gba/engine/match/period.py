@@ -76,29 +76,26 @@ class Period(object):
         '''next'''
         current_controller = self._context.current_controller;
         next_controller = self._context.next_controller;
-        self._context.setPreviousController(currentController);
-        self._context.setCurrentController(nextController);
-        self._context.setBallRight();
+        
+        self._context.previous_controller = current_controller
+        self._context.current_controller = next_controller;
+        self._context.BallRight();
 
-        Controller nextDefender = self._context.getNextDefender();
-        self._context.setCurrentDefender(nextDefender);
+        next_defender = self._context.next_defender;
+        self._context.CurrentDefender(next_defender);
 
         #move action type: next = > current; current = > previous ;clear next
 
-        int currentActionType = self._context.getCurrentActionType();
-        int nextActionType = self._context.getNextActionType();
+        current_action_type = self._context.current_action_type
+        next_action_type = self._context.next_action_type;
 
-        self._context.setPreviousActionType(currentActionType);
-        self._context.setCurrentActionType(nextActionType);
-        self._context.setNextActionType(MatchType.NULL_INTEGER);
+        self._context.PreviousActionType(currentActionType);
+        self._context.CurrentActionType(nextActionType);
+        self._context.NextActionType(MatchType.NULL_INTEGER);
+        self._context.Foul(false);
+        self._context.Outside(false);
 
-        self._context.setFoul(false);
-        self._context.setOutside(false);
-
-    def _check_next_controller(action) {
-
-
-    }
+    def _check_next_controller(action):
     
     def _load_player(self):
         '''load player'''
