@@ -68,8 +68,8 @@ class YouthFreePlayerAuctionHandler(BaseBetchClient):
                 message.to_team_id = player.team_id
                 message.is_new = 1
                 user_info = UserInfo.load(username=team.username)
-                nick_name = user_info.nick_name
-                message.content = "[%s]" '%s经理,您以%s的价格购得球员%s,现已经到队' % (datetime.now(), nick_name, player.price, player.name)
+                nickname = user_info.nickname
+                message.content = "[%s]" '%s经理,您以%s的价格购得球员%s,现已经到队' % (datetime.now(), nickname, player.price, player.name)
                 message.persist()
             player.delete()
             YouthFreePlayer.commit()
