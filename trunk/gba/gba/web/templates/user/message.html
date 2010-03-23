@@ -1,21 +1,22 @@
+{% load common_extras %}
 <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
 <script type="text/javascript" src="/site_media/js/rpc.js"></script>
 <link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
 <link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<meta http-equiv="content-type" content="text/html; charset=utf8" />
 <script type="text/javascript">
       
-      service = new rpc.ServiceProxy("/services/match/", {asynchronous:false, methods: ['send_match_request',]});
+      service = new rpc.serviceproxy("/services/match/", {asynchronous:false, methods: ['send_match_request',]});
       
 	  $(document).ready(function(){
 		 $('a.user_name').click(function() {
 		     var id = $(this).parent().parent().attr('id');
 		     $.ajax({
 			    url: '{% url freeplayer-detail %}?id=' + id,
-			    type: 'GET',
-			    dataType: 'html',
+			    type: 'get',
+			    datatype: 'html',
 			    timeout: 1000,
 			    error: function(error){
 			        alert(error.message);
@@ -70,35 +71,31 @@ body {
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
-	background-color: #EEF2FB;
+	background-color: #eef2fb;
 }
 -->
 </style>
 <body>
-<table width="99%">
-<tr>
-<td width="60%">
-<TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
+<div id="left">
+<table width="99%" border=0 cellpadding=0 cellspacing=0 class="free_player">
   <thead>
-    <th>经理名</th>
-    <th>球队名</th>
-    <th>青年联赛</th>
-    <th>职业联赛</th>
+    <th>发件人</th>
+    <th>内容</th>
+    <th>发送时间</th>
     <th class="right">操作</th>
   </thead>
   <tbody>
     {% if infos %}
       {% for info in infos %}
        <tr username="{{ info.username }}">
-        <td><a class="user_name">{{ info.username }}</a></td>
-        <td>{{ info.username }}</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td class="right"><a class="send_match_req">约战</a></td>
+        <td class="left"><a class="user_name">{{ info.from_team_id|nickname }}</a></td>
+        <td>{{ info.content }}</td>
+        <td>{{ info.created_time }}</td>
+        <td class="right"><a class="send_match_req">删除</a></td>
        </tr>
       {% endfor %}
       <tr>
-        <td colspan="5" class="right">
+        <td colspan="4" class="right">
           共{{page}}/{{totalpage}}页
           {% ifequal page 1 %}
             首页
@@ -119,12 +116,10 @@ body {
     {% endif %}
   </tbody>
 </table>
-</td>
-<td class="detail_td">
+</div>
+<dir id="side">
 <span id="play_detail" ></span>
-</td>
-</tr>
-</table>
+</dir>
 <div id="send_req_dialog" class="flora" style="display: none;">
     <form id="send_match_req_form">
         <input type="hidden" id="username"/>

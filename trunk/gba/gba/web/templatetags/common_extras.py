@@ -83,3 +83,11 @@ def format_lave_time(seconds):
         return '%i分%i秒' % (min, level_seconds)
     else:
         return '%i秒' % (seconds)
+    
+@register.filter
+def nickname(team_id):
+    if team_id == 0:
+        return u'系统消息'
+    team = Team.load(id=team_id)
+    user_info = UserInfo.load(username=team.username)
+    return user_info.nickname  
