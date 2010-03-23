@@ -1,21 +1,20 @@
 #-*- coding:utf-8 -*-
 from datetime import datetime
-import time
-import unittest
 
 from _mysql_exceptions import ProgrammingError
 
-from gba.common import md5mgr
 from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.bottle import cache
+from gba.config import DEBUG
  
 def format_now():
     now = datetime.now()
     return now.strftime("%Y-%m-%d %H:%M:%S")
 
 def info(msg):
-    print '[%s]:%s' % (format_now(), msg)
+    if DEBUG:
+        print '[%s]:%s' % (format_now(), msg)
 
 class TableNotExistException(Exception):
     
@@ -232,9 +231,7 @@ class Persistable(object):
                     return None
                 else:
                     cache_key_value = getattr(parms, cache_key)
-                    if not cache_key_value:
-                        print cache_key_value, cache_key
-                    
+              
             cache_key_str += str(cache_key_value)
             cache_key_str += ';'
         cache_key_str = cache_key_str[:-1]
