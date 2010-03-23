@@ -119,7 +119,7 @@ class Persistable(object):
         if cache_key:
             self._cache.delete(cache_key)
         data = {}
-        update_skip_columns = ['id', 'created_time', 'updated_time']
+        update_skip_columns = ['created_time', 'updated_time']
         cursor = connection.cursor()
         meta = Persistable._meta_cache[self._table]
         columns = meta.columns
