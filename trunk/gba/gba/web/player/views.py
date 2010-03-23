@@ -92,7 +92,7 @@ def youth_free_player(request):
     page = int(request.GET.get('page', 1))
     pagesize = int(request.GET.get('pagesize', 15))
     position = request.GET.get('position', 'c')
-    order_by = request.GET.get('order_by', 'id')
+    order_by = request.GET.get('order_by', 'expired_time')
     order = request.GET.get('order', 'asc')
     
     infos, total = player_operator.get_youth_freepalyer(page, pagesize, position, order_by, order)
@@ -128,3 +128,37 @@ def youth_freeplayer_detail(request):
     
     datas = {'id': id, 'player': player, 'attributes': attributes_maps}
     return render_to_response(request, 'player/youth_freeplayer_detail.html', datas)
+
+@login_required
+def youth_player(request):
+    '''youth player'''
+
+    user_info = UserManager().get_userinfo(request)
+    
+    team = Team.load(username=user_info['username'])
+    
+    infos = player_operator.get_youth_player(team.id)
+    datas = {'infos': infos}
+    datas['nos'] = [i for i in range(30)]
+    
+    return render_to_response(request, 'player/youth_player.html', datas)
+
+@login_required
+def youth_player_detail(request):
+    """youth player detail"""
+    no = request.GET.get('no', None)
+    if not no:
+        return render_to_response(request, 'default_error.html', {'msg': u'球员id为空'})
+    player = player_operator.get_profession_palyer_by_no(no)
+    if not player:
+        return render_to_response(request, 'default_error.html', {'msg': u'球员不存在'})
+    
+    playerutil.calcul_otential(player)
+    show_attributes = [i for i in attributes if i not in hide_attributes]
+    
+    attributes_maps = {}
+    for attribute in show_attributes:
+        attributes_maps[attribute] = '%s_oten' % attribute
+    
+    datas = {'id': id, 'player': player, 'attributes': attributes_maps}
+    return render_to_response(request, 'player/profession_player_detail.html', datas)

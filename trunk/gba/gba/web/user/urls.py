@@ -9,4 +9,5 @@ urlpatterns = patterns('web.user',
     url(r'^registerpage/$', 'views.register_page', name='register-page'),
     url(r'^register/$', 'views.register', name='register'),
     url(r'^onlineuser/$', 'views.online_user', name='online-user'),
+    url(r'^message/$', 'views.message', name='message'),
 )

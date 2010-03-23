@@ -1,0 +1,153 @@
+<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<script type="text/javascript">
+      
+      service = new rpc.ServiceProxy("/services/match/", {asynchronous:false, methods: ['send_match_request',]});
+      
+	  $(document).ready(function(){
+		 $('a.user_name').click(function() {
+		     var id = $(this).parent().parent().attr('id');
+		     $.ajax({
+			    url: '{% url freeplayer-detail %}?id=' + id,
+			    type: 'GET',
+			    dataType: 'html',
+			    timeout: 1000,
+			    error: function(error){
+			        alert(error.message);
+			    },
+			    success: function(html){
+			        $('#play_detail').html(html);
+			    }
+			});
+		 });
+         
+         		 
+		 $('a.send_match_req').click(function() {
+		     var username = $(this).parent().parent().attr('username');
+		     $('#manager_name').html(username);
+		     $('#username').attr('value', username);
+		     $("#send_req_dialog").show().dialog({
+		         height: 250, width: 300, modal: false,
+	             title: '比赛约战',
+		         overlay: {
+	               opacity: 0.5, 
+	               background: "black" 
+	             }
+	          });
+	          $("#send_req_dialogg").dialog('open');
+	      });
+	      
+	      $('#send_button').click(function(){
+		     var username = $('#username').val();
+		     var team_type = 1 ;//$('#team_type').val();
+	         var match_type = $('#match_type').val();
+	         data = {'team_type': team_type, 'match_type': match_type, 'username': username}
+	         try{
+	            var result = service.send_match_request(data);
+	            if(result[0]==1){
+	                alert('比赛请求发送成功');
+	            }else if(result[0]==0){
+	                alert(result[1]);
+	            }
+
+	         }catch(error){
+	            alert(error.message);
+	         }
+	         $("#edit_player_dialog").dialog('close');
+		 });
+		
+	 });
+</script>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #EEF2FB;
+}
+-->
+</style>
+<body>
+<table width="99%">
+<tr>
+<td width="60%">
+<TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
+  <thead>
+    <th>经理名</th>
+    <th>球队名</th>
+    <th>青年联赛</th>
+    <th>职业联赛</th>
+    <th class="right">操作</th>
+  </thead>
+  <tbody>
+    {% if infos %}
+      {% for info in infos %}
+       <tr username="{{ info.username }}">
+        <td><a class="user_name">{{ info.username }}</a></td>
+        <td>{{ info.username }}</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td class="right"><a class="send_match_req">约战</a></td>
+       </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="5" class="right">
+          共{{page}}/{{totalpage}}页
+          {% ifequal page 1 %}
+            首页
+            上一页
+          {% else %}
+             <a href="{% url free-players %}?page=1&position={{position}}&order={{order}}&order_by={{order_by}}">首页</a>
+             <a href="{% url free-players %}?page={{prevpage}}&position={{position}}&order={{order}}&order_by={{order_by}}">上一页</a>
+          {% endifequal %}
+          {% ifequal page totalpage %}
+            末页
+            下一页
+          {% else %}
+             <a href="{% url free-players %}?page={{totalpage}}&position={{position}}&order={{order}}&order_by={{order_by}}">末页</a>
+             <a href="{% url free-players %}?page={{nextpage}}&position={{position}}&order={{order}}&order_by={{order_by}}">下一页</a>
+          {% endifequal %}
+        </td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+</td>
+<td class="detail_td">
+<span id="play_detail" ></span>
+</td>
+</tr>
+</table>
+<div id="send_req_dialog" class="flora" style="display: none;">
+    <form id="send_match_req_form">
+        <input type="hidden" id="username"/>
+	       <p>
+    		经理名:
+			<span id="manager_name"></span>
+		   </p>
+		   <p>
+    		比赛类型:
+			<span>
+			   <select name="match_type" id="match_type">
+			    <option value="1">友谊比赛</option>
+			    <option value="2">训练比赛</option>
+			  </select>
+			</span>
+		   </p>
+		   <p>
+            附言:
+			<span>
+			  <textarea name="remark" rows="3" cols="30"></textarea>
+			</span>
+		   </p>
+		    <input id="send_button" type="button" value="约战" />
+    </form>
+</div>
+</body>

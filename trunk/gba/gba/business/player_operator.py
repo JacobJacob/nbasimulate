@@ -35,7 +35,7 @@ _SELECT_YOUTH_FREEPLAYER = 'select *, unix_timestamp(expired_time)-unix_timestam
                        
 _SELECT_YOUTH_FREEPLAYER_TOTAL = 'select count(*) as count from youth_free_player where position=%s'
 
-def get_youth_freepalyer(page=1, pagesize=30, position='C', order_by='id', order='desc'):
+def get_youth_freepalyer(page=1, pagesize=30, position='C', order_by='expired_time', order='asc'):
     '''年轻自由球员
     '''
     if page <= 0:
@@ -86,6 +86,18 @@ def get_profession_player(team_id):
     cursor = connection.cursor()
     try:
         rs = cursor.fetchall(_SELECT_PROFESSION_PLAYER , (team_id, ))
+        if rs:
+            return rs.to_list()
+    finally:
+        cursor.close()
+        
+_SELECT_YOUTH_PLAYER = 'select * from youth_player where team_id=%s order by ability desc'
+
+def get_youth_player(team_id):
+    '''获取年轻球员'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchall(_SELECT_YOUTH_PLAYER , (team_id, ))
         if rs:
             return rs.to_list()
     finally:

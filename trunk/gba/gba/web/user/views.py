@@ -79,4 +79,24 @@ def online_user(request):
             'nextpage': page + 1, 'prevpage': page - 1}
     
     return render_to_response(request, "user/online_user.html", locals())
+
+@login_required
+def message(request):
+    '''消息管理'''
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 15))
+
+    team = UserManager().get_team_info(request)
+    
+    infos, total = user_operator.get_message(team.id, page, pagesize)
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
+            'nextpage': page + 1, 'prevpage': page - 1}
+    
+    return render_to_response(request, "user/message.html", locals())
     
