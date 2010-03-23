@@ -56,6 +56,7 @@ class YouthFreePlayerAuctionHandler(BaseBetchClient):
         YouthFreePlayer.transaction()
         try:
             if player.team_id:
+                youth_player.team_id = player.team_id
                 youth_player.persist()
                 team.persist()
                 player_auction_log.persist()
