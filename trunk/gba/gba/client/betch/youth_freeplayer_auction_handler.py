@@ -3,12 +3,15 @@
 
 '''年轻球员结算监控客户端'''
 
+from datetime import datetime
+
 from gba.common import playerutil
 from gba.common.single_process import SingleProcess
 from gba.common import log_execption
 from gba.common.db.reserve_convertor import ReserveLiteral
-from gba.entity import YouthFreePlayer, YouthFreeplayerAuctionLog, Team, PlayerAuctionLog
+from gba.entity import YouthFreePlayer, YouthFreeplayerAuctionLog, Team, PlayerAuctionLog, Message, UserInfo
 from gba.client.betch.base import BaseBetchClient
+from gba.common.constants import MessageType
 
 class YouthFreePlayerAuctionHandler(BaseBetchClient):
     
@@ -60,6 +63,14 @@ class YouthFreePlayerAuctionHandler(BaseBetchClient):
                 youth_player.persist()
                 team.persist()
                 player_auction_log.persist()
+                message = Message()
+                message.type = MessageType.SYSTEM_MSG
+                message.to_team_id = player.team_id
+                message.is_new = 1
+                user_info = UserInfo.load(username=team.username)
+                nick_name = user_info.nick_name
+                message.content = "[%s]" '%s经理,您以%s的价格购得球员%s,现已经到队' % (datetime.now(), nick_name, player.price, player.name)
+                message.persist()
             player.delete()
             YouthFreePlayer.commit()
         except:
