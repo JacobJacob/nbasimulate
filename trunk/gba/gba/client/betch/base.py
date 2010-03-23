@@ -36,6 +36,7 @@ class BaseBetchClient(object):
             self.append_log(traceback.format_exc(3))
             self._status = 'error'
             self.log()
+            raise
         self._status = 'finish'
         self.append_log('client %s finish' % self.__class__.__name__)
         self.log()
