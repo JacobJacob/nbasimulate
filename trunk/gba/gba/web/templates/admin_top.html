@@ -9,28 +9,24 @@
 <table width="100%" height="64" border="0" cellpadding="0" cellspacing="0" class="admin_topbg">
   <tr>
     <td width="40%" height="64"><img src="/site_media/images/logo.gif" width="262" height="64"></td>
-    <td width="60%" valign="top">
-     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td width="60%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="74%" height="38" class="admin_txt">
-          &nbsp;
+         
        </td>
        <td width="22%">
          {% if username %}
-            <a href="#" target="_self" onClick="logout();"><img src="/site_media/images/out.gif" alt="退出登录" width="46" height="20" border="0"></a>
-         {% else %}
-            <a href="{% url login-page %}">登录</a>
+          <a href="#" target="_self" onClick="logout();"><img src="/site_media/images/out.gif" alt="退出登录" width="46" height="20" border="0"></a>
          {% endif %}
         </td>
         <td width="4%">&nbsp;</td>
       </tr>
-       <tr>
-        <td height="19" colspan="3" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;">
+      <tr>
+          <td height="19" colspan="3" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;">
          球队:珠海火箭队  经理名:{{ username }}球员资金:{{ funds }} 职业联赛:{{ ff}} 青年联赛:&nbsp;
         </td>
-       </tr>
-    </table>
-   </td>
+        </tr>
+    </table></td>
   </tr>
 </table>
 </body>
