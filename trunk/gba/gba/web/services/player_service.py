@@ -3,7 +3,7 @@
 """客户端基础服务"""
 
 from gba.common.jsonrpcserver import jsonrpc_function
-from gba.business.user_roles import login_required, UserManager
+from gba.business.user_roles import login_required, UserManager, rpc_login_required
 from gba.business import player_operator
 
 @login_required
@@ -47,10 +47,24 @@ def get_free_auction_info(request, no):
     team = UserManager().get_team_info(request)
     return player_operator.get_free_auction_info(team.username, no)
 
-@login_required
+@rpc_login_required
 @jsonrpc_function
 def freeplayer_auction(request, no, price):
     '''职业球员出价'''
     team = UserManager().get_team_info(request)
     return player_operator.freeplayer_auction(team.id, no, price)
+
+@rpc_login_required
+@jsonrpc_function
+def attention_player(request, player_no, type):
+    '''关注球员'''
+    team = UserManager().get_team_info(request)
+    return player_operator.attention_player(team.id, player_no, type)
+
+@rpc_login_required
+@jsonrpc_function
+def cancel_attention_player(request, player_no):
+    '''取消关注球员'''
+    team = UserManager().get_team_info(request)
+    return player_operator.cancel_attention_player(team.id, player_no)
     

@@ -1,4 +1,4 @@
-#Sun Mar 21 19:01:54 CST 2010
+#Tue Mar 23 20:11:01 CST 2010
 eclipse.preferences.version=1
 encoding//gba/business/admin_operator.py=utf-8
 encoding//gba/business/client.py=utf-8
@@ -11,10 +11,12 @@ encoding//gba/business/spider_task.py=utf-8
 encoding//gba/business/user.py=utf-8
 encoding//gba/business/user_operator.py=utf-8
 encoding//gba/business/user_roles.py=utf-8
+encoding//gba/client/betch/base.py=utf-8
 encoding//gba/client/betch/config.py=utf-8
 encoding//gba/client/betch/daily_update.py=utf-8
 encoding//gba/client/betch/freeplayer_auction_handler.py=utf-8
 encoding//gba/client/betch/player_creator.py=utf-8
+encoding//gba/client/betch/youth_freeplayer_auction_handler.py=utf-8
 encoding//gba/client/betch/youth_player_creator.py=utf-8
 encoding//gba/client/init/league_init.py=utf-8
 encoding//gba/client/load_name.py=utf-8
@@ -33,6 +35,7 @@ encoding//gba/common/db/__init__.py=utf-8
 encoding//gba/common/db/connection_pool.py=utf-8
 encoding//gba/common/db/connection_wrapper.py=utf-8
 encoding//gba/common/db/cursor_wrapper.py=utf-8
+encoding//gba/common/db/reserve_convertor.py=utf-8
 encoding//gba/common/exception_mgr.py=utf-8
 encoding//gba/common/file_utility.py=utf-8
 encoding//gba/common/filelocker.py=utf-8

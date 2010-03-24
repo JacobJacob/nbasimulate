@@ -14,5 +14,5 @@ urlpatterns = patterns('web.player',
      url(r'^youth_freeplayer_detail/$', 'views.youth_freeplayer_detail', name='youth-freeplayer-detail'),
      url(r'^youth_player/$', 'views.youth_player', name='youth-player'),
      url(r'^youth_player_detail/$', 'views.youth_player_detail', name='youth-player-detail'),
-#    url(r'^edit/$', 'views.edit', name='table-edit'),
+     url(r'^attention_player/$', 'views.attention_player', name='attention-player'),
 )

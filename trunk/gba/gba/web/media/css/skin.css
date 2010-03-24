@@ -242,6 +242,10 @@ a:visited {
 	line-height: 20px;
 }
 
+.player a{
+    cursor: pointer;
+}
+
 .right{
 	border-right: 1px solid #B5D0D9;
 }
@@ -384,6 +388,9 @@ a:visited {
 .normal_table td{
 	border-bottom: 1px solid #B5D0D9;
 	line-height: 20px;
+}
+.normal_table a{
+    cursor: pointer;
 }
 
 #left{

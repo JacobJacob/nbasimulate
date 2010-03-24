@@ -162,3 +162,11 @@ def youth_player_detail(request):
     
     datas = {'id': id, 'player': player, 'attributes': attributes_maps}
     return render_to_response(request, 'player/profession_player_detail.html', datas)
+
+@login_required
+def attention_player(request):
+    '''关注球员'''
+    team = UserManager().get_team_info(request)
+    infos = player_operator.get_attention_player(team.id)
+    datas = {'infos': infos}
+    return render_to_response(request, 'player/attention_players.html', datas)

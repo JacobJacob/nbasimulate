@@ -5,7 +5,9 @@ from datetime import datetime
 
 from gba.common.db import connection
 from gba.common import log_execption
-from gba.entity import Team, YouthFreeplayerAuctionLog, YouthFreePlayer, FreePlayer
+from gba.entity import Team, YouthFreeplayerAuctionLog, YouthFreePlayer, FreePlayer, \
+                       AttentionPlayer
+from gba.common.constants import MarketType
 
 _SELECT_FREE_PLAYER = 'select *, unix_timestamp(expired_time)-unix_timestamp(now()) as lave_time from free_player where position="%s" order by %s %s limit %s, %s '
                        
@@ -182,10 +184,17 @@ def youth_freeplayer_auction(team_id, no, price):
     
     youth_freeplayer.bid_count = youth_freeplayer.bid_count + 1
     
+    attention_player = AttentionPlayer()
+    attention_player.team_id = team_id
+    attention_player.no = no
+    attention_player.type = MarketType.YOUTH_FREE
+    
+    
     YouthFreeplayerAuctionLog.transaction()
     try:
         youth_freeplayer_auction_log.persist()
         youth_freeplayer.persist()
+        attention_player.persist()
         YouthFreeplayerAuctionLog.commit()
         return 1
     except:
@@ -221,9 +230,15 @@ def freeplayer_auction(team_id, no, price):
     free_player.current_price = price
     free_player.current_team_id = team_id
     
+    attention_player = AttentionPlayer()
+    attention_player.team_id = team_id
+    attention_player.no = no
+    attention_player.type = MarketType.FREE
+    
     FreePlayer.transaction()
     try:
         free_player.persist()
+        attention_player.persist()
         FreePlayer.commit()
         return 1
     except:
@@ -250,6 +265,58 @@ def get_free_auction_info(username, no):
     elif team.hold_funds > 0:
         res = -2
     return res, free_player.worth, team.funds - (team.hold_funds if team.hold_funds else 0)
+
+def attention_player(team_id, player_no, type):
+    '''关注球员
+    @return 1 关注成功  2 已经关注过了  3 关注球员超过10个  -1 未知异常
+    '''
+    
+    attention_player = AttentionPlayer.load(no=player_no, team_id=team_id)
+    if attention_player:
+        return 2
+    
+    att_count = AttentionPlayer.count(' team_id=%s' % team_id)
+    if att_count >= 10:
+        return 3
+    
+    attention_player = AttentionPlayer()
+    attention_player.team_id = team_id
+    attention_player.no = player_no
+    attention_player.type = type
+    try:
+        attention_player.persist()
+    except:
+        log_execption()
+        return -1
+    return 1
+    
+def get_attention_player(team_id):
+    '''获取某队关注球员'''
+    attention_players = AttentionPlayer.query(condition='team_id=%s' % team_id)
+    infos = []
+    if attention_players:
+        for attention_player in attention_players:
+            if attention_player.type == MarketType.FREE:
+                player = FreePlayer.load(no=attention_player.no) 
+            elif attention_player.type == MarketType.YOUTH_FREE:
+                player = YouthFreePlayer.load(no=attention_player.no)
+            lave_time = player.expired_time - datetime.now()
+            player.lave_time = lave_time.days * 60 * 60 * 24 + lave_time.seconds
+            player.type = attention_player.type
+            infos.append(player)
+    return infos
+
+def cancel_attention_player(team_id, player_no):
+    '''取消关注球员'''
+    attention_player = AttentionPlayer.load(no=player_no, team_id=team_id)
+    if attention_player:
+        try:
+            attention_player.delete()
+            return 1
+        except:
+            log_execption()
+            return -1
+    return -1
 
 if __name__ == '__main__':
     print get_free_palyer()[1]

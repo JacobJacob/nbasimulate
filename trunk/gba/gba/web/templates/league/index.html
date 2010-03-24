@@ -1,6 +1,6 @@
 <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
 <link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<meta http-equiv="content-type" content="text/html; charset=utf8" />
 <script type="text/javascript">
 
 	  $(document).ready(function(){
@@ -9,8 +9,8 @@
 		     var id = $(this).parent().parent().attr('id');
 		     $.ajax({
 			    url: '{% url freeplayer-detail %}?id=' + id,
-			    type: 'GET',
-			    dataType: 'html',
+			    type: 'get',
+			    datatype: 'html',
 			    timeout: 1000,
 			    error: function(error){
 			        alert(error.message);
@@ -29,24 +29,23 @@ body {
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
-	background-color: #EEF2FB;
+	background-color: #eef2fb;
 }
 -->
 </style>
 <body>
-<div id="main">
-<div class="left_panel">
-<TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 id=secTable>
-    <TBODY>
-      <TR align=middle height=20>
-        <TD align="center" class="{% ifequal position 'C' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=C">联赛赛程<a></TD>
-        <TD align="center" class="{% ifequal position 'PF' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=PF">联赛排名<a></TD>
-        <TD align="center" class="{% ifequal position 'SF' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=SF">上轮本轮<a></TD>
-        <TD align="center" class="{% ifequal position 'SG' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=SG">技术统计<a></TD>
-      </TR>
-    </TBODY>
-</TABLE>
-<TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
+<div id="left">
+<table width="99%" border=0 cellpadding=0 cellspacing=0 id=sectable>
+    <tbody>
+      <tr align=middle height=20>
+        <td align="center" class="{% ifequal position 'c' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=c">联赛赛程<a></td>
+        <td align="center" class="{% ifequal position 'pf' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=pf">联赛排名<a></td>
+        <td align="center" class="{% ifequal position 'sf' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=sf">上轮本轮<a></td>
+        <td align="center" class="{% ifequal position 'sg' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url free-players %}?position=sg">技术统计<a></td>
+      </tr>
+    </tbody>
+</table>
+<table width="99%" border=0 cellpadding=0 cellspacing=0 class="normal_table">
   <thead>
     <th>轮次</th>
     <th>主场</th>
@@ -78,6 +77,5 @@ body {
   </tbody>
 </table>
 </div>
-<div id="detail_panel">信息页面</div>
-</div>
+<div id="side">信息页面</div>
 </body>

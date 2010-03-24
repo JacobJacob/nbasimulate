@@ -135,3 +135,7 @@ class MessageType(ConstantBase):
     SYSTEM_MSG = 1 #系统消息
     PLAYER_MSG = 2 #经理消息
     AUCTION_MSG = 3 #购买球员消息
+    
+class MarketType(ConstantBase):
+    FREE = 1 #职业自由
+    YOUTH_FREE = 2 #年轻自由

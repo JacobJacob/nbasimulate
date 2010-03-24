@@ -5,7 +5,7 @@
 __all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
            , 'YouthPlayer', 'Message', 'Team', 'ProfessionPlayer', 'Matchs',
            'League', 'LeagueTeams', 'Names', 'UserInfo', 'YouthFreeplayerAuctionLog',
-           'PlayerAuctionLog', 'ClientRunningLog']
+           'PlayerAuctionLog', 'ClientRunningLog', 'AttentionPlayer']
 
 from gba.common.bottle.persistable import Persistable
 
@@ -58,3 +58,7 @@ class PlayerAuctionLog(Persistable):
     
 class ClientRunningLog(Persistable):
     CACHE_KEY = 'client_running_log:id'
+    
+class AttentionPlayer(Persistable):
+    '''关注球员'''
+    CACHE_KEY = 'attention_player:id'

@@ -435,5 +435,35 @@ def login_required(input_function):
     replace_function.__doc__ = input_function.__doc__
     return replace_function
 
+def rpc_login_required(input_function):
+    """登录检测装饰器，若request带参数password，则会校验密码是否正确
+    @param input_function:被装饰函数 
+    @return: 替换函数
+    """
+    def replace_function(*args, **kwargs):
+        request = args[0]
+
+        user_manager = UserManager()
+        userinfo = user_manager.get_userinfo(request)
+        if userinfo:
+            request.userinfo = userinfo
+            try:
+                return input_function(*args, **kwargs)
+            except:                
+                full_path = request.get_full_path()
+                exception_mgr.on_except('request url: %r' % full_path, 1)
+                log_execption('request url: %r' % full_path, 1)
+                raise
+#                return HttpResponseServerError("Server Error (500)")
+        else:
+            path = urlquote(request.get_full_path())
+            response = HttpResponseRedirect('%s?%s=%s' % \
+                                            (reverse('login-page'), REDIRECT_FIELD_NAME, path))
+#            response.delete_cookie(SESSION_KEY) # 清楚cookies中的session_id
+            return response
+    replace_function.func_name = input_function.func_name
+    replace_function.__doc__ = input_function.__doc__
+    return replace_function
+
 if __name__ == '__main__':
     pass

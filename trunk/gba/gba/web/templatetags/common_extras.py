@@ -59,13 +59,17 @@ def display_attribute(attribute):
 @register.filter
 def format_lave_time(seconds):
     '''格式化剩余时间'''
+    one_day_seconds = 60 * 60 * 24
+    one_hour_seconds = 60 * 60
+    one_min_seconds = 60
+    if isinstance(seconds, timedelta):
+        days = seconds.days
+        seconds = days * one_day_seconds + seconds.seconds
+        
     if not seconds:
         return ''
     if seconds < 0:
         return u'己截止'
-    one_day_seconds = 60 * 60 * 24
-    one_hour_seconds = 60 * 60
-    one_min_seconds = 60
 
     if seconds >= one_day_seconds:
         days = seconds // one_day_seconds
