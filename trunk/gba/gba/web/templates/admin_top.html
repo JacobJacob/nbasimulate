@@ -3,16 +3,43 @@
 <title>gba篮球经理</title>
 <meta http-equiv=Content-Type content=text/html;charset=utf8>
 <base target="main">
+<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/jquery.timers-1.2.js"></script>
+<script type="text/javascript">
+   $(document).everyTime(300000, function(i){
+        $.ajax({
+		    url: '{% url check-new-message %}',
+		    type: 'GET',
+		    dataType: 'json',
+		    timeout: 1000,
+		    cache: false,
+		    error: function(error){
+		    },
+		    success: function(data){
+		       if(data==1){
+		          $("#message").html('<img src="/site_media/images/mail_1.gif" onclick="read_message()"/>');
+		       }
+		    }
+		});
+   });
+   
+   function read_message(){
+     
+     $("#message").html('') ;
+     var url = "{% url message %}" ;
+     parent.main.location = url;
+   }
+</script>
 <link href="/site_media/images/skin.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0">
 <table width="100%" height="64" border="0" cellpadding="0" cellspacing="0" class="admin_topbg">
   <tr>
-    <td width="40%" height="64"><img src="/site_media/images/logo.gif" width="262" height="64"></td>
-    <td width="60%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td width="50%" height="64"><img src="/site_media/images/logo.gif" width="262" height="64"></td>
+    <td width="50%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="74%" height="38" class="admin_txt">
-         
+           <span style="float:right;margin-right:5px;" id="message"></span>
        </td>
        <td width="22%">
          {% if username %}
@@ -22,8 +49,18 @@
         <td width="4%">&nbsp;</td>
       </tr>
       <tr>
-          <td height="19" colspan="3" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;">
-         球队:珠海火箭队  经理名:{{ username }}球员资金:{{ funds }} 职业联赛:{{ ff}} 青年联赛:&nbsp;
+        <td height="19" colspan="3" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;">
+        {% if league_config %}
+          第{{ league_config.season }}赛季,第{{ league_config.round }}轮
+        {% endif %}
+        {% if team %}
+         <span class="margin_left">球队:{{ team.name}}</span>  
+         <span>经理名:{{ nickname }}</span>
+         <span>球员资金:{{ team.funds }}</span>
+         <span>冻结资金:{{ team.hold_funds }}</span> 
+         <span>职业联赛: 第{{ team.profession_league_evel}}级,第{{ team.profession_league_class}}联赛</span>
+         <span>青年联赛: {{ team.youth_league }}级</span>
+        {% endif %}
         </td>
         </tr>
     </table></td>
