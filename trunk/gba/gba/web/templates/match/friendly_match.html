@@ -21,10 +21,8 @@ body {
 -->
 </style>
 <body>
-<table width="99%">
-<tr>
-<td width="60%" valign="top">
-<TABLE width="99%" border=0 cellPadding=0 cellSpacing=0 class="player">
+<div id="left">
+<table width="99%" border=0 cellPadding=0 cellSpacing=0 class="normal_table">
   <thead>
     <th>&nbsp;</th>
     <th>主场</th>
@@ -39,7 +37,7 @@ body {
        <tr id="{{ info.id }}" no="{{ info.no }}">
         <td>{{ info.type }}</td>
         <td>{{ info.home_team_id|team_name }}</td>
-        <td>
+        <td class="align_center">
            {% if info.point %}
               {{ info.point }}
            {% else %}
@@ -48,7 +46,7 @@ body {
         </td>
         <td>{{ info.guest_team_id|team_name }}</td>
         <td>{{ info.send_time }}</td>
-        <td class="right">
+        <td class="right align_center">
            {% ifequal info.status 2 %}
                <a href="{% url match-stat %}?match_id={{info.id}}" target="_blank">比赛统计</a>
                <a href="{% url match-detail %}?match_id={{info.id}}" target="_blank">比赛战报</a>
@@ -61,12 +59,8 @@ body {
     {% endif %}
   </tbody>
 </table>
-</td>
-<td class="detail_td">
-<span id="play_detail" ></span>
-</td>
-</tr>
-</table>
+</div>
+<div id="side"></div>
 <div id="edit_player_dialog" class="flora" style="display: none;">
     <form id="edit_player_form">
         <input type="hidden" id="no"/>
