@@ -22,7 +22,7 @@ def admin_top(request):
     team = UserManager().get_team_info(request)
     if user_info:
         username = user_info['username']
-        nickname = user_info['nickname']
+        nickname = user_info.get('nickname')
         
     league_config = LeagueConfig.query()
     if league_config:
