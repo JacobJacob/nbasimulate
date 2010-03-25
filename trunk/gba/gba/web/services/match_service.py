@@ -5,7 +5,8 @@
 from gba.common.jsonrpcserver import jsonrpc_function
 from gba.business.user_roles import login_required, UserManager
 from gba.business import match_operator
-from gba.entity import Team
+from gba.entity import Team, Message
+from gba.common.constants import MessageType
 
 @login_required
 @jsonrpc_function
@@ -67,6 +68,7 @@ def send_match_request(request, info):
     """保存战术配置"""
 
     team = UserManager().get_team_info(request)
+    user_info = UserManager().get_userinfo(request)
     if not team:
         return 0, u'无法获取球队信息'
     
@@ -75,8 +77,16 @@ def send_match_request(request, info):
     if team.id == guest_team.id:
         return 0, u'你无法和自己约战'
     
+    message = Message()
+    message.type = MessageType.SYSTEM_MSG
+    message.from_team_id = 0
+    message.to_team_id = guest_team.id
+    message.content = u'%s经理向你发送了%s比赛请求，您可以在我的比赛中查看' % (user_info['nickname'], type)
+    message.is_new = 1
+    
     try:
         match_operator.send_match_request(team.id, guest_team.id, type=1)
+        message.persist()
     except:
         return 0, u'服务器异常'
     return 1, None

@@ -29,6 +29,13 @@ def update_profession_player(request, info):
 
 @login_required
 @jsonrpc_function
+def update_profession_players(request, infos):
+    '''批量更新职业球员信息，只能更新训练项等信息'''
+    team = UserManager().get_team_info(request)
+    return player_operator.update_profession_players(team.id, infos)
+
+@login_required
+@jsonrpc_function
 def youth_freeplayer_auction(request, no, price):
     team = UserManager().get_team_info(request)
     return player_operator.youth_freeplayer_auction(team.id, no, price)
