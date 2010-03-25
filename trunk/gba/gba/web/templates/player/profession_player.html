@@ -8,7 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 <script type="text/javascript">
 
-      service = new rpc.ServiceProxy("/services/player/", {asynchronous:false, methods: ['profession_player_detail', 'update_profession_player']});
+      service = new rpc.ServiceProxy("/services/player/", {asynchronous:false, 
+              methods: ['profession_player_detail', 'update_profession_player', 'update_profession_players']});
 
 	  $(document).ready(function(){
 	    
@@ -104,6 +105,25 @@
 	     
 		 });
 		 
+		 $('#save_training').click(function(){
+		     infos = [] ;
+		     $('.training').each(function(){
+		         var no = $(this).parent().parent().attr('no');
+		         var training = $(this).val();
+		         infos.push({'no': no, 'training': training});
+		     });
+		     try{
+		         var result = service.update_profession_players(infos);
+		         if(result==1){
+		             alert('训练项保存成功');
+		         }else{
+		             alert('保存失败,请重试');
+		         }
+		     }catch(error){
+		         alert('保存失败,请重试');
+		     }
+		 });
+		 
 	  });
 </script>
 <style type="text/css">
@@ -131,6 +151,7 @@ body {
     <th>综合</th>
     <th>薪水</th>
     <th>合同</th>
+    <th>训练项</th>
     <th class="right">操作</th>
   </thead>
   <tbody>
@@ -146,10 +167,22 @@ body {
         <td>{{ info.avoirdupois }}</td>
         <td>{{ info.ability|format_number }}</td>
         <td>{{ info.wage }}</td>
-        <td>{{ info.contract }}</td>
+        <td class="align_center">{{ info.contract }}</td>
+        <td class="align_center">
+         <select class="training">
+          {% for attr, attrname in attrs.items %}
+             <option value="{{attr}}" {% ifequal attr info.training %}selected{% endifequal %}>{{attrname}}</option>
+          {% endfor %}
+         </select>
+        </td>
         <td class="right"><a class="edit_player">修改</a></td>
        </tr>
       {% endfor %}
+      <tr>
+        <td colspan="12" class="right">
+          <span style="float:right;margin-rigth:10px;"><input type="button" id="save_training" value="确定训练"/></span>
+        </td>
+      </tr>
     {% endif %}
   </tbody>
 </table>
