@@ -4,9 +4,10 @@
 
 from django.http import HttpResponseRedirect
 
-from gba.web.render import render_to_response
+from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import UserManager, login_required
 from gba.business import user_operator, match_operator
+from gba.entity import Message
 
 SESSION_KEY = '_auth_user_id'
 
@@ -90,6 +91,12 @@ def message(request):
     
     infos, total = user_operator.get_message(team.id, page, pagesize)
     
+    ids = []
+    for info in infos:
+        ids.append(info['id'])
+        
+    user_operator.update_message_to_old(ids)
+        
     if total == 0:
         totalpage = 0
     else:
@@ -99,4 +106,12 @@ def message(request):
             'nextpage': page + 1, 'prevpage': page - 1}
     
     return render_to_response(request, "user/message.html", locals())
-    
+
+@login_required
+def check_new_message(request):
+    '''检查看有没有新的消息'''
+    team = UserManager().get_team_info(request)
+    message = Message.query(condition="to_team_id=%s and is_new=1" % team.id, limit=1)
+    if message:
+        return json_response(1)
+    return json_response(0)

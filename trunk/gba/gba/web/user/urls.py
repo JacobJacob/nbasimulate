@@ -10,4 +10,5 @@ urlpatterns = patterns('web.user',
     url(r'^register/$', 'views.register', name='register'),
     url(r'^onlineuser/$', 'views.online_user', name='online-user'),
     url(r'^message/$', 'views.message', name='message'),
+    url(r'^checknewmessage/$', 'views.check_new_message', name='check-new-message'),
 )
