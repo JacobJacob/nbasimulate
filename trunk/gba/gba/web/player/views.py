@@ -7,7 +7,7 @@ from gba.common import playerutil
 from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
 from gba.entity import Team
-from gba.common.constants import attributes, hide_attributes
+from gba.common.constants import attributes, hide_attributes, AttributeMaps
 
 @login_required
 def index(request):
@@ -63,6 +63,12 @@ def profession_player(request):
     infos = player_operator.get_profession_player(team.id)
     datas = {'infos': infos}
     datas['nos'] = [i for i in range(30)]
+    show_attrs = {}
+    for attr in AttributeMaps.keys():
+        if attr not in hide_attributes:
+            show_attrs[attr] = AttributeMaps[attr]
+    
+    datas['attrs'] = show_attrs
     
     return render_to_response(request, 'player/profession_player.html', datas)
 
