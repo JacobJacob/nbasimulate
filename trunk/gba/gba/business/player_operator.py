@@ -157,6 +157,27 @@ def update_profession_player(team_id, info):
     finally:
         cursor.close()
         
+def update_profession_players(team_id, infos):
+    '''批量更新职业球员信息，只能更新训练项等信息'''
+   
+    cursor = connection.cursor()
+    try:
+        datas = []
+        for info in infos:
+            data = {}
+            no = info['no']
+            if _check_player_is_in_team(team_id, no, cursor):
+                data['no'] = no
+                data['training'] = info.get('training')
+                datas.append(data)
+        cursor.update(datas, 'profession_player', ['no'])
+        return 1
+    except:
+        log_execption()
+        return 0
+    finally:
+        cursor.close()
+        
 def youth_freeplayer_auction(team_id, no, price):
     '''年轻球员出价
     @return price: -1 未知异常 - 2 资金不够  1 竞价成功 -3 已经竞过价  -4 球员信息不存在

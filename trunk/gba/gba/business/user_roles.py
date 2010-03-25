@@ -35,7 +35,7 @@ class UserManager(DBOperator):
     CHECK_USER_PASSWORD = """SELECT id, username, session_id FROM user_info where username = %s AND password = %s"""
 
     SELECT_USERS = """SELECT id, username FROM user_info"""
-    SELECT_USER = """SELECT id, username, session_id FROM user_info WHERE session_id = %s"""
+    SELECT_USER = """SELECT id, username, session_id, nickname FROM user_info WHERE session_id = %s"""
     ADD_USER = """INSERT user_info (username, password, login_times, create_time) 
                     VALUES (%s, '', 0, now())"""
     ADD_USER_LOGIN = """INSERT user_info (username, password, session_id, login_times, last_login_time, create_time) 
@@ -147,9 +147,10 @@ class UserManager(DBOperator):
     def get_team_info(self, request):
         '''获取球队信息'''
         user_info = self.get_userinfo(request)
-        username = user_info['username']
-        team = Team.load(username=username)
-        return team
+        if user_info:
+            username = user_info['username']
+            team = Team.load(username=username)
+            return team
     
     def add_user(self, username):
         """判断用户是否在ksso中存在，如果存在，就增加到当前用户信息表

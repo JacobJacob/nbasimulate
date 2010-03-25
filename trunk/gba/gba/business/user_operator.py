@@ -51,6 +51,16 @@ def get_message(team_id, page=1, pagesize=15):
         
     return infos, total
 
+_UPDATE_MESSAGE_TO_OLD = 'update message set is_new=0 where id in (%s)'
+
+def update_message_to_old(message_ids):
+    '''将消息更新为已读'''
+    cursor = connection.cursor()
+    try:
+        return cursor.execute(_UPDATE_MESSAGE_TO_OLD % ','.join(['%s' % id for id in message_ids]))
+    finally:
+        cursor.close()
+
         
 if __name__ == '__main__':
     get_message(1)
