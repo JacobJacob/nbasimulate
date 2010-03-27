@@ -61,4 +61,4 @@ class YouthAttributeConfig(AttributeConfig):
      年轻球员属性配置     
           格式:{'shoot': {'grade-c': [xx, xx xx, xx, xx, xx, xx, xx, xx]}}
     '''
-    config_file = 'outh-attribute-config.xml'
+    config_file = 'youth-attribute-config.xml'

@@ -58,10 +58,6 @@ PositioneMap = {
     Position.C: u'中锋',                                        
 }
     
-class MatchTypes(ConstantBase):
-    FRIENDLY = 1
-    TRAINING = 2
- 
 class TacticalGroupType(ConstantBase):
     PROFESSION = 1
     CUP = 2
@@ -70,7 +66,7 @@ class TacticalGroupType(ConstantBase):
 TacticalGroupTypeMap = {
     TacticalGroupType.PROFESSION: u'职业联赛',
     TacticalGroupType.CUP: u'杯赛',
-    TacticalGroupType.OTHERS: u'其它比赛',                                            
+    TacticalGroupType.OTHERS: u'其它比赛',                                  
 }
    
 class TacticalSectionType(ConstantBase):

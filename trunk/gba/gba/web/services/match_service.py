@@ -3,9 +3,9 @@
 """客户端基础服务"""
 
 from gba.common.jsonrpcserver import jsonrpc_function
-from gba.business.user_roles import login_required, UserManager
+from gba.business.user_roles import login_required, UserManager, rpc_login_required
 from gba.business import match_operator
-from gba.entity import Team, Message
+from gba.entity import Team, Message, TrainingCenter
 from gba.common.constants import MessageType
 
 @login_required
@@ -91,3 +91,18 @@ def send_match_request(request, info):
         return 0, u'服务器异常'
     return 1, None
 
+@rpc_login_required
+@jsonrpc_function
+def apply_training_center(request):
+    """报名训练赛 
+    @return -1 已经报名  -2 球队训练热情不足 1 成功 
+    """
+    team = UserManager().get_team_info(request)
+    training_center = TrainingCenter.query(condition='team_id=%s' % team.id)
+    if training_center:
+        return -1
+    
+    training_center = TrainingCenter()
+    training_center.team_id = team.id
+    training_center.persist()
+    return 1

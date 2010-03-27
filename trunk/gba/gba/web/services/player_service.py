@@ -16,8 +16,6 @@ def profession_player_detail(request, player_no):
     for player in players:
         in_use_nos.append(player['player_no'])
     
-    print player_info
-    print in_use_nos
     return player_info, in_use_nos
 
 @login_required
@@ -74,4 +72,5 @@ def cancel_attention_player(request, player_no):
     '''取消关注球员'''
     team = UserManager().get_team_info(request)
     return player_operator.cancel_attention_player(team.id, player_no)
+
     

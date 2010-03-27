@@ -8,7 +8,7 @@ import copy
 from gba.common.constants import attributes
 from gba.common import md5mgr
 from gba.entity import ProfessionPlayer, YouthPlayer
-from gba.client.betch.config import AttributeConfig
+from gba.client.betch.config import AttributeConfig, YouthAttributeConfig
 from gba.common.attribute_factory import AvoirdupoisFactory, NameFactory, AgeFactory, StatureFactory, PictrueFactory
 
 def calcul_otential(player):
@@ -93,13 +93,14 @@ def create_profession_player(location):
     setattr(player, 'position', location)
     setattr(player, 'position_base', location)
     setattr(player, 'player_no', random.randint(0, 30))
-    setattr(player, 'no', md5mgr.mkmd5fromstr('%s_%s_%s' % (location, level, str(time.time()))))
+    setattr(player, 'no', md5mgr.mkmd5fromstr('%s_%s_%s_%s' % (location, level, str(time.time()), player.player_no)))
     setattr(player, 'name', NameFactory.create_name())
     setattr(player, 'name_base', NameFactory.create_name())
     setattr(player, 'picture', PictrueFactory.create())
     setattr(player, 'power', 100) #体力100
     setattr(player, 'status', 1) #状态正常
     setattr(player, 'contract', 26) #合同26轮
+    setattr(player, 'training', 'speed') #默认训练速度
     calcul_ability(player)
     calcul_wage(player)
     
@@ -132,3 +133,32 @@ def copy_player(player, source='youth_free_player', to='youth_player'):
         profession_player.__class__ = ProfessionPlayer
         return profession_player
     return None
+
+def create_youth_player(location):
+    '''创建一个青年球员'''
+    
+    level = random.randint(1, 9)
+    
+    player = YouthPlayer()
+    setattr(player, 'betch_no', '#' * 32)
+    setattr(player, 'age', AgeFactory.create(youth=True))
+    setattr(player, 'stature', StatureFactory.create(location, youth=True))
+    setattr(player, 'avoirdupois', AvoirdupoisFactory.create(location, youth=True))
+                        
+    for attribute in attributes:
+        base = YouthAttributeConfig.get_attribute_config(attribute, location, level)
+        value = 30 * random.random() + base
+        setattr(player, attribute, value * random.random())
+        setattr(player, '%s_max' % attribute, value)
+    setattr(player, 'position', location)
+    setattr(player, 'position_base', location)
+    setattr(player, 'player_no', random.randint(0, 30))
+    setattr(player, 'no', md5mgr.mkmd5fromstr('%s_%s_%s_%s' % (location, level, str(time.time()), player.player_no)))
+    setattr(player, 'name', NameFactory.create_name())
+    setattr(player, 'name_base', NameFactory.create_name())
+    setattr(player, 'picture', PictrueFactory.create())
+    setattr(player, 'power', 100) #体力100
+    setattr(player, 'status', 1) #状态正常
+    calcul_ability(player)
+
+    return player

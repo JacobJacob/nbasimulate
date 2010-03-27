@@ -8,14 +8,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 <script type="text/javascript">
 
-      service = new rpc.ServiceProxy("/services/player/", {asynchronous:false, methods: ['profession_player_detail', 'update_profession_player']});
+      service = new rpc.ServiceProxy("/services/player/", {asynchronous:false, methods: ['update_profession_player']});
 
 	  $(document).ready(function(){
 	    
 		 $('a.player_name').click(function() {
 		     var no = $(this).parent().parent().attr('no');
 		     $.ajax({
-			    url: '{% url profession-player-detail %}?no=' + no,
+			    url: '{% url youth-player-detail %}?no=' + no,
 			    type: 'GET',
 			    dataType: 'html',
 			    timeout: 1000,
@@ -129,8 +129,7 @@ body {
     <th>身高</th>
     <th>体重</th>
     <th>综合</th>
-    <th>薪水</th>
-    <th>合同</th>
+    <th>训练点</th>
     <th class="right">操作</th>
   </thead>
   <tbody>
@@ -146,7 +145,6 @@ body {
         <td>{{ info.avoirdupois }}</td>
         <td>{{ info.ability|format_number }}</td>
         <td>{{ info.wage }}</td>
-        <td>{{ info.contract }}</td>
         <td class="right"><a class="edit_player">修改</a></td>
        </tr>
       {% endfor %}

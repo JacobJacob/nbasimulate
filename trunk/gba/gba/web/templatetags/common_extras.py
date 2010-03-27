@@ -25,9 +25,19 @@ def section_name(section):
 
 @register.filter
 def team_name(team_id):
+    '''球队名字'''
     team = Team.load(id=team_id)
     if team:
         return team.name
+    return ''
+    
+@register.filter
+def team_youth_level(team_id):
+    '''球队青年队等级'''
+    team = Team.load(id=team_id)
+    if team:
+        return team.youth_league
+    return ''
     
 @register.filter
 def team_username(team_id):

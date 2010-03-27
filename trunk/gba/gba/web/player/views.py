@@ -6,7 +6,7 @@ from gba.web.render import render_to_response
 from gba.common import playerutil
 from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
-from gba.entity import Team
+from gba.entity import Team, YouthPlayer
 from gba.common.constants import attributes, hide_attributes, AttributeMaps
 
 @login_required
@@ -155,7 +155,7 @@ def youth_player_detail(request):
     no = request.GET.get('no', None)
     if not no:
         return render_to_response(request, 'default_error.html', {'msg': u'球员id为空'})
-    player = player_operator.get_profession_palyer_by_no(no)
+    player = YouthPlayer.load(no=no)
     if not player:
         return render_to_response(request, 'default_error.html', {'msg': u'球员不存在'})
     
@@ -167,7 +167,7 @@ def youth_player_detail(request):
         attributes_maps[attribute] = '%s_oten' % attribute
     
     datas = {'id': id, 'player': player, 'attributes': attributes_maps}
-    return render_to_response(request, 'player/profession_player_detail.html', datas)
+    return render_to_response(request, 'player/youth_player_detail.html', datas)
 
 @login_required
 def attention_player(request):

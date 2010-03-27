@@ -301,6 +301,10 @@ a:visited {
    text-align:center;
 }
 
+.align_left{
+   text-align:left;
+}
+
 #tactial_type{
   padding:10px 0 0 10px;
 }
@@ -406,7 +410,7 @@ a:visited {
   float:left;
   font-family:Arial,Helvetica,sans-serif;
   font-size:12px;
-  margin: 0;
+  margin: 0 0 0 5px;
 }
 
 
@@ -469,4 +473,16 @@ a:visited {
 
 .player_others_info{
   margin: 0 0 0 8px;
+}
+
+.normal_title{
+  width:80px;
+}
+
+.short_title{
+  width:40px;
+}
+
+.long_title{
+  width:120px;
 }

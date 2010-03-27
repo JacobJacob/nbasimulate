@@ -6,7 +6,7 @@ from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MatchStatus, MatchTypes, TacticalGroupTypeMap, TacticalSectionTypeMap
 from gba.common import log_execption
 from gba.common import playerutil
-from gba.entity import Team, ProfessionPlayer, League, LeagueTeams
+from gba.entity import Team, ProfessionPlayer, League, LeagueTeams, YouthPlayer
 from gba.business import player_operator
 
 #_SELECT_MATCH = 'select * from matchs where %s order by id desc limit %s, %s'
@@ -63,7 +63,7 @@ def save_tactical_detail(info):
         cursor.close()
     return True
 
-_LOAD_TACTICAL_DETAIL = 'select * from team_tactical_detail where seq=%s and team_id=%s limit 1'
+_LOAD_TACTICAL_DETAIL = 'select * from team_tactical_detail where seq=%s and team_id=%s and is_youth=0 limit 1'
 
 def get_tactical_detail(team_id, seq):
     '''获取战术信息'''
@@ -75,19 +75,19 @@ def get_tactical_detail(team_id, seq):
     finally:
         cursor.close()
         
-_SELECT_TACTICAL_DETAILS = 'select * from team_tactical_detail where team_id=%s order by seq asc'
+_SELECT_TACTICAL_DETAILS = 'select * from team_tactical_detail where team_id=%s and is_youth=%s order by seq asc'
 
-def get_tactical_details(team_id):
+def get_tactical_details(team_id, is_youth=False):
     '''获取战术信息'''
     cursor = connection.cursor()
     try:
-        rs = cursor.fetchall(_SELECT_TACTICAL_DETAILS, (team_id, ))
+        rs = cursor.fetchall(_SELECT_TACTICAL_DETAILS, (team_id, 1 if is_youth else 0))
         if rs:
             return rs.to_list()
     finally:
         cursor.close()
 
-_SELECT_TACTICAL_MAINS = 'select * from team_tactical where team_id=%s order by type asc'
+_SELECT_TACTICAL_MAINS = 'select * from team_tactical where team_id=%s and is_youth=0 order by type asc'
         
 def get_tactical_mains(team_id):
     '''获取不同比赛阵容信息'''
@@ -99,10 +99,13 @@ def get_tactical_mains(team_id):
     finally:
         cursor.close()
         
-def create_team_default_tactical(team_id):
+def create_team_default_tactical(team_id, is_youth=False):
     '''创建球队默认战术'''
     
-    players = player_operator.get_profession_player(team_id)
+    if is_youth:
+        players = player_operator.get_youth_player(team_id)
+    else:
+        players = player_operator.get_profession_player(team_id)
     if len(players) < 5:
         raise '球队人数不足五个, 不能创建'
     
@@ -141,6 +144,7 @@ def create_team_default_tactical(team_id):
 
         tactical_detail['name'] = name
         tactical_detail['seq'] = seq
+        tactical_detail['is_youth'] = is_youth
         tactical_details.append(tactical_detail)
     
     cursor = connection.cursor()
@@ -149,12 +153,13 @@ def create_team_default_tactical(team_id):
     finally:
         cursor.close()
         
-    tactical_details = get_tactical_details(team_id)
+    tactical_details = get_tactical_details(team_id, is_youth)
     default_tactical_id = tactical_details[0]['id']
     
     tactical_mains = []
-    for type in TacticalGroupTypeMap.keys():
-        tactical_main = {'team_id': team_id, 'type': type}
+    
+    if is_youth:
+        tactical_main = {'team_id': team_id, 'type': 4, 'is_youth': is_youth} #4是青年比赛
         tactical_main['created_time'] = ReserveLiteral('now()')
         tactical_main['tactical_detail_1_id'] = default_tactical_id
         tactical_main['tactical_detail_2_id'] = default_tactical_id
@@ -165,6 +170,19 @@ def create_team_default_tactical(team_id):
         tactical_main['tactical_detail_7_id'] = default_tactical_id
         tactical_main['tactical_detail_8_id'] = default_tactical_id
         tactical_mains.append(tactical_main)
+    else:
+        for type in TacticalGroupTypeMap.keys():
+            tactical_main = {'team_id': team_id, 'type': type, 'is_youth': is_youth}
+            tactical_main['created_time'] = ReserveLiteral('now()')
+            tactical_main['tactical_detail_1_id'] = default_tactical_id
+            tactical_main['tactical_detail_2_id'] = default_tactical_id
+            tactical_main['tactical_detail_3_id'] = default_tactical_id
+            tactical_main['tactical_detail_4_id'] = default_tactical_id
+            tactical_main['tactical_detail_5_id'] = default_tactical_id
+            tactical_main['tactical_detail_6_id'] = default_tactical_id
+            tactical_main['tactical_detail_7_id'] = default_tactical_id
+            tactical_main['tactical_detail_8_id'] = default_tactical_id
+            tactical_mains.append(tactical_main)
     
     cursor = connection.cursor()
     try:
@@ -221,7 +239,10 @@ def init_team(team_info):
         for location in locations:
             player = playerutil.create_profession_player(location)
             setattr(player, 'team_id', team.id)
+            youth_player = playerutil.create_youth_player(location)
+            setattr(youth_player, 'team_id', team.id)
             player.persist()
+            youth_player.persist()
         ProfessionPlayer.commit()
     except:
         log_execption()
@@ -230,6 +251,7 @@ def init_team(team_info):
        
     #创建默认阵容
     create_team_default_tactical(team.id)
+    create_team_default_tactical(team.id, is_youth=True)
     
 _SELECT_MATCH = 'select * from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) order by id limit %s, %s '
                        
@@ -292,10 +314,4 @@ def get_match_nodosity_detail(match_nodosity_main_id):
         cursor.close()
         
 if __name__ == '__main__':
-    League.transaction()
-    try:
-        assign_league()
-    except:
-        log_execption()
-    finally:
-        League.rollback()
+    init_team({'username': '测试用户3', 'teamname': '测试球队3'})

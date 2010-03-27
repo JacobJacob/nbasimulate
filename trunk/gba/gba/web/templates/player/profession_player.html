@@ -175,7 +175,7 @@ body {
           {% endfor %}
          </select>
          {% if info.last_inc %}
-           +{{ info.last_inc }}
+           +{{ info.last_inc|format_number }}
          {% else %}
            +0.0
          {% endif %}

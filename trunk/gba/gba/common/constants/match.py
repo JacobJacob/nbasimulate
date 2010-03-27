@@ -28,3 +28,8 @@ MatchStatusMap = {
     MatchStatus.FINISH: u'完成',
     MatchStatus.CANCEL: u'取消',              
 }
+
+class MatchTypes(ConstantBase):
+    FRIENDLY = 1  #
+    TRAINING = 2  #
+    YOUTH_TRAINING = 3 #青年训练赛
