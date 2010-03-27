@@ -31,7 +31,7 @@ class UserManager(DBOperator):
     
     #---------------------权限部分sql---------------------------------#
     
-    CHECK_USER = """SELECT id, username, session_id FROM user_info where username = %s"""
+    CHECK_USER = """SELECT id, username, nickname,session_id FROM user_info where username = %s"""
     CHECK_USER_PASSWORD = """SELECT id, username, session_id FROM user_info where username = %s AND password = %s"""
 
     SELECT_USERS = """SELECT id, username FROM user_info"""
