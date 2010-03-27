@@ -170,7 +170,21 @@ class Persistable(object):
             cursor.close()
         info('not record found')
         return []
-                   
+    
+    @classmethod
+    def paging(cls, page, pagesize, **args):
+        '''分页查询'''
+        if page <= 0:
+            page = 1
+        index = (page - 1) * pagesize
+        limit = '%s, %s' % (index, pagesize)
+        args['limit'] = limit
+        objs = cls.query(**args)
+        count = 0
+        if objs:
+            count = cls.count(args.get('condition'))
+        return objs, count
+        
     @classmethod
     def load(cls, **keys):
         '''load the object'''
