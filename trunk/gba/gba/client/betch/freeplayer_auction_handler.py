@@ -7,7 +7,7 @@ from gba.common import playerutil
 from gba.common.single_process import SingleProcess
 from gba.common import log_execption
 from gba.common.db.reserve_convertor import ReserveLiteral
-from gba.entity import FreePlayer, Team, PlayerAuctionLog
+from gba.entity import FreePlayer, Team, PlayerAuctionLog, AttentionPlayer
 from gba.client.betch.base import BaseBetchClient
 
 class FreePlayerAuctionHandler(BaseBetchClient):
@@ -53,12 +53,19 @@ class FreePlayerAuctionHandler(BaseBetchClient):
             player_auction_log.content = u'交易成功 [球员:%s(%s)被经理%s以%s的价格购买]' % (player.name, player.no, team.username, player.current_price)
             player_auction_log.type = 2 #1代表自由球员接易
         
+        attentions = AttentionPlayer.query(no=player.no)
+        
         FreePlayer.transaction()
         try:
             if player.auction_status == 1:
                 profession_player.persist()
                 team.persist()
                 player_auction_log.persist()
+            
+            #关注球员，删除
+            for attention in attentions:
+                attention.delete()
+            
             player.delete()
             FreePlayer.commit()
         except:

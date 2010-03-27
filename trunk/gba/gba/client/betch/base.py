@@ -58,7 +58,6 @@ class BaseBetchClient(object):
         except:
             ClientRunningLog.rollback()
             
-        
     def _run(self):
         pass
     

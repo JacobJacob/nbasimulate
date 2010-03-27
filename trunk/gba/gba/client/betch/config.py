@@ -12,7 +12,7 @@ from gba.common.constants import attributes
 
 
 def random_attribute(position):
-    return attributes[random.randint(1, len(attributes))]
+    return attributes[random.randint(0, len(attributes)-1)]
 
 def random_diathesis(position):
     pass
