@@ -213,8 +213,7 @@ public class NodosityEngine {
 		}
 		controller = context.getControllerWithIndx(index);
 
-		if (controller.getControllerName().equals(currentControllerNm)
-				|| controller.getControllerName().equals(currentDefenderNm)) {
+		if (controller.getControllerName().equals(currentControllerNm) || controller.getControllerName().equals(currentDefenderNm)) {
 			controller = checkNextControllerForScrimmageAction();
 		}
 
@@ -317,6 +316,7 @@ public class NodosityEngine {
 			return controller;
 		}
 
+		// 判断争篮板的是谁
 		int index = -1;
 		Random random = new Random();
 		int[] percent = ReboundHelper.checkPercentForGetRebound(context.getControllers(), context.isHomeTeam());
@@ -397,7 +397,7 @@ public class NodosityEngine {
 		}
 	}
 
-	// check whether
+	// 判断投篮之前有没有犯规
 	public void checkWhetherFoulBeforeShoot() {
 		int percent = FoulHelper.checkDefensiveFoulAfterShoot(context);
 		if (RandomCheckHelper.defaultCheck(percent)) {
@@ -425,7 +425,7 @@ public class NodosityEngine {
 		} else if (context.isDefensiveRebound() || context.isOffensiveRebound()) {
 			actionType = MatchConstant.ACTION_TYPE_REBOUND;
 
-		} else if (a > 50) {
+		} else if (a > 60) {
 			actionType = MatchConstant.ACTION_TYPE_PASS;
 		} else {
 			actionType = MatchConstant.ACTION_TYPE_SHOUT;

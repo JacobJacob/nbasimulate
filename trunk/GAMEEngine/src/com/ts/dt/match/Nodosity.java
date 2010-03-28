@@ -36,10 +36,15 @@ public class Nodosity {
 
 	public void init() {
 
-		controllers = new Hashtable<String, Controller>();
+		if (context.getControllers() == null) {
+			controllers = new Hashtable<String, Controller>();
+			context.put(MatchConstant.CURRENT_CONTROLLERS, controllers);
+		} else {
+			controllers = context.getControllers();
+		}
 		context.put(MatchConstant.CURRENT_CONTROLLER_NAME, "CA");
 		context.put(MatchConstant.HAS_PASS_TIMES, 0);
-		context.put(MatchConstant.CURRENT_CONTROLLERS, controllers);
+
 		// loadControllers();
 		loadControllersFromDb();
 		Controller currentController = controllers.get(context.get(MatchConstant.CURRENT_CONTROLLER_NAME));
@@ -277,7 +282,7 @@ public class Nodosity {
 		controller_pfa.setTeamFlg("A");
 		controller_pfa.setControllerName("PFA");
 		controller_pfa.setPlayer(playerDao.load(homeTeamTacticalDetail.getPfid()));
-		controllers.put("PFA", controller_pfa);
+		context.putController(controller_pfa);
 
 		Controller controller_sfa = new Controller();
 		controller_sfa.setTeamFlg("A");

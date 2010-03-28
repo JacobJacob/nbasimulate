@@ -6,22 +6,25 @@ import com.ts.dt.po.Player;
 
 public class ActionCostTimeHelper {
 
+	// 传球所用时间
 	public static long passCostTime(Player player) {
 		long costTime = 0;
-		costTime += randomGetCostTime() * 8;
+		costTime += randomGetCostTime() * 5;
 		return costTime;
 	}
 
-	public static long shootCostTime(Player player) {
-		long costTime = 10;
-		costTime += randomGetCostTime() * 10;
-		return costTime;
-	}
+	// //投篮所用时间
+	// public static long shootCostTime(Player player) {
+	// long costTime = 10;
+	// costTime += randomGetCostTime() * 10;
+	// return costTime;
+	// }
 
+	// 随机当前投篮以后所剩的时间
 	public static long shootRemainTime(Player player) {
-		long costTime = 10;
-		costTime += randomGetCostTime() * 10;
-		return costTime;
+		long remainTime = 70;
+		remainTime += randomGetCostTime() * 10;
+		return remainTime;
 	}
 
 	public static long randomGetCostTime() {

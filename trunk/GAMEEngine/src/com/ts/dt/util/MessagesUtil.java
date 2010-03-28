@@ -8,9 +8,11 @@ public class MessagesUtil {
 
 		long time = context.getContinueTime();
 		if (context.isHomeTeam()) {
-			Logger.info(TimeUtil.timeMillis2TimeFormat(time) + desc + context.currentScore());
+			// Logger.info(TimeUtil.timeMillis2TimeFormat(time) + desc +
+			// context.currentScore());
 		} else {
-			Logger.error(TimeUtil.timeMillis2TimeFormat(time) + desc + context.currentScore());
+			// Logger.error(TimeUtil.timeMillis2TimeFormat(time) + desc +
+			// context.currentScore());
 		}
 
 	}

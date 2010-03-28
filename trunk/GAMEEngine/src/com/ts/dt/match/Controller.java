@@ -11,6 +11,7 @@ import com.ts.dt.match.action.scrimmage.Scrimmage;
 import com.ts.dt.match.action.scrimmage.ScrimmageFactory;
 import com.ts.dt.match.action.service.Service;
 import com.ts.dt.match.action.service.ServiceFactory;
+import com.ts.dt.match.action.shoot.FoulShoot;
 import com.ts.dt.match.action.shoot.Shoot;
 import com.ts.dt.match.action.shoot.ShootFactory;
 import com.ts.dt.match.helper.ActionCostTimeHelper;
@@ -22,21 +23,26 @@ public class Controller {
 	private String controllerName;
 	private String teamFlg;
 
-	// the action shut ball
+	// 投球动作
 	public void shout(MatchContext context) {
 
 		Shoot shoot = ShootFactory.getInstance().createShootAction(context);
 		shoot.execute(context);
-		long remainTime = ActionCostTimeHelper.shootRemainTime(player);
-		long currentOffensiveCostTime = context.getCurrentOffensiveCostTime();
+		long remainTime = ActionCostTimeHelper.shootRemainTime(player); // 投球以后还剩余的时间
+		long currentOffensiveCostTime = context.getCurrentOffensiveCostTime(); // 当前进攻已经花费时间
 		long thisActionCostTime = 240 - remainTime;
 
 		if (thisActionCostTime < currentOffensiveCostTime) {
 			thisActionCostTime = currentOffensiveCostTime;
 		}
 
-		context.nodosityCostTimeAdd(thisActionCostTime - currentOffensiveCostTime);
-		context.currentOffensiveCostTimeReset();
+		// 整个动作所花费的时间-之前所计算的时间,等于本次要加上去的时间, 罚球的话是停表
+		if (!(shoot instanceof FoulShoot)) {
+			long addTime = thisActionCostTime - currentOffensiveCostTime;
+			context.nodosityCostTimeAdd(addTime);
+			context.currentOffensiveCostTimeReset(); // 重置已经花费的时间
+		}
+
 	}
 
 	// the rebound action

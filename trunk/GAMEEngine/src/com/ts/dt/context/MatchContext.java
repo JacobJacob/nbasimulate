@@ -2,15 +2,16 @@ package com.ts.dt.context;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.match.Controller;
 import com.ts.dt.match.action.Action;
+import com.ts.dt.match.helper.ReboundHelper;
 import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.Player;
 import com.ts.dt.stat.DataStat;
+import com.ts.dt.util.DebugUtil;
 
 public class MatchContext {
 
@@ -50,17 +51,13 @@ public class MatchContext {
 
 	private boolean justStart = true;
 
-	private boolean isOffensiveRebound = false; //
+	private boolean isOffensiveRebound = false;
 
 	private boolean isDefensiveRebound = false;
 
-	private int totalFBackboardA = 0;//
+	private int totalHomeBackboard = 0;// 主队整体篮板能力
 
-	private int totalBBackboardA = 0;//
-
-	private int totalFBackboardB = 0;//
-
-	private int totalBBackboardB = 0;
+	private int totalGuestBackboard = 0;// 客队整体篮板能力
 
 	private long currentSeq = 0;
 
@@ -93,7 +90,6 @@ public class MatchContext {
 		String controllerName = controller.getControllerName();
 
 		Hashtable<String, Controller> controllers = (Hashtable<String, Controller>) this.get(MatchConstant.CURRENT_CONTROLLERS);
-		controllers.put(controllerName, controller);
 
 		String playerNo = controller.getPlayer().getNo();
 		if (!this.hadOnCourt(playerNo)) {
@@ -105,10 +101,31 @@ public class MatchContext {
 			if (this.onCourt(playerNo)) {
 				this.onCourtPlayers.remove(playerNo);
 			}
+			// 把旧的能力减掉
+			int reboundPower = ReboundHelper.checkReboundPower(old_controller.getPlayer());
+			// 把整队篮板能力加起来
+			if (old_controller.getTeamFlg().equals("A")) {
+				this.totalHomeBackboard -= reboundPower;
+			} else {
+				this.totalGuestBackboard -= reboundPower;
+			}
 		}
 		if (!this.onCourt(playerNo)) {
+			int reboundPower = ReboundHelper.checkReboundPower(controller.getPlayer());
+			DebugUtil.debug("球员:" + controller.getPlayer().getName() + "篮板能力为:" + reboundPower);
+			// 把整队篮板能力加起来
+			if (controller.getTeamFlg().equals("A")) {
+				this.totalHomeBackboard += reboundPower;
+				DebugUtil.debug("球队A总的篮板能力为:" + this.totalHomeBackboard);
+			} else {
+				this.totalGuestBackboard += reboundPower;
+				DebugUtil.debug("球队B总的篮板能力为:" + this.totalGuestBackboard);
+			}
+
 			this.addOnCourtPlayer(playerNo);
 		}
+
+		controllers.put(controllerName, controller);
 
 	}
 
@@ -334,38 +351,6 @@ public class MatchContext {
 
 	public void setDefensiveRebound(boolean isDefensiveRebound) {
 		this.isDefensiveRebound = isDefensiveRebound;
-	}
-
-	public int getTotalFBackboardA() {
-		return totalFBackboardA;
-	}
-
-	public void setTotalFBackboardA(int totalFBackboardA) {
-		this.totalFBackboardA = totalFBackboardA;
-	}
-
-	public int getTotalBBackboardA() {
-		return totalBBackboardA;
-	}
-
-	public void setTotalBBackboardA(int totalBBackboardA) {
-		this.totalBBackboardA = totalBBackboardA;
-	}
-
-	public int getTotalFBackboardB() {
-		return totalFBackboardB;
-	}
-
-	public void setTotalFBackboardB(int totalFBackboardB) {
-		this.totalFBackboardB = totalFBackboardB;
-	}
-
-	public int getTotalBBackboardB() {
-		return totalBBackboardB;
-	}
-
-	public void setTotalBBackboardB(int totalBBackboardB) {
-		this.totalBBackboardB = totalBBackboardB;
 	}
 
 	public void setNextActionType(int actionType) {
@@ -743,4 +728,13 @@ public class MatchContext {
 	public void clearAllOnCourtPlayer() {
 		onCourtPlayers.clear();
 	}
+
+	public int getTotalHomeBackboard() {
+		return totalHomeBackboard;
+	}
+
+	public int getTotalGuestBackboard() {
+		return totalGuestBackboard;
+	}
+
 }

@@ -36,6 +36,7 @@ public class ShootFactory {
 
 		Shoot shoot = null;
 
+		//如果已经有下一个动作,则直接返回
 		if (context.getNextAction() != null) {
 			shoot = (Shoot) context.getNextAction();
 			context.removeNextAction();
