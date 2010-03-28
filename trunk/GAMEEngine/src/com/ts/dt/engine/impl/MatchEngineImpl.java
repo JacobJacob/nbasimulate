@@ -24,7 +24,7 @@ import com.ts.dt.util.Logger;
 
 /*
  * 比赛引擎,实现比赛引擎接口
- */
+ */ 
 public class MatchEngineImpl implements MatchEngine {
 
 	public long execute(long matchid) {
@@ -87,16 +87,12 @@ public class MatchEngineImpl implements MatchEngine {
 
 		if (context.isYouth()) {
 
-			home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context
-					.getHomeTeamId());
-			guest_players = new YouthPlayerDaoImpl()
-					.getPlayerWithTeamId(context.getVisitingTeamId());
+			home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
+			guest_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
 
 		} else {
-			home_players = new ProfessionPlayerDaoImpl()
-					.getPlayerWithTeamId(context.getHomeTeamId());
-			guest_players = new ProfessionPlayerDaoImpl()
-					.getPlayerWithTeamId(context.getVisitingTeamId());
+			home_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
+			guest_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
 		}
 
 		Session session = BottleUtil.currentSession();
@@ -104,7 +100,7 @@ public class MatchEngineImpl implements MatchEngine {
 		Iterator<Player> iterator = home_players.iterator();
 		while (iterator.hasNext()) {
 			Player player = iterator.next();
-			if (context.hasOnCourt(player.getNo())) {
+			if (context.hadOnCourt(player.getNo())) {
 				continue;
 			}
 			MatchNotInPlayer matchNotInPlayer = new MatchNotInPlayer();
@@ -118,7 +114,7 @@ public class MatchEngineImpl implements MatchEngine {
 		iterator = guest_players.iterator();
 		while (iterator.hasNext()) {
 			Player player = iterator.next();
-			if (context.hasOnCourt(player.getNo())) {
+			if (context.hadOnCourt(player.getNo())) {
 				continue;
 			}
 			MatchNotInPlayer matchNotInPlayer = new MatchNotInPlayer();

@@ -29,7 +29,7 @@ public class SubstitutionHelper {
 
 		while (iterator.hasNext()) {
 			Player player = iterator.next();
-			if (context.hasOnCourt(player.getNo())) {
+			if (context.onCourt(player.getNo())) {
 				continue;
 			} else {
 				onCourtPlayer = choosePlayer(position, onCourtPlayer, player);
@@ -40,6 +40,7 @@ public class SubstitutionHelper {
 	}
 
 	// check whether the player is better than onCourtPlayer to on Court
+	//选择一个最适合的球员上场
 	private static Player choosePlayer(String position, Player onCourtPlayer, Player player) {
 
 		if (onCourtPlayer == null) {

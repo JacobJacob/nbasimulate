@@ -2,6 +2,7 @@ package com.ts.dt.context;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
 import com.ts.dt.constants.MatchConstant;
@@ -18,7 +19,9 @@ public class MatchContext {
 	private Hashtable<String, Object> data;
 
 	private DataStat dataStat;
-	private List<String> onCourtPlayers = new ArrayList<String>();
+
+	private List<String> onCourtPlayers = new ArrayList<String>(); // 当前在场上的球员
+	private List<String> hadOnCourtPlayers = new ArrayList<String>(); // 当前比赛已经上过场的球员
 
 	private long homeTeamId;
 	private long visitingTeamId;
@@ -79,8 +82,34 @@ public class MatchContext {
 	}
 
 	public void put(String key, Object value) {
-
 		data.put(key, value);
+	}
+
+	// 设置场上控制者
+	@SuppressWarnings("unchecked")
+	public void putController(Controller controller) {
+
+		// 设置场上球员时,把球员加到已经上过场的名单中, 当前上场球员列表中
+		String controllerName = controller.getControllerName();
+
+		Hashtable<String, Controller> controllers = (Hashtable<String, Controller>) this.get(MatchConstant.CURRENT_CONTROLLERS);
+		controllers.put(controllerName, controller);
+
+		String playerNo = controller.getPlayer().getNo();
+		if (!this.hadOnCourt(playerNo)) {
+			this.addHadOnCourtPlayer(playerNo);
+		}
+		// 如果该位置旧的球员存在,则清掉状态
+		Controller old_controller = controllers.get(controllerName);
+		if (old_controller != null) {
+			if (this.onCourt(playerNo)) {
+				this.onCourtPlayers.remove(playerNo);
+			}
+		}
+		if (!this.onCourt(playerNo)) {
+			this.addOnCourtPlayer(playerNo);
+		}
+
 	}
 
 	public Object get(String key) {
@@ -670,20 +699,20 @@ public class MatchContext {
 		this.nodosityMain = nodosityMain;
 	}
 
-	// check the give player whether on court
-	public boolean hasOnCourt(String playerNo) {
-		if (onCourtPlayers.contains(playerNo)) {
+	// 判断是否曾经上过场
+	public boolean hadOnCourt(String playerNo) {
+		if (hadOnCourtPlayers.contains(playerNo)) {
 			return true;
 		}
 		return false;
 	}
 
-	// add a player to the on court players list
-	public void addOnCourtPlayer(String playerNo) {
-		if (onCourtPlayers.contains(playerNo)) {
+	// 添加到已经上过场球员列表
+	public void addHadOnCourtPlayer(String playerNo) {
+		if (hadOnCourtPlayers.contains(playerNo)) {
 			return;
 		}
-		onCourtPlayers.add(playerNo);
+		hadOnCourtPlayers.add(playerNo);
 	}
 
 	public boolean isYouth() {
@@ -692,5 +721,26 @@ public class MatchContext {
 
 	public void isYouth(boolean isYouth) {
 		this.isYouth = isYouth;
+	}
+
+	// 判断当前是否在场
+	public boolean onCourt(String playerNo) {
+		if (onCourtPlayers.contains(playerNo)) {
+			return true;
+		}
+		return false;
+	}
+
+	// 添加一个球员到当前场上球员列表
+	public void addOnCourtPlayer(String playerNo) {
+		if (onCourtPlayers.contains(playerNo)) {
+			return;
+		}
+		onCourtPlayers.add(playerNo);
+	}
+
+	// 置空场上球员列表
+	public void clearAllOnCourtPlayer() {
+		onCourtPlayers.clear();
 	}
 }
