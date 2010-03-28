@@ -87,12 +87,16 @@ public class MatchEngineImpl implements MatchEngine {
 
 		if (context.isYouth()) {
 
-			home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
-			guest_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+			home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context
+					.getHomeTeamId());
+			guest_players = new YouthPlayerDaoImpl()
+					.getPlayerWithTeamId(context.getVisitingTeamId());
 
 		} else {
-			home_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
-			guest_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+			home_players = new ProfessionPlayerDaoImpl()
+					.getPlayerWithTeamId(context.getHomeTeamId());
+			guest_players = new ProfessionPlayerDaoImpl()
+					.getPlayerWithTeamId(context.getVisitingTeamId());
 		}
 
 		Session session = BottleUtil.currentSession();
@@ -107,6 +111,7 @@ public class MatchEngineImpl implements MatchEngine {
 			matchNotInPlayer.setMatchId(matchid);
 			matchNotInPlayer.setTeamId(context.getHomeTeamId());
 			matchNotInPlayer.setAbility(player.getAbility());
+			matchNotInPlayer.setPlayerNo(player.getNo());
 			matchNotInPlayer.save();
 		}
 
@@ -120,6 +125,7 @@ public class MatchEngineImpl implements MatchEngine {
 			matchNotInPlayer.setMatchId(matchid);
 			matchNotInPlayer.setTeamId(context.getVisitingTeamId());
 			matchNotInPlayer.setAbility(player.getAbility());
+			matchNotInPlayer.setPlayerNo(player.getNo());
 			matchNotInPlayer.save();
 		}
 		session.endTransaction();

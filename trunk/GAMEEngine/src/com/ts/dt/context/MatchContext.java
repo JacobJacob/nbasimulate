@@ -204,7 +204,7 @@ public class MatchContext {
 	}
 
 	/**
-	 * exchange the ball right
+	 * 
 	 */
 	public void exchangeBallRight() {
 		if (currentTeam == MatchConstant.CURRENT_TEAM_A) {
