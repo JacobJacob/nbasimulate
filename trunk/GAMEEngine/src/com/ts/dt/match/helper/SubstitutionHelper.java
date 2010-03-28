@@ -7,7 +7,7 @@ import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.match.Controller;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 import com.ts.dt.util.Logger;
 
 public class SubstitutionHelper {
@@ -21,14 +21,14 @@ public class SubstitutionHelper {
 
 		ProfessionPlayerDao playerDao = new ProfessionPlayerDaoImpl();
 
-		List<ProfessionPlayer> list = playerDao.getPlayerWithTeamId(teamId);
+		List<Player> list = playerDao.getPlayerWithTeamId(teamId);
 
-		Iterator<ProfessionPlayer> iterator = list.iterator();
+		Iterator<Player> iterator = list.iterator();
 
-		ProfessionPlayer onCourtPlayer = null;
+		Player onCourtPlayer = null;
 
 		while (iterator.hasNext()) {
-			ProfessionPlayer player = iterator.next();
+			Player player = iterator.next();
 			if (context.hasOnCourt(player.getNo())) {
 				continue;
 			} else {
@@ -40,7 +40,7 @@ public class SubstitutionHelper {
 	}
 
 	// check whether the player is better than onCourtPlayer to on Court
-	private static ProfessionPlayer choosePlayer(String position, ProfessionPlayer onCourtPlayer, ProfessionPlayer player) {
+	private static Player choosePlayer(String position, Player onCourtPlayer, Player player) {
 
 		if (onCourtPlayer == null) {
 			onCourtPlayer = player;

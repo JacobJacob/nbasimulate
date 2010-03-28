@@ -14,7 +14,7 @@ import com.ts.dt.match.helper.DefenderHelper;
 import com.ts.dt.match.helper.FoulHelper;
 import com.ts.dt.match.helper.RandomCheckHelper;
 import com.ts.dt.match.helper.ReboundHelper;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 
 public class NodosityEngine {
 
@@ -369,7 +369,7 @@ public class NodosityEngine {
 	public void checkSlamDunk() {
 
 		String nextContrNm = context.getNextController().getControllerName();
-		ProfessionPlayer player = context.getNextController().getPlayer();
+		Player player = context.getNextController().getPlayer();
 		int feasibility = 0;
 		long height = player.getAvoirdupois();
 		// long bounce = 0;

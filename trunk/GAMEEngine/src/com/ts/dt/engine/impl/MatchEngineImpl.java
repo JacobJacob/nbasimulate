@@ -1,16 +1,24 @@
 package com.ts.dt.engine.impl;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
+import com.dt.bottle.session.Session;
+import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.MatchDao;
 import com.ts.dt.dao.TeamDao;
 import com.ts.dt.dao.impl.MatchDaoImpl;
+import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TeamDaoImpl;
+import com.ts.dt.dao.impl.YouthPlayerDaoImpl;
 import com.ts.dt.engine.MatchEngine;
 import com.ts.dt.match.Nodosity;
+import com.ts.dt.po.MatchNotInPlayer;
 import com.ts.dt.po.Matchs;
+import com.ts.dt.po.Player;
 import com.ts.dt.po.Team;
 import com.ts.dt.util.Logger;
 
@@ -27,10 +35,6 @@ public class MatchEngineImpl implements MatchEngine {
 		Matchs match = matchDao.load(matchid);
 		long homeTeamId = match.getHomeTeamId();
 		long visitingTeamId = match.getGuestTeamId();
-
-		TeamDao teamDao = new TeamDaoImpl();
-		Team homeTeam = teamDao.load(homeTeamId);
-		Team visitingTeam = teamDao.load(visitingTeamId);
 
 		match.setStartTime(new Date());
 		match.setGuestTeamId(visitingTeamId);
@@ -68,7 +72,57 @@ public class MatchEngineImpl implements MatchEngine {
 
 		// TestDataFactory.saveTestDateToDB();
 
+		// 保存未上场球员统计
+		this.saveNotInPlayer(context, matchid);
+
 		return match.getId();
+
+	}
+
+	// 保存未上场球员资料
+	private void saveNotInPlayer(MatchContext context, long matchid) {
+
+		List<Player> home_players = null;
+		List<Player> guest_players = null;
+
+		if (context.isYouth()) {
+
+			home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
+			guest_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+
+		} else {
+			home_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
+			guest_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+		}
+
+		Session session = BottleUtil.currentSession();
+		session.beginTransaction();
+		Iterator<Player> iterator = home_players.iterator();
+		while (iterator.hasNext()) {
+			Player player = iterator.next();
+			if (context.hasOnCourt(player.getNo())) {
+				continue;
+			}
+			MatchNotInPlayer matchNotInPlayer = new MatchNotInPlayer();
+			matchNotInPlayer.setMatchId(matchid);
+			matchNotInPlayer.setTeamId(context.getHomeTeamId());
+			matchNotInPlayer.setAbility(player.getAbility());
+			matchNotInPlayer.save();
+		}
+
+		iterator = guest_players.iterator();
+		while (iterator.hasNext()) {
+			Player player = iterator.next();
+			if (context.hasOnCourt(player.getNo())) {
+				continue;
+			}
+			MatchNotInPlayer matchNotInPlayer = new MatchNotInPlayer();
+			matchNotInPlayer.setMatchId(matchid);
+			matchNotInPlayer.setTeamId(context.getVisitingTeamId());
+			matchNotInPlayer.setAbility(player.getAbility());
+			matchNotInPlayer.save();
+		}
+		session.endTransaction();
 
 	}
 

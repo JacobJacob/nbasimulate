@@ -1,7 +1,8 @@
 package com.ts.dt.po;
 
+import com.dt.bottle.persistence.Persistence;
 
-public class ProfessionPlayer extends Player {
+public class Player extends Persistence {
 
 	private long id;
 	private String no;
@@ -241,5 +242,5 @@ public class ProfessionPlayer extends Player {
 	public void setTeamId(long teamId) {
 		this.teamId = teamId;
 	}
-    
+
 }

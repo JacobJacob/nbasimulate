@@ -14,11 +14,11 @@ import com.ts.dt.match.action.service.ServiceFactory;
 import com.ts.dt.match.action.shoot.Shoot;
 import com.ts.dt.match.action.shoot.ShootFactory;
 import com.ts.dt.match.helper.ActionCostTimeHelper;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 
 public class Controller {
 
-	private ProfessionPlayer player;
+	private Player player;
 	private String controllerName;
 	private String teamFlg;
 
@@ -64,7 +64,7 @@ public class Controller {
 	public void foul(MatchContext context) {
 		Foul foul = FoulFactory.getInstance().createFoulAction(context);
 		foul.execute(context);
-		//reset 24 offensive cost time
+		// reset 24 offensive cost time
 		context.currentOffensiveCostTimeReset();
 	}
 
@@ -73,11 +73,11 @@ public class Controller {
 		service.service(context);
 	}
 
-	public ProfessionPlayer getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(ProfessionPlayer player) {
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 

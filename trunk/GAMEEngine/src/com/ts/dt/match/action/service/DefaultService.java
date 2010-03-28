@@ -3,7 +3,7 @@ package com.ts.dt.match.action.service;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.match.desc.ActionDescription;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 //import com.ts.dt.util.Logger;
 import com.ts.dt.util.MessagesUtil;
 
@@ -17,7 +17,7 @@ public class DefaultService implements Service {
 
 		String currtContrNm = context.getCurrentController().getControllerName();
 		String currtPlayerNm = context.getCurrentController().getPlayer().getName();
-		ProfessionPlayer player = context.getCurrentController().getPlayer();
+		Player player = context.getCurrentController().getPlayer();
 		String currtDefenderNm = context.getCurrentDefender().getPlayer().getName();
 		String previousPlayerNm = null;
 		if (context.getPreviousController() != null) {

@@ -3,11 +3,11 @@ package com.ts.dt.stat;
 import com.ts.dt.dao.MatchStatDao;
 import com.ts.dt.dao.impl.MatchStatDaoImpl;
 import com.ts.dt.po.MatchStat;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 
 public class PlayerDataStat {
 
-	private ProfessionPlayer player;
+	private Player player;
 	private int point2ShootTimes;
 	private int point2DoomTimes;
 
@@ -115,11 +115,11 @@ public class PlayerDataStat {
 		return sb.toString();
 	}
 
-	public ProfessionPlayer getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(ProfessionPlayer player) {
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 

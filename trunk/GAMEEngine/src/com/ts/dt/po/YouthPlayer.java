@@ -1,7 +1,6 @@
 package com.ts.dt.po;
 
-
-public class ProfessionPlayer extends Player {
+public class YouthPlayer extends Player {
 
 	private long id;
 	private String no;
@@ -241,5 +240,5 @@ public class ProfessionPlayer extends Player {
 	public void setTeamId(long teamId) {
 		this.teamId = teamId;
 	}
-    
+
 }

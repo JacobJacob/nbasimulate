@@ -3,7 +3,7 @@ package com.ts.dt.match.helper;
 import java.util.Hashtable;
 
 import com.ts.dt.match.Controller;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 
 public class ReboundHelper {
 
@@ -29,7 +29,7 @@ public class ReboundHelper {
 		return percent;
 	}
 
-	public static int checkReboundPower(ProfessionPlayer player) {
+	public static int checkReboundPower(Player player) {
 		return 0;
 	}
 }

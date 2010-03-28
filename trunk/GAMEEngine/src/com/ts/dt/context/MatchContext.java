@@ -8,7 +8,7 @@ import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.match.Controller;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.po.MatchNodosityMain;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 import com.ts.dt.stat.DataStat;
 
 public class MatchContext {
@@ -60,6 +60,8 @@ public class MatchContext {
 	private int totalBBackboardB = 0;
 
 	private long currentSeq = 0;
+
+	private boolean isYouth = false;
 
 	private MatchNodosityMain nodosityMain;
 
@@ -157,7 +159,7 @@ public class MatchContext {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ProfessionPlayer getCurrentControllerPlayer() {
+	public Player getCurrentControllerPlayer() {
 		String currtContrNm = (String) get(MatchConstant.CURRENT_CONTROLLER_NAME);
 		Hashtable<String, Controller> controllers = (Hashtable<String, Controller>) get(MatchConstant.CURRENT_CONTROLLERS);
 		return ((Controller) controllers.get(currtContrNm)).getPlayer();
@@ -399,7 +401,7 @@ public class MatchContext {
 
 	}
 
-	public void playerShootTimesInc(int point, ProfessionPlayer player, boolean isHomeTeam) {
+	public void playerShootTimesInc(int point, Player player, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
 			dataStat.playerPoint1ShootTimesInc(player, isHomeTeam);
@@ -435,7 +437,7 @@ public class MatchContext {
 
 	}
 
-	public void playerDoomTimesInc(int point, ProfessionPlayer player, boolean isHomeTeam) {
+	public void playerDoomTimesInc(int point, Player player, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
 			dataStat.playerPoint1DoomTimesInc(player, isHomeTeam);
@@ -447,7 +449,7 @@ public class MatchContext {
 
 	}
 
-	public void playerAssitTimesInc(ProfessionPlayer player, boolean isHomeTeam) {
+	public void playerAssitTimesInc(Player player, boolean isHomeTeam) {
 		dataStat.playerAssitTimesInc(player, isHomeTeam);
 	}
 
@@ -461,13 +463,13 @@ public class MatchContext {
 
 	}
 
-	public void playerAddOffensiveRebound(ProfessionPlayer player, boolean isHomeTeam) {
+	public void playerAddOffensiveRebound(Player player, boolean isHomeTeam) {
 
 		dataStat.playerOffensiveReboundInc(player, isHomeTeam);
 
 	}
 
-	public void playerAddFoulTimes(ProfessionPlayer player, boolean isHomeTeam) {
+	public void playerAddFoulTimes(Player player, boolean isHomeTeam) {
 		dataStat.playerFoulTimesInc(player, isHomeTeam);
 	}
 
@@ -478,7 +480,7 @@ public class MatchContext {
 	 * @param isHomeTeam
 	 * @return
 	 */
-	public boolean checkFoulOut(ProfessionPlayer player, boolean isHomeTeam) {
+	public boolean checkFoulOut(Player player, boolean isHomeTeam) {
 		return dataStat.checkFoulOut(player, isHomeTeam);
 	}
 
@@ -492,7 +494,7 @@ public class MatchContext {
 
 	}
 
-	public void playerAddDefensiveRebound(ProfessionPlayer player, boolean isHomeTeam) {
+	public void playerAddDefensiveRebound(Player player, boolean isHomeTeam) {
 
 		dataStat.playerDefensiveReboundInc(player, isHomeTeam);
 
@@ -684,4 +686,11 @@ public class MatchContext {
 		onCourtPlayers.add(playerNo);
 	}
 
+	public boolean isYouth() {
+		return this.isYouth;
+	}
+
+	public void isYouth(boolean isYouth) {
+		this.isYouth = isYouth;
+	}
 }

@@ -1,7 +1,7 @@
 package com.ts.dt.match.helper;
 
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 
 public class FoulHelper {
 
@@ -10,8 +10,8 @@ public class FoulHelper {
 
 		int percent = 10;
 
-		ProfessionPlayer player = context.getCurrentController().getPlayer();
-		ProfessionPlayer defender = context.getCurrentDefender().getPlayer();
+		Player player = context.getCurrentController().getPlayer();
+		Player defender = context.getCurrentDefender().getPlayer();
 
 		percent += (int) ((checkOffensivePower(player) - checkDefensivePower(defender)) / 10);
 
@@ -22,7 +22,7 @@ public class FoulHelper {
      * @param player
      * @return
      */
-	private static int checkOffensivePower(ProfessionPlayer player) {
+	private static int checkOffensivePower(Player player) {
 		int power = 0;
 
 		power += player.getAvoirdupois();
@@ -35,7 +35,7 @@ public class FoulHelper {
      * @param player
      * @return
      */
-	private static int checkDefensivePower(ProfessionPlayer player) {
+	private static int checkDefensivePower(Player player) {
 		int power = 0;
 		power += player.getAvoirdupois();
 		power += player.getStature();

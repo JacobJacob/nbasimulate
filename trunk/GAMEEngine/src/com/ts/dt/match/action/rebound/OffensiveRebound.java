@@ -4,7 +4,7 @@ import com.ts.dt.context.MatchContext;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 import com.ts.dt.util.MessagesUtil;
 
 public class OffensiveRebound implements Rebound {
@@ -16,7 +16,7 @@ public class OffensiveRebound implements Rebound {
 		ActionDescription description = ActionDescriptionFactory.getInstance().createActionDescription(context);
 
 		String currtPlayerName = context.getCurrentController().getPlayer().getName();
-		ProfessionPlayer player = context.getCurrentController().getPlayer();
+		Player player = context.getCurrentController().getPlayer();
 		String currtContrNm = context.getCurrentController().getControllerName();
 		String desc = description.load(context);
 

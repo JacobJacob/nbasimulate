@@ -1,10 +1,10 @@
 package com.ts.dt.match.helper;
 
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 
 public class ScrimmageHelper {
 
-	public static int checkScrimmageResult(ProfessionPlayer player, ProfessionPlayer defender) {
+	public static int checkScrimmageResult(Player player, Player defender) {
 
 		int percent = 50;
 
@@ -13,7 +13,7 @@ public class ScrimmageHelper {
 		return percent;
 	}
 
-	public static int checkScrimaagePower(ProfessionPlayer player) {
+	public static int checkScrimaagePower(Player player) {
 
 		int power = -1;
 

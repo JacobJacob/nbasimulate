@@ -7,7 +7,7 @@ import java.util.Random;
 
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.match.helper.TechnicallyTraitHelper;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.Player;
 
 /**
  * @author Administrator
@@ -49,7 +49,7 @@ public class ShootFactory {
 		int hookFloatShootProbability = 0;
 		int breacShootProbability = 0;
 
-		ProfessionPlayer player = context.getCurrentController().getPlayer();
+		Player player = context.getCurrentController().getPlayer();
 		int trait = TechnicallyTraitHelper.check(player);
 
 		switch (trait) {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ts.dt.po.Player;
 
-public interface ProfessionPlayerDao {
+public interface YouthPlayerDao {
 
 	public void save(Player player);
 

@@ -5,13 +5,13 @@ import java.util.List;
 import com.dt.bottle.exception.SessionException;
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
-import com.ts.dt.dao.ProfessionPlayerDao;
+import com.ts.dt.dao.YouthPlayerDao;
 import com.ts.dt.po.Player;
-import com.ts.dt.po.ProfessionPlayer;
+import com.ts.dt.po.YouthPlayer;
 
-public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
+public class YouthPlayerDaoImpl implements YouthPlayerDao {
 
-	private static final String QUERY_SQL = "SELECT * FROM profession_player WHERE team_id = ? ";
+	private static final String QUERY_SQL = "SELECT * FROM youth_player WHERE team_id = ? ";
 
 	public void save(Player player) {
 		// TODO Auto-generated method stub
@@ -30,7 +30,7 @@ public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 		Session session = BottleUtil.currentSession();
 		Player player = null;
 		try {
-			player = (Player) session.load(ProfessionPlayer.class, id);
+			player = (Player) session.load(YouthPlayer.class, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -42,7 +42,7 @@ public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 		Session session = BottleUtil.currentSession();
 		Player player = null;
 		try {
-			player = (Player) session.load(ProfessionPlayer.class, "no='" + no + "'");
+			player = (Player) session.load(YouthPlayer.class, "no='" + no + "'");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,7 @@ public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 
 		List<Player> list = null;
 		try {
-			list = (List<Player>) session.query(ProfessionPlayer.class, QUERY_SQL, new Object[] { teamId });
+			list = (List<Player>) session.query(YouthPlayer.class, QUERY_SQL, new Object[] { teamId });
 		} catch (SessionException e) {
 			e.printStackTrace();
 		}
