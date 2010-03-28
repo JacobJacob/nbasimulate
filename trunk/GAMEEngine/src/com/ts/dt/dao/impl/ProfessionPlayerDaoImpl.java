@@ -10,7 +10,7 @@ import com.ts.dt.po.ProfessionPlayer;
 
 public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 
-	private static final String QUERY_SQL = "SELECT * FROM player WHERE team_id = ? ";
+	private static final String QUERY_SQL = "SELECT * FROM profession_player WHERE team_id = ? ";
 
 	public void save(ProfessionPlayer player) {
 		// TODO Auto-generated method stub
