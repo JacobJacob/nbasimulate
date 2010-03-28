@@ -45,7 +45,6 @@ public class Nodosity {
 		context.put(MatchConstant.CURRENT_CONTROLLER_NAME, "CA");
 		context.put(MatchConstant.HAS_PASS_TIMES, 0);
 
-		// loadControllers();
 		loadControllersFromDb();
 		Controller currentController = controllers.get(context.get(MatchConstant.CURRENT_CONTROLLER_NAME));
 		Controller currentDefender = controllers.get("CB");
@@ -137,75 +136,6 @@ public class Nodosity {
 		}
 		main.save();
 		session.endTransaction();
-	}
-
-	public void loadControllers() {
-
-		Controller controller_ca = new Controller();
-		controller_ca.setTeamFlg("A");
-		controller_ca.setControllerName("CA");
-		controller_ca.setPlayer(TestDataFactory.players[0]);
-		context.putController(controller_ca);
-
-		Controller controller_pfa = new Controller();
-		controller_pfa.setTeamFlg("A");
-		controller_pfa.setControllerName("PFA");
-		controller_pfa.setPlayer(TestDataFactory.players[1]);
-		controllers.put("PFA", controller_pfa);
-		context.putController(controller_ca);
-
-		Controller controller_sfa = new Controller();
-		controller_sfa.setTeamFlg("A");
-		controller_sfa.setControllerName("SFA");
-		controller_sfa.setPlayer(TestDataFactory.players[2]);
-		controllers.put("SFA", controller_sfa);
-		context.putController(controller_ca);
-
-		Controller controller_sga = new Controller();
-		controller_sga.setTeamFlg("A");
-		controller_sga.setControllerName("SGA");
-		controller_sga.setPlayer(TestDataFactory.players[3]);
-		controllers.put("SGA", controller_sga);
-		context.putController(controller_ca);
-
-		Controller controller_pga = new Controller();
-		controller_pga.setTeamFlg("A");
-		controller_pga.setControllerName("PGA");
-		controller_pga.setPlayer(TestDataFactory.players[4]);
-		controllers.put("PGA", controller_pga);
-		context.putController(controller_ca);
-
-		Controller controller_cb = new Controller();
-		controller_cb.setTeamFlg("B");
-		controller_cb.setControllerName("CB");
-		controller_cb.setPlayer(TestDataFactory.players[5]);
-		controllers.put("CB", controller_cb);
-		context.putController(controller_ca);
-
-		Controller controller_pfb = new Controller();
-		controller_pfb.setTeamFlg("B");
-		controller_pfb.setControllerName("PFB");
-		controller_pfb.setPlayer(TestDataFactory.players[6]);
-		controllers.put("PFB", controller_pfb);
-		context.putController(controller_ca);
-
-		Controller controller_sfb = new Controller();
-		controller_sfb.setTeamFlg("B");
-		controller_sfb.setControllerName("SFB");
-		controller_sfb.setPlayer(TestDataFactory.players[7]);
-		context.putController(controller_sfb);
-
-		Controller controller_sgb = new Controller();
-		controller_sgb.setTeamFlg("B");
-		controller_sgb.setControllerName("SGB");
-		controller_sgb.setPlayer(TestDataFactory.players[8]);
-		context.putController(controller_sgb);
-
-		Controller controller_pgb = new Controller();
-		controller_pgb.setTeamFlg("B");
-		controller_pgb.setControllerName("PGB");
-		controller_pgb.setPlayer(TestDataFactory.players[9]);
-		context.putController(controller_pgb);
 	}
 
 	private void loadControllersFromDb() {
