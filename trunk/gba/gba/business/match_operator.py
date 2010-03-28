@@ -253,7 +253,7 @@ def init_team(team_info):
     create_team_default_tactical(team.id)
     create_team_default_tactical(team.id, is_youth=True)
     
-_SELECT_MATCH = 'select * from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) order by id limit %s, %s '
+_SELECT_MATCH = 'select * from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) order by id desc limit %s, %s '
                        
 _SELECT_MATCH_TOTAL = 'select count(*) as count from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) '
 

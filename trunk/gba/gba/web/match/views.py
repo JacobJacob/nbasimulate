@@ -7,7 +7,8 @@ from gba.business.user_roles import login_required, UserManager
 from gba.business import player_operator, match_operator
 
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter,\
-                       TeamTactical, TeamTacticalDetail, YouthPlayer
+                       TeamTactical, TeamTacticalDetail, YouthPlayer, \
+                       MatchNotInPlayer
 from gba.common.constants import MatchTypes
 
 @login_required
@@ -94,10 +95,16 @@ def match_stat(request):
     guest_stat = sorted(guest_stat, cmp=lambda x, y: cmp(x['total_point'] * 1000 + x['total_rebound'] * 100 + x['assist'] * 10 + x['steals'], \
                                                       y['total_point'] * 1000 + y['total_rebound'] * 100 + y['assist'] * 10 + y['steals']), reverse=True)
     
-    guest_stat.append(guest_stat_total)
-    home_stat.append(home_stat_total)
-     
-    datas = {'home_stat': home_stat, 'guest_stat': guest_stat, 'home_team_name': home_team.name, 'guest_team_name': guest_team.name}
+    #guest_stat.append(guest_stat_total)
+    #home_stat.append(home_stat_total)
+
+    home_not_in_players = MatchNotInPlayer.query(condition="match_id=%s and team_id=%s" %(match_id, match.home_team_id))
+    guest_not_in_players = MatchNotInPlayer.query(condition="match_id=%s and team_id=%s" %(match_id, match.guest_team_id))
+
+    datas = {'home_stat': home_stat, 'guest_stat': guest_stat, 'home_team_name': home_team.name,
+              'guest_team_name': guest_team.name, 'home_not_in_players': home_not_in_players, 
+              'guest_not_in_players': guest_not_in_players, 'guest_stat_total': guest_stat_total,
+              'home_stat_total': home_stat_total}
     return render_to_response(request, 'match/match_stat.html', datas)
 
 def match_detail(request):

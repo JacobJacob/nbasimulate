@@ -8,7 +8,7 @@ from django import template
 
 from gba.common.constants import oten_color_map, AttributeMaps
 from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap
-from gba.entity import Team, UserInfo
+from gba.entity import Team, UserInfo, ProfessionPlayer
 
 register = template.Library()
 
@@ -104,4 +104,11 @@ def nickname(team_id):
         return u'系统消息'
     team = Team.load(id=team_id)
     user_info = UserInfo.load(username=team.username)
-    return user_info.nickname  
+    return user_info.nickname
+
+@register.filter
+def profession_player_name(player_no):
+    player = ProfessionPlayer.load(no=player_no)
+    if player:
+        return player.name
+    return ''

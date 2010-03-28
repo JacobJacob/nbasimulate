@@ -6,49 +6,38 @@
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
 <link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
-<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
+<link href="/site_media/css/stat.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-<style type="text/css">
-body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	background-color: #EEF2FB;
-	text-align:center;
-}
-</style>
 <title>比赛统计({{home_team_name }}--{{guest_team_name}})</title>
 </head>
 <body>
-<div style="margin-top:40px;">
-<table width="70%" border=0 cellPadding=0 cellSpacing=0 class="match_stat">
+<div class="match_out">
+<table class="match_stat">
+   <caption>{{ home_team_name }}队技术统计</td></caption>
+  <thead>
   <tr>
-   <td colspan="14" align="center" class="right">{{ home_team_name }}队技术统计</td>
+    <th class="pn">球员</th>
+    <th class="bnum">投篮</th>  	
+    <th class="bnum">三分</th>	
+    <th class="bnum">罚球</th>
+    <th>前篮板</th>
+    <th>后篮板</th>
+    <th>总篮板</th>	
+    <th>助攻</th>
+    <th>抢断</th>
+    <th>盖帽</th> 
+    <th>失误</th>
+    <th>犯规</th>
+    <th>得分</th>
   </tr>
-  <tr>
-    <td>球员</td>
-    <td>时间</td>
-    <td>投篮</td>  	
-    <td>三分</td>	
-    <td>罚球</td>
-    <td>前篮板</td>
-    <td>后篮板</td>
-    <td>总篮板</td>	
-    <td>助攻</td> 
-    <td>抢断</td>
-    <td>盖帽</td> 
-    <td>失误</td>
-    <td>犯规</td>
-    <td class="right">得分</td>
-  </tr>
+ </thead>
+ <tbody>
   {% for stat in home_stat %}
    <tr>
-    <td>{{ stat.name }} </td>
-    <td>34</td>
-    <td>{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
-    <td>{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
-    <td>{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
+    <td class="pn">{{ stat.name }} </td>
+    <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
+    <td class="bnum">{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
+    <td class="bnum">{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
     <td>{{stat.offensive_rebound}}</td>
     <td>{{stat.defensive_rebound}}</td>
     <td>{{stat.total_rebound}}</td>
@@ -60,32 +49,68 @@ body {
     <td class="right">{{stat.total_point}}</td>
    </tr>
   {% endfor %}
-  <tr>
-   <td colspan="14" align="center" class="right">{{ guest_team_name }}队技术统计</td>
+  {% for home_not_in_player in home_not_in_players %}
+    <tr>
+    <td class="pn">{{ home_not_in_player.player_no|profession_player_name}} </td>
+    <td class="bnum">0</td>
+    <td class="bnum">0</td>
+    <td class="bnum">0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td class="right">0</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+  <tbody class="sum">
+   <tr>
+    <td class="pn">{{ home_stat_total.name }} </td>
+    <td class="bnum">{{home_stat_total.point2_doom_times}}-{{home_stat_total.point2_shoot_times}}</td>
+    <td class="bnum">{{home_stat_total.point3_doom_times}}-{{home_stat_total.point3_shoot_times}}</td>
+    <td class="bnum">{{home_stat_total.point1_doom_times}}-{{home_stat_total.point1_shoot_times}}</td>
+    <td>{{home_stat_total.offensive_rebound}}</td>
+    <td>{{home_stat_total.defensive_rebound}}</td>
+    <td>{{home_stat_total.total_rebound}}</td>
+    <td>{{home_stat_total.assist}}</td>
+    <td>{{home_stat_total.steals}}</td>
+    <td>{{home_stat_total.block}}</td>
+    <td>{{home_stat_total.lapsus}}</td>
+    <td>{{home_stat_total.foul}}</td>
+    <td class="right">{{home_stat_total.total_point}}</td>
   </tr>
+  </tbody>
+ </table>
+ <table class="match_stat">
+  <caption>{{ guest_team_name }}队技术统计</td></caption>
+  <thead>
   <tr>
-    <td>球员</td>
-    <td>时间</td>
-    <td>投篮</td>  	
-    <td>三分</td>	
-    <td>罚球</td>
-    <td>前篮板</td>
-    <td>后篮板</td>
-    <td>总篮板</td>	
-    <td>助攻</td> 
-    <td>抢断</td>
-    <td>盖帽</td> 
-    <td>失误</td>
-    <td>犯规</td>
-    <td class="right">得分</td>
+    <th class="pn">球员</th>
+    <th class="bnum">投篮</th>  	
+    <th class="bnum">三分</th>	
+    <th class="bnum">罚球</th>
+    <th>前篮板</th>
+    <th>后篮板</th>
+    <th>总篮板</th>	
+    <th>助攻</th>
+    <th>抢断</th>
+    <th>盖帽</th> 
+    <th>失误</th>
+    <th>犯规</th>
+    <th>得分</th>
   </tr>
+ </thead>
+ <tbody>
   {% for stat in guest_stat %}
    <tr>
-    <td>{{ stat.name }} </td>
-    <td>34</td>
-    <td>{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
-    <td>{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
-    <td>{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
+    <td class="pn">{{ stat.name }} </td>
+    <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
+    <td class="bnum">{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
+    <td class="bnum">{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
     <td>{{stat.offensive_rebound}}</td>
     <td>{{stat.defensive_rebound}}</td>
     <td>{{stat.total_rebound}}</td>
@@ -97,6 +122,41 @@ body {
     <td class="right">{{stat.total_point}}</td>
    </tr>
   {% endfor %}
+  {% for guest_not_in_player in guest_not_in_players %}
+    <tr>
+    <td class="pn">{{ guest_not_in_player.player_no|profession_player_name}} </td>
+    <td class="bnum">0</td>
+    <td class="bnum">0</td>
+    <td class="bnum">0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td class="right">0</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+  <tbody class="sum">
+   <tr>
+    <td class="pn">{{ guest_stat_total.name }} </td>
+    <td class="bnum">{{guest_stat_total.point2_doom_times}}-{{guest_stat_total.point2_shoot_times}}</td>
+    <td class="bnum">{{guest_stat_total.point3_doom_times}}-{{guest_stat_total.point3_shoot_times}}</td>
+    <td class="bnum">{{guest_stat_total.point1_doom_times}}-{{guest_stat_total.point1_shoot_times}}</td>
+    <td>{{guest_stat_total.offensive_rebound}}</td>
+    <td>{{guest_stat_total.defensive_rebound}}</td>
+    <td>{{guest_stat_total.total_rebound}}</td>
+    <td>{{guest_stat_total.assist}}</td>
+    <td>{{guest_stat_total.steals}}</td>
+    <td>{{guest_stat_total.block}}</td>
+    <td>{{guest_stat_total.lapsus}}</td>
+    <td>{{guest_stat_total.foul}}</td>
+    <td class="right">{{guest_stat_total.total_point}}</td>
+  </tr>
+  </tbody>
 </table>
 </div>
 </body>

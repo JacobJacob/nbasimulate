@@ -92,12 +92,13 @@ class Period(object):
         self._context.PreviousActionType(currentActionType);
         self._context.CurrentActionType(nextActionType);
         self._context.NextActionType(MatchType.NULL_INTEGER);
-        self._context.Foul(false);
-        self._context.Outside(false);
+        self._context.Foul(False);
+        self._context.Outside(False);
 
     def _check_next_controller(action):
+        pass
     
     def _load_player(self):
         '''load player'''
-        
+        pass
     

@@ -1,0 +1,70 @@
+body {
+  background:url("../images/body_bg.gif") repeat-y scroll center top #FFFFFF;
+  color:#525252;
+  font-size:12px;
+  margin:0 auto;
+  padding:0;
+  text-align:center;
+}
+
+.match_out{
+  width: 900px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.match_stat{
+  border-collapse:collapse;
+  border-left:1px solid #CCCCCC;
+  border-right:1px solid #CCCCCC;
+  width:900px;
+  margin-top: 10px;
+}
+
+.match_stat caption {
+	background:url("../images/h1_bg.gif") repeat scroll 0 0 transparent;
+	color:#FFFFFF;
+	font-size:12px;
+	font-weight:bold;
+	height:25px;
+	line-height:25px;
+	margin:0;
+	padding:0 0 0 10px;
+	text-align:left;
+}
+.match_stat thead{
+  background-color:#C1C1C1;
+  color:#000000;
+  margin:0;
+  padding:0;
+}
+
+.match_stat td{
+  border-bottom:1px solid #CCCCCC;
+  width:40px;
+}
+
+.match_stat th, .match_stat td{
+  font-size:12px;
+  text-align:center;
+  padding: 4px 0;
+}
+
+.match_stat td.pn,
+.match_stat th.pn{
+  width:140px;
+}
+
+.match_stat td.bnum,
+.match_stat th.bnum{
+  width:55px;
+}
+
+.match_stat td.pn{
+  color:#064491;
+}
+
+.match_stat tbody.sum tr td {
+  background-color:#E9E9E9;
+  font-weight:bold;
+}
