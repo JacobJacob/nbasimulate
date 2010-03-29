@@ -4,105 +4,69 @@
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
 <link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
-<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
+<link href="/site_media/css/admin.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="content-type" content="text/html; charset=utf8" />
 <script type="text/javascript">
      
-  service = new rpc.ServiceProxy("/services/player/", {asynchronous:false, methods: ['freeplayer_auction', 'get_free_auction_info', 'attention_player']});
+  service = new rpc.ServiceProxy("/services/admin/", {asynchronous:false, methods: ['get_action_desc', 'add_action_desc']});
+  
   $(document).ready(function(){
     
-	 $('a.player_name').click(function() {
-	     var id = $(this).parent().parent().attr('no');
-	     $.ajax({
-		    url: '{% url freeplayer-detail %}?no=' + id,
-		    type: 'get',
-		    datatype: 'html',
-		    timeout: 1000,
-		    error: function(error){
-		        alert(error.message);
-		    },
-		    success: function(html){
-		        $('#play_detail').html(html);
-		    }
-		});
-	 });
-	 
-	 $('a.auction').click(function() {
-	     var no = $(this).parent().parent().attr('no');
-	     try{
-	         var data = service.get_free_auction_info(no);
-	         var result = data[0];
-	         if(result==-1){
-	            alert('该球员已经截止!');
-	            return;
-	         }else if(result == -2){
-	            alert('您已经出过价了,不允许重复出价!');
-	            return;
-	         }
-	     }catch(error){
-	         alert('出现未知异常!,请重试');
-	     }
-	     $("#no").val(no);
-	     $("#min_price").html(data[1]);
-	     $("#free_funds").html(data[2]);
-	     $("#auction_player_dialog").show().dialog({
-	         height: 180, width: 300, modal: false,
-             title: '自由球员竞拍',
+	 $('a.edit').click(function() {
+	      var id = $(this).parent().parent().attr('id');
+          try{
+              var obj = service.get_action_desc(id);
+          }catch(error){
+              alert(error.message);
+          }
+          var action_name = obj.action_name;
+          var action_desc= obj.action_desc;
+          var percent = obj.percent;
+          var flg = obj.flg;
+          var is_assist = obj.is_assist;
+          var result = obj.result;
+          
+          $('#id').val(id);
+          $('#action_name').val(action_name);
+          $('#action_desc').val(action_desc);
+          $('#percent').val(percent);
+          $('#flg').val(flg);
+          $('#is_assist').val(is_assist);
+          $('#result').val(result);
+          
+          $("#edit_dialog").show().dialog({
+	         height: 370, width: 400, modal: false,
+             title: '动作描述添加/更改',
 	         overlay: {
                opacity: 0.5, 
                background: "black" 
              }
-         });
-         $("#auction_player_dialog").dialog('open');
+          });
+          $("#edit_dialog").dialog('open');
 	 });
-	 
-	 $('a.attention').click(function() {
-	     var no = $(this).parent().parent().attr('no');
-	     try{
-	         var result = service.attention_player(no, 1);
-	         if(result == 1){
-	            alert('关注成功!您可以在我的关注列表中查看该球员');
-	            return;
-	         }else if(result == 2){
-	            alert('您已经关注过该球员了!');
-	            return;
-	         }else if(result == 3){
-	            alert('最多只可以关注10个球员!');
-	            return;
-	         }else{
-	            alert('出现未知异常,请重试');
+
+	  $('#update_button').click(function(){
+	         var id = $('#id').val();
+		     var action_name = $('#action_name').val();
+	         var action_desc= $('#action_desc').val();
+	         var percent = $('#percent').val();
+	         var flg = $('#flg').val();
+	         var is_assist =$('#is_assist').val();
+	         var result =$('#result').val();
+	         var data = {'id': id, 'action_name': action_name, 'action_desc': action_desc, 'percent': percent, 
+	                     'flg': flg, 'is_assist': is_assist, 'result': result}
+
+	         try{
+	            var result = service.add_action_desc(data);
+	            alert('动作描述更新成功');
+	            $("#edit_dialog").dialog('close');
+	
+	         }catch(error){
+	            alert(error.message);
 	         }
-	     }catch(error){
-	         alert(error);
-	     }
-	 });
+	     
+		 });
 	 
-	  
-	 $('#update_button').click(function(){
-	     var no = $('#no').val();
-	     var price = $('#price').val();
-	     if(!price){
-	       alert('您必需填写您想要购买的价格!');
-	       return;
-	     }
-         try{
-            var result = service.freeplayer_auction(no, price);
-            if(result==1){
-                alert('竟拍成功!');
-                $("#auction_player_dialog").dialog('close');
-            }else if(result==-2){
-                alert('您的资金不足!');
-            }else if(result==-3){
-                alert('您已经出过价,不可以重复出价!');
-            }else if(result==-5){
-                alert('您出的价格低于当前价格!');
-            }else{
-                alert('球员竟拍出错,请重试!');
-            }
-         }catch(error){
-            alert(error.message);
-         }
-     });
 });
   
 </script>
@@ -122,6 +86,7 @@ body {
   <thead>
     <th>动作名称</th>
     <th>动作描述</th>
+    <th>结果</th>
     <th>出现百分比</th>
      <th>标志</th>
     <th>是否助攻</th>
@@ -131,19 +96,20 @@ body {
   <tbody>
     {% if infos %}
       {% for info in infos %}
-       <tr no="{{ info.no }}">
+       <tr id="{{ info.id }}">
         <td class="left name">{{ info.action_name }}</td>
-        <td>{{ info.action_desc }}</td>
+        <td><div class="action_desc" title="{{ info.action_desc }}">{{ info.action_desc }}</div></td>
+        <td>{{ info.result }}</td>
         <td>{{ info.percent }}</td>
         <td>{{ info.flg }}</td>
         <td>{{ info.is_assist }}</td>
         <td>{{ info.created_time }}</td>
-        <td class="right">&nbsp;</td>
+        <td class="right"><a class="edit">编辑</a></td>
         </td>
        </tr>
       {% endfor %}
       <tr>
-        <td colspan="9" class="right">
+        <td colspan="8" class="right">
           共{{page}}/{{totalpage}}页
           {% ifequal page 1 %}
             首页
@@ -164,4 +130,48 @@ body {
     {% endif %}
   </tbody>
 </table>
+<div id="edit_dialog" class="flora" style="display: none;">
+    <form id="edit_form">
+        <input type="hidden" id="id"/>
+    	<p>
+    		<label>名称&nbsp;&nbsp;&nbsp;&nbsp:</label>
+			<span><input id="action_name" type="text"/></span>
+	    </p>
+	    <p>
+            <label>百分比:</label>
+			<span><input id="percent" type="text"/></span>
+	    </p>
+	    <p>
+            <label>标志&nbsp;&nbsp;&nbsp;&nbsp:</label>
+            <span><input id="flg" type="text"/></span>
+	    </p>
+	    <p>
+			<label>结果&nbsp;&nbsp;&nbsp;&nbsp:</label>
+			<span>
+			  <select name="result" id="result">
+			    <option value="success">成功</option>
+			    <option value="failure">失败</option>
+			  </select>
+			</span>
+		</p>
+	    <p>
+			<label>助攻&nbsp;&nbsp;&nbsp;&nbsp:</label>
+			<span>
+			  <select name="is_assist" id="is_assist">
+			    <option value="1">是</option>
+			    <option value="0">否</option>
+			  </select>
+			</span>
+		</p>
+		<p>
+			<label>描述:</label>
+			<span>
+			  <textarea id="action_desc" rows="10" cols="40"></textarea>
+			</span>
+		</p>
+		<p>
+		  <input id="update_button" type="button" value="更新" />
+		</p>
+    </form>
+</div>
 </body>
