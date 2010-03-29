@@ -7,9 +7,11 @@ import com.ts.dt.factory.BlockCheckFactory;
 import com.ts.dt.factory.FoulCheckFactory;
 import com.ts.dt.factory.ShootResultCheckFactory;
 import com.ts.dt.match.action.Action;
+import com.ts.dt.match.check.block.BlockCheck;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
 import com.ts.dt.po.Player;
+import com.ts.dt.util.Logger;
 import com.ts.dt.util.MessagesUtil;
 
 public abstract class AbstractShoot implements Action {
@@ -29,22 +31,24 @@ public abstract class AbstractShoot implements Action {
 		if (context.getPreviousController() != null) {
 			previousPlayerNm = context.getPreviousController().getPlayer().getName();
 		}
-		// check whether block
-		BlockCheckFactory.getInstance().createBlockCheckFactory(context);
+		// 判断是否被封盖
+		BlockCheck blockCheck = BlockCheckFactory.getInstance().createBlockCheckFactory(context);
+		blockCheck.check(context);
 		// check the shoot result
 		if (context.isBlock()) {
+			this.handleBlock(context);
 			context.setShootActionResult(MatchConstant.RESULT_FAILURE_BLOCKED);
 		} else {
 			ShootResultCheckFactory.getInstance().createResultCheck(context).check(context);
 			if (!context.isSuccess()) {
-				// check whether foul
+				// 如果不进,判断一下是否犯规
 				FoulCheckFactory.getInstance().createFoulCheckFactory(context).check(context);
 			}
 		}
 
 		String desc = description.load(context);
 		if (desc == null) {
-			// Logger.error("desc is null");
+			Logger.error("desc is null");
 		}
 		String currentTeamNm = context.getCurrentController().getTeamFlg();
 		String previousTeamNm = "";
@@ -76,9 +80,9 @@ public abstract class AbstractShoot implements Action {
 			}
 		}
 
-		desc = desc.replace("~1~", currtPlayerNm.trim());
-		desc = desc.replace("~2~", currtDefenderNm.trim());
-		desc = desc.replace("~3~", previousPlayerNm.trim());
+		desc = desc.replace("~1~", currtPlayerNm.trim()); // 当前控球队员
+		desc = desc.replace("~2~", currtDefenderNm.trim()); // 当前防守队员
+		desc = desc.replace("~3~", previousPlayerNm.trim()); // 上一个控球球员
 		desc = desc.replace("~6~", currentShootNo);
 
 		boolean isHomeTeam = currtContrNm.endsWith("A");
@@ -119,6 +123,7 @@ public abstract class AbstractShoot implements Action {
 			context.setAssist(false);
 		}
 
+		// 保存比赛描述
 		MatchInfoHelper.save(context, desc);
 
 		MessagesUtil.showLine(context, desc);
@@ -126,6 +131,7 @@ public abstract class AbstractShoot implements Action {
 		return result;
 	}
 
+	// 做助攻统计
 	final private void handleAssit(MatchContext context) {
 
 		String previousControllerNm = context.getPreviousController().getControllerName();
@@ -134,5 +140,14 @@ public abstract class AbstractShoot implements Action {
 			Player previousPlayer = context.getPreviousController().getPlayer();
 			context.playerAssitTimesInc(previousPlayer, previousControllerNm.endsWith("A"));
 		}
+	}
+
+	// 做封盖统计
+	final private void handleBlock(MatchContext context) {
+
+		String currentDefenderNm = context.getCurrentDefender().getControllerName();
+		Player currentDefenderPlayer = context.getCurrentDefender().getPlayer();
+		context.playerBlockTimesInc(currentDefenderPlayer, currentDefenderNm.endsWith("A"));
+
 	}
 }

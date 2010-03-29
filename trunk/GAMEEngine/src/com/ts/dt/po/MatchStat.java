@@ -27,6 +27,7 @@ public class MatchStat extends Persistence {
 	private int block;
 
 	private int foul;
+	private int steals;
 
 	public long getTeamId() {
 		return teamId;
@@ -148,4 +149,12 @@ public class MatchStat extends Persistence {
 		this.block = block;
 	}
 
+	public int getSteals() {
+		return steals;
+	}
+
+	public void setSteals(int steals) {
+		this.steals = steals;
+	}
+    
 }

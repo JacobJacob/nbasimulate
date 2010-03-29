@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/bottle"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/jacky/java_lib/log4j-1.2.9.jar"/>
+	<classpathentry kind="lib" path="E:/Java/lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -22,15 +22,19 @@ public class ShortShootDescription implements ActionDescription {
 
 	public String failure(MatchContext context) {
 		// TODO Auto-generated method stub
-		ActionDesc actionDesc = ActionDescLoaderImpl.getInstance().loadWithNameAndResultAndFlg("ShortShoot", "failure",
-				"not_foul");
+		ActionDesc actionDesc = ActionDescLoaderImpl.getInstance().loadWithNameAndResultAndFlg("ShortShoot", "failure", "not_foul");
 		return actionDesc.getActionDesc();
 	}
 
 	public String success(MatchContext context) {
 		// TODO Auto-generated method stub
-		ActionDesc actionDesc = ActionDescLoaderImpl.getInstance().loadWithNameAndResultAndFlg("ShortShoot", "success",
-				"not_foul");
+		ActionDesc actionDesc = ActionDescLoaderImpl.getInstance().loadWithNameAndResultAndFlg("ShortShoot", "success", "not_foul");
+        
+		//看是不是一个助攻球
+		if (actionDesc.getIsAssist() == true) {
+			context.setAssist(true);
+		}
+
 		return actionDesc.getActionDesc();
 	}
 

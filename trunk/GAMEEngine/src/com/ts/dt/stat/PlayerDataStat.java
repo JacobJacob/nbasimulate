@@ -23,6 +23,7 @@ public class PlayerDataStat {
 	private int assist;
 	private int lapsus;
 	private int block;
+	private int steals;
 
 	private int foulTimes;
 
@@ -62,7 +63,7 @@ public class PlayerDataStat {
 		assist++;
 	}
 
-	public void misplayTimesInc() {
+	public void lapsusTimesInc() {
 		lapsus++;
 	}
 
@@ -72,6 +73,10 @@ public class PlayerDataStat {
 
 	public void foulTimesInc() {
 		foulTimes++;
+	}
+
+	public void stealsTimesInc() {
+		steals++;
 	}
 
 	/**
@@ -143,6 +148,7 @@ public class PlayerDataStat {
 
 		matchStat.setPlayerNo(player.getNo());
 		matchStat.setTeamId(player.getTeamid());
+		matchStat.setSteals(steals);
 		matchStat.setMatchId(matchId);
 
 		matchStatDao.save(matchStat);

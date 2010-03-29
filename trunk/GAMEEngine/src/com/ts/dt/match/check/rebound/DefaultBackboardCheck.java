@@ -36,9 +36,6 @@ public class DefaultBackboardCheck implements BackboardCheck {
 		int i = random.nextInt(100);
 
 		if (context.isHomeTeam()) {
-			this.debug("前场篮板可能性为:" + point);
-			this.debug("前场球队篮板能力为:" + context.getTotalHomeBackboard());
-			this.debug("后场球队篮板能力为:" + context.getTotalGuestBackboard());
 			if (i < point) {
 				// 如果是主队,且概率在主队这边,则是前场篮板
 				context.setOffensiveRebound(true);
@@ -61,7 +58,7 @@ public class DefaultBackboardCheck implements BackboardCheck {
 		}
 	}
 
-	private void debug(String message) {
+	public void debug(String message) {
 		System.out.println(message);
 	}
 

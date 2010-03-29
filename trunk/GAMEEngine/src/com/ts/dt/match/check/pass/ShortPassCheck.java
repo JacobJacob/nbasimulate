@@ -24,6 +24,7 @@ public class ShortPassCheck implements ResultCheck {
 			if (RandomCheckHelper.defaultCheck(70)) {
 				context.setPassActionResult(MatchConstant.RESULT_FAILURE_OUTSIDE);
 			} else {
+				//±»¶Ï
 				context.setPassActionResult(MatchConstant.RESULT_FAILURE_BE_STEAL);
 			}
 		}

@@ -32,7 +32,6 @@ public class DefaultBlockCheck implements BlockCheck {
 			context.setBlock(true);
 		} else {
 			context.setBlock(false);
-
 		}
 	}
 

@@ -251,6 +251,22 @@ public class DataStat {
 		playerDataStat.assistTimesInc();
 	}
 
+	// «Ú‘±∑‚∏«º”1
+	public void playerBlockTimesInc(Player player, boolean isHomeTeam) {
+		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
+		playerDataStat.blockTimesInc();
+	}
+
+	public void playerLapsusTimesInc(Player player, boolean isHomeTeam) {
+		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
+		playerDataStat.lapsusTimesInc();
+	}
+
+	public void playerStealsTimesInc(Player player, boolean isHomeTeam) {
+		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
+		playerDataStat.stealsTimesInc();
+	}
+
 	/**
 	 * check foul out
 	 * 

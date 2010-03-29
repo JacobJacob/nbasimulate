@@ -6,6 +6,7 @@ import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.PassResultCheckFactory;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
+import com.ts.dt.po.Player;
 import com.ts.dt.util.MessagesUtil;
 
 public class ShortPass implements Pass {
@@ -49,6 +50,9 @@ public class ShortPass implements Pass {
 		if (!context.getPassActionResult().equals(MatchConstant.RESULT_SUCCESS)) {
 			MessagesUtil.showLine(context, desc);
 			MatchInfoHelper.save(context, desc);
+			if (context.getPassActionResult().equals(MatchConstant.RESULT_FAILURE_BE_STEAL)) {
+				this.handleBeSteal(context);
+			}
 		}
 
 		return result;
@@ -59,6 +63,20 @@ public class ShortPass implements Pass {
 		context.setCurrentAction(this);
 		PassResultCheckFactory.getInstance().createResultCheck(context).check(context);
 		return null;
+	}
+
+	// 被断时做技术统计
+	public void handleBeSteal(MatchContext context) {
+
+		// 控球者失误加1
+		String currentControllerNm = context.getCurrentController().getControllerName();
+		Player currentControllerPlayer = context.getCurrentController().getPlayer();
+		context.playerLapsusTimesInc(currentControllerPlayer, currentControllerNm.endsWith("A"));
+
+		// 防守者抢断加1
+		String currentDefenderNm = context.getCurrentDefender().getControllerName();
+		Player currentDefenderPlayer = context.getCurrentDefender().getPlayer();
+		context.playerStealsTimesInc(currentDefenderPlayer, currentDefenderNm.endsWith("A"));
 	}
 
 }

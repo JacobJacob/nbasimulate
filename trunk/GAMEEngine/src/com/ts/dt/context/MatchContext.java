@@ -112,14 +112,11 @@ public class MatchContext {
 		}
 		if (!this.onCourt(playerNo)) {
 			int reboundPower = ReboundHelper.checkReboundPower(controller.getPlayer());
-			DebugUtil.debug("球员:" + controller.getPlayer().getName() + "篮板能力为:" + reboundPower);
 			// 把整队篮板能力加起来
 			if (controller.getTeamFlg().equals("A")) {
 				this.totalHomeBackboard += reboundPower;
-				DebugUtil.debug("球队A总的篮板能力为:" + this.totalHomeBackboard);
 			} else {
 				this.totalGuestBackboard += reboundPower;
-				DebugUtil.debug("球队B总的篮板能力为:" + this.totalGuestBackboard);
 			}
 
 			this.addOnCourtPlayer(playerNo);
@@ -415,6 +412,7 @@ public class MatchContext {
 
 	}
 
+	// 球员投篮次断加1
 	public void playerShootTimesInc(int point, Player player, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
@@ -427,6 +425,7 @@ public class MatchContext {
 
 	}
 
+	// 球员队命中加1
 	public void doomTimesInc(int point, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
@@ -451,6 +450,7 @@ public class MatchContext {
 
 	}
 
+	// 球员命中加1
 	public void playerDoomTimesInc(int point, Player player, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
@@ -463,8 +463,24 @@ public class MatchContext {
 
 	}
 
+	// 球员助攻加1
 	public void playerAssitTimesInc(Player player, boolean isHomeTeam) {
 		dataStat.playerAssitTimesInc(player, isHomeTeam);
+	}
+
+	// 球员封盖加1
+	public void playerBlockTimesInc(Player player, boolean isHomeTeam) {
+		dataStat.playerBlockTimesInc(player, isHomeTeam);
+	}
+
+	// 球员抢断加1
+	public void playerStealsTimesInc(Player player, boolean isHomeTeam) {
+		dataStat.playerStealsTimesInc(player, isHomeTeam);
+	}
+
+	// 球员失误加1
+	public void playerLapsusTimesInc(Player player, boolean isHomeTeam) {
+		dataStat.playerLapsusTimesInc(player, isHomeTeam);
 	}
 
 	public void addOffensiveRebound(boolean isHomeTeam) {
