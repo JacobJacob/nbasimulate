@@ -1,12 +1,14 @@
 package com.ts.dt.po;
 
+import com.dt.bottle.persistence.Persistence;
 
-public class ProfessionPlayer extends Player {
+public class ProfessionPlayer extends Persistence implements Player {
 
 	private long id;
 	private String no;
 	private String name;
 	private int age;
+	private int power;
 	private String position;
 	private int stature;
 	private int avoirdupois;
@@ -56,6 +58,14 @@ public class ProfessionPlayer extends Player {
 
 	public void setPosition(String position) {
 		this.position = position;
+	}
+
+	public int getPower() {
+		return power;
+	}
+
+	public void setPower(int power) {
+		this.power = power;
 	}
 
 	public int getStature() {
@@ -241,5 +251,5 @@ public class ProfessionPlayer extends Player {
 	public void setTeamId(long teamId) {
 		this.teamId = teamId;
 	}
-    
+
 }

@@ -13,7 +13,7 @@ public class YouthPlayerDaoImpl implements YouthPlayerDao {
 
 	private static final String QUERY_SQL = "SELECT * FROM youth_player WHERE team_id = ? ";
 
-	public void save(Player player) {
+	public void save(YouthPlayer player) {
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
 		session.beginTransaction();

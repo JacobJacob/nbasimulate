@@ -13,7 +13,7 @@ public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 
 	private static final String QUERY_SQL = "SELECT * FROM profession_player WHERE team_id = ? ";
 
-	public void save(Player player) {
+	public void save(ProfessionPlayer player) {
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
 		session.beginTransaction();
@@ -61,5 +61,10 @@ public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public static void main(String[] args) {
+		Player player = new ProfessionPlayerDaoImpl().load("a58fc1d3ff1beffdc6bf51e17cf6ef47");
+		System.out.println(player);
 	}
 }

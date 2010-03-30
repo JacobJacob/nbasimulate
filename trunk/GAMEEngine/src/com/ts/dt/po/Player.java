@@ -1,246 +1,117 @@
 package com.ts.dt.po;
 
-import com.dt.bottle.persistence.Persistence;
+import com.dt.bottle.persistence.Persistable;
 
-public class Player extends Persistence {
+public interface Player extends Persistable {
 
-	private long id;
-	private String no;
-	private String name;
-	private int age;
-	private String position;
-	private int stature;
-	private int avoirdupois;
-	private long teamId;
-	private double ability;
-	private double shooting;
-	private double speed;
-	private double strength;
-	private double bounce;
-	private double stamina;
-	private double trisection;
-	private double dribble;
-	private double pass;
-	private double backboard;
-	private double steal;
-	private double blocked;
+	public abstract float getColligate();
 
-	private double defencons;
-	private double offencons;
-	private double buildupcons;
-	private double leadcons;
-	private double backbone;
+	public abstract String getName();
 
-	public float getColligate() {
-		return 0;
-	}
+	public abstract void setName(String name);
 
-	public String getName() {
-		return name;
-	}
+	public abstract int getAge();
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	public abstract void setAge(int age);
 
-	public int getAge() {
-		return age;
-	}
+	public abstract String getPosition();
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+	public abstract int getPower();
 
-	public String getPosition() {
-		return position;
-	}
+	public abstract void setPower(int power);
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+	public abstract void setPosition(String position);
 
-	public int getStature() {
-		return stature;
-	}
+	public abstract int getStature();
 
-	public void setStature(int stature) {
-		this.stature = stature;
-	}
+	public abstract void setStature(int stature);
 
-	public int getAvoirdupois() {
-		return avoirdupois;
-	}
+	public abstract int getAvoirdupois();
 
-	public void setAvoirdupois(int avoirdupois) {
-		this.avoirdupois = avoirdupois;
-	}
+	public abstract void setAvoirdupois(int avoirdupois);
 
-	public long getTeamid() {
-		return teamId;
-	}
+	public abstract long getTeamid();
 
-	public void setTeamid(long teamId) {
-		this.teamId = teamId;
-	}
+	public abstract void setTeamid(long teamId);
 
-	public double getAbility() {
-		return ability;
-	}
+	public abstract double getAbility();
 
-	public void setAbility(double ability) {
-		this.ability = ability;
-	}
+	public abstract void setAbility(double ability);
 
-	public double getShooting() {
-		return shooting;
-	}
+	public abstract double getShooting();
 
-	public void setShooting(double shooting) {
-		this.shooting = shooting;
-	}
+	public abstract void setShooting(double shooting);
 
-	public long getId() {
-		return id;
-	}
+	public abstract long getId();
 
-	public void setId(long id) {
-		this.id = id;
-	}
+	public abstract void setId(long id);
 
-	public double getSpeed() {
-		return speed;
-	}
+	public abstract double getSpeed();
 
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
+	public abstract void setSpeed(double speed);
 
-	public double getStrength() {
-		return strength;
-	}
+	public abstract double getStrength();
 
-	public void setStrength(double strength) {
-		this.strength = strength;
-	}
+	public abstract void setStrength(double strength);
 
-	public double getBounce() {
-		return bounce;
-	}
+	public abstract double getBounce();
 
-	public void setBounce(double bounce) {
-		this.bounce = bounce;
-	}
+	public abstract void setBounce(double bounce);
 
-	public double getStamina() {
-		return stamina;
-	}
+	public abstract double getStamina();
 
-	public void setStamina(double stamina) {
-		this.stamina = stamina;
-	}
+	public abstract void setStamina(double stamina);
 
-	public double getTrisection() {
-		return trisection;
-	}
+	public abstract double getTrisection();
 
-	public void setTrisection(double trisection) {
-		this.trisection = trisection;
-	}
+	public abstract void setTrisection(double trisection);
 
-	public double getDribble() {
-		return dribble;
-	}
+	public abstract double getDribble();
 
-	public void setDribble(double dribble) {
-		this.dribble = dribble;
-	}
+	public abstract void setDribble(double dribble);
 
-	public double getPass() {
-		return pass;
-	}
+	public abstract double getPass();
 
-	public void setPass(double pass) {
-		this.pass = pass;
-	}
+	public abstract void setPass(double pass);
 
-	public double getBackboard() {
-		return backboard;
-	}
+	public abstract double getBackboard();
 
-	public void setBackboard(double backboard) {
-		this.backboard = backboard;
-	}
+	public abstract void setBackboard(double backboard);
 
-	public double getSteal() {
-		return steal;
-	}
+	public abstract double getSteal();
 
-	public void setSteal(double steal) {
-		this.steal = steal;
-	}
+	public abstract void setSteal(double steal);
 
-	public double getBlocked() {
-		return blocked;
-	}
+	public abstract double getBlocked();
 
-	public void setBlocked(double blocked) {
-		this.blocked = blocked;
-	}
+	public abstract void setBlocked(double blocked);
 
-	public double getDefencons() {
-		return defencons;
-	}
+	public abstract double getDefencons();
 
-	public void setDefencons(double defencons) {
-		this.defencons = defencons;
-	}
+	public abstract void setDefencons(double defencons);
 
-	public double getOffencons() {
-		return offencons;
-	}
+	public abstract double getOffencons();
 
-	public void setOffencons(double offencons) {
-		this.offencons = offencons;
-	}
+	public abstract void setOffencons(double offencons);
 
-	public double getBuildupcons() {
-		return buildupcons;
-	}
+	public abstract double getBuildupcons();
 
-	public void setBuildupcons(double buildupcons) {
-		this.buildupcons = buildupcons;
-	}
+	public abstract void setBuildupcons(double buildupcons);
 
-	public double getLeadcons() {
-		return leadcons;
-	}
+	public abstract double getLeadcons();
 
-	public void setLeadcons(double leadcons) {
-		this.leadcons = leadcons;
-	}
+	public abstract void setLeadcons(double leadcons);
 
-	public double getBackbone() {
-		return backbone;
-	}
+	public abstract double getBackbone();
 
-	public void setBackbone(double backbone) {
-		this.backbone = backbone;
-	}
+	public abstract void setBackbone(double backbone);
 
-	public String getNo() {
-		return no;
-	}
+	public abstract String getNo();
 
-	public void setNo(String no) {
-		this.no = no;
-	}
+	public abstract void setNo(String no);
 
-	public long getTeamId() {
-		return teamId;
-	}
+	public abstract long getTeamId();
 
-	public void setTeamId(long teamId) {
-		this.teamId = teamId;
-	}
+	public abstract void setTeamId(long teamId);
 
 }

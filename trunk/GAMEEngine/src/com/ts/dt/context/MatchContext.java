@@ -166,6 +166,7 @@ public class MatchContext {
 	}
 
 	public void setCurrentController(Controller controller) {
+		put(MatchConstant.CURRENT_CONTROLLER_NAME, controller.getControllerName());
 		put(MatchConstant.CURRENT_CONTROLLER, controller);
 	}
 

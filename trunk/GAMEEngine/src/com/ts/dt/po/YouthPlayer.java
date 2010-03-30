@@ -1,6 +1,8 @@
 package com.ts.dt.po;
 
-public class YouthPlayer extends Player {
+import com.dt.bottle.persistence.Persistence;
+
+public class YouthPlayer extends Persistence implements Player {
 
 	private long id;
 	private String no;
@@ -8,6 +10,7 @@ public class YouthPlayer extends Player {
 	private int age;
 	private String position;
 	private int stature;
+	private int power;
 	private int avoirdupois;
 	private long teamId;
 	private double ability;
@@ -51,6 +54,14 @@ public class YouthPlayer extends Player {
 
 	public String getPosition() {
 		return position;
+	}
+
+	public int getPower() {
+		return power;
+	}
+
+	public void setPower(int power) {
+		this.power = power;
 	}
 
 	public void setPosition(String position) {

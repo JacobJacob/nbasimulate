@@ -24,7 +24,7 @@ public class MatchReqMonitor extends Thread {
 			if (list.size() > 0) {
 				Logger.info("Has New Request....");
 			} else {
-				Logger.info("Not New Request....");
+				// Logger.info("Not New Request....");
 			}
 			while (iterator.hasNext()) {
 				Matchs req = iterator.next();

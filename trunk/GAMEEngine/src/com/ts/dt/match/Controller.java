@@ -16,6 +16,7 @@ import com.ts.dt.match.action.shoot.Shoot;
 import com.ts.dt.match.action.shoot.ShootFactory;
 import com.ts.dt.match.helper.ActionCostTimeHelper;
 import com.ts.dt.po.Player;
+import com.ts.dt.util.DebugUtil;
 
 public class Controller {
 
@@ -84,6 +85,7 @@ public class Controller {
 	}
 
 	public void setPlayer(Player player) {
+		DebugUtil.debug(this.controllerName + "±ª…Ë÷√≥…" + player.getName());
 		this.player = player;
 	}
 
