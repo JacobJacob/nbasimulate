@@ -58,6 +58,9 @@ public class ShortShootCheck implements ResultCheck {
 		DebugUtil.debug("[" + context.getCurrentController().getControllerName() + "]" + player.getName() + "投篮能力为" + shootPower);
 		DebugUtil.debug("[" + context.getCurrentDefender().getControllerName() + "]" + defender.getName() + "防守能力为" + defendPower);
 		DebugUtil.debug("本次命中可能性为" + point);
+		if (point > 80) {
+			point = 80;//如果大于80强制设为80
+		}
 		if (a < point) {
 			result = MatchConstant.RESULT_SUCCESS;
 			DebugUtil.debug("本次投篮命中");
