@@ -7,7 +7,9 @@ import java.util.Map;
 import com.dt.bottle.logger.Logger;
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
+import com.ts.dt.constants.DefendTactical;
 import com.ts.dt.constants.MatchConstant;
+import com.ts.dt.constants.OffensiveTactical;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.TacticalDao;
@@ -18,6 +20,7 @@ import com.ts.dt.po.MatchNodosityTacticalDetail;
 import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.TeamTactical;
 import com.ts.dt.po.TeamTacticalDetail;
+import com.ts.dt.util.DebugUtil;
 
 public class Nodosity {
 
@@ -45,7 +48,7 @@ public class Nodosity {
 		context.put(MatchConstant.CURRENT_CONTROLLER_NAME, "CA");
 		context.put(MatchConstant.HAS_PASS_TIMES, 0);
 
-		loadControllersFromDb();
+		initDataFromDb();
 		Controller currentController = controllers.get(context.get(MatchConstant.CURRENT_CONTROLLER_NAME));
 		Controller currentDefender = controllers.get("CB");
 		context.setCurrentController(currentController);
@@ -138,7 +141,10 @@ public class Nodosity {
 		session.endTransaction();
 	}
 
-	private void loadControllersFromDb() {
+	/*
+	 * 每节比赛开始前加载数据,如阵容,战术等
+	 */
+	private void initDataFromDb() {
 
 		TacticalDao tacticsDao = new TacticalDaoImpl();
 		ProfessionPlayerDao playerDao = new ProfessionPlayerDaoImpl();
@@ -201,6 +207,17 @@ public class Nodosity {
 		if (homeTeamTacticalDetail == null || visitingTeamTacticalDetail == null) {
 			System.out.println("ERROR");
 		}
+
+		// 设置战术
+		this.context.setHomeTeamOffensiveTactical(homeTeamTacticalDetail.getOffensive_tactical_type());
+		this.context.setHomeTeamDefendTactical(homeTeamTacticalDetail.getDefend_tactical_type());
+		this.context.setGuestTeamOffensiveTactical(visitingTeamTacticalDetail.getOffensive_tactical_type());
+		this.context.setGuestTeamDefendTactical(visitingTeamTacticalDetail.getDefend_tactical_type());
+
+		DebugUtil.debug(this.context.getHomeTeamId() + "战术[" + OffensiveTactical.getOffensiveTacticalName(context.getHomeTeamOffensiveTactical()) + "]["
+				+ DefendTactical.getDefendTacticalName(context.getHomeTeamDefendTactical()) + "]");
+		DebugUtil.debug(this.context.getVisitingTeamId() + "战术[" + OffensiveTactical.getOffensiveTacticalName(context.getGuestTeamOffensiveTactical()) + "]["
+				+ DefendTactical.getDefendTacticalName(context.getGuestTeamDefendTactical()) + "]");
 
 		Controller controller_ca = new Controller();
 		controller_ca.setTeamFlg("A");
