@@ -16,7 +16,7 @@
    <caption>{{ home_team_name }}队技术统计</td></caption>
   <thead>
   <tr>
-    <th class="pn">球员</th>
+    <th class="pn">首发球员</th>
     <th class="bnum">投篮</th>  	
     <th class="bnum">三分</th>	
     <th class="bnum">罚球</th>
@@ -32,7 +32,39 @@
   </tr>
  </thead>
  <tbody>
-  {% for stat in home_stat %}
+  {% for stat in home_stat_main %}
+   <tr>
+    <td class="pn">{{ stat.name }} </td>
+    <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
+    <td class="bnum">{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
+    <td class="bnum">{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
+    <td>{{stat.offensive_rebound}}</td>
+    <td>{{stat.defensive_rebound}}</td>
+    <td>{{stat.total_rebound}}</td>
+    <td>{{stat.assist}}</td>
+    <td>{{stat.steals}}</td>
+    <td>{{stat.block}}</td>
+    <td>{{stat.lapsus}}</td>
+    <td>{{stat.foul}}</td>
+    <td class="right">{{stat.total_point}}</td>
+   </tr>
+  {% endfor %}
+  <tr class="sub_title">
+    <td class="pn">替补球员</td>
+    <td class="bnum">投篮</td>  	
+    <td class="bnum">三分</td>	
+    <td class="bnum">罚球</td>
+    <td>前篮板</td>
+    <td>后篮板</td>
+    <td>总篮板</td>	
+    <td>助攻</td>
+    <td>抢断</td>
+    <td>盖帽</td> 
+    <td>失误</td>
+    <td>犯规</td>
+    <td>得分</td>
+  </tr>
+  {% for stat in home_stat_sub %}
    <tr>
     <td class="pn">{{ stat.name }} </td>
     <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
@@ -105,7 +137,39 @@
   </tr>
  </thead>
  <tbody>
-  {% for stat in guest_stat %}
+  {% for stat in guest_stat_main %}
+   <tr>
+    <td class="pn">{{ stat.name }} </td>
+    <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
+    <td class="bnum">{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
+    <td class="bnum">{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
+    <td>{{stat.offensive_rebound}}</td>
+    <td>{{stat.defensive_rebound}}</td>
+    <td>{{stat.total_rebound}}</td>
+    <td>{{stat.assist}}</td>
+    <td>{{stat.steals}}</td>
+    <td>{{stat.block}}</td>
+    <td>{{stat.lapsus}}</td>
+    <td>{{stat.foul}}</td>
+    <td class="right">{{stat.total_point}}</td>
+   </tr>
+  {% endfor %}
+   <tr class="sub_title">
+    <td class="pn">替补球员</td>
+    <td class="bnum">投篮</td>  	
+    <td class="bnum">三分</td>	
+    <td class="bnum">罚球</td>
+    <td>前篮板</td>
+    <td>后篮板</td>
+    <td>总篮板</td>	
+    <td>助攻</td>
+    <td>抢断</td>
+    <td>盖帽</td> 
+    <td>失误</td>
+    <td>犯规</td>
+    <td>得分</td>
+  </tr>
+  {% for stat in guest_stat_sub %}
    <tr>
     <td class="pn">{{ stat.name }} </td>
     <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
