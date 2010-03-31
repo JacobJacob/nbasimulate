@@ -68,3 +68,7 @@ body {
   background-color:#E9E9E9;
   font-weight:bold;
 }
+
+.match_stat .sub_title td{
+  background-color:#C1C1C1;
+}
