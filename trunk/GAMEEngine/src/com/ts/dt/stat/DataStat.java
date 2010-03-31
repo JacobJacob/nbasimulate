@@ -267,6 +267,11 @@ public class DataStat {
 		playerDataStat.stealsTimesInc();
 	}
 
+	public void playerIsMain(Player player, boolean isHomeTeam) {
+		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
+		playerDataStat.setIsMain(true);
+	}
+
 	/**
 	 * check foul out
 	 * 

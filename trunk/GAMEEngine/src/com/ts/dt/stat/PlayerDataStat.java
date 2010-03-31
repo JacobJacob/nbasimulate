@@ -27,6 +27,8 @@ public class PlayerDataStat {
 
 	private int foulTimes;
 
+	private boolean isMain;
+
 	public void point2ShootTimesInc() {
 		point2ShootTimes++;
 	}
@@ -92,6 +94,14 @@ public class PlayerDataStat {
 		return point1DoomTimes * 1 + point2DoomTimes * 2 + point3DoomTimes * 3;
 	}
 
+	public boolean isIsMain() {
+		return isMain;
+	}
+
+	public void setIsMain(boolean isMain) {
+		this.isMain = isMain;
+	}
+
 	public String toStirng() {
 
 		StringBuffer sb = new StringBuffer();
@@ -149,6 +159,7 @@ public class PlayerDataStat {
 		matchStat.setPlayerNo(player.getNo());
 		matchStat.setTeamId(player.getTeamid());
 		matchStat.setSteals(steals);
+		matchStat.setIsMain(isMain);
 		matchStat.setMatchId(matchId);
 
 		matchStatDao.save(matchStat);
