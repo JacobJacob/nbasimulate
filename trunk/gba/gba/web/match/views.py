@@ -6,7 +6,7 @@ from gba.web.render import render_to_response
 from gba.business.user_roles import login_required, UserManager
 from gba.business import player_operator, match_operator
 
-from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter,\
+from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        TeamTactical, TeamTacticalDetail, YouthPlayer, \
                        MatchNotInPlayer
 from gba.common.constants import MatchTypes
@@ -75,7 +75,15 @@ def match_stat(request):
         
     home_stat = sorted(home_stat, cmp=lambda x, y: cmp(x['total_point'] * 1000 + x['total_rebound'] * 100 + x['assist'] * 10 + x['steals'], \
                                                       y['total_point'] * 1000 + y['total_rebound'] * 100 + y['assist'] * 10 + y['steals']), reverse=True)
+    home_stat_main = [] #主队主力
+    home_stat_sub = [] #主队替补
     
+    for stat in home_stat:
+        if stat['is_main'] == 1:
+            home_stat_main.append(stat)  
+        else:
+            home_stat_sub.append(stat)
+            
     guest_stat = match_operator.get_match_stat(match.guest_team_id, match_id)
     
     guest_stat_total = {}
@@ -97,12 +105,21 @@ def match_stat(request):
     
     #guest_stat.append(guest_stat_total)
     #home_stat.append(home_stat_total)
+    guest_stat_main = [] #客队主力
+    guest_stat_sub = [] #客队替补
+    
+    for stat in guest_stat:
+        if stat['is_main'] == 1:
+            guest_stat_main.append(stat)  
+        else:
+            guest_stat_sub.append(stat)
 
-    home_not_in_players = MatchNotInPlayer.query(condition="match_id=%s and team_id=%s" %(match_id, match.home_team_id))
-    guest_not_in_players = MatchNotInPlayer.query(condition="match_id=%s and team_id=%s" %(match_id, match.guest_team_id))
+    home_not_in_players = MatchNotInPlayer.query(condition="match_id=%s and team_id=%s" % (match_id, match.home_team_id))
+    guest_not_in_players = MatchNotInPlayer.query(condition="match_id=%s and team_id=%s" % (match_id, match.guest_team_id))
 
-    datas = {'home_stat': home_stat, 'guest_stat': guest_stat, 'home_team_name': home_team.name,
-              'guest_team_name': guest_team.name, 'home_not_in_players': home_not_in_players, 
+    datas = {'home_stat_main': home_stat_main, 'home_stat_sub': home_stat_sub, 'guest_stat_main': guest_stat_main,
+              'guest_stat_sub': guest_stat_sub, 'home_team_name': home_team.name,
+              'guest_team_name': guest_team.name, 'home_not_in_players': home_not_in_players,
               'guest_not_in_players': guest_not_in_players, 'guest_stat_total': guest_stat_total,
               'home_stat_total': home_stat_total}
     return render_to_response(request, 'match/match_stat.html', datas)
@@ -146,7 +163,7 @@ def training_center(request):
         else:
             totalpage = (total - 1) / pagesize + 1
     
-    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1,\
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, \
               'prevpage': page - 1, 'in_match': in_match, 'tab': 1, 'training_center': training_center}
     
     return render_to_response(request, 'match/training_center.html', datas)
@@ -158,7 +175,7 @@ def youth_tactical(request):
     datas = {}
     team = UserManager().get_team_info(request)
     tactical_details = TeamTacticalDetail.query(condition="team_id=%s and is_youth=1" % team.id, order="seq asc")
-    tactical_mains =  TeamTactical.query(condition="team_id=%s and is_youth=1" % team.id, order="type asc")
+    tactical_mains = TeamTactical.query(condition="team_id=%s and is_youth=1" % team.id, order="type asc")
     
     datas['tactical_details'] = tactical_details
     datas['sections'] = [i for i in range(1, 9)]
