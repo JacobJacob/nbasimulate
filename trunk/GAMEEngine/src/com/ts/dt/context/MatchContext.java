@@ -24,11 +24,16 @@ public class MatchContext {
 	private List<String> onCourtPlayers = new ArrayList<String>(); // 当前在场上的球员
 	private List<String> hadOnCourtPlayers = new ArrayList<String>(); // 当前比赛已经上过场的球员
 
-	private long homeTeamId;
-	private long visitingTeamId;
+	private long homeTeamId; // 主队id
+	private long visitingTeamId; // 客队id
 
-	private int matchType; // match type
-	private int seq;
+	private int matchType; // 比赛类型
+	private int seq; // 节数
+
+	private int homeTeamOffensiveTactical = -1; // 主队进攻战术
+	private int homeTeamDefendTactical = -1; // 主队防守战术
+	private int guestTeamOffensiveTactical = -1; // 客队进攻战术
+	private int guestTeamDefendTactical = -1; // 客队防守战术
 
 	private int currentOffensiveCostTime = 0; // 当前进攻所使用了的时间,以毫秒算
 
@@ -38,13 +43,13 @@ public class MatchContext {
 
 	private int tacticsAffect = 0; // 战术对动作成功的影响
 
-	private boolean isOutside = false; // whether outside
+	private boolean isOutside = false; // 是否出界
 
-	private boolean isFoul = false; // whether foul
+	private boolean isFoul = false; // 是否犯规
 
-	private boolean isBlock = false; // whether block
+	private boolean isBlock = false; // 是否封盖
 
-	private boolean isAssist = false;// whether is a assist
+	private boolean isAssist = false;// 是否助攻
 
 	private int foulShootRemain = -1;
 	private int foulShootType;
@@ -61,7 +66,7 @@ public class MatchContext {
 
 	private long currentSeq = 0;
 
-	private boolean isYouth = false;
+	private boolean isYouth = false; // 是否是年轻球队
 
 	private MatchNodosityMain nodosityMain;
 
@@ -120,6 +125,10 @@ public class MatchContext {
 			}
 
 			this.addOnCourtPlayer(playerNo);
+		}
+		// 如果是第一节,则设置该球员为主力
+		if (this.seq == 1) {
+			this.playerIsMain(controller.getPlayer(), controllerName.endsWith("A"));
 		}
 
 		controllers.put(controllerName, controller);
@@ -526,9 +535,12 @@ public class MatchContext {
 	}
 
 	public void playerAddDefensiveRebound(Player player, boolean isHomeTeam) {
-
 		dataStat.playerDefensiveReboundInc(player, isHomeTeam);
+	}
 
+	// 设置球员是否为主力
+	public void playerIsMain(Player player, boolean isHomeTeam) {
+		dataStat.playerIsMain(player, isHomeTeam);
 	}
 
 	public void outPutMatchMessage() {
@@ -752,6 +764,38 @@ public class MatchContext {
 
 	public int getTotalGuestBackboard() {
 		return totalGuestBackboard;
+	}
+
+	public int getHomeTeamOffensiveTactical() {
+		return homeTeamOffensiveTactical;
+	}
+
+	public void setHomeTeamOffensiveTactical(int homeTeamOffensiveTactical) {
+		this.homeTeamOffensiveTactical = homeTeamOffensiveTactical;
+	}
+
+	public int getHomeTeamDefendTactical() {
+		return homeTeamDefendTactical;
+	}
+
+	public void setHomeTeamDefendTactical(int homeTeamDefendTactical) {
+		this.homeTeamDefendTactical = homeTeamDefendTactical;
+	}
+
+	public int getGuestTeamOffensiveTactical() {
+		return guestTeamOffensiveTactical;
+	}
+
+	public void setGuestTeamOffensiveTactical(int guestTeamOffensiveTactical) {
+		this.guestTeamOffensiveTactical = guestTeamOffensiveTactical;
+	}
+
+	public int getGuestTeamDefendTactical() {
+		return guestTeamDefendTactical;
+	}
+
+	public void setGuestTeamDefendTactical(int guestTeamDefendTactical) {
+		this.guestTeamDefendTactical = guestTeamDefendTactical;
 	}
 
 }
