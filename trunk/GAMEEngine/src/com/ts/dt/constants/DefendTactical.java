@@ -25,6 +25,6 @@ public class DefendTactical {
 		case MAN_MARKING_OUTSIDE:
 			return "∂¢»ÀÕ‚œﬂ";
 		}
-		return "";
+		return String.valueOf(tactical);
 	}
 }

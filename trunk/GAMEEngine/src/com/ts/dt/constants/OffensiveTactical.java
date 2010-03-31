@@ -25,7 +25,7 @@ public class OffensiveTactical {
 		case COVER_SCREENS_FOR:
 			return "ÑÚ»¤µ²²ð";
 		}
-		return "";
+		return String.valueOf(tactical);
 	}
 
 }
