@@ -28,6 +28,7 @@ public class MatchStat extends Persistence {
 
 	private int foul;
 	private int steals;
+	private boolean isMain; //ÊÇ·ñÖ÷Á¦
 
 	public long getTeamId() {
 		return teamId;
@@ -156,5 +157,13 @@ public class MatchStat extends Persistence {
 	public void setSteals(int steals) {
 		this.steals = steals;
 	}
-    
+
+	public boolean getIsMain() {
+		return isMain;
+	}
+
+	public void setIsMain(boolean isMain) {
+		this.isMain = isMain;
+	}
+	
 }
