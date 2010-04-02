@@ -28,7 +28,9 @@ class Persistable(object):
     
     _meta_cache = {}
     _cache = cache
-
+    _cursor = None
+    _transaction = False
+    
     @classmethod
     def _init_meta(cls):
         if hasattr(cls, 'inited') and getattr(cls, 'inited'):
@@ -53,7 +55,7 @@ class Persistable(object):
         try:
             try:
                 data = cursor.fetchall(sql % cls._table)
-            except ProgrammingError, err:
+            except ProgrammingError:
                 raise TableNotExistException(cls._table)
             meta = Meta(cls._table)
             column_infos = data.to_list()
@@ -120,16 +122,21 @@ class Persistable(object):
             self._cache.delete(cache_key)
         data = {}
         update_skip_columns = ['created_time', 'updated_time']
-        cursor = connection.cursor()
         meta = Persistable._meta_cache[self._table]
         columns = meta.columns
+        need_close = False
         for column in columns:
             field_name = column.field     
             if hasattr(self, field_name):
                 data[field_name] = getattr(self, field_name)
             elif field_name == 'created_time':
                 data['created_time'] = ReserveLiteral('now()')
-                    
+        
+        if not self._transaction:
+            cursor = connection.cursor()
+            need_close = True
+        else:
+            cursor = self._cursor            
         try:
             cursor.insert(data, self._table, True, update_skip_columns)
             if not hasattr(self, 'id'):
@@ -137,7 +144,8 @@ class Persistable(object):
                 if data:
                     self.id = int(data['id']) 
         finally:
-            cursor.close()
+            if need_close:
+                cursor.close()
         info('finish save object....[table:%s]' % self._table)
         
     @classmethod
@@ -279,11 +287,16 @@ class Persistable(object):
         if cache_key:
             info('start to delete from cache:[%s]' % cache_key)
             self._cache.delete(cache_key)
-        cursor = connection.cursor()
-        try:
-            cursor.execute(sql)
-        finally:
-            cursor.close()
+        
+        if not self._transaction:
+            cursor = connection.cursor()
+            try:
+                cursor.execute(sql)
+            finally:
+                cursor.close()
+        else:
+            self._cursor.execute(sql)
+            
         info('finish delete')
         
     @classmethod
@@ -301,30 +314,31 @@ class Persistable(object):
     
     @classmethod
     def transaction(cls):
-        cursor = connection.cursor()
+        if not cls._cursor:
+            cls._cursor = connection.cursor()
         info('start transaction...')
-        try:
-            cursor.execute('start transaction;')
-        finally:
-            cursor.close()
-    
+        cls._cursor.execute('start transaction;')
+        cls._transaction = True
+
     @classmethod
     def commit(cls):
-        cursor = connection.cursor()
         info('commit...')
         try:
-            cursor.execute('commit;')
+            cls._cursor.execute('commit;')
         finally:
-            cursor.close()
+            cls._cursor.close()
+            cls._cursor = None
+            cls._transaction = False
             
     @classmethod
     def rollback(cls):
-        cursor = connection.cursor()
         info('rollback...')
         try:
-            cursor.execute('rollback;')
+            cls._cursor.execute('rollback;')
         finally:
-            cursor.close()
+            cls._cursor.close()
+            cls._cursor = None
+            cls._transaction = False
     
 class Meta(object):
     
