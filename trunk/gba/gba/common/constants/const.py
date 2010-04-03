@@ -111,20 +111,20 @@ OffensiveTacticalTypeMap = {
     
 class DefendTacticalType(ConstantBase):
     '''防守战术'''
-    TWO_THREE_DEFENSE = 1
-    THREE_TWO_DEFENSE = 2
-    TWO_ONE_TWO_DEFENSE = 3
-    MAN_MARKING_DEFENSE = 4
-    MAN_MARKING_INSIDE = 5
-    MAN_MARKING_OUTSIDE = 6
-    
+    MAN_MARKING_INSIDE = 7
+    MAN_MARKING_DEFENSE = 8
+    MAN_MARKING_OUTSIDE = 9
+    TWO_THREE_DEFENSE = 10
+    TWO_ONE_TWO_DEFENSE = 11
+    THREE_TWO_DEFENSE = 12
+
 DefendTacticalTypeMap = {
-    DefendTacticalType.TWO_THREE_DEFENSE: u'2-3联防',
-    DefendTacticalType.THREE_TWO_DEFENSE: u'3-2联防',       
-    DefendTacticalType.TWO_ONE_TWO_DEFENSE: u'2-1-2联防',       
-    DefendTacticalType.MAN_MARKING_DEFENSE: u'盯人防守',       
-    DefendTacticalType.MAN_MARKING_INSIDE: u'盯人内线',       
-    DefendTacticalType.MAN_MARKING_OUTSIDE: u'盯人外线',                           
+    DefendTacticalType.MAN_MARKING_INSIDE: u'盯人内线',   
+    DefendTacticalType.MAN_MARKING_DEFENSE: u'盯人防守',           
+    DefendTacticalType.MAN_MARKING_OUTSIDE: u'盯人外线',  
+    DefendTacticalType.TWO_THREE_DEFENSE: u'2-3联防',     
+    DefendTacticalType.TWO_ONE_TWO_DEFENSE: u'2-1-2联防',   
+    DefendTacticalType.THREE_TWO_DEFENSE: u'3-2联防',                           
 }
 
 class MessageType(ConstantBase):

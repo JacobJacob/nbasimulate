@@ -12,7 +12,7 @@ from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
 from gba.common.constants import MatchTypes
 
 @login_required
-def friendly_match(request):
+def friendly_match(request, min=False):
     
     page = int(request.GET.get('page', 1))
     pagesize = int(request.GET.get('pagesize', 15))
@@ -27,6 +27,8 @@ def friendly_match(request):
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
     
+    if min:
+        return render_to_response(request, 'match/friendly_match_min.html', datas)
     return render_to_response(request, 'match/friendly_match.html', datas)
 
 def _create_total_stat(stat, total_stat):
@@ -241,30 +243,71 @@ def profession_tactical(request):
 def profession_tactical_detail(request):
     """free player detail"""
     
-    sort = request.GET.get('sort', 'A')
-    
-    user_info = UserManager().get_userinfo(request)
-    
-    username = user_info['username']
-    
-    team = Team.load(username=username)
-    
-    players = player_operator.get_profession_player(team.id)
-    
-    tactical_info = match_operator.get_tactical_detail(team.id, sort)
-    
-    ret_players = []
-    tactical_detail_info = {tactical_info['pgid']: 'pg_info', tactical_info['sfid']: 'sf_info', tactical_info['sgid']: 'sg_info', \
-                          tactical_info['pfid']: 'pf_info', tactical_info['cid']: 'c_info'}
-
-    datas = {'sort': sort}
-    for player in players:
-        if player['no'] in tactical_detail_info:
-            datas[tactical_detail_info[player['no']]] = player
-        else:
-            ret_players.append(player)
+    if request.method == 'GET':
+        seq = request.GET.get('seq', 'A')
+        user_info = UserManager().get_userinfo(request)
+        username = user_info['username']
+        team = Team.load(username=username)
+        players = player_operator.get_profession_player(team.id)
+        tactical_info = match_operator.get_tactical_detail(team.id, seq)
+        datas = tactical_info
+        datas['infos'] = players
+        return render_to_response(request, 'match/profession_tactical_detail.html', datas)
+    else:
+        success =  u'阵容保存成功'
+        error = None;
+        
+        i = 1
+        while i > 0:
+            i -= 1
+            cid = request.GET.get('form_c');
+            pfid = request.GET.get('form_pf');
+            sfid = request.GET.get('form_sf');
+            sgid = request.GET.get('form_sg');
+            pgid = request.GET.get('form_pg');
+            name = request.GET.get('name');
+            seq = request.GET.get('seq');
+            offensive_tactical_type = request.GET.get('offensive_tactical_type');
+            defend_tactical_type = request.GET.get('defend_tactical_type');
             
-    datas['infos'] = ret_players      
-    datas['tactical_detail_name'] = tactical_info['name']
-    datas['tactical_info'] = tactical_info
-    return render_to_response(request, 'match/profession_tactical_detail.html', datas)
+            team = None
+            if hasattr(request, 'team'):
+                team = request.team
+            if not team:
+                error = '战术更新失败,无法获取球队信息'
+                break
+            
+            for p in (cid, pfid, sfid, sgid, pgid):
+                if not p:
+                    error = '阵容不完整'
+                    break
+                if not player_operator._check_player_is_in_team(team.id, p):
+                    error = '阵容中有不是您球队的球员，请重新设置'
+                    break
+            
+            if error:
+                return render_to_response(request, "message.html", {'success': success, 'error': error})
+            
+            if not seq:
+                error = "保存战术出错"
+                break
+            
+            info = {'team_id': team.id, 'seq': seq, 'cid': cid, 'pfid': pfid, 'sfid': sfid, 'sgid': sgid, 'pgid': pgid,
+                     'offensive_tactical_type': offensive_tactical_type, 'defend_tactical_type': defend_tactical_type}
+
+            if not name:
+                if seq == 'A':
+                    name = '第一节战术'
+                elif seq == 'B':
+                    name = '第二节战术'
+                elif name == 'C':
+                    name = '第三节战术'
+                else:
+                    name = '第四节战术'
+            
+            info['name'] = name
+            
+            if not match_operator.save_tactical_detail(info):
+                error = '战术更新失败'
+        
+        return render_to_response(request, "message.html", {'success': success, 'error': error})

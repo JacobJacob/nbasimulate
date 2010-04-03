@@ -1,145 +1,414 @@
-<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="/site_media/js/rpc.js"></script>
-<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
-<link href="/site_media/css/tactical.css" rel="stylesheet" type="text/css" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-<script type="text/javascript">
+<form id="submitform" name="submitform" action="{% url profession-tactical-detail %}" method="post" onsubmit="return zhen_rong_check(this);">
+	<div class="tacticsNew" id="container" style="position: relative;">
+		<div class="tacticsNew_l">
+			<h2 class="tacticsNew_h2">进攻阵容图</h2>
+				<div>
+					<span id="bg_gong">
+						 <img id="f_img" src="/site_media/images/zhan_shu/zy_1.gif" width="271" height="169">
+					</span>
+				    <div id="c" style="z-index: 1; left: 143px; width: 28px; position: absolute; top: 70px; height: 38px;">
+						<img src="/site_media/images/zhan_shu/C.gif" width="28" border="0" height="38"></div>
+				    <div id="pf" style="z-index: 1; left: 50px; width: 28px; position: absolute; top: 46px; height: 38px;">
+						<img src="/site_media/images/zhan_shu/PF.gif" width="28" border="0" height="38"></div>
+					<div id="sf" style="z-index: 1; left: 70px; width: 28px; position: absolute; top: 102px; height: 38px;">
+						<img src="/site_media/images/zhan_shu/SF.gif" width="28" border="0" height="38"></div>
+					<div id="sg" style="z-index: 1; left: 195px; width: 28px; position: absolute; top: 115px; height: 38px;">
+						<img src="/site_media/images/zhan_shu/SG.gif" width="28" border="0" height="38"></div>
+					<div id="pg" style="z-index: 1; left: 150px; width: 28px; position: absolute; top: 154px; height: 38px;">
+						<img src="/site_media/images/zhan_shu/PG.gif" width="28" border="0" height="38"></div>
+					</div>
+				</div>
+		<div class="tacticsNew_r">
+			<h2 class="tacticsNew_h2"></h2>
+			<div class="tacticsNew_box">
+			     <input name="offensive_tactical_type" id="offensive_tactical_type" value="{{offensive_tactical_type}}" type="hidden">
+				<ul>
+				  <li>强攻内线
+				   <input name="offensive_tactical_type_r" id="offensive_tactical_type_r" value="1" {%ifequal offensive_tactical_type 1%}checked="checked"{%endifequal%} onclick="changeGongImg('1');" type="radio">
+				  </li>
+				 <li>中锋策应
+				   <input name="offensive_tactical_type_r" id="offensive_tactical_type_r" value="2" {%ifequal offensive_tactical_type 2%}checked="checked"{%endifequal%} onclick="changeGongImg('2');" type="radio">
+				  </li>
+				  <li>外线投篮
+				    <input name="offensive_tactical_type_r" id="offensive_tactical_type_r" value="3" {%ifequal offensive_tactical_type 3%}checked="checked"{%endifequal%} onclick="changeGongImg('3');" type="radio">
+				  </li>
+				  <li>快速进攻<input name="offensive_tactical_type_r" id="offensive_tactical_type_r" {%ifequal offensive_tactical_type 4%}checked="checked"{%endifequal%} value="4" onclick="changeGongImg('4');" type="radio">
+				  </li>
+				  <li>整体进攻<input name="offensive_tactical_type_r" id="offensive_tactical_type_r" {%ifequal offensive_tactical_type 5%}checked="checked"{%endifequal%} value="5" onclick="changeGongImg('5');" type="radio">
+				  </li>
+				  <li>掩护挡拆<input name="offensive_tactical_type_r" id="offensive_tactical_type_r" {%ifequal offensive_tactical_type 6%}checked="checked"{%endifequal%} value="6" onclick="changeGongImg('6');" type="radio">
+				  </li>
+				</ul>
+				<div class="clear"></div>
+			</div>
+			<div class="blank20"></div>
+			<div class="tacticsNew_box1">
+<ul>
+{% for info in infos %}
+<li>
+<div onmouseup="MouseUp(event);" onmousedown="MouseDown(this,event);" onmousemove="MouseMove(event);" id="{{info.no}}" style="z-index: 100; position: absolute; height: 38px; width: 29px;">
+<div title="姓名：{{info.name}}[{{info.age}}]
+位置：{{info.position}}
+身高：207CM
+体重：143KG
+体力：72
+综合：32.6
 
-	  service = new rpc.ServiceProxy("/services/match/", {asynchronous:false, methods: ['save_tactical_detail',]});
-	  
-	  var object = null;
-	  
-	  $(document).ready(function(){
-	     
-	    $("input[name=offensive_tactical_type]").each(function(){
-	        var value = $(this).val();
-	        var cur_value = "{{tactical_info.offensive_tactical_type}}";
-	        if(cur_value==value){
-	          $(this).attr('checked', true);
-	        }
-	    });
-	    
-	    $("input[name=defend_tactical_type]").each(function(){
-	        var value = $(this).val();
-	        var cur_value = "{{tactical_info.defend_tactical_type}}";
-	        if(cur_value==value){
-	          $(this).attr('checked', true);
-	        }
-	    });
-	    
-	    $(".player_tactical_zl").click(function(){
-	         if(object==null){
-	           object = $(this);
-	           $(this).attr('style', 'color:red;');
-	         }else{
-	           old_html = $(this).html();
-	           object.attr('style', '');
-	           $(this).html(object.html());
-	           object.html(old_html);
-	           object = null;
-	         }
-	    });
-	    
-	    $("input.save_tactical").click(function(){
-	        
-	        var pg_id = $("#position_pg :first-child").attr('no');
-	        var sg_id = $("#position_sg :first-child").attr('no');
-	        var sf_id = $("#position_sf :first-child").attr('no');
-	        var pf_id = $("#position_pf :first-child").attr('no');
-	        var c_id = $("#position_c :first-child").attr('no');
-	        var sort = $("#sort").attr('value');
-	        var name = $("#tactical_detail_name").attr('value');
-	        var defend_tactical_type = $("input[@name=defend_tactical_type][checked]").val();
-	        var offensive_tactical_type = $("input[@name=offensive_tactical_type][checked]").val();
-	        var info = {'pgid': pg_id, 'sgid': sg_id, 'sfid': sf_id, 
-	                    'pfid': pf_id, 'cid': c_id, 'seq': sort, 'name': name,
-	                    'defend_tactical_type': defend_tactical_type, 
-	                    'offensive_tactical_type': offensive_tactical_type};
-	        try{
-	            var message = service.save_tactical_detail(info);
-	            alert(message);
-	        }catch(error){
-	            alert(error);
-	        }
-	    });
-	  });
-	  
+速度：31
+弹跳：42
+强壮：41
+耐力：27
+投篮：37
+三分：33
+运球：35
+传球：36
+篮板：30
+抢断：23
+封盖：24" style="z-index: 1; background: url(/site_media/images/zhan_shu/{{info.player_no}}.gif) repeat scroll 0% 0% transparent;width: 29px; color: white; height: 38px;" align="center">
+</div>
+</div></li>
+{% endfor %}
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+<div class="blank8"></div>
+<div class="tacticsNew">
+<div class="tacticsNew_l">
+<h2 class="tacticsNew_h2">防守阵容图</h2>
+<div>
+<span id="bg_fang">
+ <img id="f_img" src="/site_media/images/zhan_shu/zy_7.gif" width="271" height="170">
+	</span>
+		</div>
+	   </div>
+	  <div class="tacticsNew_r">
+	  <h2 class="tacticsNew_h2"></h2>
+<div class="tacticsNew_box">
+ <input name="defend_tactical_type" id="defend_tactical_type" value="{{defend_tactical_type}}" type="hidden">
+<ul>
+<li>盯人内线<input name="defend_tactical_type_r" id="defend_tactical_type_r" value="7" {%ifequal defend_tactical_type 7 %}checked="checked"{%endifequal%} onclick="changeFangImg('7');" type="radio">
+</li>
+<li>盯人防守<input name="defend_tactical_type_r" id="defend_tactical_type_r" value="8" {%ifequal defend_tactical_type 8 %}checked="checked"{%endifequal%}onclick="changeFangImg('8');" type="radio">
+</li>
+<li>盯人外线<input name="defend_tactical_type_r" id="defend_tactical_type_r" value="9" {%ifequal defend_tactical_type 9 %}checked="checked"{%endifequal%}onclick="changeFangImg('9');" type="radio">
+</li>
+<li>2-3联防<input name="defend_tactical_type_r" id="defend_tactical_type_r" value="10" {%ifequal defend_tactical_type 10 %}checked="checked"{%endifequal%}onclick="changeFangImg('10');" type="radio">
+</li>
+<li>2-1-2联防<input name="defend_tactical_type_r" id="defend_tactical_type_r" value="11"{%ifequal defend_tactical_type 11 %}checked="checked"{%endifequal%}onclick="changeFangImg('11');" type="radio">
+</li>
+<li>3-2联防<input name="defend_tactical_type_r" id="defend_tactical_type_r" value="12" {%ifequal defend_tactical_type 12 %}checked="checked"{%endifequal%}onclick="changeFangImg('12');" type="radio">
+</li>
+</ul>
+</div>
+					
+<div class="mt40">
+	<span class="fb">战术名称：</span>
+	<input name="name" id="name" value="{{name}}" maxlength="10" class="input_dotted" style="width: 70px;" type="text">
+	<input name="seq" id="seq" value="{{seq}}" type="hidden">
+	<input name="savesubmit" value="确定" class="btn_5" type="submit">
+	<input id="form_c" name="form_c" value="" type="hidden">
+    <input id="form_pf" name="form_pf" value="" type="hidden">
+	<input id="form_sf" name="form_sf" value="" type="hidden">
+	<input id="form_sg" name="form_sg" value="" type="hidden">
+	<input id="form_pg" name="form_pg" value="" type="hidden">
+	<div class="blank10"></div>
+	<span class="red" id="notice"></span>
+	<h5 class="lh21">（10个字符以内，中英文数字）</h5>
+</div>	
+</div>
+<div class="clear"></div>
+</div>	
+</form>
+
+<script language="javascript">
+	var mousedown=false;//记录鼠标左键是否压下
+	var mx,my;//记录MOUSEMOVE事件中图标的上一个位置
+	var left,top;//获取对象相对于版面或由 offsetParent 属性指定的父坐标的计算位置
+	var currentid;//记录当前点击的ID
+
+//得到该id队员的在页面所在的位置 left ，top
+
+	var player_pos = new Array();
+//得到页面固定位置图片的坐标
+	var position = new Array();
+		// 初始化队员位置
+		
+	var	pos_c = true;
+	var	pos_pf = true;
+	var	pos_sf = true;
+	var	pos_sg = true;
+	var	pos_pg = true;
+
+	//改变进攻防守图
+	changeGongImg=function(img_str)
+	{
+		$z("bg_gong").innerHTML = '<img id="g_img" src="/site_media/images/zhan_shu/zy_'+img_str+'.gif" width="271" height="169">';
+		$z("offensive_tactical_type").value = img_str;
+	}
+
+	changeFangImg=function(img_str)
+	{
+		$z("bg_fang").innerHTML = '<img id="g_img" src="/site_media/images/zhan_shu/zy_'+img_str+'.gif" width="271" height="170">';
+		$z("defend_tactical_type").value = img_str;
+	}
+
+	zhen_rong_check=function(myform)
+	{
+		//阵容名称为空判断
+		if(!isNull("name"))
+		{
+			$("notice").innerHTML = "战术名称不能为空！";
+			return false;
+		}
+		//过滤内容
+		var name = $("name").value;
+		if(is_political_words(name)||is_dirty_words(name))
+		{
+			$("notice").innerHTML = "战术名称不合法！";
+			return false;
+		}
+		//判断战术名称是否过长
+		if(!checkCharLength("name",10))
+		{
+			$("notice").innerHTML = "战术名称输入过长！";
+			return false;
+		}
+		return submit_to_div(myform,'popup_inner');
+	}
+
+//通过ID得到控件
+	 $z=function(id)
+	{
+		return document.getElementById(id); 
+	}
+	
+	errmsg=function(msg)
+	{
+		$z("debug").innerHTML += "| &nbsp; "+msg;
+	}
+	
+	getpos1 = function(Obj_id)
+	{
+		var temp = new Array();
+		temp["left"] =$z(Obj_id).offsetLeft;
+		temp["top"]  = $z(Obj_id).offsetTop;
+		return temp;
+	}
+
+pre_assign = function()
+{
+}
+
+ MouseDown=function(obj,e)
+	{
+		e = e || window.event;
+		currentid=obj.id;
+		mx=e.clientX;
+		my=e.clientY;
+		
+		//控件相对于document的坐标
+		left=parseInt($z(currentid).offsetLeft);
+		top=parseInt($z(currentid).offsetTop);
+		document.onmousemove=MouseMove;
+		document.onmouseup=MouseUp; 
+		mousedown=true;
+
+	}
+//处理MOUSEMOVE事件
+	 MouseMove=function(e)
+	{
+		e = e || window.event;
+		
+		//鼠标在移动并且执行了点击的操作的时候才更新控件的坐标
+		if(mousedown)
+		{ 
+			left=parseInt($z(currentid).offsetLeft);
+			top=parseInt($z(currentid).offsetTop);
+
+			//控件的初始坐标+（鼠标当前坐标—鼠标初始坐标），即控件现在的位置
+			$z(currentid).style.left=(left+e.clientX-mx)+"px";
+			$z(currentid).style.top=(top+e.clientY-my)+"px";
+			
+			//初始化鼠标位置
+			mx=e.clientX;
+			my=e.clientY;
+		}
+	}
+//处理鼠标抬起事件
+	 MouseUp=function(e)
+	{
+		e=e||window.event;
+		document.onmousemove=null;
+		document.onmouseup=null; 
+		mousedown=false;
+		var obj=$z(currentid);
+		var srcObj = e.srcElement?e.srcElement:e.target;
+		
+		var pos = getXY(obj);
+		var vkey = "";
+		var putdown = false;
+		for(vkey in position)
+		{
+			if (vkey != "c" && vkey != "pf" && vkey != "pg" && vkey != "sf" && vkey != "sg")
+				continue;
+			var tmpvar = eval("pos_" + vkey);		//只有这个位置没有被占据的时候才允许放下，为啥不用数组呢？白痴
+			//alert(tmpvar);
+			if (!tmpvar)
+			{
+			    //alert(tmpvar);
+				var posleft = position[vkey]["left"];
+				var postop = position[vkey]["top"];
+				//图片位置在固定位置附近即将图片放到该位置
+				if ((pos.left > posleft-20 && pos.left < posleft+20) && (pos.top > postop-20 && pos.top < postop+20))
+				{
+					var lastleft = pos.left-posleft;
+					var lasttop = pos.top-postop;
+					
+					//松开鼠标后球衣所在的位置
+					obj.style.left = posleft + "px";
+					obj.style.top = postop + "px";
+					putdown = true;
+					var logpos_name = vkey;
+					break;
+				}
+			}
+		}
+		if (putdown)
+		{
+			switch (logpos_name)
+			{
+				case "c":
+					pos_c = true;
+					break;
+				case "pf":
+					pos_pf = true;
+					break;
+				case "sf":
+					pos_sf = true;
+					break;
+				case "sg":
+					pos_sg = true;
+					break;
+				case "pg":
+					pos_pg = true;
+					break;
+			}
+
+			var theformobj = eval("document.submitform.form_"+logpos_name);
+			theformobj.value = obj.id;
+
+			if(eval("document.submitform.form_c")!=theformobj&&eval("document.submitform.form_c").value==obj.id)
+			{
+				eval("document.submitform.form_c").value="";
+				pos_c=false;
+			}
+			else if(eval("document.submitform.form_pf")!=theformobj&&eval("document.submitform.form_pf").value==obj.id)
+			{
+				eval("document.submitform.form_pf").value="";
+				pos_pf=false;
+			}
+			else if(eval("document.submitform.form_sf")!=theformobj&&eval("document.submitform.form_sf").value==obj.id)
+			{
+				eval("document.submitform.form_sf").value="";
+				pos_sf=false;
+			}
+			else if(eval("document.submitform.form_sg")!=theformobj&&eval("document.submitform.form_sg").value==obj.id)
+			{
+				eval("document.submitform.form_sg").value="";
+				pos_sg=false;
+			}
+			else if(eval("document.submitform.form_pg")!=theformobj&&eval("document.submitform.form_pg").value==obj.id)
+			{
+				eval("document.submitform.form_pg").value="";
+				pos_pg=false;
+			}
+		}
+		else		//如果这个球员没有放到特定的位置，那么就把他拉到自己的位置。同时也完成了从阵容中撤出的功能
+		{	
+
+			obj.style.left = player_pos[obj.id]["left"] + "px";
+			obj.style.top = player_pos[obj.id]["top"] + "px";
+
+            
+			if ($F("form_c") == obj.id)
+			{
+				$z("form_c").value = "";	
+				pos_c = false;
+			}
+			else if ($F("form_pf") == obj.id)
+			{
+				$z("form_pf").value = "";	
+				pos_pf = false;
+			}
+			else if ($F("form_sf") == obj.id)
+			{
+				$z("form_sf").value = "";	
+				pos_sf = false;
+			}
+			else if ($F("form_sg") == obj.id)
+			{
+				$z("form_sg").value = "";			
+				pos_sg = false;
+			}
+			else if ($F("form_pg") == obj.id)
+			{
+				$z("form_pg").value = "";	
+				pos_pg = false;
+			}
+		}
+	}
+
+	//设置队员位置，如果队员在阵容中，就将队员位置=固定图片位置。否则不处理，默认显示。
+	AssignObj=function(objPos_id,objPlayer_id)
+	{
+		$z(objPlayer_id).style.left = position[objPos_id]["left"]+ "px";
+		$z(objPlayer_id).style.top = position[objPos_id]["top"] + "px";
+	}
+	
+	//将队员放入场中位置
+	pageload=function()
+	{
+	   
+	   {% for info in infos %}
+         player_pos["{{info.no}}"] = getpos1("{{info.no}}");
+       {% endfor %}
+
+	   position["c" ] = getpos1("c" );
+	   position["pf"] = getpos1("pf");
+	   position["sf"] = getpos1("sf");
+	   position["sg"] = getpos1("sg");
+	   position["pg"] = getpos1("pg");
+
+		
+	
+      document.submitform.form_c.value =document.getElementById("{{cid}}").id;
+	  document.submitform.form_pf.value =document.getElementById("{{pfid}}").id;
+	  document.submitform.form_sf.value =document.getElementById("{{sfid}}").id;
+	  document.submitform.form_sg.value =document.getElementById("{{sgid}}").id;
+	  document.submitform.form_pg.value =document.getElementById("{{pgid}}").id;
+	  AssignObj("c","{{cid}}");
+	  AssignObj("pf","{{pfid}}");
+	  AssignObj("sf","{{sfid}}");
+	  AssignObj("sg","{{sgid}}");
+	  AssignObj("pg","{{pgid}}");
+			   
+
+	  pos_c = true;
+	  pos_pf = true;
+	  pos_sf = true;
+	  pos_sg = true;
+	  pos_pg = true;
+}
+
+	getXY=function(Obj) 
+	{
+		return {left:Obj.offsetLeft,top:Obj.offsetTop}
+	}
+	containerLeft = $z('container').offsetLeft;
+	containerTop = $z('container').offsetTop;
+
+	pageload();
+	
 </script>
-<style type="text/css">
-
-#draggable { width: 100px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; }
-#droppable { width: 150px; height: 150px; padding: 0.5em; float: left; margin: 10px; }
-
-</style>
-<body>
-<input type="hidden" value="{{sort}}" id="sort"/>
-<table width="70%" border=0 cellPadding=0 cellSpacing=0 id=secTable>
-    <tbody>
-      <tr align=middle height=20>
-        <td align="center" class="sec1"><a href="{% url profession-tactical %}">战术设置<a></TD>
-        <td align="center" class="{% ifequal sort 'A' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url profession-tactical-detail %}?sort=A">第一阵容<a></td>
-        <td align="center" class="{% ifequal sort 'B' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url profession-tactical-detail %}?sort=B">第二阵容<a></td>
-        <td align="center" class="{% ifequal sort 'C' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url profession-tactical-detail %}?sort=C">第三阵容<a></td>
-        <td align="center" class="{% ifequal sort 'D' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url profession-tactical-detail %}?sort=D">第四阵容<a></td>
-        <td align="center" class="sec1"><a href="{% url free-players %}?position=PG">战术等级<a></td>
-      </tr>
-    </tbody>
-</table>
-<table width="70%" border=0 cellPadding=0 cellSpacing=0 class="player">
-  <tbody>
-    <tr>
-       <td width="378px">
-           <div id="tactical">
-               <div class="player_tactical_zl" id="position_sg"><div title="{{pg_info.name}}" class="player_tactical_tp" no="{{sg_info.no}}">{{sg_info.player_no}}</div></div>
-               <div class="player_tactical_zl" id="position_pg"><div title="{{sg_info.name}}" class="player_tactical_tp" no="{{pg_info.no}}">{{pg_info.player_no}}</div></div>
-               <div class="player_tactical_zl" id="position_sf"><div title="{{sf_info.name}}" class="player_tactical_tp" no="{{sf_info.no}}">{{sf_info.player_no}}</div></div>
-               <div class="player_tactical_zl" id="position_pf"><div title="{{pf_info.name}}" class="player_tactical_tp" no="{{pf_info.no}}">{{pf_info.player_no}}</div></div>
-               <div class="player_tactical_zl" id="position_c"><div title="{{c_info.name}}" class="player_tactical_tp" no="{{c_info.no}}">{{c_info.player_no}}</div></div>
-           </div>
-       </td>
-       <td class="right">
-          <div id="tactial_type">
-            <div id="offensive_tactical_type">
-               <p>进攻战术</p>
-               <ul>
-                 <li><input type="radio" name="offensive_tactical_type" value="1">强打内线</li>
-                 <li><input type="radio" name="offensive_tactical_type" value="2">中锋策应</li>
-                 <li><input type="radio" name="offensive_tactical_type" value="3">外线投篮</li>
-                 <li><input type="radio" name="offensive_tactical_type" value="4">快速进攻</li>
-                 <li><input type="radio" name="offensive_tactical_type" value="5">整体配合</li>
-                 <li><input type="radio" name="offensive_tactical_type" value="6">掩护挡拆</li>
-               </ul>
-            </div>
-            <div id="defend_tactical_type">
-               <p>防守战术</p>
-               <ul>
-                <li><input type="radio" name="defend_tactical_type" value="1">2-3联防</li>
-                <li><input type="radio" name="defend_tactical_type" value="2">3-2联防</li>
-                <li><input type="radio" name="defend_tactical_type" value="3">2-1-2联防</li>
-                <li><input type="radio" name="defend_tactical_type" value="4">盯人防守</li>
-                <li><input type="radio" name="defend_tactical_type" value="5">盯人内线</li>
-                <li><input type="radio" name="defend_tactical_type" value="6">盯人外线</li> 
-               </ul>
-            </div>
-          </div>
-       </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="right">
-        <div id="sortable">
-          <div>替补席:</div>
-          {% for info in infos %}
-              <div class="player_tactical_zl"><div class="player_tactical_tp" no="{{ info.no }}">{{ info.player_no }}</div></div>
-          {% endfor %}
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" class="right">
-       战术名称:<input name="tactical_name" value="{{tactical_detail_name}}" id="tactical_detail_name">
-       <input type="button" class="save_tactical" value="保存">
-      </td>
-    </tr>
-  </tbody>
-</table>
-</body>

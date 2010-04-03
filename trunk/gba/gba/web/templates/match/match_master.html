@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+{% block ext_head %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+{% endblock %}
+{% block class2 %}active{% endblock %}
+{%block display2%}display:block;{%endblock%}
+{%block show_nav%}
+  <script language="javascript">
+    sub_menu_highlight(4,4);
+	nav_over('nav4','show4');
+	nav_show('nav4','show4');
+ </script>
+{%endblock%}
+{% block sub_menu %}
+   <div class="players_lab">
+    <ul>
+        <li class="active" id="menu_third_1">
+            <a href="{% url friendly-match-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
+               友谊赛
+            </a>
+        </li>
+        <li class="" id="menu_third_2">
+            <a href="{% url youth-player %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">
+               训练赛
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="clear">
+</div>
+<script language="javascript">
+    third_menu_highlight(1);
+</script>
+{% endblock %}

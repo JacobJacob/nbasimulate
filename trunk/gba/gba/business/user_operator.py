@@ -3,9 +3,9 @@
 
 from gba.common.db import connection
 
-_SELECT_ONLINE_USERS = 'select * from user_info where last_active_time>=date_sub(now(),interval 30 minute) order by id desc limit %s, %s'
+_SELECT_ONLINE_USERS = 'select * from team where last_active_time>=date_sub(now(),interval 30 minute) order by id desc limit %s, %s'
                 
-_SELECT_ONLINE_USERS_TOTAL = 'select count(*) as count from user_info where last_active_time>=date_sub(now(),interval 30 minute)'
+_SELECT_ONLINE_USERS_TOTAL = 'select count(*) as count from team where last_active_time>=date_sub(now(),interval 30 minute)'
 
 def get_online_users(page=1, pagesize=15):
     '''获取比赛记录'''

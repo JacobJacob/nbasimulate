@@ -53,7 +53,7 @@ def freeplayer_detail(request):
     return render_to_response(request, 'player/freeplayer_detail.html', datas)
 
 @login_required
-def profession_player(request):
+def profession_player(request, min=False):
     '''profession player'''
 
     user_info = UserManager().get_userinfo(request)
@@ -70,6 +70,8 @@ def profession_player(request):
     
     datas['attrs'] = show_attrs
     
+    if min:
+        return render_to_response(request, 'player/profession_player_min.html', datas)
     return render_to_response(request, 'player/profession_player.html', datas)
 
 @login_required
@@ -90,7 +92,7 @@ def profession_player_detail(request):
         attributes_maps[attribute] = '%s_oten' % attribute
     
     datas = {'id': id, 'player': player, 'attributes': attributes_maps}
-    return render_to_response(request, 'player/profession_player_detail.html', datas)
+    return render_to_response(request, 'player/player_detail.html', datas)
 
 @login_required
 def youth_free_player(request):

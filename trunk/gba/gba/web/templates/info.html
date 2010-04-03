@@ -1,0 +1,186 @@
+<div class="left_box">
+    <div class="logo">
+        <img src="/site_media/images/logo.gif" alt="" height="34" width="182">
+    </div>
+    <div class="date head_bg">
+        【巨星之路】　　
+        <b>
+            <span id="sj_notice">
+                2010/4/1/&nbsp;&nbsp;&nbsp;13:39:35
+            </span>
+        </b>
+    </div>
+    <script language="JavaScript">
+        var main_url = false;
+        var a = 0;
+        var Y = 2010,
+        M = 4,
+        D = 1; //取得 年 月 日
+        var SEC = 1270129103;
+        sys_clock(); //---------------------------------------------------初始化... 
+        setInterval(sys_clock, 1000);
+    </script>
+    <!--1-->
+    <div id="sy_zuo">
+        <div class="l_box_1">
+            <div class="l_box_1_center">
+                <div class="user_info">
+                    <ul>
+                        <li>
+                            <!--span class="vip"><a href="{{DUI_HUAN}}" target="_blank">[升级 VIP]</a></span-->
+                            俱 乐部：
+                            <span class="gray">
+                                {{ team.name}}
+                            </span>
+                        </li>
+                        <li>
+                            经理名：
+                            <span class="gray">
+                               {{user_info.nickname}}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="line">
+                </div>
+                <div class="user_bank">
+                    <span class="img_float">
+                        <img id="imgClothes" src="/site_media/images/0.gif" height="55" width="55">
+                    </span>
+                    <ul>
+                        <li>
+                            <span class="l_box_btn">
+                                <a href="http://s3.dlm.17uxi.cn/source/i.php?a=445&amp;type=view&amp;lei_xing=1"
+                                onclick="return show_popup(this)">
+                                    兑换
+                                </a>
+                            </span>
+                            资&nbsp;&nbsp;金：
+                            <span class="color_1">
+                                {{team.funds}}
+                            </span>
+                        </li>
+                        <li>
+                            <span class="l_box_btnf">
+                                <a href="http://pay.17uxi.cn/17uxi/user_dlm.php?UserID=258588&amp;SubTime=2010-04-01%2013:38:23&amp;chk=b5ee638e3d631d9b905bc6fe5dae0bc1&amp;ServerID=3"
+                                target="_blank">
+                                    充值
+                                </a>
+                            </span>
+                            金&nbsp;&nbsp;币：
+                            <span class="color_2">
+                                0
+                            </span>
+                        </li>
+                        <li>
+                            <span class="l_box_btn">
+                                <a href="http://s3.dlm.17uxi.cn/source/i.php?a=445&amp;type=view&amp;lei_xing=3"
+                                onclick="return show_popup(this)">
+                                    兑换
+                                </a>
+                            </span>
+                            游戏币：
+                            <span class="color_3">
+                                0
+                            </span>
+                        </li>
+                        <li>
+                            <span class="l_box_btn">
+                                <a href="#" onclick="sy_zuo_shua_xin();">
+                                    刷新
+                                </a>
+                            </span>
+                            资&nbsp;&nbsp;质：
+                            <span class="color_4">
+                                0
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clear">
+                </div>
+                <div class="blank5">
+                </div>
+                <div class="line">
+                </div>
+                <div class="user_info">
+                    <ul>
+                        <li>
+                            <span class="vip vip_1">
+                                <a href="http://s3.dlm.17uxi.cn/source/i.php?a=201" title="没有未读消息">
+                                    消息（0）
+                                </a>
+                            </span>
+                            <img src="/site_media/images/h_letter.gif" height="8" width="13">
+                            情报：
+                            <a href="http://s3.dlm.17uxi.cn/source/i.php?a=150">
+                                <img src="/site_media/images/img_02.gif" title="无受伤球员" alt="" height="11"
+                                width="11">
+                            </a>
+                            <a href="http://s3.dlm.17uxi.cn/source/i.php?a=201">
+                                <img src="/site_media/images/img_03.gif" id="xx_shan_shuo" title="没有未读消息"
+                                height="11" width="17">
+                            </a>
+                            <a href="http://s3.dlm.17uxi.cn/source/n.php?a=1200" onclick="return 
+                            show_popup(this)">
+                                <img src="/site_media/images/ren_wu_new.gif" title="新手任务">
+                            </a>
+                            <a href="http://s3.dlm.17uxi.cn/source/i.php?a=1410">
+                                <img src="/site_media/images/money.gif" title="活动奖励" height="14" width="15">
+                            </a>
+                        </li>
+                        <li>
+                            <img src="/site_media/images/h_country.gif" height="10" width="13">
+                            国家：
+                            <span class="gray">
+                                北国
+                            </span>
+                        </li>
+                        <li>
+                            <img src="/site_media/images/h_honor.gif" height="10" width="13">
+                            荣誉：
+                            <span class="gray">
+                                0
+                            </span>
+                        </li>
+                        <li>
+                            <img src="/site_media/images/h_cachet.gif" height="10" width="13">
+                            贡 献：
+                            <span class="gray">
+                                ----
+                            </span>
+                        </li>
+                        <li>
+                            <img src="/site_media/images/h_level.gif" height="10" width="13">
+                            联赛：
+                            <span class="gray">
+                                第9等级 第191组 第10名
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="l_box_btn_1 left">
+                    <a href="http://s3.dlm.17uxi.cn/source/i.php?a=832" target="_blank">
+                        互动论坛
+                    </a>
+                </div>
+                <div class="l_box_btn_1 right">
+                    <a href="http://s3.dlm.17uxi.cn/source/i.php?a=109">
+                        退出游戏
+                    </a>
+                </div>
+                <div class="clear">
+                </div>
+                <div class="blank5">
+                </div>
+            </div>
+            <div class="bot">
+            </div>
+        </div>
+    </div>
+    <!--/1-->
+    <div class="blank5">
+    </div>
+    <!--chat begin-->
+    <!--chat end -->
+</div>

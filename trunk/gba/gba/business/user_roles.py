@@ -65,7 +65,7 @@ class UserManager(DBOperator):
     MODIFY_PAGE = """UPDATE page_info SET page_name = %s, page_descript = %s  WHERE id = %s"""
     DELETE_PAGE = """DELETE FROM page_info WHERE id = %s"""
     
-    UPDATE_ACTIVE_TIME = """UPDATE user_info set last_active_time=now() WHERE username = %s"""
+    UPDATE_ACTIVE_TIME = """UPDATE team set last_active_time=now() WHERE username = %s"""
     
     def login(self, username, password):
         """

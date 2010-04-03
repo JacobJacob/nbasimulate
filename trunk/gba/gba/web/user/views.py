@@ -7,7 +7,8 @@ from django.http import HttpResponseRedirect
 from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import UserManager, login_required
 from gba.business import user_operator, match_operator
-from gba.entity import Message
+from gba.entity import Message, Team
+from gba.common.constants import MessageType
 
 SESSION_KEY = '_auth_user_id'
 
@@ -81,6 +82,59 @@ def online_user(request):
     
     return render_to_response(request, "user/online_user.html", locals())
 
+@login_required
+def send_match_request(request):
+    '''发送约战请求'''
+    if request.method == 'GET':
+        team_id = request.GET.get('team_id')
+        team = Team.load(id=team_id)
+        return render_to_response(request, "user/send_match_request.html", locals())
+    else:
+        success =  u'比赛请求发送成功'
+        error = '';
+        
+        i = 1
+        while i > 0:
+            i -= 1 
+            team_id = request.GET.get('team_id')
+            team = UserManager().get_team_info(request)
+            user_info = UserManager().get_userinfo(request)
+            if not team:
+                error = u'登录信息丢失'
+                break
+                
+            guest_team = Team.load(id=team_id)
+            if not guest_team:
+                error = u'找不到该球队'
+                break
+                
+            if team.id == guest_team.id:
+                error = u'你无法和自己约战'
+                break
+               
+            message = Message()
+            message.type = MessageType.SYSTEM_MSG
+            message.from_team_id = 0
+            message.to_team_id = guest_team.id
+            message.content = u'%s经理向你发送了%s比赛请求，您可以在我的比赛中查看' % (user_info['nickname'], type)
+            message.is_new = 1
+    
+            try:
+                match_operator.send_match_request(team.id, guest_team.id, type=1)
+                message.persist()
+            except:
+                error = u'服务器异常'
+        
+        return render_to_response(request, "message.html", {'success': success, 'error': error})
+    
+@login_required
+def send_message(request):
+    '''发送约战请求''' 
+    if request.method == 'GET':
+        return render_to_response(request, "user/send_message.html", locals())
+    else:
+        return render_to_response(request, "user/send_message.html", locals())
+        
 @login_required
 def message(request):
     '''消息管理'''

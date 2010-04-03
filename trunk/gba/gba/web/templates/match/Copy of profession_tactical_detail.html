@@ -1,0 +1,145 @@
+<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
+<link href="/site_media/css/tactical.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<script type="text/javascript">
+
+	  service = new rpc.ServiceProxy("/services/match/", {asynchronous:false, methods: ['save_tactical_detail',]});
+	  
+	  var object = null;
+	  
+	  $(document).ready(function(){
+	     
+	    $("input[name=offensive_tactical_type]").each(function(){
+	        var value = $(this).val();
+	        var cur_value = "{{tactical_info.offensive_tactical_type}}";
+	        if(cur_value==value){
+	          $(this).attr('checked', true);
+	        }
+	    });
+	    
+	    $("input[name=defend_tactical_type]").each(function(){
+	        var value = $(this).val();
+	        var cur_value = "{{tactical_info.defend_tactical_type}}";
+	        if(cur_value==value){
+	          $(this).attr('checked', true);
+	        }
+	    });
+	    
+	    $(".player_tactical_zl").click(function(){
+	         if(object==null){
+	           object = $(this);
+	           $(this).attr('style', 'color:red;');
+	         }else{
+	           old_html = $(this).html();
+	           object.attr('style', '');
+	           $(this).html(object.html());
+	           object.html(old_html);
+	           object = null;
+	         }
+	    });
+	    
+	    $("input.save_tactical").click(function(){
+	        
+	        var pg_id = $("#position_pg :first-child").attr('no');
+	        var sg_id = $("#position_sg :first-child").attr('no');
+	        var sf_id = $("#position_sf :first-child").attr('no');
+	        var pf_id = $("#position_pf :first-child").attr('no');
+	        var c_id = $("#position_c :first-child").attr('no');
+	        var sort = $("#sort").attr('value');
+	        var name = $("#tactical_detail_name").attr('value');
+	        var defend_tactical_type = $("input[@name=defend_tactical_type][checked]").val();
+	        var offensive_tactical_type = $("input[@name=offensive_tactical_type][checked]").val();
+	        var info = {'pgid': pg_id, 'sgid': sg_id, 'sfid': sf_id, 
+	                    'pfid': pf_id, 'cid': c_id, 'seq': sort, 'name': name,
+	                    'defend_tactical_type': defend_tactical_type, 
+	                    'offensive_tactical_type': offensive_tactical_type};
+	        try{
+	            var message = service.save_tactical_detail(info);
+	            alert(message);
+	        }catch(error){
+	            alert(error);
+	        }
+	    });
+	  });
+	  
+</script>
+<style type="text/css">
+
+#draggable { width: 100px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; }
+#droppable { width: 150px; height: 150px; padding: 0.5em; float: left; margin: 10px; }
+
+</style>
+<body>
+<input type="hidden" value="{{sort}}" id="sort"/>
+<table width="70%" border=0 cellPadding=0 cellSpacing=0 id=secTable>
+    <tbody>
+      <tr align=middle height=20>
+        <td align="center" class="sec1"><a href="{% url profession-tactical %}">战术设置<a></TD>
+        <td align="center" class="{% ifequal sort 'A' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url profession-tactical-detail %}?sort=A">第一阵容<a></td>
+        <td align="center" class="{% ifequal sort 'B' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url profession-tactical-detail %}?sort=B">第二阵容<a></td>
+        <td align="center" class="{% ifequal sort 'C' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url profession-tactical-detail %}?sort=C">第三阵容<a></td>
+        <td align="center" class="{% ifequal sort 'D' %}sec2{% else %}sec1{% endifequal %}"><a href="{% url profession-tactical-detail %}?sort=D">第四阵容<a></td>
+        <td align="center" class="sec1"><a href="{% url free-players %}?position=PG">战术等级<a></td>
+      </tr>
+    </tbody>
+</table>
+<table width="70%" border=0 cellPadding=0 cellSpacing=0 class="player">
+  <tbody>
+    <tr>
+       <td width="378px">
+           <div id="tactical">
+               <div class="player_tactical_zl" id="position_sg"><div title="{{pg_info.name}}" class="player_tactical_tp" no="{{sg_info.no}}">{{sg_info.player_no}}</div></div>
+               <div class="player_tactical_zl" id="position_pg"><div title="{{sg_info.name}}" class="player_tactical_tp" no="{{pg_info.no}}">{{pg_info.player_no}}</div></div>
+               <div class="player_tactical_zl" id="position_sf"><div title="{{sf_info.name}}" class="player_tactical_tp" no="{{sf_info.no}}">{{sf_info.player_no}}</div></div>
+               <div class="player_tactical_zl" id="position_pf"><div title="{{pf_info.name}}" class="player_tactical_tp" no="{{pf_info.no}}">{{pf_info.player_no}}</div></div>
+               <div class="player_tactical_zl" id="position_c"><div title="{{c_info.name}}" class="player_tactical_tp" no="{{c_info.no}}">{{c_info.player_no}}</div></div>
+           </div>
+       </td>
+       <td class="right">
+          <div id="tactial_type">
+            <div id="offensive_tactical_type">
+               <p>进攻战术</p>
+               <ul>
+                 <li><input type="radio" name="offensive_tactical_type" value="1">强打内线</li>
+                 <li><input type="radio" name="offensive_tactical_type" value="2">中锋策应</li>
+                 <li><input type="radio" name="offensive_tactical_type" value="3">外线投篮</li>
+                 <li><input type="radio" name="offensive_tactical_type" value="4">快速进攻</li>
+                 <li><input type="radio" name="offensive_tactical_type" value="5">整体配合</li>
+                 <li><input type="radio" name="offensive_tactical_type" value="6">掩护挡拆</li>
+               </ul>
+            </div>
+            <div id="defend_tactical_type">
+               <p>防守战术</p>
+               <ul>
+                <li><input type="radio" name="defend_tactical_type" value="1">2-3联防</li>
+                <li><input type="radio" name="defend_tactical_type" value="2">3-2联防</li>
+                <li><input type="radio" name="defend_tactical_type" value="3">2-1-2联防</li>
+                <li><input type="radio" name="defend_tactical_type" value="4">盯人防守</li>
+                <li><input type="radio" name="defend_tactical_type" value="5">盯人内线</li>
+                <li><input type="radio" name="defend_tactical_type" value="6">盯人外线</li> 
+               </ul>
+            </div>
+          </div>
+       </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="right">
+        <div id="sortable">
+          <div>替补席:</div>
+          {% for info in infos %}
+              <div class="player_tactical_zl"><div class="player_tactical_tp" no="{{ info.no }}">{{ info.player_no }}</div></div>
+          {% endfor %}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="right">
+       战术名称:<input name="tactical_name" value="{{tactical_detail_name}}" id="tactical_detail_name">
+       <input type="button" class="save_tactical" value="保存">
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>

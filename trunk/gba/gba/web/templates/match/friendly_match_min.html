@@ -1,0 +1,56 @@
+{% load common_extras %}
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+<thead>
+   <tr>
+    <th>类别</th>
+	<th>发起</th>
+	<th>比分</th>
+	<th>接收</th>
+	<th>比赛</th>
+	<th>时间</th>
+    <th class="end_cell">操作</th>
+  </tr>
+</thead>
+<tbody>
+{% for info in infos %}
+  <tr>
+    <td>
+        <font color="#ff0000">
+        {% ifequal info.is_youth 0 %}
+          职业
+        {% else %}
+          青年
+        {% endifequal %}
+        </font>
+    </td>
+    <td>
+     <span class="blue">
+     <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this);">{{ info.home_team_id|team_name }}</a>
+     </span>
+    </td>
+    <td>
+       {{info|match_point}}
+    </td>
+    <td>
+     <span class="blue">
+     <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=41007" onclick="return show_popup(this);">{{ info.guest_team_id|team_name }}</a>
+     </span>
+    </td>
+    <td>友谊赛</td>
+    <td>
+        <div id="yz_time_2">第四节  剩余3分钟</div>
+		<input id="yz_value_2" value="3" type="hidden">
+	</td>
+    <td>
+        {{info.status|match_status:info.id|safe}}
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">&nbsp;首页 &lt;上一页&nbsp;下一页&gt; 末页&nbsp;[第1/1页]&nbsp;第
+ <input name="page" id="page" value="1" size="1" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" type="text"> 页 
+ <input class="btn_2" value="GO" onclick="return href_to_div('n.php?a=163&amp;p='+document.getElementById('page').value,'main_content');" type="button">&nbsp;
+</div>
+<div class="blank10"></div>

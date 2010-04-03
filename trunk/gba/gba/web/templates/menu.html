@@ -1,0 +1,355 @@
+          <!-- main menu begin-->
+<div class="head_bg top_nav">
+    <ul>
+        <li class="{%block class1%}{%endblock%}" id="nav1" onclick="nav_show('nav1', 'show1')" onmouseover="nav_over('nav1', 'show1')" onmouseout="nav_out('nav1', 'show1')">
+            首页
+        </li>
+        <li class="{%block class2%}{%endblock%}" id="nav2" onclick="nav_show('nav2', 'show2')" onmouseover="nav_over('nav2', 'show2')" onmouseout="nav_out('nav2', 'show2')">
+            球队
+        </li>
+        <li class="{%block class3%}{%endblock%}" id="nav3" onclick="nav_show('nav3', 'show3')" onmouseover="nav_over('nav3', 'show3')" onmouseout="nav_out('nav3', 'show3')">
+            训练
+        </li>
+        <li class="{%block class4%}{%endblock%}" id="nav4" onclick="nav_show('nav4', 'show4')" onmouseover="nav_over('nav4', 'show4')" onmouseout="nav_out('nav4', 'show4')">
+            赛事
+        </li>
+        <li class="{%block class5%}{%endblock%}" id="nav5" onclick="nav_show('nav5', 'show5')" onmouseover="nav_over('nav5', 'show5')" onmouseout="nav_out('nav5', 'show5')">
+            战术
+        </li>
+        <li class="{%block class6%}{%endblock%}" id="nav6" onclick="nav_show('nav6', 'show6')" onmouseover="nav_over('nav6', 'show6')" onmouseout="nav_out('nav6', 'show6')">
+            球馆
+        </li>
+        <li class="{%block class7%}{%endblock%}" id="nav7" onclick="nav_show('nav7', 'show7')" onmouseover="nav_over('nav7', 'show7')" onmouseout="nav_out('nav7', 'show7')">
+            国战
+        </li>
+        <li class="{%block class8%}{%endblock%}" id="nav8" onclick="nav_show('nav8', 'show8')" onmouseover="nav_over('nav8', 'show8')" onmouseout="nav_out('nav8', 'show8')">
+            转会
+        </li>
+    </ul>
+</div>
+<div class="clear">
+</div>
+<!-- main menu end-->
+<!-- sub menu begin-->
+<div onmouseover="show_over()" onmouseout="show_out()">
+    <div id="show1" style="width:100%;display:none;">
+        <div class="main_nav main_nav_1">
+            <ul>
+                <li class="" id="menu_sub_1_1">
+                    <a id="menu_sub_href_1_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=502">
+                        游戏主页
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li class="" id="menu_sub_1_3">
+                    <a id="menu_sub_href_1_3" href="http://s3.dlm.17uxi.cn/source/i.php?a=232">
+                        俱乐部信息
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li class="" id="menu_sub_1_4">
+                    <a id="menu_sub_href_1_4" href="http://s3.dlm.17uxi.cn/source/i.php?a=470">
+                        好友列表
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li class="" id="menu_sub_1_5">
+                    <a id="menu_sub_href_1_5" href="{% url online-user %}">
+                        在线经理
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li class="" id="menu_sub_1_6">
+                    <a id="menu_sub_href_1_6" href="http://s3.dlm.17uxi.cn/source/i.php?a=201">
+                        我的消息
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li class="" id="menu_sub_1_7">
+                    <a id="menu_sub_href_1_7" href="http://s3.dlm.17uxi.cn/source/i.php?a=810">
+                        个人财政
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li class="" id="menu_sub_1_8">
+                    <a id="menu_sub_href_1_8" href="http://s3.dlm.17uxi.cn/source/i.php?a=509">
+                        游戏帮助
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div id="show2" style="width: 100%;display:none">
+        <div class="main_nav main_nav_2">
+            <ul>
+                <li id="menu_sub_2_1">
+                    <a id="menu_sub_href_2_1" href="{% url profession-player %}"> 
+                        球员管理
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_2_2">
+                    <a id="menu_sub_href_2_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=420">
+                        职员管理
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_2_3">
+                    <a id="menu_sub_href_2_3" href="http://s3.dlm.17uxi.cn/source/i.php?a=342">
+                        球队财政
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_2_4">
+                    <a id="menu_sub_href_2_4" href="http://s3.dlm.17uxi.cn/source/i.php?a=114">
+                        球队荣誉
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_2_5">
+                    <a id="menu_sub_href_2_5" href="http://s3.dlm.17uxi.cn/source/i.php?a=550">
+                        荣誉排行
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div id="show3" style="display: none; width: 100%;">
+        <div class="main_nav main_nav_3">
+            <ul>
+                <li id="menu_sub_3_1">
+                    <a id="menu_sub_href_3_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=150">
+                        属性调整
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_3_2">
+                    <a id="menu_sub_href_3_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=155">
+                        训练中心
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div id="show4" style="display: none; width: 100%;">
+        <div class="main_nav main_nav_4">
+            <ul>
+                <li id="menu_sub_4_1">
+                    <a id="menu_sub_href_4_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=385">
+                        职业联赛
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_4_2">
+                    <a id="menu_sub_href_4_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=338">
+                        自建杯赛
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_4_3">
+                    <a id="menu_sub_href_4_3" href="http://s3.dlm.17uxi.cn/source/i.php?a=601">
+                        竞技场
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_4_4">
+                    <a id="menu_sub_href_4_4" href="{% url friendly-match  %}">
+                        我的比赛
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_4_5">
+                    <a id="menu_sub_href_4_5" href="http://s3.dlm.17uxi.cn/source/i.php?a=2025">
+                        <font color="red">
+                            大联盟季 后赛
+                        </font>
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_4_6">
+                    <a id="menu_sub_href_4_6" href="http://s3.dlm.17uxi.cn/source/i.php?a=851">
+                        挑战赛
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div id="show5" style="display: none; width: 100%;">
+        <div class="main_nav main_nav_5">
+            <ul>
+                <li id="menu_sub_5_1">
+                    <a id="menu_sub_href_5_1" href="{% url profession-tactical %}">
+                        职业战术
+                    </a> 
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_5_2">
+                    <a id="menu_sub_href_5_2" href="{% url development %}">
+                        街头战术
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div id="show6" style="display: none; width: 100%;">
+        <div class="main_nav main_nav_6">
+            <ul>
+                <li id="menu_sub_6_1">
+                    <a id="menu_sub_href_6_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=347">
+                        球馆建设
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_6_2">
+                    <a id="menu_sub_href_6_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=348">
+                        球场广告
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div id="show7" style="width: 100%; display: none;">
+        <div class="main_nav main_nav_7">
+            <ul>
+                <li id="menu_sub_7_1">
+                    <a id="menu_sub_href_7_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=619">
+                        战队
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_7_2">
+                    <a id="menu_sub_href_7_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=670">
+                        联盟
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_7_3">
+                    <a id="menu_sub_href_7_3" href="http://s3.dlm.17uxi.cn/source/i.php?a=1100">
+                        国战
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div id="show8" style="display: none; width: 100%;">
+        <div class="main_nav main_nav_8">
+            <ul>
+                <li id="menu_sub_8_1">
+                    <a id="menu_sub_href_8_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=465">
+                        关注球员
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_8_2">
+                    <a id="menu_sub_href_8_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=460">
+                        职业市场
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_8_3">
+                    <a id="menu_sub_href_8_3" href="http://s3.dlm.17uxi.cn/source/i.php?a=462">
+                        业余市场
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_8_4">
+                    <a id="menu_sub_href_8_4" href="http://s3.dlm.17uxi.cn/source/i.php?a=271">
+                        经纪人
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_8_5">
+                    <a id="menu_sub_href_8_5" href="http://s3.dlm.17uxi.cn/source/i.php?a=463">
+                        金币交易市场
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div id="show9" style="display: none; width: 100%;">
+        <div class="main_nav main_nav_9">
+            <ul>
+                <li id="menu_sub_9_1">
+                    <a id="menu_sub_href_9_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=440">
+                        道具商店
+                    </a>
+                </li>
+                <li class="i1">
+                    |
+                </li>
+                <li id="menu_sub_9_2">
+                    <a id="menu_sub_href_9_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=443">
+                        我的道具
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+                <!--/main_nav-->

@@ -1,10 +1,71 @@
-{% extends "master.html" %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>GBA篮球经理</title>
+        <link rel="stylesheet" type="text/css" href="/site_media/css/global.css">
+        <link rel="stylesheet" type="text/css" href="/site_media/css/style.css">
+        <link rel="stylesheet" type="text/css" href="/site_media/css/icon.css">
+        <link rel="stylesheet" type="text/css" href="/site_media/css/create.css">
+        <link rel="stylesheet" type="text/css" href="/site_media/css/bf.css">
+        <link rel="stylesheet" type="text/css" href="/site_media/css/war.css">
+        <link rel="stylesheet" type="text/css" href="/site_media/css/shou_ye.css">
+        <script type="text/javascript" src="/site_media/js/common.js"></script>
+        <script type="text/javascript" src="/site_media/js/rpc.js"></script>
+        <script type="text/javascript" src="/site_media/js/prototype.js"></script>
+        <script type="text/javascript" src="/site_media/js/hide_show.js"></script>
+        <script type="text/javascript" src="/site_media/js/shou_ye.js"></script>
+        {% block ext_head %}{% endblock %}
+    </head>
+    <!--body onload="msg_list.scrollTop=msg_list.scrollHeight;"-->
+    <body>
+        <div class="Area cut">
+            {% include "info.html" %}
+            <div class="right_box">
+                <div class="head_box" id="casting">
 
-{% block title %}金山云安全{% endblock %}
-{% block content %}
-<h1>首页</h1>
-
-{% endblock %}
-
-
-
+                </div>
+                <!--导航-->
+                 {% include "menu.html" %}
+                    {%block show_nav%}
+				      <script language="javascript">
+				        sub_menu_highlight(1, 1);
+				        nav_over('nav1', 'show1');
+				        nav_show('nav1', 'show1');
+				     </script>
+				   {%endblock%}
+                <!--/导航-->
+                  {% block sub_menu %}{%endblock%}
+                  <div id="main_content">
+                       {%block main%}
+              
+                       {%endblock%}
+                  </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="blank10"></div>
+        <div class="Area bot_line"></div>
+         <!-- popup div begins -->
+        <div id="floatBoxBg" style="display:none;"></div>
+        <div id="floatBox" class="floatBox" style="display: none; position: absolute; z-index: 999;">
+            <div class="floatBox_header">
+            </div>
+            <div class="floatBox_shadow">
+                <div class="floatBox_closer">
+                    <a href="" onclick="return hide_popup();">
+                        <img id="popup_closer" src="/site_media/images/close.gif" alt="关闭" height="11" width="11">
+                    </a>
+                </div>
+                <!-- return show_popup('floatBox'); -->
+                <div id="popup_inner" class="content">
+                    Loading...
+                </div>
+            </div>
+            <div class="floatBox_footer">
+            </div>
+        </div>
+        <!-- popup div ends -->
+    </body>
+</html>

@@ -61,7 +61,7 @@ TEMPLATE_LOADERS = (
 #SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 MIDDLEWARE_CLASSES = (
     'gba.common.jsonrpcserver.JSONRPCServerMiddleware',
-
+    'gba.common.middleware.TeamInfoMiddleware',
 )
 
 ROOT_URLCONF = 'web.urls'
@@ -85,9 +85,9 @@ INSTALLED_APPS = (
 URL_PREFIX = DjangoSettings.URL_PREFIX
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+   'gba.business.context_processors.user_info',
    'django.core.context_processors.request',
  #  'from gba.business.context_processors.data_total',
- #  'from gba.business.context_processors.user_info',
 )
 
 #-------------------------
