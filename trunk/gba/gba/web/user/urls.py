@@ -13,4 +13,6 @@ urlpatterns = patterns('web.user',
     url(r'^8806/$', 'views.send_match_request', name='send-match-request'),
     url(r'^8807/$', 'views.send_message', name='send-message'),
     url(r'^8808/$', 'views.check_new_message', name='check-new-message'),
+    url(r'^8809/$', 'views.user_detail', name='user-detail'),
+    url(r'^8810/$', 'views.message', {'min': True}, name='message-min'),
 )

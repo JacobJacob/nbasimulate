@@ -20,7 +20,7 @@
             球馆
         </li>
         <li class="{%block class7%}{%endblock%}" id="nav7" onclick="nav_show('nav7', 'show7')" onmouseover="nav_over('nav7', 'show7')" onmouseout="nav_out('nav7', 'show7')">
-            国战
+            联盟
         </li>
         <li class="{%block class8%}{%endblock%}" id="nav8" onclick="nav_show('nav8', 'show8')" onmouseover="nav_over('nav8', 'show8')" onmouseout="nav_out('nav8', 'show8')">
             转会
@@ -68,7 +68,7 @@
                     |
                 </li>
                 <li class="" id="menu_sub_1_6">
-                    <a id="menu_sub_href_1_6" href="http://s3.dlm.17uxi.cn/source/i.php?a=201">
+                    <a id="menu_sub_href_1_6" href="{% url message %}">
                         我的消息
                     </a>
                 </li>
@@ -191,24 +191,6 @@
                         我的比赛
                     </a>
                 </li>
-                <li class="i1">
-                    |
-                </li>
-                <li id="menu_sub_4_5">
-                    <a id="menu_sub_href_4_5" href="http://s3.dlm.17uxi.cn/source/i.php?a=2025">
-                        <font color="red">
-                            大联盟季 后赛
-                        </font>
-                    </a>
-                </li>
-                <li class="i1">
-                    |
-                </li>
-                <li id="menu_sub_4_6">
-                    <a id="menu_sub_href_4_6" href="http://s3.dlm.17uxi.cn/source/i.php?a=851">
-                        挑战赛
-                    </a>
-                </li>
             </ul>
         </div>
         <div class="clear">
@@ -259,25 +241,9 @@
     <div id="show7" style="width: 100%; display: none;">
         <div class="main_nav main_nav_7">
             <ul>
-                <li id="menu_sub_7_1">
-                    <a id="menu_sub_href_7_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=619">
-                        战队
-                    </a>
-                </li>
-                <li class="i1">
-                    |
-                </li>
                 <li id="menu_sub_7_2">
                     <a id="menu_sub_href_7_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=670">
                         联盟
-                    </a>
-                </li>
-                <li class="i1">
-                    |
-                </li>
-                <li id="menu_sub_7_3">
-                    <a id="menu_sub_href_7_3" href="http://s3.dlm.17uxi.cn/source/i.php?a=1100">
-                        国战
                     </a>
                 </li>
             </ul>
@@ -289,7 +255,7 @@
         <div class="main_nav main_nav_8">
             <ul>
                 <li id="menu_sub_8_1">
-                    <a id="menu_sub_href_8_1" href="http://s3.dlm.17uxi.cn/source/i.php?a=465">
+                    <a id="menu_sub_href_8_1" href="{% url attention-player %}">
                         关注球员
                     </a>
                 </li>
@@ -297,7 +263,7 @@
                     |
                 </li>
                 <li id="menu_sub_8_2">
-                    <a id="menu_sub_href_8_2" href="http://s3.dlm.17uxi.cn/source/i.php?a=460">
+                    <a id="menu_sub_href_8_2" href="{% url free-players %}">
                         职业市场
                     </a>
                 </li>
@@ -306,7 +272,7 @@
                 </li>
                 <li id="menu_sub_8_3">
                     <a id="menu_sub_href_8_3" href="http://s3.dlm.17uxi.cn/source/i.php?a=462">
-                        业余市场
+                        街头市场
                     </a>
                 </li>
                 <li class="i1">
@@ -314,15 +280,7 @@
                 </li>
                 <li id="menu_sub_8_4">
                     <a id="menu_sub_href_8_4" href="http://s3.dlm.17uxi.cn/source/i.php?a=271">
-                        经纪人
-                    </a>
-                </li>
-                <li class="i1">
-                    |
-                </li>
-                <li id="menu_sub_8_5">
-                    <a id="menu_sub_href_8_5" href="http://s3.dlm.17uxi.cn/source/i.php?a=463">
-                        金币交易市场
+                        赛季选秀
                     </a>
                 </li>
             </ul>

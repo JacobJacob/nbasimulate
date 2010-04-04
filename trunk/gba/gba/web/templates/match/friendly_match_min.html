@@ -38,19 +38,37 @@
     </td>
     <td>友谊赛</td>
     <td>
-        <div id="yz_time_2">第四节  剩余3分钟</div>
-		<input id="yz_value_2" value="3" type="hidden">
+        <div id="yz_time_2">
+          {% ifequal info.status 2%}
+             {{info.sub_status|match_sub_status}}
+          {% else %}
+            <span title="发请邀请时间">{{info.created_time}}</span>
+          {% endifequal %}
+        </div>
 	</td>
     <td>
-        {{info.status|match_status:info.id|safe}}
+        {{info|match_status:info.id|safe}}
     </td>
 </tr>
 {% endfor %}
 </tbody>
 </table>
 <div class="blank10"></div>
-<div class="mlr8 tr">&nbsp;首页 &lt;上一页&nbsp;下一页&gt; 末页&nbsp;[第1/1页]&nbsp;第
- <input name="page" id="page" value="1" size="1" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" type="text"> 页 
- <input class="btn_2" value="GO" onclick="return href_to_div('n.php?a=163&amp;p='+document.getElementById('page').value,'main_content');" type="button">&nbsp;
+<div class="mlr8 tr">
+  {% ifequal page 1 %}
+    首页
+    上一页
+  {% else %}
+     <a onclick="return href_to_div(this,'main_content');" href="{% url friendly-match-min %}?page=1">首页</a>
+     <a onclick="return href_to_div(this,'main_content');" href="{% url friendly-match-min %}?page={{prevpage}}">&lt;上一页</a>
+  {% endifequal %}
+  {% ifequal page totalpage %}
+    下一页
+    末页
+  {% else %}
+     <a onclick="return href_to_div(this,'main_content');" href="{% url friendly-match-min %}?page={{nextpage}}">下一页&gt;</a>
+     <a onclick="return href_to_div(this,'main_content');" href="{% url friendly-match-min %}?page={{totalpage}}">末页</a>
+  {% endifequal %}
+  [共{{page}}/{{totalpage}}页]
 </div>
 <div class="blank10"></div>

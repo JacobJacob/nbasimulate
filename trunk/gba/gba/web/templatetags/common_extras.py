@@ -7,7 +7,7 @@ from datetime import timedelta
 from django import template
 from django.core.urlresolvers import reverse
 
-from gba.common.constants import oten_color_map, AttributeMaps
+from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap
 from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap
 from gba.entity import Team, UserInfo, ProfessionPlayer
 
@@ -50,20 +50,51 @@ def team_username(team_id):
     return ''
         
 @register.filter
-def match_status(status, id):
+def match_status(info, id):
+
+    if isinstance(info, dict):
+        status = info['status']
+        is_home = info['is_home']
+    else:
+        status = info.status
+        is_home = info.is_home
+        
     html = ''
     if status == 0:
-        html += '等待中'
+        print is_home
+        if is_home:
+            html += '等待中'
+        else:
+            html += """<a href="%s?match_id=%s" onclick='return show_popup(this);'>接受</a>""" % (reverse('match-accept'), id)
     elif status == 1:
         html += '赛前准备中'
     elif status == 2:
         html += '比赛中'
     elif status == 3:
-        html += """<a href="%s?match_id=%s" target="_blank">比赛统计</a>""" % (reverse('match-stat'), id)
-        html += """<a href="%s?match_id=%s" target="_blank">比赛战报</a>""" % (reverse('match-detail'), id)
+        html += """<a href="%s?match_id=%s" target="_blank">统计</a>""" % (reverse('match-stat'), id)
+        html += """|<a href="%s?match_id=%s" target="_blank">战报</a>""" % (reverse('match-detail'), id)
     elif status == 4:
         html += '比赛取消'
     return html
+
+@register.filter
+def match_sub_status(sub_status):
+    if not sub_status:
+        return ''
+    if sub_status == 1:
+        return '第一节'
+    elif sub_status == 2:
+        return '第二节'
+    elif sub_status == 3:
+        return '第三节'
+    elif sub_status == 4:
+        return '第四节'
+    elif sub_status == 5:
+        return '第一加时'
+    elif sub_status == 6:
+        return '第二加时'
+    else:
+        return '第%s加进进行中' % (sub_status - 4)
 
 @register.filter
 def match_point(info):
@@ -80,13 +111,15 @@ def match_point(info):
     return '-- : --'
 
 @register.filter
-def position(status):
+def position(position):
     '''位置'''
-    return u'等待'
+    return PositioneMap.get(position, '')
 
 @register.filter
 def format_number(number):
     '''位置'''
+    if not number:
+        return 'error'
     return '%.1f' % number
 
 @register.filter

@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block ext_head %}
+  <script type='text/javascript' src='/site_media/js/transfers.js'></script>
+{% endblock %}
+{% block show_nav %}
+<script language="javascript">
+	sub_menu_highlight(8,2);
+	nav_over('nav8','show8');
+	nav_show('nav8','show8');
+</script>
+{% endblock %}
+{% block sub_menu %}
+<div class="players_lab">
+ <ul>
+	<li class="active" id="menu_third_1">
+	<a href="{% url free-players-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">职业转会</a></li>
+ </ul>
+</div>
+<div class="clear"></div>
+<script language="javascript">
+ third_menu_highlight(1);	
+</script> 
+{% endblock %}

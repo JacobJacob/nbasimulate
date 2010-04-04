@@ -26,7 +26,7 @@
    <tr>
      <td>
        <span class="blue"><img src="/site_media/images/boy.gif" hight="16" title="男" width="16">&nbsp;&nbsp;
-       <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=3055" onclick="return show_popup(this);">{{info.id|nickname}}</a>
+       <a href="{% url user-detail %}?id={{info.id}}" onclick="return show_popup(this);">{{info.id|nickname}}</a>
        </span>
      </td>
      <td>{{info.name}}</td>

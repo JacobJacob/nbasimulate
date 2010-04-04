@@ -6,9 +6,9 @@ from django.http import HttpResponseRedirect
 
 from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import UserManager, login_required
-from gba.business import user_operator, match_operator
+from gba.business import user_operator, match_operator, player_operator
 from gba.entity import Message, Team
-from gba.common.constants import MessageType
+from gba.common.constants import MessageType, MatchTypeMaps
 
 SESSION_KEY = '_auth_user_id'
 
@@ -97,6 +97,11 @@ def send_match_request(request):
         while i > 0:
             i -= 1 
             team_id = request.GET.get('team_id')
+            type = request.GET.get('type')
+            is_youth = request.GET.get('is_youth')
+            
+            match_type = 1 #debug
+            
             team = UserManager().get_team_info(request)
             user_info = UserManager().get_userinfo(request)
             if not team:
@@ -116,7 +121,8 @@ def send_match_request(request):
             message.type = MessageType.SYSTEM_MSG
             message.from_team_id = 0
             message.to_team_id = guest_team.id
-            message.content = u'%s经理向你发送了%s比赛请求，您可以在我的比赛中查看' % (user_info['nickname'], type)
+            message.title = u'比赛请求(%s)' % user_info['nickname']
+            message.content = u'%s经理向你发送了%s比赛请求，您可以在我的比赛中查看' % (user_info['nickname'], MatchTypeMaps.get(match_type))
             message.is_new = 1
     
             try:
@@ -136,10 +142,10 @@ def send_message(request):
         return render_to_response(request, "user/send_message.html", locals())
         
 @login_required
-def message(request):
+def message(request, min=False):
     '''消息管理'''
     page = int(request.GET.get('page', 1))
-    pagesize = int(request.GET.get('pagesize', 15))
+    pagesize = int(request.GET.get('pagesize', 10))
 
     team = UserManager().get_team_info(request)
     
@@ -159,6 +165,8 @@ def message(request):
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
             'nextpage': page + 1, 'prevpage': page - 1}
     
+    if min:
+        return render_to_response(request, "user/message_min.html", locals())
     return render_to_response(request, "user/message.html", locals())
 
 @login_required
@@ -169,3 +177,12 @@ def check_new_message(request):
     if message:
         return json_response(1)
     return json_response(0)
+
+@login_required
+def user_detail(request):
+    '''经理信息'''
+    team_id = request.GET.get('id')
+    show_team = Team.load(id=team_id)
+    pro_players = player_operator.get_profession_player(team_id)
+    youth_players = player_operator.get_youth_player(team_id)
+    return render_to_response(request, "user/user_detail.html", locals()) 

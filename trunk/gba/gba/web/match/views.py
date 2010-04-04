@@ -2,20 +2,23 @@
 # -*- coding: utf-8 -*-
 """"""
 
+from django.core.urlresolvers import reverse
+
 from gba.web.render import render_to_response
 from gba.business.user_roles import login_required, UserManager
 from gba.business import player_operator, match_operator
 
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        TeamTactical, TeamTacticalDetail, YouthPlayer, \
-                       MatchNotInPlayer
-from gba.common.constants import MatchTypes
+                       MatchNotInPlayer, Message, UserInfo
+from gba.common.constants import MatchTypes, MessageType
+from gba.common.constants import MatchStatus, MatchTypeMaps
 
 @login_required
 def friendly_match(request, min=False):
     
     page = int(request.GET.get('page', 1))
-    pagesize = int(request.GET.get('pagesize', 15))
+    pagesize = int(request.GET.get('pagesize', 10))
     
     team = UserManager().get_team_info(request)
     infos, total = match_operator.get_match(team.id, MatchTypes.FRIENDLY, page, pagesize)
@@ -24,6 +27,9 @@ def friendly_match(request, min=False):
         totalpage = 0
     else:
         totalpage = (total - 1) / pagesize + 1
+        
+    for info in infos:
+        info['is_home'] = team.id == info['home_team_id']
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
     
@@ -220,24 +226,56 @@ def youth_tactical_detail(request):
     return render_to_response(request, 'match/youth_tactical_detail.html', datas)
 
 @login_required
-def profession_tactical(request):
+def profession_tactical(request, min=False):
     """list"""
 
-    datas = {}
-    team = UserManager().get_team_info(request)
-    tactical_details = match_operator.get_tactical_details(team.id)
-    tactical_mains = match_operator.get_tactical_mains(team.id)
+    if request.method == 'GET':
+        datas = {}
+        team = UserManager().get_team_info(request)
+        tactical_details = match_operator.get_tactical_details(team.id)
+        tactical_mains = match_operator.get_tactical_mains(team.id)
+        
+        datas['tactical_details'] = tactical_details
+        datas['sections'] = [i for i in range(1, 9)]
+        
+        for tactical_main in tactical_mains:
+            for i in range(1, 9):
+                tactical_main[i] = tactical_main['tactical_detail_%s_id' % i]
+                del tactical_main['tactical_detail_%s_id' % i]
+            datas['match_type_%s' % tactical_main['type']] = tactical_main
+
+        if min:
+            return render_to_response(request, 'match/profession_tactical_min.html', datas)
+        return render_to_response(request, 'match/profession_tactical.html', datas)
     
-    datas['tactical_details'] = tactical_details
-    datas['sections'] = [i for i in range(1, 9)]
-    
-    for tactical_main in tactical_mains:
+    else:
+        success = u'战术配置保存成功'
+        error = None
+
+        team = request.team
+        profession_tactical = {'type': 1, 'team_id': team.id}
+        cup_tactical = {'type': 2, 'team_id': team.id}
+        others_tactical = {'type': 3, 'team_id': team.id}
         for i in range(1, 9):
-            tactical_main[i] = tactical_main['tactical_detail_%s_id' % i]
-            del tactical_main['tactical_detail_%s_id' % i]
-        datas['match_type_%s' % tactical_main['type']] = tactical_main
-               
-    return render_to_response(request, 'match/profession_tactical.html', datas)
+            profession_tactical_detail_id = request.GET.get('profession%s' % i)
+            cup_tactical_detail_id = request.GET.get('cup%s' % i)
+            others_tactical_detail_id = request.GET.get('others%s' % i)
+            if not (profession_tactical_detail_id and cup_tactical_detail_id and others_tactical_detail_id):
+                error = '战术设置不完整'
+                break
+            profession_tactical['tactical_detail_%s_id' % i] = profession_tactical_detail_id
+            cup_tactical['tactical_detail_%s_id' % i] = cup_tactical_detail_id
+            others_tactical['tactical_detail_%s_id' % i] = others_tactical_detail_id
+         
+        i = 0
+        while i < 1 and not error:
+            i += 1
+            if not match_operator.save_tactical_main((profession_tactical, cup_tactical, others_tactical)):
+                error = '战术配置保存失败'
+                break
+          
+    return render_to_response(request, "message.html", {'error': error, 'success': success}) 
+        
 
 @login_required
 def profession_tactical_detail(request):
@@ -311,3 +349,63 @@ def profession_tactical_detail(request):
                 error = '战术更新失败'
         
         return render_to_response(request, "message.html", {'success': success, 'error': error})
+    
+@login_required
+def match_accept(request):
+    '''接受比赛'''
+    success =  u'比赛请求己接受'
+    error = None;
+        
+    team = None
+    user_name = None
+    if hasattr(request, 'team'):
+        team = request.team
+        if team:
+            user_info = UserInfo.load(username=team.username)
+            if user_info:
+                user_name = user_info.username
+    
+    match_id = request.GET.get('match_id')
+        
+    i = 1
+    while i > 0:
+        i -= 1
+        if not team or not user_name:
+            error = '登陆信息丢失,请重新登陆!'
+            break
+        
+        if not match_id:
+            error = '无法获取比赛信息'
+            break
+        
+        match = Matchs.load(id=match_id)
+        if not match or match.status != 0:
+            error = '比赛信息异常'
+            break
+        
+        match.status = MatchStatus.ACCP
+        
+        message = Message()
+        message.type = MessageType.SYSTEM_MSG
+        message.from_team_id = 0
+        message.to_team_id = match.guest_team_id
+        message.title = u'%s经理接收了你的%s约战请求' % (user_name, MatchTypeMaps.get(match.type))
+        message.content = u'%s经理接收了你的%s约战请求' % (user_name, MatchTypeMaps.get(match.type))
+        message.is_new = 1
+        
+        Message.transaction()
+        try:
+            match.persist()
+            message.persist()
+            Message.commit()
+        except:
+            error = u'服务器异常'
+            Message.rollback()
+            break
+        
+        if match.is_youth == 1:
+            url = ''
+        else:
+            url = reverse('friendly-match-min')
+        
+    return render_to_response(request, "message_update.html", {'success': success, 'error': error, 'url': url})

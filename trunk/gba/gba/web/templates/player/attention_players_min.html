@@ -1,0 +1,76 @@
+{% load common_extras %}
+<div class="lh30 mlr8"></div>
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+ <thead>
+  <tr>
+	<th>姓名</th>
+	<th>年龄</th>
+	<th>位置</th>
+	<th>体质</th>
+	<th>市场</th>
+	<th>综合</th>
+	<th>次数</th>
+	<th>买主</th>
+	<th>剩余出价时间</th>
+	<th class="end_cell">操作</th>
+ </tr>
+</thead>
+<tbody>
+{% for info in infos %}
+<tr>
+<td>
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=416&amp;id_zh_qiu_yuan=1366924&amp;id_qy_lei_xing=5" onclick="return show_popup(this)" title="">
+<font color="#0096f1">{{info.name}}</font></a></td>
+<td>{{info.age}}</td>
+<td>{{info.position}}</td>
+<td>{{ info.stature }}CM | {{ info.avoirdupois }}KG</td>
+<td>
+   {% ifequal info.type 1 %}
+       职
+   {% else %}
+       青
+   {% endifequal %}
+</td>
+<td><font color="#0096f1">{{info.ability|format_number}}</font></td>
+<td>{{ info.bid_count }}</td>
+<td>283366 
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42474" onclick="return show_popup(this);">
+<font color="#0096f1">懒人</font>
+</a>
+</td>
+<td><div id="time_1">{{ info.lave_time|format_lave_time }}</div>
+<input id="value_1" value="85678" type="hidden"></td>
+<td>
+ {% ifless info.lave_time 0 %}
+     {% ifequal info.auction_status 1 %}
+       <a>成交详情</a>
+     {% else %}
+          {% ifequal info.auction_status 2 %}
+            未成交
+          {% else %}
+            结算中
+          {% endifequal %}
+     {% endifequal %}
+ {% else %}
+     {% ifequal info.type 1%}
+        <a href="{% url free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
+           <font color="#0096f1">出价</font>
+        </a>
+     {% else %}
+         <a href="{% url free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
+           <font color="#0096f1">出价</font>
+        </a>
+     {% endifequal %}
+     <a href="{% url remove-attention-player %}?no={{info.no}}" onclick="return show_popup(this)">
+        <font color="#0096f1">取消</font>
+     </a>
+ {% endifless %}
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div></div>
+<div class="blank10"></div>
+<div class="blank10"></div>
+<font color="brown"><div align="center">可利用资金：{{team.funds}}</div></font>

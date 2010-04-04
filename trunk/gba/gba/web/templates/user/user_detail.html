@@ -1,0 +1,280 @@
+{% load common_extras %}
+<div class="floatBox_content">
+		<span class="left border_black mr10"><img id=imgClothes height=55 src="../upload/jlb/23/5913.gif" width=55></span>
+		<div class="blank10"></div>
+		<p class="lh21">
+		<table border="0">
+			<tr>
+			  <td colspan=2><font color="#616161">俱乐部名：</font><span class="blue">{{show_team.name}}</span></td>
+		    </tr>
+			</tr>
+				<td colspan=2><font color="#616161">经理名称：</font><span class="blue">{{show_team.id|nickname}}</span></td>
+			</tr>
+			<tr>
+			  <td><font color="#616161">综合实力：</font><span class="blue">108.38</span></td>
+			  <td><font color="#616161">实力排名：</font><span class="blue">18</span></td>
+			</tr>
+			<tr>
+			  <td><font color="#616161">最后登录：</font><span class="blue">04-04</span></td>
+			  <td>　<a href="n.php?a=471&jiao_se_ming_cheng=%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E4%BA%BA" onclick="return href_to_div(this,'popup_inner')"><font color="#0096f1">加为好友</font></a></td>
+			 </tr>
+		</table>	
+		</p>
+		<div class="clear"></div>
+		<div class="blank10"></div>
+		<div class="players_lab players_lab_1">
+			<dl>
+			<dd id="wz2_1" onclick="show_s_table(2,1,5)" class="active" >职业</dd>
+			<dd id="wz2_2" onclick="show_s_table(2,2,5)">业余</dd>
+			<dd id="wz2_3" onclick="show_s_table(2,3,5)">荣誉</dd>
+			<dd id="wz2_4" onclick="show_s_table(2,4,5)">短信</dd>
+			<dd id="wz2_5" onclick="show_s_table(2,5,5)">约战</dd>
+			</dl>
+		</div><div class="clear"></div>
+<div id="tab2_1">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="list_table">
+<tr>
+<th>&nbsp;&nbsp;</th>
+<th>姓名</th>
+<th>位置</th>
+<th class="end_cell">综合</th>
+</tr>
+{% for player in pro_players %}
+<tr >
+<td>
+<img src="/site_media/images/qiu_yuan/{{player.player_no}}.gif"></td>
+<td>
+<span class='blue'>
+<a href='{% url player-detail %}?no={{player.no}}&type=2&from_page=user-detail&from_id={{show_team.id}}' onclick='return href_to_div(this,"popup_inner")'>
+{{player.name}}
+</a>
+</span></td>
+<td>{{player.position}}</td>
+<td><font color='#FF8000'>{{player.ability|format_number}}</font></td>
+</tr>
+{% endfor %}
+</table>   <!--业余队球员列表  -->
+</div>
+<div id="tab2_2" style="display:none">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%" class="list_table">
+<tr>
+<th  >&nbsp;&nbsp;</th>
+<th  >姓名</th>
+<th  >位置</th>
+<th  class="end_cell"  >综合</th>
+</tr>
+{% for player in youth_players %}
+<tr>
+<td><img src="/site_media/images/qiu_yuan/{{player.player_no}}.gif"></td>
+<td>
+<span class='blue'>
+<a href='{% url player-detail %}?no={{player.no}}&type=3&from_page=user-detail&from_id={{show_team.id}}' onclick='return href_to_div(this,"popup_inner")'>{{player.name}}</a>
+</span>
+</td>
+<td>{{player.position}}</td>
+<td><font color='#666666'>{{player.ability|format_number}}</font></td>
+</tr>
+{% endfor %}
+</table> 
+</div>
+<div id="tab2_3" style="display:none">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="list_table">
+<tr>
+<th  >奖杯</th>
+<th  >荣誉</th>
+<th  class="end_cell"  >获得时间</th>
+</tr>
+<tr >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+<td><div align='center'>世界新人杯</div></td>
+<td>2009-10-28 22:59:09</td>
+</tr>
+<tr  class="td_bgcolor_blue1" >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+
+<td><div align='center'>亚洲杯</div></td>
+<td>2009-11-07 18:31:25</td>
+</tr>
+<tr >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+<td><div align='center'>新手杯</div></td>
+<td>2009-11-07 21:51:11</td>
+</tr>
+<tr  class="td_bgcolor_blue1" >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+<td><div align='center'>圣诞大战</div></td>
+<td>2009-12-25 11:15:37</td>
+</tr>
+<tr >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+<td><div align='center'>NBA冠军赛</div></td>
+<td>2009-11-15 21:12:38</td>
+</tr>
+<tr  class="td_bgcolor_blue1" >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+<td><div align='center'>爱国者</div></td>
+<td>2009-11-19 17:59:09</td>
+</tr>
+<tr >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+
+<td><div align='center'>菜鸟杯</div></td>
+<td>2009-11-21 18:53:13</td>
+</tr>
+<tr  class="td_bgcolor_blue1" >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+<td><div align='center'>联合杯</div></td>
+<td>2009-12-05 11:35:12</td>
+</tr>
+<tr >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+<td><div align='center'>国金杯</div></td>
+<td>2009-12-09 12:48:09</td>
+
+</tr>
+<tr  class="td_bgcolor_blue1" >
+<td><div align='center'><img src='/site_media/images/bei_sai/1.gif'></div></td>
+<td><div align='center'>阿迪达斯杯</div></td>
+<td>2009-12-09 12:49:10</td>
+</tr>
+</table>   <!--荣誉列表  -->
+		</div>
+		
+			<div id="tab2_4" style="display:none">
+			<script language="javascript">
+			check_xx = function(myform)
+			{
+				var temp = true;
+				var type_1  ="LENGTH";
+				var ids_1   = new Array("nei_rong");
+				var msgs_1  = new Array("短信内容长度不能超过100个字符！");
+				var other_1 = new Array("100");
+				if(!checkPublic(type_1,ids_1,msgs_1,other_1))
+					return  false;
+
+				var ids   = new Array("nei_rong");
+				var msgs  = new Array("短信内容不能为空！");
+				var types = new Array("STRING");
+				if(!checkSubmit(ids,msgs,types))
+					return  false;
+				//内容过滤
+				if(is_political_words($("nei_rong").value)||is_dirty_words($("nei_rong").value))
+				{
+					alert("短信内容不合法！");
+					return false;
+				}
+				return submit_to_div(myform,"popup_inner");
+			}
+			</script>
+
+			<form name="duan_xin_form" id="duan_xin_form" action="n.php?a=191" method="post" onsubmit="return check_xx(this);">
+			  <div class="blank20"></div>
+					<dl><dd>
+						<span class="floatBox_msg_l">经理名称：</span>
+						<span class="floatBox_msg_r">
+							<input type="text" name="ming_cheng" id="ming_cheng" value="不知道的人" readonly>
+						    <input type="hidden" name="id_jiao_se_shou" id="id_jiao_se_shou" value="5913">
+						</span>
+
+					</dd></dl>
+					<div class="clear"></div>
+					<div class="blank10"></div>
+					<dl><dd>
+						<div class="floatBox_msg_l lh21">短信内容：</div>
+						<div class="floatBox_msg_r">
+							<textarea name="nei_rong" id="nei_rong" cols="30" rows="10" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" style="width:190px; height:146px"></textarea>
+							
+						</div><div class="clear"></div>
+
+					</dd></dl>
+	
+					<div class="blank10"></div>
+					<dl><dd>
+						<span class="floatBox_msg_l lh21">&nbsp;</span>
+						<span class="floatBox_msg_r floatBox_msg_btn">
+							<div class="btn_3 mauto"><input type="submit" name="liu_yan" value="确定" class="btn_3" style="CURSOR: pointer"/></div>
+						</span>
+					</dd></dl>
+					<div class="clear"></div>
+
+        	</form>
+			</div>
+					    <!--短信  -->
+		
+			<div id="tab2_5" style="display:none">
+			<script language="javascript">
+				dui_wu_onclick=function(dui_wu)
+				{
+					//alert(dui_wu);
+					$("dui_wu").value = dui_wu;
+				}
+				check_yz = function(myform)
+				{
+					var temp = true;
+					var type_1  ="LENGTH";
+					var ids_1   = new Array("yz_nei_rong");
+					var msgs_1  = new Array("附言内容长度不能超过20个字符！");
+					var other_1 = new Array("20");
+					if(!checkPublic(type_1,ids_1,msgs_1,other_1))
+						return  false;
+					//内容过滤
+					if(is_political_words($("yz_nei_rong").value)||is_dirty_words($("yz_nei_rong").value))
+					{
+						alert("附言内容不合法！");
+						return false;
+					}
+					return submit_to_div(myform,"popup_inner");
+				}
+			</script>
+			<form name="yue_zhan_form" id="yue_zhan_form" action="n.php?a=118" method="post" onsubmit="return check_yz(this);">
+		      <div class="blank20"></div>
+					<dl><dd>
+
+						<span class="floatBox_msg_l">&nbsp;</span>
+						<!--span class="floatBox_msg_r"><input type="radio" name="yz_dui_wu" id="yz_dui_wu" value="1" checked="checked" onclick="dui_wu_onclick('1');"> 职业队　 <input type="radio" name="yz_dui_wu" id="yz_dui_wu" value="2" onclick="dui_wu_onclick('2');">业余队<input type="hidden" name="dui_wu" id="dui_wu" value="1"></span-->
+					</dd></dl>
+					<div class="clear"></div>
+					<div class="blank10"></div>
+					<dl><dd>
+						<span class="floatBox_msg_l lh21">经理名称：</span>
+						<span class="floatBox_msg_r">
+
+							<div class="left">
+							<input type="hidden" name="id_jiao_se_shou" id="id_jiao_se_shou" value="5913">
+							<input type="text" name="ming_cheng" id="ming_cheng" value="不知道的人" readonly style="width:90px" /></div>
+						  <div class="right">
+							<select name="bi_sai_lei_xing" id="bi_sai_lei_xing">
+									<option value="2">友谊赛</option>
+									<option value="1">训练赛</option>
+						     </select>
+
+						  </div>
+						</span>
+					</dd></dl>
+					<div class="clear"></div>
+					<div class="blank10"></div>
+					<dl><dd>
+						<div class="floatBox_msg_l lh21">附言：</div>
+						<div class="floatBox_msg_r">
+
+							<textarea name="yz_nei_rong" id="yz_nei_rong" cols="25" rows="5" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" style="width:190px; height:146px"></textarea>
+							
+						</div><div class="clear"></div>
+					</dd></dl>
+	
+					<div class="blank10"></div>
+					<dl><dd>
+						<span class="floatBox_msg_l lh21">&nbsp;</span>
+						<span class="floatBox_msg_r floatBox_msg_btn">
+							<div class="btn_3 mauto"><input type="submit" name="yue_zhan" value="发送约战" class="btn_4" style="CURSOR: pointer"/></div>
+
+						</span>
+					</dd></dl>
+					<div class="clear"></div>
+					<input type="hidden" name="dui_wu" id="dui_wu" value="1">
+	          </form>
+			  </div>
+					    <!--约战  -->
+		<div class="blank20"></div>
+		<!--div class="btn_3 mauto"><input type="button" name="fan_hui" onclick="return show_popup('floatBox');" value="返回" class="btn_5" style="CURSOR: pointer"/></div>-->
+</div>

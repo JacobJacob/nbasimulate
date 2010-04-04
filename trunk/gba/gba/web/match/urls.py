@@ -13,4 +13,6 @@ urlpatterns = patterns('web.match',
     url(r'^8906/$', 'views.training_center', name='training-center'),
     url(r'^8907/$', 'views.youth_tactical', name='youth-tactical'),
     url(r'^8908/$', 'views.youth_tactical_detail', name='youth-tactical-detail'),
+    url(r'^8909/$', 'views.match_accept', name='match-accept'),
+    url(r'^8910$', 'views.profession_tactical', {'min': True}, name='profession-tactical-min'),
 )

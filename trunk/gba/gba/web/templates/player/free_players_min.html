@@ -1,0 +1,93 @@
+{% load common_extras %}
+<script language="javascript" src="i4.php_files/zhuan_hui.js"></script>
+<div class="lh30 mlr8">
+<a href="{% url free-players-min %}?position=c" onclick='return href_to_div(this,"main_content")'>中锋 C</a>
+| 
+<a href="{% url free-players-min %}?position=pf" onclick='return href_to_div(this,"main_content")'>大前 PF</a>
+| 
+<a href="{% url free-players-min %}?position=sf" onclick='return href_to_div(this,"main_content")'>小前 SF</a>
+| 
+<a href="{% url free-players-min %}?position=sg" onclick='return href_to_div(this,"main_content")'>分卫 SG</a>
+| 
+<a href="{% url free-players-min %}?position=pg" onclick='return href_to_div(this,"main_content")'>控卫 PG</a>
+</div>
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+ <th>姓名</th>
+ <th>
+  <a href="{% url free-players-min %}?position={{ position }}&order_by=age&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
+  <font color="#0096f1">年龄</font></a></th>
+  <th>位置</th>
+  <th><a href="{% url free-players-min %}?position={{ position }}&order_by=stature&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
+  <font color="#0096f1">身高</font></a></th>
+  <th><a href="{% url free-players-min %}?position={{ position }}&order_by=avoirdupois&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
+  <font color="#0096f1">体重</font></a></th>
+  <th><a href="http://s3.dlm.17uxi.cn/source/n.php?a=460&amp;id_qy_lei_xing=5&amp;lei_xing_id=1&amp;pai_xu=zh" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
+  <font color="#0096f1">综合</font></a></th>
+  <th>次数</th>
+  <th>买主</th>
+  <th><a href="http://s3.dlm.17uxi.cn/source/n.php?a=460&amp;id_qy_lei_xing=5&amp;lei_xing_id=1&amp;pai_xu=sj_jie_zhi" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
+  <font color="#0096f1">剩余出价时间</font></a></th>
+  <th class="end_cell">操作</th>
+</tr>
+{% for info in infos %}
+<tr>
+<td><a href="{% url free-player-detail %}?no={{info.no}}" onclick="return show_popup(this)" title="{{info.name}}">
+ <font color="#0096f1">{{ info.name }}</font></a>
+</td>
+ <td>{{ info.age }}</td>
+ <td>{{ info.position }}</td>
+ <td>{{ info.stature}}</td>
+ <td>{{ info.avoirdupois }}</td>
+ <td><font color="#ff8000">{{ info.ability|format_number}}</font></td>
+ <td>{{ info.bid_count }}</td>
+ <td>
+   {{ info.current_price }}/
+   {% if info.current_team_id %}
+       <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=17570" onclick="return show_popup(this);">
+       <font color="#0096f1">{{ info.current_team_id|team_username}}</font>
+       </a>
+   {% else %}
+      --
+   {% endif %} 
+ </td>
+  <td><div id="time_1">{{ info.lave_time|format_lave_time }}</div>
+	<input id="value_1" value="2548" type="hidden"></td>
+  <td>
+  {% ifless info.lave_time 0 %}
+     {% ifequal info.auction_status 1 %}
+       <a>成交详情</a>
+     {% else %}
+          {% ifequal info.auction_status 2 %}
+            未成交
+          {% else %}
+            结算中
+          {% endifequal %}
+     {% endifequal %}
+  {% else %}
+  <a href="{% url free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
+    <font color="#0096f1">出价</font>
+  </a>
+  |
+  <a href="{% url add-attention-player %}?no={{info.no}}&type=1" onclick="return show_popup(this)">
+   <font color="#0096f1">关注</font>
+  </a>
+  {% endifless %}
+ </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="blank10"></div><div class="mlr8 tr">&nbsp;首页
+ &lt;上一页&nbsp;
+ <a href="http://s3.dlm.17uxi.cn/source/n.php?a=460&amp;p=2" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>&nbsp;
+ <a href="http://s3.dlm.17uxi.cn/source/n.php?a=460&amp;p=5" onclick="return
+ href_to_div(this,'main_content');">末页</a>&nbsp;[第1/5页]&nbsp;第 
+ <input name="page" id="page" value="1" size="1" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" type="text"> 页 
+ <input class="btn_2" value="GO" onclick="return href_to_div('n.php?a=460&amp;p='+document.getElementById('page').value,'main_content');" type="button">&nbsp;
+ </div>
+<div></div>
+<div class="blank10"></div>
+<div class="blank10"></div>
+<font color="brown"><div align="center">可利用资金：600906</div></font

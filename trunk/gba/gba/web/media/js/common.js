@@ -42,7 +42,7 @@ function href_to_div_new(myhref,div_id)
 	myhref+="";		//不管传递进来的是href的this，还是一个字符串，都可以正常使用这个功能了。
 	document.getElementById(div_id).innerHTML='<div class="loading"><img src="'+loadingImg.src+'"></div>';
 	var myAjax = new Ajax.Updater(div_id,myhref, {evalScripts:true});
-	show_popup('floatBox');
+	hide_popup('floatBox');
 	return false;
 }
 

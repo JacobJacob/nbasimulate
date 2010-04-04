@@ -1,0 +1,40 @@
+{% load common_extras %}
+<script language="javascript" src="i5.php_files/xiao_xi.js"></script>
+<form name="frm" id="frm" action="n.php?a=207&amp;id=select&amp;type=shou" method="post">
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+  <tr>
+   <th>标题</th>
+   <th>发件人</th>
+   <th>发送时间</th>
+   <th class="end_cell">操作</th>
+ </tr>
+{% for info in infos %}
+<tr>
+ <td>
+ <a href="http://s3.dlm.17uxi.cn/source/n.php?a=205&amp;id_xiao_xi=3856961&amp;yi_du=&amp;type=shou" onclick='return href_to_div(this,"main_content")'>
+ <font color="#0096f1">{{info.title}}</font>
+ </a>
+</td>
+<td>
+  <font color="red">{{ info.from_team_id|nickname }}</font>
+</td>
+<td>{{info.created_time}}</td>
+<td><input id="3856961" name="ch[]" value="sh3856961" type="checkbox"></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">&nbsp;首页
+ &lt;上一页&nbsp;下一页&gt; 末页&nbsp;[第1/1页]&nbsp;第 
+ <input name="page" id="page" value="1" size="1" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" type="text"> 页 
+ <input class="btn_2" value="GO" onclick="return href_to_div('n.php?a=201&amp;p='+document.getElementById('page').value,'main_content');" type="button">&nbsp;
+ </div><div class="blank10"></div><div align="right">
+<a href="#" onclick="return checkdel()"><font color="red">删除选中</font></a>|
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=207&amp;id=all&amp;type=shou" onclick="return shan_chu(this)">
+<font color="red">全部删除</font>
+</a>
+</div>
+<div class="blank20"></div>
+</form>
