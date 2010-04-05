@@ -4,7 +4,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.dt.bottle.logger.Logger;
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.constants.DefendTactical;
@@ -13,14 +12,16 @@ import com.ts.dt.constants.OffensiveTactical;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.TacticalDao;
+import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TacticalDaoImpl;
-import com.ts.dt.match.test.TestDataFactory;
-import com.ts.dt.po.MatchNodosityTacticalDetail;
 import com.ts.dt.po.MatchNodosityMain;
+import com.ts.dt.po.MatchNodosityTacticalDetail;
+import com.ts.dt.po.Matchs;
 import com.ts.dt.po.TeamTactical;
 import com.ts.dt.po.TeamTacticalDetail;
 import com.ts.dt.util.DebugUtil;
+import com.ts.dt.util.Logger;
 
 public class Nodosity {
 
@@ -74,7 +75,7 @@ public class Nodosity {
 
 		long currentContinueTime = (Long) context.get(MatchConstant.CURRT_CONT_TIME);
 
-		Logger.logger("%%%%%%%%%%%%%%The " + nodosityNo + "Start.....");
+		Logger.info("%%%%%%%%%%%%%%The " + nodosityNo + "Start.....");
 
 		while (currentContinueTime < PER_NODOSITY_TIME) {
 
@@ -92,7 +93,7 @@ public class Nodosity {
 			currentContinueTime = (Long) context.get(MatchConstant.CURRT_CONT_TIME);
 
 		}
-		Logger.logger("%%%%%%%%%%%%%%The " + nodosityNo + "End.....");
+		Logger.info("%%%%%%%%%%%%%%The " + nodosityNo + "End.....");
 		apoint = (Integer) context.get(MatchConstant.POINT_TEAM_A);
 		bpoint = (Integer) context.get(MatchConstant.POINT_TEAM_B);
 
@@ -125,6 +126,12 @@ public class Nodosity {
 
 		Map<String, Controller> map = context.getControllers();
 
+		Matchs match = new MatchDaoImpl().load(context.getMatchId());
+		if (context.getSeq() > 0) {
+			match.setSubStatus(context.getSeq());
+		}
+		match.setPoint(context.currentScore());
+
 		Iterator<String> iterator = map.keySet().iterator();
 		while (iterator.hasNext()) {
 
@@ -138,6 +145,7 @@ public class Nodosity {
 			main.addDetail(detail);
 		}
 		main.save();
+		match.save();
 		session.endTransaction();
 	}
 
@@ -152,8 +160,11 @@ public class Nodosity {
 		homeTeamTactical = tacticsDao.loadTeamTactical(context.getHomeTeamId(), context.getMatchType());
 		visitingTeamTactical = tacticsDao.loadTeamTactical(context.getVisitingTeamId(), context.getMatchType());
 
-		if (homeTeamTactical == null || visitingTeamTactical == null) {
-			System.out.println("ERROR");
+		if (homeTeamTactical == null) {
+			Logger.logToDb("error", "tactical not exist team id:" + context.getHomeTeamId());
+		}
+		if (visitingTeamTactical == null) {
+			Logger.logToDb("error", "tactical not exist team id:" + context.getVisitingTeamId());
 		}
 
 		long homeTeamPoint = context.getInt(MatchConstant.POINT_TEAM_A);

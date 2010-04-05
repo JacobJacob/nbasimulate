@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
+import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.dao.MatchReqDao;
 import com.ts.dt.dao.impl.MatchReqDaoImpl;
 import com.ts.dt.po.Matchs;
@@ -28,7 +29,8 @@ public class MatchReqMonitor extends Thread {
 			}
 			while (iterator.hasNext()) {
 				Matchs req = iterator.next();
-				req.setStatus(1);
+				req.setPoint("[0:0]");
+				req.setStatus(MatchStatus.START);
 				Session session = BottleUtil.currentSession();
 				session.beginTransaction();
 				req.save();

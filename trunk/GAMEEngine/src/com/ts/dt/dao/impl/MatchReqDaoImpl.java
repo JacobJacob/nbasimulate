@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
+import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.dao.MatchReqDao;
 import com.ts.dt.po.Matchs;
 
 public class MatchReqDaoImpl implements MatchReqDao {
 
 	private static final String QUERY_NEW_REQ_SQL = "select * from matchs where status = ?";
-	private static final Object[] QUERY_NEW_REQ_PARM = new Object[] { 0 };
+	private static final Object[] QUERY_NEW_REQ_PARM = new Object[] { MatchStatus.ACCP };
 
 	@SuppressWarnings("unchecked")
 	public List<Matchs> getAllNewReq() {

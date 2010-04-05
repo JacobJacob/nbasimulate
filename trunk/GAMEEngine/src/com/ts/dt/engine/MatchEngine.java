@@ -1,7 +1,9 @@
 package com.ts.dt.engine;
 
+import com.ts.dt.po.Matchs;
+
 public interface MatchEngine {
 
-	public long execute(long matchid);
+	public Matchs execute(long matchid);
 
 }

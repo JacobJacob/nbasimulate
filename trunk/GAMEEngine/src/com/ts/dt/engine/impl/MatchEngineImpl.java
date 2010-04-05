@@ -7,6 +7,7 @@ import java.util.List;
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.constants.MatchConstant;
+import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.MatchDao;
 import com.ts.dt.dao.impl.MatchDaoImpl;
@@ -21,10 +22,10 @@ import com.ts.dt.util.Logger;
 
 /*
  * 比赛引擎,实现比赛引擎接口
- */ 
+ */
 public class MatchEngineImpl implements MatchEngine {
 
-	public long execute(long matchid) {
+	public Matchs execute(long matchid) {
 
 		MatchContext context = new MatchContext();
 
@@ -65,6 +66,7 @@ public class MatchEngineImpl implements MatchEngine {
 		context.saveStatToDB();
 
 		match.setPoint(context.currentScore());
+		match.setStatus(MatchStatus.FINISH);
 		matchDao.save(match);
 
 		// TestDataFactory.saveTestDateToDB();
@@ -72,7 +74,7 @@ public class MatchEngineImpl implements MatchEngine {
 		// 保存未上场球员统计
 		this.saveNotInPlayer(context, matchid);
 
-		return match.getId();
+		return match;
 
 	}
 

@@ -10,6 +10,7 @@ public class Matchs extends Persistence {
 	private long homeTeamId;
 	private long guestTeamId;
 	private int status;
+	private int subStatus;
 	private Date startTime;
 	private String point;
 	private int type;
@@ -62,4 +63,12 @@ public class Matchs extends Persistence {
 		this.type = type;
 	}
 
+	public int getSubStatus() {
+		return subStatus;
+	}
+
+	public void setSubStatus(int subStatus) {
+		this.subStatus = subStatus;
+	}
+    
 }
