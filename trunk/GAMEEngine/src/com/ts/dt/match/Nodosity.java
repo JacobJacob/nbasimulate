@@ -22,6 +22,7 @@ import com.ts.dt.po.TeamTactical;
 import com.ts.dt.po.TeamTacticalDetail;
 import com.ts.dt.util.DebugUtil;
 import com.ts.dt.util.Logger;
+import com.ts.dt.util.TacticalUtil;
 
 public class Nodosity {
 
@@ -157,8 +158,11 @@ public class Nodosity {
 		TacticalDao tacticsDao = new TacticalDaoImpl();
 		ProfessionPlayerDao playerDao = new ProfessionPlayerDaoImpl();
 
-		homeTeamTactical = tacticsDao.loadTeamTactical(context.getHomeTeamId(), context.getMatchType());
-		visitingTeamTactical = tacticsDao.loadTeamTactical(context.getVisitingTeamId(), context.getMatchType());
+		int matchType = context.getMatchType();
+		int tacticalType = TacticalUtil.matchType2Tactical(matchType);
+
+		homeTeamTactical = tacticsDao.loadTeamTactical(context.getHomeTeamId(), tacticalType);
+		visitingTeamTactical = tacticsDao.loadTeamTactical(context.getVisitingTeamId(), tacticalType);
 
 		if (homeTeamTactical == null) {
 			Logger.logToDb("error", "tactical not exist team id:" + context.getHomeTeamId());
