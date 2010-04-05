@@ -33,7 +33,6 @@ public class Session {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void save(Persistence persist) throws SessionException {
 
 		long id = 0;
@@ -181,7 +180,7 @@ public class Session {
 
 		String sql = SqlHelper.getLoaderSql(persistence, condition);
 		Object[] parm = {};
-
+		Logger.logger(sql);
 		try {
 			ResultSet resultSet = conn.executeQuery(sql, parm);
 			if (!resultSet.next()) {
