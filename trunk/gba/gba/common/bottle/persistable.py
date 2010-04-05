@@ -147,7 +147,42 @@ class Persistable(object):
             if need_close:
                 cursor.close()
         info('finish save object....[table:%s]' % self._table)
-        
+    
+    @classmethod
+    def inserts(cls, objects):
+        '''insert objects'''
+        cls._init_meta()
+        info('start to save objects....[table:%s]' % cls._table)
+        update_skip_columns = ['id', 'created_time', 'updated_time']
+        meta = Persistable._meta_cache[cls._table]
+        columns = meta.columns
+        datas = []
+        for object in objects:
+            data = {}
+            cache_key = object.build_cache_key(object)
+            if cache_key:
+                cls._cache.delete(cache_key)
+            for column in columns:
+                field_name = column.field     
+                if hasattr(object, field_name):
+                    data[field_name] = getattr(object, field_name)
+                elif field_name == 'created_time':
+                    data['created_time'] = ReserveLiteral('now()')
+            datas.append(data)
+            
+        need_close = False
+        if not cls._transaction:
+            cursor = connection.cursor()
+            need_close = True
+        else:
+            cursor = cls._cursor            
+        try:
+            cursor.insert(datas, cls._table, True, update_skip_columns)
+        finally:
+            if need_close:
+                cursor.close()
+        info('finish save objects....[table:%s]' % cls._table)
+    
     @classmethod
     def query(cls, **args):
         '''query objects'''

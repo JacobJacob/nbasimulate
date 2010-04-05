@@ -182,3 +182,20 @@ def league_rank(team_id):
     if league_team:
         return league_team.rank
     return ''
+
+@register.filter
+def league_team_to_name(league_team_id):
+    '''根据联赛里坑位id,获取实际的球队名'''
+    if league_team_id  == -1:
+        return u'轮空'
+    
+    league_team = LeagueTeams.load(id=league_team_id)
+    if not league_team:
+        return '该经理不存在'
+    
+    team = Team.load(id=league_team.team_id)
+    if team:
+        return team.name
+    return ''
+    
+    

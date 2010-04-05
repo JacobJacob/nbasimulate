@@ -54,8 +54,8 @@ class DailyLeagueUpdate(BaseBetchClient):
                         
                         match = Matchs()
                         match.type = MatchTypes.LEAGUE
-                        match.home_team_id = home_team.id
-                        match.guest_team_id = guest_team.id
+                        match.home_team_id = home_team.team_id
+                        match.guest_team_id = guest_team.team_id
                         match.status = 1
                         match.persist()
                         

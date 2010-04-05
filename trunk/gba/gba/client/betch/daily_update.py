@@ -23,7 +23,7 @@ class DailyUpdate(BaseBetchClient):
     def _sys_update(self):
         '''轮次更新'''
         league_config = LeagueConfig.query(limit=1)[0]
-        league_config.season += 1
+        league_config.round += 1
         league_config.persist()
             
     def _youth_player_update(self):

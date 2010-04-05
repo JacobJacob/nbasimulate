@@ -2,12 +2,10 @@
 # -*- coding: utf-8 -*-
 """"""
 
+from gba.business.user_roles import login_required
+from gba.entity import League, LeagueTeams, LeagueMatchs
 from gba.web.render import render_to_response
-from gba.business.user_roles import login_required, UserManager
-from gba.business import player_operator, match_operator
 
-from gba.entity import League, LeagueTeams
-from gba.common.constants import MatchTypes
 
 @login_required
 def league_rank(request, min=False):
@@ -24,6 +22,14 @@ def league_rank(request, min=False):
         return render_to_response(request, 'league/league_rank_min.html', datas)
     return render_to_response(request, 'league/league_rank.html', datas)
 
+
+@login_required
+def league_schedule(request):
+    """联赛赛程"""
+    league_team = LeagueTeams.load(team_id=request.team.id)
+    league_matchs = LeagueMatchs.query(condition='match_team_home_id=%s or match_team_guest_id=%s' % (league_team.id, league_team.id), order='round asc ')
+    datas = {'infos': league_matchs}
+    return render_to_response(request, 'league/league_schedule.html', datas)
 
 
     

@@ -1,0 +1,33 @@
+{% load common_extras %}
+<table class="list_table" width="100%"
+ border="0" cellpadding="0" cellspacing="0">
+<tbody><tr>
+<th>轮次</th>
+<th>主队</th>
+<th colspan="2">比分</th>
+<th>客队</th>
+<th class="end_cell">战术/战报/统计</th>
+</tr>
+{% for info in infos %}
+<tr>
+<td>{{info.round}}</td>
+<td>
+  <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=7435" onclick="return show_popup(this);">
+  <font color="#0096f1">{{info.match_team_home_id|league_team_to_name}}</font>
+  </a>
+</td>
+<td>113</td>
+<td>65</td>
+<td>
+ <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this);">
+ <font color="#0096f1">{{info.match_team_guest_id|league_team_to_name}}</font>
+</a>
+</td>
+<td>
+ <a href="http://s3.dlm.17uxi.cn/source/i.php?a=504&amp;zbid=3764919" target="_blank">战报</a> | 
+ <a href="http://s3.dlm.17uxi.cn/source/i.php?a=505&amp;zbid=3764919" target="_blank">统计</a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
