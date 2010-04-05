@@ -3,10 +3,10 @@
 
 from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
-from gba.common.constants import MatchStatus, MatchTypes, TacticalGroupTypeMap, TacticalSectionTypeMap
+from gba.common.constants import MatchStatus, TacticalGroupTypeMap
 from gba.common import log_execption
 from gba.common import playerutil
-from gba.entity import Team, ProfessionPlayer, League, LeagueTeams, YouthPlayer
+from gba.entity import Team, ProfessionPlayer, League, LeagueTeams
 from gba.business import player_operator
 
 #_SELECT_MATCH = 'select * from matchs where %s order by id desc limit %s, %s'
@@ -206,10 +206,14 @@ def save_tactical_main(infos):
 
 def assign_league():
     '''分配联赛'''
-    leagues = League.query(condition='degree>=11 and team_count<14', order='id asc', limit=1)
+    leagues = League.query(condition='degree>=10 and team_count<14', order='id asc', limit=1)
     if leagues:
         league = leagues[0]
         league.team_count += 1
+        if league.status == 0 and league.team_count > 2:
+            league.status = 1 # 1表示有球队了
+        elif league.status == 1 and league.team_count == 14:
+            league.status = 2 # 2表示整个联赛己经满了
         league.persist()
         return league
     return None 
@@ -231,9 +235,11 @@ def init_team(team_info):
         team.profession_league_evel = league.degree
         team.persist()
         
-        league_team = LeagueTeams()
-        league_team.league_id = league.id
+        league_team = LeagueTeams.load(league_id=league.id, status=0, team_id=-1)
+        if not league_team:
+            raise 'league team is not exit'
         league_team.team_id = team.id
+        league_team.status = 1 #状态改为了，表示有人了
         league_team.persist()
         
         for location in locations:

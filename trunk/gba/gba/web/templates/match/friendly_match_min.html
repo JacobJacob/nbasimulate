@@ -25,7 +25,7 @@
     </td>
     <td>
      <span class="blue">
-     <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this);">{{ info.home_team_id|team_name }}</a>
+     <a href="{% url user-detail %}?id={{info.home_team_id}}" onclick="return show_popup(this);">{{ info.home_team_id|team_name }}</a>
      </span>
     </td>
     <td>
@@ -33,7 +33,7 @@
     </td>
     <td>
      <span class="blue">
-     <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=41007" onclick="return show_popup(this);">{{ info.guest_team_id|team_name }}</a>
+     <a href="{% url user-detail %}?id={{info.guest_team_id}}" onclick="return show_popup(this);">{{ info.guest_team_id|team_name }}</a>
      </span>
     </td>
     <td>友谊赛</td>

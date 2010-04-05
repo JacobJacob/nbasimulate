@@ -34,10 +34,12 @@ class MatchTypes(ConstantBase):
     TRAINING = 2  #
     YOUTH_TRAINING = 3 #青年训练赛
     YOUTH_FRIENDLY = 4
+    LEAGUE = 5 #职业联赛
     
 MatchTypeMaps = {
     MatchTypes.FRIENDLY: u'职业友谊 ',  
     MatchTypes.TRAINING: u'职业训练 ',
     MatchTypes.YOUTH_FRIENDLY: u'街头友谊 ',
-    MatchTypes.YOUTH_TRAINING: u'街头训练 ',             
+    MatchTypes.YOUTH_TRAINING: u'街头训练 ',
+    MatchTypes.LEAGUE: u'职业联赛',             
 }

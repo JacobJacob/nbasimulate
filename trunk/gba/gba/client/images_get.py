@@ -6,7 +6,7 @@ def main():
     
     save_dir = 'E:\workspace\gba\gba\web\media\images\%s'
     
-    name = 'tou_xiang/C.gif'
+    name = 'bifen.gif'
     
     url = 'http://s3.dlm.17uxi.cn/source/images/%s' % name
 
@@ -27,12 +27,12 @@ def main():
         
 def main2():
     
-    save_dir = 'E:\workspace\gba\gba\web\media\images\zhan_shu\%s.gif'
+    save_dir = 'E:\workspace\gba\gba\web\media\images\\num\%s.gif'
     
     
     for i in range(101):
-    
-        url = "http://s3.dlm.17uxi.cn/source/images/zhan_shu/%s.gif" % i
+        i += 1 
+        url = "http://s3.dlm.17uxi.cn/source/images/num/%s.gif" % i
         print url
         #url = 'http://s3.dlm.17uxi.cn/source/images/%s' % name
     
@@ -41,7 +41,7 @@ def main2():
         
         response = opener.open(request)
         
-        print url
+        print save_dir % i
         
         f = open(save_dir % i, 'wb')
         try:
@@ -54,4 +54,4 @@ def main2():
             f.close()
                 
 if __name__ == '__main__':
-    main()
+    main2()

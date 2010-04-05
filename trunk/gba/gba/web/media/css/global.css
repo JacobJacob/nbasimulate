@@ -48,6 +48,7 @@ a:hover {text-decoration:underline}
 .gray,.gray a  { color:#707070}
 .red,.red a { color:#f00;}					/* 标准红醒目提示文字	 */
 .blue,.blue a { color:#0096f1;}
+.blue a:visited{ color:#0096f1;}
 .org,.org a { color:#ea0000;}
 .color_1 { color:#fe0000}
 .color_2 { color:#de5a03}

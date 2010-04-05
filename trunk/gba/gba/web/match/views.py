@@ -363,7 +363,7 @@ def match_accept(request):
         if team:
             user_info = UserInfo.load(username=team.username)
             if user_info:
-                user_name = user_info.username
+                user_name = user_info.nickname
     
     match_id = request.GET.get('match_id')
         
@@ -388,7 +388,7 @@ def match_accept(request):
         message = Message()
         message.type = MessageType.SYSTEM_MSG
         message.from_team_id = 0
-        message.to_team_id = match.guest_team_id
+        message.to_team_id = match.home_team_id
         message.title = u'%s经理接收了你的%s约战请求' % (user_name, MatchTypeMaps.get(match.type))
         message.content = u'%s经理接收了你的%s约战请求' % (user_name, MatchTypeMaps.get(match.type))
         message.is_new = 1

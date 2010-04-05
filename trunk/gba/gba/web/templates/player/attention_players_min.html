@@ -19,7 +19,7 @@
 {% for info in infos %}
 <tr>
 <td>
-<a href="http://s3.dlm.17uxi.cn/source/n.php?a=416&amp;id_zh_qiu_yuan=1366924&amp;id_qy_lei_xing=5" onclick="return show_popup(this)" title="">
+<a href="{% url player-detail %}?no={{info.no}}&type={{info.type}}" onclick="return show_popup(this)" title="">
 <font color="#0096f1">{{info.name}}</font></a></td>
 <td>{{info.age}}</td>
 <td>{{info.position}}</td>

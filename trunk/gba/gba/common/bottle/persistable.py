@@ -121,7 +121,7 @@ class Persistable(object):
         if cache_key:
             self._cache.delete(cache_key)
         data = {}
-        update_skip_columns = ['created_time', 'updated_time']
+        update_skip_columns = ['id', 'created_time', 'updated_time']
         meta = Persistable._meta_cache[self._table]
         columns = meta.columns
         need_close = False
@@ -164,7 +164,12 @@ class Persistable(object):
          
         sql =  'select * from %s where %s %s %s ' % (cls._table, where, order, limit)
         info('start to load objects[%s] with sql:%s' % (cls._table, sql))
-        cursor = connection.cursor()
+        need_close = False
+        if cls._transaction:
+            cursor = cls._cursor
+        else:
+            need_close = True
+            cursor = connection.cursor()
         try:
             data = cursor.fetchall(sql)
             if data:
@@ -175,7 +180,8 @@ class Persistable(object):
                 info('query success, return %s records...' % len(objs))
                 return objs
         finally:
-            cursor.close()
+            if need_close:
+                cursor.close()
         info('not record found')
         return []
     
@@ -207,7 +213,12 @@ class Persistable(object):
         condition = ' and '.join(["%s=%%s" % k for k in keys.keys()])
         param = [keys[k] for k in keys.keys()] 
         sql = 'select * from %s where %s' % (cls._table, condition) 
-        cursor = connection.cursor()
+        need_close = False
+        if cls._transaction:
+            cursor = cls._cursor
+        else:
+            need_close = True
+            cursor = connection.cursor()
         try:
             data = cursor.fetchone(sql, param)
             if data:
@@ -218,7 +229,8 @@ class Persistable(object):
                 info('success load object[%s, id=%s]' % (cls._table, obj.id)) 
                 return obj
         finally:
-            cursor.close()
+            if need_close:
+                cursor.close()
         info('load failure[table:%s]' % cls._table)
         return None
     
@@ -253,6 +265,9 @@ class Persistable(object):
                     return None
                 else:
                     cache_key_value = getattr(parms, cache_key)
+             
+            if isinstance(cache_key_value, unicode):
+                cache_key_value = cache_key_value.encode('utf8')
               
             cache_key_str += str(cache_key_value)
             cache_key_str += ';'

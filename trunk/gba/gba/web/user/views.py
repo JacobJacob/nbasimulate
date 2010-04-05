@@ -154,8 +154,9 @@ def message(request, min=False):
     ids = []
     for info in infos:
         ids.append(info['id'])
-        
-    user_operator.update_message_to_old(ids)
+    
+    if ids:    
+        user_operator.update_message_to_old(ids)
         
     if total == 0:
         totalpage = 0

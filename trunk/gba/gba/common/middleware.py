@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from gba.business.user_roles import UserManager
-from gba.web.render import render_to_response
+
+REDIRECT_FIELD_NAME = 'next'
 
 class TeamInfoMiddleware(object):
 
@@ -11,6 +12,7 @@ class TeamInfoMiddleware(object):
 
     def process_request(self, request):
         team = UserManager().get_team_info(request)
-        if not team:
-            return render_to_response(request, "message.html", {'error': u'登陆信息丢失,请重新登陆'}) 
+        #if not team:
+        #    path = urlquote(request.get_full_path())
+        #    return HttpResponseRedirect('%s?%s=%s' % (reverse('login-page'), REDIRECT_FIELD_NAME, path)) 
         setattr(request, 'team', team)

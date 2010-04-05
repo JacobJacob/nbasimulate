@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 
 from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap
 from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap
-from gba.entity import Team, UserInfo, ProfessionPlayer
+from gba.entity import Team, UserInfo, ProfessionPlayer, LeagueTeams
 
 register = template.Library()
 
@@ -164,11 +164,21 @@ def nickname(team_id):
         return u'系统消息'
     team = Team.load(id=team_id)
     user_info = UserInfo.load(username=team.username)
-    return user_info.nickname
-
+    if user_info:
+        return user_info.nickname
+    return ''
+    
 @register.filter
 def profession_player_name(player_no):
     player = ProfessionPlayer.load(no=player_no)
     if player:
         return player.name
+    return ''
+
+@register.filter
+def league_rank(team_id):
+    '''球队联赛排名'''
+    league_team = LeagueTeams.load(team_id=team_id)
+    if league_team:
+        return league_team.rank
     return ''

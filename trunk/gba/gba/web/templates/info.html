@@ -1,9 +1,31 @@
+{% load common_extras %}
+<script type="text/javascript">
+   function check_msg() {
+       var myAjax = new Ajax.Request(
+             '{% url check-new-message %}', // 请求的URL
+             {
+                method: 'get',
+                asynchronous: true,
+                onComplete: showResponse
+             }
+
+       );
+   }
+   function showResponse(response) {
+      status = response.responseText;
+      if(status == 1){
+        $('msg').innerHTML = '<img src="/site_media/images/img_00.gif" id="xx_shan_shuo" title="有未读消息" height="11" width="17"/>';
+      }else{
+        $('msg').innerHTML = '<img src="/site_media/images/img_03.gif" id="xx_shan_shuo" title="没有未读消息" height="11" width="17"/>';
+      }
+   }
+   setInterval(check_msg, 30000);  
+</script>
 <div class="left_box">
     <div class="logo">
         <img src="/site_media/images/logo.gif" alt="" height="34" width="182">
     </div>
-    <div class="date head_bg">
-        【巨星之路】　　
+    <div class="date head_bg">　
         <b>
             <span id="sj_notice">
                 2010/4/1/&nbsp;&nbsp;&nbsp;13:39:35
@@ -52,47 +74,12 @@
                             <span class="l_box_btn">
                                 <a href="http://s3.dlm.17uxi.cn/source/i.php?a=445&amp;type=view&amp;lei_xing=1"
                                 onclick="return show_popup(this)">
-                                    兑换
+                                    刷新
                                 </a>
                             </span>
                             资&nbsp;&nbsp;金：
                             <span class="color_1">
                                 {{team.funds}}
-                            </span>
-                        </li>
-                        <li>
-                            <span class="l_box_btnf">
-                                <a href="http://pay.17uxi.cn/17uxi/user_dlm.php?UserID=258588&amp;SubTime=2010-04-01%2013:38:23&amp;chk=b5ee638e3d631d9b905bc6fe5dae0bc1&amp;ServerID=3"
-                                target="_blank">
-                                    充值
-                                </a>
-                            </span>
-                            金&nbsp;&nbsp;币：
-                            <span class="color_2">
-                                0
-                            </span>
-                        </li>
-                        <li>
-                            <span class="l_box_btn">
-                                <a href="http://s3.dlm.17uxi.cn/source/i.php?a=445&amp;type=view&amp;lei_xing=3"
-                                onclick="return show_popup(this)">
-                                    兑换
-                                </a>
-                            </span>
-                            游戏币：
-                            <span class="color_3">
-                                0
-                            </span>
-                        </li>
-                        <li>
-                            <span class="l_box_btn">
-                                <a href="#" onclick="sy_zuo_shua_xin();">
-                                    刷新
-                                </a>
-                            </span>
-                            资&nbsp;&nbsp;质：
-                            <span class="color_4">
-                                0
                             </span>
                         </li>
                     </ul>
@@ -106,35 +93,14 @@
                 <div class="user_info">
                     <ul>
                         <li>
-                            <span class="vip vip_1">
-                                <a href="http://s3.dlm.17uxi.cn/source/i.php?a=201" title="没有未读消息">
-                                    消息（0）
-                                </a>
-                            </span>
                             <img src="/site_media/images/h_letter.gif" height="8" width="13">
                             情报：
                             <a href="http://s3.dlm.17uxi.cn/source/i.php?a=150">
-                                <img src="/site_media/images/img_02.gif" title="无受伤球员" alt="" height="11"
-                                width="11">
+                                <img src="/site_media/images/img_02.gif" title="无受伤球员" alt="" height="11" width="11">
                             </a>
-                            <a href="http://s3.dlm.17uxi.cn/source/i.php?a=201">
-                                <img src="/site_media/images/img_03.gif" id="xx_shan_shuo" title="没有未读消息"
-                                height="11" width="17">
+                            <a href="{% url message %}">
+                               <span id="msg"><img src="/site_media/images/img_03.gif" id="xx_shan_shuo" title="没有未读消息" height="11" width="17"></msg></span>
                             </a>
-                            <a href="http://s3.dlm.17uxi.cn/source/n.php?a=1200" onclick="return 
-                            show_popup(this)">
-                                <img src="/site_media/images/ren_wu_new.gif" title="新手任务">
-                            </a>
-                            <a href="http://s3.dlm.17uxi.cn/source/i.php?a=1410">
-                                <img src="/site_media/images/money.gif" title="活动奖励" height="14" width="15">
-                            </a>
-                        </li>
-                        <li>
-                            <img src="/site_media/images/h_country.gif" height="10" width="13">
-                            国家：
-                            <span class="gray">
-                                北国
-                            </span>
                         </li>
                         <li>
                             <img src="/site_media/images/h_honor.gif" height="10" width="13">
@@ -154,7 +120,7 @@
                             <img src="/site_media/images/h_level.gif" height="10" width="13">
                             联赛：
                             <span class="gray">
-                                第9等级 第191组 第10名
+                                第{{team.profession_league_evel}}等级 第{{team.profession_league_class}}组 第{{team.id|league_rank}}名
                             </span>
                         </li>
                     </ul>

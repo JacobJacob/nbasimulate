@@ -10,7 +10,7 @@ import sys
 
 import memcache
 
-from gba.config import SYSLOG_HOST, PathSettings, COMMON_CACHE
+from gba.config import SYSLOG_HOST, PathSettings, COMMON_CACHE, DEBUG
 from gba.common.exception_mgr import format_except
 
 
@@ -108,12 +108,19 @@ def log_execption(msg = None, track_index = 0):
     """自动记录异常信息"""
     init_log()
     backup = logging.currentframe
+    need_format = True
     if not msg:
         msg = traceback.format_exc(track_index)
+        need_format = False
     try:
         currentframe = lambda: sys._getframe(5)
         logging.currentframe = currentframe # hook, get the real frame
-        logging.error(repr(format_except(msg, track_index)))
+        if need_format:
+            logging.error(repr(format_except(msg, track_index)) + '\n')
+        else:
+            logging.error(msg + '\n')
+        if DEBUG:
+            print msg
     except:
         pass
     finally:

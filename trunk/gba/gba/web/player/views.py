@@ -10,7 +10,7 @@ from gba.web.render import render_to_response
 from gba.common import playerutil
 from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
-from gba.entity import Team, YouthPlayer, FreePlayer
+from gba.entity import Team, YouthPlayer, FreePlayer, YouthFreePlayer, ProfessionPlayer
 from gba.common.constants import attributes, hide_attributes, AttributeMaps
 
 @login_required
@@ -297,11 +297,13 @@ def player_detail(request):
     else:
         type = int(type)
         if type == 1:
-            player = player_operator.get_free_palyer_by_no(no)
+            player = FreePlayer.load(no=no)
         elif type == 2:
-            player = player_operator.get_profession_palyer_by_no(no)
+            player = ProfessionPlayer.load(no=no)
         elif type == 3:
             player = YouthPlayer.load(no=no)
+        elif type == 4:
+            player = YouthFreePlayer.load(no=no)
         if not player:
             error = u'获取球员信息出错'
         datas = {'player': player}
@@ -309,6 +311,7 @@ def player_detail(request):
     if error:
         return render_to_response(request, 'message.html', {'error': error})
     
-    datas['url'] = reverse(from_page)
-    datas['from_id'] = from_id
+    if from_page:
+        datas['url'] = reverse(from_page)
+        datas['from_id'] = from_id
     return render_to_response(request, 'player/common_detail.html', datas)
