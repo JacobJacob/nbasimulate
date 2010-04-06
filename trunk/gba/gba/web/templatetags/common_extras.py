@@ -197,5 +197,63 @@ def league_team_to_name(league_team_id):
     if team:
         return team.name
     return ''
-    
+
+@register.filter
+def point_total(stat):
+    '''计算总分'''
+    total = 0
+    total += (stat.point1_doom_times if stat.point1_doom_times else 0) * 1
+    total += (stat.point2_doom_times if stat.point2_doom_times else 0) * 2
+    total += (stat.point3_doom_times if stat.point3_doom_times else 0) * 3
+    return total
+
+@register.filter
+def rebound_total(stat):
+    '''计算篮板总数'''
+    total = 0
+    total += stat.offensive_rebound if stat.offensive_rebound else 0
+    total += stat.defensive_rebound if stat.defensive_rebound else 0
+    return total
+
+@register.filter
+def rebound_agv(stat):
+    '''计算篮板平均'''
+    if stat.match_total == 0:
+        return 0
+    total = 0
+    total += stat.offensive_rebound if stat.offensive_rebound else 0
+    total += stat.defensive_rebound if stat.defensive_rebound else 0
+    return '%.1f' % (total / stat.match_total)
+
+@register.filter
+def point_agv(stat):
+    '''计算平均分'''
+    if stat.match_total == 0:
+        return 0
+    total = 0
+    total += (stat.point1_doom_times if stat.point1_doom_times else 0) * 1
+    total += (stat.point2_doom_times if stat.point2_doom_times else 0) * 2
+    total += (stat.point3_doom_times if stat.point3_doom_times else 0) * 3
+    return '%.1f' % (total / stat.match_total)
+
+@register.filter
+def assist_agv(stat):
+    '''计算助攻平均'''
+    if stat.match_total == 0:
+        return 0
+    return '%.1f' % (stat.assist / stat.match_total)
+
+@register.filter
+def steal_agv(stat):
+    '''计算抢断平均'''
+    if stat.match_total == 0:
+        return 0
+    return '%.1f' % (stat.steals / stat.match_total)
+
+@register.filter
+def block_agv(stat):
+    '''计算封盖平均'''
+    if stat.match_total == 0:
+        return 0
+    return '%.1f' % (stat.block / stat.match_total)
     

@@ -7,7 +7,8 @@ __all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
            'League', 'LeagueTeams', 'Names', 'UserInfo', 'YouthFreeplayerAuctionLog',
            'PlayerAuctionLog', 'ClientRunningLog', 'AttentionPlayer', 'LeagueConfig',
            'ActionDesc', 'TrainingCenter', 'TeamTacticalDetail', 'TeamTactical',
-           'MatchNotInPlayer', 'LeagueMatchs', 'RuntimeData']
+           'MatchNotInPlayer', 'LeagueMatchs', 'RuntimeData', 'ProPlayerCareerStatTotal',
+           'ProPlayerSeasonStatTotal', 'ErrorLog']
 
 from gba.common.bottle.persistable import Persistable
 
@@ -98,3 +99,19 @@ class MatchNotInPlayer(Persistable):
 class RuntimeData(Persistable):
     '''运行时数据'''
     CACHE_KEY = 'runtime_data:programe,value_key'
+    
+class MatchStat(Persistable):
+    '''比赛统计'''
+    CACHE_KEY = 'match_stat:player_no,match_id'
+
+class ProPlayerCareerStatTotal(Persistable):
+    '''职业球员生涯总的统计'''
+    CACHE_KEY = 'pro_player_career_stat_total:player_no'
+    
+class ProPlayerSeasonStatTotal(Persistable):
+    '''职业球员赛季总的统计，每赛季完要清空'''
+    CACHE_KEY = 'pro_player_season_stat_total:player_no'
+    
+class ErrorLog(Persistable):
+    '''错误日志'''
+    CACHE_KEY = 'error_log:id'

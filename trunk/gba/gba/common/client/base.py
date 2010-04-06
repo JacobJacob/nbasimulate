@@ -8,7 +8,6 @@ import time
 import sys
 import threading
 
-from client.rpc_proxy import client_service_proxy
 from common import init_log
 from common.constants import ClientStatus, STATUS_MAP, Command, SmartClientCommand
 
@@ -249,7 +248,8 @@ class BaseClient(object):
         """模块上报状态并接受指令，以及运行参数、Task ID 等。"""
         while True:
             try: 
-                data = self.service.report_status(self.client_id, status, description)
+                #data = self.service.report_status(self.client_id, status, description)
+                
                 break
             except KeyboardInterrupt:
                 raise

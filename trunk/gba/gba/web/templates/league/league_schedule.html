@@ -4,7 +4,7 @@
 <tbody><tr>
 <th>轮次</th>
 <th>主队</th>
-<th colspan="2">比分</th>
+<th>比分</th>
 <th>客队</th>
 <th class="end_cell">战术/战报/统计</th>
 </tr>
@@ -16,16 +16,24 @@
   <font color="#0096f1">{{info.match_team_home_id|league_team_to_name}}</font>
   </a>
 </td>
-<td>113</td>
-<td>65</td>
+<td>
+  {% ifequal info.status 2%}
+    {{ info.point }}
+  {% endifequal %}
+
+</td>
 <td>
  <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this);">
  <font color="#0096f1">{{info.match_team_guest_id|league_team_to_name}}</font>
 </a>
 </td>
 <td>
- <a href="http://s3.dlm.17uxi.cn/source/i.php?a=504&amp;zbid=3764919" target="_blank">战报</a> | 
- <a href="http://s3.dlm.17uxi.cn/source/i.php?a=505&amp;zbid=3764919" target="_blank">统计</a>
+ {% ifequal info.status 2%}
+   <a href="{% url match-detail %}?match_id={{info.match_id}}" target="_blank">战报</a> | 
+   <a href="{% url match-stat %}?match_id={{info.match_id}}" target="_blank">统计</a>
+ {% else %}
+   --|--
+ {% endifequal %}
 </td>
 </tr>
 {% endfor %}

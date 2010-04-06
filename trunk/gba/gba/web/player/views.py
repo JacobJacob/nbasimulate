@@ -10,7 +10,8 @@ from gba.web.render import render_to_response
 from gba.common import playerutil
 from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
-from gba.entity import Team, YouthPlayer, FreePlayer, YouthFreePlayer, ProfessionPlayer
+from gba.entity import Team, YouthPlayer, FreePlayer, YouthFreePlayer, \
+                       ProfessionPlayer, ProPlayerSeasonStatTotal, ProPlayerCareerStatTotal
 from gba.common.constants import attributes, hide_attributes, AttributeMaps
 
 @login_required
@@ -94,8 +95,23 @@ def profession_player_detail(request):
     attributes_maps = {}
     for attribute in show_attributes:
         attributes_maps[attribute] = '%s_oten' % attribute
+        
+    season_stat_total = ProPlayerSeasonStatTotal.load(player_no=no)
+    if not season_stat_total:
+        season_stat_total = ProPlayerSeasonStatTotal()
+        season_stat_total.player_no = no
+        season_stat_total.persist()
+        season_stat_total = ProPlayerSeasonStatTotal.load(player_no=no)
     
-    datas = {'id': id, 'player': player, 'attributes': attributes_maps}
+    career_stat_total = ProPlayerCareerStatTotal.load(player_no=no)
+    if not career_stat_total:
+        career_stat_total = ProPlayerCareerStatTotal()
+        career_stat_total.player_no = no
+        career_stat_total.persist()
+        career_stat_total = ProPlayerCareerStatTotal.load(player_no=no)
+    
+    datas = {'id': id, 'player': player, 'attributes': attributes_maps, \
+             'season_stat_total': season_stat_total, 'career_stat_total': career_stat_total}
     return render_to_response(request, 'player/player_detail.html', datas)
 
 @login_required
