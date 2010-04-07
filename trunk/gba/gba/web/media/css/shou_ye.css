@@ -71,3 +71,7 @@ body {
 .main_nav_7 { padding-left:380px}
 .main_nav_8 { padding-left:200px}
 .main_nav_9 { float:right;padding-right:10px;}
+
+.select_href{
+  color:red;
+}

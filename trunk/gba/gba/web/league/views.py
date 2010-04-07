@@ -57,7 +57,7 @@ def league_statistics(request):
     """联赛统计,记得做静态化，然后在"""
     type = int(request.GET.get('type', 1))
     league_id = request.GET.get('league_id', None)
-    datas = {}
+    datas = {'type': type}
     if league_id:
         print type
         #1平均分 ,2 抢断 3 篮板 , 4 助功 ,5 封盖

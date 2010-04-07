@@ -56,7 +56,7 @@ class PlayerStatisticsHandler(BaseBetchClient):
                 logger.log_to_db('球员找不到球员号码[%s]比赛id[%s]' % (match_stat.player_no, match.id))
                 
             point_total = match_stat.point1_shoot_times * 1 + match_stat.point2_shoot_times * 2 + match_stat.point3_shoot_times * 3
-            rebount_total =  match_stat.offensive_rebound + match_stat.defensive_rebound
+            rebound_total =  match_stat.offensive_rebound + match_stat.defensive_rebound
             player_caree_total = ProPlayerCareerStatTotal.load(player_no=player.no)
             if not player_caree_total:
                 player_caree_total = ProPlayerCareerStatTotal()
@@ -75,7 +75,7 @@ class PlayerStatisticsHandler(BaseBetchClient):
                 player_caree_total.block = match_stat.block
                 player_caree_total.steals = match_stat.steals
                 player_caree_total.point_total = point_total
-                player_caree_total.rebount_total = rebount_total
+                player_caree_total.rebound_total = rebound_total
                 player_caree_total.match_total = 1
                 player_caree_total.main_total = 1 if match_stat.is_main else 0 #是否主力
             else:
@@ -94,7 +94,7 @@ class PlayerStatisticsHandler(BaseBetchClient):
                 player_caree_total.steals += match_stat.steals
                 player_caree_total.match_total += 1
                 player_caree_total.point_total += point_total
-                player_caree_total.rebount_total += rebount_total
+                player_caree_total.rebound_total += rebound_total
                 player_caree_total.main_total += 1 if match_stat.is_main else 0 #是否主力
                 
             player_season_total = ProPlayerSeasonStatTotal.load(player_no=player.no)
@@ -117,7 +117,7 @@ class PlayerStatisticsHandler(BaseBetchClient):
                 player_season_total.steals = match_stat.steals
                 player_season_total.match_total = 1
                 player_season_total.point_total = point_total
-                player_season_total.rebount_total = rebount_total
+                player_season_total.rebound_total = rebound_total
                 player_season_total.main_total = 1 if match_stat.is_main else 0 #是否主力
             else:
                 player_season_total.point2_shoot_times += match_stat.point2_shoot_times
@@ -134,7 +134,7 @@ class PlayerStatisticsHandler(BaseBetchClient):
                 player_season_total.block += match_stat.block
                 player_season_total.steals += match_stat.steals
                 player_season_total.point_total += point_total
-                player_season_total.rebount_total += rebount_total
+                player_season_total.rebound_total += rebound_total
                 player_season_total.match_total += 1
                 player_season_total.main_total += 1 if match_stat.is_main else 0 #是否主力
                 
@@ -142,7 +142,7 @@ class PlayerStatisticsHandler(BaseBetchClient):
             player_season_total.block_agv = player_season_total.block / player_season_total.match_total
             player_season_total.steals_agv = player_season_total.steals / player_season_total.match_total
             player_season_total.point_agv = player_season_total.point_total / player_season_total.match_total
-            player_season_total.rebount_agv = player_season_total.rebount_total / player_season_total.match_total
+            player_season_total.rebount_agv = player_season_total.rebound_total / player_season_total.match_total
                 
             league_match.status = 2 #状态2表示处理完了
             league_match.point = match.point

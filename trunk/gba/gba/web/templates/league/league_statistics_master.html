@@ -1,10 +1,39 @@
 <div class="lh30 mlr8">
+{% ifequal type 1%}
+  <span class="select_href">得分</span>
+{% else %}
  <a href="{% url league-statistics %}?league_id={{league.id}}&type=1" onclick='return href_to_div(this,"main_content")'>得分</a>
- | <a href="{% url league-statistics %}?league_id={{league.id}}&type=3" onclick='return href_to_div(this,"main_content")'>篮板</a>
- | <a href="{% url league-statistics %}?league_id={{league.id}}&type=4" onclick='return href_to_div(this,"main_content")'>助攻</a>
- | <a href="{% url league-statistics %}?league_id={{league.id}}&type=2" onclick='return href_to_div(this,"main_content")'>抢断</a>
- | <a href="{% url league-statistics %}?league_id={{league.id}}&type=5" onclick='return href_to_div(this,"main_content")'>封盖</a>
-| <a href="{% url team-statistics %}" onclick='return href_to_div(this,"main_content")'>本队统计</a>
+{% endifequal %}
+ | 
+{% ifequal type 3%}
+  <span class="select_href">篮板</span>
+{% else %}
+<a href="{% url league-statistics %}?league_id={{league.id}}&type=3" onclick='return href_to_div(this,"main_content")'>篮板</a>
+{% endifequal %}
+|
+{% ifequal type 4%}
+  <span class="select_href">助功</span>
+{% else %}
+  <a href="{% url league-statistics %}?league_id={{league.id}}&type=4" onclick='return href_to_div(this,"main_content")'>助攻</a>
+{% endifequal %}
+ | 
+{% ifequal type 2%}
+  <span class="select_href">抢断</span>
+{% else %}
+<a href="{% url league-statistics %}?league_id={{league.id}}&type=2" onclick='return href_to_div(this,"main_content")'>抢断</a>
+{% endifequal %}
+ | 
+{% ifequal type 5%}
+  <span class="select_href">封盖</span>
+{% else %}
+<a href="{% url league-statistics %}?league_id={{league.id}}&type=5" onclick='return href_to_div(this,"main_content")'>封盖</a>
+{% endifequal %}
+|
+{% if type %}
+ <a href="{% url team-statistics %}" onclick='return href_to_div(this,"main_content")'>本队统计</a>
+{% else %}
+ <span class="select_href">本队统计</span>
+{% endif %}
 </div>
 {% block statistics %}
 {% endblock %}
