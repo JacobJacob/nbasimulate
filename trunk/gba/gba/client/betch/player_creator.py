@@ -114,7 +114,7 @@ class PlayerCreator(object):
         setattr(player, 'position', location)
         setattr(player, 'position_base', location)
         setattr(player, 'player_no', random.randint(0, 30))
-        setattr(player, 'no', md5mgr.mkmd5fromstr('%s_%s_%s' % (location, level, str(time.time()))))
+        setattr(player, 'no', md5mgr.mkmd5fromstr('%s_%s_%s_%s' % (location, level, time.time(), random.random())))
         setattr(player, 'name', name)
         setattr(player, 'name_base', name)
         return player

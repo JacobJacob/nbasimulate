@@ -49,6 +49,9 @@ class LeagueMatchs(Persistable):
 class LeagueTeams(Persistable):
     CACHE_KEY = 'league_teams:id'
     
+class LeagueTasks(Persistable):
+    CACHE_KEY = 'league_tasks:id'
+    
 class Names(Persistable):
     CACHE_KEY = 'names:id'
     
