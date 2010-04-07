@@ -1,0 +1,39 @@
+{% extends "league/league_statistics_master.html" %}
+{% load common_extras %}
+{% block statistics %}
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+<thead>
+ <tr>
+	<th>姓名</th>
+	<th>号码</th>
+	<th>位置</th>
+	<th>综合</th>
+	<th>得分</th>
+	<th>篮板</th>
+	<th>助攻</th>
+	<th>抢断</th>
+	<th class="end_cell">封盖</th>
+</tr>
+</thead>
+<tbody>
+{% for info in infos %}
+<tr>
+<td>
+ <a href="{% url player-detail %}?no={{info.player.no}}&type=2" onclick="return show_popup(this)">
+   <font color="#0096f1">{{info.player.name}}</font></a>
+</td>
+<td>
+  <img src="/site_media/images/number/{{info.player.player_no}}.gif">
+</td>
+<td>{{info.player.position}}</td>
+<td>{{info.player.ability|format_number}}</td>
+<td>{{info.point_agv}}</td>
+<td>{{info.rebound_agv}}</td>
+<td>{{info.assist_agv}}</td>
+<td>{{info.steals_agv}}</td>
+<td>{{info.block_agv}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

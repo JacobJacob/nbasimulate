@@ -1,0 +1,30 @@
+{% load common_extras %}
+<div class="explain_box players_talbe">
+ <p class="mlr8">第{{season}}赛季,第{{round}}轮|第{{team.profession_league_evel}}级联赛，第{{team.profession_league_class}}组赛程：</p>
+</div>
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+<thead>
+ <tr>
+  <th>主队</th>
+  <th >对战</th>
+  <th>客队</th>
+</tr>
+</thead>
+<tbody>
+{% for info in infos %}
+<tr>
+<td>
+ <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=40531" onclick="return show_popup(this);">
+  <font color="#0096f1">{{info.match_team_home_id|league_team_to_name}}</font></a></td>
+<td>
+  VS
+</td>
+<td>
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=12902" onclick="return show_popup(this);">
+ <font color="#0096f1">{{info.match_team_guest_id|league_team_to_name}}</font></a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+	

@@ -1,0 +1,43 @@
+{% extends "league/league_statistics_master.html" %}
+{% load common_extras %}
+{% block statistics %}
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+<thead>
+ <tr>
+  <th>姓名</th>
+  <th>身高</th>
+  <th>体重</th>
+  <th>位置</th>
+  <th>所在球队</th>
+  <th>综合</th>
+  <th>总封盖</th>
+  <th>总出场</th>
+  <th class="end_cell">场均封盖</th>
+</tr>
+</thead>
+<tbody>
+{% for info in infos %}
+<tr>
+<td>
+ <a href="http://s3.dlm.17uxi.cn/source/n.php?a=416&amp;id_qiu_yuan=1882164" onclick="return show_popup(this)">
+  <font color="#0096f1">{{info.player.name}}</font>
+</a>
+</td>
+<td>{{info.player.stature}}</td>
+<td>{{info.player.avoirdupois}}</td>
+<td>{{info.player.position}}</td>
+<td>
+ <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=39899" onclick="return show_popup(this)">
+   <font color="#0096f1">我是毛球</font>
+ </a>
+</td>
+<td>{{info.player.ability|format_number}}</td>
+<td>{{info.block}}</td>
+<td>{{info.match_total}}</td>
+<td>{{info.block_agv}}</td>
+ </tr>
+ {% endfor %}
+</tbody>
+</table>
+{% endblock %}
+	

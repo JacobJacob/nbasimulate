@@ -15,11 +15,14 @@
 <li class="" id="menu_third_2">
  <a href="{% url league-schedule %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">联赛赛程</a>
 </li>
-<li class="" id="menu_third_3"><a href="http://s3.dlm.17uxi.cn/source/n.php?a=356" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(3);return false;">上轮赛程</a>
+<li class="" id="menu_third_3">
+ <a href="{% url pre-schedule %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(3);return false;">上轮赛程</a>
 </li>
-<li class="" id="menu_third_4"><a href="http://s3.dlm.17uxi.cn/source/n.php?a=397" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(4);return false;">本轮赛程</a>
+<li class="" id="menu_third_4">
+  <a href="{% url current-schedule %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(4);return false;">本轮赛程</a>
 </li>
-<li class="" id="menu_third_5"><a href="http://s3.dlm.17uxi.cn/source/n.php?a=386" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(5);return false;">技术统计</a>
+<li class="" id="menu_third_5">
+  <a href="{% url league-statistics %}?league_id={{league.id}}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(5);return false;">技术统计</a>
 </li>
 </ul>
 </div>
