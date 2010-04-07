@@ -1,8 +1,0 @@
-# crontab tasks for data sync in internal system
-*/15 * * * * python /home/mercury/gateway/client/data_export/data_file_creater.py > /home/mercury/gateway/client/data_export/data_file_creater.log
-*/2 * * * * python /home/mercury/gateway/client/sql_conver/sql_file_creater.py > /home/mercury/gateway/client/sql_conver/sql_file_creater.log
-*/2 * * * * python /home/mercury/gateway/client/sql_conver/sql_file_uploader.py
-*/2 * * * * python /home/mercury/gateway/client/fetch_data/data_fetcher.py  > /home/mercury/gateway/client/fetch_data/data_fetcher.log
-*/30 * * * * python /home/mercury/gateway/client/data_export/dump_mercury_data.py > /home/mercury/gateway/client/data_export/dump_mercury_data.log
-0 */1 * * * python /home/mercury/gateway/client/data_export/dump_to_sql.py
-30 */1 * * * python /home/mercury/gateway/client/web_check.py

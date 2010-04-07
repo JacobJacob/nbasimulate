@@ -1,1 +1,0 @@
-python main.py URL_SOURCE_STATISTIC

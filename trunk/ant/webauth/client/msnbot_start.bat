@@ -1,2 +1,0 @@
-python msnbot.py
-pause
