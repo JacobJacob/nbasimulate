@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block show_nva %}
+<script language="javascript">
+   sub_menu_highlight(2,3);
+   nav_over('nav2','show2');
+   nav_show('nav2','show2');
+</script>
+{% endblock %}
+{% block sub_menu %}
+<div class="players_lab">
+ <ul>
+	<li class="active" id="menu_third_1">
+	 <a href="http://s3.dlm.17uxi.cn/source/n.php?a=342" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">本赛季财政</a>
+	</li>
+    <li class="" id="menu_third_2">
+     <a href="http://s3.dlm.17uxi.cn/source/n.php?a=346" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">所有赛季</a>
+    </li>
+ </ul>
+</div>
+<script language="javascript">
+ third_menu_highlight(1);	
+</script>
+{% endblock %}

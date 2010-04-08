@@ -78,7 +78,7 @@ class DailyLeagueUpdate(BaseBetchClient):
     def _get_league_matchs(self, league_id):
         return LeagueMatchs.query(condition="league_id=%s and round=%s" % (league_id, self._round))
     
-if __name__ == '__main__':  
+def main():
     signle_process = SingleProcess('DailyLeagueUpdate')
     signle_process.check()
     try:
@@ -86,3 +86,5 @@ if __name__ == '__main__':
         client.start()
     except:
         log_execption()
+if __name__ == '__main__':
+    main()

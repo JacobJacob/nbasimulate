@@ -115,10 +115,10 @@ def profession_player_detail(request):
     return render_to_response(request, 'player/player_detail.html', datas)
 
 @login_required
-def youth_free_player(request):
+def youth_free_player(request, min=False):
     """list"""
     page = int(request.GET.get('page', 1))
-    pagesize = int(request.GET.get('pagesize', 15))
+    pagesize = int(request.GET.get('pagesize', 10))
     position = request.GET.get('position', 'c')
     order_by = request.GET.get('order_by', 'expired_time')
     order = request.GET.get('order', 'asc')
@@ -134,6 +134,8 @@ def youth_free_player(request):
             'nextpage': page + 1, 'prevpage': page - 1, 'position': position, 'order_by': order_by, 
             'order': order}
     
+    if min:
+        return render_to_response(request, 'player/youth_free_players_min.html', datas)
     return render_to_response(request, 'player/youth_free_players.html', datas)
 
 @login_required

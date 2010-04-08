@@ -7,7 +7,7 @@ import traceback
 
 def main():
     try:
-        os.popen('mysqldump gba -u root > mysql.sql')
+        os.popen('mysqldump gba -u gba > mysql.sql')
     except:
         print traceback.format_exc()
     

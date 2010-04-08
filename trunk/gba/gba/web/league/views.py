@@ -11,7 +11,7 @@ def league_rank(request, min=False):
     """联赛排名"""
     team = request.team
     league = League.load(degree=team.profession_league_evel, no=team.profession_league_class)
-    league_teams = LeagueTeams.query(condition="league_id='%s'" % league.id, order="rank desc")
+    league_teams = LeagueTeams.query(condition="league_id='%s'" % league.id, order="win desc, net_points desc")
     datas = {'infos': league_teams, 'league': league}
     
     for i, league_team in enumerate(league_teams):
