@@ -6,34 +6,8 @@ from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MatchStatus, TacticalGroupTypeMap
 from gba.common import log_execption
 from gba.common import playerutil
-from gba.entity import Team, ProfessionPlayer, League, LeagueTeams
+from gba.entity import Team, ProfessionPlayer, League, LeagueTeams, TeamArena
 from gba.business import player_operator
-
-#_SELECT_MATCH = 'select * from matchs where %s order by id desc limit %s, %s'
-#                
-#_SELECT_MATCH_TOTAL = 'select count(*) as total from matchs where %s order by id desc limit %s, %s'
-#
-#def get_match(team_id, type, page=1, pagesize=15):
-#    '''获取比赛记录'''
-#    if page <= 0:
-#        page = 1
-#    index = (page - 1) * pagesize
-#    total = 0
-#    infos = []
-#    
-#    where = 'home_team_id=%s or guest_team_id=%s and type=%s' %  (team_id, team_id, type)
-#    
-#    cursor = connection.cursor()
-#    try:
-#        rs = cursor.fetchall(_SELECT_MATCH % (where, index, pagesize))
-#        if rs:
-#            infos = rs.to_list()
-#            rs = cursor.fetchone(_SELECT_MATCH_TOTAL, (where, ))
-#            total = rs['count']
-#    finally:
-#        cursor.close()
-#        
-#    return infos, total
 
 def send_match_request(home_team_id, guest_team_id, type):
     '''发送比赛请求'''
@@ -224,6 +198,7 @@ def init_team(team_info):
     team = Team()
     team.username = team_info['username']
     team.name = team_info['teamname']
+    team.funds = 500000 #50W的初始资金
     
     #先创建球员,8名职业球员1 c , 1pf 2 sf 2 sg 2 pg
     locations = ['C', 'PF', 'SF', 'SF', 'SG', 'SG', 'PG', 'PG']
@@ -242,10 +217,21 @@ def init_team(team_info):
         league_team.status = 1 #状态改为了，表示有人了
         league_team.persist()
         
-        for location in locations:
+        #创建球馆
+        team_arena = TeamArena()
+        team_arena.team_id = team.id
+        team_arena.level = 1
+        team_arena.fare = 20 #票价
+        team_arena.fan_count = 1000 #球迷
+        team_arena.persist()
+        
+        
+        for i, location in enumerate(locations):
             player = playerutil.create_profession_player(location)
+            setattr(player, 'player_no', i + 1)
             setattr(player, 'team_id', team.id)
             youth_player = playerutil.create_youth_player(location)
+            setattr(youth_player, 'player_no', i + 1)
             setattr(youth_player, 'team_id', team.id)
             player.persist()
             youth_player.persist()

@@ -8,38 +8,50 @@ __all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
            'PlayerAuctionLog', 'ClientRunningLog', 'AttentionPlayer', 'LeagueConfig',
            'ActionDesc', 'TrainingCenter', 'TeamTacticalDetail', 'TeamTactical',
            'MatchNotInPlayer', 'LeagueMatchs', 'RuntimeData', 'ProPlayerCareerStatTotal',
-           'ProPlayerSeasonStatTotal', 'ErrorLog', 'TeamStaff']
+           'ProPlayerSeasonStatTotal', 'ErrorLog', 'TeamStaff', 'MatchNodosityMain',
+           'MatchNodosityDetail', 'MatchNodosityTacticalDetail', 'TeamArena',
+           'RoundUpdateLog']
 
 from gba.common.bottle.persistable import Persistable
 
 class ProfessionPlayer(Persistable):
+    '''职业球员'''
     CACHE_KEY = 'profession_player:no'
      
 class FreePlayer(Persistable):
+    '''职业自由球员'''
     CACHE_KEY = 'free_player:no'
     
 class YouthFreePlayer(Persistable):
+    '''街头自由球员'''
     CACHE_KEY = 'youth_free_player:no'
 
 class YouthPlayer(Persistable):
+    '''街头球员'''
     CACHE_KEY = 'youth_player:no'
     
 class PlayerBetchLog(Persistable):
+    '''球员生成日志'''
     CACHE_KEY = 'player_betch_log:betch_no'
     
 class SysConfig(Persistable):
+    '''系统信息'''
     CACHE_KEY = 'sys_config:key'
     
 class Message(Persistable):
+    '''消息'''
     CACHE_KEY = 'message:id'
     
 class Team(Persistable):
+    '''球队'''
     CACHE_KEY = 'team:username'
     
 class Matchs(Persistable):
+    '''球队'''
     CACHE_KEY = 'matchs:id'
  
 class League(Persistable):
+    '''联赛'''
     CACHE_KEY = 'league:id'
     
 class LeagueMatchs(Persistable):
@@ -47,22 +59,24 @@ class LeagueMatchs(Persistable):
     CACHE_KEY = 'league_matchs:id'
  
 class LeagueTeams(Persistable):
+    '''联赛虚拟球队，通过映射来映射到真正的球队'''
     CACHE_KEY = 'league_teams:id'
     
 class LeagueTasks(Persistable):
     CACHE_KEY = 'league_tasks:id'
     
 class Names(Persistable):
+    '''名字库'''
     CACHE_KEY = 'names:id'
     
 class UserInfo(Persistable):
+    '''用户表'''
     CACHE_KEY = 'user_info:username'
     
 class YouthFreeplayerAuctionLog(Persistable):
     '''年轻球员出价表'''
     CACHE_KEY = 'youth_freeplayer_auction_log:username'
     
-
 class PlayerAuctionLog(Persistable):
     '''球员成交记录'''
     CACHE_KEY = 'player_auction_log:player_no'
@@ -106,7 +120,19 @@ class RuntimeData(Persistable):
 class MatchStat(Persistable):
     '''比赛统计'''
     CACHE_KEY = 'match_stat:player_no,match_id'
-
+    
+class MatchNodosityTacticalDetail(Persistable):
+    '''比赛每节战术详细'''
+    CACHE_KEY = 'match_nodosity_tactical_detail:id'
+    
+class MatchNodosityMain(Persistable):
+    '''比赛每节概要'''
+    CACHE_KEY = 'match_nodosity_main:id'
+    
+class MatchNodosityDetail(Persistable):
+    '''比赛每节详细'''
+    CACHE_KEY = 'match_nodosity_detail:id'
+    
 class ProPlayerCareerStatTotal(Persistable):
     '''职业球员生涯总的统计'''
     CACHE_KEY = 'pro_player_career_stat_total:player_no'
@@ -122,3 +148,11 @@ class ErrorLog(Persistable):
 class TeamStaff(Persistable):
     '''球队职员'''
     CACHE_KEY = 'team_staff:team_id,type,is_youth'
+    
+class TeamArena(Persistable):
+    '''创建球馆'''
+    CACHE_KEY = 'team_arena:id'
+    
+class RoundUpdateLog(Persistable):
+    '''每轮更新日志'''
+    CACHE_KEY = 'round_update_log:id'

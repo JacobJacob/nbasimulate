@@ -17,7 +17,7 @@
   <tr>
    <td>
       <div class="left">训练师</div>
-      <div class="left top_5"><img src="i15.php_files/icon_03.gif" alt="" align="absmiddle" width="16" height="7"></div>
+      <div class="left top_5"><img src="/site_media/images/icon_03.gif" alt="" align="absmiddle" width="16" height="7"></div>
    </td>
   {% if trainer %}
    <td>{{trainer.name}}</td>
@@ -34,7 +34,7 @@
    <td>
      <div class="left">营养师</div>
      <div class="left top_5">
-      <img src="i15.php_files/icon_04.gif" alt="" align="absmiddle" width="11" height="9"></div>
+      <img src="/site_media/images/icon_04.gif" alt="" align="absmiddle" width="11" height="9"></div>
    </td>
   {% if dietitian %}
    <td>{{dietitian.name}}</td>
@@ -51,7 +51,7 @@
    <td>
      <div class="left">队医</div>
      <div class="left top_5">
-      <img src="i15.php_files/icon_00.gif" alt="" align="absmiddle" width="11" height="11"></div>
+      <img src="/site_media/images/icon_00.gif" alt="" align="absmiddle" width="11" height="11"></div>
    </td>
    {% if doctor %}
    <td>{{doctor.name}}</td>
@@ -69,20 +69,20 @@
 <div class="explain_box players_talbe">
   <ul>
 	<li class="color_6">
-	<img src="i15.php_files/icon_02.gif" alt="" align="absmiddle" width="10" height="9">
-	<a href="{% url team-staff-min %}?is_youth={{is_youth}}" onclick='return href_to_div(this,"main_content")'>所有</a>
+	<img src="/site_media/images/icon_02.gif" alt="" align="absmiddle" width="10" height="9"/>
+	<a href="{% url team-staff-min %}?is_youth={{is_youth}}&level={{level}}" onclick='return href_to_div(this,"main_content")'>所有</a>
     </li>
 	<li>
-	  <img src="i15.php_files/icon_03.gif" alt="" align="absmiddle" width="16" height="7">
-	  <a href="{% url team-staff-min %}?type=1&is_youth={{is_youth}}" onclick='return href_to_div(this,"main_content")'>训练员</a>
+	  <img src="/site_media/images/icon_03.gif" alt="" align="absmiddle" width="16" height="7"/>
+	  <a href="{% url team-staff-min %}?type=1&is_youth={{is_youth}}&level={{level}}" onclick='return href_to_div(this,"main_content")'>训练员</a>
 	</li>
 	<li>
-	 <img src="i15.php_files/icon_04.gif" alt="" align="absmiddle" width="11" height="9">
-	 <a href="{% url team-staff-min %}?type=2&is_youth={{is_youth}}" onclick='return href_to_div(this,"main_content")'>营养师</a>
+	 <img src="/site_media/images/icon_04.gif" alt="" align="absmiddle" width="11" height="9"/>
+	 <a href="{% url team-staff-min %}?type=2&is_youth={{is_youth}}&level={{level}}" onclick='return href_to_div(this,"main_content")'>营养师</a>
     </li>
 	<li>
-	 <img src="i15.php_files/img_01.gif" alt="" align="absmiddle" width="11" height="11">
-	<a href="{% url team-staff-min %}?type=3&is_youth={{is_youth}}" onclick='return href_to_div(this,"main_content")'>队医</a>
+	 <img src="/site_media/images/img_01.gif" alt="" align="absmiddle" width="11" height="11"/>
+	<a href="{% url team-staff-min %}?type=3&is_youth={{is_youth}}&level={{level}}" onclick='return href_to_div(this,"main_content")'>队医</a>
     </li>
  </ul>
    <div class="clear"></div>
@@ -123,7 +123,7 @@
    <td>
      <div class="left">{{info.type|staff_type}}</div>
      <div class="left top_5">
-      <img src="i15.php_files/icon_04.gif" alt="" align="absmiddle" width="11" height="9">
+      <img src="/site_media/images/{{info.type|staff_img}}.gif" alt="" align="absmiddle" width="11" height="9">
      </div>
    </td>
   <td>{{info.round}}轮</td>
@@ -139,11 +139,21 @@
 </table>
 <div class="blank10"></div>
 <div class="mlr8 tr">
-<a href="{% url team-staff-min %}?level=1{%if type%}&type={{type}}{%endif%}" onclick="return href_to_div(this,'main_content');">首页</a>
-<a href="http://s3.dlm.17uxi.cn/source/n.php?a=420&amp;p=1" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
-<a href="http://s3.dlm.17uxi.cn/source/n.php?a=420&amp;p=3" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
-<a href="http://s3.dlm.17uxi.cn/source/n.php?a=420&amp;p=239" onclick="return href_to_div(this,'main_content');">末页</a>
-[第2/239页]
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url team-staff-min %}?page=1&level={{level}}&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url team-staff-min %}?page={{prevpage}}&level={{level}}&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url team-staff-min %}?page={{nextpage}}&level={{level}}&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url team-staff-min %}?page={{totalpage}}&level={{level}}&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
 </div>
 <div class="h25"></div>	
  </div>

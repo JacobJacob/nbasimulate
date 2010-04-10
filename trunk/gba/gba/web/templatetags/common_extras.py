@@ -261,3 +261,13 @@ def block_agv(stat):
 def staff_type(type):
     '''职员类型'''
     return StaffMap.get(type, '')
+
+@register.filter
+def staff_img(type):
+    '''职员类型图片'''
+    if type == 1:
+        return 'icon_03'
+    elif type == 2:
+        return 'icon_04'
+    elif type == 3:
+        return 'img_01'

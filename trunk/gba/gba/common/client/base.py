@@ -54,6 +54,7 @@ class BaseClient(object):
         
         self.is_paused = False # 是否已经成功进入暂停状态
         self.sleep_time = self.REPORT_SLEEP_TIME
+        self.ip = serverinfo.get_ip()
 
     def get_value_from_params(self, key, value_type, default):
         """从传回的params中获取指定参数的值
@@ -281,7 +282,7 @@ class BaseClient(object):
         """模块注册，并得到由服务器端分配的 Client ID。"""
         while True:
             try:
-                self.client_id = ClientManager.register(self._id, self.client_type, gba.VERSION)
+                self.client_id = ClientManager.register(self._id, self.client_type, gba.VERSION, self.ip)
                 logging.info('%s REGISTER SUCCEED(client_id %s)' % \
                                 (self.client_type, self.client_id))
                 return True
@@ -299,8 +300,7 @@ class BaseClient(object):
     def main(self):
         """客户端的主循环入口"""
         self._id = self._get_id()
-        logging.info("%s[Source Version = %s] START" % (self.client_type, 
-                                                        from gba.VERSION))
+        logging.info("%s[Source Version = %s] START" % (self.client_type, gba.VERSION))
         if not self._register(): # 只有注册成功，才能进入主循环
             return
         while True:

@@ -3,19 +3,15 @@
 
 from gba.client.betch.base import BaseBetchClient
 from gba.common import log_execption
-from gba.common.single_process import SingleProcess
 from gba.common.constants import MatchTypes
-from gba.entity import League, LeagueMatchs, Matchs, LeagueTeams, LeagueConfig
+from gba.entity import League, LeagueMatchs, Matchs, LeagueTeams
 
 class DailyLeagueUpdate(BaseBetchClient):
     
-    def __init__(self):
+    def __init__(self, round):
         super(DailyLeagueUpdate, self).__init__()
         self._start_id = 0
-        config = LeagueConfig.load(id=1)
-        if not config:
-            raise 'config error'
-        self._round = config.round
+        self._round = round
         self._total_created_match = 0
         
     def _run(self):
@@ -77,14 +73,3 @@ class DailyLeagueUpdate(BaseBetchClient):
         
     def _get_league_matchs(self, league_id):
         return LeagueMatchs.query(condition="league_id=%s and round=%s" % (league_id, self._round))
-    
-def main():
-    signle_process = SingleProcess('DailyLeagueUpdate')
-    signle_process.check()
-    try:
-        client = DailyLeagueUpdate()
-        client.start()
-    except:
-        log_execption()
-if __name__ == '__main__':
-    main()

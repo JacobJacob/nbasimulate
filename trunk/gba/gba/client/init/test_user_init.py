@@ -23,11 +23,11 @@ user_infos = [
 
 def main():
     user_manager = UserManager()
-    for user_info in user_infos:
-        success, session_id = user_manager.register_user(user_info[0], '821015', user_info[1])
+    for i in range(1, 500):
+        success, session_id = user_manager.register_user('test%s' % i, '821015', '花木兰%s' % i)
         print success, session_id
         if success:
-            match_operator.init_team({'username': user_info[0], 'teamname': user_info[2]})
+            match_operator.init_team({'username': 'test%s' % i, 'teamname': '木兰女子队%s' % i})
 
 
 if __name__ == '__main__':

@@ -6,6 +6,7 @@ from _mysql_exceptions import ProgrammingError
 from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.bottle import cache
+from gba.common import exception_mgr
 from gba.config import DEBUG
  
 def format_now():
@@ -214,6 +215,9 @@ class Persistable(object):
                     objs.append(obj)
                 info('query success, return %s records...' % len(objs))
                 return objs
+        except:
+            exception_mgr.on_except('sql[%s]' % sql)
+            raise
         finally:
             if need_close:
                 cursor.close()

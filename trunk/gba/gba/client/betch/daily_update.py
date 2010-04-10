@@ -7,9 +7,7 @@ from gba.common.constants import AttributeMaps
 from gba.entity import LeagueConfig, YouthPlayer, Message, ProfessionPlayer
 from gba.client.betch import config
 from gba.common import playerutil
-from gba.common.single_process import SingleProcess
 from gba.client.betch.base import BaseBetchClient
-from gba.common import log_execption
 
 class DailyUpdate(BaseBetchClient):
     '''每日更新批处理任务'''
@@ -57,7 +55,8 @@ class DailyUpdate(BaseBetchClient):
             message = Message()
             message.from_team_id = 0
             message.to_team_id = player.team_id
-            message.content = "%s 在刻苦训练中%s潜力加%s" % (player.name, AttributeMaps[attribute], inc_value)
+            message.title = u"%s 在刻苦训练中%s潜力加%s" % (player.name, AttributeMaps[attribute], inc_value)
+            message.content = u"%s 在刻苦训练中%s潜力加%s" % (player.name, AttributeMaps[attribute], inc_value)
             message.persist()
             
     def _prefission_player_update(self):
@@ -98,14 +97,3 @@ class DailyUpdate(BaseBetchClient):
         setattr(player, 'last_inc', inc)
         playerutil.calcul_ability(player)
         player.persist() 
-        
-def main():
-    signle_process = SingleProcess('DailyUpdate')
-    signle_process.check()
-    try:
-        client = DailyUpdate()
-        client.start()
-    except:
-        log_execption()
-if __name__ == '__main__':
-    main()
