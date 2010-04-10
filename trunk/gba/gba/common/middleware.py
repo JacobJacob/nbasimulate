@@ -15,4 +15,6 @@ class TeamInfoMiddleware(object):
         #if not team:
         #    path = urlquote(request.get_full_path())
         #    return HttpResponseRedirect('%s?%s=%s' % (reverse('login-page'), REDIRECT_FIELD_NAME, path)) 
+        print '=' * 30
+        print 'start to set'
         setattr(request, 'team', team)

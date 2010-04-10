@@ -1,0 +1,149 @@
+{% load common_extras %}
+<div id="tab3_1">		
+<table class="list_table" border="0" cellpadding="0" cellspacing="1" width="100%">
+  <tbody>
+  <tr>
+	<th colspan="7"><font color="blue">{%if is_youth%}【街头队】{%else%}【职业队】{%endif%}</font>现有职员</th>
+  </tr>
+  <tr>
+   <th>类型</th>
+   <th>名称</th>
+   <th>年龄</th>
+   <th>剩余合同</th>
+   <th>薪水</th>
+   <th>级别</th>
+   <th>操作</th>
+  </tr>
+  <tr>
+   <td>
+      <div class="left">训练师</div>
+      <div class="left top_5"><img src="i15.php_files/icon_03.gif" alt="" align="absmiddle" width="16" height="7"></div>
+   </td>
+  {% if trainer %}
+   <td>{{trainer.name}}</td>
+   <td>{{trainer.age}}</td>
+   <td>{{trainer.remain_round}}</td>
+   <td>{{trainer.wave}}</td>
+   <td>{{trainer.level}}</td>
+   <td></td>
+  {% else %}
+   <td colspan="6">&nbsp;</td>
+  {% endif %}
+  </tr>
+<tr class="td_bgcolor_blue1">
+   <td>
+     <div class="left">营养师</div>
+     <div class="left top_5">
+      <img src="i15.php_files/icon_04.gif" alt="" align="absmiddle" width="11" height="9"></div>
+   </td>
+  {% if dietitian %}
+   <td>{{dietitian.name}}</td>
+   <td>{{dietitian.age}}</td>
+   <td>{{dietitian.remain_round}}</td>
+   <td>{{dietitian.wave}}</td>
+   <td>{{dietitian.level}}</td>
+   <td></td>
+  {% else %}
+   <td colspan="6">&nbsp;</td>
+  {% endif %}
+</tr>
+<tr class="td_bgcolor_white">
+   <td>
+     <div class="left">队医</div>
+     <div class="left top_5">
+      <img src="i15.php_files/icon_00.gif" alt="" align="absmiddle" width="11" height="11"></div>
+   </td>
+   {% if doctor %}
+   <td>{{doctor.name}}</td>
+   <td>{{doctor.age}}</td>
+   <td>{{doctor.remain_round}}</td>
+   <td>{{doctor.wave}}</td>
+   <td>{{doctor.level}}</td>
+   <td></td>
+  {% else %}
+   <td colspan="6">&nbsp;</td>
+  {% endif %}
+  </tr>
+ </tbody>
+</table>
+<div class="explain_box players_talbe">
+  <ul>
+	<li class="color_6">
+	<img src="i15.php_files/icon_02.gif" alt="" align="absmiddle" width="10" height="9">
+	<a href="{% url team-staff-min %}?is_youth={{is_youth}}" onclick='return href_to_div(this,"main_content")'>所有</a>
+    </li>
+	<li>
+	  <img src="i15.php_files/icon_03.gif" alt="" align="absmiddle" width="16" height="7">
+	  <a href="{% url team-staff-min %}?type=1&is_youth={{is_youth}}" onclick='return href_to_div(this,"main_content")'>训练员</a>
+	</li>
+	<li>
+	 <img src="i15.php_files/icon_04.gif" alt="" align="absmiddle" width="11" height="9">
+	 <a href="{% url team-staff-min %}?type=2&is_youth={{is_youth}}" onclick='return href_to_div(this,"main_content")'>营养师</a>
+    </li>
+	<li>
+	 <img src="i15.php_files/img_01.gif" alt="" align="absmiddle" width="11" height="11">
+	<a href="{% url team-staff-min %}?type=3&is_youth={{is_youth}}" onclick='return href_to_div(this,"main_content")'>队医</a>
+    </li>
+ </ul>
+   <div class="clear"></div>
+</div>
+<div class="line2"></div>
+<div class="lh21 mlr8 grey">
+  <a href="{% url team-staff-min %}?level=1&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick='return href_to_div(this,"main_content")' class="blue">1级</a> 
+  |
+  <a href="{% url team-staff-min %}?level=2&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick='return href_to_div(this,"main_content")' class="blue">2级</a> 
+  |
+ <a href="{% url team-staff-min %}?level=3&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick='return href_to_div(this,"main_content")' class="blue">3级</a> 
+ |
+ <a href="{% url team-staff-min %}?level=4&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick='return href_to_div(this,"main_content")' class="blue">4级</a> 
+ |
+ <a href="{% url team-staff-min %}?level=5&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick='return href_to_div(this,"main_content")' class="blue">5级</a> 
+ |
+ <a href="{% url team-staff-min %}?level=6&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick='return href_to_div(this,"main_content")' class="blue">6级</a>
+ |
+ <a href="{% url team-staff-min %}?level=7&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick='return href_to_div(this,"main_content")' class="blue">7级</a> 
+ |
+ <a href="{% url team-staff-min %}?level=8&is_youth={{is_youth}}{%if type%}&type={{type}}{%endif%}" onclick='return href_to_div(this,"main_content")' class="blue">8级</a> 
+</div>
+<table class="list_table" border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tbody>
+  <tr>
+    <th>姓名</th>
+    <th>年龄</th>
+    <th>职业</th>
+    <th>合同</th>
+    <th>薪水</th>
+    <th>等级</th>
+    <th class="end_cell">操作</th>
+</tr>
+{% for info in infos %}
+ <tr>
+   <td>{{info.name}}</td>
+   <td>{{info.age}}</td>
+   <td>
+     <div class="left">{{info.type|staff_type}}</div>
+     <div class="left top_5">
+      <img src="i15.php_files/icon_04.gif" alt="" align="absmiddle" width="11" height="9">
+     </div>
+   </td>
+  <td>{{info.round}}轮</td>
+  <td>{{info.wave}}</td>
+  <td>{{info.level}}</td>
+  <td>
+   <a href="{% url hire-staff %}?id={{info.id}}" onclick="return show_popup(this);">
+   <font color="#0096f1">雇佣</font></a>
+ </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">
+<a href="{% url team-staff-min %}?level=1{%if type%}&type={{type}}{%endif%}" onclick="return href_to_div(this,'main_content');">首页</a>
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=420&amp;p=1" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=420&amp;p=3" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=420&amp;p=239" onclick="return href_to_div(this,'main_content');">末页</a>
+[第2/239页]
+</div>
+<div class="h25"></div>	
+ </div>

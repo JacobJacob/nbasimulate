@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+
+{% block show_nav %}
+<script language="javascript">
+  sub_menu_highlight(2,2);
+  nav_over('nav2','show2');
+  nav_show('nav2','show2');
+</script>
+{% endblock %}
+{% block sub_menu %}			
+ <div class="players_lab">
+  <ul>
+	<li class="active" id="menu_third_1">
+	 <a href="{% url team-staff-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">职业队</a>
+	</li>
+	<li id="menu_third_2">
+	 <a href="{% url team-staff-min %}?is_youth=1" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">街球队</a>
+	</li>
+  </ul>
+</div>
+<div class="clear"></div>				
+ <script language="javascript">
+  third_menu_highlight(1);	
+ </script>
+{% endblock %}

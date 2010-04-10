@@ -8,7 +8,7 @@ from django import template
 from django.core.urlresolvers import reverse
 
 from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap
-from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap
+from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap, StaffMap
 from gba.entity import Team, UserInfo, ProfessionPlayer, LeagueTeams
 
 register = template.Library()
@@ -256,4 +256,8 @@ def block_agv(stat):
     if stat.match_total == 0:
         return 0
     return '%.1f' % (stat.block / stat.match_total)
-    
+
+@register.filter
+def staff_type(type):
+    '''职员类型'''
+    return StaffMap.get(type, '')

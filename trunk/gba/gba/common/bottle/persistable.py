@@ -238,6 +238,8 @@ class Persistable(object):
     def load(cls, **keys):
         '''load the object'''
         cls._init_meta()
+        for v in keys.values():
+            pass #检验参数 
         query_str = ','.join(['%s=%s' % (k, v) for k, v in keys.items()])
         info('start load object with %s[table:%s]' % (query_str, cls._table))
         #load from cache

@@ -135,3 +135,18 @@ class MessageType(ConstantBase):
 class MarketType(ConstantBase):
     FREE = 1 #职业自由
     YOUTH_FREE = 2 #年轻自由
+    
+class StaffType(ConstantBase):
+    TRAINERS = 1 #训练员
+    DIETITIAN = 2 #营养师
+    DOCTOR = 3 #队医
+    
+StaffMap = {
+    StaffType.TRAINERS: u'训练员',
+    StaffType.DIETITIAN: u'营养师',
+    StaffType.DOCTOR: u'队医',        
+}
+
+class StaffStatus(ConstantBase):
+    IN_WORK = 1 #在球队中
+    NOT_IN_WORD = 2 #自由
