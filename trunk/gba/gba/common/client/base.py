@@ -8,8 +8,10 @@ import time
 import sys
 import threading
 
-from common import init_log
-from common.constants import ClientStatus, STATUS_MAP, Command, SmartClientCommand
+import gba
+from gba.business.client import ClientManager
+from gba.common.constants import ClientStatus, STATUS_MAP, Command, SmartClientCommand
+from gba.common import serverinfo
 
 def log_execption():
     pass
@@ -31,9 +33,6 @@ class BaseClient(object):
     REPORT_SLEEP_TIME = 20
     
     def __init__(self, client_type):
-        init_log()
-        
-        self.service = client_service_proxy
         self.client_type = client_type # 客户端名称
         self.status = ClientStatus.SLEEP # 初始状态
         self._last_report_status = None
@@ -145,7 +144,7 @@ class BaseClient(object):
         self.work_thread.start()
         
     def _svnup(self):
-        logging.warning("%s[Source Version = %s] SVNUP, exit 43" % (self.client_type, from gba.VERSION))
+        logging.warning("%s[Source Version = %s] SVNUP, exit 43" % (self.client_type, gba.VERSION, serverinfo.get_ip()))
         raise SystemExit(SmartClientCommand.SVNUP_RESTART) # 升级重启进程
         
     def _quit(self):
@@ -248,8 +247,8 @@ class BaseClient(object):
         """模块上报状态并接受指令，以及运行参数、Task ID 等。"""
         while True:
             try: 
-                #data = self.service.report_status(self.client_id, status, description)
-                
+                cmd, params = ClientManager.update_status(self.client_id, status, description)
+                data = {'cmd': cmd, 'params': params}
                 break
             except KeyboardInterrupt:
                 raise
@@ -282,7 +281,7 @@ class BaseClient(object):
         """模块注册，并得到由服务器端分配的 Client ID。"""
         while True:
             try:
-                self.client_id = self.service.register(self._id, self.client_type, from gba.VERSION)
+                self.client_id = ClientManager.register(self._id, self.client_type, gba.VERSION)
                 logging.info('%s REGISTER SUCCEED(client_id %s)' % \
                                 (self.client_type, self.client_id))
                 return True
