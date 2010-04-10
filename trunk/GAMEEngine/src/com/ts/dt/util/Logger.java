@@ -20,8 +20,11 @@ public class Logger {
 
 		ErrorLog log = new ErrorLog();
 		log.setType(type);
-		log.setLog(msg.toString());
-
+		if (msg != null) {
+			log.setLog(msg.toString());
+		} else {
+			log.setLog("unknown error");
+		}
 		Session session = BottleUtil.currentSession();
 		session.beginTransaction();
 		try {

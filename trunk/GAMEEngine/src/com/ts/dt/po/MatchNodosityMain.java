@@ -31,6 +31,16 @@ public class MatchNodosityMain extends Persistence {
 		detail.add(matchdetail);
 	}
 
+	public void clear() {
+		this.seq = 0;
+		this.matchId = 0;
+		this.homeTacticId = 0;
+		this.visitingTacticId = 0;
+		this.point = null;
+		this.list.clear();
+		this.detail.clear();
+	}
+
 	public int getSeq() {
 		return seq;
 	}

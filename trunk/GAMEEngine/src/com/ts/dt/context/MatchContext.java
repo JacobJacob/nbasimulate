@@ -11,7 +11,6 @@ import com.ts.dt.match.helper.ReboundHelper;
 import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.Player;
 import com.ts.dt.stat.DataStat;
-import com.ts.dt.util.DebugUtil;
 
 public class MatchContext {
 
@@ -73,6 +72,44 @@ public class MatchContext {
 	public MatchContext() {
 		data = new Hashtable<String, Object>();
 		init();
+	}
+
+	// 清除所有数据,重用,不要每次都开一个
+	public void clear() {
+
+		this.matchId = 0;
+		this.data.clear();
+		this.dataStat.clear();
+		this.onCourtPlayers.clear();
+		this.hadOnCourtPlayers.clear();
+		this.homeTeamId = 0;
+		this.visitingTeamId = 0;
+		this.matchType = 0;
+		this.seq = 0;
+		this.homeTeamOffensiveTactical = -1;
+		this.homeTeamDefendTactical = -1;
+		this.guestTeamOffensiveTactical = -1;
+		this.guestTeamDefendTactical = -1;
+		this.currentOffensiveCostTime = 0;
+		this.currentTeam = MatchConstant.CURRENT_TEAM_A;
+		this.previousActionAffect = 0;
+		this.tacticsAffect = 0;
+		this.isOutside = false;
+		this.isFoul = false;
+		this.isBlock = false;
+		this.isAssist = false;
+		this.foulShootRemain = -1;
+		this.foulShootType = 0;
+		this.justStart = true;
+		this.isOffensiveRebound = false;
+		this.isDefensiveRebound = false;
+		this.totalHomeBackboard = 0;
+		this.totalGuestBackboard = 0;
+		this.currentSeq = 0;
+		this.isYouth = false;
+		this.nodosityMain.clear();
+
+		this.init();
 	}
 
 	private void init() {

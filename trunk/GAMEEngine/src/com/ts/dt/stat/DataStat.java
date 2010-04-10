@@ -41,6 +41,28 @@ public class DataStat {
 		visitingTeamPlayersDataStat = new Hashtable<Long, PlayerDataStat>();
 	}
 
+	// ³ý³ý×´Ì¬
+	public void clear() {
+		this.homeTeamPlayersDataStat.clear();
+		this.visitingTeamPlayersDataStat.clear();
+		this.homeTeam1ShootTimes = 0;
+		this.visitingTeam1ShootTimes = 0;
+		this.homeTeam2ShootTimes = 0;
+		this.visitingTeam2ShootTimes = 0;
+		this.homeTeam3ShootTimes = 0;
+		this.visitingTeam3ShootTimes = 0;
+		this.homeTeamOffensiveRebound = 0;
+		this.visitingTeamOffensiveRebound = 0;
+		this.homeTeam1DoomTimes = 0;
+		this.visitingTeam1DoomTimes = 0;
+		this.homeTeam2DoomTimes = 0;
+		this.visitingTeam2DoomTimes = 0;
+		this.homeTeam3DoomTimes = 0;
+		this.visitingTeam3DoomTimes = 0;
+		this.homeTeamDefensiveRebound = 0;
+		this.visitingTeamDefensiveRebound = 0;
+	}
+
 	public void homeTeam1ShootTimesInc() {
 		homeTeam1ShootTimes++;
 	}

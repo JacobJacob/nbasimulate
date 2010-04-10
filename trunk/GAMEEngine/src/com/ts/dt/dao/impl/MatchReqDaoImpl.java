@@ -10,7 +10,7 @@ import com.ts.dt.po.Matchs;
 
 public class MatchReqDaoImpl implements MatchReqDao {
 
-	private static final String QUERY_NEW_REQ_SQL = "select * from matchs where status = ?";
+	private static final String QUERY_NEW_REQ_SQL = "select * from matchs where status = ? limit 100";
 	private static final Object[] QUERY_NEW_REQ_PARM = new Object[] { MatchStatus.ACCP };
 
 	@SuppressWarnings("unchecked")

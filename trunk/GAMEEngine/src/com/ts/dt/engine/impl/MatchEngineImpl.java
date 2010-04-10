@@ -25,9 +25,9 @@ import com.ts.dt.util.Logger;
  */
 public class MatchEngineImpl implements MatchEngine {
 
-	public Matchs execute(long matchid) {
+	MatchContext context = new MatchContext();
 
-		MatchContext context = new MatchContext();
+	public Matchs execute(long matchid) {
 
 		MatchDao matchDao = new MatchDaoImpl();
 		Matchs match = matchDao.load(matchid);
@@ -73,6 +73,9 @@ public class MatchEngineImpl implements MatchEngine {
 
 		// 保存未上场球员统计
 		this.saveNotInPlayer(context, matchid);
+
+		// 清除状态
+		context.clear();
 
 		return match;
 
