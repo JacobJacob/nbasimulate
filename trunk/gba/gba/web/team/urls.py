@@ -11,5 +11,7 @@ urlpatterns = patterns('web.team',
     url(r'^team_staff/$', 'views.team_staff', name='team-staff'),
     url(r'^team_staff_min/$', 'views.team_staff', {'min': True}, name='team-staff-min'),
     url(r'^hire_staff/$', 'views.hire_staff', name='hire-staff'),
-    
+    url(r'^team_ad/$', 'views.team_ad', name='team-ad'),
+    url(r'^team_ad_min/$', 'views.team_ad',{'min': True}, name='team-ad-min'),
+    url(r'^select_ad/$', 'views.select_ad', name='select-ad'),
 )

@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 """"""
 
+from copy import deepcopy
 from django.core.urlresolvers import reverse
 
 from gba.business.user_roles import login_required
-from gba.entity import TeamStaff, SeasonFinance, AllFinance
+from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, LeagueConfig
 from gba.web.render import render_to_response
-from gba.common.constants import StaffStatus, StaffType
+from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
+from gba.common.config import ad_billboards
 
 @login_required
 def season_finance(request, min=False):
@@ -50,9 +52,108 @@ def all_finance(request, min=False):
 def arena_build(request):
     """球员馆建设"""
     team = request.team
-    datas = {}
+    team_arena = TeamArena.load(team_id=team.id)
+    datas = {'team_arena': team_arena}
     return render_to_response(request, 'team/arena_build.html', datas)
 
+@login_required
+def team_ad(request, min=False):
+    """球队广告"""
+    team = request.team
+    team_ads = deepcopy(ad_billboards)
+
+    selected_ads = TeamAd.query(condition='team_id="%s"' % team.id)
+    selected_ad_ids = [selected_ad.round for selected_ad in selected_ads]
+    for team_ad in team_ads:
+        amount = team_ad['amount']
+        team_ad['amount'] = amount * (12 - team.profession_league_evel) #联赛等级越高，广告费越贵
+        if team_ad['round'] in selected_ad_ids:
+            team_ad['is_selected'] = True
+        else:
+            team_ad['is_selected'] = False
+        
+    datas = {'infos': team_ads}
+    if min:
+        return render_to_response(request, 'team/team_ad_min.html', datas)
+    return render_to_response(request, 'team/team_ad.html', datas)
+
+@login_required
+def select_ad(request):
+    """选择广告"""
+    team = request.team
+    ad_id = int(request.GET.get('id', 0))
+    success = "广告签订成功"
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not ad_id or ad_id < 1 or ad_id > 8:
+            error = u'广告不存在'
+            break
+        
+        team_arena = TeamArena.load(team_id=team.id)
+        if not team_arena:
+            error = u'未知异常，联系客服'
+            break
+        
+        selected_ads = TeamAd.query(condition='team_id="%s"' % team.id)
+        if len(selected_ads) >= team_arena.level:
+            error = u'赞助商不肯投放更多的广告<br/>咱们还是先发展我们的球队吧'
+            break
+        for selected_ad in selected_ads:
+            if selected_ad.round == ad_id:
+                error = '您已经签过该广告了'
+                break
+        
+        amount = ad_billboards[ad_id-1]['amount'] * (12 - team.profession_league_evel) #联赛等级越高，广告费越贵
+        
+        league_config = LeagueConfig.load(id=1)
+        
+        team_ad = TeamAd()
+        team_ad.team_id = team.id
+        team_ad.round = ad_id
+        team_ad.remain_round = ad_id
+        team_ad.amount = amount
+        
+        #赛季收入明细
+        tinance = SeasonFinance()
+        tinance.sub_type = FinanceSubType.AD
+        tinance.team_id = team.id
+        tinance.type = FinanceType.INCOME
+        tinance.season = league_config.season
+        tinance.round = league_config.round
+        tinance.info = u'赞助商广告费'
+        tinance.income = amount
+        tinance.outlay = 0
+        team.funds += amount
+
+        #赛季收入概要
+        all_tinance = AllFinance.load(team_id=team.id, season=league_config.season)
+        if not all_tinance:
+            all_tinance = AllFinance()
+            all_tinance.team_id = team.id
+            all_tinance.season = league_config.season
+            all_tinance.income = 0
+            all_tinance.outlay = 0
+        all_tinance.income += amount
+        
+        TeamAd.transaction()
+        try:
+            team_ad.persist()
+            team.persist()
+            tinance.persist()
+            all_tinance.persist()
+            TeamAd.commit()
+        except:
+            TeamAd.rollback()
+            error = u'应用服务器未知异常'
+        
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    url = reverse('team-ad-min')
+    return render_to_response(request, 'message_update.html', {'success': success, 'url': url})  
+    
 @login_required
 def team_staff(request, min=False):
     """球队职员"""
