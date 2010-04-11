@@ -10,7 +10,7 @@ __all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
            'MatchNotInPlayer', 'LeagueMatchs', 'RuntimeData', 'ProPlayerCareerStatTotal',
            'ProPlayerSeasonStatTotal', 'ErrorLog', 'TeamStaff', 'MatchNodosityMain',
            'MatchNodosityDetail', 'MatchNodosityTacticalDetail', 'TeamArena',
-           'RoundUpdateLog', 'SeasonFinance', 'AllFinance']
+           'RoundUpdateLog', 'SeasonFinance', 'AllFinance', 'TeamAd']
 
 from gba.common.bottle.persistable import Persistable
 
@@ -164,3 +164,7 @@ class SeasonFinance(Persistable):
 class AllFinance(Persistable):
     '''球队每赛季收支明细'''
     CACHE_KEY = 'all_finance:id'
+    
+class TeamAd(Persistable):
+    '''球队广告'''
+    CACHE_KEY = 'team_ad:id'
