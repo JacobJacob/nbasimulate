@@ -50,14 +50,14 @@ def main():
     
 def test():
     
-    for i in range(26):
+    for i in range(17):
         main()
 
 if __name__ == '__main__':
     signle_process = SingleProcess('RoundUpdate')
     signle_process.check()
     try:
-        #test()
-        main()
+        test()
+        #main()
     except:
         exception_mgr.on_except()
