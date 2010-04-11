@@ -2,6 +2,7 @@ package com.dt.bottle.helper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -35,6 +36,10 @@ public class SqlHelper {
 
 			Field field = fields[i];
 			if ("serialVersionUID".equals(field.getName())) {
+				continue;
+			}
+			int mod = field.getModifiers();
+			if (Modifier.isFinal(mod)) {
 				continue;
 			}
 
@@ -115,6 +120,11 @@ public class SqlHelper {
 			if ("serialVersionUID".equals(field.getName())) {
 				continue;
 			}
+			int mod = field.getModifiers();
+			if (Modifier.isFinal(mod)) {
+				continue;
+			}
+
 			Object value = getValueByField(obj, field.getName());
 
 			if (value != null) {
@@ -172,7 +182,8 @@ public class SqlHelper {
 	public static String className2TableName(Object obj) {
 
 		String className = obj.getClass().getName();
-		className = className.substring(className.lastIndexOf(".") + 1, className.length());
+		className = className.substring(className.lastIndexOf(".") + 1,
+				className.length());
 
 		char[] chs = className.toCharArray();
 
@@ -212,7 +223,8 @@ public class SqlHelper {
 	public static String getShortName(Object obj) {
 
 		String className = obj.getClass().getName();
-		className = className.substring(className.lastIndexOf(".") + 1, className.length());
+		className = className.substring(className.lastIndexOf(".") + 1,
+				className.length());
 		return className;
 
 	}
@@ -230,10 +242,12 @@ public class SqlHelper {
 	}
 
 	public static String fieldName2GetMethod(String fieldName) {
-		return "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
+		return "get" + fieldName.substring(0, 1).toUpperCase()
+				+ fieldName.substring(1, fieldName.length());
 	}
 
 	public static String fieldName2SetMethod(String fieldName) {
-		return "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
+		return "set" + fieldName.substring(0, 1).toUpperCase()
+				+ fieldName.substring(1, fieldName.length());
 	}
 }
