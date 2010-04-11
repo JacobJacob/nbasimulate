@@ -1,7 +1,7 @@
 <br><br><br><br>
  <div align='center'>
    {% if error %}
-    {{error}}
+    {{error|safe}}
    {% else %}
     {{success}}
    {% endif %}
