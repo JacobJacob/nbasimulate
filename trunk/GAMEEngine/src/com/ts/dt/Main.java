@@ -8,8 +8,10 @@ public class Main {
 	public static void main(String[] args) {
 
 		new MatchReqMonitor().start();
-		new MatchReqHandle().start();
-		new MatchReqHandle().start();
-		new MatchReqHandle().start();
+		for (int i = 0; i <= 20; i++) {
+			new MatchReqHandle().start();
+		}
+		// new MatchReqHandle().start();
+		// new MatchReqHandle().start();
 	}
 }

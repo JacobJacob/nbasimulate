@@ -1,6 +1,6 @@
 package com.ts.dt.engine.impl;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class MatchEngineImpl implements MatchEngine {
 		long homeTeamId = match.getHomeTeamId();
 		long visitingTeamId = match.getGuestTeamId();
 
-		match.setStartTime(new Date());
+		match.setStartTime(new Date(new java.util.Date().getTime()));
 		match.setGuestTeamId(visitingTeamId);
 
 		match.setHomeTeamId(homeTeamId);
@@ -52,6 +52,7 @@ public class MatchEngineImpl implements MatchEngine {
 		boolean go = true;
 		Logger.info("match start......");
 		while (go) {
+			long start = System.currentTimeMillis();
 			context.put(MatchConstant.CURRT_CONT_TIME, 0L);
 			int nodosityNo = nodosity.getNodosityNo();
 			Logger.info("The" + nodosityNo + "nodosity start...");
@@ -60,10 +61,16 @@ public class MatchEngineImpl implements MatchEngine {
 			go = nodosity.hasNextNodosity();
 
 			nodosity = nodosity.getNextNodosity();
+			long end = System.currentTimeMillis();
+			System.out.println("nodosity " + nodosityNo + " use times:"
+					+ (end - start));
 		}
 
 		context.outPutMatchMessage();
+		long start = System.currentTimeMillis();
 		context.saveStatToDB();
+		long end = System.currentTimeMillis();
+		System.out.println("save stat use times:" + (end - start));
 
 		match.setPoint(context.currentScore());
 		match.setStatus(MatchStatus.FINISH);
@@ -89,14 +96,18 @@ public class MatchEngineImpl implements MatchEngine {
 
 		if (context.isYouth()) {
 
-			home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
-			guest_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+			home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context
+					.getHomeTeamId());
+			guest_players = new YouthPlayerDaoImpl()
+					.getPlayerWithTeamId(context.getVisitingTeamId());
 
 		} else {
-			home_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
-			guest_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+			home_players = new ProfessionPlayerDaoImpl()
+					.getPlayerWithTeamId(context.getHomeTeamId());
+			guest_players = new ProfessionPlayerDaoImpl()
+					.getPlayerWithTeamId(context.getVisitingTeamId());
 		}
-
+		long start = System.currentTimeMillis();
 		Session session = BottleUtil.currentSession();
 		session.beginTransaction();
 		Iterator<Player> iterator = home_players.iterator();
@@ -127,7 +138,8 @@ public class MatchEngineImpl implements MatchEngine {
 			matchNotInPlayer.save();
 		}
 		session.endTransaction();
-
+		long end = System.currentTimeMillis();
+		System.out.println("save not in player user times:" + (end - start));
 	}
 
 	public static void main(String[] args) {

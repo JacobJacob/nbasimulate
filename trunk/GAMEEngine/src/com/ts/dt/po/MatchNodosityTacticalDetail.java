@@ -6,7 +6,7 @@ public class MatchNodosityTacticalDetail extends Persistence {
 
 	private long matchNodosityMainId;
 	private String position;
-	private long playerId;
+	private String playerNo;
 	private String playerName;
 	private float colligate;
 
@@ -26,12 +26,12 @@ public class MatchNodosityTacticalDetail extends Persistence {
 		this.position = position;
 	}
 
-	public long getPlayerId() {
-		return playerId;
+	public String getPlayerNo() {
+		return playerNo;
 	}
 
-	public void setPlayerId(long playerId) {
-		this.playerId = playerId;
+	public void setPlayerNo(String playerNo) {
+		this.playerNo = playerNo;
 	}
 
 	public String getPlayerName() {
