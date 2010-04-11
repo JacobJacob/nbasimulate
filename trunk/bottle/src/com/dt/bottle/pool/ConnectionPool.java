@@ -6,7 +6,7 @@ import com.dt.bottle.connector.DBConnection;
 
 public class ConnectionPool {
 
-	public final static int MAX_CONNECTION = 5;
+	public final static int MAX_CONNECTION = 50;
 
 	private static ConnectionPool connPool;
 
@@ -37,7 +37,8 @@ public class ConnectionPool {
 	}
 
 	public DBConnection connection() {
-
+       
+		//System.out.println("start to get conn");
 		DBConnection conn = null;
 		synchronized (lock) {
 			while (conn == null) {
@@ -55,6 +56,7 @@ public class ConnectionPool {
 				}
 			}
 		}
+		//System.out.println("success get conn");
 		return conn;
 	}
 
