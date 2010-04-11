@@ -2,6 +2,7 @@ package com.dt.bottle.helper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.sql.ResultSet;
 import java.util.Date;
 
@@ -23,6 +24,10 @@ public class ObjectBuilder {
 			if ("serialVersionUID".equals(field.getName())) {
 				continue;
 			}
+			int mod = field.getModifiers();
+			if (Modifier.isFinal(mod)) {
+				continue;
+			}
 
 			String fieldName = field.getName();
 			Class<?>[] parmTypes = { field.getType() };
@@ -31,8 +36,11 @@ public class ObjectBuilder {
 			Method method = cls.getMethod(SqlHelper
 					.fieldName2SetMethod(fieldName), parmTypes);
 
-			method.invoke(obj, args);
-
+			try {
+				method.invoke(obj, args);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		((Persistence) obj).setId(resultSet.getLong("id"));
 
@@ -68,7 +76,8 @@ public class ObjectBuilder {
 			return resultSet.getBoolean(columnName);
 		} else if (fieldTypeName.endsWith("Date")) {
 			if (resultSet.getTimestamp(columnName) != null) {
-				Date date = new Date(resultSet.getTimestamp(columnName).getTime() );
+				Date date = new Date(resultSet.getTimestamp(columnName)
+						.getTime());
 				return date;
 			}
 			return null;
