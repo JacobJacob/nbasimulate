@@ -16,16 +16,11 @@ class DailyUpdate(BaseBetchClient):
         super(DailyUpdate, self).__init__()
     
     def _run(self):
-        self._sys_update()
-        self._youth_player_update()
-        self._prefission_player_update()
+        pass
+        #self._sys_update()
+        #self._youth_player_update()
+        #self._prefission_player_update()
     
-    def _sys_update(self):
-        '''轮次更新'''
-        league_config = LeagueConfig.query(limit=1)[0]
-        league_config.round += 1
-        league_config.persist()
-            
     def _youth_player_update(self):
         '''年轻球员更新'''
         start_id = 0

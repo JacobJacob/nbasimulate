@@ -1,12 +1,38 @@
 #-*- coding:utf-8 -*-
 
-from gba.web.render import render_to_response
-from gba.business.user_roles import UserManager
-from gba.entity import LeagueConfig
+import time
 
+from gba.web.render import render_to_response
+from gba.business.user_roles import UserManager, login_required
+from gba.entity import LeagueConfig, LeagueMatchs, LeagueTeams
+from gba.common import commonutil
+
+@login_required
 def index(request):
-    content = u'首页'
-    return render_to_response(request, "index.html", locals())
+    '''首页'''
+    
+    team = request.team
+    league_config = LeagueConfig.load(id=1)
+    start = False
+    datas = {}
+    if league_config.round == 1:
+        start = True
+    else:
+        league_team = LeagueTeams.load(team_id=team.id)
+        league_match = LeagueMatchs.query(condition='(match_team_home_id="%s" or match_team_guest_id="%s") and round="%s"' %\
+                                           (league_team.id, league_team.id, league_config.round-1), limit=1)
+        print league_match
+        if league_match:
+            league_match = league_match[0]
+            timetuple = league_match.updated_time.timetuple()
+            month = timetuple[1]
+            date = timetuple[2]
+    
+            point_data = commonutil.change_point_to_score_card(league_match.point)
+         
+            datas.update({'league_match': league_match, 'start': start, 'month': month, 'date': date})
+            datas.update(point_data)
+    return render_to_response(request, "index.html", datas)
 
 def left(request):
     content = u'首页'

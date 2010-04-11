@@ -11,7 +11,7 @@ def league_rank(request, min=False):
     """联赛排名"""
     team = request.team
     league = League.load(degree=team.profession_league_evel, no=team.profession_league_class)
-    league_teams = LeagueTeams.query(condition="league_id='%s'" % league.id, order="win desc, net_points desc")
+    league_teams = LeagueTeams.query(condition="league_id='%s' and team_id<> -1" % league.id, order="win desc, net_points desc")
     datas = {'infos': league_teams, 'league': league}
     
     for i, league_team in enumerate(league_teams):
@@ -23,13 +23,15 @@ def league_rank(request, min=False):
 
 
 @login_required
-def league_schedule(request):
+def league_schedule(request, min=False):
     """联赛赛程"""
     team = request.team
     league = League.load(degree=team.profession_league_evel, no=team.profession_league_class)
     league_team = LeagueTeams.load(team_id=team.id)
     league_matchs = LeagueMatchs.query(condition='match_team_home_id=%s or match_team_guest_id=%s' % (league_team.id, league_team.id), order='round asc ')
     datas = {'infos': league_matchs, 'league': league}
+    if min:
+         return render_to_response(request, 'league/league_schedule_min.html', datas)
     return render_to_response(request, 'league/league_schedule.html', datas)
 
 @login_required
@@ -38,8 +40,13 @@ def pre_schedule(request):
     team = request.team
     league_config = LeagueConfig.load(id=1)
     league = League.load(degree=team.profession_league_evel, no=team.profession_league_class)
-    league_matchs = LeagueMatchs.query(condition="league_id='%s' and round='%s'" % (league.id, league_config.round))
-    datas = {'infos': league_matchs, 'league': league}
+    start = False
+    league_matchs = []
+    if league_config.round == 1:
+        start = True
+    else:
+        league_matchs = LeagueMatchs.query(condition="league_id='%s' and round='%s'" % (league.id, league_config.round-1))
+    datas = {'infos': league_matchs, 'league': league, 'start': start}
     return render_to_response(request, 'league/pre_schedule.html', datas)
 
 @login_required
@@ -48,7 +55,7 @@ def current_schedule(request):
     team = request.team
     league_config = LeagueConfig.load(id=1)
     league = League.load(degree=team.profession_league_evel, no=team.profession_league_class)
-    league_matchs = LeagueMatchs.query(condition="league_id='%s' and round='%s'" % (league.id, league_config.round+1))
+    league_matchs = LeagueMatchs.query(condition="league_id='%s' and round='%s'" % (league.id, league_config.round))
     datas = {'infos': league_matchs, 'season': league_config.season, 'round': league_config.round+1, 'league': league}
     return render_to_response(request, 'league/current_schedule.html', datas)
 
@@ -59,9 +66,11 @@ def league_statistics(request):
     league_id = request.GET.get('league_id', None)
     datas = {'type': type}
     if league_id:
-        print type
         #1平均分 ,2 抢断 3 篮板 , 4 助功 ,5 封盖
-        teams = Team.query(league_id=league_id)
+        league_teams = LeagueTeams.query(condition='league_id="%s"' % league_id)
+        teams_ids = ','.join(["'%s'" % league_team.team_id for league_team in league_teams if league_team.team_id != -1])
+        print teams_ids
+        teams = Team.query(condition="id in (%s)" % teams_ids)
         league = League.load(id=league_id)
         player_nos = []
         for team in teams:
@@ -102,7 +111,6 @@ def team_statistics(request):
     league = League.load(degree=team.profession_league_evel, no=team.profession_league_class)
     player_nos = []
     players = ProfessionPlayer.query(condition="team_id='%s'" % team.id)
-    print len(players)
     for player in players:
         player_nos.append(player.no)
     player_str = ",".join(["'%s'" % no for no in player_nos])

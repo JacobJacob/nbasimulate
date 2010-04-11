@@ -7,10 +7,11 @@ from const import oten_color_map, attributes, hide_attributes, AttributeMaps, Po
 from const import TacticalSectionTypeMap, TacticalGroupType, TacticalGroupTypeMap,MessageType
 from const import MarketType, StaffType, StaffMap, StaffStatus
 from user import User
-from match import ActionType, MatchStatus, MatchStatusMap, MatchTypes, MatchTypeMaps
+from match import ActionType, MatchStatus, MatchStatusMap, MatchTypes, MatchTypeMaps, \
+                  FinanceType, FinanceSubType
 
 __all__ = ('ClientStatus', 'ClientType', 'Command', 'SmartClientCommand', 'STATUS_MAP',
            'CLIENT_STATUS_NAMES', 'attributes', 'oten_color_map', 'User', 'MatchStatus', 'hide_attributes',
            'MatchTypes', 'TacticalSectionTypeMap', 'TacticalGroupTypeMap', 'TacticalGroupType',
            'MatchStatusMap', 'AttributeMaps', 'MessageType', 'MarketType', 'MatchTypeMaps',
-           'PositioneMap', 'StaffType', 'StaffMap', 'StaffStatus')
+           'PositioneMap', 'StaffType', 'StaffMap', 'StaffStatus', 'FinanceSubType', 'FinanceType')

@@ -2,20 +2,14 @@
 width="100%" border="0" cellpadding="0" cellspacing="0">
 <tbody><tr>
 <th>赛季</th>
-<th>轮数</th>
 <th>收入</th>
 <th>支出</th>
-<th>时间</th>
-<th class="end_cell">科目</th>
 </tr>
 {% for info in infos %}
 <tr>
 <td>{{info.season}}</td>
-<td>{{info.round}}</td>
 <td><font color="#0096f1">{{info.income}}</font></td>
 <td><font color="red">{{info.outlay}}</font></td>
-<td>{{info.created_time}}</td>
-<td>{{info.info}}</td>
 </tr>
 {% endfor %}
 </tbody>

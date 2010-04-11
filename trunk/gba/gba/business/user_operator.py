@@ -61,6 +61,16 @@ def update_message_to_old(message_ids):
     finally:
         cursor.close()
 
+_GET_TEAM_WAVE_TOTAL = 'select sum(wage) as total from profession_player where team_id=%s'
+
+def calcul_team_wave_total(team_id):
+    '''计算球队的工资总和'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchone(_GET_TEAM_WAVE_TOTAL, (team_id, ))
+        return rs['total'] if rs else 0
+    finally:
+        cursor.close()
         
 if __name__ == '__main__':
-    get_message(1)
+    print calcul_team_wave_total(1)

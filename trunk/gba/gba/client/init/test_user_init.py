@@ -23,7 +23,7 @@ user_infos = [
 
 def main():
     user_manager = UserManager()
-    for i in range(1, 500):
+    for i in range(1, 80):
         success, session_id = user_manager.register_user('test%s' % i, '821015', '花木兰%s' % i)
         print success, session_id
         if success:

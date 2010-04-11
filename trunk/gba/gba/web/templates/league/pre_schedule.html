@@ -1,6 +1,8 @@
 {% load common_extras %}
 <div class="explain_box players_talbe">
- <p class="mlr8">第8级联赛，第81组第5轮次赛程：</p>
+ {% ifnotequal start 1 %}
+  <p class="mlr8">第{{season}}赛季,第{{round}}轮|第{{team.profession_league_evel}}级联赛，第{{team.profession_league_class}}组赛程：</p>
+ {% endifnotequal %}
 </div>
 <table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
 <thead>
@@ -12,6 +14,9 @@
 </tr>
 </thead>
 <tbody>
+{% if start %}
+ 赛季初
+{% else %}
 {% for info in infos %}
 <tr>
 <td>
@@ -28,6 +33,7 @@
  <a href="http://s3.dlm.17uxi.cn/source/i.php?a=505&amp;zbid=3787117" target="_blank">统计</a></td>
 </tr>
 {% endfor %}
+{% endif %}
 </tbody>
 </table>
 	

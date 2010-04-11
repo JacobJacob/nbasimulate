@@ -1,3 +1,4 @@
+{% load common_extras %}
 <script language="javascript" type="js/shou_ye/shou_ye.js"></script>
 <div class="title">
 <div class="title_left"><span class="color_5">比赛</span>信息</div>
@@ -10,44 +11,52 @@
 <div class="r_box_1">
 <div class="r_box_1_title">
 <span class="right gray">门票出售：2000 张   总收入：36000  <a href="http://s3.dlm.17uxi.cn/source/i.php?a=342">球队财政</a>
-</span><span class="f24 fb">04</span>
-<span class="f14 fb">月04日</span> 职业联赛第2轮比赛结果</div>
+</span><span class="f24 fb">{{month}}</span>
+<span class="f14 fb">月{{date}}日</span> 职业联赛第{{league_match.round}}轮比赛结果</div>
 <div class="r_box_1_1">
   <div class="w160 tr">
-	<h2><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this)">木兰女子队</a></h2>
+	<h2>
+	  <a href="{% url user-detail %}?id={{league_match.match_team_home_id|league_team_to_team_id}}" onclick="return show_popup(this)">
+	   {{league_match.match_team_home_id|league_team_to_name}}
+	 </a>
+	</h2>
 	<h3>河南</h3>
   </div>
   <div class="w55">
 	<img id="imgClothes" src="/site_media/images/0.gif" width="55" height="55"></div>
  <div class="w173">
 	 <div class="blank10"></div>
-  <div id="bifen">		
+  <div id="bifen">	
 		<span class="sp"></span>
-		<span class="bfa"></span>
-		<span class="bf6"></span>
-		<span class="bf3"></span>
+		<span class="bf{{a1}}"></span>
+		<span class="bf{{a2}}"></span>
+		<span class="bf{{a3}}"></span>
 		<span class="sp"></span>
 		<span class="vs"></span>
 		<span class="sp"></span>
 		<span class="sp"></span>
-		<span class="bf9"></span>
-		<span class="bf8"></span>
-		<span class="bfa"></span>	
+		<span class="bf{{b1}}"></span>
+		<span class="bf{{b2}}"></span>
+		<span class="bf{{b3}}"></span>	
    </div>
 </div>
 <div class="w55">
-<img id="imgClothes" src="/site_media/images/13.gif" width="55" height="55"></div>
+<img id="imgClothes" src="/site_media/images/0.gif" width="55" height="55"></div>
 <div class="w160">
-<h2><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42341" onclick="return show_popup(this)">Sox丶沸腾</a></h2>
+<h2>
+   <a href="{% url user-detail %}?id={{league_match.match_team_guest_id|league_team_to_team_id}}" onclick="return show_popup(this)">
+      {{league_match.match_team_guest_id|league_team_to_name}}   
+   </a>
+</h2>
 <h3>四川</h3>
 </div>
 </div><div class="clear"></div>
 <div class="blank5"></div>
 <div class="r_box_1_2 right">连续14天未登陆的用户，在赛季更新时，自动退出大联盟联赛。　　　　　　　　　　
 <!-- gray 本场MVP:  Y. 明 阿甘  [ 得分：4 | 篮板：7 | 助攻：0 | 盖帽：5 | 抢断：0 ] -->
-<span class="icon_1"><a href="http://s3.dlm.17uxi.cn/source/i.php?a=504&amp;zbid=3770484" target="_blank">战报</a></span>
-<span class="icon_2"><a href="http://s3.dlm.17uxi.cn/source/i.php?a=505&amp;zbid=3770484" target="_blank">统计</a></span>
-<span class="icon_3"><a href="http://s3.dlm.17uxi.cn/source/n.php?a=385" onclick='return href_to_div(this,"main_content");'>排名</a>
+<span class="icon_1"><a href="{% url match-detail %}?match_id={{league_match.match_id}}" target="_blank">战报</a></span>
+<span class="icon_2"><a href="{% url match-stat %}?match_id={{league_match.match_id}}" target="_blank">统计</a></span>
+<span class="icon_3"><a href="{% url league-rank %}">排名</a>
 </span>
 </div>
 </div>
@@ -58,13 +67,13 @@
 	<div class="r_r_box_2">
 	  <div class="blank5"></div>
 		<p>职业联赛第3轮比赛：
-<a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=40531" onclick="return show_popup(this)">剃刀光芒</a> VS 
+<a href="{% url user-detail %}" onclick="return show_popup(this)">剃刀光芒</a> VS 
 <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this)">木兰女子队</a>
 </p>
-<div class="left">比赛将在明天上午9点举行 您可以届时收看直播</div>
-<div class="tr"><div class="r_box_btn right ml10"><a href="http://s3.dlm.17uxi.cn/source/i.php?a=355">联赛赛程</a>
+<div class="left">比赛将在明天上午9点举行播</div>
+<div class="tr"><div class="r_box_btn right ml10"><a href="{% url league-schedule%}">联赛赛程</a>
 </div>
-<div class="r_box_btn right"><a href="http://s3.dlm.17uxi.cn/source/i.php?a=126">调整战术</a></div>
+<div class="r_box_btn right"><a href="{% url profession-tactical %}">调整战术</a></div>
 </div>
 </div>
 <div class="clear"></div>

@@ -43,3 +43,13 @@ MatchTypeMaps = {
     MatchTypes.YOUTH_TRAINING: u'街头训练 ',
     MatchTypes.LEAGUE: u'职业联赛',             
 }
+
+class FinanceType(ConstantBase):
+    INCOME = 1 #收入
+    OUTLAY = 2 #支出
+    
+class FinanceSubType(ConstantBase):
+    TICKETS = 11 #球票收入
+    AD = 12 #广告收入
+    PLAYER_WAGE = 21 #球员工资支出
+    STAFF_WAGE = 22 #职员工资支出

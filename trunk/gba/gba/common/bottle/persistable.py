@@ -199,7 +199,9 @@ class Persistable(object):
             where = args['condition']
          
         sql =  'select * from %s where %s %s %s ' % (cls._table, where, order, limit)
-        info('start to load objects[%s] with sql:%s' % (cls._table, sql))
+        if len(sql) < 200:
+            info('start to load objects[%s] with sql:%s' % (cls._table, sql))
+        info('start to load objects')
         need_close = False
         if cls._transaction:
             cursor = cls._cursor

@@ -5,7 +5,7 @@
 from django.core.urlresolvers import reverse
 
 from gba.business.user_roles import login_required
-from gba.entity import TeamStaff
+from gba.entity import TeamStaff, SeasonFinance, AllFinance
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType
 from gba.common import exception_mgr
@@ -14,10 +14,37 @@ from gba.common import exception_mgr
 def season_finance(request, min=False):
     """球队财政"""
     team = request.team
-    datas = {}
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    infos, total = SeasonFinance.paging(page, pagesize, condition='team_id="%s"' % team.id, order='round desc')
+
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    
     if min:
         return render_to_response(request, 'team/season_finance_min.html', datas)
     return render_to_response(request, 'team/season_finance.html', datas)
+
+@login_required
+def all_finance(request, min=False):
+    """球队财政历史"""
+    team = request.team
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    infos, total = AllFinance.paging(page, pagesize, condition='team_id="%s"' % team.id, order='season desc')
+
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    
+    return render_to_response(request, 'team/all_finance_min.html', datas)
 
 @login_required
 def arena_build(request):

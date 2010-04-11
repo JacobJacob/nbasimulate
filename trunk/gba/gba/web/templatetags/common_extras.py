@@ -27,6 +27,8 @@ def section_name(section):
 @register.filter
 def team_name(team_id):
     '''球队名字'''
+    if team_id == -1:
+        return u'轮空'
     team = Team.load(id=team_id)
     if team:
         return team.name
@@ -179,9 +181,9 @@ def profession_player_name(player_no):
 def league_rank(team_id):
     '''球队联赛排名'''
     league_team = LeagueTeams.load(team_id=team_id)
-    if league_team:
+    if league_team and league_team.rank:
         return league_team.rank
-    return ''
+    return 1
 
 @register.filter
 def league_team_to_name(league_team_id):
@@ -191,12 +193,29 @@ def league_team_to_name(league_team_id):
     
     league_team = LeagueTeams.load(id=league_team_id)
     if not league_team:
-        return '该经理不存在'
+        return ''
+    if league_team.team_id == -1:
+        return u'轮空'
     
     team = Team.load(id=league_team.team_id)
     if team:
         return team.name
     return ''
+
+@register.filter
+def league_team_to_team_id(league_team_id):
+    '''根据联赛里坑位id,获取实际的球队id'''
+    if league_team_id  == -1:
+        return u'轮空'
+    
+    league_team = LeagueTeams.load(id=league_team_id)
+    if not league_team:
+        return ''
+    if league_team.team_id == -1:
+        return ''
+    return league_team.team_id
+    
+
 
 @register.filter
 def point_total(stat):
