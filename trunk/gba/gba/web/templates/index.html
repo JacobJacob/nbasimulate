@@ -17,7 +17,7 @@
         <script type="text/javascript" src="/site_media/js/shou_ye.js"></script>
         {% block ext_head %}{% endblock %}
     </head>
-    <body>
+    <body onload="msg_list.scrollTop=msg_list.scrollHeight;">
         <div class="Area cut">
             {% include "info.html" %}
             <div class="right_box">
