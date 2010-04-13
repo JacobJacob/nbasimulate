@@ -18,7 +18,7 @@
 </div>
 </div>
     <script language="javascript">
-	 // timerChat=setInterval("chat_refresh('');",6000); 
+	  timerChat=setInterval("chat_refresh('');",6000); 
 	  function chat_refresh(msg)
 	  {
 		if (is_political_words(msg)||is_dirty_words(msg))
@@ -43,7 +43,7 @@
 		document.getElementById('chat_input').value='';
 		return false;
 	  }
-	chat_refresh('');
+	  chat_refresh('');
  </script>
 <!--chat end -->
 	
