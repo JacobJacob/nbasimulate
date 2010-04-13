@@ -31,7 +31,7 @@
 		else
 		{   
 	  	    var url = '/site_media/static/lt.html';
-	  	    var myAjax = new Ajax.Updater('msg_list',url, {method:'post'});
+	  	    var myAjax = new Ajax.Updater('msg_list',url, {method:'post',  requestHeaders: ['Cache-Control','no-cache','If-Modified-Since','0']});
 		}
 		
 	  }
