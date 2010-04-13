@@ -992,6 +992,7 @@ function is_political_words(msg) {
 function sys_clock() 
 { 
 	sec = SEC+a;                   //(GMT+8:00)时区:中国标准时间 
+	//sec = SEC;
 	S=sec%60;                                               //秒 
 	I=Math.floor(sec/60)%60;                                //分 
 	H=Math.floor(sec/3600)%24;                              //时 

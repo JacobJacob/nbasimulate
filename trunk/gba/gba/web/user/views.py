@@ -197,39 +197,31 @@ def user_detail(request):
 def issue_message(request):
     '''发布消息'''
     
-    if request.method == 'POST':
-        content = request.GET.get('msg', None)
-        user_info = UserManager().get_userinfo(request)
-        chat_message = ChatMessage()
-        chat_message.content = content
-        chat_message.username = user_info['nickname']
-        chat_message.persist()
-         
-        chat_messages = ChatMessage.query(order='created_time desc', limit=15)
-        if chat_messages:
-            chat_messages = chat_messages[-1::-1]
-        response = render_to_response(request, "user/chat_message.html",{'infos': chat_messages})
-        
-        path = os.path.join(PathSettings.PROJECT_FOLDER, 'web', 'media', 'static', 'lt.html')
-        f = open('%s_' % path, 'wb')
-        success = True
-        try:
-            f.write(response.content)
-        except:
-            success = False
-            exception_mgr.on_except()
-        finally:
-            f.close()
-                
-        if success:
-            shutil.move('%s_' % path, path)
+    content = request.GET.get('msg', None)
+    user_info = UserManager().get_userinfo(request)
+    chat_message = ChatMessage()
+    chat_message.content = content
+    chat_message.username = user_info['nickname']
+    chat_message.persist()
+     
+    chat_messages = ChatMessage.query(order='created_time desc', limit=15)
+    if chat_messages:
+        chat_messages = chat_messages[-1::-1]
+    response = render_to_response(request, "user/chat_message.html",{'infos': chat_messages})
+    
+    path = os.path.join(PathSettings.PROJECT_FOLDER, 'web', 'media', 'static', 'lt.html')
+    f = open('%s_' % path, 'wb')
+    success = True
+    try:
+        f.write(response.content)
+    except:
+        success = False
+        exception_mgr.on_except()
+    finally:
+        f.close()
             
-        return response
-    
-    else:
-        chat_messages = ChatMessage.query(order='created_time desc', limit=15)
-        if chat_messages:
-            chat_messages = chat_messages[-1::-1]
-        return render_to_response(request, "user/chat_message.html",{'infos': chat_messages})
-    
+    if success:
+        shutil.move('%s_' % path, path)
+        
+    return response
     

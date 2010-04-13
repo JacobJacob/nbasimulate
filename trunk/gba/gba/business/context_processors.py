@@ -10,6 +10,9 @@ These are referenced from the setting TEMPLATE_CONTEXT_PROCESSORS and used by
 RequestContext.
 """
 
+import time
+from datetime import datetime
+
 from gba.business.user_roles import UserManager
 
 def user_info(request):
@@ -17,4 +20,10 @@ def user_info(request):
     user_info = user_manager.get_userinfo(request);
     team = user_manager.get_team_info(request);
     
-    return {'user_info': user_info, 'team': team}
+    now = datetime.now()
+    timetuple = now.timetuple()
+    year = timetuple[0]
+    month = timetuple[1]
+    day = timetuple[2]
+    sec = int(time.time())
+    return {'user_info': user_info, 'team': team, 'year': year, 'month': month, 'day': day, 'sec': sec}

@@ -31,7 +31,7 @@ def league_schedule(request, min=False):
     league_matchs = LeagueMatchs.query(condition='match_team_home_id=%s or match_team_guest_id=%s' % (league_team.id, league_team.id), order='round asc ')
     datas = {'infos': league_matchs, 'league': league}
     if min:
-         return render_to_response(request, 'league/league_schedule_min.html', datas)
+        return render_to_response(request, 'league/league_schedule_min.html', datas)
     return render_to_response(request, 'league/league_schedule.html', datas)
 
 @login_required

@@ -28,17 +28,17 @@
     <div class="date head_bg">　
         <b>
             <span id="sj_notice">
-                2010/4/1/&nbsp;&nbsp;&nbsp;13:39:35
+               
             </span>
         </b>
     </div>
     <script language="JavaScript">
         var main_url = false;
-        var a = 0;
-        var Y = 2010,
-        M = 4,
-        D = 1; //取得 年 月 日
-        var SEC = 1270129103;
+        var a = 3600 * 8;
+        var Y = {{year}},
+        M = {{month}},
+        D = {{day}}; //取得 年 月 日
+        var SEC = {{sec}};
         sys_clock(); //---------------------------------------------------初始化... 
         setInterval(sys_clock, 1000);
     </script>
