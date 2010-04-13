@@ -30,9 +30,10 @@
 		}
 		else
 		{   
-	  	    var url = '{% url issue-message %}';
+	  	    //var url = '{% url issue-message %}';
 	  	    var myAjax = new Ajax.Updater('msg_list',url, {method:'get'});
-	  	    //var url = '/site_media/static/lt.html';
+	  	    var url = '/site_media/static/lt.html';
+	  	    var myAjax = new Ajax.Updater('msg_list',url, {method:'get'});
 		}
 		
 	  }
