@@ -1,0 +1,16 @@
+<meta http-equiv="pragma" content="no-cache">
+<table style="table-layout: fixed;" border="0" width="200" height="200">
+ <tbody>
+ <tr>
+   <td style="word-wrap: break-word;">
+	<ul>
+	{% for info in infos %}
+	 <li>
+	   <span class="blue">{{info.username}}:</span><font color="black">{{info.content}}</font>
+	 </li>
+	{% endfor %}
+    </ul>
+    </td>
+ </tr>
+</tbody>
+</table>

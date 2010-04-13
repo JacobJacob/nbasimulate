@@ -6,7 +6,7 @@ def main():
     
     save_dir = 'E:\workspace\gba\gba\web\media\images\%s'
     
-    name = 'bifen.gif'
+    name = 'left_box_btn2.gif'
     
     url = 'http://s3.dlm.17uxi.cn/source/images/%s' % name
 
@@ -54,4 +54,4 @@ def main2():
             f.close()
                 
 if __name__ == '__main__':
-    main2()
+    main()

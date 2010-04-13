@@ -1,0 +1,49 @@
+<!--chat begin-->
+<div class="l_box_1">
+	<div class="l_box_2">
+		<div class="l_box_2_center">
+<div id="msg_list" class="msg_list">
+
+</div>
+<div class="line1"></div>
+<div class="blank5"></div>
+<div class="msg_input">
+<div class="input_box"><input name="" id="chat_input" type="text"></div>
+<div class="sub">
+  <input src="/site_media/images/left_box_btn_3.gif" onclick="chat_send_msg();" type="image" align="absmiddle" width="25" height="13">
+</div>
+</div>
+</div>
+<div class="bot_1"></div>
+</div>
+</div>
+    <script language="javascript">
+	 // timerChat=setInterval("chat_refresh('');",6000); 
+	  function chat_refresh(msg)
+	  {
+		if (is_political_words(msg)||is_dirty_words(msg))
+			return false;
+		if (msg && msg.length>=1)
+		{
+			var url = '{% url issue-message %}?msg='+encodeURI(msg);
+		    var myAjax = new Ajax.Updater('msg_list',url, {method:'post'});
+		}
+		else
+		{   
+	  	    var url = '{% url issue-message %}';
+	  	    var myAjax = new Ajax.Updater('msg_list',url, {method:'get'});
+	  	    //var url = '/site_media/static/lt.html';
+		}
+		
+	  }
+	
+	  function chat_send_msg()
+	  {
+		chat_refresh($F('chat_input'));
+		document.getElementById('chat_input').value='';
+		return false;
+	  }
+	chat_refresh('');
+ </script>
+<!--chat end -->
+	

@@ -2,13 +2,18 @@
 # -*- coding: utf-8 -*-
 """用户相关视图"""
 
+import os
+import shutil
+
 from django.http import HttpResponseRedirect
 
+from gba.config import PathSettings
 from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import UserManager, login_required
 from gba.business import user_operator, match_operator, player_operator
-from gba.entity import Message, Team
+from gba.entity import Message, Team, ChatMessage
 from gba.common.constants import MessageType, MatchTypeMaps
+from gba.common import exception_mgr
 
 SESSION_KEY = '_auth_user_id'
 
@@ -186,4 +191,45 @@ def user_detail(request):
     show_team = Team.load(id=team_id)
     pro_players = player_operator.get_profession_player(team_id)
     youth_players = player_operator.get_youth_player(team_id)
-    return render_to_response(request, "user/user_detail.html", locals()) 
+    return render_to_response(request, "user/user_detail.html", locals())
+   
+@login_required                   
+def issue_message(request):
+    '''发布消息'''
+    
+    if request.method == 'POST':
+        content = request.GET.get('msg', None)
+        user_info = UserManager().get_userinfo(request)
+        chat_message = ChatMessage()
+        chat_message.content = content
+        chat_message.username = user_info['nickname']
+        chat_message.persist()
+         
+        chat_messages = ChatMessage.query(order='created_time desc', limit=15)
+        if chat_messages:
+            chat_messages = chat_messages[-1::-1]
+        response = render_to_response(request, "user/chat_message.html",{'infos': chat_messages})
+        
+        path = os.path.join(PathSettings.PROJECT_FOLDER, 'web', 'media', 'static', 'lt.html')
+        f = open('%s_' % path, 'wb')
+        success = True
+        try:
+            f.write(response.content)
+        except:
+            success = False
+            exception_mgr.on_except()
+        finally:
+            f.close()
+                
+        if success:
+            shutil.move('%s_' % path, path)
+            
+        return response
+    
+    else:
+        chat_messages = ChatMessage.query(order='created_time desc', limit=15)
+        if chat_messages:
+            chat_messages = chat_messages[-1::-1]
+        return render_to_response(request, "user/chat_message.html",{'infos': chat_messages})
+    
+    
