@@ -10,9 +10,12 @@ from gba.business import player_operator, match_operator
 
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        TeamTactical, TeamTacticalDetail, YouthPlayer, \
-                       MatchNotInPlayer, Message, UserInfo
-from gba.common.constants import MatchTypes, MessageType
+                       MatchNotInPlayer, Message, UserInfo, TacticalGrade, \
+                       TrainingRemain
+from gba.common.constants import MatchTypes, MessageType, DefendTacticalTypeMap, OffensiveTacticalTypeMap
 from gba.common.constants import MatchStatus, MatchTypeMaps
+from gba.common import exception_mgr
+from gba.common.db.reserve_convertor import ReserveLiteral
 
 @login_required
 def friendly_match(request, min=False):
@@ -150,31 +153,70 @@ def match_detail(request):
     return render_to_response(request, 'match/match_detail.html', datas)
 
 @login_required
-def training_center(request):
+def training_center(request, min=False):
     '''训练中心'''
-    
-    in_match = 0
-    
-    team = UserManager().get_team_info(request)
-    training_center = TrainingCenter.load(team_id=team.id)
-    
-    infos = []
-    totalpage = 0
-    
-    page = int(request.GET.get('page', 1))
-    pagesize = int(request.GET.get('pagesize', 12))
+    team = request.team
+    training_center = TrainingCenter.load(team_id=team.id, status=0)
+    remain = 0
     if training_center:
-        in_match = 1
-        infos, total = TrainingCenter.paging(page, pagesize, condition='team_id <> %s' % team.id)
-        if total == 0:
-            totalpage = 0
-        else:
-            totalpage = (total - 1) / pagesize + 1
+        remain = match_operator.get_training_remain(team.id)
+        print remain
+        in_training = True
+    else:
+        in_training = False
     
-    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, \
-              'prevpage': page - 1, 'in_match': in_match, 'tab': 1, 'training_center': training_center}
+    training_remain = TrainingRemain.load(team_id=team.id)
+    if not training_remain:
+        training_remain = TrainingRemain()
+        training_remain.remain_times = 5
+        training_remain.team_id = team.id
+        training_remain.persist()
+       
+    training_remain.finish_times = 5 - training_remain.remain_times
+        
+    datas = {'in_training': in_training, 'training_remain': training_remain, 'remain': remain}
     
+    if min:
+        return render_to_response(request, 'match/training_center_min.html', datas)
     return render_to_response(request, 'match/training_center.html', datas)
+     
+def training_center_apply(request):
+    '''训练赛报名'''
+    team = request.team
+    success = '您已经成功的参加了街球训练!'
+    error = None
+    i = 0 
+    while i < 1:
+        i += 1
+        training_center = TrainingCenter.load(team_id=team.id, status=0)
+        if training_center:
+            error = '您已经在训练中，无需重复报名'
+            break
+        training_remain = TrainingRemain.load(team_id=team.id)  
+        if training_remain and training_remain.remain_times == 0:
+            error = '您今天训练次数已经用完'
+            break
+          
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    else:
+        training_center = TrainingCenter()
+        training_center.team_id = team.id
+        training_center.status = 0
+        training_center.finish_time = ReserveLiteral('date_add(now(), interval 10 minute)')
+        training_remain.remain_times -= 1
+        
+        TrainingRemain.transaction()
+        try:
+            training_center.persist()
+            training_remain.persist()
+            TrainingRemain.commit()
+        except:
+            exception_mgr.on_except()
+            TrainingRemain.rollback()
+            
+    url = reverse('training-center-min')
+    return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
 
 @login_required
 def youth_tactical(request):
@@ -409,3 +451,48 @@ def match_accept(request):
             url = reverse('friendly-match-min')
         
     return render_to_response(request, "message_update.html", {'success': success, 'error': error, 'url': url})
+
+@login_required
+def tactical_grade(request):
+    '''战术等级'''
+    team = request.team
+    tactical_grades = TacticalGrade.query(condition='team_id="%s"' % team.id, order='tactical asc')
+    if not tactical_grades:
+        tactical_grades = []
+        for i in range(1, 13):
+            tactical_grade = TacticalGrade()
+            tactical_grade.tactical = i 
+            tactical_grade.team_id = team.id
+            tactical_grade.point = 0
+            tactical_grades.append(tactical_grade)
+        
+        try:
+            TacticalGrade.inserts(tactical_grades)
+        except:
+            exception_mgr.on_except()
+    
+    grades = [0, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+    for tactical_grade in tactical_grades:
+        if tactical_grade.tactical <= 6:
+            tactical_grade.type = u'进攻'
+            tactical_grade.style = 'color_4'
+            tactical_grade.name = OffensiveTacticalTypeMap.get(tactical_grade.tactical)
+        else:
+            tactical_grade.type = u'防守'
+            tactical_grade.style = 'red'
+            tactical_grade.name = DefendTacticalTypeMap.get(tactical_grade.tactical)
+        point = tactical_grade.point
+        for i, grade in enumerate(grades):
+            if point == 0:
+                tactical_grade.level = 0
+                tactical_grade.max = 2
+                tactical_grade.remain_point = 0
+                break
+            if point <= grade:
+                tactical_grade.level = i - 1
+                tactical_grade.max = grade
+                tactical_grade.remain_point = point - grades[i-1]
+                break
+                
+    datas = {'infos': tactical_grades}
+    return render_to_response(request, "match/tactical_grade.html", datas)

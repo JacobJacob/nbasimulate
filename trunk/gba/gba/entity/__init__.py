@@ -10,7 +10,8 @@ __all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
            'MatchNotInPlayer', 'LeagueMatchs', 'RuntimeData', 'ProPlayerCareerStatTotal',
            'ProPlayerSeasonStatTotal', 'ErrorLog', 'TeamStaff', 'MatchNodosityMain',
            'MatchNodosityDetail', 'MatchNodosityTacticalDetail', 'TeamArena',
-           'RoundUpdateLog', 'SeasonFinance', 'AllFinance', 'TeamAd', 'ChatMessage']
+           'RoundUpdateLog', 'SeasonFinance', 'AllFinance', 'TeamAd', 'ChatMessage',
+           'TacticalGrade', 'TrainingRemain']
 
 from gba.common.bottle.persistable import Persistable
 
@@ -172,3 +173,11 @@ class TeamAd(Persistable):
 class ChatMessage(Persistable):
     '''联天信息'''
     CACHE_KEY = 'chat_message:id'
+    
+class TacticalGrade(Persistable):
+    '''战术等级'''
+    CACHE_KEY = 'tactical_grade:id'
+
+class TrainingRemain(Persistable):
+    '''训练赛剩余次数'''
+    CACHE_KEY = 'training_remain:team_id'

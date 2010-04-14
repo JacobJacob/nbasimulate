@@ -1,0 +1,124 @@
+{% if in_training %}
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
+ <tbody>
+  <tr>
+    <td height="60">
+      <div align="center"><img src="/site_media/images/yeyuxunlian.gif" width="409" height="25"></div>
+    </td>
+ </tr>
+ <tr>
+   <td height="244">
+     <div align="center"><img src="/site_media/images/xunlian_3.jpg" width="417" height="221"></div>
+  </td>
+ </tr>
+ <tr>
+ <td height="88">
+    <div align="center">剩余时间:<span id="dao_ji_shi" class="red"></span></div>
+ </td>
+</tr>
+</tbody>
+</table>
+<div class="clear"></div>
+<p>&nbsp;</p>
+<input name="sj_sheng_yu" id="sj_sheng_yu" value="{{remain}}" type="hidden">
+<script language="javascript">
+	try
+	{
+		clearTimeout(oTimer);
+	}
+	catch (e)
+	{
+	}
+	count_down_one = function()
+	{
+		try
+		{
+			var spantime = $("sj_sheng_yu").value;
+			spantime --;
+			$("sj_sheng_yu").value = spantime;
+			var d = Math.floor(spantime / (24 * 3600));
+			var h = Math.floor((spantime % (24*3600))/3600);
+			var m = Math.floor((spantime % 3600)/(60));
+			var s = Math.floor(spantime%60);
+			var clock = "";
+			if(d>0)
+			{
+				clock+=d+"天";
+				if(h!=0)
+					clock+=h+"小时";
+				else
+					clock+=m+"分钟";
+			}
+			else{
+				if(h>0)
+				{
+					clock+=h+"小时";
+					clock+=m+"分钟";
+				}else
+				{
+					if(m>0)
+					{
+						clock+=m+"分钟";
+						clock+=s+"秒";
+					}else
+					{
+						if(s==0)
+							return href_to_div("{% url training-center-min%}",'main_content');
+						if(s>0)
+							clock+=s+"秒";
+						else
+							clock = "已结束";
+					}
+
+				}
+			}
+			$("dao_ji_shi").innerHTML = clock;
+		}
+		catch (e)
+		{
+		}
+		oTimer = setTimeout(count_down_one,1000);
+	}
+	oTimer = setTimeout(count_down_one,1000);
+</script>
+{% else %}
+<form name="xun_lian_form" id="xun_lian_form" action="{% url training-center-apply %}" method="post" onsubmit="return submit_to_div(this,'popup_inner');">
+<div class="clear"></div>
+<div class="blank10"></div>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
+   <tbody>
+    <tr>
+      <td height="60">
+       <div align="center">
+         <img src="/site_media/images/yeyuxunlian.gif" width="409" height="25"></div></td>
+   </tr>
+   <tr>
+      <td height="244">
+       <div align="center">
+        <img src="/site_media/images/xunlian_6.jpg" width="417" height="221">
+       </div>
+      </td>
+   </tr>
+   <tr>
+      <td height="20">
+        <div align="center">您今日已经进行了<span class="red">{{ training_remain.finish_times}}</span>次训练，还可以免费进行<span class="red">{{ training_remain.remain_times}}</span>次训练。</div>
+      </td>
+   </tr>
+   <tr>
+     <td height="20">
+       <div align="center">每次训练后，业余队中所有球员每项属性增加<span class="red">0.2</span>。单项数值能力达到上限后将不再增加。</div>
+     </td>
+   </tr>        
+	  <tr>
+		 <td height="88">
+		  <div align="center">
+		   <input src="/site_media/images/xunlian_begin.gif" type="image" width="110" height="28">
+		  </div>
+		 </td>
+	  </tr>
+ </tbody>
+</table>
+<div class="clear"></div>
+<p>&nbsp;</p>
+</form>
+{% endif %}

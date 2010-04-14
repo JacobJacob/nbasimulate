@@ -304,6 +304,19 @@ def get_match_nodosity_detail(match_nodosity_main_id):
             return rs.to_list()
     finally:
         cursor.close()
+
+_SELECT_TRAININT_REMAIN = 'select (finish_time - now()) as remain from training_center where team_id="%s" and status=0'
+
+def get_training_remain(team_id):
+    '''获取训练赛剩余时间'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchone(_SELECT_TRAININT_REMAIN, (team_id, ))
+        if rs:
+            return rs['remain']
+        return 0
+    finally:
+        cursor.close()
         
 if __name__ == '__main__':
     init_team({'username': '测试用户3', 'teamname': '测试球队3'})
