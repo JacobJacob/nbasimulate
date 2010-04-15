@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block show_nav %}
 <script language="javascript">
-  sub_menu_highlight(3,1);
+  sub_menu_highlight(3,2);
   nav_over('nav3','show3');
   nav_show('nav3','show3');
 </script>
@@ -10,7 +10,12 @@
 <div class="players_lab">
 <ul>
  <li class="" id="menu_third_1">
-  <a href="{% url training-center-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
+  <a href="" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
+    职业训练
+  </a>
+</li>
+ <li class="" id="menu_third_2">
+  <a href="{% url training-center-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">
     街球训练
   </a>
 </li>

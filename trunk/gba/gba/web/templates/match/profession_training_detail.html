@@ -1,0 +1,206 @@
+{% load common_extras %}
+<form id="submitform" name="submitform" action="n.php?a=164&amp;dui_wu=1&amp;id_qiu_yuan=1941644" method="post" onsubmit="return submit_to_div(this,'popup_inner');">
+<div class="training_box">
+<div class="h25"></div>				
+<div class="h25"></div>
+<div class="training_box_l">
+<img src="/site_media/images/tou_xiang/pg.gif" alt="" class="head_img" width="83" height="123">
+<div class="blank10"></div>
+<div class="blank5"></div>
+<div class="blank10"></div>
+<div class="blank5"></div>
+<div class="fb f14 blue">
+ <img src="/site_media/images/icon_15.gif" style="cursor: pointer;" title="正常" width="12" height="12">{{player.name}}</div>
+<div class="blank5"></div>
+<ul class="lh21 dgrey">
+<li>年龄<a title="第19轮生日" style="cursor: pointer;">
+ <span class="blue">23</span></a>
+</li>
+<li>位置  <a title="控卫" style="cursor: pointer;"><span class="blue">pg</span></a></li>
+<li>身高  <span class="blue">185cm</span></li>
+<li>体重  <span class="blue">84kg</span></li>
+<li>体力  <span id="ti_li"><span class="color_4">
+<font color="#66cc33">94</font></span>
+<input id="ti_li_zhi" name="ti_li_zhi" value="94" type="hidden"></span></li>
+<li>综合  <span id="zong_he"><span class="blue">30.9</span>
+  <input type="hidden" id="zong_he_zhi" name="zong_he_zhi" value="30.9"></span>
+</li>
+</ul>
+</div>
+<div class="training_box_r">
+	<div class="training_box1">
+	<ul>
+	<li class="gray w_blank2_l">速度</li>
+	<li class="w_blank2_c">
+		<div class="scroll">
+		 <span id="sd_tiao">
+		 <img src="/site_media/images/qiu_yuan/color{{player.speed_oten|check_attr}}.gif" width="45" height="8"><input id="sd_width" name="sd_width" value="{{player.speed}}" type="hidden"></span>
+		</div>
+	</li>
+	<li class="w_blank2_r"><span class="right mt4"><span id="sd_jia"><img
+ id="sd" onclick="jia_dian_onclick('sd')" style="cursor: pointer;" 
+title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" 
+width="12" height="12"></span></span><span id="sd_zhi"><font 
+color="black">{{player.speed|format_number}}</font></span></li>
+	</ul><div class="clear"></div>
+
+    <!-- start -->
+    <ul>
+	<li class="gray w_blank2_l">弹跳</li>
+	<li class="w_blank2_c">
+		<div class="scroll"><span id="tt_tiao"><img src="/site_media/images/qiu_yuan/color{{player.bounce_oten|check_attr}}.gif" width="{{player.bounce}}" height="8"><input id="tt_width" name="tt_width" value="{{player.bounce}}" type="hidden"></span></div>
+	</li>
+	<li class="w_blank2_r">
+	 <span class="right mt4">
+	 <span id="tt_jia">
+	 <img id="tt" onclick="jia_dian_onclick('tt')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span>
+	 </span><span id="tt_zhi"><font color="black">{{player.bounce|format_number}}</font></span>
+    </li>
+	</ul><div class="clear"></div>
+	<ul>
+	<li class="gray w_blank2_l">强壮</li>
+	<li class="w_blank2_c">
+		<div class="scroll"><span id="qz_tiao">
+		<img src="/site_media/images/qiu_yuan/color{{player.strength_oten|check_attr}}.gif" width="{{player.strength}}" height="8"><input id="qz_width" name="qz_width" value="{{player.strength}}" type="hidden"></span></div>
+	</li>
+	<li class="w_blank2_r"><span class="right mt4"><span id="qz_jia">
+	<img id="qz" onclick="jia_dian_onclick('qz')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span>
+	</span><span id="qz_zhi">
+	<font color="black">{{player.strength|format_number}}</font></span></li>
+	</ul><div class="clear"></div>
+	<ul>
+	<li class="gray w_blank2_l">耐力</li>
+	<li class="w_blank2_c">
+		<div class="scroll"><span id="nli_tiao">
+		<img src="/site_media/images/qiu_yuan/color{{player.stamina_oten|check_attr}}.gif" width="{{player.stamina}}" height="8"><input id="nli_width" name="nli_width" value="{{player.stamina}}" type="hidden"></span></div>
+	</li>
+	<li class="w_blank2_r"><span class="right mt4"><span id="nli_jia">
+	<img id="nli" onclick="jia_dian_onclick('nli')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span></span>
+	<span id="nli_zhi">
+	<font color="#666666">{{player.stamina|format_number}}</font></span></li>
+	</ul><div class="clear"></div>
+	<ul>
+	<li class="gray w_blank2_l">投篮</li>
+	<li class="w_blank2_c">
+	<div class="scroll"><span id="tlan_tiao">
+	<img src="/site_media/images/qiu_yuan/color{{player.shooting_oten|check_attr}}.gif" width="{{player.shooting}}" height="8"><input id="tlan_width" name="tlan_width" value="{{player.shooting}}" type="hidden"></span></div>
+	</li>
+	<li class="w_blank2_r"><span class="right mt4">
+	 <span id="tlan_jia">
+	 <img id="tlan" onclick="jia_dian_onclick('tlan')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span></span><span id="tlan_zhi"><font color="black">{{player.shooting|format_number}}</font></span>
+	</li>
+	</ul><div class="clear"></div>
+	<ul>
+	<li class="gray w_blank2_l">三分</li>
+	<li class="w_blank2_c">
+    <div class="scroll"><span id="sf_tiao"><img src="/site_media/images/qiu_yuan/color{{player.trisection_oten|check_attr}}.gif" width="{{player.trisection}}" height="8"><input id="sf_width" name="sf_width" value="{{player.trisection}}" type="hidden"></span></div>
+	</li>
+	<li class="w_blank2_r">
+	 <span class="right mt4">
+	  <span id="sf_jia">
+	   <img id="sf" onclick="jia_dian_onclick('sf')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span>
+	</span>
+	<span id="sf_zhi">
+	 <font color="black">{{player.trisection|format_number}}</font>
+	</span>
+	</li>
+	</ul><div class="clear"></div>
+	<ul>
+	<li class="gray w_blank2_l">运球</li>
+	<li class="w_blank2_c">
+		<div class="scroll">
+		 <span id="yq_tiao">
+		 <img src="/site_media/images/qiu_yuan/color{{player.dribble_oten|check_attr}}.gif" width="{{player.dribble}}" height="8"><input id="yq_width" name="yq_width" value="{{player.dribble}}" type="hidden"></span>
+		</div>
+	</li>
+	<li class="w_blank2_r">
+	 <span class="right mt4">
+	 <span id="yq_jia">
+	  <img id="yq" onclick="jia_dian_onclick('yq')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span>
+	 </span>
+	 <span id="yq_zhi">
+	  <font color="black">{{player.dribble|format_number}}</font>
+	 </span>
+	</li>
+	</ul>
+	 <div class="clear"></div>
+	<ul>
+	 <li class="gray w_blank2_l">传球</li>
+	 <li class="w_blank2_c">
+	 <div class="scroll">
+	 <span id="cq_tiao">
+	  <img src="/site_media/images/qiu_yuan/color{{player.pass_oten|check_attr}}.gif" width="{{player.pass}}" height="8"><input id="cq_width" name="cq_width" value="{{player.pass}}" type="hidden"></span></div>
+	</li>
+	<li class="w_blank2_r">
+	<span class="right mt4">
+	<span id="cq_jia">
+	 <img id="cq" onclick="jia_dian_onclick('cq')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span></span><span id="cq_zhi">
+     <font color="black">{{player.pass|format_number}}</font></span></li>
+	</ul><div class="clear"></div>
+	<ul>
+	<li class="gray w_blank2_l">篮板</li>
+	<li class="w_blank2_c">
+		<div class="scroll"><span id="lb_tiao">
+		<img src="/site_media/images/qiu_yuan/color{{player.backboard_oten|check_attr}}.gif" width="{{player.backboard}}" height="8"><input id="lb_width" name="lb_width" value="{{player.backboard}}" type="hidden"></span></div>
+	</li>
+	<li class="w_blank2_r"><span class="right mt4"><span id="lb_jia">
+	<img id="lb" onclick="jia_dian_onclick('lb')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span></span>
+	<span id="lb_zhi">
+	<font color="#666666">{{player.backboard|format_number}}</font></span>
+    </li>
+	</ul><div class="clear"></div>
+	<ul>
+	<li class="gray w_blank2_l">抢断</li>
+	<li class="w_blank2_c">
+		<div class="scroll"><span id="qd_tiao">
+		<img src="/site_media/images/qiu_yuan/color{{player.steal_oten|check_attr}}.gif" width="{{player.steal}}" height="8"><input id="qd_width" name="qd_width" value="{{player.steal}}" type="hidden"></span>
+		</div>
+	</li>
+	<li class="w_blank2_r"><span class="right mt4"><span id="qd_jia">
+	<img id="qd" onclick="jia_dian_onclick('qd')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span></span>
+	<span id="qd_zhi">
+	<font color="black">40</font></span>
+    </li>
+	</ul><div class="clear"></div>
+	<ul>
+	<li class="gray w_blank2_l">封盖</li>
+	<li class="w_blank2_c">
+	<div class="scroll"><span id="fg_tiao">
+	<img src="/site_media/images/qiu_yuan/color{{player.blocked_oten|check_attr}}.gif" width="{{player.blocked}}" height="8"><input id="fg_width" name="fg_width" value="{{player.blocked}}" type="hidden"></span></div>
+	</li>
+	<li class="w_blank2_r"><span class="right mt4"><span id="fg_jia">
+	 <img id="fg" onclick="jia_dian_onclick('fg')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/zengjia.gif" align="absmiddle" width="12" height="12"></span></span><span id="fg_zhi">
+	  <font color="#666666">20</font></span></li>
+	</ul><div class="clear"></div>
+    <!-- end -->
+	</div>
+	<div class="blank10"></div>
+	<div class="blank8"></div>
+	<div class="tc black">剩余训练点数：<span id="xun_lian_dian">20140
+	<input id="xun_lian_dian_zhi" name="xun_lian_dian_zhi" value="20140" type="hidden"></span>
+	</div>
+	<div class="h25"></div>
+	<div class="blank8"></div>
+	<div class="mr10 left">
+	<input name="ti_jiao" value="提交" class="btn_3" style="cursor: pointer;" type="submit"><span>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+	<div class="btn_3 left"><a href="http://s3.dlm.17uxi.cn/source/n.php?a=153&amp;dui_wu=1&amp;id=1941644" id="href" onclick="return href_to_div(this,'main_content')">重置</a></div>
+	<div class="right"><span class="gray">
+	<a href="http://s3.dlm.17uxi.cn/source/n.php?a=150" id="href" onclick="return href_to_div(this,'main_content')">
+	<img src="/site_media/images/jia_dian_back.gif" border="0" width="52" height="18"></a>
+    </span>
+    </div>
+</div>
+<input name="dui_wu" id="dui_wu" value="1" type="hidden">
+<input name="id" id="id" value="1941644" type="hidden">
+<input id="ti_li_zui_xiao_zhi" name="ti_li_zui_xiao_zhi" value="10"
+ type="hidden">
+<input id="shu_xing_zeng_zhi" name="shu_xing_zeng_zhi" value="1" 
+type="hidden">
+<input id="tl_xiao_hao_zhi" name="tl_xiao_hao_zhi" value="1" 
+type="hidden">
+<input id="xld_xiao_hao_zhi" name="xld_xiao_hao_zhi" value="200" 
+type="hidden">
+<div class="clear"></div>
+</div>
+</form>

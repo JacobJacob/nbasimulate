@@ -6,7 +6,7 @@ def main():
     
     save_dir = 'E:\workspace\gba\gba\web\media\images\%s'
     
-    name = 'left_box_btn2.gif'
+    name = 'w_blank/blank_05.gif'
     
     url = 'http://s3.dlm.17uxi.cn/source/images/%s' % name
 
@@ -27,15 +27,15 @@ def main():
         
 def main2():
     
-    save_dir = 'E:\workspace\gba\gba\web\media\images\\num\%s.gif'
+    save_dir = 'E:\workspace\gba\gba\web\media\images\\xl\color%s.gif'
     
     
-    for i in range(101):
+    for i in range(12):
         i += 1 
-        url = "http://s3.dlm.17uxi.cn/source/images/num/%s.gif" % i
+        url = "http://s3.dlm.17uxi.cn/source/images/xun_lian/Color%s.gif" % i
         print url
         #url = 'http://s3.dlm.17uxi.cn/source/images/%s' % name
-    
+        
         request = urllib2.Request(url)
         opener = urllib2.build_opener()
         

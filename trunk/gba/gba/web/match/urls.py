@@ -18,4 +18,7 @@ urlpatterns = patterns('web.match',
     url(r'^8909/$', 'views.match_accept', name='match-accept'),
     url(r'^8910$', 'views.profession_tactical', {'min': True}, name='profession-tactical-min'),
     url(r'^8911$', 'views.tactical_grade', name='tactical-grade'),
+    url(r'^8914$', 'views.profession_training', name='profession-training'),
+    url(r'^8915$', 'views.profession_training', {'min': True}, name='profession-training-min'),
+    url(r'^8916$', 'views.profession_training_detail', name='profession-training-detail'),
 )

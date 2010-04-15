@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% block ext_head %}
+ <script type="text/javascript" src="/site_media/js/training.js"></script>
+{% endblock %}
+{% block show_nav %}
+<script language="javascript">
+  sub_menu_highlight(3,1);
+  nav_over('nav3','show3');
+  nav_show('nav3','show3');
+</script>
+{% endblock %}
+{% block sub_menu %}
+<div class="players_lab">
+<ul>
+ <li class="" id="menu_third_1">
+  <a href="{% url profession-training-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
+    职业队
+  </a>
+</li>
+</ul>
+</div>
+{% endblock %}

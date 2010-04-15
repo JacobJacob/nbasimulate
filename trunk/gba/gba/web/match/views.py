@@ -14,8 +14,11 @@ from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        TrainingRemain
 from gba.common.constants import MatchTypes, MessageType, DefendTacticalTypeMap, OffensiveTacticalTypeMap
 from gba.common.constants import MatchStatus, MatchTypeMaps
+from gba.common.constants import attributes, hide_attributes
 from gba.common import exception_mgr
+from gba.common import playerutil
 from gba.common.db.reserve_convertor import ReserveLiteral
+
 
 @login_required
 def friendly_match(request, min=False):
@@ -160,7 +163,9 @@ def training_center(request, min=False):
     remain = 0
     if training_center:
         remain = match_operator.get_training_remain(team.id)
-        print remain
+        if remain < 0:
+            remain = 0
+        remain = remain / 100 * 60
         in_training = True
     else:
         in_training = False
@@ -496,3 +501,37 @@ def tactical_grade(request):
                 
     datas = {'infos': tactical_grades}
     return render_to_response(request, "match/tactical_grade.html", datas)
+
+@login_required
+def profession_training(request, min=False):
+    '''职业训练'''
+    team = request.team
+    infos = player_operator.get_profession_player(team.id)
+    datas = {'infos': infos}
+    
+    for info in infos:
+        info['can_training'] = True
+        if info['power'] < 30 or info['training_locations'] < 200:
+            info['can_training'] = False
+    if min:
+        return render_to_response(request, 'match/profession_training_min.html', datas)
+    return render_to_response(request, 'match/profession_training.html', datas)
+
+@login_required
+def profession_training_detail(request):
+    '''职业训练'''
+    no = request.GET.get('no', None)
+    team = request.team
+    if not no:
+        return render_to_response(request, 'message.html', {'error': u'球员id为空'})
+    player = player_operator.get_profession_palyer_by_no(no)
+    if not player:
+        return render_to_response(request, 'message.html', {'error': u'球员不存在'})
+    
+    if player['team_id'] != team.id:
+        return render_to_response(request, 'message.html', {'error': u'该球员不在您队中'})
+    
+    playerutil.calcul_otential(player)
+
+    datas = {'player': player}
+    return render_to_response(request, 'match/profession_training_detail.html', datas)

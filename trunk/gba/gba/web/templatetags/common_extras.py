@@ -125,6 +125,13 @@ def format_number(number):
     return '%.1f' % number
 
 @register.filter
+def format_int(number):
+    '''位置'''
+    if not number:
+        return 'error'
+    return int(number)
+
+@register.filter
 def display_attribute(attribute):
     return AttributeMaps.get(attribute, u'未知')
 

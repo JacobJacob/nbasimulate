@@ -1,0 +1,51 @@
+{% load common_extras %}
+<script type="text/javascript" src="i.php_files/qiu_yuan_xun_lian.js"></script>
+<div id="tab3_1">
+<table class="list_table" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+ <tr>
+ <th></th>
+ <th>姓名</th>
+ <th>状态</th>
+ <th>年龄</th>
+ <th>位置</th>
+ <th>体力</th>
+ <th>身高</th>
+ <th>体重</th>
+ <th>综合</th>
+ <th>训练点</th>
+<th class="end_cell">操作</th>
+</tr>
+{% for info in infos %}
+<tr>
+<td><img src="/site_media/images/number/{{info.player_no}}.gif"></td>
+<td>
+  <span class="blue">
+   <a href="{% url profession-player-detail %}?no={{info.no}}" onclick="return show_popup(this);">
+    {{info.name}}</a>
+  </span>
+</td>
+<td><a title="正常" style="cursor: pointer;">
+     <span class="i_smile" style="margin: 0pt -15px 0pt 15px;"></span>
+    </a>
+</td>
+<td>{{info.age}}</td>
+<td><a title="{{info.position}}" style="cursor: pointer;">{{info.position}}</a></td>
+<td><font color="#ff0000">{{info.power}}</font></td>
+<td>{{info.stature}}</td>
+<td>{{info.avoirdupois}}</td>
+<td><font color="black">{{info.ability|format_number}}</font></td>
+<td>{{info.training_locations}}</td>
+<td>
+  <span class="orange">
+    {% if info.can_training %}
+      <a href="{% url profession-training-detail %}?no={{info.no}}" id="href" onclick="return href_to_div(this,'main_content')" >训练</a>
+    {% else %}
+      ----
+    {% endif %}
+  </span>
+</td>
+</tr>
+{% endfor %}
+</tbody></table>
+</div>

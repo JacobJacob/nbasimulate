@@ -18,7 +18,7 @@
 <tr>
      <td><img src="/site_media/images/number/{{info.player_no}}.gif"></td>
      <td>
-       <a href="http://s3.dlm.17uxi.cn/source/n.php?a=223&amp;id_qiu_yuan=1941648&amp;dui_wu=2" onclick="return show_popup(this)" title="">
+       <a href="{% url player-detail%}?type=3&no={{info.no}}" onclick="return show_popup(this)" title="">
          <font color="#0096f1">{{info.name}}</font>
        </a>
      </td>
