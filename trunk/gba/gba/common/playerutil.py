@@ -22,14 +22,14 @@ def calcul_otential(player):
             attr_max_value = player.get('%s_max' % attr, 0)
             attr_max_value = attr_max_value if attr_max_value else 0
             attr_otential = attr_max_value - attr_value
-            player['%s_oten' % attr] = attr_otential
+            player['%s_oten' % attr] = attr_otential if attr_otential > 0.1 else 0
         else:
             attr_value = getattr(player, attr)
             attr_value = attr_value if attr_value else 0
             attr_max_value = getattr(player, '%s_max' % attr)
             attr_max_value = attr_max_value if attr_max_value else 0
             attr_otential = attr_max_value - attr_value
-            setattr(player, '%s_oten' % attr, attr_otential)
+            setattr(player, '%s_oten' % attr, attr_otential if attr_otential > 0.1 else 0)
             
 def calcul_wage(player):
     '''计算工资'''

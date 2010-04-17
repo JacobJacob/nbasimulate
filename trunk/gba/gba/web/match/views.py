@@ -533,5 +533,128 @@ def profession_training_detail(request):
     
     playerutil.calcul_otential(player)
 
+    player['sd_max_add']  = 3 if player['speed_oten'] >= 3 else player['speed_oten']
+    player['tt_max_add']  = 3 if player['bounce_oten'] >= 3 else player['bounce_oten']
+    player['qz_max_add']  = 3 if player['strength_oten'] >= 3 else player['strength_oten']
+    player['nli_max_add']  = 3 if player['stamina_oten'] >= 3 else player['stamina_oten']
+    player['tlan_max_add']  = 3 if player['shooting_oten'] >= 3 else player['shooting_oten']
+    player['sf_max_add']  = 3 if player['trisection_oten'] >= 3 else player['trisection_oten']
+    player['yq_max_add']  = 3 if player['dribble_oten'] >= 3 else player['dribble_oten']
+    player['cq_max_add']  = 3 if player['pass_oten'] >= 3 else player['pass_oten']
+    player['lb_max_add']  = 3 if player['backboard_oten'] >= 3 else player['backboard_oten']
+    player['qd_max_add']  = 3 if player['steal_oten'] >= 3 else player['steal_oten']
+    player['fg_max_add']  = 3 if player['blocked_oten'] >= 3 else player['blocked_oten']
+         
     datas = {'player': player}
     return render_to_response(request, 'match/profession_training_detail.html', datas)
+
+@login_required
+def profession_training_save(request):
+    '''职业训练'''
+    no = request.GET.get('no', None)
+    team = request.team
+    success = '球员训练成功'
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not no:
+            error = u'球员id为空'
+            break
+        player = ProfessionPlayer.load(no=no)
+        if not player:
+            error = u'球员不存在'
+            break
+        
+        playerutil.calcul_otential(player)
+        if player.team_id != team.id:
+            error = '该球员不在您队中'
+            break
+            
+        sd_add = float(request.GET.get('sd_add', 0))
+        if sd_add >  player.speed_oten:
+            sd_add = player.speed_oten
+        player.speed += sd_add
+            
+        tt_add = float(request.GET.get('tt_add', 0))
+        if tt_add > player.bounce_oten:
+            tt_add = player.bounce_oten
+        player.bounce += tt_add
+            
+        qz_add = float(request.GET.get('qz_add', 0))
+        if qz_add > player.strength_oten:
+            qz_add = player.strength_oten
+        player.strength += qz_add
+            
+        nli_add = float(request.GET.get('nli_add', 0))
+        if nli_add > player.stamina_oten:
+            nli_add = player.stamina_oten
+        player.stamina += nli_add
+        
+        tlan_add = float(request.GET.get('tlan_add', 0))
+        if tlan_add > player.shooting_oten:
+            tlan_add = player.shooting_oten
+        player.shooting += tlan_add
+            
+        sf_add = float(request.GET.get('sf_add', 0))
+        if sf_add > player.trisection_oten:
+            sf_add = player.trisection_oten
+        player.trisection += sf_add
+            
+        yq_add = float(request.GET.get('yq_add', 0))
+        if yq_add > player.dribble_oten:
+            yq_add = player.dribble_oten
+        player.dribble += yq_add
+            
+        cq_add = float(request.GET.get('cq_add', 0))
+        if cq_add > player.pass_oten:
+            cq_add = player.pass_oten
+        old_attr = getattr(player, 'pass')
+        old_attr += cq_add
+        setattr(player, 'pass', old_attr)
+            
+        lb_add = float(request.GET.get('lb_add', 0))
+        if lb_add > player.backboard_oten:
+            lb_add = player.backboard_oten
+        player.backboard += lb_add
+            
+        qd_add = float(request.GET.get('qd_add', 0))
+        if qd_add > player.steal_oten:
+            qd_add = player.steal_oten
+        player.steal += qd_add
+        
+        fg_add = float(request.GET.get('fg_add', 0))
+        if fg_add > player.blocked_oten:
+            fg_add = player.blocked_oten
+        player.blocked += fg_add
+        
+        if sd_add > 3 or tt_add > 3 or qz_add > 3 or nli_add > 3 or tlan_add > 3 or sf_add > 3 \
+            or yq_add > 3 or cq_add > 3 or lb_add > 3 or qd_add > 3 or fg_add > 3:
+            error = u'训练异常'
+            break
+        
+        total_add =  sd_add + tt_add + qz_add + nli_add + tlan_add + sf_add + yq_add + cq_add + lb_add + qd_add + fg_add
+        
+        if player.power - total_add < 30:
+            error = u'球队员体不足，不能训练'
+            break
+        else: 
+            player.power = player.power - total_add
+        
+        if player.training_locations < total_add * 200:
+            error = u'球员训练点不足'
+            break
+        else:
+            player.training_locations = player.training_locations - total_add * 200
+            
+        playerutil.calcul_ability(player)
+        try:
+            player.persist()
+        except:
+            exception_mgr.on_except()
+            error = '服务器异常'
+        
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    url = '%s?no=%s' % (reverse('profession-training-detail'), no)
+    return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
