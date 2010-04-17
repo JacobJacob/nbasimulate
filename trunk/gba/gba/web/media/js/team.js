@@ -1,5 +1,3 @@
-var rpc = new PHPRPC_Client('ajax/jlb.php', ['jlb_ming_cheng_check']);
-
 //失去焦点的时候执行此方法，发送请求到后台php
 function usernameResult(result) {
   var mes;
@@ -26,7 +24,7 @@ function usernameResult(result) {
 }
 
 function jlb_ming_chengCheck() {						//判断是否执行此方法
-  var input = $('ju_le_bu_ming').value;
+  var input = $('team_name').value;
   rpc.jlb_ming_cheng_check(input, usernameResult);
 }
 //--------------------------------填充页面-------------------------------------
@@ -63,23 +61,23 @@ function checkform()
 	  return false;
 	}
 
-	if(!isNull('ju_le_bu_ming'))
+	if(!isNull('team_name'))
 	{
 		$('message').innerHTML = "俱乐部名称不能为空！";
 		return false;
 	}
 	//过滤内容
-	if(is_political_words($('ju_le_bu_ming').value)||is_dirty_words($('ju_le_bu_ming').value))
+	if(is_political_words($('team_name').value)||is_dirty_words($('team_name').value))
 	{
 		$("message").innerHTML = "俱乐部名称不合法！";
 		return false;
 	}
-	if(!isNaN($('ju_le_bu_ming').value))
+	if(!isNaN($('team_name').value))
 	{
 		$('message').innerHTML = "俱乐部名称不能全是数字！";
 		return false;
 	}
-	if(!checkCharLength('ju_le_bu_ming',16))
+	if(!checkCharLength('team_name',16))
 	{
 		$('message').innerHTML = "填写的俱乐部字符太长！";
 		return false;
@@ -96,34 +94,29 @@ check_edit_form = function (myform)
 	  return false;
 	}
 
-	if(!isNull('ju_le_bu_ming'))
+	if(!isNull('team_name'))
 	{
 		$('message').innerHTML = "俱乐部名称不能为空！";
 		return false;
 	}
 	//过滤内容
-	if(is_political_words($('ju_le_bu_ming').value)||is_dirty_words($('ju_le_bu_ming').value))
+	if(is_political_words($('team_name').value)||is_dirty_words($('team_name').value))
 	{
 		$("message").innerHTML = "俱乐部名称不合法！";
 		return false;
 	}
-	if(!isNaN($('ju_le_bu_ming').value))
+	if(!isNaN($('team_name').value))
 	{
 		$('message').innerHTML = "俱乐部名称不能全是数字！";
 		return false;
 	}
-	if(!checkCharLength('ju_le_bu_ming',16))
+	if(!checkCharLength('team_name',16))
 	{
 		$('message').innerHTML = "填写的俱乐部字符太长！";
 		return false;
 	}
-	if($('type').value=='upload')
-	{
-		if(!check_file())
-			return false;
-	}
-	//submit_to_div(myform,"popup_inner")
-	return true;
+
+	return submit_to_div(myform,'popup_inner');
 }
 
 function check_file() 

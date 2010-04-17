@@ -50,6 +50,13 @@ def team_username(team_id):
         if user_info:
             return user_info.username
     return ''
+
+@register.filter
+def team_micro(team_id):
+    team = Team.load(id=team_id)
+    if team and team.micro:
+        return team.micro
+    return '/site_media/images/team/0.gif'
         
 @register.filter
 def match_status(info, id):

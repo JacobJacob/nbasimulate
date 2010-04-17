@@ -24,8 +24,9 @@
       <td align="right" height="25">俱乐部经理：</td>
       <td><font class="ForumTime">{{team.id|nickname}}</font></td></tr>
      <tr>
+       <input name="can_shu" id="can_shu" value="-1" type="hidden">
        <td align="right" height="25">俱乐部名称：</td>
-       <td><input class="input_100_20" id="ju_le_bu_ming" name="ju_le_bu_ming" value="{{team.name}}" onchange="jlb_ming_chengCheck();"></td>
+       <td><input class="input_100_20" id="team_name" name="team_name" value="{{team.name}}"></td>
     </tr>
     <tr>
       <td align="right" height="25"></td>
@@ -56,6 +57,7 @@
 </tbody>
  </table>
 <input name="is_check" value="-1" type="hidden">
+<input name="type" id="type" value="" type="hidden">
 <!-- 隐藏的div包含所有的衣服 -->
 <div id="div2" style="display: none;">
  <table width="264" bgcolor="#f7f7f7" border="0" cellpadding="0" cellspacing="0" height="220">

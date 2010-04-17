@@ -23,7 +23,7 @@
 	<h3>河南</h3>
   </div>
   <div class="w55">
-	<img id="imgClothes" src="/site_media/images/0.gif" width="55" height="55"></div>
+	<img id="imgClothes" src="{{league_match.match_team_home_id|league_team_to_team_id|team_micro}}" width="55" height="55"></div>
  <div class="w173">
 	 <div class="blank10"></div>
   <div id="bifen">	
@@ -41,7 +41,7 @@
    </div>
 </div>
 <div class="w55">
-<img id="imgClothes" src="/site_media/images/0.gif" width="55" height="55"></div>
+<img id="imgClothes" src="{{league_match.match_team_guest_id|league_team_to_team_id|team_micro}}" width="55" height="55"></div>
 <div class="w160">
 <h2>
    <a href="{% url user-detail %}?id={{league_match.match_team_guest_id|league_team_to_team_id}}" onclick="return show_popup(this)">

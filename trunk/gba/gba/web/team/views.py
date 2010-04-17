@@ -268,7 +268,7 @@ def team_info(request):
 def update_team_info(request):
     """更新球队信息"""
     team_name = request.GET.get('team_name', None)
-    micro = request.GET.get('micro', None)
+    micro = request.GET.get('hidClothes', None)
     team = request.team
     success = '球队信息更新成功'
     error = None
@@ -279,7 +279,7 @@ def update_team_info(request):
         if micro:
             team.micro = micro
         
-        if team_name:
+        if team_name and team_name != team.name:
             check_team = Team.load(name=team_name)
             if check_team:
                 error = '该球队名称已被占用'
