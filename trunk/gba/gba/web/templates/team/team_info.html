@@ -1,0 +1,202 @@
+{% extends "index.html" %}
+{% block ext_head %}
+<script type="text/javascript" src="/site_media/js/team.js"></script>
+{% endblock %}
+{% block show_nav %}
+<script language="javascript">
+  sub_menu_highlight(1,3);
+  nav_over('nav1','show1');
+  nav_show('nav1','show1');
+</script>
+{% endblock %}
+{% block main %}
+<form method="post" action="i.php?a=233" enctype="multipart/form-data" name="frm" id="frm" onsubmit="return check_edit_form(this)">
+<div class="blank10"></div>
+<div class="blueBoxclub">
+<div class="jlbBox">
+<table>
+  <tbody>
+     <tr>
+       <td width="100" align="right" height="25">&nbsp;</td>
+       <td>&nbsp;</td></tr>
+     <tr>
+      <td align="right" height="25">俱乐部经理：</td>
+      <td><font class="ForumTime">花木兰</font></td></tr>
+		  <input name="jlb" id="jlb" value="木兰女子队" type="hidden">
+     <tr>
+       <td align="right" height="25">俱乐部名称：</td>
+       <td><input class="input_100_20" id="ju_le_bu_ming" name="ju_le_bu_ming" value="木兰女子队" onchange="jlb_ming_chengCheck();"></td>
+    </tr>
+    <input name="can_shu" id="can_shu" value="-1" type="hidden">
+    <tr>
+      <td align="right" height="25"></td>
+      <td>[<font color="#ff0000">必填项</font>]名称限制在16个英文字符/8个中文字符。
+          <font color="red"><div id="message"></div></font></td></tr>
+    <tr>
+      <td align="right" height="25">
+       <input id="hidLogo" value="10" name="hidLogo" type="hidden">俱乐部队徽：
+      </td>
+      <td>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tbody>
+           <tr>
+             <td colspan="2" height="62">
+             <div id="tu_pian">
+             <img id="imgClothes2" onclick="ShowMenu2()" src="/site_media/images/team/26.gif" width="55" height="55">
+            </div>
+           </td>
+           </tr>
+           <tr>
+            <td colspan="2"><input id="hidClothes" value="images/ju_le_bu/26.gif" name="hidClothes" type="hidden">点击图片选择队徽！
+	          <font color="red"></font></td>
+           </tr>
+          </tbody>
+        </table>
+       </td>
+      </tr>
+</tbody>
+ </table>
+<input name="is_check" value="-1" type="hidden">
+<!-- 隐藏的div包含所有的衣服 -->
+<div id="div2" style="display: none;">
+ <table width="264" bgcolor="#f7f7f7" border="0" cellpadding="0" cellspacing="0" height="220">
+  <tbody>
+  <tr>
+    <td width="7" height="7">
+     <img src="/site_media/images/team/div_corner_01.gif" width="7" border="0" height="7">
+    </td>
+    <td background="/site_media/images/team/Div_side_top.gif"></td>
+    <td width="7">
+     <img src="/site_media/images/team/div_corner_02.gif" width="7" border="0" height="7">
+    </td>
+  </tr>
+  <tr>
+    <td background="/site_media/images/team/div_side_left.gif"></td>
+    <td>
+      <table style="font-size: 12px; color: rgb(247, 247, 247); font-family: 宋体; text-decoration: none;" width="250" bgcolor="#f7f7f7" border="0" cellpadding="0" cellspacing="0" height="206">
+        <tbody>
+         <tr align="middle">
+          <td width="50">
+           <img style="" onclick="ChooseClothes(0)" src="/site_media/images/team/0.gif" width="55" border="0" height="55">
+          </td>
+          <td width="50">
+           <img style="" onclick="ChooseClothes(1)" src="/site_media/images/team/1.gif" width="55" border="0" height="55">
+          </td>
+          <td width="50"><img style="" onclick="ChooseClothes(2)" src="/site_media/images/team/2.gif" width="55" border="0" height="55">
+          </td>
+          <td width="50"><img style="" onclick="ChooseClothes(3)" src="/site_media/images/team/3.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(4)" src="/site_media/images/team/4.gif" width="55" border="0" height="55"></td>
+		  <td width="50"><img style="" onclick="ChooseClothes(20)" src="/site_media/images/team/20.gif" width="55" border="0" height="55"></td>
+		  <td width="50"><img style="" onclick="ChooseClothes(21)" src="/site_media/images/team/21.gif" width="55" border="0" height="55"></td></tr>
+        <tr align="middle">
+          <td width="50"><img style="" onclick="ChooseClothes(5)" src="/site_media/images/team/5.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(6)" src="/site_media/images/team/6.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(7)" src="/site_media/images/team/7.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(8)" src="/site_media/images/team/8.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(9)" src="/site_media/images/team/9.gif" width="55" border="0" height="55"></td>
+		  <td width="50"><img style="" onclick="ChooseClothes(22)" src="/site_media/images/team/22.gif" width="55" border="0" height="55"></td>
+		  <td width="50"><img style="" onclick="ChooseClothes(23)" src="/site_media/images/team/23.gif" width="55" border="0" height="55"></td>
+		</tr>
+        <tr align="middle">
+          <td width="50"><img style="" onclick="ChooseClothes(10)" src="/site_media/images/team/10.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(11)" src="/site_media/images/team/11.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(12)" src="/site_media/images/team/12.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(13)" src="/site_media/images/team/13.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(14)" src="/site_media/images/team/14.gif" width="55" border="0" height="55"></td>
+		  <td width="50"><img style="" onclick="ChooseClothes(24)" src="/site_media/images/team/24.gif" width="55" border="0" height="55"></td>
+		  <td width="50"><img style="" onclick="ChooseClothes(25)" src="/site_media/images/team/25.gif" width="55" border="0" height="55"></td></tr>
+        <tr align="middle">
+          <td width="50"><img style="" onclick="ChooseClothes(15)" src="/site_media/images/team/15.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(16)" src="/site_media/images/team/16.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(17)" src="/site_media/images/team/17.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(18)" src="/site_media/images/team/18.gif" width="55" border="0" height="55"></td>
+          <td width="50"><img style="" onclick="ChooseClothes(19)" src="/site_media/images/team/19.gif" width="55" border="0" height="55"></td>
+		  <td width="50"><img style="" onclick="ChooseClothes(26)" src="/site_media/images/team/26.gif" width="55" border="0" height="55"></td>
+		  <td width="50"><img style="" onclick="ChooseClothes(27)" src="/site_media/images/team/27.gif" width="55" border="0" height="55"></td></tr>
+	    </tbody>
+	   </table>
+	   </td>
+       <td background="/site_media/images/team/div_side_right.gif"></td></tr>
+  <tr>
+    <td width="7" height="7"><img src="/site_media/images/team/div_corner_04.gif" width="7" border="0" height="7"></td>
+    <td background="/site_media/images/team/div_side_down.gif"></td>
+    <td width="7" height="7">
+     <img src="/site_media/images/team/div_corner_03.gif" width="7" border="0" height="7">
+    </td>
+  </tr>
+ </tbody>
+</table>
+</div>
+<!-- 完成按钮 -->
+<div class="clear"></div>
+<div class="h25"></div>
+<div align="center">
+ <input src="/site_media/images/team/submit.gif" name="sub" id="sub" onclick='document.getElementById("type").value="";' width="60" type="image" border="0" height="18">
+</div>
+</div>
+</div>
+</form>
+</div>		
+<div class="clubinfo">
+  <table width="100%" border="0" cellpadding="3" cellspacing="0">
+    <tbody>
+      <tr>
+        <td colspan="2" style="border-bottom: 1px solid rgb(218, 218, 218);" bgcolor="#ffffff" height="28">
+        <div class="f14" align="center">
+          <img src="/site_media/images/team/i.gif" width="107" height="25">
+        </div>
+        </td>
+      </tr>
+     <tr>
+    <td class="blk1220" valign="top" width="8%" bgcolor="#f7f7f7" height="32">·</td>
+    <td width="92%" bgcolor="#f7f7f7"><span class="blk1220">2010-04-03 星期六　09:37:42</span><br>
+     <span class="blue1220">
+      <a href="http://s3.dlm.17uxi.cn/source/i.php?a=433&amp;id_gong_gao=2496495&amp;type=SJ">
+      <font color="#0096f1">好消息，表演赛奖励已经发放！</font>
+      </a>
+     </span>
+    </td>
+ </tr>
+ <tr>
+  <td class="blk1220" valign="top" bgcolor="#ffffff">·</td>
+	<td bgcolor="#ffffff"><span class="blk1220">2010-04-01　星期四　13:23:01</span><br>
+	 <span class="blue1220">
+	 <a href="http://s3.dlm.17uxi.cn/source/i.php?a=433&amp;id_gong_gao=2491016&amp;type=SJ">
+	  <font color="#0096f1">请为俱乐部聘请合适的职员。</font>
+	 </a>
+	 </span>
+  </td>
+</tr>
+<tr>
+  <td class="blk1220" valign="top" bgcolor="#f7f7f7">·</td>
+  <td bgcolor="#f7f7f7"><span class="blk1220">2010-04-01　星期四　13:23:01</span><br>
+   <span class="blue1220">
+    <a href="http://s3.dlm.17uxi.cn/source/i.php?a=433&amp;id_gong_gao=2491015&amp;type=SJ">
+     <font color="#0096f1">联赛即将开始！
+    </font>
+    </a>
+   </span>
+  </td>
+</tr>
+<tr>
+ <td class="blk1220" valign="top" bgcolor="#ffffff">·</td>
+  <td bgcolor="#ffffff"><span class="blk1220">2010-04-01　星期四　13:23:01</span><br>
+ <span class="blue1220">
+  <a href="http://s3.dlm.17uxi.cn/source/i.php?a=433&amp;id_gong_gao=2491014&amp;type=SJ">
+   <font color="#0096f1">欢迎加入，球队资金已经到位！</font>
+  </a>
+ </span>
+</td>
+</tr>
+<tr>
+ <td class="blk1220" valign="top" bgcolor="#ffffff">·</td>
+ <td bgcolor="#ffffff">
+  <span class="blk1220">
+   <a href="http://s3.dlm.17uxi.cn/source/i.php?a=430&amp;type=SJ">更多&gt;&gt;</a>
+  </span><br>
+ </td>
+</tr>
+</tbody>
+</table>
+</div>
+{% endblock %}

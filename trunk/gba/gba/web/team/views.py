@@ -255,4 +255,11 @@ def hire_staff(request):
         if error:
             return render_to_response(request, 'message.html', {'error': error, 'success': success})
         url = reverse('team-staff-min')
-        return render_to_response(request, 'message_update.html', {'error': error, 'success': success, 'url': '%s?is_youth=%s' % (url, staff.is_youth)})    
+        return render_to_response(request, 'message_update.html', {'error': error, 'success': success, 'url': '%s?is_youth=%s' % (url, staff.is_youth)})
+    
+@login_required
+def team_info(request):
+    """球队信息"""
+    team = request.team
+    datas = {}
+    return render_to_response(request, 'team/team_info.html', datas)

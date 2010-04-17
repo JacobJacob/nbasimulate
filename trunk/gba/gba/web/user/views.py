@@ -11,7 +11,7 @@ from gba.config import PathSettings
 from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import UserManager, login_required
 from gba.business import user_operator, match_operator, player_operator
-from gba.entity import Message, Team, ChatMessage
+from gba.entity import Message, Team, ChatMessage, LeagueTeams
 from gba.common.constants import MessageType, MatchTypeMaps
 from gba.common import exception_mgr
 
@@ -188,6 +188,10 @@ def check_new_message(request):
 def user_detail(request):
     '''经理信息'''
     team_id = request.GET.get('id')
+    type = int(request.GET.get('type', 1))
+    if type == 2:
+        league_team = LeagueTeams.load(id=team_id)
+        team_id = league_team.team_id
     show_team = Team.load(id=team_id)
     pro_players = player_operator.get_profession_player(team_id)
     youth_players = player_operator.get_youth_player(team_id)

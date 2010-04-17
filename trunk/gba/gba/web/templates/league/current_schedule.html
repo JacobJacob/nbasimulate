@@ -14,13 +14,13 @@
 {% for info in infos %}
 <tr>
 <td>
- <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=40531" onclick="return show_popup(this);">
+ <a href="{% url user-detail %}?id={{info.match_team_home_id}}&type=2" onclick="return show_popup(this);">
   <font color="#0096f1">{{info.match_team_home_id|league_team_to_name}}</font></a></td>
 <td>
   VS
 </td>
 <td>
-<a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=12902" onclick="return show_popup(this);">
+<a href="{% url user-detail %}?id={{info.match_guest_home_id}}&type=2" onclick="return show_popup(this);">
  <font color="#0096f1">{{info.match_team_guest_id|league_team_to_name}}</font></a>
 </td>
 </tr>

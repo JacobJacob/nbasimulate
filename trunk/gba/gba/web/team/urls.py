@@ -14,4 +14,5 @@ urlpatterns = patterns('web.team',
     url(r'^team_ad/$', 'views.team_ad', name='team-ad'),
     url(r'^team_ad_min/$', 'views.team_ad',{'min': True}, name='team-ad-min'),
     url(r'^select_ad/$', 'views.select_ad', name='select-ad'),
+    url(r'^team_info/$', 'views.team_info', name='team-info'),
 )
