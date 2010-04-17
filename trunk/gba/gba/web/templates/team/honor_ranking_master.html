@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% block show_nav %}
+<script language="javascript">
+  sub_menu_highlight(2,5);
+  nav_over('nav2','show2');
+  nav_show('nav2','show2');
+</script>
+{% endblock %}
+{% block sub_menu %}
+ <div class="players_lab">
+ <ul>
+  <li class="" id="menu_third_1">
+   <a href="{% url team-ranking-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
+    球队
+   </a>
+ </li>
+ <li id="menu_third_2">
+  <a href="{% url player-ranking %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">
+  球员
+  </a>
+</li>
+<li id="menu_third_3">
+ <a href="http://s3.dlm.17uxi.cn/source/n.php?a=552" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(3);return false;">
+  战队
+</a>
+</li>
+</ul>
+</div>
+<div class="clear"></div>
+{% endblock %}

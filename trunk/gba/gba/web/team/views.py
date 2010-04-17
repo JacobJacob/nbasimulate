@@ -6,7 +6,7 @@ from copy import deepcopy
 from django.core.urlresolvers import reverse
 
 from gba.business.user_roles import login_required
-from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, LeagueConfig, Friends, Team
+from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, LeagueConfig, Friends, Team, ProfessionPlayer
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
@@ -410,3 +410,55 @@ def delete_friend(request):
             return render_to_response(request, 'message.html', {'error': error})
         url = reverse('friends-min')
         return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+    
+@login_required
+def team_ranking(request, min=False):
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    
+    if page <= 0:
+        page = 1
+    if page > 10:
+        page = 10
+    index = (page - 1) * pagesize
+    
+    infos = Team.query(order='agv_ability desc', limit="%s, %s" % (index, pagesize))
+    total = 100
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+
+    if min:
+        return render_to_response(request, 'team/team_ranking_min.html', datas)
+    return render_to_response(request, 'team/team_ranking.html', datas)
+
+@login_required
+def player_ranking(request):
+    '''球员综合排行榜'''
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    
+    if page <= 0:
+        page = 1
+    if page > 10:
+        page = 10
+    index = (page - 1) * pagesize
+    
+    infos = ProfessionPlayer.query(order='ability desc', limit="%s, %s" % (index, pagesize))
+    total = 100
+    
+    for i, info in enumerate(infos):
+        info.rank = (page-1)*pagesize + i + 1
+        
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+
+    return render_to_response(request, 'team/player_ranking_min.html', datas)

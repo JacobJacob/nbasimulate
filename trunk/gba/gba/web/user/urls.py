@@ -16,4 +16,5 @@ urlpatterns = patterns('web.user',
     url(r'^8809/$', 'views.user_detail', name='user-detail'),
     url(r'^8810/$', 'views.message', {'min': True}, name='message-min'),
     url(r'^8811/$', 'views.issue_message', name='issue-message'),
+    url(r'^8812/$', 'views.out_message', name='out-message'),
 )

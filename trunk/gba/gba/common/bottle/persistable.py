@@ -239,7 +239,11 @@ class Persistable(object):
         objs = cls.query(**args)
         count = 0
         if objs:
-            count = cls.count(args.get('condition'))
+            condition = args.get('condition')
+            if condition:
+                count = cls.count(condition)
+            else:
+                count = cls.count()
         return objs, count
         
     @classmethod

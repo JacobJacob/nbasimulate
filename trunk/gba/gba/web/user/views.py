@@ -246,6 +246,26 @@ def message(request, min=False):
     return render_to_response(request, "user/message.html", locals())
 
 @login_required
+def out_message(request):
+    '''发件箱管理'''
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+
+    team = UserManager().get_team_info(request)
+    
+    infos, total = OutMessage.paging(page, pagesize)
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
+            'nextpage': page + 1, 'prevpage': page - 1}
+    
+    return render_to_response(request, "user/out_message.html", locals())
+
+@login_required
 def check_new_message(request):
     '''检查看有没有新的消息'''
     team = UserManager().get_team_info(request)

@@ -20,4 +20,7 @@ urlpatterns = patterns('web.team',
     url(r'^add_friend/$', 'views.add_friend', name='add-friend'),
     url(r'^delete_friend/$', 'views.delete_friend', name='delete-friend'),
     url(r'^update_team_info/$', 'views.update_team_info', name='update-team-info'),
+    url(r'^team_ranking/$', 'views.team_ranking', name='team-ranking'),
+    url(r'^team_ranking_min/$', 'views.team_ranking', {'min': True}, name='team-ranking-min'),
+    url(r'^player_ranking/$', 'views.player_ranking', name='player-ranking'),
 )
