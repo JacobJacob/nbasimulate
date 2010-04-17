@@ -6,7 +6,7 @@ from copy import deepcopy
 from django.core.urlresolvers import reverse
 
 from gba.business.user_roles import login_required
-from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, LeagueConfig
+from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, LeagueConfig, Friends, Team
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
@@ -261,5 +261,152 @@ def hire_staff(request):
 def team_info(request):
     """球队信息"""
     team = request.team
-    datas = {}
+    datas = {'team': team}
     return render_to_response(request, 'team/team_info.html', datas)
+
+@login_required
+def update_team_info(request):
+    """更新球队信息"""
+    team_name = request.GET.get('team_name', None)
+    micro = request.GET.get('micro', None)
+    team = request.team
+    success = '球队信息更新成功'
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        
+        if micro:
+            team.micro = micro
+        
+        if team_name:
+            check_team = Team.load(name=team_name)
+            if check_team:
+                error = '该球队名称已被占用'
+                break
+            else:
+                team.name = team_name
+        
+        try:
+            team.persist()
+        except:
+            exception_mgr.on_except()
+            error = '服务器异常'
+            break
+        
+    return render_to_response(request, 'message.html', {'error': error, 'success': success})
+
+@login_required
+def friends(request, min=False):
+    '''好友列表'''
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    team = request.team
+    infos, total = Friends.paging(page, pagesize, condition='team_id="%s"' % team.id)
+
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    
+    if min:
+        return render_to_response(request, 'team/friends_min.html', datas)
+    return render_to_response(request, 'team/friends.html', datas)
+ 
+@login_required
+def add_friend(request):
+    friend_team_id = request.GET.get('team_id', None)
+    team = request.team
+    success = '添加好友成功'
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not friend_team_id:
+            error = '该经理不存在'
+            break
+        
+        friend_team = Team.load(id=friend_team_id)
+        if not friend_team:
+            error = '该经理不存在'
+            break
+        
+        friend = Friends.load(team_id=team.id, friend_team_id=friend_team_id)
+        if friend:
+            error = '该经理已经是您的好友'
+            break
+        
+        friend = Friends()
+        friend.team_id = team.id
+        friend.friend_team_id = friend_team_id
+        try:
+            friend.persist()
+        except:
+            exception_mgr.on_except()
+            error = '服务器异常'
+            break
+            
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    url = reverse('friends-min')
+    return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+
+@login_required
+def delete_friend(request):
+    friend_team_id = request.GET.get('team_id', None)
+    team = request.team
+    if request.method == 'GET':
+        error = None
+        i = 0
+        while i < 1:
+            i += 1
+            if not friend_team_id:
+                error = '该经理不存在'
+                break
+            
+            friend_team = Team.load(id=friend_team_id)
+            if not friend_team:
+                error = '该经理不存在'
+                break
+            
+            friend = Friends.load(team_id=team.id, friend_team_id=friend_team_id)
+            if not friend:
+                error = '该经理不是是您的好友'
+                break
+             
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        return render_to_response(request, 'team/delete_friend.html', {'friend_team': friend_team})
+    else:
+        error = None
+        success = '好友删除成功'
+        i = 0
+        while i < 1:
+            i += 1
+            if not friend_team_id:
+                error = '该经理不存在'
+                break
+            
+            friend_team = Team.load(id=friend_team_id)
+            if not friend_team:
+                error = '该经理不存在'
+                break
+            
+            friend = Friends.load(team_id=team.id, friend_team_id=friend_team_id)
+            if not friend:
+                error = '该经理不是是您的好友'
+                break
+            
+            try:
+                friend.delete()
+            except:
+                exception_mgr.on_except()
+                error = '删除出错'
+                break
+             
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        url = reverse('friends-min')
+        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})

@@ -1,0 +1,20 @@
+{% load common_extras %}
+<form method="post" action="{% url delete-friend %}?team_id={{friend_team.id}}" name="frm" onsubmit='return submit_to_div(this,"popup_inner")'>
+<div class="floatBox_sms">
+<div class="blank20"></div>
+<div class="blank10"></div>
+<p class="lh21">
+ 是否要删除好友:{{friend_team.id|nickname}}?
+</div>
+<div class="blank10"></div>
+<div class="floatBox_sms_btn">
+<div class="left">
+ <input name="Submit" value="确定" class="btn_3" type="submit">
+</div>
+<div class="btn_3 right"><a href="#" onclick="return hide_popup('');">取消</a>
+</div>
+</div><div class="clear"></div>
+</div>
+<div class="blank20"></div>
+<div class="blank20"></div>
+</form>

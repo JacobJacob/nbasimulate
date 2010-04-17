@@ -172,6 +172,8 @@ def nickname(team_id):
     if team_id == 0:
         return u'系统消息'
     team = Team.load(id=team_id)
+    if not team:
+        return ''
     user_info = UserInfo.load(username=team.username)
     if user_info:
         return user_info.nickname
@@ -330,3 +332,7 @@ def power_color(value):
         return '#ff8c00'
     else:
         return '#ff0000'
+    
+@register.filter
+def attr_width(value):
+    return int(value*1.6)

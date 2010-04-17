@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% block show_nav %}
+<script language="javascript">
+  sub_menu_highlight(1,4);
+  nav_over('nav1','show1');
+  nav_show('nav1','show1');
+</script>
+{% endblock %}
+{% block main %}
+ {% include "team/friends_min.html" %}
+{% endblock %}

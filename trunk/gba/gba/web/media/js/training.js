@@ -50,7 +50,7 @@ function jia_dian_onclick(shu_xing)
 		ti_li = ti_li - 1;
 
 		xun_lian_dian = xun_lian_dian - xld_xiao_hao_zhi;
-		$(shu_xing+'_tiao').innerHTML = '<img height=8 src="/site_media/images/qiu_yuan/color' + color + '.gif" width="'+sx_dang_qian_zhi+'"><input type="hidden" id="'+shu_xing+'_width" name="'+shu_xing+'_width" value="'+sx_dang_qian_zhi+'">';
+		$(shu_xing+'_tiao').innerHTML = '<img height=8 src="/site_media/images/qiu_yuan/color' + color + '.gif" width="'+sx_dang_qian_zhi * 1.6 +'"><input type="hidden" id="'+shu_xing+'_width" name="'+shu_xing+'_width" value="'+sx_dang_qian_zhi+'">';
 		$(shu_xing+'_zhi').innerHTML = parseFloat(parseInt(sx_dang_qian_zhi*10)/10);
 		$('ti_li').innerHTML = ti_li+'<input type="hidden" id="ti_li_zhi" name="ti_li_zhi" value="'+ti_li+'">';
 		$('xun_lian_dian').innerHTML = xun_lian_dian+'<input type="hidden" id="xun_lian_dian_zhi" name="xun_lian_dian_zhi" value="'+xun_lian_dian+'">';

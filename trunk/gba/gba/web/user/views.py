@@ -11,7 +11,7 @@ from gba.config import PathSettings
 from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import UserManager, login_required
 from gba.business import user_operator, match_operator, player_operator
-from gba.entity import Message, Team, ChatMessage, LeagueTeams
+from gba.entity import Message, Team, ChatMessage, LeagueTeams, OutMessage
 from gba.common.constants import MessageType, MatchTypeMaps
 from gba.common import exception_mgr
 
@@ -142,9 +142,79 @@ def send_match_request(request):
 def send_message(request):
     '''发送约战请求''' 
     if request.method == 'GET':
-        return render_to_response(request, "user/send_message.html", locals())
+        team_id = request.GET.get('team_id', None)
+        if request.method == 'GET':
+            error = None
+            i = 0
+            while i < 1:
+                i += 1
+                if not team_id:
+                    error = '该经理不存在'
+                    break
+                
+                to_team = Team.load(id=team_id)
+                if not to_team:
+                    error = '该经理不存在'
+                    break
+
+            if error:
+                return render_to_response(request, 'message.html', {'error': error})
+            datas = {'to_team': to_team}
+            return render_to_response(request, "user/send_message.html", datas)
     else:
-        return render_to_response(request, "user/send_message.html", locals())
+        to_team_id = request.GET.get('team_id', None)
+        title = request.GET.get('title', None)
+        content = request.GET.get('content', None)
+        team = request.team
+
+        success = '信息发送成功'
+        error = None
+        i = 0
+        while i < 1:
+            i += 1
+            print title
+            print content
+            if not (title and content):
+                error = '消息不完整'
+                break
+                
+            if not to_team_id:
+                error = '该经理不存在'
+                break
+            
+            to_team = Team.load(id=to_team_id)
+            if not to_team:
+                error = '该经理不存在'
+                break
+            
+            message = Message()
+            out_message = OutMessage()
+            
+            message.title = title
+            message.content = content
+            message.from_team_id = team.id
+            message.to_team_id = to_team_id
+            message.is_new = 1
+            message.type = MessageType.PLAYER_MSG
+            
+            out_message.title = title
+            out_message.content = content
+            out_message.from_team_id = team.id
+            out_message.to_team_id = to_team_id
+            
+            Message.transaction()
+            try:
+                message.persist()
+                out_message.persist()
+                Message.commit()
+            except:
+                Message.rollback()
+                exception_mgr.on_except()
+                error = '服务器异常'
+            
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        return render_to_response(request, "message.html", {'success': success})
         
 @login_required
 def message(request, min=False):

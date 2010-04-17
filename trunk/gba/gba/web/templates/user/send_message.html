@@ -1,98 +1,76 @@
+{% load common_extras %}
 <script language='javascript'>
-    check_xx = function(myform) {
-        var temp = true;
-        var type_1 = 'LENGTH';
-        var ids_1 = new Array('biao_ti', 'nei_rong');
-        var msgs_1 = new Array('标题长度不能超过30个字符！', '内容长度不能超过255个字符！');
-        var other_1 = new Array('30', '255');
-        if (!checkPublic(type_1, ids_1, msgs_1, other_1)) return false;
+check_xx = function(myform)
+{
+	var temp = true;
+	var type_1  ='LENGTH';
+	var ids_1   = new Array('title','content');
+    var msgs_1  = new Array('标题长度不能超过30个字符！','内容长度不能超过255个字符！');
+	var other_1 = new Array('30','255');
+	if(!checkPublic(type_1,ids_1,msgs_1,other_1))
+		return  false;
 
-        var ids = new Array('biao_ti', 'nei_rong');
-        var msgs = new Array('标题不能为空！', '内容不能为空！');
-        var types = new Array('STRING', 'STRING');
-        if (!checkSubmit(ids, msgs, types)) return false;
-        //标题过滤内容
-        if (is_political_words($('biao_ti').value) || is_dirty_words($('biao_ti').value)) {
-            alert("标题不合法！");
-            return false;
-        }
-        //内容过滤
-        if (is_political_words($('nei_rong').value) || is_dirty_words($('nei_rong').value)) {
-            alert("消息内容不合法！");
-            return false;
-        }
-        return submit_to_div(myform, 'popup_inner');
-    }
-</script>
-<form name="liu_yan_form" id="liu_yan_form" action="i.php?a=117" method="post" onsubmit='return check_xx(this);'>
-    <div class="blank20">
-    </div>
-    <div class="floatBox_msg">
-        <div>
-            <img src="/site_media/images/w_blank/blank_2_08.gif" width="59" height="63" alt=""/>
-        </div>
-        <dl>
-            <dd>
-                <span class="floatBox_msg_l">
-                    收件人：
-                </span>
-                <span class="floatBox_msg_r">
-                    <input type="text" name="ming_cheng" id="ming_cheng" value="{{ team.nickname}}" readonly>
-                    经理
-                    <input type="hidden" name="id_jiao_se_shou" id="id_jiao_se_shou" value="26719">
-                </span>
-            </dd>
-        </dl>
-        <div class="clear">
-        </div>
-        <div class="blank10">
-        </div>
-        <dl>
-            <dd>
-                <span class="floatBox_msg_l lh21">
-                    主题：
-                </span>
-                <span class="floatBox_msg_r">
-                    <input type="text" name="biao_ti" id="biao_ti">
-                </span>
-            </dd>
-        </dl>
-        <div class="clear">
-        </div>
-        <div class="blank10">
-        </div>
-        <dl>
-            <dd>
-                <div class="floatBox_msg_l lh21">
-                    消息内容：
-                </div>
-                <div class="floatBox_msg_r">
-                    <textarea name="nei_rong" id="nei_rong" cols="30" rows="10" class="in1"
-                    onfocus="this.className='in2';" onblur="this.className='in1';" style="width:190px; height:146px">
-                    </textarea>
-                </div>
-                <div class="clear">
-                </div>
-            </dd>
-        </dl>
-        <div class="blank10">
-        </div>
-        <dl>
-            <dd>
-                <span class="floatBox_msg_l lh21">
-                    &nbsp;
-                </span>
-                <span class="floatBox_msg_r floatBox_msg_btn">
-                    <div class="mr10 left">
-                        <input type="submit" name="liu_yan" value="确定" class="btn_3" style="CURSOR: pointer"
-                        />
-                    </div>
-                    <div class="btn_3 left">
-                        <input type="button" name="qu_xiao" onclick="return hide_popup();" value="取消" class="btn_3" style="CURSOR: pointer" />
-                    </div>
-                </span>
-            </dd>
-        </dl>
-        <div class="clear">
-        </div>
-</form>
+	var ids   = new Array('title','content');
+	var msgs  = new Array('标题不能为空！','内容不能为空！');
+	var types = new Array('STRING','STRING');
+	if(!checkSubmit(ids,msgs,types))
+		return  false;
+	//标题过滤内容
+	if(is_political_words($('title').value)||is_dirty_words($('title').value))
+	{
+		alert("标题不合法！");
+		return false;
+	}
+	//内容过滤
+	if(is_political_words($('content').value)||is_dirty_words($('content').value))
+	{
+		alert("消息内容不合法！");
+		return false;
+	}
+	return submit_to_div(myform,'popup_inner');
+}
+	</script>
+	
+	<form name="liu_yan_form" id="liu_yan_form" action="{% url send-message %}" method="post" onsubmit='return check_xx(this);'>
+		<div class="blank20"></div>
+				<div class="floatBox_msg">
+					<div><img src="/site_media/images/w_blank/blank_2_08.gif" width="59" height="63" alt="" /></div>
+					<dl><dd>
+						<span class="floatBox_msg_l">收件人：</span>
+						<span class="floatBox_msg_r">
+
+							<input type="text" name="ming_cheng" id="ming_cheng" value="{{to_team.id|nickname}}" readonly>经理
+						    <input type="hidden" name="team_id" id="team_id" value="{{to_team.id}}">
+						</span>
+					</dd></dl>
+					<div class="clear"></div>
+					<div class="blank10"></div>
+					<dl><dd>
+						<span class="floatBox_msg_l lh21">主题：</span>
+						<span class="floatBox_msg_r">
+
+							<input type="text" name="title" id="title">
+						</span>
+					</dd></dl>
+					<div class="clear"></div>
+					<div class="blank10"></div>
+					<dl><dd>
+						<div class="floatBox_msg_l lh21">消息内容：</div>
+						<div class="floatBox_msg_r">
+
+							<textarea name="content" id="content" cols="30" rows="10" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" style="width:190px; height:146px"></textarea>
+							
+						</div><div class="clear"></div>
+					</dd></dl>
+	
+					<div class="blank10"></div>
+					<dl><dd>
+						<span class="floatBox_msg_l lh21">&nbsp;</span>
+						<span class="floatBox_msg_r floatBox_msg_btn">
+							<div class="mr10 left"><input type="submit" name="liu_yan" value="确定" class="btn_3" style="CURSOR: pointer"/></div>
+
+							<div class="btn_3 left"><input type="button" name="qu_xiao" onclick="return show_popup('floatBox');" value="取消" class="btn_3" style="CURSOR: pointer"/></div>
+						</span>
+					</dd></dl>
+					<div class="clear"></div>
+	</form>

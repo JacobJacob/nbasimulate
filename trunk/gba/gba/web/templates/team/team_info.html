@@ -1,4 +1,5 @@
 {% extends "index.html" %}
+{% load common_extras %}
 {% block ext_head %}
 <script type="text/javascript" src="/site_media/js/team.js"></script>
 {% endblock %}
@@ -10,7 +11,7 @@
 </script>
 {% endblock %}
 {% block main %}
-<form method="post" action="i.php?a=233" enctype="multipart/form-data" name="frm" id="frm" onsubmit="return check_edit_form(this)">
+<form method="post" action="{% url update-team-info %}" enctype="multipart/form-data" name="frm" id="frm" onsubmit="return check_edit_form(this)">
 <div class="blank10"></div>
 <div class="blueBoxclub">
 <div class="jlbBox">
@@ -21,13 +22,11 @@
        <td>&nbsp;</td></tr>
      <tr>
       <td align="right" height="25">俱乐部经理：</td>
-      <td><font class="ForumTime">花木兰</font></td></tr>
-		  <input name="jlb" id="jlb" value="木兰女子队" type="hidden">
+      <td><font class="ForumTime">{{team.id|nickname}}</font></td></tr>
      <tr>
        <td align="right" height="25">俱乐部名称：</td>
-       <td><input class="input_100_20" id="ju_le_bu_ming" name="ju_le_bu_ming" value="木兰女子队" onchange="jlb_ming_chengCheck();"></td>
+       <td><input class="input_100_20" id="ju_le_bu_ming" name="ju_le_bu_ming" value="{{team.name}}" onchange="jlb_ming_chengCheck();"></td>
     </tr>
-    <input name="can_shu" id="can_shu" value="-1" type="hidden">
     <tr>
       <td align="right" height="25"></td>
       <td>[<font color="#ff0000">必填项</font>]名称限制在16个英文字符/8个中文字符。
@@ -42,12 +41,12 @@
            <tr>
              <td colspan="2" height="62">
              <div id="tu_pian">
-             <img id="imgClothes2" onclick="ShowMenu2()" src="/site_media/images/team/26.gif" width="55" height="55">
+             <img id="imgClothes2" onclick="ShowMenu2()" src="{{team.micro}}" width="55" height="55">
             </div>
            </td>
            </tr>
            <tr>
-            <td colspan="2"><input id="hidClothes" value="images/ju_le_bu/26.gif" name="hidClothes" type="hidden">点击图片选择队徽！
+            <td colspan="2"><input id="hidClothes" value="{{team.micro}}" name="hidClothes" type="hidden">点击图片选择队徽！
 	          <font color="red"></font></td>
            </tr>
           </tbody>
