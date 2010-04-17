@@ -83,15 +83,18 @@ def profession_player(request, min=False):
 def profession_player_detail(request):
     """profession player detail"""
     no = request.GET.get('no', None)
+    team = request.team
     if not no:
-        return render_to_response(request, 'default_error.html', {'msg': u'球员id为空'})
-    player = player_operator.get_profession_palyer_by_no(no)
+        return render_to_response(request, 'message.html', {'error': u'球员id为空'})
+    player = ProfessionPlayer.load(no=no)
     if not player:
-        return render_to_response(request, 'default_error.html', {'msg': u'球员不存在'})
+        return render_to_response(request, 'message.html', {'error': u'球员不存在'})
+    if player.team_id != team.id:
+        return render_to_response(request, 'message.html', {'error': u'球员不在队中'})
     
     playerutil.calcul_otential(player)
     show_attributes = [i for i in attributes if i not in hide_attributes]
-    
+
     attributes_maps = {}
     for attribute in show_attributes:
         attributes_maps[attribute] = '%s_oten' % attribute
@@ -110,8 +113,21 @@ def profession_player_detail(request):
         career_stat_total.persist()
         career_stat_total = ProPlayerCareerStatTotal.load(player_no=no)
     
+    use_nos = []   
+    players = ProfessionPlayer.query(condition='team_id="%s"' % team.id)
+        
+    for p in players:
+        use_nos.append(p.no)
+        
+    free_nos = []
+    for i in range(1, 110):
+        if i not in use_nos:
+            free_nos.append(i)
+
     datas = {'id': id, 'player': player, 'attributes': attributes_maps, \
-             'season_stat_total': season_stat_total, 'career_stat_total': career_stat_total}
+             'season_stat_total': season_stat_total, 'career_stat_total': career_stat_total, \
+             'free_nos': free_nos}
+    
     return render_to_response(request, 'player/player_detail.html', datas)
 
 @login_required
@@ -333,3 +349,32 @@ def player_detail(request):
         datas['url'] = reverse(from_page)
         datas['from_id'] = from_id
     return render_to_response(request, 'player/common_detail.html', datas)
+
+@login_required
+def player_update(request):
+    """player detail"""
+    no = request.GET.get('no', None)
+    type = request.GET.get('type', None)
+    name = request.GET.get('name', None)
+    number = request.GET.get('number', None)
+    error = None
+    if not no or not type:
+        error = u'获取球员信息出错'
+    else:
+        type = int(type)
+        if type == 2:
+            player = ProfessionPlayer.load(no=no)
+        elif type == 3:
+            player = YouthPlayer.load(no=no)
+   
+        if not player:
+            error = u'获取球员信息出错'
+        player.player_no = number
+        player.name = name
+        player.persist()
+    
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    if type == 2: 
+        url = '%s?no=%s' % (reverse('profession-player-detail'), no)
+    return render_to_response(request, 'message_update.html', {'success': u'球员信息修改成功', 'sub_url': url})

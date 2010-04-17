@@ -9,7 +9,13 @@
 <br><br><br><br>
 <div align="center">
 <div class="btn_3">
+{% if url %}
   <a onclick="return href_to_div_new('{{url}}','main_content');;">确定</a>
+{% else %}
+    {% if sub_url %}
+	<a onclick="return href_to_div(this,'popup_inner');" href="{{sub_url}}">确认</a>
+    {% endif %}
+{% endif %}
 </div>
 </div>
 <br>

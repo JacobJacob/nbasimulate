@@ -297,3 +297,36 @@ def staff_img(type):
         return 'icon_04'
     elif type == 3:
         return 'img_01'
+    
+@register.filter
+def attr_color(value):
+    '''球员属性颜色条'''
+    if not value:
+        return '#000' 
+    elif value >= 90:
+        return '#ff8000'
+    elif value >= 80:
+        return '#0096f1'
+    elif value >= 70:
+        return '#0096f1'
+    elif value >= 60:
+        return '#0096f1'
+    elif value >= 50:
+        return '#00d034'
+    else:
+        return '#000'
+    
+@register.filter
+def power_color(value):
+    '''球员体力颜色条'''
+    print 1, value
+    if not value:
+        return '#000' 
+    elif value == 100:
+        return '#66cc33'
+    elif value >= 70:
+        return '#228b22'
+    elif value >= 60:
+        return '#ff8c00'
+    else:
+        return '#ff0000'

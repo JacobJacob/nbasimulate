@@ -197,8 +197,10 @@ class Persistable(object):
             order = 'order by %s' % args['order']
         if 'condition' in args:
             where = args['condition']
-         
-        sql =  'select * from %s where %s %s %s ' % (cls._table, where, order, limit)
+            
+        columns = args.get('columns', '*')
+            
+        sql =  'select %s from %s where %s %s %s ' % (columns, cls._table, where, order, limit)
         if len(sql) < 200:
             info('start to load objects[%s] with sql:%s' % (cls._table, sql))
         info('start to load objects')

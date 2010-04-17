@@ -1,7 +1,7 @@
 {% load common_extras %}
 <div class="floatBox_content">
 		<div class="floatBox_content_l">
-			<div class="head_img"><img src="/site_media/images/tou_xiang/SG.gif" width="83" height="123" alt="" /></div>
+			<div class="head_img"><img src="/site_media/images/tou_xiang/{{player.position}}.gif" width="83" height="123" alt="" /></div>
 		</div>
 		<div class="floatBox_content_r blue">
 			<h2>
@@ -12,9 +12,9 @@
 			</h2>
 			<ul>
 			<li>
-			年龄	<span class='blue'><a title='第6轮生日'  style='CURSOR:hand'>{{player.age}}</a></span>
+			年龄	<span class='blue'><a title='第{{player.birthday}}轮生日'  style='CURSOR:hand'>{{player.age}}</a></span>
 			 <!-- <a title='球龄' style="CURSOR: hand">[]</a> --><br />
-			位置  <span class="blue"><a title='分卫' style='CURSOR:hand'>SG</a></span><br />
+			位置  <span class="blue"><a title='{{player.position}}' style='CURSOR:hand'>{{player.position}}</a></span><br />
 			身高  <span class="blue">{{player.stature}}CM</span><br />
 			体重  <span class="blue">{{player.avoirdupois}}KG</span><br />
 			体力  <span class="green">{{player.power}}</span><br />
@@ -208,12 +208,12 @@
 		check_edit_qy = function (myform)
 		{
 			//过滤内容
-			if(is_political_words($('xing_ming').value)||is_dirty_words($('xing_ming').value))
+			if(is_political_words($('name').value)||is_dirty_words($('name').value))
 			{
-				document.getElementById('notice_edit_qy').innerHTML = '俱乐部名称不合法！';
+				document.getElementById('notice_edit_qy').innerHTML = '球员名称不合法！';
 				return false;
 			}
-			if(!isNull('xing_ming'))
+			if(!isNull('name'))
 			{
 				document.getElementById('notice_edit_qy').innerHTML = '姓名不能为空！';
 				return false;
@@ -222,120 +222,34 @@
 		}
 		</script>
 		
-<form name='frm11' action='n.php?a=242&id=1941643&dui_wu=1' method='post' onsubmit='return check_edit_qy(this)'>
+<form name='frm11' action='{% url player-update %}?type=2&no={{player.no}}' method='post' onsubmit='return check_edit_qy(this)'>
 	<ul>
 		<li class='gray l_title'> 姓名</li>
-		<li class='r_value'><input type='text' size='20' name='xing_ming' id='xing_ming' value='何塞-卡尔德隆'></li>
+		<li class='r_value'><input type='text' size='20' name='name' id='name' value='{{player.name}}'></li>
         <li><font color='red'><div id='notice_edit_qy'></div></font></li>
 	</ul>
 		<div class='clear'></div>
 		<div class='blank10'></div>
 	<ul>
 	 <li class='gray l_title'> 号码</li>
-	 <li class='r_value'><select name='hao_ma' id='hao_ma'  cols=10>
-<option value='1' >1</option>
-<option value='4' >4</option>
-<option value='8' >8</option>
-<option value='9' >9</option>
-<option value='10' >10</option>
-<option value='11' >11</option>
-<option value='12' >12</option>
-<option value='13' >13</option>
-<option value='14' >14</option>
-<option value='15' >15</option>
-<option value='16' >16</option>
-<option value='17' >17</option>
-<option value='18' >18</option>
-<option value='19' >19</option>
-<option value='21' >21</option>
-<option value='22' >22</option>
-<option value='23' >23</option>
-<option value='24' >24</option>
-<option value='25' >25</option>
-<option value='26' >26</option>
-<option value='27' >27</option>
-<option value='28' >28</option>
-<option value='29' >29</option>
-<option value='30' >30</option>
-<option value='31' >31</option>
-<option value='32' >32</option>
-<option value='33' >33</option>
-<option value='34' >34</option>
-<option value='35' >35</option>
-<option value='36' >36</option>
-<option value='37' >37</option>
-<option value='38' >38</option>
-<option value='39' >39</option>
-<option value='40' >40</option>
-<option value='41' >41</option>
-<option value='42' >42</option>
-<option value='43' >43</option>
-<option value='44' >44</option>
-<option value='46' >46</option>
-<option value='47' >47</option>
-<option value='48' >48</option>
-<option value='49' >49</option>
-<option value='50' >50</option>
-<option value='51' >51</option>
-<option value='52' >52</option>
-<option value='53' >53</option>
-<option value='54' >54</option>
-<option value='55' >55</option>
-<option value='56' >56</option>
-<option value='57' >57</option>
-<option value='58' >58</option>
-<option value='59' selected>59</option>
-<option value='60' >60</option>
-<option value='61' >61</option>
-<option value='62' >62</option>
-<option value='63' >63</option>
-<option value='64' >64</option>
-<option value='65' >65</option>
-<option value='66' >66</option>
-<option value='67' >67</option>
-<option value='68' >68</option>
-<option value='69' >69</option>
-<option value='71' >71</option>
-<option value='72' >72</option>
-<option value='73' >73</option>
-<option value='74' >74</option>
-<option value='75' >75</option>
-<option value='76' >76</option>
-<option value='77' >77</option>
-<option value='79' >79</option>
-<option value='80' >80</option>
-<option value='81' >81</option>
-<option value='82' >82</option>
-<option value='83' >83</option>
-<option value='84' >84</option>
-<option value='85' >85</option>
-<option value='86' >86</option>
-<option value='87' >87</option>
-<option value='88' >88</option>
-<option value='89' >89</option>
-<option value='90' >90</option>
-<option value='91' >91</option>
-<option value='92' >92</option>
-<option value='93' >93</option>
-<option value='94' >94</option>
-<option value='95' >95</option>
-<option value='96' >96</option>
-<option value='97' >97</option>
-<option value='98' >98</option>
-</select>
+<li class='r_value'>
+ <select name='number' id='number' cols=10>
+   {% for no in free_nos %}   
+     <option value="{{no}}" {%ifequal player.player_no no%}selected{%endifequal%}>{{no}}</option>
+   {% endfor %}
+ </select>
 </li>
 </ul>
-
 <div class='clear'></div>
 <div class='blank10'></div>
   <ul>
-  <li class='gray l_title'> 位置</li>
+  <li class='gray l_title'> {{player.position}}位置</li>
   <li class='r_value'><select name='wei_zhi' id='wei_zhi'  cols=10>
-    <option value='1' >中锋(C)</option>
-    <option value='2' >大前(PF)</option>
-    <option value='3' >小前(SF)</option>
-    <option value='4' selected>分卫(SG)</option>
-    <option value='5' >控卫(PG)</option>
+    <option value='C' {%ifequal player.position 'C'%}selected{%endifequal%}>中锋(C)</option>
+    <option value='PF' {%ifequal player.position 'PF'%}selected{%endifequal%}>大前(PF)</option>
+    <option value='SF' {%ifequal player.position 'SF'%}selected{%endifequal%}>小前(SF)</option>
+    <option value='SG' {%ifequal player.position 'SG'%}selected{%endifequal%}>分卫(SG)</option>
+    <option value='PG' {%ifequal player.position 'PG'%}selected{%endifequal%}>控卫(PG)</option>
    </select>
  </li>
 </ul>

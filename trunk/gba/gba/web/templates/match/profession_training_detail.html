@@ -30,7 +30,7 @@
 <li>身高  <span class="blue">{{player.stature}}cm</span></li>
 <li>体重  <span class="blue">{{player.avoirdupois}}kg</span></li>
 <li>体力  <span id="ti_li"><span class="color_4">
-<font color="#66cc33">{{player.power}}</font></span>
+<font color="{{player.power|power_color}}">{{player.power}}</font></span>
 <input id="ti_li_zhi" name="ti_li_zhi" value="{{player.power}}" type="hidden"></span></li>
 <li>综合  <span id="zong_he"><span class="blue">{{player.ability|format_number}}</span>
   <input type="hidden" id="zong_he_zhi" name="zong_he_zhi" value="{{player.ability|format_number}}"></span>
@@ -64,7 +64,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	 <span class="right mt4">
 	 <span id="tt_jia">
 	 <img id="tt" onclick="jia_dian_onclick('tt')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.bounce_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span>
-	 </span><span id="tt_zhi"><font color="black">{{player.bounce|format_number}}</font></span>
+	 </span><span id="tt_zhi"><font color="{{player.bounce|attr_color}}">{{player.bounce|format_number}}</font></span>
     </li>
 	</ul><div class="clear"></div>
 	<ul>
@@ -76,7 +76,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	<li class="w_blank2_r"><span class="right mt4"><span id="qz_jia">
 	<img id="qz" onclick="jia_dian_onclick('qz')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.strength_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span>
 	</span><span id="qz_zhi">
-	<font color="black">{{player.strength|format_number}}</font></span></li>
+	<font color="{{player.strength|attr_color}}">{{player.strength|format_number}}</font></span></li>
 	</ul><div class="clear"></div>
 	<ul>
 	<li class="gray w_blank2_l">耐力</li>
@@ -87,7 +87,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	<li class="w_blank2_r"><span class="right mt4"><span id="nli_jia">
 	<img id="nli" onclick="jia_dian_onclick('nli')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.stamina_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span></span>
 	<span id="nli_zhi">
-	<font color="#666666">{{player.stamina|format_number}}</font></span></li>
+	<font color="{{player.stamina|attr_color}}">{{player.stamina|format_number}}</font></span></li>
 	</ul><div class="clear"></div>
 	<ul>
 	<li class="gray w_blank2_l">投篮</li>
@@ -97,7 +97,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	</li>
 	<li class="w_blank2_r"><span class="right mt4">
 	 <span id="tlan_jia">
-	 <img id="tlan" onclick="jia_dian_onclick('tlan')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.shooting_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span></span><span id="tlan_zhi"><font color="black">{{player.shooting|format_number}}</font></span>
+	 <img id="tlan" onclick="jia_dian_onclick('tlan')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.shooting_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span></span><span id="tlan_zhi"><font color="{{player.shooting|attr_color}}">{{player.shooting|format_number}}</font></span>
 	</li>
 	</ul><div class="clear"></div>
 	<ul>
@@ -111,7 +111,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	   <img id="sf" onclick="jia_dian_onclick('sf')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.trisection_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span>
 	</span>
 	<span id="sf_zhi">
-	 <font color="black">{{player.trisection|format_number}}</font>
+	 <font color="{{player.trisection|attr_color}}">{{player.trisection|format_number}}</font>
 	</span>
 	</li>
 	</ul><div class="clear"></div>
@@ -129,7 +129,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	  <img id="yq" onclick="jia_dian_onclick('yq')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.dribble_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span>
 	 </span>
 	 <span id="yq_zhi">
-	  <font color="black">{{player.dribble|format_number}}</font>
+	  <font color="{{player.dribble|attr_color}}">{{player.dribble|format_number}}</font>
 	 </span>
 	</li>
 	</ul>
@@ -145,7 +145,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	<span class="right mt4">
 	<span id="cq_jia">
 	 <img id="cq" onclick="jia_dian_onclick('cq')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.pass_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span></span><span id="cq_zhi">
-     <font color="black">{{player.pass|format_number}}</font></span></li>
+     <font color="{{player.pass|attr_color}}">{{player.pass|format_number}}</font></span></li>
 	</ul><div class="clear"></div>
 	<ul>
 	<li class="gray w_blank2_l">篮板</li>
@@ -156,7 +156,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	<li class="w_blank2_r"><span class="right mt4"><span id="lb_jia">
 	<img id="lb" onclick="jia_dian_onclick('lb')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.backboard_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span></span>
 	<span id="lb_zhi">
-	<font color="#666666">{{player.backboard|format_number}}</font></span>
+	<font color="{{player.backboard|attr_color}}">{{player.backboard|format_number}}</font></span>
     </li>
 	</ul><div class="clear"></div>
 	<ul>
@@ -169,7 +169,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	<li class="w_blank2_r"><span class="right mt4"><span id="qd_jia">
 	<img id="qd" onclick="jia_dian_onclick('qd')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.steal_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span></span>
 	<span id="qd_zhi">
-	<font color="black">{{player.steal|format_number}}</font></span>
+	<font color="{{player.steal|attr_color}}">{{player.steal|format_number}}</font></span>
     </li>
 	</ul><div class="clear"></div>
 	<ul>
@@ -180,7 +180,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	</li>
 	<li class="w_blank2_r"><span class="right mt4"><span id="fg_jia">
 	 <img id="fg" onclick="jia_dian_onclick('fg')" style="cursor: pointer;" title="训练提升该项目值" src="/site_media/images/{%if player.blocked_oten%}zengjia.gif{%else%}zengjia_c.gif{%endif%}" align="absmiddle" width="12" height="12"></span></span><span id="fg_zhi">
-	  <font color="#666666">{{player.blocked|format_number}}</font></span></li>
+	  <font color="{{player.blocked|attr_color}}">{{player.blocked|format_number}}</font></span></li>
 	</ul><div class="clear"></div>
     <!-- end -->
 	</div>
@@ -195,7 +195,7 @@ color="black">{{player.speed|format_number}}</font></span></li>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
 	<div class="btn_3 left"><a href="{% url profession-training-detail %}?no={{player.no}}" id="href" onclick="return href_to_div(this,'main_content')">重置</a></div>
 	<div class="right"><span class="gray">
-	<a href="http://s3.dlm.17uxi.cn/source/n.php?a=150" id="href" onclick="return href_to_div(this,'main_content')">
+	<a href="{% url profession-training-min %}" id="href" onclick="return href_to_div(this,'main_content')">
 	<img src="/site_media/images/jia_dian_back.gif" border="0" width="52" height="18"></a>
     </span>
     </div>

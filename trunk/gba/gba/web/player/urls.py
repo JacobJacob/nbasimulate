@@ -23,4 +23,5 @@ urlpatterns = patterns('web.player',
      url(r'^add_attention_player/$', 'views.add_attention_player', name='add-attention-player'),
      url(r'^remove_attention_player/$', 'views.remove_attention_player', name='remove-attention-player'),
      url(r'^player_detail/$', 'views.player_detail', name='player-detail'),
+     url(r'^player_update/$', 'views.player_update', name='player-update'),
 )
