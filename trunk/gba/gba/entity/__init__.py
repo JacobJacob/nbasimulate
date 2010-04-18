@@ -11,7 +11,8 @@ __all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
            'ProPlayerSeasonStatTotal', 'ErrorLog', 'TeamStaff', 'MatchNodosityMain',
            'MatchNodosityDetail', 'MatchNodosityTacticalDetail', 'TeamArena',
            'RoundUpdateLog', 'SeasonFinance', 'AllFinance', 'TeamAd', 'ChatMessage',
-           'TacticalGrade', 'TrainingRemain', 'Friends', 'OutMessage']
+           'TacticalGrade', 'TrainingRemain', 'Friends', 'OutMessage', 'TeamHonor',
+           'Cup']
 
 from gba.common.bottle.persistable import Persistable
 
@@ -189,3 +190,11 @@ class TrainingRemain(Persistable):
 class Friends(Persistable):
     '''友好'''
     CACHE_KEY = 'friends:team_id,friend_team_id'
+    
+class TeamHonor(Persistable):
+    '''球队荣誉'''
+    CACHE_KEY = 'team_honor:id'
+    
+class Cup(Persistable):
+    '''奖杯'''
+    CACHE_KEY = 'cup:id'
