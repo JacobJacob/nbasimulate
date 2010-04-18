@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from gba.web.render import render_to_response
 from gba.business.user_roles import UserManager
-
-REDIRECT_FIELD_NAME = 'next'
 
 class TeamInfoMiddleware(object):
 
@@ -12,9 +11,6 @@ class TeamInfoMiddleware(object):
 
     def process_request(self, request):
         team = UserManager().get_team_info(request)
-        #if not team:
-        #    path = urlquote(request.get_full_path())
-        #    return HttpResponseRedirect('%s?%s=%s' % (reverse('login-page'), REDIRECT_FIELD_NAME, path)) 
-        print '=' * 30
-        print 'start to set'
+        if not team:
+            render_to_response(request, 'not_loging_error.html', {'error': '尚未登录'})
         setattr(request, 'team', team)
