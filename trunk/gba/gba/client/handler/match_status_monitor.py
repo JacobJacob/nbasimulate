@@ -6,6 +6,8 @@ from gba.entity import Matchs
 from gba.common.constants import MatchShowStatus
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants.match import MatchStatus
+from gba.common import exception_mgr
+from gba.common.single_process import SingleProcess
 
 class MatchStatusMonitor(object):
     '''比赛状态监控程序'''
@@ -21,7 +23,7 @@ class MatchStatusMonitor(object):
             matchs = self.get_match(start_id)
             if not matchs:
                 start_id = 0
-                time.sleep(10)
+                time.sleep(2)
                 continue
             
             start_id = matchs[-1].id
@@ -72,15 +74,13 @@ class MatchStatusMonitor(object):
                     else:
                         new_match.next_show_status = show_status #如果真正的比赛还没打完则等待
                 else:
-                    print 'status error'
+                    pass
                         
                 if MatchShowStatus.OVERTIME_ONE <= show_status and show_status <= MatchShowStatus.OVERTIME_SIX:
                     interval = 2
                 new_match.next_status_time = ReserveLiteral('date_add(now(), interval %s minute)' % interval)
                 
                 new_match.id = match.id
-                print new_match.show_status
-                print new_match.next_show_status
                 new_matchs.append(new_match)
                 
             Matchs.inserts(new_matchs)
@@ -89,5 +89,10 @@ class MatchStatusMonitor(object):
         return Matchs.query(condition='id>%s and show_status<%s and next_status_time<=now()' % (start_id, MatchShowStatus.FINISH), limit=100)
     
 if __name__ == '__main__':
-    monitor = MatchStatusMonitor()
-    monitor.run()
+    signle_process = SingleProcess('MatchStatusMonitor')
+    signle_process.check()
+    try:
+        monitor = MatchStatusMonitor()
+        monitor.run()
+    except:
+        exception_mgr.on_except()
