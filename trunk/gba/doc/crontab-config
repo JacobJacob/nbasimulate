@@ -1,4 +1,4 @@
 # m h  dom mon dow   command
 */1 * * * * sh /data/apps/gba/gba/client/betch/start_freeplayer_auction_handler.sh >> /data/appdatas/gba_working/crontab_log/start_freeplayer_auction_handler.log 2>&1
-*/2 * * * * sh /data/apps/dtspider/dtspider/client/smartclient/start_sanyaxunfang_spider.sh >> /data/appdatas/gba_working/crontab_log/sanyaxunfang_spider.log 2>&1
 */1 * * * * sh /data/apps/gba/gba/client/betch/start_youth_freeplayer_auction_handler.sh  >> /data/appdatas/gba_working/crontab_log/youth_freeplayer_auction_handler.log 2>&1
+*/1 * * * * sh /data/apps/gba/gba/client/betch/start_finish_training_match_clear.sh  >> /data/appdatas/gba_working/crontab_log/finish_training_match_clear.log 2>&1
