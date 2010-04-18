@@ -6,7 +6,8 @@ from copy import deepcopy
 from django.core.urlresolvers import reverse
 
 from gba.business.user_roles import login_required
-from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, LeagueConfig, Friends, Team, ProfessionPlayer
+from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, \
+                       LeagueConfig, Friends, Team, ProfessionPlayer, TeamHonor
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
@@ -422,13 +423,15 @@ def team_ranking(request, min=False):
         page = 10
     index = (page - 1) * pagesize
     
-    infos = Team.query(order='agv_ability desc', limit="%s, %s" % (index, pagesize))
-    total = 100
-    
+    infos, total = Team.paging(index, pagesize, order='agv_ability desc')
+
     if total == 0:
         totalpage = 0
     else:
         totalpage = (total -1) / pagesize + 1
+    
+    for i, info in enumerate(infos):
+        info.rank = (page-1)*pagesize + i + 1
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
 
@@ -462,3 +465,23 @@ def player_ranking(request):
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
 
     return render_to_response(request, 'team/player_ranking_min.html', datas)
+
+@login_required
+def team_honor(request, min=False):
+    """球队荣誉"""
+    team = request.team
+    
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    infos, total = TeamHonor.paging(page, pagesize, condition='team_id="%s"' % team.id, order='created_time desc')
+
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    
+    if min:
+        return render_to_response(request, 'team/team_honor_min.html', datas)
+    return render_to_response(request, 'team/team_honor.html', datas)

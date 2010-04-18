@@ -23,4 +23,6 @@ urlpatterns = patterns('web.team',
     url(r'^team_ranking/$', 'views.team_ranking', name='team-ranking'),
     url(r'^team_ranking_min/$', 'views.team_ranking', {'min': True}, name='team-ranking-min'),
     url(r'^player_ranking/$', 'views.player_ranking', name='player-ranking'),
+    url(r'^team_honor/$', 'views.team_honor', name='team-honor'),
+    url(r'^team_honor_min/$', 'views.team_honor', {'min': True}, name='team-honor-min'),
 )
