@@ -25,7 +25,7 @@
    <td>是</td>
    <td>暂无资料</td>
    <td>
-    <a href="http://s3.dlm.17uxi.cn/source/n.php?a=115&amp;id=5913" onclick="return show_popup(this);"><img src="/site_media/images/btn_01.gif"></a>
+    <a href="{% url send-match-request %}?team_id={{info.friend_team_id}}" onclick="return show_popup(this);"><img src="/site_media/images/btn_01.gif"></a>
    </td>
    <td>
       <a href="{% url send-message %}?team_id={{info.friend_team_id}}" onclick="return show_popup(this);">
@@ -41,8 +41,23 @@
 </tbody>
 </table>
 <div class="blank10"></div>
-<div class="mlr8 tr">&nbsp;首页
- &lt;上一页&nbsp;下一页&gt; 末页&nbsp;[第1/1页]
+<div class="mlr8 tr">
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url friends-min %}?page=1" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url friends-min %}?page={{prevpage}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url friends-min %}?page={{nextpage}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url friends-min %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+</div>
 <div class="clear"></div>
 <dl>
   <dd>
@@ -54,16 +69,16 @@
 	   <tr>
 		 <td width="100" height="30">经理名称：</td>
 		 <td width="150">
-		 <input value="花木兰" name="jiao_se_ming_cheng" id="jiao_se_ming_cheng" onblur="hao_you_ming_chengCheck()" type="text">
+		 <input value="" name="jiao_se_ming_cheng" id="jiao_se_ming_cheng" onblur="hao_you_ming_chengCheck()" type="text">
 		 </td>
 		 <td width="280">
-		  <input name="btnAdd" id="btnAdd" src="ifr.php_files/friend.gif" alt="" type="image" border="0">（点击空白处查看经理名是否存在）</td>
+		  <input name="btnAdd" id="btnAdd" src="/site_media/images/friend.gif" alt="" type="image" border="0">[点击空白处查看经理名是否存在]</td>
 		</tr>
 		<input name="can_shu" id="can_shu" value="1" type="hidden">
 		<tr>
 		 <td colspan="3" align="center" height="25">
 		  <font color="#ff0000">
-		  <div id="notice"><font xmlns="http://www.w3.org/1999/xhtml">该经理存在！请点击添加</font></div>
+		  <div id="notice"></div>
 		  </font>
 		</td>
 	    </tr>

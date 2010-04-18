@@ -1,171 +1,81 @@
-
-				
-		<script language="javascript">
-		third_menu_highlight(1);	
-		</script>
-
-		
-		<table class="list_table" border="0" 
-cellpadding="0" cellspacing="0" width="100%">
-<tbody><tr>
-<th>排名</th>
-<th>经理名称</th>
-<th>所属球队</th>
-<th>国家</th>
-<th>所属战队</th>
-<th class="end_cell">综合能力</th>
-</tr>
+{% load common_extras %}		
+<script language="javascript">
+third_menu_highlight(1);	
+</script>
+<table class="list_table" border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tbody>
+  <tr>
+   <th>排名</th>
+   <th>经理名称</th> 
+   <th>所属球队</th>
+   <th>联赛等级</th>
+   <th>所属联盟</th>
+   <th class="end_cell">综合能力</th>
+ </tr>
+{% for info in infos %}
 <tr>
-<td>1</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=15737" 
-onclick="return show_popup(this);"><font color="#0096f1">小雨酥</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=15737" 
-onclick="return show_popup(this);"><font color="#0096f1">【膤】фの薔薇</font></a></span></td>
-<td>北国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=6621" 
-onclick="return show_popup(this)">膤丅の⑦哖</a></td>
-<td>144.24</td>
+<td>{{info.rank}}</td>
+<td>
+ <a href="{% url user-detail %}?id={{info.id}}" onclick="return show_popup(this);">
+  <font color="#0096f1">{{info.id|nickname}}</font>
+</a>
+</td>
+<td>
+ <span class="">
+  <a href="{% url user-detail %}?id={{info.id}}" onclick="return show_popup(this);">
+   <font color="#0096f1">{{info.name}}</font>
+ </a>
+</span>
+</td>
+<td>{{info.profession_league_evel}}.{{info.profession_league_class}}</td>
+<td>
+ <a href="" onclick="return show_popup(this)">
+  暂无联盟
+ </a>
+</td>
+<td>{{info.agv_ability|format_number}}</td>
 </tr>
-<tr class="td_bgcolor_blue1">
-<td>2</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=1074" 
-onclick="return show_popup(this);"><font color="#0096f1">〖亮】</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=1074" 
-onclick="return show_popup(this);"><font color="#0096f1">名人堂∠顺德靓仔</font></a></span></td>
-<td>南国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=6167" 
-onclick="return show_popup(this)">【名人堂】</a></td>
-<td>136.82</td>
-</tr>
-<tr>
-<td>3</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=18073" 
-onclick="return show_popup(this);"><font color="#0096f1">卩s灬焱鯹朲</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=18073" 
-onclick="return show_popup(this);"><font color="#0096f1">【名人堂】♨摩羯</font></a></span></td>
-<td>南国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=6167" 
-onclick="return show_popup(this)">【名人堂】</a></td>
-<td>133.38</td>
-</tr>
-<tr class="td_bgcolor_blue1">
-<td>4</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=11591" 
-onclick="return show_popup(this);"><font color="#0096f1">Endless_rain</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=11591" 
-onclick="return show_popup(this);"><font color="#0096f1">瓦爾哈拉殿堂</font></a></span></td>
-<td>北国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=6711" 
-onclick="return show_popup(this)">瓦爾哈拉殿堂</a></td>
-<td>118.82</td>
-</tr>
-<tr>
-<td>5</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=6371" 
-onclick="return show_popup(this);"><font color="#0096f1">專屬♫菜波℡</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=6371" 
-onclick="return show_popup(this);"><font color="#0096f1">【情】⊙⊙辉煌</font></a></span></td>
-<td>南国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=8159" 
-onclick="return show_popup(this)">『情』生力军</a></td>
-<td>118.18</td>
-</tr>
-<tr class="td_bgcolor_blue1">
-<td>6</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=8992" 
-onclick="return show_popup(this);"><font color="#0096f1">小L 。</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=8992" 
-onclick="return show_popup(this);"><font color="#0096f1">出售此号。要的M</font></a></span></td>
-<td>南国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=6167" 
-onclick="return show_popup(this)">【名人堂】</a></td>
-<td>117.7</td>
-</tr>
-<tr>
-<td>7</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=3121" 
-onclick="return show_popup(this);"><font color="#0096f1">❤90後々小峰❤</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=3121" 
-onclick="return show_popup(this);"><font color="#0096f1">【名人堂】◆小峰</font></a></span></td>
-<td>南国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=6167" 
-onclick="return show_popup(this)">【名人堂】</a></td>
-<td>116.42</td>
-</tr>
-<tr class="td_bgcolor_blue1">
-<td>8</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=24114" 
-onclick="return show_popup(this);"><font color="#0096f1">、捏 盘」</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=24114" 
-onclick="return show_popup(this);"><font color="#0096f1">无奈、郁闷</font></a></span></td>
-<td>南国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=8159" 
-onclick="return show_popup(this)">『情』生力军</a></td>
-<td>115.44</td>
-</tr>
-<tr>
-<td>9</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=8183" 
-onclick="return show_popup(this);"><font color="#0096f1">北极づ莜蓝</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=8183" 
-onclick="return show_popup(this);"><font color="#0096f1">【名人堂】无比</font></a></span></td>
-<td>南国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=6167" 
-onclick="return show_popup(this)">【名人堂】</a></td>
-<td>114.06</td>
-</tr>
-<tr class="td_bgcolor_blue1">
-<td>10</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=1242" 
-onclick="return show_popup(this);"><font color="#0096f1">文君</font></a></td>
-<td><span class=""><a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=1242" 
-onclick="return show_popup(this);"><font color="#0096f1">【名人堂】◆文君</font></a></span></td>
-<td>南国</td>
-<td><a href="http://s3.dlm.17uxi.cn/source/n.php?a=661&amp;id=6167" 
-onclick="return show_popup(this)">【名人堂】</a></td>
-<td>113.92</td>
-</tr>
-</tbody></table><div class="blank10"></div><div class="mlr8 tr">&nbsp;首页
- &lt;上一页&nbsp;<a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=550&amp;p=2" onclick="return
- href_to_div(this,'main_content');">下一页&gt;</a>&nbsp;<a 
-href="http://s3.dlm.17uxi.cn/source/n.php?a=550&amp;p=482" 
-onclick="return href_to_div(this,'main_content');">末页</a>&nbsp;[第1/482
-页]&nbsp;第 <input name="page" id="page" value="1" size="1" class="in1" 
-onfocus="this.className='in2';" onblur="this.className='in1';" 
-type="text"> 页 <input class="btn_2" value="GO" onclick="return 
-href_to_div('n.php?a=550&amp;p='+document.getElementById('page').value,'main_content');"
- type="button">&nbsp;</div><form action="n.php?a=550&amp;keyword=" 
-method="post" name="frm" onsubmit='return 
-submit_to_div(this,"main_content");'>
-					<table border="0" cellpadding="0" cellspacing="0" width="679">
-						<tbody><tr>
-							<td width="60">
-								<span class="blue">查找经理：</span>
-							</td>
-							<td width="170">
-								<input name="keyword" id="keyword" class="in1" 
-onfocus="this.className='in2';" onblur="this.className='in1';" 
-style="width: 152px;" type="text">
-							</td>
-							<td>
-								<label>
-									<input src="i992.php_files/search.gif" name="Submit" 
-type="image" width="56" height="19">
-								</label>
-							</td>
-						</tr>
-					</tbody></table>
-				</form>
+{% endfor %}
+</tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">
+{% if infos %}
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url team-honor-min %}?page=1" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url team-honor-min %}?page={{prevpage}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url team-honor-min %}?page={{nextpage}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url team-honor-min %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+{% endif %}
 </div>
+<form action="n.php?a=550&amp;keyword=" method="post" name="frm" onsubmit='return submit_to_div(this,"main_content");'>
+<table border="0" cellpadding="0" cellspacing="0" width="679">
+ <tbody>
+  <tr>
+   <td width="60">
+    <span class="blue">查找经理：</span>
+   </td>
+   <td width="170">
+    <input name="keyword" id="keyword" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" style="width: 152px;" type="text">
+   </td>
+   <td>
+   <label>
+	<input src="/site_media/images/search.gif" name="Submit" type="image" width="56" height="19">
+   </label>
+  </td>
+</tr>
+</tbody>
+</table>
+</form>
+
 		

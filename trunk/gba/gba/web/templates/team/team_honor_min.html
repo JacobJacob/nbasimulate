@@ -1,0 +1,34 @@
+<table class="list_table" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+ <tr>
+  <th>奖杯</th>
+  <th>荣誉</th>
+  <th class="end_cell">获得时间</th>
+ </tr>
+ <tr>
+  <td></td>
+  <td></td>
+  <td></td>
+ </tr>
+</tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">
+{% if infos %}
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url team-honor-min %}?page=1" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url team-honor-min %}?page={{prevpage}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url team-honor-min %}?page={{nextpage}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url team-honor-min %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+{% endif %}
+</div>
