@@ -182,6 +182,10 @@ def send_message(request):
                 error = '该经理不存在'
                 break
             
+            if to_team_id == team.id:
+                error = '您不可以给自己发短信'
+                break
+            
             to_team = Team.load(id=to_team_id)
             if not to_team:
                 error = '该经理不存在'
@@ -253,7 +257,7 @@ def out_message(request):
 
     team = UserManager().get_team_info(request)
     
-    infos, total = OutMessage.paging(page, pagesize)
+    infos, total = OutMessage.paging(page, pagesize, order="id desc")
     
     if total == 0:
         totalpage = 0
@@ -277,12 +281,19 @@ def check_new_message(request):
 @login_required
 def user_detail(request):
     '''经理信息'''
+    team = request.team
     team_id = request.GET.get('id')
     type = int(request.GET.get('type', 1))
     if type == 2:
         league_team = LeagueTeams.load(id=team_id)
         team_id = league_team.team_id
     show_team = Team.load(id=team_id)
+    
+    if show_team.last_active_time:
+        show_team.last_active_time = show_team.last_active_time.strftime("%m-%d")
+    
+    show_team.is_self = 1 if show_team.id == team.id else 0
+
     pro_players = player_operator.get_profession_player(team_id)
     youth_players = player_operator.get_youth_player(team_id)
     return render_to_response(request, "user/user_detail.html", locals())

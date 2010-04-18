@@ -36,7 +36,7 @@ class PathSettings:
     
 class DjangoSettings:
     DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-    DATABASE_NAME = 'from gba'
+    DATABASE_NAME = 'gba'
     #DATABASE_USER = 'from gba'             # Not used with sqlite3.
     #DATABASE_PASSWORD = 'from gba.123'
     #DATABASE_HOST = '10.20.238.169'

@@ -11,11 +11,11 @@
 				<td colspan=2><font color="#616161">经理名称：</font><span class="blue">{{show_team.id|nickname}}</span></td>
 			</tr>
 			<tr>
-			  <td><font color="#616161">综合实力：</font><span class="blue">108.38</span></td>
-			  <td><font color="#616161">实力排名：</font><span class="blue">18</span></td>
+			  <td><font color="#616161">综合实力：</font><span class="blue">{{show_team.agv_ability|format_number}}</span></td>
+			  <td><font color="#616161">实力排名：</font><span class="blue">{{show_team.agv_ability_rank}}</span></td>
 			</tr>
 			<tr>
-			  <td><font color="#616161">最后登录：</font><span class="blue">04-04</span></td>
+			  <td><font color="#616161">最后登录：</font><span class="blue">{{show_team.last_active_time}}</span></td>
 			  <td>　<a href="{% url add-friend %}?team_id={{show_team.id}}" onclick="return href_to_div(this,'popup_inner')"><font color="#0096f1">加为好友</font></a></td>
 			 </tr>
 		</table>	
@@ -27,8 +27,10 @@
 			<dd id="wz2_1" onclick="show_s_table(2,1,5)" class="active" >职业</dd>
 			<dd id="wz2_2" onclick="show_s_table(2,2,5)">业余</dd>
 			<dd id="wz2_3" onclick="show_s_table(2,3,5)">荣誉</dd>
+			{% ifequal show_team.is_self 0%}
 			<dd id="wz2_4" onclick="show_s_table(2,4,5)">短信</dd>
 			<dd id="wz2_5" onclick="show_s_table(2,5,5)">约战</dd>
+			{% endifequal %}
 			</dl>
 		</div><div class="clear"></div>
 <div id="tab2_1">
@@ -56,12 +58,12 @@
 </table>   <!--业余队球员列表  -->
 </div>
 <div id="tab2_2" style="display:none">
-			<table border="0" cellpadding="0" cellspacing="0" width="100%" class="list_table">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="list_table">
 <tr>
-<th  >&nbsp;&nbsp;</th>
-<th  >姓名</th>
-<th  >位置</th>
-<th  class="end_cell"  >综合</th>
+<th>&nbsp;&nbsp;</th>
+<th>姓名</th>
+<th>位置</th>
+<th class="end_cell">综合</th>
 </tr>
 {% for player in youth_players %}
 <tr>
@@ -146,19 +148,19 @@
 			{
 				var temp = true;
 				var type_1  ="LENGTH";
-				var ids_1   = new Array("nei_rong");
+				var ids_1   = new Array("content");
 				var msgs_1  = new Array("短信内容长度不能超过100个字符！");
 				var other_1 = new Array("100");
 				if(!checkPublic(type_1,ids_1,msgs_1,other_1))
 					return  false;
 
-				var ids   = new Array("nei_rong");
+				var ids   = new Array("content");
 				var msgs  = new Array("短信内容不能为空！");
 				var types = new Array("STRING");
 				if(!checkSubmit(ids,msgs,types))
 					return  false;
 				//内容过滤
-				if(is_political_words($("nei_rong").value)||is_dirty_words($("nei_rong").value))
+				if(is_political_words($("content").value)||is_dirty_words($("content").value))
 				{
 					alert("短信内容不合法！");
 					return false;
@@ -167,32 +169,35 @@
 			}
 			</script>
 
-			<form name="duan_xin_form" id="duan_xin_form" action="n.php?a=191" method="post" onsubmit="return check_xx(this);">
+			<form name="duan_xin_form" id="duan_xin_form" action="{% url send-message %}" method="post" onsubmit="return check_xx(this);">
 			  <div class="blank20"></div>
 					<dl><dd>
 						<span class="floatBox_msg_l">经理名称：</span>
 						<span class="floatBox_msg_r">
-							<input type="text" name="ming_cheng" id="ming_cheng" value="不知道的人" readonly>
-						    <input type="hidden" name="id_jiao_se_shou" id="id_jiao_se_shou" value="5913">
+							{{show_team.id|nickname}}
+						    <input type="hidden" name="team_id" id="team_id" value="{{show_team.id}}">
+						    <input type="hidden" name="title" id="title" value="站内短信">
 						</span>
 
 					</dd></dl>
 					<div class="clear"></div>
 					<div class="blank10"></div>
-					<dl><dd>
+					<dl>
+					  <dd>
 						<div class="floatBox_msg_l lh21">短信内容：</div>
 						<div class="floatBox_msg_r">
-							<textarea name="nei_rong" id="nei_rong" cols="30" rows="10" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" style="width:190px; height:146px"></textarea>
-							
-						</div><div class="clear"></div>
-
-					</dd></dl>
-	
+							<textarea name="content" id="content" cols="30" rows="10" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" style="width:190px; height:146px"></textarea>
+						</div>
+						<div class="clear"></div>
+					 </dd>
+				    </dl>
 					<div class="blank10"></div>
 					<dl><dd>
 						<span class="floatBox_msg_l lh21">&nbsp;</span>
 						<span class="floatBox_msg_r floatBox_msg_btn">
-							<div class="btn_3 mauto"><input type="submit" name="liu_yan" value="确定" class="btn_3" style="CURSOR: pointer"/></div>
+						  <div class="btn_3 mauto">
+						   <input type="submit" name="liu_yan" value="确定" class="btn_3" style="CURSOR: pointer"/>
+						  </div>
 						</span>
 					</dd></dl>
 					<div class="clear"></div>
@@ -238,10 +243,9 @@
 					<dl><dd>
 						<span class="floatBox_msg_l lh21">经理名称：</span>
 						<span class="floatBox_msg_r">
-
 							<div class="left">
 							<input type="hidden" name="id_jiao_se_shou" id="id_jiao_se_shou" value="5913">
-							<input type="text" name="ming_cheng" id="ming_cheng" value="不知道的人" readonly style="width:90px" /></div>
+							<input type="text" name="ming_cheng" id="ming_cheng" value="{{show_team.id|nickname}}" readonly style="width:90px" /></div>
 						  <div class="right">
 							<select name="bi_sai_lei_xing" id="bi_sai_lei_xing">
 									<option value="2">友谊赛</option>

@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 
 from gba.business.user_roles import login_required
 from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, \
-                       LeagueConfig, Friends, Team, ProfessionPlayer, TeamHonor
+                       LeagueConfig, Friends, Team, ProfessionPlayer, TeamHonor, UserInfo
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
@@ -416,23 +416,30 @@ def delete_friend(request):
 def team_ranking(request, min=False):
     page = int(request.GET.get('page', 1))
     pagesize = int(request.GET.get('pagesize', 10))
+    keyword = request.GET.get('keyword', None)
     
     if page <= 0:
         page = 1
-    if page > 10:
-        page = 10
-    index = (page - 1) * pagesize
-    
-    infos, total = Team.paging(index, pagesize, order='agv_ability desc')
+
+    infos = []
+    total = 0
+    if keyword:
+
+        user_info = UserInfo.load(nickname=keyword)
+        if user_info:
+            infos, total = Team.paging(page, pagesize, condition='username="%s"' % user_info.username, order='agv_ability desc')
+        for i, info in enumerate(infos):
+            info.rank = info.agv_ability_rank
+    else:
+        infos, total = Team.paging(page, pagesize, order='agv_ability desc')     
+        for i, info in enumerate(infos):
+            info.rank = (page-1)*pagesize + i + 1
 
     if total == 0:
         totalpage = 0
     else:
         totalpage = (total -1) / pagesize + 1
-    
-    for i, info in enumerate(infos):
-        info.rank = (page-1)*pagesize + i + 1
-    
+
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
 
     if min:
