@@ -1,12 +1,13 @@
 #-*- coding:utf-8 -*-
 #from connection_pool import ConnectionPool
 from connection_wrapper import Connection as __Connection
+from gba.config import DjangoSettings
 
 connection = __Connection(
-                          user = 'gba',
-                          db = 'gba',
-                          passwd = 'gba123',
-                          host = '192.168.1.158',
+                          user = DjangoSettings.DATABASE_USER,
+                          db = DjangoSettings.DATABASE_NAME,
+                          passwd = DjangoSettings.DATABASE_PASSWORD,
+                          host = DjangoSettings.DATABASE_HOST,
                           port = 3306,
                           charset = "utf8",
                           init_command = "set wait_timeout = 300"
