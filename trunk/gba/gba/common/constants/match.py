@@ -53,3 +53,21 @@ class FinanceSubType(ConstantBase):
     AD = 12 #广告收入
     PLAYER_WAGE = 21 #球员工资支出
     STAFF_WAGE = 22 #职员工资支出
+    
+#比赛显示的状态
+class MatchShowStatus(ConstantBase):
+    READY = 1 #赛前准备中
+    FIRST = 2 #第一节
+    SECOND = 3 #第二节
+    THIRD = 4 #第三节
+    FOURTH = 5 #第四节
+    OVERTIME_ONE = 6 #第一加时
+    OVERTIME_TWO = 7 #第二加时
+    OVERTIME_THREE = 8 #第三加时
+    OVERTIME_FOUR = 9 #第四加时
+    OVERTIME_FIVE = 10 #第五加时
+    OVERTIME_SIX = 11 #第六加时
+    STATISTICS = 12 #统计中
+    FINISH = 13 #完了
+    CANCEL = 14 #比赛取消
+    WAITING = 15 #等待中

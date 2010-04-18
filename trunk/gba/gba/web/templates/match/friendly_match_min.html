@@ -39,11 +39,7 @@
     <td>友谊赛</td>
     <td>
         <div id="yz_time_2">
-          {% ifequal info.status 2%}
-             {{info.sub_status|match_sub_status}}
-          {% else %}
-            <span title="发请邀请时间">{{info.created_time}}</span>
-          {% endifequal %}
+           {{info|match_show_status|safe}}
         </div>
 	</td>
     <td>

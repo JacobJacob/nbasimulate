@@ -18,6 +18,7 @@ def send_match_request(home_team_id, guest_team_id, type):
     info['status'] = MatchStatus.SEND
     info['created_time'] = ReserveLiteral('now()')
     info['send_time'] = ReserveLiteral('now()')
+    info['next_status_time'] = ReserveLiteral('now()')
     cursor = connection.cursor()
     try:
         cursor.insert(info, 'matchs')
@@ -245,7 +246,7 @@ def init_team(team_info):
     create_team_default_tactical(team.id)
     create_team_default_tactical(team.id, is_youth=True)
     
-_SELECT_MATCH = 'select * from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) order by id desc limit %s, %s '
+_SELECT_MATCH = 'select *, unix_timestamp(next_status_time)-unix_timestamp(now()) as remain_time from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) order by id desc limit %s, %s '
                        
 _SELECT_MATCH_TOTAL = 'select count(*) as count from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) '
 

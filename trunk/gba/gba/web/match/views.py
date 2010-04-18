@@ -10,11 +10,10 @@ from gba.business import player_operator, match_operator
 
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        TeamTactical, TeamTacticalDetail, YouthPlayer, \
-                       MatchNotInPlayer, Message, UserInfo, TacticalGrade, \
-                       TrainingRemain
-from gba.common.constants import MatchTypes, MessageType, DefendTacticalTypeMap, OffensiveTacticalTypeMap
-from gba.common.constants import MatchStatus, MatchTypeMaps
-from gba.common.constants import attributes, hide_attributes
+                       MatchNotInPlayer, UserInfo, TacticalGrade, \
+                       TrainingRemain, Message
+from gba.common.constants import MatchTypes, DefendTacticalTypeMap, OffensiveTacticalTypeMap
+from gba.common.constants import MatchStatus, MatchShowStatus, MessageType, MatchTypeMaps
 from gba.common import exception_mgr
 from gba.common import playerutil
 from gba.common.db.reserve_convertor import ReserveLiteral
@@ -431,6 +430,8 @@ def match_accept(request):
             break
         
         match.status = MatchStatus.ACCP
+        match.show_status = MatchShowStatus.READY
+        match.next_show_status = MatchShowStatus.FIRST
         
         message = Message()
         message.type = MessageType.SYSTEM_MSG
@@ -454,7 +455,9 @@ def match_accept(request):
             url = ''
         else:
             url = reverse('friendly-match-min')
-        
+    
+    if error:
+        return render_to_response(request, "message.html", {'success': success, 'error': error})
     return render_to_response(request, "message_update.html", {'success': success, 'error': error, 'url': url})
 
 @login_required

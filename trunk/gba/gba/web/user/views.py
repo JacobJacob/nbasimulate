@@ -140,7 +140,7 @@ def send_match_request(request):
     
 @login_required
 def send_message(request):
-    '''发送约战请求''' 
+    '''发送信息''' 
     if request.method == 'GET':
         team_id = request.GET.get('team_id', None)
         if request.method == 'GET':

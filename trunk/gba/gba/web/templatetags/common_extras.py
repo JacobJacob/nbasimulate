@@ -8,7 +8,7 @@ from django import template
 from django.core.urlresolvers import reverse
 
 from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap
-from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap, StaffMap
+from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap, StaffMap, MatchShowStatus
 from gba.entity import Team, UserInfo, ProfessionPlayer, LeagueTeams
 
 register = template.Library()
@@ -62,27 +62,26 @@ def team_micro(team_id):
 def match_status(info, id):
 
     if isinstance(info, dict):
-        status = info['status']
+        status = info['show_status']
         is_home = info['is_home']
     else:
-        status = info.status
+        status = info.show_status
         is_home = info.is_home
         
     html = ''
-    if status == 0:
-        print is_home
+    if status == MatchShowStatus.WAITING:
         if is_home:
             html += '等待中'
         else:
             html += """<a href="%s?match_id=%s" onclick='return show_popup(this);'>接受</a>""" % (reverse('match-accept'), id)
-    elif status == 1:
+    elif status == MatchShowStatus.READY:
         html += '赛前准备中'
-    elif status == 2:
-        html += '比赛中'
-    elif status == 3:
+    elif status >= MatchShowStatus.FIRST and  status <= MatchShowStatus.OVERTIME_SIX:
+        html += '比赛中...'
+    elif status == MatchShowStatus.FINISH:
         html += """<a href="%s?match_id=%s" target="_blank">统计</a>""" % (reverse('match-stat'), id)
         html += """|<a href="%s?match_id=%s" target="_blank">战报</a>""" % (reverse('match-detail'), id)
-    elif status == 4:
+    elif status == MatchShowStatus.CANCEL:
         html += '比赛取消'
     return html
 
@@ -106,6 +105,67 @@ def match_sub_status(sub_status):
         return '第%s加进进行中' % (sub_status - 4)
 
 @register.filter
+def match_show_status(info):
+    if isinstance(info, dict):
+        show_status = info['show_status']
+        created_time = info['created_time']
+        remain_time = info['remain_time']
+    else:
+        show_status = info.show_status
+        created_time = info.created_time
+        remain_time = info.remain_time
+        
+    if not remain_time:
+        return ''
+        
+    remain_time = remain_time * 4 #放大四倍
+    
+    if remain_time >= 60:
+        min = remain_time // 60
+        level_seconds = remain_time % 60
+        remain = '%i分%i秒' % (min, level_seconds)
+    else:
+        if remain_time > 0:
+            remain = '%i秒' % (remain_time)
+        else:
+            remain = '...'
+        
+    if not show_status:
+        return ''
+    
+    msg = ''
+    
+    if show_status == MatchShowStatus.READY:
+        msg = '赛前准备中'
+    elif show_status == MatchShowStatus.FIRST:
+        msg = '第一节'
+    elif show_status == MatchShowStatus.SECOND:
+        msg = '第二节'
+    elif show_status == MatchShowStatus.THIRD:
+        msg = '第三节'
+    elif show_status == MatchShowStatus.FOURTH:
+        msg = '第四节'
+    elif show_status == MatchShowStatus.OVERTIME_ONE:
+        msg = '第一加时'
+    elif show_status == MatchShowStatus.OVERTIME_TWO:
+        msg = '第二加时'
+    elif show_status == MatchShowStatus.OVERTIME_THREE:
+        msg = '第三加时'
+    elif show_status == MatchShowStatus.OVERTIME_FOUR:
+        msg = '第四加时'
+    elif show_status == MatchShowStatus.OVERTIME_FIVE:
+        msg = '第五加时'
+    elif show_status == MatchShowStatus.OVERTIME_SIX:
+        msg = '第六加时'
+    elif show_status == MatchShowStatus.STATISTICS:
+        msg = '比赛统计中'
+    elif show_status == MatchShowStatus.WAITING or show_status == MatchShowStatus.CANCEL or \
+         show_status == MatchShowStatus.FINISH:
+        return '''<span title="发送邀请时间">%s</span>''' % created_time
+    
+    return '%s %s' % (msg, remain)
+
+@register.filter
 def match_point(info):
     if isinstance(info, dict):
         status = info['status']
@@ -114,7 +174,7 @@ def match_point(info):
         status = info.status
         point = info.point
         
-    if status == 2 or status == 3:
+    if status == 13:
         return point
     
     return '-- : --'

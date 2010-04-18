@@ -17,7 +17,7 @@ class LeagueStatisticsHandler(BaseBetchClient):
     ''''''
     
     def __init__(self):
-        super(PlayerStatisticsHandler, self).__init__()
+        super(LeagueStatisticsHandler, self).__init__()
         self._start_id = 0
 
     def _run(self):
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     signle_process = SingleProcess('LeagueStatisticsHandler')
     signle_process.check()
     try:
-        client = PlayerStatisticsHandler()
+        client = LeagueStatisticsHandler()
         client.start()
     except:
         log_execption()
