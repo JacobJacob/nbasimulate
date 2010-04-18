@@ -60,8 +60,8 @@ TEMPLATE_LOADERS = (
 )
 #SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 MIDDLEWARE_CLASSES = (
-    'gba.common.jsonrpcserver.JSONRPCServerMiddleware',
     'gba.common.middleware.TeamInfoMiddleware',
+    'gba.common.jsonrpcserver.JSONRPCServerMiddleware',
 )
 
 ROOT_URLCONF = 'web.urls'

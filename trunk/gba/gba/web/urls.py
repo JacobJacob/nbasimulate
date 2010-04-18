@@ -22,4 +22,5 @@ jsonrpc_urlpatterns = patterns('',
     (r'^services/match/$', 'web.services.match_service'),
     (r'^services/admin/$', 'web.services.admin_service'),
     (r'^services/player/$', 'web.services.player_service'),
+    (r'^services/user/$', 'web.services.user_service'),
 )
