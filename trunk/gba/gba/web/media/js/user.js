@@ -8,6 +8,8 @@ function usernameResult(result) {
 function jiao_se_ming_chengCheck() {
   var input = $('jiao_se_ming_cheng').value;
   //rpc.jiao_se_ming_cheng_check(input, usernameResult);
+  result = service.check_user_exist('jacky');
+  alert(result);
 }
 
 
@@ -34,7 +36,9 @@ function usernameResult2(result) {
 
 function hao_you_ming_chengCheck() {
   var input = $('jiao_se_ming_cheng').value;
-  rpc.hao_you_ming_cheng_check(input, usernameResult2);
+  //rpc.hao_you_ming_cheng_check(input, usernameResult2);
+  result = service.check_user_exist('jacky');
+  usernameResult2(result);
 }
 //--------------------------------填充页面-------------------------------------
 
