@@ -1,0 +1,186 @@
+{% if apply %}
+
+ <div class="explain_box players_talbe">&nbsp;
+第1场比赛&nbsp;&nbsp;当前你能得到的奖励是 100资金 ，胜出后退出比赛可立即得到。下一场奖励是 200资金。
+</div>
+{% ifequal challenge_pool.status 1 %}
+<div class="r_box_1">
+	<div class="r_box_1_title"></div>
+	<div class="r_box_1_1">
+		<div class="w160 tr">
+		  <h2>
+		   <a href="{% url user-detail %}?id={{team.id}}" onclick="return show_popup(this);">{{team.name}}</a>
+		  </h2>
+		  <h3></h3>
+		</div>
+		<div class="w55">
+		   <img id="imgClothes" src="{{team.micro}}" width="55" height="55">
+		</div>
+		<div class="w173" align="center">
+			<div class="blank10"></div>
+			<img id="imgLogo1" src="/site_media/images/zero.gif">
+		</div>
+		<div class="w55"><img id="imgLogo1" src="/site_media/images/99.gif" width="40" height="42"></div>
+		<div class="w160"><h2>正在等待合适的对手...</h2><h3></h3></div>
+
+	</div><div class="clear"></div>
+	<div class="blank5"></div>
+	<div class="r_box_1_2 gray">
+		<div id="yz_time">等待对手中……已等待44秒</div>
+	</div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="w173" align="center">
+		<!--input name="button" value="战术设置" type="submit" class="btn_3" onclick="javascript:window.document.location.href='i.php?a=126'" onmouseup="javascript:window.open('i.php?a=126')"/-->
+		<input name="button" value="继续比赛" class="btn_3x" disabled="disabled"
+ type="submit">
+		&nbsp;
+		<input name="button" value="退出比赛" class="btn_3x" disabled="disabled"
+ type="submit">
+	</div>
+</div>
+
+{% else %}
+ <div class="r_box_1">
+	<div class="r_box_1_title"></div>
+    <div class="r_box_1_1">
+	 <div class="w160 tr">
+	  <h2>
+	   <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this);">木兰女子A队</a>
+	  </h2>
+	  <h3></h3>
+	 </div>
+	<div class="w55"><img id="imgClothes" src="/site_media/images/26.gif" width="55" height="55"></div>
+	<div class="w173" align="center">
+	    <div class="blank10"></div>
+	      <div id="bifen">			
+			<span class="sp"></span>
+			<span class="bfa"></span>
+			<span class="bf6"></span>
+			<span class="bf6"></span>
+			<span class="vs"></span>
+			<span class="sp"></span>
+			<span class="bf1"></span>
+			<span class="bf1"></span>
+			<span class="bf6"></span>
+			<span class="sp"></span>
+			<span class="sp"></span>
+			<span class="sp"></span>
+			<span class="sp"></span>
+		 </div>
+   </div>
+   <div class="w55">
+     <img id="imgClothes" src="/site_media/images/9.gif" width="55" height="55">
+  </div>
+  <div class="w160">
+     <h2>
+       <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=43904" onclick="return show_popup(this);">圣·索菲亚</a>
+     </h2>
+     <h3></h3>
+  </div>
+</div>
+<div class="clear"></div>
+<div class="blank5"></div>
+<div class="r_box_1_2 gray">比赛失利！</div>
+</div>
+<div class="r_box_1_2 gray">
+ <div id="yz_time">
+   比赛已结束 
+  <a href="http://s3.dlm.17uxi.cn/source/i.php?a=504&amp;zbid=3858668" target="_blank">本场战报</a>
+  <a href="http://s3.dlm.17uxi.cn/source/i.php?a=505&amp;zbid=3858668" target="_blank">本场统计</a>
+ </div>
+<table width="500" align="center" border="0">
+ <tbody>
+  <tr>
+   <td width="252">第4节 强攻内线 盯人内线</td>
+   <td width="252">中锋策应 盯人防守</td>
+  </tr>
+  <tr>
+   <td colspan="2">
+	<div class="w173" align="center">
+	<!--input name="button" value="战术设置" type="submit" class="btn_3x" disabled/-->
+	  <input name="button" value="继续比赛" onclick="javascript:window.document.location.href='n.php?a=607';" onmouseup="return href_to_div('n.php?a=607','main_content');" disabled="disabled" class="btn_3x" type="submit">
+	<!--input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>'" onMouseUp="return href_to_div('<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>','main_content');"/-->
+	<!--input name="button" value="退出比赛" type="button" class="btn_3" onclick="return show_popup('<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>');"/-->
+	<input name="button" value="退出比赛" class="btn_3" onclick="javascript:window.document.location.href='n.php?a=606'" onmouseup="return href_to_div('n.php?a=606','main_content');" type="submit">
+	</div>
+  </td>
+ </tr>
+</tbody>
+</table>
+</div>
+{% endifequal %}
+<br><br><br><br><br><br><br>
+<table width="100%" align="center" border="0" cellpadding="0" cellspacing="0">
+   <tbody>
+    <tr>
+      <td colspan="6" style="border-bottom: 1px solid rgb(218, 218, 218);" bgcolor="#ffffff" height="42">
+       <span class="f14">
+       <img src="/site_media/images/gold.gif" width="48" align="absmiddle" height="35">
+       <strong>挑战奖励</strong>
+       </span>
+     </td>
+     </tr>
+     <tr>
+      <td width="30" bgcolor="#f6f6f6">
+      <img src="/site_media/images/ball.gif" width="16" height="16">
+      <div align="center"></div>
+     </td>
+     <td width="187" bgcolor="#f6f6f6" height="28">第一场 100资金</td>
+     <td width="30" bgcolor="#f6f6f6">
+      <div align="center"></div>
+     </td>
+     <td width="196" bgcolor="#f6f6f6">第二场 200资金</td>
+     <td width="30" bgcolor="#f6f6f6"><div align="center"></div></td>
+     <td width="202" bgcolor="#f6f6f6">第三场 300资金</td>
+     </tr>
+     <tr>
+       <td><div align="center"></div></td> 
+       <td height="28">第四场 400资金 1资质</td>
+        <td><div align="center"></div></td>
+        <td>第五场 500资金 2资质</td>
+        <td><div align="center"></div></td>
+        <td>第六场 600资金 3资质</td>
+      </tr>
+      <tr>
+        <td bgcolor="#f6f6f6"><div align="center"></div></td>
+        <td bgcolor="#f6f6f6" height="28">第七场 700资金 5资质</td>
+        <td bgcolor="#f6f6f6"><div align="center"></div></td>
+        <td bgcolor="#f6f6f6">第八场 800资金 7资质</td>
+        <td bgcolor="#f6f6f6"><div align="center"></div></td>
+        <td bgcolor="#f6f6f6">第九场 900资金 10资质</td>
+      </tr>
+    </tbody>
+ </table>
+{% else %}
+<div class="blank10"></div>
+<div class="blueBox_bg">
+<div class="jlbBox">
+<div align="center">
+ <strong>
+   昨日竞技王，大奖得主 
+   <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=15737" onclick="return show_popup(this);">
+   <font color="blue">小雨酥</font></a> ，获得奖金1000000资金！
+ </strong>
+</div>
+<p>&nbsp;</p>
+<div align="center">
+今日排名 第一 
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=15737" onclick="return show_popup(this);">
+<font color="#0096f1">【膤】фの薔薇</font></a>经理 
+<a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=15737" onclick="return show_popup(this);">
+<font color="#0096f1">小雨酥</font></a> ，积分 110</div>
+<div align="center">
+<p>&nbsp;</p>
+<p><img src="/site_media/images/jing_yi_chang.jpg"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div class="btn_3 center">
+<a href="{% url challenge-apply %}" onclick="return href_to_div(this,'main_content');">
+ 报名
+</a>
+</div>
+<p>&nbsp;</p>现在有：13支球队</div>
+</div>
+{% endif %}	

@@ -22,4 +22,7 @@ urlpatterns = patterns('web.match',
     url(r'^8915$', 'views.profession_training', {'min': True}, name='profession-training-min'),
     url(r'^8916$', 'views.profession_training_detail', name='profession-training-detail'),
     url(r'^8917$', 'views.profession_training_save', name='profession-training-save'),
+    url(r'^8918$', 'views.challenge_main', name='challenge-main'),
+    url(r'^8919$', 'views.challenge_main', {'min': True}, name='challenge-main-min'),
+    url(r'^8920$', 'views.challenge_apply', name='challenge-apply'),
 )

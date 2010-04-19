@@ -11,7 +11,7 @@ from gba.business import player_operator, match_operator
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        TeamTactical, TeamTacticalDetail, YouthPlayer, \
                        MatchNotInPlayer, UserInfo, TacticalGrade, \
-                       TrainingRemain, Message
+                       TrainingRemain, Message, ChallengePool ,ChallengeTeam
 from gba.common.constants import MatchTypes, DefendTacticalTypeMap, OffensiveTacticalTypeMap
 from gba.common.constants import MatchStatus, MatchShowStatus, MessageType, MatchTypeMaps
 from gba.common import exception_mgr
@@ -661,3 +661,45 @@ def profession_training_save(request):
         return render_to_response(request, 'message.html', {'error': error})
     url = '%s?no=%s' % (reverse('profession-training-detail'), no)
     return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+
+@login_required
+def challenge_main(request, min=False):
+    '''胜者为王'''
+    team = request.team
+    challenge_pool = ChallengePool.load(team_id=team.id)
+    apply = False
+    if challenge_pool:
+        apply = True
+    
+    datas = {'challenge_pool': challenge_pool, 'apply': apply}
+    if min:
+        return render_to_response(request, 'match/challenge_main_min.html', datas)
+    return render_to_response(request, 'match/challenge_main.html', datas)
+
+@login_required
+def challenge_apply(request):
+    '''胜者为王,报名,或者继续'''
+    
+    team = request.team
+    error = None
+    
+    challenge_pool = ChallengePool.load(team_id=team.id)
+    if challenge_pool:#是继续的
+        challenge_pool.win_count += 1
+    else:#是新报名的
+        challenge_pool = ChallengePool()
+        challenge_pool.win_count = 0
+        challenge_pool.start_wait_time = ReserveLiteral('now()')
+        challenge_pool.status = 1 #等待中
+        challenge_pool.team_id = team.id
+    
+    try:
+        challenge_pool.persist()
+    except:
+        exception_mgr.on_except()
+        error = '服务器异常'
+        
+    datas = {'challenge_pool': challenge_pool, 'apply': True}
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    return render_to_response(request, 'match/challenge_main_min.html', datas)
