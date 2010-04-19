@@ -3,7 +3,7 @@
 
 from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
-from gba.common.constants import MatchStatus, TacticalGroupTypeMap
+from gba.common.constants import MatchStatus, TacticalGroupTypeMap, MatchShowStatus
 from gba.common import log_execption
 from gba.common import playerutil
 from gba.entity import Team, ProfessionPlayer, League, LeagueTeams, TeamArena
@@ -18,6 +18,8 @@ def send_match_request(home_team_id, guest_team_id, type):
     info['status'] = MatchStatus.SEND
     info['created_time'] = ReserveLiteral('now()')
     info['send_time'] = ReserveLiteral('now()')
+    info['show_status'] = MatchShowStatus.WAITING
+    info['next_show_status'] = MatchShowStatus.READY
     info['next_status_time'] = ReserveLiteral('now()')
     cursor = connection.cursor()
     try:
