@@ -8,6 +8,12 @@
   <property name="dist"  location="dist"/>
   <property name="gameengine" location="../GAMEEngine/lib"/>
   <property name="jar" value="bottle.jar"/>
+	
+  <path id="compile.classpath">
+	<pathelement path="${gameengine}/DBPool-4.9.3.jar"/>
+	<pathelement path="${gameengine}/mysql-connector-java-5.1.7-bin.jar"/>
+    <pathelement path="${classpath} "/>
+  </path> 
 
   <target name="init">
     <!-- Create the time stamp -->
