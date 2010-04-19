@@ -29,10 +29,10 @@ class MatchStatusMonitor(object):
             start_id = matchs[-1].id
             new_matchs = []
             for match in matchs:
-                interval = 3
-                show_status = match.show_status
+                interval = 12 * 60 / 5
                 new_match = Matchs() #重新生成一个，以访有脏数据
                 new_match.show_status = match.next_show_status
+                show_status = match.show_status  #以当前显示的状态
                 if show_status >= MatchShowStatus.READY and show_status < MatchShowStatus.FOURTH:
                     new_match.next_show_status = match.next_show_status + 1
                 elif show_status == MatchShowStatus.FOURTH:
@@ -68,7 +68,7 @@ class MatchStatusMonitor(object):
                 elif show_status == MatchShowStatus.OVERTIME_SIX:
                     new_match.next_show_status = MatchShowStatus.STATISTICS
                 elif show_status == MatchShowStatus.STATISTICS:
-                    interval = 1
+                    interval = 1 * 60 / 5
                     if match.status == MatchStatus.FINISH:
                         new_match.next_show_status = MatchShowStatus.FINISH
                     else:
@@ -77,8 +77,8 @@ class MatchStatusMonitor(object):
                     pass
                         
                 if MatchShowStatus.OVERTIME_ONE <= show_status and show_status <= MatchShowStatus.OVERTIME_SIX:
-                    interval = 2
-                new_match.next_status_time = ReserveLiteral('date_add(now(), interval %s minute)' % interval)
+                    interval =  5 * 60 / 5
+                new_match.next_status_time = ReserveLiteral('date_add(now(), interval %s second)' % interval)
                 
                 new_match.id = match.id
                 new_matchs.append(new_match)

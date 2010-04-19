@@ -118,7 +118,7 @@ def match_show_status(info):
     if not remain_time:
         return ''
         
-    remain_time = remain_time * 4 #放大四倍
+    remain_time = remain_time * 5 #放大五倍
     
     if remain_time >= 60:
         min = remain_time // 60
