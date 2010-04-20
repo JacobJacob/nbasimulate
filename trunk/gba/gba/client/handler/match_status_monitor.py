@@ -34,7 +34,7 @@ class MatchStatusMonitor(object):
                 new_match.show_status = match.next_show_status
                 show_status = match.show_status  #以当前显示的状态
                 if show_status >= MatchShowStatus.READY and show_status < MatchShowStatus.FOURTH:
-                    new_match.next_show_status = match.next_show_status + 1
+                    new_match.next_show_status = show_status + 1
                 elif show_status == MatchShowStatus.FOURTH:
                     if match.overtime > 0:
                         new_match.next_show_status = MatchShowStatus.OVERTIME_ONE
