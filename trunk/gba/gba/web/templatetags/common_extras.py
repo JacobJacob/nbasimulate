@@ -168,10 +168,10 @@ def match_show_status(info):
 @register.filter
 def match_point(info):
     if isinstance(info, dict):
-        status = info['status']
+        status = info['show_status']
         point = info.get('point')
     else:
-        status = info.status
+        status = info.show_status
         point = info.point
         
     if status == 13:
