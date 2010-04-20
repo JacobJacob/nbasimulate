@@ -35,6 +35,7 @@ class MatchTypes(ConstantBase):
     YOUTH_TRAINING = 3 #青年训练赛
     YOUTH_FRIENDLY = 4
     LEAGUE = 5 #职业联赛
+    CHALLENGE = 6 #胜者为王
     
 MatchTypeMaps = {
     MatchTypes.FRIENDLY: u'职业友谊 ',  

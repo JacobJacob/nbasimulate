@@ -78,6 +78,7 @@ class MatchStatusMonitor(object):
                         
                 if MatchShowStatus.OVERTIME_ONE <= show_status and show_status <= MatchShowStatus.OVERTIME_SIX:
                     interval =  5 * 60 / 5
+                print interval
                 new_match.next_status_time = ReserveLiteral('date_add(now(), interval %s second)' % interval)
                 
                 new_match.id = match.id

@@ -12,7 +12,7 @@ __all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
            'MatchNodosityDetail', 'MatchNodosityTacticalDetail', 'TeamArena',
            'RoundUpdateLog', 'SeasonFinance', 'AllFinance', 'TeamAd', 'ChatMessage',
            'TacticalGrade', 'TrainingRemain', 'Friends', 'OutMessage', 'TeamHonor',
-           'Cup', 'ChallengePool', 'ChallengeTeam']
+           'Cup', 'ChallengePool', 'ChallengeTeam', 'ChallengeHistory']
 
 from gba.common.bottle.persistable import Persistable
 
@@ -50,7 +50,7 @@ class OutMessage(Persistable):
     
 class Team(Persistable):
     '''球队'''
-    CACHE_KEY = 'team:username'
+    CACHE_KEY = 'team:id'
     
 class Matchs(Persistable):
     '''球队'''
@@ -206,3 +206,7 @@ class ChallengePool(Persistable):
 class ChallengeTeam(Persistable):
     '''胜者为王球队统计'''
     CACHE_KEY = 'challenge_team:team_id'
+    
+class ChallengeHistory(Persistable):
+    '''胜者为王对战历史'''
+    CACHE_KEY = 'challenge_history:id'

@@ -7,7 +7,8 @@ from datetime import timedelta
 from django import template
 from django.core.urlresolvers import reverse
 
-from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap
+from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap, OffensiveTacticalTypeMap, \
+                                 DefendTacticalTypeMap
 from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap, StaffMap, MatchShowStatus
 from gba.entity import Team, UserInfo, ProfessionPlayer, LeagueTeams
 
@@ -403,3 +404,8 @@ def power_color(value):
 @register.filter
 def attr_width(value):
     return int(value*1.6)
+    
+@register.filter
+def tactical(type):
+    return DefendTacticalTypeMap.get(type) if DefendTacticalTypeMap.get(type) else OffensiveTacticalTypeMap.get(type)
+        

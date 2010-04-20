@@ -5,3 +5,4 @@
 1 */3 * * * python2.5 /data/apps/gba/gba/client/betch/team_agv_ability_handler.py
 0 3 * * * python2.5 /data/apps/gba/gba/client/betch/player_creator.py
 0 3 * * * python2.5 /data/apps/gba/gba/client/betch/youth_player_creator.py
+*/10 * * * * python2.5 /data/apps/gba/gba/client/handler/challenge_pair.py

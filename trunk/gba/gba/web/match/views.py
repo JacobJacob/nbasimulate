@@ -11,11 +11,13 @@ from gba.business import player_operator, match_operator
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        TeamTactical, TeamTacticalDetail, YouthPlayer, \
                        MatchNotInPlayer, UserInfo, TacticalGrade, \
-                       TrainingRemain, Message, ChallengePool ,ChallengeTeam
+                       TrainingRemain, Message, ChallengePool , MatchNodosityMain
 from gba.common.constants import MatchTypes, DefendTacticalTypeMap, OffensiveTacticalTypeMap
 from gba.common.constants import MatchStatus, MatchShowStatus, MessageType, MatchTypeMaps
 from gba.common import exception_mgr
 from gba.common import playerutil
+from gba.common import commonutil
+from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
 
 
@@ -668,10 +670,52 @@ def challenge_main(request, min=False):
     team = request.team
     challenge_pool = ChallengePool.load(team_id=team.id)
     apply = False
+    waiting_time = 0
+    home_team = None
+    guest_team = None
+    point_data = None
+    entering = False
+    match_nodosity_main = None
+    match = None
+    finish = False
     if challenge_pool:
         apply = True
+        if challenge_pool.status == 1:
+            cursor = connection.cursor()
+            try:
+                rs = cursor.fetchone('select unix_timestamp(now()) - unix_timestamp(start_wait_time)  ' \
+                                     'as waiting_time from challenge_pool where team_id="%s"' % team.id)
+                if rs:
+                    waiting_time = rs['waiting_time']
+            finally:
+                cursor.close()
+        elif challenge_pool.status == 2:
+            match = Matchs.load(id=challenge_pool.match_id)
+            home_team = Team.load(id=match.home_team_id)
+            guest_team = Team.load(id=match.guest_team_id)
+            
+            seq = 0
+            if match.show_status == MatchShowStatus.READY:
+                entering = True
+            elif match.show_status <= 11 and match.show_status >= 2:
+                seq = match.show_status - 1
+                print seq
+                match_nodosity_main = MatchNodosityMain.load(match_id=match.id, seq=seq)
+                print match_nodosity_main.point
+            elif match.show_status == MatchShowStatus.FINISH or match.show_status == MatchShowStatus.STATISTICS:#比赛已经完成
+                if match.show_status == MatchShowStatus.FINISH:
+                    finish = True
+                match_nodosity_main = MatchNodosityMain.query(condition='match_id="%s"' % match.id, order='seq desc', limit=1)
+                match_nodosity_main = match_nodosity_main[0]
+            
+            if match_nodosity_main:
+                point_data = commonutil.change_point_to_score_card(match_nodosity_main.point)  
     
-    datas = {'challenge_pool': challenge_pool, 'apply': apply}
+    datas = {'challenge_pool': challenge_pool, 'apply': apply, 'waiting_time': waiting_time, \
+             'home_team': home_team, 'guest_team': guest_team, 'entering': entering, \
+             'match_nodosity_main': match_nodosity_main, 'finish': finish, 'match': match}
+    if point_data:
+        datas.update(point_data)
     if min:
         return render_to_response(request, 'match/challenge_main_min.html', datas)
     return render_to_response(request, 'match/challenge_main.html', datas)
@@ -692,6 +736,7 @@ def challenge_apply(request):
         challenge_pool.start_wait_time = ReserveLiteral('now()')
         challenge_pool.status = 1 #等待中
         challenge_pool.team_id = team.id
+        challenge_pool.ability = team.agv_ability
     
     try:
         challenge_pool.persist()

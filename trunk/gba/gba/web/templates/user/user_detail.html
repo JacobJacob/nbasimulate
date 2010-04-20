@@ -231,7 +231,7 @@
 					return submit_to_div(myform,"popup_inner");
 				}
 			</script>
-			<form name="yue_zhan_form" id="yue_zhan_form" action="n.php?a=118" method="post" onsubmit="return check_yz(this);">
+			<form name="yue_zhan_form" id="yue_zhan_form" action="{% url send-match-request %}" method="post" onsubmit="return check_yz(this);">
 		      <div class="blank20"></div>
 					<dl><dd>
 
@@ -244,8 +244,9 @@
 						<span class="floatBox_msg_l lh21">经理名称：</span>
 						<span class="floatBox_msg_r">
 							<div class="left">
-							<input type="hidden" name="id_jiao_se_shou" id="id_jiao_se_shou" value="5913">
-							<input type="text" name="ming_cheng" id="ming_cheng" value="{{show_team.id|nickname}}" readonly style="width:90px" /></div>
+							   <input type="hidden" name="team_id" id="team_id" value="{{show_team.id}}">
+                               {{show_team.name}}
+							</div>
 						  <div class="right">
 							<select name="bi_sai_lei_xing" id="bi_sai_lei_xing">
 									<option value="2">友谊赛</option>

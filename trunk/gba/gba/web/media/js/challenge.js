@@ -5,9 +5,9 @@
 		count_down_one("yz_time","yz_value");
 	}	
 	//正在等待对手的时的时间处理
-	count_down_all_jia = function()
+	count_down_waiting = function()
 	{
-		count_down_two("yz_time","yz_value2");
+		count_down_two("yz_time","waiting");
 	}
 
 	//比赛前的时间
@@ -18,12 +18,12 @@
 
 
 
-	count_down_two = function(yz_div_id,yz_value2)
+	count_down_two = function(status_div_id,waiting)
 	{
-		var a = document.getElementById(yz_value2).value;
+		var a = document.getElementById(waiting).value;
 		a ++;
-		document.getElementById(yz_value2).value = a;
-		document.getElementById(yz_div_id).innerHTML = "等待对手中……已等待"+a+"秒";
+		document.getElementById(waiting).value = a;
+		document.getElementById(status_div_id).innerHTML = "等待对手中……已等待"+a+"秒";
 	}
 
 	count_down_one = function(yz_div_id,yz_value)

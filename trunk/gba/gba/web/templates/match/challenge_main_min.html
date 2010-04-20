@@ -1,9 +1,13 @@
+{% load common_extras %}
 {% if apply %}
-
  <div class="explain_box players_talbe">&nbsp;
 第1场比赛&nbsp;&nbsp;当前你能得到的奖励是 100资金 ，胜出后退出比赛可立即得到。下一场奖励是 200资金。
 </div>
 {% ifequal challenge_pool.status 1 %}
+<input id="waiting" type="hidden" value="{{waiting_time}}"/>
+<script language="javascript">
+  setInterval(count_down_waiting, 1000);
+</script>
 <div class="r_box_1">
 	<div class="r_box_1_title"></div>
 	<div class="r_box_1_1">
@@ -26,7 +30,7 @@
 	</div><div class="clear"></div>
 	<div class="blank5"></div>
 	<div class="r_box_1_2 gray">
-		<div id="yz_time">等待对手中……已等待44秒</div>
+		<div id="yz_time">等待对手中……已等待{{waiting_time}}秒</div>
 	</div>
 	<div class="blank10"></div>
 	<div class="blank10"></div>
@@ -42,6 +46,95 @@
 </div>
 
 {% else %}
+ {% ifequal challenge_pool.status 2%}
+   <div class="r_box_1">
+	<div class="r_box_1_title"></div>
+    <div class="r_box_1_1">
+	 <div class="w160 tr">
+	  <h2>
+	   <a href="{% url user-detail %}?id={{home_team.id}}" onclick="return show_popup(this);">{{home_team.name}}</a>
+	  </h2>
+	  <h3></h3>
+	 </div>
+	<div class="w55"><img id="imgClothes" src="{{home_team.micro}}" width="55" height="55"></div>
+	<div class="w173" align="center">
+	    <div class="blank10"></div>
+	      <div id="bifen">
+	        {% if entering %}
+	          <img id="imgLogo1" src="/site_media/images/zero.gif">
+	        {% else %}
+			<span class="sp"></span>
+			<span class="bf{{a1}}"></span>
+			<span class="bf{{a2}}"></span>
+			<span class="bf{{a3}}"></span>
+			<span class="sp"></span>
+			<span class="vs"></span>
+			<span class="sp"></span>
+			<span class="sp"></span>
+			<span class="bf{{b1}}"></span>
+			<span class="bf{{b2}}"></span>
+			<span class="bf{{b3}}"></span>
+		   {% endif %}
+		 </div>
+   </div>
+   <div class="w55">
+     <img id="imgClothes" src="{{guest_team.micro}}" width="55" height="55">
+  </div>
+  <div class="w160">
+     <h2>
+       <a href="{% url user-detail %}?id={{guest_team.id}}" onclick="return show_popup(this);">{{guest_team.name}}</a>
+     </h2>
+     <h3></h3>
+  </div>
+</div>
+<div class="clear"></div>
+<div class="blank5"></div>
+<div class="r_box_1_2 gray">
+   {% if entering %}
+     赛前准备中
+   {% else %}
+     {{match_nodosity_main.seq|match_sub_status}}
+   {% endif %}
+</div>
+</div>
+<div class="r_box_1_2 gray">
+ <div id="yz_time">
+ {% if finish %}
+   比赛已结束 
+  <a href="{% url match-detail%}?match_id={{match.id}}" target="_blank">本场战报</a>
+  <a href="{% url match-stat%}?match_id={{match.id}}" target="_blank">本场统计</a>
+  {% endif %}
+ </div>
+<table width="500" align="center" border="0">
+ <tbody>
+  {% if match_nodosity_main %}
+  <tr>
+   <td width="252">
+     {{match_nodosity_main.seq|match_sub_status}} 
+     {{match_nodosity_main.home_offensive_tactic|tactical}}
+     {{match_nodosity_main.home_defend_tactic|tactical}} 
+   </td>
+   <td width="252">
+     {{match_nodosity_main.guest_offensive_tactic|tactical}}
+     {{match_nodosity_main.guest_defend_tactic|tactical}} 
+   </td>
+  </tr>
+ {% endif %}
+  <tr>
+   <td colspan="2">
+	<div class="w173" align="center">
+	<!--input name="button" value="战术设置" type="submit" class="btn_3x" disabled/-->
+	  <input name="button" value="继续比赛" onclick="javascript:window.document.location.href='n.php?a=607';" onmouseup="return href_to_div('n.php?a=607','main_content');" disabled="disabled" class="btn_3x" type="submit">
+	<!--input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>'" onMouseUp="return href_to_div('<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>','main_content');"/-->
+	<!--input name="button" value="退出比赛" type="button" class="btn_3" onclick="return show_popup('<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>');"/-->
+	<input name="button" value="退出比赛" class="btn_3" onclick="javascript:window.document.location.href='n.php?a=606'" onmouseup="return href_to_div('n.php?a=606','main_content');" type="submit">
+	</div>
+  </td>
+ </tr>
+</tbody>
+</table>
+</div>
+ {% else %}
  <div class="r_box_1">
 	<div class="r_box_1_title"></div>
     <div class="r_box_1_1">
@@ -92,10 +185,12 @@
  </div>
 <table width="500" align="center" border="0">
  <tbody>
+ {% if match_nodosity_main %}
   <tr>
    <td width="252">第4节 强攻内线 盯人内线</td>
    <td width="252">中锋策应 盯人防守</td>
   </tr>
+ {% endif %}
   <tr>
    <td colspan="2">
 	<div class="w173" align="center">
@@ -110,6 +205,7 @@
 </tbody>
 </table>
 </div>
+ {% endifequal %}
 {% endifequal %}
 <br><br><br><br><br><br><br>
 <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0">
