@@ -725,7 +725,8 @@ def challenge_main(request, min=False):
             elif match.show_status <= 11 and match.show_status >= 2:
                 seq = match.show_status - 1
                 if seq >= 2:
-                    pre_match_nodosity_main = MatchNodosityMain.load(match_id=match.id, seq=seq-1)
+                    pre_seq = seq - 1
+                    pre_match_nodosity_main = MatchNodosityMain.load(match_id=match.id, seq=pre_seq)
                 match_nodosity_main = MatchNodosityMain.load(match_id=match.id, seq=seq)
                 
             elif match.show_status == MatchShowStatus.FINISH or match.show_status == MatchShowStatus.STATISTICS:#比赛已经完成
