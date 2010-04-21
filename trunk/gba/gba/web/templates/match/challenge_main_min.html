@@ -139,11 +139,11 @@
 	<div class="w173" align="center">
 	{% if finish %}
 	 {% if win %}
-	  <input name="button" value="继续比赛" class="btn_3"  onclick="javascript:window.document.location.href='{% url challenge-apply %}';" onmouseup="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
-	  <input name="button" value="退出比赛" class="btn_3" onclick="javascript:window.document.location.href='{% url challenge-apply %}'" onmouseup="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
+	  <input name="button" value="继续比赛" class="btn_3" onclick="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
+	  <input name="button" value="退出比赛" class="btn_3" onclick="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
 	 {% else %}
 	  <input name="button" value="继续比赛" class="btn_3x">
-	  <input name="button" value="退出比赛" class="btn_3" onclick="javascript:window.document.location.href='{% url challenge-apply %}'" onmouseup="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
+	  <input name="button" value="退出比赛" class="btn_3" onclick="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
 	 {% endif %}
 	{% else %}
 	<input name="button" value="继续比赛" class="btn_3x">
