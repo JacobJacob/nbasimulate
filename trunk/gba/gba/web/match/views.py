@@ -678,6 +678,8 @@ def challenge_main(request, min=False):
     entering = False
     statistics = False
     match_nodosity_main = None
+    pre_match_nodosity_main = None #上一节比赛，用于显示分数
+    show_point = False
     match = None
     finish = False
     win = False
@@ -694,6 +696,24 @@ def challenge_main(request, min=False):
                 cursor.close()
         elif challenge_pool.status == 2:
             match = Matchs.load(id=challenge_pool.match_id)
+            if match:
+                cursor = connection.cursor()
+                try:
+                    rs = cursor.fetchone('select unix_timestamp(next_status_time) - unix_timestamp(now())  ' \
+                                     'as remain_time from matchs where id="%s"' % match.id)
+                    if rs:
+                        remain_time = rs['remain_time']
+                    #如果已经到了下一个状态的时间，则在这自己改状态
+                    if remain_time < 0:
+                        new_match, interval = commonutil.next_status(match)
+                        new_match.id = match.id
+                        new_match.persist()
+                        match = Matchs.load(id=new_match.id)
+                        remain_time = interval
+                finally:
+                    cursor.close()
+            
+            
             home_team = Team.load(id=match.home_team_id)
             guest_team = Team.load(id=match.guest_team_id)
             
@@ -704,6 +724,8 @@ def challenge_main(request, min=False):
                 entering = True
             elif match.show_status <= 11 and match.show_status >= 2:
                 seq = match.show_status - 1
+                if seq >= 2:
+                    pre_match_nodosity_main = MatchNodosityMain.load(match_id=match.id, seq=seq-1)
                 match_nodosity_main = MatchNodosityMain.load(match_id=match.id, seq=seq)
                 
             elif match.show_status == MatchShowStatus.FINISH or match.show_status == MatchShowStatus.STATISTICS:#比赛已经完成
@@ -718,24 +740,20 @@ def challenge_main(request, min=False):
                 if (team.id == match.home_team_id and home_point > guest_point) or \
                         (team.id != match.home_team_id and home_point < guest_point):
                     win = True
-                    
-            if match_nodosity_main:
-                point_data = commonutil.change_point_to_score_card(match_nodosity_main.point)
+            
+            if finish:
+                if match_nodosity_main:
+                    show_point = True
+                    point_data = commonutil.change_point_to_score_card(match_nodosity_main.point)
+            else:
+                if pre_match_nodosity_main:
+                    show_point = True
+                    point_data = commonutil.change_point_to_score_card(pre_match_nodosity_main.point)
                 
-            if match:
-                cursor = connection.cursor()
-                try:
-                    rs = cursor.fetchone('select unix_timestamp(next_status_time) - unix_timestamp(now())  ' \
-                                     'as remain_time from matchs where id="%s"' % match.id)
-                    if rs:
-                        remain_time = rs['remain_time']
-                finally:
-                    cursor.close()
-    
     datas = {'challenge_pool': challenge_pool, 'apply': apply, 'waiting_time': waiting_time, \
              'home_team': home_team, 'guest_team': guest_team, 'entering': entering, \
              'match_nodosity_main': match_nodosity_main, 'finish': finish, 'match': match, \
-             'win': win, 'remain_time': remain_time, 'statistics': statistics}
+             'win': win, 'remain_time': remain_time, 'statistics': statistics, 'show_point': show_point}
     if point_data:
         datas.update(point_data)
     if min:
@@ -787,6 +805,44 @@ def challenge_apply(request):
             error = '服务器异常'
         
     datas = {'challenge_pool': challenge_pool, 'apply': apply}
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    return render_to_response(request, 'match/challenge_main_min.html', datas)
+
+@login_required
+def challenge_out(request):
+    '''胜者为王,退出'''
+    
+    team = request.team
+    error = None
+    
+    challenge_pool = ChallengePool.load(team_id=team.id)
+    win = False
+    i = 0
+    while i < 1:
+        i += 1
+        if challenge_pool:#
+            match_id = challenge_pool.match_id
+            match = Matchs.load(id=match_id)
+            if match.show_status != MatchShowStatus.FINISH:
+                error = '你有一场比赛正在进行中'
+                break
+            home_point, guest_point = commonutil.get_point_from_str(match.point)
+            if (team.id == match.home_team_id and home_point > guest_point) or \
+               (team.id != match.home_team_id and home_point < guest_point):
+                win = True
+        else:#是新报名的
+            error = '你没有报名参加比赛'
+            break
+        
+        print win
+        try:
+            challenge_pool.delete()
+        except:
+            exception_mgr.on_except()
+            error = '服务器异常'
+        
+    datas = {'challenge_pool': challenge_pool, 'apply': False}
     if error:
         return render_to_response(request, 'message.html', {'error': error})
     return render_to_response(request, 'match/challenge_main_min.html', datas)

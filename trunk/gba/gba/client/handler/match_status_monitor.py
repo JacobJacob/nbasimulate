@@ -26,7 +26,7 @@ class MatchStatusMonitor(object):
             
             start_id = matchs[-1].id
             for match in matchs:
-                new_match = commonutil.next_status(match)
+                new_match, interval = commonutil.next_status(match)
                 new_match.id = match.id
                 new_match.persist()
                 

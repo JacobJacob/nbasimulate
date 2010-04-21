@@ -55,7 +55,7 @@ def next_status(match):
         interval = 12 * 60 / 5
     new_match = Matchs() #重新生成一个，以访有脏数据
     new_match.show_status = match.next_show_status
-    show_status = match.show_status  #以当前显示的状态
+    show_status = new_match.show_status  #以当前显示的状态
     if show_status >= MatchShowStatus.READY and show_status < MatchShowStatus.FOURTH:
         new_match.next_show_status = show_status + 1
     elif show_status == MatchShowStatus.FOURTH:
@@ -105,4 +105,32 @@ def next_status(match):
         else:
             interval =  5 * 60 / 5
     new_match.next_status_time = ReserveLiteral('date_add(now(), interval %s second)' % interval)
-                
+    return new_match, interval
+
+if __name__ == '__main__':
+    match = Matchs()
+    match.type = 5
+    match.status = 2
+    match.show_status = 1
+    match.next_show_status = 2
+    match, i = next_status(match)
+    match.type = 5
+    print '*' * 30
+    print match.show_status, match.next_show_status
+    print '*' * 30
+    match, i = next_status(match)      
+    match.type = 5
+    print '*' * 30
+    print match.show_status, match.next_show_status
+    print '*' * 30
+    match, i = next_status(match)      
+    match.type = 5
+    print '*' * 30
+    print match.show_status, match.next_show_status
+    print '*' * 30
+    match, i = next_status(match)      
+    match.type = 5
+    print '*' * 30
+    print match.show_status, match.next_show_status
+    print '*' * 30
+              

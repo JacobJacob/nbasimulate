@@ -59,20 +59,20 @@
 	<div class="w173" align="center">
 	    <div class="blank10"></div>
 	      <div id="bifen">
-	        {% if entering %}
-	          <img id="imgLogo1" src="/site_media/images/zero.gif">
+	        {% if show_point %}
+	           <span class="sp"></span>
+				<span class="bf{{a1}}"></span>
+				<span class="bf{{a2}}"></span>
+				<span class="bf{{a3}}"></span>
+				<span class="sp"></span>
+				<span class="vs"></span>
+				<span class="sp"></span>
+				<span class="sp"></span>
+				<span class="bf{{b1}}"></span>
+				<span class="bf{{b2}}"></span>
+				<span class="bf{{b3}}"></span>
 	        {% else %}
-			<span class="sp"></span>
-			<span class="bf{{a1}}"></span>
-			<span class="bf{{a2}}"></span>
-			<span class="bf{{a3}}"></span>
-			<span class="sp"></span>
-			<span class="vs"></span>
-			<span class="sp"></span>
-			<span class="sp"></span>
-			<span class="bf{{b1}}"></span>
-			<span class="bf{{b2}}"></span>
-			<span class="bf{{b3}}"></span>
+	           <img id="imgLogo1" src="/site_media/images/zero.gif">
 		   {% endif %}
 		 </div>
    </div>
@@ -90,7 +90,7 @@
 <div class="blank5"></div>
 <div class="r_box_1_2 gray">
    {% if entering %}
-     赛前准备中
+     赛前准备中 还剩{{remain_time}}秒
    {% else %}
      {% if statistics %}
          比赛统计中 还剩{{remain_time}}秒
