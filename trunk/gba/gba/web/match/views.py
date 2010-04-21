@@ -742,7 +742,7 @@ def challenge_main(request, min=False):
                         (team.id != match.home_team_id and home_point < guest_point):
                     win = True
             
-            if finish:
+            if finish or statistics:
                 if match_nodosity_main:
                     show_point = True
                     point_data = commonutil.change_point_to_score_card(match_nodosity_main.point)
