@@ -1,6 +1,5 @@
 package com.ts.dt.po;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,15 +12,17 @@ import com.dt.bottle.persistence.Persistence;
 
 public class MatchNodosityMain extends Persistence {
 
-	public static final String INSERT_SQL = "insert into match_nodosity_main(seq, match_id, home_tactic_id, visiting_tactic_id, point) values(?,?,?,?,?)";
+	public static final String INSERT_SQL = "insert into match_nodosity_main(seq, match_id, home_offensive_tactic, home_defend_tactic, guest_offensive_tactic, guest_defend_tactic,point, created_time) values(?,?,?,?,?,?,?,now())";
 	public static final String GET_LAST_ID = "select LAST_INSERT_ID() as id from match_nodosity_main limit 1";
-	public static final String INSERT_LIST_SQL = "insert into match_nodosity_tactical_detail (match_nodosity_main_id,position, player_no, player_name, colligate) values(?,?,?,?,?)";
-	public static final String INSERT_DETAIL_SQL = "insert into match_nodosity_detail (match_id, seq, description, time_msg, point_msg, match_nodosity_main_id) values(?,?,?,?,?,?)";
+	public static final String INSERT_LIST_SQL = "insert into match_nodosity_tactical_detail (match_nodosity_main_id,position, player_no, player_name, colligate, created_time) values(?,?,?,?,?, now())";
+	public static final String INSERT_DETAIL_SQL = "insert into match_nodosity_detail (match_id, seq, description, time_msg, point_msg, match_nodosity_main_id, created_time) values(?,?,?,?,?,?,now())";
 
 	private int seq;
 	private long matchId;
-	private long homeTacticId;
-	private long visitingTacticId;
+	private short homeOffensiveTactic;
+	private short homeDefendTactic;
+	private short guestOffensiveTactic;
+	private short guestDefendTactic;
 	private String point;
 
 	private List<MatchNodosityTacticalDetail> list;
@@ -33,9 +34,11 @@ public class MatchNodosityMain extends Persistence {
 					.prepareStatement(INSERT_SQL);
 			statement.setInt(1, this.seq);
 			statement.setLong(2, this.matchId);
-			statement.setLong(3, this.homeTacticId);
-			statement.setLong(4, this.visitingTacticId);
-			statement.setString(5, this.point);
+			statement.setShort(3, this.homeOffensiveTactic);
+			statement.setShort(4, this.homeDefendTactic);
+			statement.setShort(5, this.guestOffensiveTactic);
+			statement.setShort(6, this.guestDefendTactic);
+			statement.setString(7, this.point);
 			statement.execute();
 
 			statement = connection.prepareStatement(GET_LAST_ID);
@@ -102,8 +105,10 @@ public class MatchNodosityMain extends Persistence {
 	public void clear() {
 		this.seq = 0;
 		this.matchId = 0;
-		this.homeTacticId = 0;
-		this.visitingTacticId = 0;
+		this.homeDefendTactic = 0;
+		this.homeOffensiveTactic = 0;
+		this.guestDefendTactic = 0;
+		this.guestOffensiveTactic = 0;
 		this.point = null;
 		this.list.clear();
 		this.detail.clear();
@@ -125,20 +130,36 @@ public class MatchNodosityMain extends Persistence {
 		this.matchId = matchId;
 	}
 
-	public long getHomeTacticId() {
-		return homeTacticId;
+	public short getHomeOffsiveTactic() {
+		return homeOffensiveTactic;
 	}
 
-	public void setHomeTacticId(long homeTacticId) {
-		this.homeTacticId = homeTacticId;
+	public void setHomeOffsiveTactic(short homeOffsiveTactic) {
+		this.homeOffensiveTactic = homeOffsiveTactic;
 	}
 
-	public long getVisitingTacticId() {
-		return visitingTacticId;
+	public short getHomeDefendTactic() {
+		return homeDefendTactic;
 	}
 
-	public void setVisitingTacticId(long visitingTacticId) {
-		this.visitingTacticId = visitingTacticId;
+	public void setHomeDefendTactic(short homeDefendTactic) {
+		this.homeDefendTactic = homeDefendTactic;
+	}
+
+	public short getGuestOffsiveTactic() {
+		return guestOffensiveTactic;
+	}
+
+	public void setGuestOffsiveTactic(short guestOffsiveTactic) {
+		this.guestOffensiveTactic = guestOffsiveTactic;
+	}
+
+	public short getGuestDefendTactic() {
+		return guestDefendTactic;
+	}
+
+	public void setGuestDefendTactic(short guestDefendTactic) {
+		this.guestDefendTactic = guestDefendTactic;
 	}
 
 	public String getPoint() {

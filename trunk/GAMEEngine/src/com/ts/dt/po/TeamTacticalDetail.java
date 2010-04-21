@@ -4,8 +4,8 @@ import com.dt.bottle.persistence.Persistence;
 
 public class TeamTacticalDetail extends Persistence {
 
-	private int offensive_tactical_type;
-	private int defend_tactical_type;
+	private short offensive_tactical_type;
+	private short defend_tactical_type;
 	private long team_id;
 	private String name;
 
@@ -17,19 +17,19 @@ public class TeamTacticalDetail extends Persistence {
 	private String sgid;
 	private String pgid;
 
-	public int getOffensive_tactical_type() {
+	public short getOffensive_tactical_type() {
 		return offensive_tactical_type;
 	}
 
-	public void setOffensive_tactical_type(int offensiveTacticalType) {
+	public void setOffensive_tactical_type(short offensiveTacticalType) {
 		offensive_tactical_type = offensiveTacticalType;
 	}
 
-	public int getDefend_tactical_type() {
+	public short getDefend_tactical_type() {
 		return defend_tactical_type;
 	}
 
-	public void setDefend_tactical_type(int defendTacticalType) {
+	public void setDefend_tactical_type(short defendTacticalType) {
 		defend_tactical_type = defendTacticalType;
 	}
 
