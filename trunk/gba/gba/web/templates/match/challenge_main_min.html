@@ -6,7 +6,10 @@
 {% ifequal challenge_pool.status 1 %}
 <input id="waiting" type="hidden" value="{{waiting_time}}"/>
 <script language="javascript">
-  setInterval(count_down_waiting, 1000);
+  if(waiting_interval){
+    clearInterval(waiting_interval);
+  }
+  waiting_interval = setInterval(count_down_waiting, 1000);
 </script>
 <div class="r_box_1">
 	<div class="r_box_1_title"></div>
