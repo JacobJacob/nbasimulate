@@ -62,6 +62,9 @@ public class ObjectBuilder {
 		} else if (fieldTypeName.endsWith("Integer")
 				|| fieldTypeName.endsWith("int")) {
 			return resultSet.getInt(columnName);
+		} else if (fieldTypeName.endsWith("Short")
+				|| fieldTypeName.endsWith("short")) {
+			return resultSet.getShort(columnName);
 		} else if (fieldTypeName.endsWith("Long")
 				|| fieldTypeName.endsWith("long")) {
 			return resultSet.getLong(columnName);
