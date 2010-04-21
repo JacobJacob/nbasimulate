@@ -671,13 +671,16 @@ def challenge_main(request, min=False):
     challenge_pool = ChallengePool.load(team_id=team.id)
     apply = False
     waiting_time = 0
+    remain_time = 0
     home_team = None
     guest_team = None
     point_data = None
     entering = False
+    statistics = False
     match_nodosity_main = None
     match = None
     finish = False
+    win = False
     if challenge_pool:
         apply = True
         if challenge_pool.status == 1:
@@ -694,26 +697,45 @@ def challenge_main(request, min=False):
             home_team = Team.load(id=match.home_team_id)
             guest_team = Team.load(id=match.guest_team_id)
             
+            print '-' * 100, match.show_status, '-' * 100
+            
             seq = 0
             if match.show_status == MatchShowStatus.READY:
                 entering = True
             elif match.show_status <= 11 and match.show_status >= 2:
                 seq = match.show_status - 1
-                print seq
                 match_nodosity_main = MatchNodosityMain.load(match_id=match.id, seq=seq)
-                print match_nodosity_main.point
+                
             elif match.show_status == MatchShowStatus.FINISH or match.show_status == MatchShowStatus.STATISTICS:#比赛已经完成
                 if match.show_status == MatchShowStatus.FINISH:
                     finish = True
+                if match.show_status == MatchShowStatus.STATISTICS:
+                    statistics = True
                 match_nodosity_main = MatchNodosityMain.query(condition='match_id="%s"' % match.id, order='seq desc', limit=1)
                 match_nodosity_main = match_nodosity_main[0]
-            
+                
+                home_point, guest_point = commonutil.get_point_from_str(match.point)
+                if (team.id == match.home_team_id and home_point > guest_point) or \
+                        (team.id != match.home_team_id and home_point < guest_point):
+                    win = True
+                    
             if match_nodosity_main:
-                point_data = commonutil.change_point_to_score_card(match_nodosity_main.point)  
+                point_data = commonutil.change_point_to_score_card(match_nodosity_main.point)
+                
+            if match:
+                cursor = connection.cursor()
+                try:
+                    rs = cursor.fetchone('select unix_timestamp(next_status_time) - unix_timestamp(now())  ' \
+                                     'as remain_time from matchs where id="%s"' % match.id)
+                    if rs:
+                        remain_time = rs['remain_time']
+                finally:
+                    cursor.close()
     
     datas = {'challenge_pool': challenge_pool, 'apply': apply, 'waiting_time': waiting_time, \
              'home_team': home_team, 'guest_team': guest_team, 'entering': entering, \
-             'match_nodosity_main': match_nodosity_main, 'finish': finish, 'match': match}
+             'match_nodosity_main': match_nodosity_main, 'finish': finish, 'match': match, \
+             'win': win, 'remain_time': remain_time, 'statistics': statistics}
     if point_data:
         datas.update(point_data)
     if min:
@@ -728,23 +750,44 @@ def challenge_apply(request):
     error = None
     
     challenge_pool = ChallengePool.load(team_id=team.id)
-    if challenge_pool:#是继续的
-        challenge_pool.win_count += 1
-    else:#是新报名的
-        challenge_pool = ChallengePool()
-        challenge_pool.win_count = 0
-        challenge_pool.start_wait_time = ReserveLiteral('now()')
-        challenge_pool.status = 1 #等待中
-        challenge_pool.team_id = team.id
-        challenge_pool.ability = team.agv_ability
-    
-    try:
-        challenge_pool.persist()
-    except:
-        exception_mgr.on_except()
-        error = '服务器异常'
+    apply = True
+    i = 0
+    while i < 1:
+        i += 1
+        if challenge_pool:#是继续的
+            #判断一下是不是赢了,赢了才能继续
+            match_id = challenge_pool.match_id
+            match = Matchs.load(id=match_id)
+            if match.show_status != MatchShowStatus.FINISH:
+                error = '你有一场比赛正在进行中'
+                break
+            home_point, guest_point = commonutil.get_point_from_str(match.point)
+            if (team.id == match.home_team_id and home_point > guest_point) or \
+               (team.id != match.home_team_id and home_point < guest_point):
+                challenge_pool.win_count += 1
+                challenge_pool.status = 1
+                challenge_pool.start_wait_time = ReserveLiteral('now()')
+            else:
+                apply = False
+        else:#是新报名的
+            challenge_pool = ChallengePool()
+            challenge_pool.win_count = 0
+            challenge_pool.start_wait_time = ReserveLiteral('now()')
+            challenge_pool.status = 1 #等待中
+            challenge_pool.team_id = team.id
+            challenge_pool.ability = team.agv_ability
         
-    datas = {'challenge_pool': challenge_pool, 'apply': True}
+        try:
+            if apply:
+                challenge_pool.persist()
+            else:
+                challenge_pool.delete()
+        except:
+            exception_mgr.on_except()
+            error = '服务器异常'
+        
+    datas = {'challenge_pool': challenge_pool, 'apply': apply}
     if error:
         return render_to_response(request, 'message.html', {'error': error})
     return render_to_response(request, 'match/challenge_main_min.html', datas)
+

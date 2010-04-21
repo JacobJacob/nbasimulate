@@ -18,19 +18,18 @@ class ChallengePair(object):
             if not challenge_pools:
                 time.sleep(5)
             size = len(challenge_pools)
-            paired = []
             for i in range(size):
                 challenge_pool = challenge_pools[i]
+                if challenge_pool.status != 1:
+                    continue
                 for j in range(size):
                     if i == j:
                         continue
-                    if j in paired:
+                    if challenge_pools[j].status != 1:
                         continue
                     if self.check_can_pair(challenge_pool.team_id, challenge_pools[j].team_id):#可以配对
                         self.pair(challenge_pool, challenge_pools[j])
-                        paired.append(i)
-                        paired.append(j)
-                        
+ 
     def pair(self, challenge_pool_home, challenge_pool_guest):
         """配对"""
         challenge_pool_home.status = 2 #比赛中
@@ -57,6 +56,7 @@ class ChallengePair(object):
             challenge_pool_guest.match_id = match.id
             challenge_pool_home.persist()
             challenge_pool_guest.persist()
+            challenge_history.match_id = match.id
             challenge_history.persist()
             Matchs.commit()
         except:

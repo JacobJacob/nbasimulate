@@ -30,7 +30,7 @@ function href_to_div(myhref,div_id)
 	if(div_id=='main_content')
 		main_url = myhref;
 	document.getElementById(div_id).innerHTML='<div class="loading"><img src="'+loadingImg.src+'"></div>';
-	var myAjax = new Ajax.Updater(div_id,myhref, {evalScripts:true, method:'get'});
+	var myAjax = new Ajax.Updater(div_id,myhref, {evalScripts:true, method:'get', requestHeaders: ['Cache-Control','no-cache','If-Modified-Since','0']});
 	return false;
 }
 /**		链接不直接刷新整个页面，而是刷新特定的div

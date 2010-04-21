@@ -46,7 +46,6 @@
 </div>
 
 {% else %}
- {% ifequal challenge_pool.status 2%}
    <div class="r_box_1">
 	<div class="r_box_1_title"></div>
     <div class="r_box_1_1">
@@ -93,7 +92,19 @@
    {% if entering %}
      赛前准备中
    {% else %}
-     {{match_nodosity_main.seq|match_sub_status}}
+     {% if statistics %}
+         比赛统计中 还剩{{remain_time}}秒
+     {% else %}
+        {% if finish %}
+           {% if win %}
+              比赛赢了
+           {% else %}
+              比赛输了
+           {% endif %}
+        {% else %}
+           {{match_nodosity_main.seq|match_sub_status}} 还剩{{remain_time}}秒
+        {% endif %}
+     {% endif %}
    {% endif %}
 </div>
 </div>
@@ -123,89 +134,24 @@
   <tr>
    <td colspan="2">
 	<div class="w173" align="center">
-	<!--input name="button" value="战术设置" type="submit" class="btn_3x" disabled/-->
-	  <input name="button" value="继续比赛" onclick="javascript:window.document.location.href='n.php?a=607';" onmouseup="return href_to_div('n.php?a=607','main_content');" disabled="disabled" class="btn_3x" type="submit">
-	<!--input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>'" onMouseUp="return href_to_div('<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>','main_content');"/-->
-	<!--input name="button" value="退出比赛" type="button" class="btn_3" onclick="return show_popup('<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>');"/-->
-	<input name="button" value="退出比赛" class="btn_3" onclick="javascript:window.document.location.href='n.php?a=606'" onmouseup="return href_to_div('n.php?a=606','main_content');" type="submit">
+	{% if finish %}
+	 {% if win %}
+	  <input name="button" value="继续比赛" class="btn_3"  onclick="javascript:window.document.location.href='{% url challenge-apply %}';" onmouseup="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
+	  <input name="button" value="退出比赛" class="btn_3" onclick="javascript:window.document.location.href='{% url challenge-apply %}'" onmouseup="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
+	 {% else %}
+	  <input name="button" value="继续比赛" class="btn_3x">
+	  <input name="button" value="退出比赛" class="btn_3" onclick="javascript:window.document.location.href='{% url challenge-apply %}'" onmouseup="return href_to_div('{% url challenge-apply %}','main_content');" type="submit">
+	 {% endif %}
+	{% else %}
+	<input name="button" value="继续比赛" class="btn_3x">
+	<input name="button" value="退出比赛" class="btn_3x">
+	{% endif %}
 	</div>
   </td>
  </tr>
 </tbody>
 </table>
 </div>
- {% else %}
- <div class="r_box_1">
-	<div class="r_box_1_title"></div>
-    <div class="r_box_1_1">
-	 <div class="w160 tr">
-	  <h2>
-	   <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this);">木兰女子A队</a>
-	  </h2>
-	  <h3></h3>
-	 </div>
-	<div class="w55"><img id="imgClothes" src="/site_media/images/26.gif" width="55" height="55"></div>
-	<div class="w173" align="center">
-	    <div class="blank10"></div>
-	      <div id="bifen">			
-			<span class="sp"></span>
-			<span class="bfa"></span>
-			<span class="bf6"></span>
-			<span class="bf6"></span>
-			<span class="vs"></span>
-			<span class="sp"></span>
-			<span class="bf1"></span>
-			<span class="bf1"></span>
-			<span class="bf6"></span>
-			<span class="sp"></span>
-			<span class="sp"></span>
-			<span class="sp"></span>
-			<span class="sp"></span>
-		 </div>
-   </div>
-   <div class="w55">
-     <img id="imgClothes" src="/site_media/images/9.gif" width="55" height="55">
-  </div>
-  <div class="w160">
-     <h2>
-       <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=43904" onclick="return show_popup(this);">圣·索菲亚</a>
-     </h2>
-     <h3></h3>
-  </div>
-</div>
-<div class="clear"></div>
-<div class="blank5"></div>
-<div class="r_box_1_2 gray">比赛失利！</div>
-</div>
-<div class="r_box_1_2 gray">
- <div id="yz_time">
-   比赛已结束 
-  <a href="http://s3.dlm.17uxi.cn/source/i.php?a=504&amp;zbid=3858668" target="_blank">本场战报</a>
-  <a href="http://s3.dlm.17uxi.cn/source/i.php?a=505&amp;zbid=3858668" target="_blank">本场统计</a>
- </div>
-<table width="500" align="center" border="0">
- <tbody>
- {% if match_nodosity_main %}
-  <tr>
-   <td width="252">第4节 强攻内线 盯人内线</td>
-   <td width="252">中锋策应 盯人防守</td>
-  </tr>
- {% endif %}
-  <tr>
-   <td colspan="2">
-	<div class="w173" align="center">
-	<!--input name="button" value="战术设置" type="submit" class="btn_3x" disabled/-->
-	  <input name="button" value="继续比赛" onclick="javascript:window.document.location.href='n.php?a=607';" onmouseup="return href_to_div('n.php?a=607','main_content');" disabled="disabled" class="btn_3x" type="submit">
-	<!--input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>'" onMouseUp="return href_to_div('<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>','main_content');"/-->
-	<!--input name="button" value="退出比赛" type="button" class="btn_3" onclick="return show_popup('<input name="button" value="退出比赛" type="submit" class="btn_3" onClick="javascript:window.document.location.href='n.php?a=606'" onMouseUp="return href_to_div('n.php?a=606','main_content');"/>');"/-->
-	<input name="button" value="退出比赛" class="btn_3" onclick="javascript:window.document.location.href='n.php?a=606'" onmouseup="return href_to_div('n.php?a=606','main_content');" type="submit">
-	</div>
-  </td>
- </tr>
-</tbody>
-</table>
-</div>
- {% endifequal %}
 {% endifequal %}
 <br><br><br><br><br><br><br>
 <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0">
