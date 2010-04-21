@@ -34,7 +34,10 @@ public class Nodosity {
 	private Nodosity nextNodosity;
 
 	private TeamTactical homeTeamTactical;
-	private TeamTactical visitingTeamTactical;
+	private TeamTactical guestTeamTactical;
+
+	TeamTacticalDetail homeTeamTacticalDetail;
+	TeamTacticalDetail guestTeamTacticalDetail;
 
 	private Hashtable<String, Controller> controllers;
 	private MatchContext context;
@@ -121,8 +124,14 @@ public class Nodosity {
 	private void logNodosityData(MatchContext context) {
 
 		MatchNodosityMain main = context.getNodosityMain();
-		main.setHomeTacticId(homeTeamTactical.getId());
-		main.setVisitingTacticId(visitingTeamTactical.getId());
+		main.setHomeOffsiveTactic(homeTeamTacticalDetail
+				.getOffensive_tactical_type());
+		main.setHomeDefendTactic(homeTeamTacticalDetail
+				.getDefend_tactical_type());
+		main.setGuestOffsiveTactic(guestTeamTacticalDetail
+				.getOffensive_tactical_type());
+		main.setGuestDefendTactic(guestTeamTacticalDetail
+				.getDefend_tactical_type());
 		main.setPoint(context.currentScore());
 		main.setSeq(context.getSeq());
 		main.setMatchId(context.getMatchId());
@@ -192,14 +201,14 @@ public class Nodosity {
 
 		homeTeamTactical = tacticsDao.loadTeamTactical(context.getHomeTeamId(),
 				tacticalType);
-		visitingTeamTactical = tacticsDao.loadTeamTactical(context
+		guestTeamTactical = tacticsDao.loadTeamTactical(context
 				.getVisitingTeamId(), tacticalType);
 
 		if (homeTeamTactical == null) {
 			Logger.logToDb("error", "tactical not exist team id:"
 					+ context.getHomeTeamId());
 		}
-		if (visitingTeamTactical == null) {
+		if (guestTeamTactical == null) {
 			Logger.logToDb("error", "tactical not exist team id:"
 					+ context.getVisitingTeamId());
 		}
@@ -213,67 +222,66 @@ public class Nodosity {
 		if ((homeTeamPoint - visitingTeamPoint) > 15) {// 领先15分
 			homeTeamTacticalDetailId = homeTeamTactical
 					.getTactical_detail_7_id();
-			visitingTeamTacticalDetailId = visitingTeamTactical
+			visitingTeamTacticalDetailId = guestTeamTactical
 					.getTactical_detail_8_id();
 		} else if ((homeTeamPoint - visitingTeamPoint) < -15) {// 落后15分
 			homeTeamTacticalDetailId = homeTeamTactical
 					.getTactical_detail_8_id();
-			visitingTeamTacticalDetailId = visitingTeamTactical
+			visitingTeamTacticalDetailId = guestTeamTactical
 					.getTactical_detail_7_id();
 		} else {
 			switch (context.getSeq()) {
 			case 1:
 				homeTeamTacticalDetailId = homeTeamTactical
 						.getTactical_detail_1_id();
-				visitingTeamTacticalDetailId = visitingTeamTactical
+				visitingTeamTacticalDetailId = guestTeamTactical
 						.getTactical_detail_1_id();
 				break;
 			case 2:
 				homeTeamTacticalDetailId = homeTeamTactical
 						.getTactical_detail_2_id();
-				visitingTeamTacticalDetailId = visitingTeamTactical
+				visitingTeamTacticalDetailId = guestTeamTactical
 						.getTactical_detail_2_id();
 				break;
 			case 3:
 				homeTeamTacticalDetailId = homeTeamTactical
 						.getTactical_detail_3_id();
-				visitingTeamTacticalDetailId = visitingTeamTactical
+				visitingTeamTacticalDetailId = guestTeamTactical
 						.getTactical_detail_3_id();
 				break;
 			case 4:
 				homeTeamTacticalDetailId = homeTeamTactical
 						.getTactical_detail_4_id();
-				visitingTeamTacticalDetailId = visitingTeamTactical
+				visitingTeamTacticalDetailId = guestTeamTactical
 						.getTactical_detail_4_id();
 				break;
 			case 5:
 				homeTeamTacticalDetailId = homeTeamTactical
 						.getTactical_detail_5_id();
-				visitingTeamTacticalDetailId = visitingTeamTactical
+				visitingTeamTacticalDetailId = guestTeamTactical
 						.getTactical_detail_5_id();
 				break;
 			case 6:
 				homeTeamTacticalDetailId = homeTeamTactical
 						.getTactical_detail_6_id();
-				visitingTeamTacticalDetailId = visitingTeamTactical
+				visitingTeamTacticalDetailId = guestTeamTactical
 						.getTactical_detail_6_id();
 				break;
 			default:
 				homeTeamTacticalDetailId = homeTeamTactical
 						.getTactical_detail_6_id();
-				visitingTeamTacticalDetailId = visitingTeamTactical
+				visitingTeamTacticalDetailId = guestTeamTactical
 						.getTactical_detail_6_id();
 
 			}
 		}
 
-		TeamTacticalDetail homeTeamTacticalDetail = tacticsDao
+		homeTeamTacticalDetail = tacticsDao
 				.loadTeamTacticalDetail(homeTeamTacticalDetailId);
-		TeamTacticalDetail visitingTeamTacticalDetail = tacticsDao
+		guestTeamTacticalDetail = tacticsDao
 				.loadTeamTacticalDetail(visitingTeamTacticalDetailId);
 
-		if (homeTeamTacticalDetail == null
-				|| visitingTeamTacticalDetail == null) {
+		if (homeTeamTacticalDetail == null || guestTeamTacticalDetail == null) {
 			System.out.println("ERROR");
 		}
 
@@ -282,9 +290,9 @@ public class Nodosity {
 				.getOffensive_tactical_type());
 		this.context.setHomeTeamDefendTactical(homeTeamTacticalDetail
 				.getDefend_tactical_type());
-		this.context.setGuestTeamOffensiveTactical(visitingTeamTacticalDetail
+		this.context.setGuestTeamOffensiveTactical(guestTeamTacticalDetail
 				.getOffensive_tactical_type());
-		this.context.setGuestTeamDefendTactical(visitingTeamTacticalDetail
+		this.context.setGuestTeamDefendTactical(guestTeamTacticalDetail
 				.getDefend_tactical_type());
 
 		DebugUtil.debug(this.context.getHomeTeamId()
@@ -340,35 +348,35 @@ public class Nodosity {
 		Controller controller_cb = new Controller();
 		controller_cb.setTeamFlg("B");
 		controller_cb.setControllerName("CB");
-		controller_cb.setPlayer(playerDao.load(visitingTeamTacticalDetail
-				.getCid()));
+		controller_cb.setPlayer(playerDao
+				.load(guestTeamTacticalDetail.getCid()));
 		context.putController(controller_cb);
 
 		Controller controller_pfb = new Controller();
 		controller_pfb.setTeamFlg("B");
 		controller_pfb.setControllerName("PFB");
-		controller_pfb.setPlayer(playerDao.load(visitingTeamTacticalDetail
+		controller_pfb.setPlayer(playerDao.load(guestTeamTacticalDetail
 				.getPfid()));
 		context.putController(controller_pfb);
 
 		Controller controller_sfb = new Controller();
 		controller_sfb.setTeamFlg("B");
 		controller_sfb.setControllerName("SFB");
-		controller_sfb.setPlayer(playerDao.load(visitingTeamTacticalDetail
+		controller_sfb.setPlayer(playerDao.load(guestTeamTacticalDetail
 				.getSfid()));
 		context.putController(controller_sfb);
 
 		Controller controller_sgb = new Controller();
 		controller_sgb.setTeamFlg("B");
 		controller_sgb.setControllerName("SGB");
-		controller_sgb.setPlayer(playerDao.load(visitingTeamTacticalDetail
+		controller_sgb.setPlayer(playerDao.load(guestTeamTacticalDetail
 				.getSgid()));
 		context.putController(controller_sgb);
 
 		Controller controller_pgb = new Controller();
 		controller_pgb.setTeamFlg("B");
 		controller_pgb.setControllerName("PGB");
-		controller_pgb.setPlayer(playerDao.load(visitingTeamTacticalDetail
+		controller_pgb.setPlayer(playerDao.load(guestTeamTacticalDetail
 				.getPgid()));
 		context.putController(controller_pgb);
 
