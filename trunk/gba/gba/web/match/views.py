@@ -11,7 +11,8 @@ from gba.business import player_operator, match_operator
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        TeamTactical, TeamTacticalDetail, YouthPlayer, \
                        MatchNotInPlayer, UserInfo, TacticalGrade, \
-                       TrainingRemain, Message, ChallengePool , MatchNodosityMain
+                       TrainingRemain, Message, ChallengePool , MatchNodosityMain, \
+                       ChallengeHistory
 from gba.common.constants import MatchTypes, DefendTacticalTypeMap, OffensiveTacticalTypeMap
 from gba.common.constants import MatchStatus, MatchShowStatus, MessageType, MatchTypeMaps
 from gba.common import exception_mgr
@@ -750,11 +751,15 @@ def challenge_main(request, min=False):
                 if pre_match_nodosity_main:
                     show_point = True
                     point_data = commonutil.change_point_to_score_card(pre_match_nodosity_main.point)
+    
+    pool_count = ChallengePool.count()
                 
     datas = {'challenge_pool': challenge_pool, 'apply': apply, 'waiting_time': waiting_time, \
              'home_team': home_team, 'guest_team': guest_team, 'entering': entering, \
              'match_nodosity_main': match_nodosity_main, 'finish': finish, 'match': match, \
-             'win': win, 'remain_time': remain_time, 'statistics': statistics, 'show_point': show_point}
+             'win': win, 'remain_time': remain_time, 'statistics': statistics, 'show_point': show_point, \
+             'pool_count': pool_count}
+    
     if point_data:
         datas.update(point_data)
     if min:
@@ -848,3 +853,20 @@ def challenge_out(request):
         return render_to_response(request, 'message.html', {'error': error})
     return render_to_response(request, 'match/challenge_main_min.html', datas)
 
+@login_required
+def team_challenge(request):
+    '''胜者为王,我的比赛'''
+    
+    team = request.team
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    
+    infos, total = ChallengeHistory.paging(page, pagesize, condition='home_team_id="%s" or guest_team_id="%s" and finish=1' % (team.id, team.id), order='id desc')
+        
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total - 1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    return render_to_response(request, 'match/team_challenge_min.html', datas)

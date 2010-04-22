@@ -25,4 +25,5 @@ urlpatterns = patterns('web.match',
     url(r'^8918$', 'views.challenge_main', name='challenge-main'),
     url(r'^8919$', 'views.challenge_main', {'min': True}, name='challenge-main-min'),
     url(r'^8920$', 'views.challenge_apply', name='challenge-apply'),
+    url(r'^8921$', 'views.team_challenge', name='team-challenge'),
 )
