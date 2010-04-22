@@ -31,9 +31,10 @@ class MatchStatusMonitor(object):
                 new_match.persist()
                 if match.type == MatchTypes.CHALLENGE:
                     challenge_history = ChallengeHistory.load(match_id=match.id)
-                    challenge_history.finish = 1
-                    challenge_history.point = match.point
-                    challenge_history.persist()
+                    if challenge_history:
+                        challenge_history.finish = 1
+                        challenge_history.point = match.point
+                        challenge_history.persist()
                     
                     
                 
