@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import time
-from gba.entity import Matchs
-from gba.common.constants import MatchShowStatus
+from gba.entity import Matchs, ChallengeHistory
+from gba.common.constants import MatchShowStatus, MatchTypes
 from gba.common import exception_mgr
 from gba.common.single_process import SingleProcess
 from gba.common import commonutil
@@ -29,6 +29,13 @@ class MatchStatusMonitor(object):
                 new_match, interval = commonutil.next_status(match)
                 new_match.id = match.id
                 new_match.persist()
+                if match.type == MatchTypes.CHALLENGE:
+                    challenge_history = ChallengeHistory.load(match_id=match.id)
+                    challenge_history.finish = 1
+                    challenge_history.point = match.point
+                    challenge_history.persist()
+                    
+                    
                 
     def get_match(self, start_id):
         return Matchs.query(condition='id>%s and show_status<%s and next_status_time<=now()' % (start_id, MatchShowStatus.FINISH), limit=100)
