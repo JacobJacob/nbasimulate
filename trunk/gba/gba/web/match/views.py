@@ -163,15 +163,15 @@ def training_center(request, min=False):
     team = request.team
     training_center = TrainingCenter.load(team_id=team.id, status=0)
     remain = 0
+    in_training = False
     if training_center:
         remain = match_operator.get_training_remain(team.id)
         if remain < 0:
-            remain = 0
-        remain = remain / 100 * 60
-        in_training = True
-    else:
-        in_training = False
-    
+            playerutil.finish_training(training_center)            
+        else:
+            remain = remain / 100 * 60
+            in_training = True
+
     training_remain = TrainingRemain.load(team_id=team.id)
     if not training_remain:
         training_remain = TrainingRemain()

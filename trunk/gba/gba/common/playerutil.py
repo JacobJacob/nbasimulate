@@ -7,10 +7,53 @@ import copy
 
 from gba.common.constants import attributes
 from gba.common import md5mgr
-from gba.entity import ProfessionPlayer, YouthPlayer
+from gba.entity import ProfessionPlayer, YouthPlayer, TrainingCenter
 from gba.client.betch.config import AttributeConfig, YouthAttributeConfig
 from gba.common.attribute_factory import AvoirdupoisFactory, NameFactory, AgeFactory, StatureFactory, PictrueFactory
+from gba.common.constants import attributes, hide_attributes
 
+def finish_training(training_center):
+    '''一个球队完成训练'''
+    team_id = training_center.team_id
+    youth_players = YouthPlayer.query(condition='team_id="%s"' % team_id)
+    for youth_player in youth_players:
+        for attribute in attributes:
+            if attribute not in hide_attributes:
+                old_value = getattr(youth_player, attribute)
+                max_value = getattr(youth_player, '%s_max' % attribute)
+                if old_value + 0.2 > max_value:
+                    new_value = max_value
+                else:
+                    new_value = old_value + 0.2
+                setattr(youth_player, attribute, new_value)
+                calcul_ability(youth_player)
+                calcul_consume_power(youth_player)
+                
+    YouthPlayer.transaction()
+    try:
+        for youth_player in youth_players:
+            youth_player.persist()
+        training_center.status = 1
+        training_center.persist()
+        YouthPlayer.commit()
+    except:
+        YouthPlayer.rollback()
+        raise
+        
+def calcul_consume_power(player):
+    '''计算一个球员打一场比赛消耗的体力'''
+    stamina = getattr(player, 'stamina')
+    old_power = getattr(player, 'power')
+
+    consume = 20
+    consume += random.randint(0, 10) - stamina / 5
+    
+    new_power = old_power - consume
+    if new_power < 0:
+        new_power = 0
+    
+    setattr(player, 'power', new_power) 
+            
 def calcul_otential(player):
     '''计算球员潜力'''
     if not player:
