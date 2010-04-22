@@ -13,6 +13,9 @@ def main():
     finally:
         cursor.close()
         
+        
+    
+        
 if __name__ == '__main__':
     main()
         

@@ -29,15 +29,13 @@ class MatchStatusMonitor(object):
                 new_match, interval = commonutil.next_status(match)
                 new_match.id = match.id
                 new_match.persist()
-                if match.type == MatchTypes.CHALLENGE:
+                if new_match.show_status == MatchShowStatus.FINISH and match.type == MatchTypes.CHALLENGE:
                     challenge_history = ChallengeHistory.load(match_id=match.id)
                     if challenge_history:
                         challenge_history.finish = 1
                         challenge_history.point = match.point
                         challenge_history.persist()
-                    
-                    
-                
+                        
     def get_match(self, start_id):
         return Matchs.query(condition='id>%s and show_status<%s and next_status_time<=now()' % (start_id, MatchShowStatus.FINISH), limit=100)
     
