@@ -1,0 +1,440 @@
+{% extends "master.html" %}
+{% block title %}计划任务管理{% endblock %}
+{% block head_ext %}
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.draggable.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.droppable.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.resizable.js"></script>
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+
+var web_service = null;
+<script type="text/javascript">
+	$(document).ready(function() {
+		//初始化json-rpc代理
+		web_service = new rpc.ServiceProxy("/services/plan_task/", 
+			{methods: ['get_tasks',
+					   'delete_current_task']});
+		_init();//初始化模版
+	});
+	
+	function _init() {
+		// 初始化模板
+		$.tpl('task_item', [
+                  '<tr id="{id:s}" class="task-row" title="{safe_cmd:s}">',
+                     '<td>{index:s}</td><td>{minute:s}</td><td>{hour:s}</td>',
+                     '<td>{day:s}</td><td>{month:s}</td><td>{week:s}</td>',
+                     '<td>{name:s}</td><td>{description:s}</td>',
+                     '<td><a href="javascript:edit_task({id:s});">编辑</a></td>',
+                     '<td><a href="javascript:delete_task({id:s});">删除</a></td>',
+                  '</tr>'
+              ]);
+		
+		$.extend(jQuery.strConversion, 
+		    {'S': function(input, arg){ return input.safe(); }
+		});
+
+		$.tpl('current_task_item', [
+		    '<li id="current_task_{i:s}" cmd="{v:S}">{v:S} ',
+		        '<a href=\"javascript:delete_current_task(\'current_task_{i:s}\');\">删除</a>',
+		    '</li>'
+		]);
+		
+		$.tpl("option_tpl", ["<option values=\"{v:s}\">{v:s}</option>"]);
+		// 初始化表单值
+		var keys = [['minute', [0, 60]], 
+		    		['hour', [0, 24]], 
+		    		['day', [1, 32]],
+		            ['month', [1, 13]], 
+		            ['week', [0, 8]]];
+	    
+		$.each(keys, function(index, k) {
+			var id = $.format('#task_{0}_1', k[0]);
+			$.tpl('option_tpl', {v: '*'}).appendTo(id);
+               for(var i = k[1][0]; i < k[1][1]; i++) {
+                   $.tpl('option_tpl', {v: i}).appendTo(id);
+               }
+		});
+		
+        $('#task_form input, #task_form select').change(fresh_description);
+        $('#save_task_button').click(save_task); //綁定提交按钮事件
+
+        refresh_tasks();
+	}
+	
+	function save_task() { // 提交数据
+		var url = $('#task_form').attr('action');
+              var params = get_form_values();
+		if(!values.isvaild) {
+			show_dialog('请输入正确参数!', '参数错误');
+			return false;
+		}
+        $.getJSON(url, params,
+           function(result){
+               if(result[0]) {
+                  params['id'] = result[1]['id'];
+                  $("#task_dialog").dialog('close');
+                  refresh_tasks();
+              } else {
+                  show_dialog(result[1].message, '更新任务错误');
+              }
+          });
+	}
+	
+	function refresh_tasks() {
+		$('#task_list tr.task-row').remove();
+		$('#current_task_list li').remove();
+
+		web_service.get_tasks({
+ 		    params:{},
+ 		    onSuccess:function(result){
+ 				$.each(result.tasks, function(index, task){
+                          task['index'] = index + 1;
+                          task['safe_cmd'] = task['cmd'].safe();
+                          task['description'] = get_description(task);
+                          $.tpl('task_item', task).appendTo('#task_list_body');
+                });
+                      
+				if(result.current_tasks.length > 0){
+					$.each(result.current_tasks, function(index, task) {
+						$.tpl('current_task_item', 
+						    {i: index + 1, v: task}).appendTo('#current_task_list');
+					});
+				} else {
+                    $('#current_task_list').append('<li>当前无任何计划任务</li>');
+                }
+      		},
+ 	  		onException:function(e){
+          		show_dialog("刷新获取数据错误。");
+      		}
+		});
+	}
+	
+	function get_description(values) {
+		var vals = [];
+		var every = false;
+		if(values['month'].indexOf('*/') > -1) {
+			vals.push('每隔', values['month'].replace('*/', '') + '个月');
+			every = true;
+		} else if(values['month'] != '*') {
+			vals.push('每年', values['month'] + '月');
+		}
+		
+		if(values['week'].indexOf('*/') > -1) {
+			if(!every) {
+                      vals.push('每隔');
+                  }
+                  vals.push(values['week'].replace('*/', '') + '个星期');
+			every = true;
+              } else if(values['week'] != '*') {
+			if(vals.length > 0 && values['week'].indexOf(',') > -1) {
+                      vals.push('其中的');
+                  }
+                  vals.push('星期' + values['week'] + ' ');
+              }
+		
+		if(values['day'].indexOf('*/') > -1) {
+			if(vals.length > 0) {
+                      vals.push('每隔');
+                  }
+                  vals.push(values['day'].replace('*/', '') + '天');
+			every = true;
+              } else if(values['day'] != '*') {
+			if(vals.length == 0) {
+                      vals.push('每月');
+                  }
+			if(values['day'].indexOf(',') > -1) {
+                      vals.push('其中的');
+                  }
+                  vals.push(values['day'] + '日');
+              }
+		
+		if(values['hour'].indexOf('*/') > -1) {
+			if(!every) {
+                      vals.push('每隔');
+                  }
+                  vals.push(values['hour'].replace('*/', '') + '小时');
+			every = true;
+              } else if(values['hour'] != '*') {
+			if(vals.length == 0) {
+                      vals.push('每天');
+                  }
+			if(values['hour'].indexOf(',') > -1) {
+                      vals.push('其中的');
+                  } 
+                  vals.push(values['hour'] + '时');
+              }
+		
+		if(values['minute'].indexOf('*/') > -1) {
+			if(!every) {
+                      vals.push('每隔');
+                  }
+                  vals.push(values['minute'].replace('*/', '') + '分钟');
+			every = true;
+              } else if(values['minute'] != '*') {
+			if(vals.length == 0) {
+                      vals.push('每小时');
+                  }
+			if(values['minute'].indexOf(',') > -1) {
+                      vals.push('其中的');
+                  }
+                  vals.push(values['minute'] + '分');
+              }
+		vals.push('执行一次 [' + values['name'] + ']');
+		return vals.join('');
+	}
+	
+	function get_form_values() {
+		id_keys = {'minute': ['task_minute_3', 'task_minute_2', 'task_minute_1'],
+		    'hour': ['task_hour_3', 'task_hour_2', 'task_hour_1'],
+			'day': ['task_day_3', 'task_day_2', 'task_day_1'],
+			'month': ['task_month_3', 'task_month_2', 'task_month_1'],
+			'week': ['task_week_3', 'task_week_2', 'task_week_1']
+		}
+		values = _choice_values(id_keys);
+		values['id'] = $('#task_id').val();
+		j_cmd = $('#task_cmd');
+              values['cmd'] = j_cmd.val();
+		values['name'] = j_cmd.attr('options')[j_cmd.attr('selectedIndex')].text;
+		return values;
+	}
+	
+	function _choice_values(id_keys) {
+		// 选择最佳的值
+		var values = {isvaild: false};
+		for(var k in id_keys) {
+			ids = id_keys[k];
+			for(var i in ids) {
+				var v = $('#' + ids[i]).val().trim();
+                   if(v) {
+					if(i == 0) {
+						v = '*/' + v;
+					}
+					values[k] = v;
+					if(v != '*') { // 只要有一时间值不为*，则算输入正确
+						values.isvaild = true;
+					}
+					break;
+				}
+			}
+		}
+		return values;
+	}
+	
+	function _format_form_values(values) {
+		$('#task_form')[0].reset();
+		var keys = ['minute', 'hour', 'day', 'month', 'week'];
+		$.each(keys, function(index, key) {
+			if(values[key].indexOf('*/') > -1) {
+                   $($.format('#task_{0}_3', key)).val(values[key].replace('*/', ''));
+               } else if(values[key].indexOf(',') > -1) {
+                   $($.format('#task_{0}_2', key)).val(values[key]);
+               } else {
+                   $($.format('#task_{0}_1', key)).val(values[key]);
+               }
+		});
+		$('#task_cmd').val(values['cmd']);
+		fresh_description();
+	}
+	
+	function fresh_description() {
+		var values = get_form_values();
+		$('#task_description').html(get_description(values));
+	}
+	
+	function add_task() {
+		//初始化表单
+              $('#task_form')[0].reset();
+		$('#task_description').html('');
+		var add_url = "{% url add-plantask %}";
+		$('#task_form').attr('action', add_url);
+		_show_task_form();
+	}
+	
+	function edit_task(taskid) {
+		$('#task_id').val(taskid);
+		var update_url = "{% url update-plantask "000" %}";
+		$('#task_form').attr('action', update_url.replace("000", taskid));
+		var url = "{% url get-plantask "000" %}";
+		$.getJSON(url.replace("000", taskid),
+            function(result) {
+            	_format_form_values(result);
+				_show_task_form();
+            }
+        );
+	}
+	
+	function _show_task_form() {
+		$("#task_dialog").show().dialog({
+			height: 500, width: 600, modal: true,
+		    title: '编辑计划任务(按ESC键可直接退出)',
+			overlay: { 
+	            opacity: 0.5, 
+	            background: "black" 
+	        }
+		});
+        $("#task_dialog").dialog('open');
+	}
+	
+	function delete_task(taskid) {
+		if(!confirm("确定要删除吗?")) return;
+		var delete_url = "{% url delete-plantask "000" %}";
+		delete_url = delete_url.replace("000", taskid);
+		$.getJSON(delete_url,  
+		    function(result) {
+			    if(!result[0]) {
+					show_dialog(result[1].message, '删除任务错误');
+				}
+			    refresh_tasks();
+		    }
+		);
+	}
+	
+	function delete_current_task(li_id) {
+		var cmd = $('#'+li_id).attr('cmd');
+        if(!confirm($.format("确定要删除[{0:s}]吗?", cmd))) return;
+		web_service.delete_current_task({
+ 		    params:{"task": cmd},
+ 		    onSuccess:function(result){
+ 		    	if(!result[0]) {
+					show_dialog(result[1].message, '删除任务错误');
+				}
+ 				refresh_tasks();
+      		},
+ 	  		onException:function(e){
+          		show_dialog("删除任务错误");
+      		}
+		});
+	}
+
+	function sync_tasks() {
+		var url = "{% url sync-plantasks %}";
+		$.getJSON(url,
+                  function(result) {
+                      if(!result[0]) {
+                          show_dialog(result[1].message, '同步错误');
+                      }
+				refresh_tasks();
+                  }
+              );
+	}
+	
+	function show_dialog(message, title) {
+		if(!title) {
+			title = '消息';
+		}
+		$('<div class="flora"></div>').html(message).dialog({
+			'title': title,
+		    buttons: {
+		        "确定": function() { 
+		            $(this).dialog("close"); 
+		        }
+		    }
+		});
+	}
+	
+</script>
+<style type="text/css">
+	#task_form select {
+		min-width: 4em;
+	}
+	.input-every {
+		width: 2em;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>计划任务 
+    <a href="javascript:add_task();">添加任务</a> 
+	<a href="javascript:refresh_tasks();">刷新</a>
+	<a href="javascript:sync_tasks();" title="刷新当前计划任务到服务器上">同步</a></h1>
+<table id="task_list" cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th>序号</th>
+		<th>分</th>
+		<th>时</th>
+        <th>日</th>
+		<th>月</th>
+        <th>周</th>
+		<th>名称</th>
+        <th>描述</th>
+		<th></th>
+		<th></th>
+	</tr>
+	</thead>
+	<tbody id="task_list_body"></tbody>
+</table>
+
+<h2>当前系统的计划任务</h2>
+<ol id="current_task_list">
+</ol>
+<div id="task_dialog" class="flora" style="display: none;">
+    <form id="task_form">
+    	<p>
+    		<h3>提示</h3>
+			<span>你可以指定程序在 月、日、周、时、分的组合中执行，每行的第一个下拉框是选择具体的时间，
+			如:在分钟行的下拉框中选择 5 ，那么就表示在第五分钟；第二个文本框中可以指定其中的几项, 
+			如:1,2,8,9 表示在第1,2,8,9分执行，数字之间用逗号隔开，也可以指定为:5-10,
+			表示在第5到10分钟期间都会执行，也就是5,6,7,8,9,10; 第三个文本框表示间隔，
+			如在分钟行的第三个文本框中指定10，表示每隔10分钟执行一次。 
+			</span>
+		</p>
+    	<p>
+            <label>描述</label>
+            <span id="task_description"></span>
+        </p>
+    	<p>
+    		<label for="task_minute_1">分</label>
+			<select id="task_minute_1" name="minute"></select>
+			或其中的
+			<input id="task_minute_2" name="minute" type="text" />
+			或间隔
+			<input id="task_minute_3" name="minute" type="text" maxlength="2" class="input-every" />
+		</p>
+		<p>
+            <label for="task_hour_1">时</label>
+            <select id="task_hour_1" name="hour"></select>
+            或其中的
+            <input id="task_hour_2" name="hour" type="text" />
+            或间隔
+            <input id="task_hour_3" name="hour" type="text" maxlength="2" class="input-every" />
+        </p>
+		<p>
+            <label for="task_day_1">日</label>
+            <select id="task_day_1" name="day"></select>
+            或其中的
+            <input id="task_day_2" name="day" type="text" />
+            或间隔
+            <input id="task_day_3" name="day" type="text" maxlength="2" class="input-every" />
+        </p>
+		<p>
+            <label for="task_month_1">月</label>
+            <select id="task_month_1" name="month"></select>
+            或其中的
+            <input id="task_month_2" name="month" type="text" />
+            或间隔
+            <input id="task_month_3" name="month" type="text" maxlength="2" class="input-every" />
+        </p>
+		<p>
+            <label for="task_week_1">周</label>
+            <select id="task_week_1" name="week"></select>
+            或其中的
+            <input id="task_week_2" name="week" type="text" />
+            或间隔
+            <input id="task_week_3" name="week" type="text" maxlength="2" class="input-every" />
+        </p>
+		<p>
+            <label for="task_cmd">命令</label>
+            <select id="task_cmd" name="cmd">
+            {% for key, val in cmds.items %}<option value="{{val}}">{{key}}</option>{% endfor %}
+			</select>
+        </p>
+		<p><input id="save_task_button" type="button" value="确定" />
+		<input id="task_id" name="id" type="hidden" value="0" />
+		</p>
+    </form>
+</div>
+{% endblock %}
