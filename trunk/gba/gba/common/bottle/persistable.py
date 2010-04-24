@@ -125,7 +125,7 @@ class Persistable(object):
         update_skip_columns = ['id', 'created_time', 'updated_time']
         meta = Persistable._meta_cache[self._table]
         columns = meta.columns
-        need_close = False
+
         for column in columns:
             field_name = column.field     
             if hasattr(self, field_name):
@@ -133,11 +133,7 @@ class Persistable(object):
             elif field_name == 'created_time':
                 data['created_time'] = ReserveLiteral('now()')
         
-        if not self._transaction:
-            cursor = connection.cursor()
-            need_close = True
-        else:
-            cursor = self._cursor            
+        cursor = connection.cursor()           
         try:
             cursor.insert(data, self._table, True, update_skip_columns)
             if not hasattr(self, 'id'):
@@ -145,8 +141,7 @@ class Persistable(object):
                 if data:
                     self.id = int(data['id']) 
         finally:
-            if need_close:
-                cursor.close()
+            cursor.close()
         info('finish save object....[table:%s]' % self._table)
     
     @classmethod
@@ -170,18 +165,12 @@ class Persistable(object):
                 elif field_name == 'created_time':
                     data['created_time'] = ReserveLiteral('now()')
             datas.append(data)
-            
-        need_close = False
-        if not cls._transaction:
-            cursor = connection.cursor()
-            need_close = True
-        else:
-            cursor = cls._cursor            
+
+        cursor = connection.cursor()           
         try:
             cursor.insert(datas, cls._table, True, update_skip_columns)
         finally:
-            if need_close:
-                cursor.close()
+            cursor.close()
         info('finish save objects....[table:%s]' % cls._table)
     
     @classmethod
@@ -204,12 +193,8 @@ class Persistable(object):
         if len(sql) < 200:
             info('start to load objects[%s] with sql:%s' % (cls._table, sql))
         info('start to load objects')
-        need_close = False
-        if cls._transaction:
-            cursor = cls._cursor
-        else:
-            need_close = True
-            cursor = connection.cursor()
+
+        cursor = connection.cursor()
         try:
             data = cursor.fetchall(sql)
             if data:
@@ -223,8 +208,7 @@ class Persistable(object):
             exception_mgr.on_except('sql[%s]' % sql)
             raise
         finally:
-            if need_close:
-                cursor.close()
+            cursor.close()
         info('not record found')
         return []
     
@@ -262,12 +246,8 @@ class Persistable(object):
         condition = ' and '.join(["%s=%%s" % k for k in keys.keys()])
         param = [keys[k] for k in keys.keys()] 
         sql = 'select * from %s where %s' % (cls._table, condition) 
-        need_close = False
-        if cls._transaction:
-            cursor = cls._cursor
-        else:
-            need_close = True
-            cursor = connection.cursor()
+
+        cursor = connection.cursor()
         try:
             data = cursor.fetchone(sql, param)
             if data:
@@ -278,8 +258,7 @@ class Persistable(object):
                 info('success load object[%s, id=%s]' % (cls._table, obj.id)) 
                 return obj
         finally:
-            if need_close:
-                cursor.close()
+            cursor.close()
         info('load failure[table:%s]' % cls._table)
         return None
     
@@ -352,15 +331,12 @@ class Persistable(object):
             info('start to delete from cache:[%s]' % cache_key)
             self._cache.delete(cache_key)
         
-        if not self._transaction:
-            cursor = connection.cursor()
-            try:
-                cursor.execute(sql)
-            finally:
-                cursor.close()
-        else:
-            self._cursor.execute(sql)
-            
+        cursor = connection.cursor()
+        try:
+            cursor.execute(sql)
+        finally:
+            cursor.close()
+
         info('finish delete')
         
     @classmethod
