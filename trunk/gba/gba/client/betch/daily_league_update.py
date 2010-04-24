@@ -6,7 +6,8 @@ from gba.common import exception_mgr
 from gba.business import user_operator
 from gba.common.constants import MatchTypes, FinanceType, FinanceSubType
 from gba.common import logger, teamutil
-from gba.entity import League, LeagueMatchs, Matchs, LeagueTeams, SeasonFinance, TeamArena, Team, AllFinance
+from gba.entity import League, LeagueMatchs, Matchs, LeagueTeams, SeasonFinance, \
+                       TeamArena, Team, AllFinance, TeamTicketHistory
 
 class DailyLeagueUpdate(BaseBetchClient):
     
@@ -41,6 +42,7 @@ class DailyLeagueUpdate(BaseBetchClient):
                     for league_match in league_matchs:
                         tinances = []
                         all_tinances = []
+                        team_ticket_history = None
                         teams = []
                         if league_match.status > 0:
                             exception_mgr.on_except('出现比赛已经打完的情况!!')
@@ -123,8 +125,16 @@ class DailyLeagueUpdate(BaseBetchClient):
                                 tickets_tinance.round = self._round
                                 tickets_tinance.info = u'门票收入'
                                 tinances.append(tickets_tinance)
-                                home_team.funds += amount
+                                home_team.funds += float(str(amount))
                                 home_all_tinance.income += amount
+                                
+                                #赛季门票销售记录
+                                team_ticket_history = TeamTicketHistory()
+                                team_ticket_history.team_id = home_league_team.team_id
+                                team_ticket_history.price = team_arena.fare
+                                team_ticket_history.ticket_count = seat_count * attendance
+                                team_ticket_history.amount = team_ticket_history.price * team_ticket_history.ticket_count
+                                team_ticket_history.round = self._round
                                 
                             teams.append(home_team)
                             all_tinances.append(home_all_tinance)
@@ -169,12 +179,15 @@ class DailyLeagueUpdate(BaseBetchClient):
                             SeasonFinance.inserts(tinances)
                         if all_tinances:
                             AllFinance.inserts(all_tinances)
-                            
+                        if team_ticket_history:
+                            team_ticket_history.persist()
+                                                    
                         self._total_created_match += 1
                     Matchs.commit()
                 except:
                     exception_mgr.on_except()
                     Matchs.rollback()
+                    raise
             self.save_status()
             
         self.save_status()

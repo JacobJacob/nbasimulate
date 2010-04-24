@@ -1,0 +1,82 @@
+{% load common_extras %}
+<form action="{% url arena-price-update %}" method="post" onsubmit='return submit_to_div(this,"popup_inner");'>
+<div class="Venues">
+	<div class="Venues_box_l">
+		<ul class="lh21">
+		 <li><span class="fb">体育馆：</span>{{team_arena.level}}级</li>
+		 <li><span class="fb">座　位：</span>{{team_arena.seat_count}} 个</li>
+		 <li><span class="fb">广告栏：</span>{{team_arena.level}} 个</li>
+		 <li><span class="fb">球　迷：</span>{{team_arena.fan_count}} 人</li>
+		 <li class="color_6">
+		 {% ifequal team_arena.status 1%}
+		   升级完成:<label id="time">{{remain_time|format_lave_time}}</label>
+		 {% else %} 
+		  <a href="{% url arena-update %}" onclick="return show_popup(this);">升级球场</a>
+		 {% endifequal %}
+		 </li>
+	    </ul>
+    </div>
+	<div class="Venues_box_r">
+	  <img src="/site_media/images/qc.jpg" alt="" width="502" height="116">
+	</div>
+<div class="clear"></div>
+		<table class="list_table">
+		<tbody><tr valign="top"><th>球票价格</th>
+		<th>赛季球票销售</th>
+		<th class="end_cell">球场广告</th>
+		</tr><tr valign="top"><td width="175">
+			<div class="blank10"></div>
+			<div class="blank5"></div>
+			<div class="tc">
+		  <select name="price" id="price" style="width: 49px;">
+		   {% for price in prices %}
+			 <option value="{{price}}" {%ifequal price team_arena.fare%}selected="selected"{%endifequal%}>{{price}}</option>
+		   {% endfor %}
+		</select> <input name="" value="确定" class="btn_5" type="submit">
+	   </div>
+			<div class="blank20"></div>
+			<div class="blank20"></div>
+			<ul class="lh21">
+			<li>上场球票价格：0 元</li>
+			<li>上场门票销售：0 张</li>
+			<li>上场门票收入：0 元</li>
+			<li>赛季门票收入：72000 元</li>
+			</ul>
+		</td>
+		<td>
+			<table class="list_table3">
+				<tbody>
+				 <tr class="bgBlueLight">
+					<td>轮次</td>
+					<td>价格(元)</td>
+					<td class="end_cell_1">销售(张)</td>
+				 </tr>
+				 <tr>
+				 </tr>
+				 <tr class="end_cell">
+				  <td>2</td>
+				  <td>18</td>
+				  <td class="end_cell_1">2000</td>
+				 </tr>
+                 <tr class="bgBlueLight">
+                  <td>5</td>
+                  <td>18</td>
+                  <td class="end_cell_1">2000</td>
+                 </tr>
+			    </tbody>
+			</table>
+		</td>
+		<td>
+		 <div class="blank8">
+		 </div>
+		 {% for team_ad in team_ads %}
+		 <p class="plr10">GBA<img src="/site_media/images/gba.gif" width="88" align="absmiddle" height="31"> 剩{{team_ad.remain_round}}轮共{{team_ad.amount}}</p>
+		 {% endfor %}
+		 <div class="blank8"></div>
+		 <div class="line1 td_bgcolor_blue"></div>
+		</td>
+	</tr>
+	</tbody>
+  </table>
+</div>
+</form>

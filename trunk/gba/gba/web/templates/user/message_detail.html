@@ -1,0 +1,39 @@
+{% load common_extras %}
+<br>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center" style="">
+  <tbody>
+   <tr>
+    <td height="29" colspan="2"><div align="center" class="STYLE2">
+      <div align="right"><img height="33" width="670" src="/site_media/images/sys_xx.gif"></div>
+    </div>
+    <div align="center" class="STYLE2"></div>
+    </td>
+   </tr>
+  <tr>
+    <td height="83" width="57" rowspan="5">&nbsp;</td>
+    <td height="25" style="border-bottom: 1px solid rgb(212, 208, 200);">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="30" style="border-bottom: 1px solid rgb(212, 208, 200);">时　　间： {{message.created_time}}</td>
+  </tr>
+  <tr>
+    <td height="30" width="600" style="border-bottom: 1px solid rgb(212, 208, 200);">
+     发 件 人： <font color="brown">{{message.from_team_id|nickname }}</font>
+    </td>
+  </tr>
+  <tr>
+    <td height="30" style="border-bottom: 1px solid rgb(212, 208, 200);">标　　题： {{message.title}}</td>
+  </tr>
+  <tr>
+    <td height="30" width="600" style="border-bottom: 1px solid rgb(212, 208, 200);">
+    内　　容：<br><br>
+    {{message.content}}
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td height="67"><div align="right"><a onclick="return shan_chu(this);" href="n.php?a=207&amp;id_xiao_xi=3978641&amp;type=shou"><font color="red">删除</font></a>|<a onclick="return href_to_div(this,&quot;main_content&quot;)" href="n.php?a=201"><font color="#0096f1">返回</font></a></div></td>
+  </tr>
+</tbody></table>
+<br>
+<div class="clear"></div>
+<div class="blank10"></div>

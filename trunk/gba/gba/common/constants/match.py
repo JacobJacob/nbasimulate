@@ -54,6 +54,7 @@ class FinanceSubType(ConstantBase):
     AD = 12 #广告收入
     PLAYER_WAGE = 21 #球员工资支出
     STAFF_WAGE = 22 #职员工资支出
+    ARENA_BUILD = 23 #球场建设支出
     
 #比赛显示的状态
 class MatchShowStatus(ConstantBase):

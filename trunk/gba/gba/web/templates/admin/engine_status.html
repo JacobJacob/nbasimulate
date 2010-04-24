@@ -1,0 +1,27 @@
+{% extends "admin/master.html" %}
+{% load admin_extras %}
+{% block head_ext %}
+<meta http-equiv="content-type" content="text/html; charset=utf8" />
+{% endblock %}
+{% block title %}引擎状态监控{% endblock %}
+{% block content %}
+<table cellspacing="1" class="tablesorter">
+  <thead>
+    <th>线程名</th>
+    <th>状态</th>
+    <th>创建时间</th>
+    <th>最后更新时间</th>
+  </thead>
+  <tbody>
+      {% for info in infos %}
+       <tr>
+        <td>{{ info.name }}</td>
+        <td>{{ info.status }}</td>
+        <td>{{ info.created_time }}</td>
+        <td>{{ info.updated_time }}</td>
+        </td>
+       </tr>
+      {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

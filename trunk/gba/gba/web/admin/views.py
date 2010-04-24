@@ -4,7 +4,7 @@
 
 from gba.web.render import render_to_response
 from gba.business.user_roles import login_required
-from gba.entity import ClientRunningLog, ActionDesc
+from gba.entity import ClientRunningLog, ActionDesc, EngineStatus
 from gba.business.client import ClientManager
 from gba.business.common_client_monitor import CommonClientMonitor
 
@@ -93,3 +93,9 @@ def _get_common_client_monitor_info(client_type, monitor_type, time_type, time_l
             client_info.img_label = "death"
             
     return clients_list
+
+def engine_status(request):
+    '''比赛引擎状态'''
+    infos = EngineStatus.query()
+    datas = {'infos': infos}
+    return render_to_response(request, 'admin/engine_status.html' , datas)

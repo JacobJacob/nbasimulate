@@ -5,6 +5,7 @@
 import os
 import shutil
 
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
 from gba.config import PathSettings
@@ -172,8 +173,6 @@ def send_message(request):
         i = 0
         while i < 1:
             i += 1
-            print title
-            print content
             if not (title and content):
                 error = '消息不完整'
                 break
@@ -329,4 +328,37 @@ def issue_message(request):
         shutil.move('%s_' % path, path)
         
     return response
+
+@login_required
+def message_detail(request):
+    '''消息详细'''
+    id = request.GET.get('id')
+    message = Message.load(id=id)
+    datas = {'message': message}
+    return render_to_response(request, "user/message_detail.html", datas)
+
+@login_required
+def delete_message(request, all=False):
+    '''消息详细'''
+    team = request.team
+    i = 0
+    error = None
+    success = '删除成功'
+    while i < 1:
+        i += 1
+        messages = None
+        if all:
+            messages = Message.query(condtion="to_team_id=%s" % team.id)
+        else:
+            msg_ids = request.GET.getlist("ch[]")
+            if msg_ids:
+                messages = Message.query(condition="id in (%s)" % ','.join(['"%s"' % id for id in msg_ids]))
+        if messages:
+            for message in messages:
+                message.delete()
+     
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
     
+    url = reverse('message-min')
+    return render_to_response(request, "message_update.html", {'success': success, 'url': url})

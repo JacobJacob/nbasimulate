@@ -25,6 +25,9 @@ def main():
     log.start_time = datetime.now()
     log.persist()
     
+    daily_update = DailyUpdate(config.round)
+    daily_update.start()
+    
     daily_league_update = DailyLeagueUpdate(config.season, config.round)
     daily_league_update.start()
     
@@ -45,12 +48,9 @@ def main():
     daily_league_rank_update = DailyLeagueRankUpdate()
     daily_league_rank_update.start()
     
-    daily_update = DailyUpdate()
-    daily_update.start()
-    
 def test():
     
-    for i in range(17):
+    for i in range(26):
         main()
 
 if __name__ == '__main__':

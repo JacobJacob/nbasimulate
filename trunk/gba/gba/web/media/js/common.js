@@ -84,7 +84,8 @@ function submit_to_div(target,content_div)
 			}else if (elem.type=="checkbox")
 			{
 				if(elem.checked)
-				{
+				{ 
+				    alert(tmpstr);
 					if (i>0) tmpstr+="&";
 						tmpstr += elem.name+"="+ encodeURIComponent($F(elem.id));				
 				}

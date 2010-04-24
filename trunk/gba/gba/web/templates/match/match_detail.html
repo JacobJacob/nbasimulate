@@ -210,8 +210,13 @@ body/**/{
 	   </tr>
       {% for detail in match_nodosity_main.details %}
        <tr>
+        {% if detail.is_new_line %}
          <td>{{ detail.time_msg }}</td>
          <td>{{ detail.point_msg }}</td>
+        {% else %}
+         <td>&nbsp;</td>	
+         <td>&nbsp;</td>		
+        {% endif %}
          <td>{{ detail.description }}</td>
        </tr>
       {% endfor %}

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import random
 
 from gba.client.betch.base import BaseBetchClient
 from gba.common import log_execption, logger
@@ -63,6 +64,8 @@ class PlayerStatisticsHandler(BaseBetchClient):
         match_team_home = LeagueTeams.load(id=match_team_home_id)
         match_team_guest = LeagueTeams.load(id=match_team_guest_id)
         
+        win_team_id = 0 #赢球球队id
+         
         home_point, guest_point = self.get_point_from_str(match.point)
         if home_point > guest_point:
             sub_point = home_point - guest_point
@@ -70,13 +73,15 @@ class PlayerStatisticsHandler(BaseBetchClient):
             match_team_home.net_points += sub_point
             match_team_guest.lose += 1
             match_team_guest.net_points -= sub_point
+            win_team_id = match_team_home.team_id
         else:
             sub_point = guest_point - home_point
             match_team_home.lose += 1
             match_team_home.net_points -= sub_point
             match_team_guest.win += 1
             match_team_guest.net_points += sub_point
-        
+            win_team_id = match_team_guest.team_id
+         
         #球队胜场统计end
         
         match_stats = MatchStat.query(condition='match_id=%s' % match.id)
@@ -85,6 +90,13 @@ class PlayerStatisticsHandler(BaseBetchClient):
             
         for match_stat in match_stats:
             player = ProfessionPlayer.load(no=match_stat.player_no)
+            #计算训练点
+            if player.team_id == win_team_id:
+                add_training_locations = random.randint(1000, 1500)
+            else:
+                add_training_locations = random.randint(800, 1300)
+            player.training_locations += add_training_locations
+            
             if not player:
                 logger.log_to_db('球员找不到球员号码[%s]比赛id[%s]' % (match_stat.player_no, match.id))
                 
@@ -183,6 +195,7 @@ class PlayerStatisticsHandler(BaseBetchClient):
             try:
                 player_season_total.persist()
                 player_caree_total.persist()
+                player.persist()
                 league_match.persist()
                 match_team_home.persist()
                 match_team_guest.persist()

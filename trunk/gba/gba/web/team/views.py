@@ -11,6 +11,8 @@ from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, 
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
+from gba.common.db import connection
+from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.config import ad_billboards
 
 @login_required
@@ -50,12 +52,149 @@ def all_finance(request, min=False):
     return render_to_response(request, 'team/all_finance_min.html', datas)
 
 @login_required
-def arena_build(request):
+def arena_build(request, min=False):
     """球员馆建设"""
     team = request.team
     team_arena = TeamArena.load(team_id=team.id)
+    team_arena.seat_count = team_arena.level * 2000
     datas = {'team_arena': team_arena}
+    
+    prices = [i for i in range(18, 51)]
+    datas['prices'] = prices
+    
+    team_ads = TeamAd.query(condition='team_id=%s' % team.id, order='round asc')
+    datas['team_ads'] = team_ads
+    
+    if team_arena.status == 1:#建设中
+        cursor = connection.cursor()
+        try:
+            sql = 'select unix_timestamp(next_level_time)-unix_timestamp(now()) as remain_time from team_arena where team_id="%s"' % team.id
+            print sql
+            rs = cursor.fetchone(sql)
+            if rs:
+                datas['remain_time'] = rs['remain_time']
+        finally:
+            cursor.close()
+    
+    if min:
+        return render_to_response(request, 'team/arena_build_min.html', datas)
     return render_to_response(request, 'team/arena_build.html', datas)
+
+@login_required
+def arena_price_update(request, min=False):
+    """球场票价更改"""
+    team = request.team
+    price = int(request.GET.get('price'))
+    success = '票价更改成功'
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if price < 10 or price > 50:
+            error = '票价必须在10-50之间'
+            break
+        
+        team_arena = TeamArena.load(team_id=team.id)
+        team_arena.fare = price
+        team_arena.persist()
+        
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    url = reverse('arena-build-min')
+    return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+
+@login_required
+def arena_update(request):
+    """球馆升级"""
+    team = request.team
+    i = 0
+    error = None
+    datas = {}
+    while i < 1:
+        i += 1
+        team_arena = TeamArena.load(team_id=team.id)
+        if team_arena.status == 1:
+            error = '您的球馆已经在升级中'
+            break
+        
+        level = team_arena.level
+        next_level = level + 1
+        
+        use_days = next_level * 2 #每高一级多用一天
+        use_funds = next_level * 20000
+        
+        datas = {'use_days': use_days, 'use_funds': use_funds}
+    
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    return render_to_response(request, 'team/arena_update.html', datas)
+
+@login_required
+def arena_update_save(request):
+    """球馆升级保存"""
+    team = request.team
+    i = 0
+    error = None
+    success = '球场升级开始'
+    while i < 1:
+        i += 1
+        team_arena = TeamArena.load(team_id=team.id)
+        if team_arena.status == 1:
+            error = '您的球馆已经在升级中'
+            break
+        
+        level = team_arena.level
+        next_level = level + 1
+        
+        use_days = next_level * 2 #每高一级多用一天
+        use_funds = next_level * 20000
+        
+        if team.funds < use_funds:
+            error = '您的资金不足'
+            break
+        
+        team_arena.next_level_time =  ReserveLiteral('date_add(now(), interval %s day)' % use_days)
+        team_arena.status = 1
+        team.funds -= use_funds
+        
+        league_config = LeagueConfig.load(id=1)
+        #赛季支出明细
+        tinance = SeasonFinance()
+        tinance.sub_type = FinanceSubType.ARENA_BUILD
+        tinance.team_id = team.id
+        tinance.type = FinanceType.OUTLAY
+        tinance.season = league_config.season
+        tinance.round = league_config.round
+        tinance.info = u'球场升级费'
+        tinance.income = 0
+        tinance.outlay = use_funds
+
+        #赛季收入概要
+        all_tinance = AllFinance.load(team_id=team.id, season=league_config.season)
+        if not all_tinance:
+            all_tinance = AllFinance()
+            all_tinance.team_id = team.id
+            all_tinance.season = league_config.season
+            all_tinance.income = 0
+            all_tinance.outlay = 0
+        all_tinance.outlay += use_funds
+        
+        Team.transaction()
+        try:
+            team_arena.persist()
+            team.persist()
+            tinance.persist()
+            all_tinance.persist()
+            Team.commit()
+        except:
+            Team.rollback()
+            error = '服务器异常'
+            break
+        
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    url = reverse('arena-build-min')
+    return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
 
 @login_required
 def team_ad(request, min=False):
@@ -72,8 +211,21 @@ def team_ad(request, min=False):
             team_ad['is_selected'] = True
         else:
             team_ad['is_selected'] = False
-        
+            
     datas = {'infos': team_ads}
+    
+    team_arena = TeamArena.load(team_id=team.id)      
+    datas['team_arena'] = team_arena
+    if team_arena.status == 1:#建设中
+        cursor = connection.cursor()
+        try:
+            sql = 'select unix_timestamp(next_level_time)-unix_timestamp(now()) as remain_time from team_arena where team_id="%s"' % team.id
+            print sql
+            rs = cursor.fetchone(sql)
+            if rs:
+                datas['remain_time'] = rs['remain_time']
+        finally:
+            cursor.close()
     if min:
         return render_to_response(request, 'team/team_ad_min.html', datas)
     return render_to_response(request, 'team/team_ad.html', datas)

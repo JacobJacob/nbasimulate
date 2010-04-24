@@ -17,4 +17,7 @@ urlpatterns = patterns('web.user',
     url(r'^8810/$', 'views.message', {'min': True}, name='message-min'),
     url(r'^8811/$', 'views.issue_message', name='issue-message'),
     url(r'^8812/$', 'views.out_message', name='out-message'),
+    url(r'^8813/$', 'views.message_detail', name='message-detail'),
+    url(r'^8814/$', 'views.delete_message', name='delete-message'),
+    url(r'^8815/$', 'views.delete_message', {'all': True}, name='delete-all-message'),
 )

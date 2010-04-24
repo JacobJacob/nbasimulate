@@ -1,3 +1,22 @@
+{% load common_extras %}
+<div class="Venues_box_l">
+	<ul class="lh21">
+	 <li><span class="fb">体育馆：</span>{{team_arena.level}}级</li>
+	 <li><span class="fb">座　位：</span>{{team_arena.seat_count}} 个</li>
+	 <li><span class="fb">广告栏：</span>{{team_arena.level}} 个</li>
+	 <li><span class="fb">球　迷：</span>{{team_arena.fan_count}} 人</li>
+	 <li class="color_6">
+	 {% ifequal team_arena.status 1%}
+	   升级完成:<label id="time">{{remain_time|format_lave_time}}</label>
+	 {% else %} 
+	  <a href="{% url arena-update %}" onclick="return show_popup(this);">升级球场</a>
+	 {% endifequal %}
+	 </li>
+    </ul>
+</div>
+<div class="Venues_box_r">
+  <img src="/site_media/images/qc.jpg" alt="" width="502" height="116">
+</div>
 <table class="list_table Venues_table Venues_table1">
 </table>
 <table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
