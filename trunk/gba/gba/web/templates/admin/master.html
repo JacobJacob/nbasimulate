@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/site_media/js/base.js"></script>
     <script type="text/javascript" src="/site_media/js/menu.js"></script>
     {% block head_ext %}{% endblock %}
-    <title>{% block title %}{{title}}{% endblock %} - 网址认证  </title>
+    <title>{% block title %}{{title}}{% endblock %} - GBA后台  </title>
 	
 </head>
 <body>
@@ -29,7 +29,7 @@
 
     {% block navigation %}
     <div id="nav">
-    	{% include "links.html" %}
+    	{% include "admin/links.html" %}
     </div>
     {% endblock %}
     
@@ -42,7 +42,7 @@
     <div id="footer">
 	    <p>
 	    Copyright &copy; 2009 - {% now "Y" %}
-	    <a target="_blank" href="http://www.kingsoft.com/">Kingsoft</a> Corp All Rights Reserved <a target="_blank" href="http://www.pc120.com/">金山云安全</a>
+	    <a target="_blank" href="http://www.gba.com/">GBA</a> Corp All Rights Reserved <a target="_blank" href="http://www.pc120.com/">金山云安全</a>
 	    </p>
     </div>
 </div>

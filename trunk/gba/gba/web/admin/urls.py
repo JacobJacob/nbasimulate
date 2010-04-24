@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import url, patterns
 
 urlpatterns = patterns('web.admin',
     # clients

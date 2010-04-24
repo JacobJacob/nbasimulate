@@ -10,7 +10,8 @@ from django.core.urlresolvers import reverse
 from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap, OffensiveTacticalTypeMap, \
                                  DefendTacticalTypeMap
 from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap, StaffMap, MatchShowStatus
-from gba.entity import Team, UserInfo, ProfessionPlayer, LeagueTeams
+from gba.entity import Team, UserInfo, ProfessionPlayer, LeagueTeams, \
+                       MatchNodosityTacticalDetail, MatchNodosityMain, Matchs
 
 register = template.Library()
 
@@ -103,7 +104,7 @@ def match_sub_status(sub_status):
     elif sub_status == 6:
         return '第二加时'
     else:
-        return '第%s加进进行中' % (sub_status - 4)
+        return '第%s加时' % (sub_status - 4)
 
 @register.filter
 def match_show_status(info):
@@ -408,4 +409,31 @@ def attr_width(value):
 @register.filter
 def tactical(type):
     return DefendTacticalTypeMap.get(type) if DefendTacticalTypeMap.get(type) else OffensiveTacticalTypeMap.get(type)
-        
+
+@register.filter
+def match_nodosity_detail(nodosity_id):
+    '''比赛每节信息'''
+    nodosity_main = MatchNodosityMain.load(id=nodosity_id)
+    match = Matchs.load(id=nodosity_main.match_id)
+    details = MatchNodosityTacticalDetail.query(condition="match_nodosity_main_id=%s" % nodosity_id)
+    
+    html = '''<table cellspacing="0" cellpadding="0" border="0" class="RS_table_match">
+     <tbody>
+      <tr>
+       <td>
+          <div class="RS_div_v1">alince</div>
+          <div class="RS_div_v2">
+            %s %s
+          </div>
+       </td>        
+       <td>
+          <div class="RS_div_v1">￑ￇ﾿ￋￎ￷</div>
+          <div class="RS_div_v2">
+            %s %s
+          </div>
+       </td>
+     </tr>
+    </tbody>
+    </table>''' 
+    
+    return html % (1, 2, 3, 4)

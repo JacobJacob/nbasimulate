@@ -1,32 +1,213 @@
-<html>
+{% load common_extras %}
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link href="/site_media/css/skin.css" rel="stylesheet" type="text/css" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-<style type="text/css">
-body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	background-color: #EEF2FB;
-	text-align:center;
-}
+<link media="all" href="/site_media/css/report.css" rel="stylesheet" type="text/css" />
+<style media="all" type="text/css">
+body/**/{
+	font-family /* IE6不识别 */: 微软雅黑;
+	_font-family:Georgia, "Times New Roman", Times, serif, Helvetica, simsun;
+    }
 </style>
-<title>比赛统计({{home_team_name }}--{{guest_team_name}})</title>
+<meta http-equiv="content-type" content="text/html; charset=utf8" />
+<title>比赛战报({{home_team_name }}--{{guest_team_name}})</title>
 </head>
 <body>
-<div style="margin-top:40px;"></div>
-<table width="70%" border=0 cellPadding=0 cellSpacing=0 class="player">
-  {% for match_nodosity_main in match_nodosity_mains %}
+字体调不小
+<div class="rs_div_body">
+ <table cellspacing="0" cellpadding="0" border="0" class="rs_table_t1">
+  <tbody>
    <tr>
-     <td class="right">
-      {{match_nodosity_main.id}}
-     </td>
+    <td height="50">
+	 <div class="rs_div_clubname">alince</div>
+	 <div class="rs_div_position">             
+	 </div>
+	</td>
+	<td align="center" width="50">
+	 <img height="46" width="46" src="http://match-3.xba.com.cn//images/club/logo/1.gif">
+   </td>
+   <td width="170" class="rs_div_score">67:91</td>
+   <td align="center" width="50">
+   <img height="46" width="46" src="http://match-3.xba.com.cn//images/club/logo/1.gif"></td>
+   <td align="left"><div class="rs_div_clubnamea">亚克西</div>
+   <div class="rs_div_position2">
+   </div>
+   </td>
    </tr>
-   <tr>
-    <td>
-     <table>
-      {{ match_nodosity.details}}
+ </tbody>
+</table>
+<div class="rs_div_zb">战报</div>
+ {% for match_nodosity_main in match_nodosity_mains %}
+   <div>
+     <div class="rs_div_match" style="float: left;">  {{match_nodosity_main.seq|match_sub_status}}</div>
+     <div style="float: left; padding-left: 10px;"> {{match_nodosity_main.point}}</div>
+   </div>
+  <table cellspacing="0" cellpadding="0" border="0" class="rs_table_match">
+     <tbody>
+      <tr>
+       <td>
+          <div class="rs_div_v1">alince</div>
+          <div class="rs_div_v2">整体配合　2-1-2联防　阵容状态：100%</div>
+       </td>        
+       <td>
+          <div class="rs_div_v1">木兰</div>
+          <div class="rs_div_v2">整体配合　2-1-2联防　阵容状态：100%</div>
+       </td>
+     </tr>
+    </tbody>
+   </table> 
+  <div class="rs_div_m1">
+   <table cellspacing="0" cellpadding="0" border="0" class="rs_table_m1">
+    <tbody>
+	 <tr align="center" class="rs_table_m1head">
+	 <td style="padding: 0pt 0pt 0pt 20px; width: 30px;">
+	 </td>
+	 <td style="width: 90px; text-align: left;">球员</td>
+     <td width="40">号码</td>
+	 <td width="40">年龄</td>
+	 <td width="40">身高</td>
+	 <td width="40">体重</td>
+	 <td width="40">体力</td>
+	 <td width="40">综合</td>
+	 <td>&nbsp;</td>
+	</tr>
+	<tr align="center">
+	<td>[c]</td>
+	<td style="text-align: left;">
+	  <u>k.mutombo</u>
+	</td>
+	<td>34</td>								
+	<td>28</td>								
+	<td>198</td>								
+	<td>93</td>								
+	<td>35</td>								
+	<td>31.5</td>		                        
+	<td>&nbsp;</td>							
+	</tr>					
+	<tr align="center">								
+	<td>[pf]</td>								
+	<td style="text-align: left;"><u>j.pollard</u></td>								
+	<td>33</td>								
+	<td>21</td>								
+	<td>213</td>								
+	<td>100</td>								
+	<td>37</td>								
+	<td>26.5</td>		                        
+	<td>&nbsp;</td>							
+	</tr>					
+	<tr align="center">								
+	<td>[sf]</td>								
+	<td style="text-align: left;"><u>a.allen</u></td>								
+	<td>16</td>								
+	<td>19</td>								
+	<td>183</td>								
+	<td>75</td>								
+	<td>40</td>								
+	<td>26.1</td>		                        
+	<td>&nbsp;</td>							
+	</tr>					
+	<tr align="center">
+	<td>[sg]</td>
+	<td style="text-align: left;">
+	 <u>s.smith</u>
+	</td>				
+	<td>36</td>
+	<td>33</td>
+	<td>203</td>
+	<td>103</td>
+	<td>35</td>
+	<td>33.2</td>
+	<td>&nbsp;</td>	
+	</tr>
+	<tr align="center">
+	<td>[pg]</td>
+	<td style="text-align: left;">
+	 <u>t.green</u></td>
+	 <td>20</td>								
+	 <td>21</td>
+	 <td>101</td>								
+	 <td>35</td>								
+	 <td>29.3</td>		                        
+	 <td>&nbsp;</td>							
+	 </tr>				
+	 </tbody>
+	 </table>
+	 <table cellspacing="0" cellpadding="0" border="0" class="rs_table_m1">    
+	 <tbody><tr align="center" class="rs_table_m1head">		
+	 <td>&nbsp;</td>       
+	 <td style="padding: 0pt 0pt 0pt 20px; width: 30px;"></td>        
+	 <td style="width: 90px; text-align: left;">球员</td>        
+	 <td width="40">号码</td>        
+	 <td width="40">年龄</td>
+	 <td width="40">身高</td>
+	 <td width="40">体重</td>
+	 <td width="40">体力</td>	
+	 <td width="40">综合</td>  
+	 </tr>			
+	 <tr align="center">	
+	 <td>&nbsp;</td>		
+	 <td height="25">[c]</td>	
+	 <td style="text-align: left;">k.mutombo</td>
+	 <td>34</td>						
+	 <td>28</td>					
+	 <td>198</td>						
+	 <td>93</td>						
+	 <td>100</td>					
+	 <td>29.8</td>					
+	 </tr>				
+	 <tr align="center">	
+	 <td>&nbsp;</td>		
+	 <td height="25">[pf]</td>	
+	 <td style="text-align: left;">m.jones</td>	
+	 <td>14</td>								
+	 <td>33</td>						
+	 <td>198</td>						
+	 <td>98</td>						
+	 <td>98</td>							
+	 <td>33.1</td>						
+	 </tr>				
+	 <tr align="center">	
+	 <td>&nbsp;</td>			
+	 <td height="25">[sf]</td>		
+	 <td style="text-align: left;">j.pollard</td>	
+	 <td>33</td>							
+	 <td>21</td>						
+	 <td>213</td>					
+	 <td>100</td>						
+	 <td>84</td>					
+	 <td>24.5</td>					
+	 </tr>				
+	 <tr align="center">	
+	 <td>&nbsp;</td>		
+	 <td height="25">[sg]</td>	
+	 <td style="text-align: left;">k.whitney</td>	
+	 <td>6</td>							
+	 <td>28</td>				
+	 <td>211</td>				
+	 <td>110</td>			
+	 <td>96</td>			
+	 <td>30.1</td>			
+	 </tr>					
+	 <tr align="center">	
+	 <td>&nbsp;</td>			
+	 <td height="25">[pg]</td>
+	 <td style="text-align: left;">s.smith</td>		
+	 <td>36</td>						
+	 <td>33</td>				
+	 <td>203</td>				
+	 <td>103</td>			
+	 <td>81</td>			
+	 <td>32.9</td>			
+	 </tr>				
+	 </tbody>
+	 </table>
+	</div>
+    <table cellspacing="0" cellpadding="0" border="0" class="rs_table_m2">
+	  <tbody>
+	   <tr align="center" class="rs_table_m2head">
+	    <td height="25" width="80">时间</td>
+	    <td width="70">主：客</td>
+	    <td>描 述</td>
+	   </tr>
       {% for detail in match_nodosity_main.details %}
        <tr>
          <td>{{ detail.time_msg }}</td>
@@ -34,10 +215,9 @@ body {
          <td>{{ detail.description }}</td>
        </tr>
       {% endfor %}
-     </table>
-    </td>
-   </tr>
+        </tbody>
+   </table>
   {% endfor %}
-</table>
+</div>
 </body>
 </html>

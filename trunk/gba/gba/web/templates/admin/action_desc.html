@@ -1,10 +1,10 @@
-{% load common_extras %}
-<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+{% extends "admin/master.html" %}
+{% load admin_extras %}
+{% block head_ext %}
 <script type="text/javascript" src="/site_media/js/rpc.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
 <script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
 <link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
-<link href="/site_media/css/admin.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="content-type" content="text/html; charset=utf8" />
 <script type="text/javascript">
      
@@ -68,21 +68,11 @@
 		 });
 	 
 });
-  
 </script>
-<style type="text/css">
-<!--
-body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	background-color: #eef2fb;
-}
--->
-</style>
-<body>
-<table width="99%" border=0 cellpadding=0 cellspacing=0 class="normal_table">
+{% endblock %}
+{% block title %}客户端监控{% endblock %}
+{% block content %}
+<table cellspacing="1" class="tablesorter">
   <thead>
     <th>动作名称</th>
     <th>动作描述</th>
@@ -174,4 +164,4 @@ body {
 		</p>
     </form>
 </div>
-</body>
+{% endblock %}

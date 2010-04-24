@@ -7,7 +7,7 @@
 from __future__ import with_statement
 
 from datetime import datetime, timedelta
-from business.dboperator import DBOperator
+from gba.business.dboperator import DBOperator
 
 class CommonClientInfo:
     """普通客户端信息"""
