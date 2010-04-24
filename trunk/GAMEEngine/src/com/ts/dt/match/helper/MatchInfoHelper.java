@@ -6,21 +6,21 @@ import com.ts.dt.util.TimeUtil;
 
 public class MatchInfoHelper {
 
-	public static void save(MatchContext context, String desc) {
+    public static void save(MatchContext context, String desc) {
 
-		MatchNodosityDetail matchDetail = new MatchNodosityDetail();
-		// MatchDetailDao matchDetailDao = new MatchDetailDaoImpl();
+	MatchNodosityDetail matchDetail = new MatchNodosityDetail();
+	// MatchDetailDao matchDetailDao = new MatchDetailDaoImpl();
 
-		String timeMsg = TimeUtil.timeMillis2TimeFormat(context
-				.getContinueTime());
-		String pointMsg = context.currentScore();
+	String timeMsg = TimeUtil.timeMillis2TimeFormat(context.getContinueTime());
+	String pointMsg = context.currentScore();
 
-		matchDetail.setMatchId(context.getMatchId());
-		matchDetail.setDescription(desc);
-		matchDetail.setSeq(context.getCurrentSeq());
-		matchDetail.setTimeMsg(timeMsg);
-		matchDetail.setPointMsg(pointMsg);
-		// matchDetailDao.save(matchDetail);
-		context.getNodosityMain().addMatchDetailLog(matchDetail);
-	}
+	matchDetail.setMatchId(context.getMatchId());
+	matchDetail.setDescription(desc);
+	matchDetail.setSeq(context.getCurrentSeq());
+	matchDetail.setTimeMsg(timeMsg);
+	matchDetail.setPointMsg(pointMsg);
+	matchDetail.setNewLine(context.isNewLine());
+	// matchDetailDao.save(matchDetail);
+	context.getNodosityMain().addMatchDetailLog(matchDetail);
+    }
 }

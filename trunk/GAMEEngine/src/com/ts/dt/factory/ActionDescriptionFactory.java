@@ -10,41 +10,40 @@ import com.ts.dt.util.StringUtil;
  */
 public class ActionDescriptionFactory {
 
-	public static final String CHECK_CLASS_SUFFIXAL = "Description";
-	public static final String CHECK_CLASS_PACKAGE_NAME = "com.ts.dt.match.desc";
+    public static final String CHECK_CLASS_SUFFIXAL = "Description";
+    public static final String CHECK_CLASS_PACKAGE_NAME = "com.ts.dt.match.desc";
 
-	private static ActionDescriptionFactory descriptionFactory;
+    private static ActionDescriptionFactory descriptionFactory;
 
-	private ActionDescriptionFactory() {
+    private ActionDescriptionFactory() {
 
+    }
+
+    public static ActionDescriptionFactory getInstance() {
+
+	if (descriptionFactory == null) {
+	    descriptionFactory = new ActionDescriptionFactory();
+	}
+	return descriptionFactory;
+    }
+
+    public ActionDescription createActionDescription(MatchContext context) {
+
+	ActionDescription actionDescription = null;
+
+	String claFulNm;
+	Action action = context.getCurrentAction();
+	String clsNm = StringUtil.className2ShortNameWithHigherPackage(action);
+
+	claFulNm = CHECK_CLASS_PACKAGE_NAME + "." + clsNm + CHECK_CLASS_SUFFIXAL;
+
+	try {
+	    actionDescription = (ActionDescription) Class.forName(claFulNm).newInstance();
+	} catch (Exception e) {
+	    e.printStackTrace();
 	}
 
-	public static ActionDescriptionFactory getInstance() {
+	return actionDescription;
 
-		if (descriptionFactory == null) {
-			descriptionFactory = new ActionDescriptionFactory();
-		}
-		return descriptionFactory;
-	}
-
-	public ActionDescription createActionDescription(MatchContext context) {
-
-		ActionDescription actionDescription = null;
-
-		String claFulNm;
-		Action action = context.getCurrentAction();
-		String clsNm = StringUtil.className2ShortNameWithHigherPackage(action);
-
-		claFulNm = CHECK_CLASS_PACKAGE_NAME + "." + clsNm
-				+ CHECK_CLASS_SUFFIXAL;
-
-		try {
-			actionDescription = (ActionDescription) Class.forName(claFulNm)
-					.newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return actionDescription;
-
-	}
+    }
 }
