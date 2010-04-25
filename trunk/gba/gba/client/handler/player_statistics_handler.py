@@ -22,7 +22,7 @@ class PlayerStatisticsHandler(BaseClient):
         self._start_id = 0
         self._handle_total = 0
 
-    def _run(self):
+    def run(self):
         
         while True:
             league_matchs = self._get_league_match()
