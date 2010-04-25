@@ -20,6 +20,7 @@ try:
 except ImportError:
     import processing as multiprocessing
 
+from gba.common.single_process import SingleProcess
 from gba.common import init_log
 from gba.common.svnutils import svn_update
 from gba.client.smartclient.deploy import CLIENTS
@@ -330,4 +331,7 @@ def main():
     Main(args, opts.autorestart, opts.memory, opts.interval)
 
 if __name__ == '__main__':
+    if sys.argv and len(sys.argv) > 1 and sys.argv[1]:
+        single = SingleProcess(sys.argv[1])
+        single.check()
     main()
