@@ -236,7 +236,7 @@ class BaseClient(object):
                 break
             except KeyboardInterrupt:
                 raise
-            except Exception, e:
+            except:
                 logging.warning('STATUS:%s, REPORT Server ERROR: %r' % (status, traceback.format_exc()))
                 exception_mgr.on_except()
             self._sleep()
@@ -268,7 +268,7 @@ class BaseClient(object):
                 logging.info('%s REGISTER SUCCEED(client_id %s)' % \
                                 (self.client_type, self.client_id))
                 return True
-            except Exception, e:
+            except:
                 exception_mgr.on_except()
                 self._sleep()
         

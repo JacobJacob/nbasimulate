@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 """client manager"""
 
-from gba.business.dboperator import DBOperator
+from gba.common.db import connection
 from gba.common.constants import ClientStatus
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.business import common_business
 from gba.common.constants.client import Command
 
 
-class ClientManager(DBOperator):
+class ClientManager(object):
     
     SELECT_CLIENTS = "select * from client order by ip"
     
@@ -42,7 +42,7 @@ class ClientManager(DBOperator):
     def register(cls, id, client_type, version, ip):
         """根据客户端编号id，类型，ip返回服务器注册的id"""
         status = ClientStatus.SLEEP
-        cursor = cls.cursor()
+        cursor = connection.cursor()
         try:
             cursor.execute(cls.REGISTER_SQL, (id, client_type, ip, status, version))
             r = cursor.fetchone(cls.SELECT_CLIENT, (id, client_type, ip))
@@ -53,7 +53,7 @@ class ClientManager(DBOperator):
     @classmethod
     def update_status(cls, client_id, status, description):
         """客户端状态更新，返回执行命令和辅助参数"""
-        cursor = cls.cursor()
+        cursor = connection.cursor()
         try:
             r = cursor.fetchone(cls.SELECT_CLIENT_BY_ID, (client_id,))
             if not r:
@@ -63,13 +63,8 @@ class ClientManager(DBOperator):
             if status == ClientStatus.FINISH:
                 # 任务完成，自动增加启动命令
                 cmd = 'start'
-                cursor.execute(cls.UPDATE_STATUS_WITH_CMD_SQL, 
+                cursor.execute(cls.UPDATE_STATUS_WITH_CMD_SQL,
                                (status, description, cmd, client_id))
-#            elif status == ClientStatus.ACTIVE and description:
-#                # 在运行状态并且有描述，则修改
-#                cursor.execute(cls.UPDATE_STATUS_SQL, (status, description, client_id))
-#            elif r['status'] == status: # 状态未发生改变，则只修改时间信息
-#                cursor.execute(cls.UPDATE_TIME_ONLY_SQL, (client_id,))
             else:
                 cursor.execute(cls.UPDATE_STATUS_SQL, (status, description, client_id))
             return cmd, params
@@ -79,7 +74,7 @@ class ClientManager(DBOperator):
     @classmethod
     def get_clients(cls):
         """获取客户端信息"""
-        cursor = cls.cursor()
+        cursor = connection.cursor()
         try:
             clients = cursor.fetchall(cls.SELECT_CLIENTS)
             return clients
@@ -89,7 +84,7 @@ class ClientManager(DBOperator):
     @classmethod
     def get_client(cls, client_id):
         """获取客户端信息"""
-        cursor = cls.cursor()
+        cursor = connection.cursor()
         try:
             client = cursor.fetchone(cls.SELECT_CLIENT_BY_ID, client_id)
             return client
@@ -102,7 +97,7 @@ class ClientManager(DBOperator):
         cmd = cmd.strip().lower()
         if not params:
             params = ReserveLiteral('params')
-        cursor = cls.cursor()
+        cursor = connection.cursor()
         try:
             if cmd == 'delete':
                 cursor.execute(cls.DELETE_CLIENT, (client_id,))
@@ -117,7 +112,7 @@ class ClientManager(DBOperator):
         cmd = cmd.strip().lower()
         if not params:
             params = ReserveLiteral('params')
-        cursor = cls.cursor()
+        cursor = connection.cursor()
         try:
             cursor.execute(cls.SET_COMMAND_TO_ALL, (cmd, params,))
         finally:
@@ -125,7 +120,7 @@ class ClientManager(DBOperator):
     SELECT_MSN_ACCOUNT = 'select email, password from msnbot where client_ip=%s'
     @classmethod
     def get_msn_account(cls, client_ip):
-        cursor = cls.cursor()
+        cursor = connection.cursor()
         try:
             r = cursor.fetchone(cls.SELECT_MSN_ACCOUNT, (client_ip,))
             return r.to_dict()
@@ -144,10 +139,3 @@ class ClientManager(DBOperator):
         """设置运行时数据"""
         return common_business.set_runtime_data(client_name, process_id, data_key, data_content)
             
-if __name__ == '__main__':
-    client_name = 'test'
-    process_id = 100
-    data_key = 'data_key'
-    data_content = 'data_content'
-    print ClientManager.set_runtime_data(client_name, process_id, data_key, data_content)
-    print ClientManager.get_runtime_data(client_name, process_id, data_key)
