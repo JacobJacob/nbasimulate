@@ -47,7 +47,7 @@ class MatchStatusMonitor(BaseClient):
                 self.current_info = traceback.format_exc()
             self._sleep()
             
-if __name__ == '__main__':
+def main():
     signle_process = SingleProcess('MatchStatusMonitor')
     signle_process.check()
     try:
@@ -55,3 +55,6 @@ if __name__ == '__main__':
         monitor.main()
     except:
         exception_mgr.on_except()
+        
+if __name__ == '__main__':
+    main()

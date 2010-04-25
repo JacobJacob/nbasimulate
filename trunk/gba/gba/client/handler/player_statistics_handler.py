@@ -210,7 +210,7 @@ class PlayerStatisticsHandler(BaseClient):
                 ProPlayerCareerStatTotal.rollback()
                 self.current_info = traceback.format_exc()
         
-if __name__ == '__main__':  
+def main():  
     signle_process = SingleProcess('PlayerStatisticsHandler')
     signle_process.check()
     try:
@@ -218,3 +218,6 @@ if __name__ == '__main__':
         client.main()
     except:
         log_execption()
+        
+if __name__ == '__main__':
+    main()
