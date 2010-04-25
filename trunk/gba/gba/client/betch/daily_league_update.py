@@ -125,7 +125,9 @@ class DailyLeagueUpdate(BaseBetchClient):
                                 tickets_tinance.round = self._round
                                 tickets_tinance.info = u'门票收入'
                                 tinances.append(tickets_tinance)
-                                home_team.funds += int(str(amount))
+                                old_funds = home_team.funds
+                                new_funds = float(old_funds) + float(str(amount))
+                                home_team.funds = new_funds
                                 home_all_tinance.income += amount
                                 
                                 #赛季门票销售记录

@@ -76,8 +76,12 @@ class ExpiredMatchUpdate(BaseClient):
         return True
             
     def get_expired_match(self):
-        return Matchs.query(condition='status<>3 and expired_time<now() and id>%s' % self._start_id, order=' id asc ', limit=10)
-          
+        while True:
+            try:
+                return Matchs.query(condition='status<>3 and expired_time<now() and id>%s' % self._start_id, order=' id asc ', limit=10)
+            except:
+                self.current_info = traceback.format_exc()
+            self._sleep()
 def main():
     spider = ExpiredMatchUpdate()
     spider.main()

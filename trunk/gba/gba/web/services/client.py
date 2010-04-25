@@ -40,12 +40,6 @@ def get_msn_account(request):
     return ClientManager.get_msn_account(request.META['REMOTE_ADDR'])
 
 @jsonrpc_function
-def get_url_check_status(request):
-    clients_info = UrlCheckClientMonitor().get_client_info()
-    if clients_info.has_key(request.META['REMOTE_ADDR']):
-        return clients_info[request.META['REMOTE_ADDR']]
-
-@jsonrpc_function
 def get_runtime_data(request, client_name, process_id, data_key): #已废弃，请调用common_service.get_runtime_data()
     """获取运行时数据"""
     return ClientManager.get_runtime_data(client_name, process_id, data_key)

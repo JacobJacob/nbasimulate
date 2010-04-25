@@ -19,6 +19,7 @@ urlpatterns = patterns('',
 
 # json rpc settings
 jsonrpc_urlpatterns = patterns('',
+    (r'^services/client/$', 'web.services.client'),
     (r'^services/match/$', 'web.services.match_service'),
     (r'^services/admin/$', 'web.services.admin_service'),
     (r'^services/player/$', 'web.services.player_service'),

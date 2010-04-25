@@ -2,17 +2,20 @@
 # -*- coding: utf-8 -*-
 
 import time
+import traceback
+
 from gba.entity import Matchs, ChallengeHistory
 from gba.common.constants import MatchShowStatus, MatchTypes
 from gba.common import exception_mgr
 from gba.common.single_process import SingleProcess
 from gba.common import commonutil
+from gba.common.client.base import BaseClient
 
-class MatchStatusMonitor(object):
+class MatchStatusMonitor(BaseClient):
     '''比赛状态监控程序'''
     
     def __init__(self):
-        pass
+        super(MatchStatusMonitor, self).__init__('MatchStatusMonitor')
     
     def run(self):
         
@@ -21,9 +24,9 @@ class MatchStatusMonitor(object):
             matchs = self.get_match(start_id)
             if not matchs:
                 start_id = 0
-                time.sleep(2)
-                continue
-            
+                self.current_info = "not matchs for handler now sleep 10s"
+                return 10
+                            
             start_id = matchs[-1].id
             for match in matchs:
                 new_match, interval = commonutil.next_status(match)
@@ -37,13 +40,18 @@ class MatchStatusMonitor(object):
                         challenge_history.persist()
                         
     def get_match(self, start_id):
-        return Matchs.query(condition='id>%s and show_status<%s and next_status_time<=now()' % (start_id, MatchShowStatus.FINISH), limit=100)
-    
+        while True:
+            try:
+                return Matchs.query(condition='id>%s and show_status<%s and next_status_time<=now()' % (start_id, MatchShowStatus.FINISH), limit=100)
+            except:
+                self.current_info = traceback.format_exc()
+            self._sleep()
+            
 if __name__ == '__main__':
     signle_process = SingleProcess('MatchStatusMonitor')
     signle_process.check()
     try:
         monitor = MatchStatusMonitor()
-        monitor.run()
+        monitor.main()
     except:
         exception_mgr.on_except()
