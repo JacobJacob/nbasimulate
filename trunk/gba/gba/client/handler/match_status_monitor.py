@@ -43,6 +43,8 @@ class MatchStatusMonitor(BaseClient):
         while True:
             try:
                 return Matchs.query(condition='id>%s and show_status<%s and next_status_time<=now()' % (start_id, MatchShowStatus.FINISH), limit=100)
+            except KeyboardInterrupt:
+                raise
             except:
                 self.current_info = traceback.format_exc()
             self._sleep()

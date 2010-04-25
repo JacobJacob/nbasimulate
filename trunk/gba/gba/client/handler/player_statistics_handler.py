@@ -42,6 +42,8 @@ class PlayerStatisticsHandler(BaseClient):
         while True:
             try:
                 return LeagueMatchs.query(condition='id>%s and status=1' % self._start_id, limit=100, order='id asc')
+            except KeyboardInterrupt:
+                raise
             except:
                 self.current_info = traceback.format_exc()
             self._sleep()

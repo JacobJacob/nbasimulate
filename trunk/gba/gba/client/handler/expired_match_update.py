@@ -79,6 +79,8 @@ class ExpiredMatchUpdate(BaseClient):
         while True:
             try:
                 return Matchs.query(condition='status<>3 and expired_time<now() and id>%s' % self._start_id, order=' id asc ', limit=10)
+            except KeyboardInterrupt:
+                raise
             except:
                 self.current_info = traceback.format_exc()
             self._sleep()
