@@ -10,12 +10,10 @@ import threading
 import datetime
 
 import gba
+from gba.common import exception_mgr
 from gba.business.client import ClientManager
 from gba.common.constants import ClientStatus, STATUS_MAP, Command, SmartClientCommand
 from gba.common import serverinfo
-
-def log_execption():
-    pass
 
 class WorkThread(threading.Thread):
     """工作线程"""
@@ -241,7 +239,7 @@ class BaseClient(object):
             except Exception, e:
                 print e
                 logging.warning('STATUS:%s, REPORT Server ERROR: %r' % (status, traceback.format_exc()))
-                log_execption()
+                exception_mgr.on_except()
             self._sleep()
         
         result = data
@@ -272,8 +270,7 @@ class BaseClient(object):
                                 (self.client_type, self.client_id))
                 return True
             except Exception, e:
-                print e
-                log_execption()
+                exception_mgr.on_except()
                 self._sleep()
         
     def _get_id(self):
@@ -297,5 +294,5 @@ class BaseClient(object):
             except SystemExit:
                 raise
             except:
-                log_execption()
+                exception_mgr.on_except()
             self._sleep()

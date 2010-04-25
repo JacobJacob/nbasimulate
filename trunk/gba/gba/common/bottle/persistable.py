@@ -61,10 +61,10 @@ class Persistable(object):
             meta = Meta(cls._table)
             column_infos = data.to_list()
             for column_info in column_infos:
-                field = column_info['Field']
-                default = column_info['Default']
-                type = column_info['Type']
-                extra = column_info['Extra']
+                field = column_info.get('Field', column_info['field'])
+                default = column_info.get('Default', column_info['default'])
+                type = column_info.get('Type', column_info['type'])
+                extra = column_info.get('Extra', column_info['extra'])
                 if type.startswith(Column.TYPE_INT):
                     temp_type = type[:len(Column.TYPE_INT)]
                     length = type[len(Column.TYPE_INT)+1:-1]
