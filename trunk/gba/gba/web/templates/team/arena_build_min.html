@@ -37,10 +37,10 @@
 			<div class="blank20"></div>
 			<div class="blank20"></div>
 			<ul class="lh21">
-			<li>上场球票价格：0 元</li>
-			<li>上场门票销售：0 张</li>
-			<li>上场门票收入：0 元</li>
-			<li>赛季门票收入：72000 元</li>
+			<li>上场球票价格：{{pre_round_ticket.price}} 元</li>
+			<li>上场门票销售：{{pre_round_ticket.ticket_count}} 张</li>
+			<li>上场门票收入：{{pre_round_ticket.amount}} 元</li>
+			<li>赛季门票收入：{{season_total_amount}} 元</li>
 			</ul>
 		</td>
 		<td>
@@ -53,16 +53,13 @@
 				 </tr>
 				 <tr>
 				 </tr>
+				 {% for ticket_history in ticket_historys %}
 				 <tr class="end_cell">
-				  <td>2</td>
-				  <td>18</td>
-				  <td class="end_cell_1">2000</td>
+				  <td>{{ticket_history.round}}</td>
+				  <td>{{ticket_history.price}}</td>
+				  <td class="end_cell_1">{{ticket_history.ticket_count}}</td>
 				 </tr>
-                 <tr class="bgBlueLight">
-                  <td>5</td>
-                  <td>18</td>
-                  <td class="end_cell_1">2000</td>
-                 </tr>
+				 {% endfor %}
 			    </tbody>
 			</table>
 		</td>

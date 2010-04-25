@@ -7,6 +7,7 @@ import traceback
 import time
 import sys
 import threading
+import datetime
 
 import gba
 from gba.business.client import ClientManager
@@ -133,7 +134,9 @@ class BaseClient(object):
 
     def _report(self):
         """汇报函数, 子类可以覆盖，回调 report() 进行上报。"""
-        return self.report(self.status, self.current_info) # 这里 附加参数 将传到服务器端的 publicop 里面，具体定义由子类实现
+        now = datetime.datetime.now()
+        info = '[%s]%s' % (now.strftime("%Y-%m-%d %H:%M:%S"), self.current_info)
+        return self.report(self.status, info) # 这里 附加参数 将传到服务器端的 publicop 里面，具体定义由子类实现
         
     def _start(self):
         self.work_thread = WorkThread(self.mainbody)

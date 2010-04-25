@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import time
 import random
+import traceback
 
-from gba.client.betch.base import BaseBetchClient
+from gba.common.client.base import BaseClient
 from gba.common import log_execption, logger
 from gba.common.constants import MatchTypes
 from gba.common.single_process import SingleProcess
@@ -14,12 +14,13 @@ from gba.entity import League, LeagueMatchs, Matchs, LeagueTeams, \
                        
 from gba.common.constants.match import MatchStatus
 
-class PlayerStatisticsHandler(BaseBetchClient):
+class PlayerStatisticsHandler(BaseClient):
     '''职业球员生涯统计客户端'''
     
     def __init__(self):
         super(PlayerStatisticsHandler, self).__init__()
         self._start_id = 0
+        self._handle_total = 0
 
     def _run(self):
         
@@ -27,19 +28,22 @@ class PlayerStatisticsHandler(BaseBetchClient):
             league_matchs = self._get_league_match()
             if not league_matchs:
                 self._start_id = 0
-                self.append_log('now not tasks sleep 60s...')
-                self._status = 'sleep'
-                self.log()
-                time.sleep(60)
-                continue
+                self.current_info = 'now not tasks sleep 60s...[handle total: %s]' % self._handle_total
+                return 60
                 
             self._start_id = league_matchs[-1].id
             for league_match in league_matchs:
+                self._handle_total += 1
                 self._handle_match(league_match)
                 
     def _get_league_match(self):
-        return LeagueMatchs.query(condition='id>%s and status=1' % self._start_id, limit=100, order='id asc')
-    
+        while True:
+            try:
+                return LeagueMatchs.query(condition='id>%s and status=1' % self._start_id, limit=100, order='id asc')
+            except:
+                self.current_info = traceback.format_exc()
+            self._sleep()
+            
     def get_point_from_str(self, point):
         '''从字符串的分数里提出两队的比分'''
         if not point:
@@ -201,14 +205,14 @@ class PlayerStatisticsHandler(BaseBetchClient):
                 match_team_guest.persist()
                 ProPlayerCareerStatTotal.commit()
             except:
-                log_execption()
-                ProPlayerCareerStatTotal.rollback()  
+                ProPlayerCareerStatTotal.rollback()
+                self.current_info = traceback.format_exc()
         
 if __name__ == '__main__':  
     signle_process = SingleProcess('PlayerStatisticsHandler')
     signle_process.check()
     try:
         client = PlayerStatisticsHandler()
-        client.start()
+        client.main()
     except:
         log_execption()

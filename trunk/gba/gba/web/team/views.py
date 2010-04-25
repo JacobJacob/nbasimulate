@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse
 
 from gba.business.user_roles import login_required
 from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, \
-                       LeagueConfig, Friends, Team, ProfessionPlayer, TeamHonor, UserInfo
+                       LeagueConfig, Friends, Team, ProfessionPlayer, TeamHonor, UserInfo, \
+                       TeamTicketHistory
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
@@ -64,6 +65,24 @@ def arena_build(request, min=False):
     
     team_ads = TeamAd.query(condition='team_id=%s' % team.id, order='round asc')
     datas['team_ads'] = team_ads
+    
+    ticket_historys = TeamTicketHistory.query(condition='team_id="%s"' % team.id, order='round asc')
+    datas['ticket_historys'] = ticket_historys
+    
+    league_config = LeagueConfig.load(id=1)
+    if ticket_historys and ticket_historys[-1].round == league_config.round-1:
+        pre_round_ticket = ticket_historys[-1]
+    else:
+        pre_round_ticket = TeamTicketHistory()
+        pre_round_ticket.price = 0
+        pre_round_ticket.ticket_count = 0
+        pre_round_ticket.amount = 0
+    datas['pre_round_ticket'] = pre_round_ticket
+        
+    season_total_amount = 0
+    for ticket_history in ticket_historys:
+        season_total_amount += ticket_history.amount
+    datas['season_total_amount'] = season_total_amount
     
     if team_arena.status == 1:#建设中
         cursor = connection.cursor()
