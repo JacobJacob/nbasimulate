@@ -3,19 +3,21 @@
 
 '''自由球员结算监控客户端'''
 
+import traceback
+
 from gba.common import playerutil
 from gba.common.single_process import SingleProcess
-from gba.common import log_execption
+from gba.common import exception_mgr
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.entity import FreePlayer, Team, PlayerAuctionLog, AttentionPlayer
-from gba.client.betch.base import BaseBetchClient
+from gba.common.client.base import BaseClient
 
-class FreePlayerAuctionHandler(BaseBetchClient):
+class FreePlayerAuctionHandler(BaseClient):
     
     def __init__(self):
-        super(FreePlayerAuctionHandler, self).__init__()
+        super(FreePlayerAuctionHandler, self).__init__("FreePlayerAuctionHandler")
     
-    def _run(self):
+    def run(self):
         
         start_id = 0
         #把球员置为成交,或者不成交
@@ -39,8 +41,20 @@ class FreePlayerAuctionHandler(BaseBetchClient):
             start_id = players[-1].id
             for player in players:
                 self.handle_has_auction(player)
-            
+        
+        self.current_info = "sleep 60%s"
+        return 60
+     
     def handle_has_auction(self, player):
+        while True:
+            try:
+                self._handle_has_auction(player)
+                break
+            except:
+                self.current_info = traceback.format_exc()
+            self._sleep()
+           
+    def _handle_has_auction(self, player):
         '''处理单个成交竟拍'''
         
         if player.auction_status == 1:
@@ -69,10 +83,21 @@ class FreePlayerAuctionHandler(BaseBetchClient):
             player.delete()
             FreePlayer.commit()
         except:
-            log_execption()
             FreePlayer.rollback()
-        
+            exception_mgr.on_except()
+            self.current_info = traceback.format_exc()
+            raise
+    
     def handle_single_auction(self, player):
+        while True:
+            try:
+                self._handle_single_auction(player)
+                break
+            except:
+                self.current_info = traceback.format_exc()
+            self._sleep()  
+       
+    def _handle_single_auction(self, player):
         '''处理单个竟拍'''        
         FreePlayer.transaction()
         try:
@@ -84,14 +109,19 @@ class FreePlayerAuctionHandler(BaseBetchClient):
             player.persist() 
             FreePlayer.commit()
         except:
-            log_execption
             FreePlayer.rollback()
+            exception_mgr.on_except()
+            self.current_info = traceback.format_exc()
+            raise
     
-if __name__ == '__main__':
+def main():
     signle_process = SingleProcess('freeplayer_auction_handler')
     signle_process.check()
     try:
         client = FreePlayerAuctionHandler()
         client.start()
     except:
-        log_execption()
+        exception_mgr.on_except()
+        
+if __name__ == '__main__':
+    main()
