@@ -37,7 +37,7 @@ class PlayerStatisticsHandler(BaseClient):
                 self._handle_total += 1
                 if self._handle_total % 10 == 0:
                     self.current_info = "handle total %s" % self._handle_total
-                self._handle_match(league_match)
+                self.handle_match(league_match)
                 
     def _get_league_match(self):
         while True:
@@ -59,6 +59,17 @@ class PlayerStatisticsHandler(BaseClient):
         home_point = int(split[0])
         guest_point = int(split[1])
         return home_point, guest_point
+    
+    def handle_match(self, league_match):
+        while True:
+            try:
+                self._handle_match(league_match)
+                break
+            except KeyboardInterrupt:
+                raise
+            except:
+                self.current_info = traceback.format_exc()
+            self._sleep()
     
     def _handle_match(self, league_match):
         '''处理比赛'''
