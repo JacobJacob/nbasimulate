@@ -18,7 +18,7 @@ class PlayerStatisticsHandler(BaseClient):
     '''职业球员生涯统计客户端'''
     
     def __init__(self):
-        super(PlayerStatisticsHandler, self).__init__()
+        super(PlayerStatisticsHandler, self).__init__('PlayerStatisticsHandler')
         self._start_id = 0
         self._handle_total = 0
 
