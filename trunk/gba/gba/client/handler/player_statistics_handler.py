@@ -24,12 +24,13 @@ class PlayerStatisticsHandler(BaseClient):
 
     def run(self):
         
+        self.current_info = "start..."
         while True:
             league_matchs = self._get_league_match()
             if not league_matchs:
                 self._start_id = 0
                 self.current_info = 'now not tasks sleep 60s...[handle total: %s]' % self._handle_total
-                return 60
+                return 30
                 
             self._start_id = league_matchs[-1].id
             self.current_info = "start handle"
