@@ -44,7 +44,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
             for player in players:
                 self.handle_has_auction(player)
         
-        self.current_info = "sleep 60%s"
+        self.current_info = "sleep 60s"
         return 60
     
     def get_players(self, condition, limit=10):
