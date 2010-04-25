@@ -159,8 +159,10 @@ class Persistable(object):
             if cache_key:
                 cls._cache.delete(cache_key)
             for column in columns:
-                field_name = column.field     
-                if hasattr(object, field_name):
+                field_name = column.field
+                if field_name == 'updated_time':
+                    continue
+                elif hasattr(object, field_name):
                     data[field_name] = getattr(object, field_name)
                 elif field_name == 'created_time':
                     data['created_time'] = ReserveLiteral('now()')

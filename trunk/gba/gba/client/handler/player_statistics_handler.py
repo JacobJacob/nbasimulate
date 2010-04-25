@@ -110,13 +110,7 @@ class PlayerStatisticsHandler(BaseClient):
         match_stats = MatchStat.query(condition='match_id=%s' % match.id)
         if not match_stats or len(match_stats) < 10:
             logger.log_to_db('比赛无统计或统计条数小于10,比赛id[%s]' % match.id)
-        
-        player_season_totals = []
-        player_caree_totals = []
-        players = []
-        league_matchs = []
-        league_teams = []
-
+            
         for match_stat in match_stats:
             player = ProfessionPlayer.load(no=match_stat.player_no)
             #计算训练点
@@ -220,25 +214,18 @@ class PlayerStatisticsHandler(BaseClient):
                 
             league_match.status = 2 #状态2表示处理完了
             league_match.point = match.point
-            
-            player_season_totals.append(player_season_total)
-            player_caree_totals.append(player_caree_total)
-            players.append(player)
-            league_matchs.append(league_match)
-            league_teams.append(match_team_home)
-            league_teams.append(match_team_guest)
-            
-        ProPlayerCareerStatTotal.transaction()
-        try:
-            ProPlayerSeasonStatTotal.inserts(player_season_totals)
-            ProPlayerCareerStatTotal.inserts(player_caree_totals)
-            ProfessionPlayer.inserts(players)
-            LeagueMatchs.inserts(league_matchs)
-            LeagueTeams.inserts(league_teams)
-            ProPlayerCareerStatTotal.commit()
-        except:
-            ProPlayerCareerStatTotal.rollback()
-            raise
+            ProPlayerCareerStatTotal.transaction()
+            try:
+                player_season_total.persist()
+                player_caree_total.persist()
+                player.persist()
+                league_match.persist()
+                match_team_home.persist()
+                match_team_guest.persist()
+                ProPlayerCareerStatTotal.commit()
+            except:
+                ProPlayerCareerStatTotal.rollback()
+                raise
         
 def main():  
     signle_process = SingleProcess('PlayerStatisticsHandler')

@@ -11,9 +11,9 @@ import datetime
 
 import gba
 from gba.common import exception_mgr
-from gba.business.client import ClientManager
 from gba.common.constants import ClientStatus, STATUS_MAP, Command, SmartClientCommand
 from gba.common import serverinfo
+from gba.client.rpc_proxy import client_service_proxy
 
 class WorkThread(threading.Thread):
     """工作线程"""
@@ -231,8 +231,7 @@ class BaseClient(object):
         """模块上报状态并接受指令，以及运行参数、Task ID 等。"""
         while True:
             try: 
-                cmd, params = ClientManager.update_status(self.client_id, status, description)
-                data = {'cmd': cmd, 'params': params}
+                data = client_service_proxy.report_status(self.client_id, status, description)
                 break
             except KeyboardInterrupt:
                 raise
@@ -264,7 +263,7 @@ class BaseClient(object):
         """模块注册，并得到由服务器端分配的 Client ID。"""
         while True:
             try:
-                self.client_id = ClientManager.register(self._id, self.client_type, gba.VERSION, self.ip)
+                self.client_id = client_service_proxy.register(self._id, self.client_type, gba.VERSION)
                 logging.info('%s REGISTER SUCCEED(client_id %s)' % \
                                 (self.client_type, self.client_id))
                 return True
