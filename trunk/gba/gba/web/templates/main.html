@@ -3,15 +3,18 @@
 <div class="title">
 <div class="title_left"><span class="color_5">比赛</span>信息</div>
 <div class="title_left_1">
-<a href="http://s3.dlm.17uxi.cn/source/n.php?a=509" onclick="return href_to_div(this,'main_content');">帮助</a>
+<a href="" onclick="return href_to_div(this,'main_content');">帮助</a>
 <img src="/site_media/images/right_box_bg_3.gif" alt="" width="10" height="9"></div>
-<span class="lh25">第8等级 第10联赛  排名：第12名   战绩：0胜2负 / 净胜：-83分</span>	
+<span class="lh25">第{{team.profession_league_evel}}等级 第{{team.profession_league_class}}联赛
+  排名：第{{league_team.rank}}名   战绩：{{league_team.win}}胜{{league_team.lose}}负 / 净胜：{{league_team.net_points}}分</span>	
 </div>
 <div class="blank5"></div>
 <div class="r_box_1">
 <div class="r_box_1_title">
-<span class="right gray">门票出售：2000 张   总收入：36000  <a href="http://s3.dlm.17uxi.cn/source/i.php?a=342">球队财政</a>
-</span><span class="f24 fb">{{month}}</span>
+<span class="right gray">门票出售：{{team_ticket_history.ticket_count}} 张   总收入：{{team_ticket_history.amount}}  
+  <a href="{% url season-finance %}">球队财政</a>
+</span>
+<span class="f24 fb">{{month}}</span>
 <span class="f14 fb">月{{date}}日</span> 职业联赛第{{league_match.round}}轮比赛结果</div>
 <div class="r_box_1_1">
   <div class="w160 tr">
@@ -53,7 +56,6 @@
 </div><div class="clear"></div>
 <div class="blank5"></div>
 <div class="r_box_1_2 right">连续14天未登陆的用户，在赛季更新时，自动退出大联盟联赛。　　　　　　　　　　
-<!-- gray 本场MVP:  Y. 明 阿甘  [ 得分：4 | 篮板：7 | 助攻：0 | 盖帽：5 | 抢断：0 ] -->
 <span class="icon_1"><a href="{% url match-detail %}?match_id={{league_match.match_id}}" target="_blank">战报</a></span>
 <span class="icon_2"><a href="{% url match-stat %}?match_id={{league_match.match_id}}" target="_blank">统计</a></span>
 <span class="icon_3"><a href="{% url league-rank %}">排名</a>

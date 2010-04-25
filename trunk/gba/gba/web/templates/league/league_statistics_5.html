@@ -19,7 +19,7 @@
 {% for info in infos %}
 <tr>
 <td>
- <a href="http://s3.dlm.17uxi.cn/source/n.php?a=416&amp;id_qiu_yuan=1882164" onclick="return show_popup(this)">
+ <a href="{% url player-detail %}?no={{info.player.no}}&type=2" onclick="return show_popup(this)">
   <font color="#0096f1">{{info.player.name}}</font>
 </a>
 </td>
@@ -27,7 +27,7 @@
 <td>{{info.player.avoirdupois}}</td>
 <td>{{info.player.position}}</td>
 <td>
- <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=39899" onclick="return show_popup(this)">
+ <a href="{% url user-detail %}?id={{info.player.team_id}}" onclick="return show_popup(this)">
    <font color="#0096f1">{{info.player.team_id|team_name}}</font>
  </a>
 </td>
