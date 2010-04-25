@@ -30,7 +30,8 @@ class PlayerStatisticsHandler(BaseClient):
             if not league_matchs:
                 self._start_id = 0
                 self.current_info = 'now not tasks sleep 60s...[handle total: %s]' % self._handle_total
-                return 30
+                self._sleep(30)
+                continue
                 
             self._start_id = league_matchs[-1].id
             self.current_info = "start handle"
