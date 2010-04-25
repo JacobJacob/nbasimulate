@@ -128,7 +128,7 @@ class BaseClient(object):
         self.work_thread.start()
         
     def _svnup(self):
-        logging.warning("%s[Source Version = %s] SVNUP, exit 43" % (self.client_type, gba.VERSION, serverinfo.get_ip()))
+        logging.warning("%s[Source Version = %s] SVNUP, exit 43" % (self.client_type, gba.VERSION))
         raise SystemExit(SmartClientCommand.SVNUP_RESTART) # 升级重启进程
         
     def _quit(self):
@@ -237,7 +237,6 @@ class BaseClient(object):
             except KeyboardInterrupt:
                 raise
             except Exception, e:
-                print e
                 logging.warning('STATUS:%s, REPORT Server ERROR: %r' % (status, traceback.format_exc()))
                 exception_mgr.on_except()
             self._sleep()
