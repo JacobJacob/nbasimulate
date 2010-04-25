@@ -24,7 +24,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         start_id = 0
         #把球员置为成交,或者不成交
         while True:
-            players = YouthFreePlayer.query(condition='id>%s and expired_time<=now()' % start_id, limit=10)
+            players = self.get_players(condition='id>%s and expired_time<=now()' % start_id, limit=10)
             if not players:
                 break
             start_id = players[-1].id
@@ -37,7 +37,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         #2.从自由球员中删除
         start_id = 0
         while True:
-            players = YouthFreePlayer.query(condition='id>%s and delete_time<=now()' % start_id, limit=10)
+            players = self.get_players(condition='id>%s and delete_time<=now()' % start_id, limit=10)
             if not players:
                 break
             start_id = players[-1].id
@@ -47,6 +47,14 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         self.current_info = "sleep 60%s"
         return 60
     
+    def get_players(self, condition, limit=10):
+        while True:
+            try:
+                return YouthFreePlayer.query(condition=condition, limit=10)
+            except:
+                self.current_info = traceback.format_exc()
+            self._sleep()
+        
     def handle_has_auction(self, player):
         while True:
             try:
