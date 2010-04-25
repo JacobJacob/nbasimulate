@@ -79,11 +79,6 @@ class BaseClient(object):
             self.is_paused = False
             logging.warning("JUST DO out status PAUSE, ...")
     
-    def before_run(self):
-        """子类实现，在run之前被调用, 子类一般在此获取任务，返回任务信息
-        """
-        return 'before_run_NotImplemented'
-        
     def run(self):
         """"函数主体, 子类必须覆盖。"""
         raise NotImplementedError
@@ -92,14 +87,6 @@ class BaseClient(object):
         try:
             self.current_info = None
             while not self.work_thread_stop:
-                task_info = self.before_run()
-                # 没有任务，则无须执行
-                if not task_info:
-                    break
-                assert isinstance(task_info, basestring)
-                if task_info != 'before_run_NotImplemented':
-                    logging.info(task_info)
-                    self.current_info = task_info
 #                self._report() # 不由工作线程调用
                 next = self.run()
                 self.suport_pause() # 如果子类不支持 PAUSE，保证状态切换正确
@@ -114,12 +101,7 @@ class BaseClient(object):
                             s = sleep_seconds
                         self._sleep(s)
                         next = next - sleep_seconds
-                elif task_info == 'before_run_NotImplemented':
-                    # 若next不等于-1并且before_run未实现，则此次运行算完成
-                    if next != -1: 
-                        break
-                # 其他则马上进入下一次循环
-                
+
             if not self.work_thread_stop: # 不是被stop了，就算正常结束
                 self.execute(Command.FINISH)
         except SystemExit:

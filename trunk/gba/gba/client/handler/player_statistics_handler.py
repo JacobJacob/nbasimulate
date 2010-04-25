@@ -34,6 +34,8 @@ class PlayerStatisticsHandler(BaseClient):
             self._start_id = league_matchs[-1].id
             for league_match in league_matchs:
                 self._handle_total += 1
+                if self._handle_total % 10 == 0:
+                    self.current_info = "handle total %s" % self._handle_total
                 self._handle_match(league_match)
                 
     def _get_league_match(self):
