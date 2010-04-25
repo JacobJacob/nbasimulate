@@ -126,7 +126,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
             YouthFreeplayerAuctionLog.rollback()
             raise
             
-if __name__ == '__main__':
+def main():
     signle_process = SingleProcess('youth_freeplayer_auction_handler')
     signle_process.check()
     try:
@@ -134,3 +134,6 @@ if __name__ == '__main__':
         client.main()
     except:
         log_execption()
+        
+if __name__ == '__main__':
+    main()
