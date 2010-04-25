@@ -14,7 +14,8 @@ from gba.common.db import connection
 
 
 TRUNCATE_TABLES = ['matchs', 'match_nodosity_detail', 'match_nodosity_main', 'match_nodosity_tactical_detail',
-                   'match_not_in_player', 'match_stat', 'message', 'season_finance', 'pro_player_season_stat_total']
+                   'match_not_in_player', 'match_stat', 'message', 'season_finance', 'pro_player_season_stat_total',
+                   'team_ticket_history']
 
 UPDATE_SQLS = ['update league_matchs set status=0, point=null, match_id=null;',
                'update league_teams set win = 0, lose=0, net_points=0 ,status=0, rank=null;',

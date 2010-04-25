@@ -32,6 +32,7 @@ class PlayerStatisticsHandler(BaseClient):
                 return 60
                 
             self._start_id = league_matchs[-1].id
+            self.current_info = "start handle"
             for league_match in league_matchs:
                 self._handle_total += 1
                 if self._handle_total % 10 == 0:
