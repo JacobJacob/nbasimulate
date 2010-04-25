@@ -35,25 +35,26 @@ class Connection(object):
             self._locker.release()
     
     def is_connected(self):
-        if self._connection is not None:
+        if self._connection:
             try:
                 self._connection.ping()
                 return True
             except MySQLdb.DatabaseError:
-                self._close()
+                pass
+        self._close()
         return False
     
     def ensure_connected(self):
         self._locker.acquire()
         try:
             if not self.is_connected():
-                if DEBUG:
-                    c = cache.get("connection_wrapper")
-                    if c is None:
-                        c = 1
-                    else:
-                        c += 1
-                    cache.set("connection_wrapper", c)
+#                if DEBUG:
+#                    c = cache.get("connection_wrapper")
+#                    if c is None:
+#                        c = 1
+#                    else:
+#                        c += 1
+#                    cache.set("connection_wrapper", c)
                 self._connection = MySQLdb.Connection(*self._authInfo[0], **self._authInfo[1])
                 self._connection.autocommit(True)
         finally:
@@ -71,8 +72,10 @@ class Connection(object):
     
     def _close(self):
         if self._connection:
-            if self._connection.open:
+            try:
                 self._connection.close()
+            except:
+                pass
             self._connection = None
 
     def __getattr__(self, name):

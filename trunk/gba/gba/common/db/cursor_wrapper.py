@@ -3,6 +3,7 @@
 from weakref import ref
 
 import MySQLdb
+from _mysql_exceptions import OperationalError
 
 from schema import DatabaseSchema
 from data_row import DataRow, DataRowCollection
@@ -46,11 +47,27 @@ class Cursor(object):
         self._cursor.connection.autocommit(value)
 
     def execute(self, sql, params = ()):
-        while self._cursor.nextset(): pass
-        if params:
-            return self._cursor.execute(sql, params)
-        else:
-            return self._cursor.execute(sql)
+        try:
+            while self._cursor.nextset(): pass
+            if params:
+                return self._cursor.execute(sql, params)
+            else:
+                return self._cursor.execute(sql)
+        except OperationalError, e:
+            if e.args[0] == 2006 and e.args[1].find("MySQL server has gone away") > -1:
+                if self._conn:
+                    self._conn().close()
+            raise
+    
+    def executemany(self, query, args):
+        try:
+            while self._cursor.nextset(): pass
+            return self._cursor.executemany(query, args)
+        except OperationalError, e:
+            if e.args[0] == 2006 and e.args[1].find("MySQL server has gone away") > -1:
+                if self._conn:
+                    self._conn().close()
+            raise
     
     def fetchone(self, sql = None, params = ()):
         if sql:
