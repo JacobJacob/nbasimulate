@@ -119,7 +119,7 @@ def main():
     signle_process.check()
     try:
         client = FreePlayerAuctionHandler()
-        client.start()
+        client.main()
     except:
         exception_mgr.on_except()
         

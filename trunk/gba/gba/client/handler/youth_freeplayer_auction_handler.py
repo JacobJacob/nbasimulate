@@ -131,6 +131,6 @@ if __name__ == '__main__':
     signle_process.check()
     try:
         client = YouthFreePlayerAuctionHandler()
-        client.start()
+        client.main()
     except:
         log_execption()
