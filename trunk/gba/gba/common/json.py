@@ -14,7 +14,9 @@ import sys
 
 import simplejson
 from simplejson.decoder import BACKSLASH, STRINGCHUNK, DEFAULT_ENCODING, errmsg, \
-    JSONArray, JSONObject, _CONSTANTS, make_scanner
+    JSONArray, JSONObject, _CONSTANTS
+    
+from gba.common.scanner import py_make_scanner as make_scanner
 
 
 class _Encoder(simplejson.JSONEncoder):
