@@ -12,8 +12,8 @@
 import datetime
 import sys
 
-import simplejson
-from simplejson.decoder import BACKSLASH, STRINGCHUNK, DEFAULT_ENCODING, errmsg, \
+from  django.utils import simplejson
+from django.utils.simplejson.decoder import BACKSLASH, STRINGCHUNK, DEFAULT_ENCODING, errmsg, \
     JSONArray, JSONObject, _CONSTANTS
     
 from gba.common.scanner import py_make_scanner as make_scanner
