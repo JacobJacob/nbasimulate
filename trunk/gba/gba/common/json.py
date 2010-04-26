@@ -12,11 +12,9 @@
 import datetime
 import sys
 
-from  django.utils import simplejson
-from django.utils.simplejson.decoder import BACKSLASH, STRINGCHUNK, DEFAULT_ENCODING, errmsg, \
-    JSONArray, JSONObject, _CONSTANTS
-    
-from gba.common.scanner import py_make_scanner as make_scanner
+import simplejson
+from simplejson.decoder import BACKSLASH, STRINGCHUNK, DEFAULT_ENCODING, errmsg, \
+    JSONArray, JSONObject, _CONSTANTS, make_scanner
 
 
 class _Encoder(simplejson.JSONEncoder):
@@ -178,3 +176,13 @@ if __name__ == '__main__':
     print loads(data)
 #    assert loads(data) == l
     print sys.maxunicode > 65535
+    f = open('json_test.dat', 'rb')
+    try:
+        dd = JSONDecoder().decode(f.read())
+        
+        for t in [dd]:
+            print t['title']
+            print t['description']
+            print '-' * 60
+    finally:
+        f.close()
