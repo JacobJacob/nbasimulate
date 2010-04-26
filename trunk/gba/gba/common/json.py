@@ -12,9 +12,9 @@
 import datetime
 import sys
 
-#from django.utils import simplejson
-import simplejson
-from simplejson.decoder import BACKSLASH, STRINGCHUNK, DEFAULT_ENCODING, errmsg, \
+from django.utils import simplejson
+#import simplejson
+from django.utils.simplejson.decoder import BACKSLASH, STRINGCHUNK, DEFAULT_ENCODING, errmsg, \
     JSONArray, JSONObject, _CONSTANTS#, make_scanner
 
 from gba.common.scanner import py_make_scanner
