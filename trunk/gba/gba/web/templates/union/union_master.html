@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block show_nav %}
+<script language="javascript">
+   sub_menu_highlight(7,1);
+   nav_over('nav7','show7');
+   nav_show('nav7','show7');
+</script>
+{% endblock %}
+{% block sub_menu %}
+<div class="players_lab">
+ <ul>
+ <li class="" id="menu_third_1">
+  <a href="{% url union-list-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
+   联盟列表
+  </a>
+ </li>
+</ul>
+</div>
+ <div class="clear"></div>				
+<script language="javascript">
+ third_menu_highlight(1);	
+</script>
+{% endblock %}

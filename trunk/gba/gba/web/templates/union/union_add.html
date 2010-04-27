@@ -1,0 +1,56 @@
+<form method="post" action="{% url union-add %}" name="frm" id="frm">
+<div class="blank10"></div>
+<div class="blueBoxclub" style="width:690px;">
+<div class="jlbBox">
+<table>
+  <tbody>
+     <tr>
+       <td width="100" align="right" height="25">&nbsp;</td>
+       <td>&nbsp;</td></tr>
+     <tr>
+      <td align="right" height="25">联盟名称：</td>
+      <td>
+        <input id="name" name="name" value="">
+        限12个英文字符或6个中文字符，必填项。
+      </td>
+     </tr>
+     <tr>
+       <td align="right" height="25">联盟缩写：</td>
+       <td>
+         <input id="short_name" name="short_name">
+         限2个英文字符或1个中文字符，必填项。
+       </td>
+    </tr>
+    <tr>
+       <td align="right" height="25">联盟群：</td>
+       <td>
+        <input id="qq_group" name="team_name">
+        限15个字符以内，可不填。
+       </td>
+    </tr>
+    <tr>
+       <td align="right" height="25">联盟论坛：</td>
+       <td>
+        <input id="forum" name="forum">
+         限200个字符以内，可不填。
+       </td>
+    </tr>
+    <tr>
+       <td align="right" height="25">联盟介绍：</td>
+       <td>
+         <textarea id="desc" name="desc" rows="2" cols="50"></textarea>
+         <br/>
+         300个英文字符或150个中文字符以内，必填项。
+       </td>
+    </tr>
+</tbody>
+ </table>
+ </div>
+ <div class="clear"></div>
+ <div align="center">
+    <div>
+        <input type="submit" value="创建联盟" class="btn_3"/>
+    </div>
+ </div>
+ </div>
+ </form>
