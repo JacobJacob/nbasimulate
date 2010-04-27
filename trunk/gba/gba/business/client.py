@@ -11,7 +11,7 @@ from gba.common.constants.client import Command
 
 class ClientManager(object):
     
-    SELECT_CLIENTS = "select * from client order by ip"
+    SELECT_CLIENTS = "select *, unix_timestamp(now()) - unix_timestamp(updated_time) as last_time from client order by ip"
     
     SELECT_CLIENT = """select id from client where client_id=%s and type=%s and ip=%s
     """
