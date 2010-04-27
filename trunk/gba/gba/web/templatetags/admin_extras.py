@@ -16,7 +16,7 @@ def _client_status(client_info):
     if status not in CLIENT_STATUS_NAMES:
         return 'Unkow(%s)' % status
     now =  datetime.datetime.now()
-    if client_info['updated_time'] < client_info['last_time'] > 600: # 10分钟没响应的，则当做久无响应处理
+    if client_info['updated_time'] and client_info['last_time'] > 600: # 10分钟没响应的，则当做久无响应处理
         status = ClientStatus.DEATH
     return CLIENT_STATUS_NAMES[status]
 
