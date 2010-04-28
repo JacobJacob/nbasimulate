@@ -1,7 +1,4 @@
 {% extends "index.html"%}
-{% block ext_head %}
-  <script type="text/javascript" src="/site_media/js/union.js"></script>
-{% endblock %}
 {% block show_nav %}
 <script language="javascript">
   sub_menu_highlight(7,2);
@@ -13,8 +10,7 @@
 <div class="players_lab">
  <ul>
    <li class="" id="menu_third_1">
-    我的联盟
-   </li>
+    <a target="_top" href="#">我的联盟</a></li>
  </ul>
 </div>
 <div class="clear"></div>
@@ -30,15 +26,10 @@
  <p>&nbsp;</p>
  <p>&nbsp;</p>
  <p>&nbsp;</p>
- <p class="lh21 color_7">您还未加入任何联盟，请在联盟首页加入或创建联盟。</p>
+ <p class="lh21 color_7">联盟创建成功。</p>
  <div class="blank20"></div><div class="floatBox_msg_btn mauto">
- <div class="btn_3 left">
-    <a href="{% url union-add %}" onclick="return href_to_div(this,'main_content');">
-        创建联盟
-    </a>
-</div>
  <div class="btn_3 right">
-  <a target="_top" href="{% url union-list %}">确定</a>
+  <a target="_top" href="{% url team-union %}">确定</a>
  </div>
  <div class="clear"></div>
 </div>

@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block show_nav %}
 <script language="javascript">
-   sub_menu_highlight(7,2);
+   sub_menu_highlight(7,1);
    nav_over('nav7','show7');
    nav_show('nav7','show7');
 </script>
@@ -10,7 +10,7 @@
 <div class="players_lab">
  <ul>
  <li class="" id="menu_third_1">
-  <a href="{% url team-union-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
+  <a href="{% url union-list-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
    联盟主页
   </a>
  </li>

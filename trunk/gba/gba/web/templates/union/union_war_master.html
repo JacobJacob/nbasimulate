@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block show_nav %}
 <script language="javascript">
-   sub_menu_highlight(7,2);
+   sub_menu_highlight(7,1);
    nav_over('nav7','show7');
    nav_show('nav7','show7');
 </script>
@@ -10,18 +10,23 @@
 <div class="players_lab">
  <ul>
  <li class="" id="menu_third_1">
-  <a href="{% url team-union-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
-   联盟主页
+  <a href="{% url union-list-min %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(1);return false;">
+   竞技场
   </a>
  </li>
  <li class="" id="menu_third_2">
   <a href="http://s3.dlm.17uxi.cn/source/n.php?a=672" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">
-  联盟成员
+  我的比赛
   </a>
   </li>
  <li class="" id="menu_third_3">
   <a href="http://s3.dlm.17uxi.cn/source/n.php?a=785" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(3);return false;">
-  功勋榜
+  比赛历史
+  </a>
+ </li>
+  <li class="" id="menu_third_4">
+  <a href="http://s3.dlm.17uxi.cn/source/n.php?a=785" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(3);return false;">
+  大事记录
   </a>
  </li>
 </ul>

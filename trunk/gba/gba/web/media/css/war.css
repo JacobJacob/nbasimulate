@@ -277,7 +277,7 @@
 	text-decoration: none;
 	padding-left: 6px;
 }
-/* ¾«Ó¢ÌôÕ½Èü */
+/* ï¿½ï¿½Ó¢ï¿½ï¿½Õ½ï¿½ï¿½ */
 .elite {
 	float: none;
 	width: 600px;
@@ -462,7 +462,7 @@
 	margin-top: 25px;
 }
 
-/*ÁªÃË*/
+/*ï¿½ï¿½ï¿½ï¿½*/
 .union_half {
 	width:338px;
 	margin-left: 6px;
@@ -541,7 +541,7 @@
 	height: 240px;
 }
 
-/* ÇÐ»» */
+/* ï¿½Ð»ï¿½ */
 .u_Menu_01{
 	height:22px;
 	background-repeat: repeat-x;
@@ -593,7 +593,7 @@
 .u_Menu_01 a:link,.T_Menu_01 a:visited{color:#000; text-decoration:none;}
 .u_Menu_01 a:hover{color:#f00; text-decoration:underline;}
 
-/* Ò³Âë */
+/* Ò³ï¿½ï¿½ */
 .ipages {
 	clear: both;
 	font-family: Verdana, Geneva, sans-serif;
@@ -651,7 +651,7 @@
 	BORDER-BOTTOM: #ccc 1px solid
 }
 
-/* ÁªÈü¹Ú¾ü±­ 090306add */
+/* ï¿½ï¿½ï¿½ï¿½Ú¾ï¿½ 090306add */
 
 .champion_info {
 	background-color: #EFEFEF;
@@ -678,7 +678,7 @@
 	border-bottom-color: #CCC;
 }	
 	
-/* Çò³¡Õù°ÔÈü 090309add */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 090309add */
 .zhengba_rule {
 	height: 160px;
 	width: 560px;
@@ -693,7 +693,7 @@
 	margin-left: auto;
 }
 
-/* ÁªÃË 090304add */
+/* ï¿½ï¿½ï¿½ï¿½ 090304add */
 
 .union_new_1 {
 	width: 200px;
@@ -755,7 +755,7 @@
 	width:344px;
 }
 .union_info {
-	width: 334px;
+	width: 680px;
 	background-image: url(../images/bg1211_2.gif);
 	padding-left: 10px;
 }
@@ -793,7 +793,7 @@
 }
 .union_shop_list {}
 
-/* ¹úÕ½ 090320add */
+/* ï¿½ï¿½Õ½ 090320add */
 .guozhan_left {
 	float: left;
 	width: 438px;
@@ -1009,7 +1009,7 @@
 	width: 100px;
 }
 
-/* ¹ú¼Ò 090323add */
+/* ï¿½ï¿½ï¿½ 090323add */
 .country{
 	float: none;
 	height: 430px;

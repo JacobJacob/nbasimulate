@@ -289,7 +289,6 @@ function isNull(id){
 function checkStrLen(id,num){
 	var o =document.getElementById(id);
 	if(Len(o.value.trim()) > num){
-//		alert("输入的字符太长！");
 		o.value = o.value.trim();
 		return false;
 	}
