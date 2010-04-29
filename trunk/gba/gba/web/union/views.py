@@ -267,7 +267,7 @@ def union_member(request):
     union_id = request.GET.get('union_id')
     
     is_leader = False
-    is_mamager = False
+    is_manager = False
     if not union_id:
         union_id = team.union_id
         union = Unions.load(id=union_id)
@@ -275,7 +275,7 @@ def union_member(request):
             is_leader = True
         else:
             union_member = UnionMember.load(team_id=team.id)
-            if union_member and union_member.is_mamager:
+            if union_member and union_member.is_manager:
                 is_mamager = True
         
     infos, total =  UnionMember.paging(page, pagesize, condition='union_id="%s"' % union_id)
@@ -286,6 +286,6 @@ def union_member(request):
         totalpage = (total -1) / pagesize + 1
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1, \
-             'is_leader': is_leader, 'is_mamager': is_mamager}
+             'is_leader': is_leader, 'is_manager': is_manager}
     
     return render_to_response(request, 'union/union_member.html', datas)
