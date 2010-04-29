@@ -1,0 +1,47 @@
+<form action="{%url union-apply %}" method="post" name="frm" onsubmit="return submit_to_div(this,'popup_inner');">
+  <div class="floatBox_content floatBox_yzbg_1">
+        <div class="blank20">
+        </div>
+        <div class="floatBox_sms">
+            <dl>
+                <dd>
+                    <span class="floatBox_sms_l">
+                        &nbsp;
+                    </span>
+                    <span class="floatBox_sms_r">
+                        <p class="lh21">
+                            确定要加入该联盟？
+                            <br>
+                            附言：
+                        </p>
+                    </span>
+                </dd>
+            </dl>
+            <div class="clear">
+            </div>
+            <div class="blank5">
+            </div>
+            <textarea name="remark" id="remark" cols="" rows="" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" style="width:268px;height:130px;font-size:12px;"></textarea>
+            <input type="hidden" id="union_id" name="union_id" value="{{union_id}}"/>
+            <div class="blank5">
+            </div>
+            <div> 2-500个字符之间。</div>
+            <div class="blank8">
+            </div>
+            <div class="blank10">
+            </div>
+            <div class="floatBox_sms_btn">
+                <div class="left">
+                    <input name="Submit" value="确定" class="btn_3" type="submit">
+                </div>
+                <div class="btn_3 right">
+                    <a href="#" onclick="return hide_popup(this)">
+                        取消
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="blank20">
+        </div>
+    </div>
+</form>

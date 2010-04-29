@@ -22,15 +22,13 @@
                                     </a>
                                 </td>
                                 <td class="gray" style="border-bottom: 1px solid rgb(218, 218, 218);" width="73%" height="38">
-                                    联盟名称：{{union.name}}
+                                    联盟名称：{{union.name}}[{{union.short_name}}]
                                 </td>
                             </tr>
                             <tr>
                                 <td class="gray" style="border-bottom: 1px solid rgb(218, 218,  218);" height="35">
                                     盟主：
-                                    <a href="http://s3.dlm.17uxi.cn/source/%7B%7Bdui_zhang_url%7D%7D" onclick="return show_popup(this);">
-                                    </a>
-                                    <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42290" onclick="return show_popup(this)">
+                                    <a href="{%url user-detail%}?id={{union.leader}}" onclick="return show_popup(this)">
                                         {{union.leader|nickname}}
                                     </a>
                                 </td>
@@ -92,17 +90,36 @@
     </div>
 </div>
 <div class="union_half right">
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" height="194">
+    <table style="width:337px;" border="0" cellpadding="0" cellspacing="0" height="194">
         <tbody>
             <tr>
-                <td class="blk1218" style="border-bottom: 1px solid rgb(218, 218, 
-                218);" width="120" bgcolor="#f0f0f0" height="26">
+                <td class="blk1218" style="border-bottom: 1px solid rgb(218, 218, 218);" width="100%" bgcolor="#f0f0f0" height="26">
                     联盟公告
+                    {% if is_leader %}
+                     <a onclick="return show_popup(this)" href="{% url union-announce %}">[更改]</a>
+                    {%endif%}
                 </td>
             </tr>
             <tr>
-                <td colspan="2" valign="top" height="185">
-                
+                <td colspan="2" valign="top" height="155">
+                   <div class="union_huizhang_info3 left lh18">{{union.announce}}</div> 
+                </td>
+             </tr>
+        </tbody>
+    </table>
+     <table style="width:337px;" border="0" cellpadding="0" cellspacing="0" height="194">
+        <tbody>
+            <tr>
+                <td class="blk1218" style="border-bottom: 1px solid rgb(218, 218, 218);" width="100%" bgcolor="#f0f0f0" height="26">
+                    联盟介绍
+                    {% if is_leader %}
+                     <a onclick="return show_popup(this)" href="{% url union-announce %}">[更改]</a>
+                    {%endif%}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" valign="top" height="155">
+                   <div class="union_huizhang_info3 left lh18">{{union.union_desc}}</div> 
                 </td>
              </tr>
         </tbody>

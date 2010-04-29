@@ -1,0 +1,41 @@
+<script language="javascript">
+check_form = function(myform)
+{
+	//过滤内容
+	if(is_political_words($("announce").value)||is_dirty_words($("announce").value))
+	{
+		$('notice').innerHTML = "公告内容不合法！";
+		return false;
+	}
+	//长度判断
+	if(!checkCharLength('announce',200))
+	{
+		$('notice').innerHTML = "公告不能超过100个字符！";
+		return false;
+	}
+	return submit_to_div(myform,"popup_inner")
+}
+</script>
+<form action="{% url union-announce %}" name="frm" method="post" onsubmit="return check_form(this);">
+	<div>
+		<div class="floatBox_sms">
+			<div><img src="/site_media/images/lian_meng.gif" alt=""></div>
+			<div class="h25"></div>
+			<div>
+			   <span class="blue lh21">请输入公告：</span>
+			  <textarea name="announce" id="announce" cols="" rows="" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" style="width:268px;height:130px;font-size:12px;">{{union.announce}}</textarea>
+			</div>
+			<div class="blank10"></div>
+			<div class="blank10"></div>
+			<font color="red"><div id="notice"></div></font>
+			<div class="blank10"></div>
+			<div class="floatBox_sms_btn">
+			<div class="left"><input name="Submit" value="确定" class="btn_3" type="submit"></div>
+				<div class="btn_3 right"><a href="#" onclick="return hide_popup(this)">取消</a></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="blank20"></div>
+		<div class="blank20"></div>
+</div>
+</form>

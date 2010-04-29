@@ -520,10 +520,7 @@ def add_friend(request):
             error = '服务器异常'
             break
             
-    if error:
-        return render_to_response(request, 'message.html', {'error': error})
-    url = reverse('friends-min')
-    return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+    return render_to_response(request, 'message.html', {'success': success, 'error': error})
 
 @login_required
 def delete_friend(request):
@@ -578,10 +575,7 @@ def delete_friend(request):
                 error = '删除出错'
                 break
              
-        if error:
-            return render_to_response(request, 'message.html', {'error': error})
-        url = reverse('friends-min')
-        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+        return render_to_response(request, 'message.html', {'success': success, 'error': error})
     
 @login_required
 def team_ranking(request, min=False):

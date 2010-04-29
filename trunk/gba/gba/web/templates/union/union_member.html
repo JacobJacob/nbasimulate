@@ -1,0 +1,102 @@
+{% load common_extras %}
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+ <tbody>
+    <tr>
+        <th>队徽</th>
+	    <th>经理名</th>
+	    <th>球队名</th>
+	    <th>封号</th>
+	    <th>可用威望</th>
+	    <th class="end_cell">操作</th>
+	</tr>
+	{% for info in infos %}
+	<tr>
+	   <td>
+	    <img id="imgClothes" src="{{info.team_id|team_micro}}" width="30" height="30" alt="队徽">
+	   </td>
+	  <td>
+	   <span class="blue">
+	    <a href="{% url user-detail %}?id={{info.team_id}}" onclick="return show_popup(this);">{{info.team_id|nickname}}</a>
+	   </span>
+	  </td>
+	  <td>{{info.team_id|team_name}}</td>
+	  <td>
+	     {% if title %}
+	       {{info.title}}
+	     {% else %}
+	       无
+	     {% endif %}
+	     {% if info.is_manager %}
+	      <font color="red">[管理员]</font>
+	     {% endif %}
+	     {% if info.is_leader %}
+	      <font color="red">[盟主]</font>
+	     {% endif %}
+	  </td>
+	  <td>{{info.prestige}}</td>
+	  <td>
+	   {% if is_leader %}
+	   <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
+         <font color="#0096f1">封号</font>
+       </a> 
+        | 
+       <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
+         <font color="#0096f1">调整威望</font>
+       </a> 
+        |
+        {% if info.is_manager %}
+          <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
+            <font color="#0096f1">
+             取消管理员
+            </font>
+          </a> 
+          |
+        {% else %}
+         {% ifequal info.is_member 0%}
+          <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
+           <font color="#0096f1">
+            设为管理员
+           </font>
+          </a> 
+          |
+          <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
+           <font color="#0096f1">
+            踢出联盟
+           </font>
+          </a> 
+          |
+          {% endifequal %}
+        {% endif %}  
+      {% endif %}
+	   <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
+         <font color="#0096f1">短信</font>
+       </a> 
+        | 
+       <a href="{%url union-member-appove %}?result=1&team_id={{info.team_id}}" onclick="return show_popup(this);">
+         <font color="#0096f1">约战</font>
+       </a>
+	  </td>
+	</tr>
+	{% endfor %}
+ </tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url wait-appove-list %}?page=1" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url wait-appove-list %}?page={{prevpage}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url wait-appove-list %}?page={{nextpage}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url wait-appove-list %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+</div>
+<div></div>
+<div class="blank10"></div>

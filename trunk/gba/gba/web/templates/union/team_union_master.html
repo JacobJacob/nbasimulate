@@ -15,7 +15,7 @@
   </a>
  </li>
  <li class="" id="menu_third_2">
-  <a href="http://s3.dlm.17uxi.cn/source/n.php?a=672" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">
+  <a href="{% url union-member %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(2);return false;">
   联盟成员
   </a>
   </li>
@@ -24,6 +24,13 @@
   功勋榜
   </a>
  </li>
+ {%if is_leader %}
+   <li class="" id="menu_third_4">
+     <a href="{% url wait-appove-list %}" onclick="javascript:href_to_div(this,'main_content');third_menu_highlight(4);return false;">
+      待审会员
+     </a>
+  </li>
+ {%endif%}
 </ul>
 </div>
  <div class="clear"></div>				

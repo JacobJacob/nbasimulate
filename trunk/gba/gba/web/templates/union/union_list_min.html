@@ -17,17 +17,17 @@
  </td>
  <td>
     <a href="{% url user-detail %}?id={{info.leader}}" onclick="return show_popup(this)">
-     <font color="#0096f1">{{info.leader|team_name}}</font>
+     <font color="#0096f1">{{info.leader|nickname}}</font>
     </a>
  </td>
- <td>{{team.prestige}}</td>
- <td>{{team.member}}</td>
+ <td>{{info.prestige}}</td>
+ <td>{{info.member}}</td>
 <td>
  <a href="http://s3.dlm.17uxi.cn/source/n.php?a=700&amp;id_lian_meng=577" onclick="return show_popup(this);">
   <font color="#0096f1">竞技场</font>
  </a> 
  | 
- <a href="http://s3.dlm.17uxi.cn/source/n.php?a=689&amp;id_lian_meng=577" onclick="return show_popup(this);">
+ <a href="{% url union-apply %}?union_id={{info.id}}" onclick="return show_popup(this);">
  <font color="#0096f1">申请入盟</font>
  </a>
 </td>
