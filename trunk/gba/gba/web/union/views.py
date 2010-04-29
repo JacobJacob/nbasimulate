@@ -275,7 +275,7 @@ def union_member(request):
             is_leader = True
         else:
             union_member = UnionMember.load(team_id=team.id)
-            if union_member and union_member.is_mamanger:
+            if union_member and union_member.is_mamger:
                 is_mamager = True
         
     infos, total =  UnionMember.paging(page, pagesize, condition='union_id="%s"' % union_id)
