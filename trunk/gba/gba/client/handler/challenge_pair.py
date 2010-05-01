@@ -37,6 +37,7 @@ class ChallengePair(BaseClient):
                         self._pair_total += 1
                         self.pair(challenge_pool, challenge_pools[j])
             
+            self.current_info = 'pair total[%s]' % self._pair_total
             return 10
  
     def pair(self, challenge_pool_home, challenge_pool_guest):
