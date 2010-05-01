@@ -82,7 +82,7 @@ class YauthPlayerCreator(object):
                     setattr(player, 'age', AgeFactory.create(youth=True))
                     setattr(player, 'stature', StatureFactory.create(location, youth=True))
                     setattr(player, 'avoirdupois', AvoirdupoisFactory.create(location, youth=True))
-                    setattr(player, 'expired_time', ReserveLiteral('date_add(now(), interval 2 day)'))
+                    setattr(player, 'expired_time', ReserveLiteral('date_add(now(), interval %s minute)' % random.randint(2160, 2880)))
                     setattr(player, 'picture', PictrueFactory.create())
                     name = NameFactory.create_name()
                     setattr(player, 'name', name)
