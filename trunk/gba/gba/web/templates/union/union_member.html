@@ -21,7 +21,7 @@
 	  </td>
 	  <td>{{info.team_id|team_name}}</td>
 	  <td>
-	     {% if title %}
+	     {% if info.title %}
 	       {{info.title}}
 	     {% else %}
 	       无
@@ -36,43 +36,43 @@
 	  <td>{{info.prestige}}</td>
 	  <td>
 	   {% if is_leader %}
-	   <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
+	   <a href="{%url union-title-setting %}?member_id={{info.id}}" onclick="return show_popup(this);">
          <font color="#0096f1">封号</font>
        </a> 
         | 
        <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
-         <font color="#0096f1">调整威望</font>
+         <font color="#0096f1" title="调整可用威望">威望</font>
        </a> 
         |
         {% if info.is_manager %}
-          <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
-            <font color="#0096f1">
-             取消管理员
+          <a href="{%url union-manager-setting %}?member_id={{info.id}}&opt=1" onclick="return show_popup(this);">
+            <font color="#0096f1" title="取消管理员">
+             管理员
             </font>
           </a> 
           |
         {% else %}
-         {% ifequal info.is_member 0%}
-          <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
-           <font color="#0096f1">
-            设为管理员
+         {% ifequal info.is_leader 0%}
+          <a href="{%url union-manager-setting %}?member_id={{info.id}}" onclick="return show_popup(this);">
+           <font color="#0096f1" title="设为管理员">
+            管理员
            </font>
           </a> 
           |
           <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
-           <font color="#0096f1">
-            踢出联盟
+           <font color="#0096f1" title="踢出联盟">
+            踢
            </font>
           </a> 
           |
           {% endifequal %}
         {% endif %}  
       {% endif %}
-	   <a href="{%url union-member-appove %}?result=0&team_id={{info.team_id}}" onclick="return show_popup(this);">
+	   <a href="{%url send-message %}?team_id={{info.team_id}}" onclick="return show_popup(this);">
          <font color="#0096f1">短信</font>
        </a> 
         | 
-       <a href="{%url union-member-appove %}?result=1&team_id={{info.team_id}}" onclick="return show_popup(this);">
+       <a href="{%url send-match-request %}?team_id={{info.team_id}}" onclick="return show_popup(this);">
          <font color="#0096f1">约战</font>
        </a>
 	  </td>

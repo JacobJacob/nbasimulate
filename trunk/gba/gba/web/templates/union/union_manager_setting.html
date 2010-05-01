@@ -1,0 +1,27 @@
+{% load common_extras %}
+<form method="post" action="{% url union-manager-setting %}" name="frm" onsubmit='return submit_to_div(this,"popup_inner")'>
+ <input id="member_id" type="hidden" name="member_id" value="{{union_member.id}}"/>
+ <input id="opt" type="hidden" name="opt" value="{{opt}}"/>
+<div class="floatBox_sms">
+<div class="blank20"></div>
+<div class="blank10"></div>
+<p class="lh21" align="center">
+  {% if opt %}
+    是否取消{{union_member.team_id|nickname}}的管理员职位
+  {% else %}
+    是否将{{union_member.team_id|nickname}}设置为管理员
+  {% endif %}
+</p>
+</div>
+<div class="blank10"></div>
+<div class="floatBox_sms_btn">
+<div class="left">
+ <input name="Submit" value="确定" class="btn_3" type="submit">
+</div>
+<div class="btn_3 right"><a href="#" onclick="return hide_popup('');">取消</a>
+</div>
+</div><div class="clear"></div>
+</div>
+<div class="blank20"></div>
+<div class="blank20"></div>
+</form>

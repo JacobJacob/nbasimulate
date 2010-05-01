@@ -11,7 +11,7 @@
 {% for info in infos %}
  <tr>
   <td>
-    <a href="http://s3.dlm.17uxi.cn/source/n.php?a=688&amp;id=577" onclick="return show_popup(this)">
+    <a href="{% url team-union-min %}?union_id={{info.id}}" onclick="return href_to_div(this,'main_content');">
      <font color="#0096f1">{{info.name}}</font>
     </a>
  </td>
