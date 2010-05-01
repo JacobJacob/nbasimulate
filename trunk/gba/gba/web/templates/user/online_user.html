@@ -33,67 +33,38 @@
      <td>{{info.profession_league_evel}}<font size="2">.</font>{{info.profession_league_class}}</td>
      <td><font size="2">{{info.youth_league}}</font></td>
      <td>暂无资料</td>
-     <td>
+     <td style="margin:auto;">
        <a href="{% url send-match-request %}?team_id={{info.id}}" onclick="return show_popup(this);">
-        <img src="/site_media/images/btn_01.gif">
+        <img src="/site_media/images/btn_01.gif"  style="display:block;">
        </a>
      </td>
-     <td>
+     <td align="center">
        <a href="{% url send-message %}?team_id={{info.id}}" onclick="return show_popup(this);">
-        <img src="/site_media/images/icon_13.gif" title="留言">
+        <img src="/site_media/images/icon_13.gif" title="留言"  style="display:block;">
        </a>
      </td>
     </tr>
    {% endfor %}
   </tbody>
 </table>
-
 <div class="blank10"></div>
-  <div class="mlr8 tr">
-   &nbsp;首页 
-   &lt;上一页&nbsp;
-   <a href="http://s3.dlm.17uxi.cn/source/n.php?a=113&amp;p=2" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
-   &nbsp;
-   <a href="http://s3.dlm.17uxi.cn/source/n.php?a=113&amp;p=12" onclick="return href_to_div(this,'main_content');">末页</a>
-   &nbsp;[第1/12页]&nbsp;第 
-   <input name="page" id="page" value="1" size="1" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" type="text"> 页
-   <input class="btn_2" value="GO" onclick="return href_to_div('n.php?a=113&amp;p='+document.getElementById('page').value,'main_content');" type="button">&nbsp;
- </div>
+<div class="mlr8 tr">
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url online-user-min %}?page=1" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url online-user-min %}?page={{prevpage}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url online-user-min %}?page={{nextpage}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url online-user-min %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+</div>
  <div class="blank10"></div>
-<script language="javascript" src="i.php_files/jiao_se.js" type="text/javascript"></script>
-<form method="post" action="n.php?a=471" onsubmit="return hao_you_check(this)">
-	<div class="clear"></div>
-	<div class="blank10"></div>
-	<dl>
-	  <dd>
-		<table width="530" border="0" cellpadding="0" cellspacing="0">
-		  <tbody>
-		    <tr>
-		      <td colspan="3" align="center" height="5"></td>
-		    </tr>
-			<tr>
-				<td width="100" height="30">经理名称：</td>
-				<td width="150">
-				<input value="6465" name="jiao_se_ming_cheng" id="jiao_se_ming_cheng" onblur="hao_you_ming_chengCheck()" type="text"></td>
-				<td width="280">
-				<input name="btnAdd" id="btnAdd" src="i.php_files/friend.gif" alt="" border="0" type="image">（点击空白处查看经理名是否存在）</td>
-			</tr>
-			<input name="can_shu" id="can_shu" value="-1" type="hidden">
-			<tr>
-				<td colspan="3" align="center" height="25">
-			      <font color="#ff0000">
-				   <div id="notice">
-				     <font xmlns="http://www.w3.org/1999/xhtml">该经理不存在！</font>
-			 	   </div>
-				  </font>
-			    </td>
-			</tr>
-		 </tbody>
-		</table>
-	  </dd>
-    </dl>
-	<div class="clear"></div>
-	<div class="blank10"></div>
- </form>
  </div>
 {% endblock %}

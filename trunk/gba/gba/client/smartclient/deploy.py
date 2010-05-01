@@ -8,4 +8,5 @@ CLIENTS = {
     "PLAYER_STATISTICS_HANDLER": "gba.client.handler.player_statistics_handler.main",
     "FREEPLAYER_AUCTION_HANDLER": "gba.client.handler.freeplayer_auction_handler.main",
     "YOUTH_FREEPLAYER_AUCTION_HANDLER": "gba.client.handler.youth_freeplayer_auction_handler.main",
+    "CHALLENGE_PAIR": "gba.client.handler.challenge_pair.main",
 }

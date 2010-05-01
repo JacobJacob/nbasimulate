@@ -100,8 +100,27 @@ def calcul_wage(player):
             times += 0.1
         else:
             times -= 0.1
-    
-    wage = ability / 10 * times * 10000
+        
+    if ability <= 20:
+        wage = float(ability) / 90 * 10000 + (times * 1000)
+    elif ability <= 30:
+        wage = float(ability) / 110 * 10000 + (times * 1000)
+    elif ability <= 40:
+        wage = float(ability) / 105 * 10000 + (times * 1000)
+    elif ability <= 50:
+        wage = float(ability) / 95 * 10000 + (times * 1000)
+    elif ability <= 60:
+        wage = float(ability) / 85 * 10000 + (times * 1000)
+    elif ability <= 70:
+        wage = float(ability) / 60 * 10000 + (times * 1000)
+    elif ability <= 80:
+        wage = float(ability) / 50 * 10000 + (times * 1000)
+    elif ability <= 90:
+        wage = float(ability) / 40 * 10000 + (times * 1000)
+    else:
+        wage = float(ability) / 30 * 10000 + (times * 1000)
+        
+    wage = int(wage)
     if isinstance(player, dict):
         player['wage'] = wage
     else:
@@ -205,3 +224,16 @@ def create_youth_player(location):
     calcul_ability(player)
 
     return player
+
+if __name__ == '__main__':
+    
+    abilitys = [20, 30, 40, 50, 60, 69.9, 70, 70.1, 80]
+    positions = ['PG', 'SG', 'SF', 'PF', 'C']
+    
+    for ability in abilitys:
+        for position in positions:
+            player = ProfessionPlayer()
+            player.ability = ability
+            player.position = position
+            calcul_wage(player)
+            print '[%s, %s][%s]' % (position, ability, player.wage)

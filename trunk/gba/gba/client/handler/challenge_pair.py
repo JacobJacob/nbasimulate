@@ -7,16 +7,22 @@ from gba.common.constants import MatchStatus , MatchTypes, MatchShowStatus
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common import exception_mgr
 from gba.common.single_process import SingleProcess
+from gba.common.client.base import BaseClient
 
-class ChallengePair(object):
+class ChallengePair(BaseClient):
     '''胜者为王配对客户端'''
     
+    def __init__(self):
+        super(ChallengePair, self).__init__("ChallengePair")
+        self._pair_total = 0
+        
     def run(self):
         
         while True:
             challenge_pools = self.get_challenge_pool()
             if not challenge_pools:
-                time.sleep(5)
+                self.current_info = 'pair total[%s]' % self._pair_total
+                return 5
             size = len(challenge_pools)
             for i in range(size):
                 challenge_pool = challenge_pools[i]
@@ -28,7 +34,10 @@ class ChallengePair(object):
                     if challenge_pools[j].status != 1:
                         continue
                     if self.check_can_pair(challenge_pool.team_id, challenge_pools[j].team_id):#可以配对
+                        self._pair_total += 1
                         self.pair(challenge_pool, challenge_pools[j])
+            
+            return 10
  
     def pair(self, challenge_pool_home, challenge_pool_guest):
         """配对"""
@@ -81,6 +90,6 @@ if __name__ == '__main__':
     signle_process.check()
     try:
         client = ChallengePair()
-        client.run()
+        client.main()
     except:
         exception_mgr.on_except()
