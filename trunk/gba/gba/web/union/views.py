@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 from gba.web.render import render_to_response
 from gba.business.user_roles import login_required, UserManager
-from gba.entity import Unions, UnionApply, Team, Message, UnionMember
+from gba.entity import Unions, UnionApply, Team, Message, UnionMember, UserInfo
 from gba.common import exception_mgr
 from gba.common.constants import MessageType
 from gba.business.client import ClientManager
@@ -34,16 +34,20 @@ def union_list(request, min=False):
 def team_union(request, min=False):
     """我的联盟"""
     team = request.team
+    union_id = request.GET.get('union_id')
     datas = {}
     
-    has_union = False
     if team.union_id:
         has_union = True
-        union = Unions.load(id=team.union_id)
-        datas['union'] = union
-        print union.leader
-        print team.id
-        print union.leader == team.id 
+    else:
+        has_union = False
+    
+    if not union_id:
+        union_id = team.union_id
+     
+    union = Unions.load(id=team.union_id)
+    datas['union'] = union
+    if has_union:
         datas['is_leader'] = True if union.leader == team.id else False   
         
     if not has_union:
@@ -123,9 +127,7 @@ def union_apply(request):
     
     else:
         union_id = request.GET.get('union_id')
-        print union_id
-        print request.GET
-        print request.POST
+        remark = request.GET.get('remark')
         error = None
         success = '申请成功，请等待审核!'
         i = 0
@@ -143,6 +145,7 @@ def union_apply(request):
             union_apply = UnionApply()
             union_apply.union_id = union_id
             union_apply.team_id = team.id
+            union_apply.remark =  remark
             
             union_apply.persist()
              
@@ -276,7 +279,7 @@ def union_member(request):
         else:
             union_member = UnionMember.load(team_id=team.id)
             if union_member and union_member.is_manager:
-                is_mamager = True
+                is_manager = True
         
     infos, total =  UnionMember.paging(page, pagesize, condition='union_id="%s"' % union_id)
     
@@ -289,3 +292,116 @@ def union_member(request):
              'is_leader': is_leader, 'is_manager': is_manager}
     
     return render_to_response(request, 'union/union_member.html', datas)
+
+def union_manager_setting(request):
+    '''联盟设置管理员'''
+    team = request.team
+    error = None
+    member_id = request.GET.get('member_id')
+    opt = int(request.GET.get('opt', 0)) #0是设置1是取消
+    i = 0
+    while i < 1:
+        i += 1
+        union = Unions.load(id=team.union_id)
+        if not union or union.leader != team.id:
+            error = '您不是盟主，不能执行该操作'
+            break
+        
+        union_member = UnionMember.load(id=member_id)
+        if not union_member:
+            error = '该经理不是您的盟员!'
+            break
+        
+        if opt == 0:
+            if union_member.is_manager or union_member.is_leader:
+                error = '您不能将其设为管理员'
+                break
+        
+            manager_count = UnionMember.count(condition="union_id='%s' and is_manager=1" % team.union_id)
+            if manager_count >=5 :
+                error = '您的联盟最多只能设置5位管理员!'
+                break
+                    
+    if request.method == 'GET':
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        return render_to_response(request, 'union/union_manager_setting.html', {'union_member': union_member, 'opt': opt})
+    else:
+        if opt == 0:
+            success = '管理员设置成功'
+        else:
+            success = '管理员取消成功'
+        if not error:
+            union_member.is_manager = 1 if opt == 0 else 0
+            message = Message()
+            message.type = MessageType.SYSTEM_MSG
+            message.from_team_id = 0
+            if opt == 0:
+                message.title = u'您被设置为联盟管理员'
+                message.content = u'您被设置为联盟管理员'
+            else:
+                message.title = u'您被取消了联盟管理员的职位'
+                message.content = u'您被取消了联盟管理员的职位'
+            message.to_team_id = union_member.team_id
+            
+            UnionMember.transaction()
+            try:
+                union_member.persist()
+                message.persist()
+                UnionMember.commit()
+            except:
+                UnionMember.rollback()
+                raise
+            
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        url = reverse('union-member')
+        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+             
+def union_title_setting(request):
+    '''联盟成员封号设置'''
+    team = request.team
+    error = None
+    member_id = request.GET.get('member_id')
+    title = request.GET.get('title')
+    i = 0
+    while i < 1:
+        i += 1
+        union = Unions.load(id=team.union_id)
+        if not union or union.leader != team.id:
+            error = '您不是盟主，不能设置封号'
+            break
+        
+        union_member = UnionMember.load(id=member_id)
+        if not union_member:
+            error = '该经理不是您的盟员!'
+            break
+               
+    if request.method == 'GET':
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        return render_to_response(request, 'union/union_title_setting.html', {'union_member': union_member})
+    else:
+        success = '封号成功'
+        if not error:
+            union_member.title = title 
+            message = Message()
+            message.type = MessageType.SYSTEM_MSG
+            message.from_team_id = 0
+            message.title = u'您被联盟盟主封为:%s' % title
+            message.content = u'您被联盟盟主封为:%s' % title
+            message.to_team_id = union_member.team_id
+            
+            UnionMember.transaction()
+            try:
+                union_member.persist()
+                message.persist()
+                UnionMember.commit()
+            except:
+                UnionMember.rollback()
+                raise
+            
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        url = reverse('union-member')
+        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})

@@ -15,4 +15,6 @@ urlpatterns = patterns('web.union',
     url(r'^wait_appove_list/$', 'views.wait_appove_list', name='wait-appove-list'),
     url(r'^union_member_appove/$', 'views.union_member_appove', name='union-member-appove'),
     url(r'^union_member/$', 'views.union_member', name='union-member'),
+    url(r'^union_manager_setting/$', 'views.union_manager_setting', name='union-manager-setting'),
+    url(r'^union_title_setting/$', 'views.union_title_setting', name='union-title-setting'),
 )
