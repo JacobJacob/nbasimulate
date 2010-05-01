@@ -86,7 +86,7 @@ class ChallengePair(BaseClient):
             return False
         return True
     
-if __name__ == '__main__':
+def main():
     signle_process = SingleProcess('ChallengePair')
     signle_process.check()
     try:
@@ -94,3 +94,6 @@ if __name__ == '__main__':
         client.main()
     except:
         exception_mgr.on_except()
+        
+if __name__ == '__main__':
+    main()
