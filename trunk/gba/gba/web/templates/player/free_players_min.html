@@ -1,15 +1,35 @@
 {% load common_extras %}
 <script language="javascript" src="i4.php_files/zhuan_hui.js"></script>
 <div class="lh30 mlr8">
+{% ifequal position 'c' %}
+ <font color="red">中锋 C</font>
+{% else %}
 <a href="{% url free-players-min %}?position=c" onclick='return href_to_div(this,"main_content")'>中锋 C</a>
-| 
+{% endifequal %}
+|
+{% ifequal position 'pf' %}
+ <font color="red">大前 PF</font>
+{% else %}
 <a href="{% url free-players-min %}?position=pf" onclick='return href_to_div(this,"main_content")'>大前 PF</a>
+{% endifequal %}
 | 
+{% ifequal position 'sf' %}
+ <font color="red">小前 SF</font>
+{% else %}
 <a href="{% url free-players-min %}?position=sf" onclick='return href_to_div(this,"main_content")'>小前 SF</a>
+{% endifequal %}
 | 
+{% ifequal position 'sg' %}
+ <font color="red">分卫 SG</font>
+{% else %}
 <a href="{% url free-players-min %}?position=sg" onclick='return href_to_div(this,"main_content")'>分卫 SG</a>
+{% endifequal %}
 | 
+{% ifequal position 'pg' %}
+ <font color="red">控卫 C</font>
+{% else %}
 <a href="{% url free-players-min %}?position=pg" onclick='return href_to_div(this,"main_content")'>控卫 PG</a>
+{% endifequal %}
 </div>
 <table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
 <tbody>
@@ -23,11 +43,11 @@
   <font color="#0096f1">身高</font></a></th>
   <th><a href="{% url free-players-min %}?position={{ position }}&order_by=avoirdupois&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
   <font color="#0096f1">体重</font></a></th>
-  <th><a href="http://s3.dlm.17uxi.cn/source/n.php?a=460&amp;id_qy_lei_xing=5&amp;lei_xing_id=1&amp;pai_xu=zh" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
+  <th><a href="{% url free-players-min %}?position={{ position }}&order_by=ability&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
   <font color="#0096f1">综合</font></a></th>
   <th>次数</th>
   <th>买主</th>
-  <th><a href="http://s3.dlm.17uxi.cn/source/n.php?a=460&amp;id_qy_lei_xing=5&amp;lei_xing_id=1&amp;pai_xu=sj_jie_zhi" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
+  <th><a href="{% url free-players-min %}?position={{ position }}&order_by=expired_time&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
   <font color="#0096f1">剩余出价时间</font></a></th>
   <th class="end_cell">操作</th>
 </tr>
@@ -45,7 +65,7 @@
  <td>
    {{ info.current_price }}/
    {% if info.current_team_id %}
-       <a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=17570" onclick="return show_popup(this);">
+       <a href="{% url user-detail %}?id={{info.current_team_id}}" onclick="return show_popup(this);">
        <font color="#0096f1">{{ info.current_team_id|team_username}}</font>
        </a>
    {% else %}
@@ -79,15 +99,24 @@
 {% endfor %}
 </tbody>
 </table>
-<div class="blank10"></div><div class="mlr8 tr">&nbsp;首页
- &lt;上一页&nbsp;
- <a href="http://s3.dlm.17uxi.cn/source/n.php?a=460&amp;p=2" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>&nbsp;
- <a href="http://s3.dlm.17uxi.cn/source/n.php?a=460&amp;p=5" onclick="return
- href_to_div(this,'main_content');">末页</a>&nbsp;[第1/5页]&nbsp;第 
- <input name="page" id="page" value="1" size="1" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" type="text"> 页 
- <input class="btn_2" value="GO" onclick="return href_to_div('n.php?a=460&amp;p='+document.getElementById('page').value,'main_content');" type="button">&nbsp;
- </div>
-<div></div>
+<div class="blank10"></div>
+<div class="mlr8 tr">
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url free-players-min %}?page=1" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url free-players-min %}?page={{prevpage}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url free-players-min %}?page={{nextpage}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url free-players-min %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+</div>
 <div class="blank10"></div>
 <div class="blank10"></div>
 <font color="brown"><div align="center">可利用资金：{{team.funds}}</div></font
