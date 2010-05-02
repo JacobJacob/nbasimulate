@@ -1,0 +1,27 @@
+{% load common_extras %}
+<form name='frm' action='{% url youth-free-player-bid %}' method='post' onsubmit="return check_form_youth_bid(this);">
+<div class="floatBox_sms">
+	<div><img src="/site_media/images/w_blank/blank_2_12.gif" width="91" height="70" alt="" /></div>
+	<div class="blank20"></div>
+	<div class="blank10"></div>
+	<p class="lh21">{{team.id|nickname}}经理，建议您出价最少不低于{{ min_price }}</p>
+	<div class="h25"></div>
+	<div><span class="blue lh21 left">拍卖价格：
+	</span>
+	 <input name="price" id="price" type="text" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" />
+	</div>
+	<input type='hidden' name='no' id='no' value='{{no}}'>
+	<input type='hidden' name='funds' id='funds' value='{{team.funds}}'>
+	<div class="blank10"></div>
+	<font color='red'><div id='notice' align="center"></div></font>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="floatBox_sms_btn">
+		<div class="left"><input type="Submit" name="Submit" value="确定" class="btn_3"></div>
+		<div class="btn_3 right"><a href="#" onclick="return hide_popup();">取消</a></div>
+	</div>
+	<div class="clear"></div>
+	<div class="blank10"></div>
+</div>
+</form>

@@ -111,16 +111,22 @@ check_wei_tuo = function (myform)
 	return submit_to_div(myform,"popup_inner");
 }
 // 业余出售
-check_yy_chu_jia = function (myform)
+// 判断出价是否合理
+check_form_youth_bid = function(myform)
 {
-	if(!isNum('jia_ge'))
+	if(!isNull('price'))
 	{
-		$('notice').innerHTML = "请输入数字！";
+		$('notice').innerHTML = "价格不能为空！";
 		return false;
 	}
-	if(parseInt($('jia_ge').value)< parseInt($('jia_ge_a').value))
+	if(!isNum('price'))
 	{
-		$('notice').innerHTML = "出价需大于指定价！";
+		$('notice').innerHTML = "价格必须是数字！";
+		return false;
+	}
+	if(parseInt($('price').value)>parseInt($('funds').value))
+	{
+		$('notice').innerHTML = "出价超出您俱乐部资金!";
 		return false;
 	}
 	return submit_to_div(myform,"popup_inner");

@@ -137,6 +137,7 @@ class MessageType(ConstantBase):
 class MarketType(ConstantBase):
     FREE = 1 #职业自由
     YOUTH_FREE = 2 #年轻自由
+    DRAFT = 3 #选秀球员
     
 class StaffType(ConstantBase):
     TRAINERS = 1 #训练员

@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 """"""
 
-import random
-
 from django.core.urlresolvers import reverse
 
 from gba.web.render import render_to_response
@@ -11,7 +9,8 @@ from gba.common import playerutil
 from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
 from gba.entity import Team, YouthPlayer, FreePlayer, YouthFreePlayer, \
-                       ProfessionPlayer, ProPlayerSeasonStatTotal, ProPlayerCareerStatTotal
+                       ProfessionPlayer, ProPlayerSeasonStatTotal, ProPlayerCareerStatTotal, \
+                       DraftPlayer
 from gba.common.constants import attributes, hide_attributes, AttributeMaps
 
 @login_required
@@ -270,6 +269,53 @@ def free_player_bid(request):
         return render_to_response(request, 'message.html', {'error': error, 'success': success})
 
 @login_required
+def youth_free_player_bid(request):
+    """自由球员出价"""
+    
+    if request.method == 'GET':
+        datas = {}
+        error = None
+        no = request.GET.get('no')
+        if not no:
+            error = '球员不存在'
+        
+        if no:
+            player = YouthFreePlayer.load(no=no)
+            if not player:
+                error = '球员不存在'
+            else:
+                datas['no'] = no
+        
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})  
+        return render_to_response(request, 'player/youth_free_player_bid.html', datas)
+    else:
+        error = None
+        success = "竟价成功"
+        no = request.GET.get('no')
+        price = request.GET.get('price')
+        
+        if not no or not price:
+            error = '出价异常'
+    
+        if not error:
+            result = player_operator.youth_freeplayer_auction(request.team.id, no, price)
+        
+            if result == -1:
+                error = '未知异常'
+            elif result == -2:
+                error = '您的资金不不足'
+            elif result == -3:
+                error = '您己经出过价了,不能再出价'
+            elif result == -4:
+                error = '球员不存在'
+
+        if not error:
+            url = reverse('attention-player-min')
+            return render_to_response(request, 'message_update.html', {'error': error, 'success': success, 'url': url})
+        return render_to_response(request, 'message.html', {'error': error, 'success': success})
+
+@login_required
 def add_attention_player(request):
     '''关注球员'''
     if request.method == 'GET':
@@ -334,6 +380,8 @@ def player_detail(request):
             player = YouthPlayer.load(no=no)
         elif type == 4:
             player = YouthFreePlayer.load(no=no)
+        elif type == 5:
+            player = DraftPlayer.load(no=no)
         if not player:
             error = u'获取球员信息出错'
         datas = {'player': player}
@@ -344,6 +392,8 @@ def player_detail(request):
     if from_page:
         datas['url'] = reverse(from_page)
         datas['from_id'] = from_id
+    if type == 5:
+        return render_to_response(request, 'player/draft_detail.html', datas)
     return render_to_response(request, 'player/common_detail.html', datas)
 
 @login_required
@@ -374,3 +424,27 @@ def player_update(request):
     if type == 2: 
         url = '%s?no=%s' % (reverse('profession-player-detail'), no)
     return render_to_response(request, 'message_update.html', {'success': u'球员信息修改成功', 'sub_url': url})
+
+@login_required
+def draft_player(request, min=False):
+    """选秀球员"""
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    position = request.GET.get('position', 'c')
+    order_by = request.GET.get('order_by', 'expired_time')
+    order = request.GET.get('order', 'asc')
+    
+    infos, total = DraftPlayer.paging(page, pagesize, condition="position='%s'" % position, order="%s %s" % (order_by, order))
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
+            'nextpage': page + 1, 'prevpage': page - 1, 'position': position, 'order_by': order_by, 
+            'order': order}
+    
+    if min:
+        return render_to_response(request, 'player/draft_players_min.html', datas)
+    return render_to_response(request, 'player/draft_players.html', datas)

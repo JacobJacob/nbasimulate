@@ -24,19 +24,15 @@ class TeamAgvAbilityHandler(BaseBetchClient):
                 
             Team.inserts(teams)
         
-        start_id = 0
         i = 1
         #再计算排名
-        while True:
-            teams = self.get_teams(start_id, order="agv_ability desc ")
-            if not teams:
-                break
-            start_id = teams[-1].id
-            for team in teams:
-                team.agv_ability_rank = i
-                i += 1
-                
-            Team.inserts(teams)
+        teams = self.get_teams(order="agv_ability desc ")
+
+        for team in teams:
+            team.agv_ability_rank = i
+            i += 1
+            
+        Team.inserts(teams)
         
     def update_team(self, team):
         
@@ -51,11 +47,18 @@ class TeamAgvAbilityHandler(BaseBetchClient):
         team.agv_ability = agv_ability
         return team
         
-    def get_teams(self, start_id, order=None):
+    def get_teams(self, start_id=None, order=None):
         if order:
-            return Team.query(condition='id>%s' % start_id, limit=100, order=order)
-        return Team.query(condition='id>%s' % start_id, limit=100)
-        
+            if start_id:
+                return Team.query(condition='id>%s' % start_id, limit=100, order=order)
+            else:
+                return Team.query(order=order)
+        else:
+            if start_id:
+                return Team.query(condition='id>%s' % start_id, limit=100)
+            else:
+                return Team.query()
+            
 if __name__ == '__main__':
     client = TeamAgvAbilityHandler()
     client.start()

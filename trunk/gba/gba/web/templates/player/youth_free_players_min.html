@@ -79,7 +79,7 @@
   <div id="time_1">{{ info.lave_time|format_lave_time }}</div>
 </td>
  <td>
-  <a href="http://s3.dlm.17uxi.cn/source/n.php?a=253&amp;id_zh_qiu_yuan=1376998&amp;lei_xing_id=1&amp;pai_xu=zh" onclick="return show_popup(this)">
+  <a href="{% url youth-free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
   <font color="#0096f1">出价</font>
   </a>|
   <a href="{% url add-attention-player %}?no={{info.no}}&type=2" onclick="return show_popup(this)">

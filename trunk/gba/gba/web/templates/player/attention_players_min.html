@@ -19,7 +19,7 @@
 {% for info in infos %}
 <tr>
 <td>
-<a href="{% url player-detail %}?no={{info.no}}&type={{info.type}}" onclick="return show_popup(this)" title="">
+<a href="{% url player-detail %}?no={{info.no}}&type={% ifequal info.type 1%}1{%endifequal%}{% ifequal info.type 2%}4{%endifequal%}{% ifequal info.type 3%}5{%endifequal%}" onclick="return show_popup(this)" title="">
 <font color="#0096f1">{{info.name}}</font></a></td>
 <td>{{info.age}}</td>
 <td>{{info.position}}</td>
@@ -28,14 +28,28 @@
    {% ifequal info.type 1 %}
        职
    {% else %}
-       青
+      {% ifequal info.type 2 %}
+         青
+      {% else %}
+         秀
+      {% endifequal %}
    {% endifequal %}
 </td>
 <td><font color="#0096f1">{{info.ability|format_number}}</font></td>
 <td>{{ info.bid_count }}</td>
-<td>283366 
-<a href="http://s3.dlm.17uxi.cn/source/n.php?a=119&amp;id=42474" onclick="return show_popup(this);">
-<font color="#0096f1">懒人</font>
+<td>
+  {% ifequal info.type 1%}
+       {{ info.current_price }}/
+       {% if info.current_team_id %}
+         <a href="{% url user-detail %}?id={{info.current_team_id}}" onclick="return show_popup(this);">
+         <font color="#0096f1">{{ info.current_team_id|team_username}}</font>
+         </a>
+       {% else %}
+         --
+       {% endif %} 
+  {% else %}
+       隐藏
+  {% endifequal %}
 </a>
 </td>
 <td><div id="time_1">{{ info.lave_time|format_lave_time }}</div>
@@ -57,9 +71,15 @@
            <font color="#0096f1">出价</font>
         </a>
      {% else %}
-         <a href="{% url free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
-           <font color="#0096f1">出价</font>
-        </a>
+          {% ifequal info.type 2%}
+            <a href="{% url youth-free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
+              <font color="#0096f1">出价</font>
+            </a>
+          {%else%}
+            <a href="{% url youth-free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
+              <font color="#0096f1">试训</font>
+            </a>
+          {% endifequal %}
      {% endifequal %}
      <a href="{% url remove-attention-player %}?no={{info.no}}" onclick="return show_popup(this)">
         <font color="#0096f1">取消</font>

@@ -62,3 +62,10 @@ class YouthAttributeConfig(AttributeConfig):
           格式:{'shoot': {'grade-c': [xx, xx xx, xx, xx, xx, xx, xx, xx]}}
     '''
     config_file = 'youth-attribute-config.xml'
+    
+class DraftAttributeConfig(AttributeConfig):
+    '''
+     选秀球员属性配置     
+          格式:{'shoot': {'grade-c': [xx, xx xx, xx, xx, xx, xx, xx, xx]}}
+    '''
+    config_file = 'draft-attribute-config.xml'

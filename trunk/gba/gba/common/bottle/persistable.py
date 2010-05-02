@@ -220,7 +220,7 @@ class Persistable(object):
                 info('query success, return %s records...' % len(objs))
                 return objs
         except:
-            exception_mgr.on_except()
+            exception_mgr.on_except(sql)
             raise PersistableException()
         finally:
             cursor.close()

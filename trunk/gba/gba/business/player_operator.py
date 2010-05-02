@@ -6,7 +6,7 @@ from datetime import datetime
 from gba.common.db import connection
 from gba.common import log_execption
 from gba.entity import Team, YouthFreeplayerAuctionLog, YouthFreePlayer, FreePlayer, \
-                       AttentionPlayer
+                       AttentionPlayer, DraftPlayer
 from gba.common.constants import MarketType
 
 _SELECT_FREE_PLAYER = 'select *, unix_timestamp(expired_time)-unix_timestamp(now()) as lave_time from free_player where position="%s" order by %s %s limit %s, %s '
@@ -324,6 +324,8 @@ def get_attention_player(team_id):
                 player = FreePlayer.load(no=attention_player.no) 
             elif attention_player.type == MarketType.YOUTH_FREE:
                 player = YouthFreePlayer.load(no=attention_player.no)
+            elif attention_player.type == MarketType.DRAFT:
+                player = DraftPlayer.load(no=attention_player.no)
             lave_time = player.expired_time - datetime.now()
             player.lave_time = lave_time.days * 60 * 60 * 24 + lave_time.seconds
             player.type = attention_player.type
