@@ -62,11 +62,13 @@ class TacticalGroupType(ConstantBase):
     PROFESSION = 1
     CUP = 2
     OTHERS = 3
+    YOUTH = 4
     
 TacticalGroupTypeMap = {
     TacticalGroupType.PROFESSION: u'职业联赛',
     TacticalGroupType.CUP: u'杯赛',
-    TacticalGroupType.OTHERS: u'其它比赛',                                  
+    TacticalGroupType.OTHERS: u'其它比赛',
+    TacticalGroupType.YOUTH: u'青年比赛'                               
 }
    
 class TacticalSectionType(ConstantBase):

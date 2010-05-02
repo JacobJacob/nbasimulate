@@ -1,0 +1,35 @@
+{% load common_extras %}
+<script>
+     
+    tactical_check = function(myform){
+      return submit_to_div(myform,'popup_inner');
+    }
+    
+</script>
+ <form id="submitform" style="display:block;" name="submitform" action="{% url youth-tactical %}" method="post" onsubmit="return tactical_check(this);">
+<table cellspacing="0" cellpadding="0" border="0" width="100%" class="list_table">
+  <thead>
+  <tr>
+       <th width="15%">&nbsp;</th>
+       <th align="right">街球战术</th>
+   </tr>
+  </thead>
+  <tbody>
+   {% for section in sections %}
+     <tr>
+       <td>{{ section|section_name }}</td>
+       <td>
+          <select name='youth{{section}}' id="youth{{section}}">
+            {% for tactical_detail in tactical_details %}
+                   <option value="{{ tactical_detail.id }}" {% ifequal tactical_detail.id match_type_4.section_ %}selected=true{% endifequal %}>{{ tactical_detail.name }}</option>
+            {% endfor %}
+          </select>
+       </td>
+     </tr>
+     {% endfor %}
+     <tr>
+       <td colspan="2" class="right"><input name="savesubmit" value="保存设置" class="btn_5" type="submit"></td>
+     </tr>
+    </tbody>
+</table>
+</form>

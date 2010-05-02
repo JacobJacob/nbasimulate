@@ -118,14 +118,17 @@ def get_profession_palyer_by_no(no):
         cursor.close()
         
 
-def _check_player_is_in_team(team_id, no, cursor=None):
+def _check_player_is_in_team(team_id, no, is_youth=False, cursor=None):
     '''确认某球员在某队中'''
     need_close = False
     if not cursor:
         need_close = True
         cursor = connection.cursor()
     try:
-        return cursor.fetchone('select 1 from profession_player where team_id=%s and no=%s', (team_id, no))
+        if is_youth:
+            return cursor.fetchone('select 1 from youth_player where team_id=%s and no=%s', (team_id, no))
+        else:
+            return cursor.fetchone('select 1 from profession_player where team_id=%s and no=%s', (team_id, no))
     finally:
         if need_close:
             cursor.close()

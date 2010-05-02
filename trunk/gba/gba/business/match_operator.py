@@ -40,13 +40,13 @@ def save_tactical_detail(info):
         cursor.close()
     return True
 
-_LOAD_TACTICAL_DETAIL = 'select * from team_tactical_detail where seq=%s and team_id=%s and is_youth=0 limit 1'
+_LOAD_TACTICAL_DETAIL = 'select * from team_tactical_detail where seq=%s and team_id=%s and is_youth=%s limit 1'
 
-def get_tactical_detail(team_id, seq):
+def get_tactical_detail(team_id, seq, is_youth=False):
     '''获取战术信息'''
     cursor = connection.cursor()
     try:
-        rs = cursor.fetchone(_LOAD_TACTICAL_DETAIL, (seq, team_id))
+        rs = cursor.fetchone(_LOAD_TACTICAL_DETAIL, (seq, team_id, 1 if is_youth else 0))
         if rs:
             return rs.to_dict()
     finally:
@@ -64,13 +64,13 @@ def get_tactical_details(team_id, is_youth=False):
     finally:
         cursor.close()
 
-_SELECT_TACTICAL_MAINS = 'select * from team_tactical where team_id=%s and is_youth=0 order by type asc'
+_SELECT_TACTICAL_MAINS = 'select * from team_tactical where team_id=%s and is_youth=%s order by type asc'
         
-def get_tactical_mains(team_id):
+def get_tactical_mains(team_id, is_youth=False):
     '''获取不同比赛阵容信息'''
     cursor = connection.cursor()
     try:
-        rs = cursor.fetchall(_SELECT_TACTICAL_MAINS, (team_id, ))
+        rs = cursor.fetchall(_SELECT_TACTICAL_MAINS, (team_id, 1 if is_youth else 0))
         if rs:
             return rs.to_list()
     finally:

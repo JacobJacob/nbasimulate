@@ -60,11 +60,9 @@ def freeplayer_detail(request):
 @login_required
 def profession_player(request, min=False):
     '''profession player'''
-
-    user_info = UserManager().get_userinfo(request)
-    
-    team = Team.load(username=user_info['username'])
-    
+     
+    team = request.team
+     
     infos = player_operator.get_profession_player(team.id)
     datas = {'infos': infos}
     datas['nos'] = [i for i in range(30)]
@@ -178,10 +176,8 @@ def youth_freeplayer_detail(request):
 @login_required
 def youth_player(request):
     '''youth player'''
-
-    user_info = UserManager().get_userinfo(request)
     
-    team = Team.load(username=user_info['username'])
+    team = request.team
     
     infos = player_operator.get_youth_player(team.id)
     datas = {'infos': infos}

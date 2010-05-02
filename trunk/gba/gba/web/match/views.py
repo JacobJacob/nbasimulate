@@ -226,53 +226,121 @@ def training_center_apply(request):
     return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
 
 @login_required
-def youth_tactical(request):
+def youth_tactical(request, min=False):
     """青年战术"""
 
-    datas = {}
-    team = UserManager().get_team_info(request)
-    tactical_details = TeamTacticalDetail.query(condition="team_id=%s and is_youth=1" % team.id, order="seq asc")
-    tactical_mains = TeamTactical.query(condition="team_id=%s and is_youth=1" % team.id, order="type asc")
+    if request.method == 'GET':
+        datas = {}
+        team = request.team
+        tactical_details = match_operator.get_tactical_details(team.id, is_youth=True)
+        tactical_mains = match_operator.get_tactical_mains(team.id, is_youth=True)
+        
+        datas['tactical_details'] = tactical_details
+        datas['sections'] = [i for i in range(1, 9)]
+        
+        for tactical_main in tactical_mains:
+            for i in range(1, 9):
+                tactical_main[i] = tactical_main['tactical_detail_%s_id' % i]
+                del tactical_main['tactical_detail_%s_id' % i]
+            datas['match_type_%s' % tactical_main['type']] = tactical_main
+
+        if min:
+            return render_to_response(request, 'match/youth_tactical_min.html', datas)
+        return render_to_response(request, 'match/youth_tactical.html', datas)
     
-    datas['tactical_details'] = tactical_details
-    datas['sections'] = [i for i in range(1, 9)]
-    
-    for tactical_main in tactical_mains:
+    else:
+        success = u'战术配置保存成功'
+        error = None
+
+        team = request.team
+        youth_tactical = {'type': 4, 'team_id': team.id, 'is_youth': 1}
         for i in range(1, 9):
-            setattr(tactical_main, str(i), getattr(tactical_main, 'tactical_detail_%s_id' % i))
-            delattr(tactical_main, 'tactical_detail_%s_id' % i)
-        datas['match_type_%s' % tactical_main.type] = tactical_main
-    
-    datas['sort'] = 'W'         
-    return render_to_response(request, 'match/youth_tactical.html', datas)
+            youth_tactical_detail_id = request.GET.get('youth%s' % i)
+            if not youth_tactical_detail_id:
+                error = '战术设置不完整'
+                break
+            youth_tactical['tactical_detail_%s_id' % i] = youth_tactical_detail_id
+
+        i = 0
+        while i < 1:
+            i += 1
+            if not match_operator.save_tactical_main((youth_tactical, )):
+                error = '战术配置保存失败'
+                break
+          
+    return render_to_response(request, "message.html", {'error': error, 'success': success}) 
 
 @login_required
 def youth_tactical_detail(request):
     """青年战术详细"""
     
-    sort = request.GET.get('sort', 'A')
-    
-    team = UserManager().get_team_info(request)
-    
-    players = YouthPlayer.query(condition="team_id=%s" % team.id, order='ability desc')
-    tactical_info = TeamTacticalDetail.query(condition="team_id=%s and seq='%s' and is_youth=1" % (team.id, sort), limit=1)
-    tactical_info = tactical_info[0]
-    
-    ret_players = []
-    tactical_detail_info = {tactical_info.pgid: 'pg_info', tactical_info.sfid: 'sf_info', tactical_info.sgid: 'sg_info', \
-                          tactical_info.pfid: 'pf_info', tactical_info.cid: 'c_info'}
-
-    datas = {'sort': sort}
-    for player in players:
-        if player.no in tactical_detail_info:
-            datas[tactical_detail_info[player.no]] = player
-        else:
-            ret_players.append(player)
+    if request.method == 'GET':
+        seq = request.GET.get('seq', 'A')
+        team = request.team
+        players = player_operator.get_youth_player(team.id)
+        tactical_info = match_operator.get_tactical_detail(team.id, seq, is_youth=True)
+        datas = tactical_info
+        datas['infos'] = players
+        return render_to_response(request, 'match/youth_tactical_detail.html', datas)
+    else:
+        success =  u'阵容保存成功'
+        error = None;
+        
+        i = 1
+        while i > 0:
+            i -= 1
+            cid = request.GET.get('form_c');
+            pfid = request.GET.get('form_pf');
+            sfid = request.GET.get('form_sf');
+            sgid = request.GET.get('form_sg');
+            pgid = request.GET.get('form_pg');
+            name = request.GET.get('name');
+            seq = request.GET.get('seq');
+            offensive_tactical_type = request.GET.get('offensive_tactical_type');
+            defend_tactical_type = request.GET.get('defend_tactical_type');
             
-    datas['infos'] = ret_players      
-    datas['tactical_detail_name'] = tactical_info.name
-    datas['tactical_info'] = tactical_info
-    return render_to_response(request, 'match/youth_tactical_detail.html', datas)
+            team = None
+            if hasattr(request, 'team'):
+                team = request.team
+            if not team:
+                error = '战术更新失败,无法获取球队信息'
+                break
+            
+            for p in (cid, pfid, sfid, sgid, pgid):
+                if not p:
+                    error = '阵容不完整'
+                    break
+                if not player_operator._check_player_is_in_team(team.id, p, is_youth=True):
+                    error = '阵容中有不是您球队的球员，请重新设置'
+                    break
+            
+            if error:
+                return render_to_response(request, "message.html", {'success': success, 'error': error})
+            
+            if not seq:
+                error = "保存战术出错"
+                break
+            
+            info = {'team_id': team.id, 'seq': seq, 'cid': cid, 'pfid': pfid, 'sfid': sfid, 'sgid': sgid, 'pgid': pgid,
+                     'offensive_tactical_type': offensive_tactical_type, 'defend_tactical_type': defend_tactical_type}
+
+            if not name:
+                if seq == 'A':
+                    name = '第一节战术'
+                elif seq == 'B':
+                    name = '第二节战术'
+                elif name == 'C':
+                    name = '第三节战术'
+                else:
+                    name = '第四节战术'
+            
+            info['name'] = name
+            info['is_youth'] = 1
+            
+            if not match_operator.save_tactical_detail(info):
+                error = '战术更新失败'
+        
+        return render_to_response(request, "message.html", {'success': success, 'error': error})
 
 @login_required
 def profession_tactical(request, min=False):
@@ -280,7 +348,7 @@ def profession_tactical(request, min=False):
 
     if request.method == 'GET':
         datas = {}
-        team = UserManager().get_team_info(request)
+        team = request.team
         tactical_details = match_operator.get_tactical_details(team.id)
         tactical_mains = match_operator.get_tactical_mains(team.id)
         
@@ -332,9 +400,7 @@ def profession_tactical_detail(request):
     
     if request.method == 'GET':
         seq = request.GET.get('seq', 'A')
-        user_info = UserManager().get_userinfo(request)
-        username = user_info['username']
-        team = Team.load(username=username)
+        team = request.team
         players = player_operator.get_profession_player(team.id)
         tactical_info = match_operator.get_tactical_detail(team.id, seq)
         datas = tactical_info

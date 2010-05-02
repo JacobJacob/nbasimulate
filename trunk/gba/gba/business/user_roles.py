@@ -5,8 +5,10 @@
 """
 
 from __future__ import with_statement
+
+import time
+import random
 from uuid import uuid4
-import traceback
 
 from django.http import HttpResponseRedirect, HttpResponseServerError
 from django.utils.http import urlquote
@@ -14,9 +16,9 @@ from django.core.urlresolvers import reverse
 
 from gba.business.dboperator import DBOperator
 from gba.common.db import connection
+from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common import md5mgr
 from gba.common import cache
-#from gba.common.constants import User
 from gba.common import log_execption
 from gba.common import exception_mgr
 from gba.entity import Team
@@ -36,6 +38,7 @@ class UserManager(DBOperator):
 
     SELECT_USERS = """SELECT id, username FROM user_info"""
     SELECT_USER = """SELECT id, username, session_id, nickname FROM user_info WHERE session_id = %s"""
+    SELECT_SESSION = """SELECT id, username, session_id FROM session WHERE session_id = %s"""
     ADD_USER = """INSERT user_info (username, password, login_times, create_time) 
                     VALUES (%s, '', 0, now())"""
     ADD_USER_LOGIN = """INSERT user_info (username, password, session_id, login_times, last_login_time, create_time) 
@@ -65,7 +68,7 @@ class UserManager(DBOperator):
     MODIFY_PAGE = """UPDATE page_info SET page_name = %s, page_descript = %s  WHERE id = %s"""
     DELETE_PAGE = """DELETE FROM page_info WHERE id = %s"""
     
-    UPDATE_ACTIVE_TIME = """UPDATE team set last_active_time=now() WHERE username = %s"""
+    UPDATE_ACTIVE_TIME = """UPDATE session set active_time=now() WHERE username = %s"""
     
     def login(self, username, password):
         """
@@ -85,28 +88,22 @@ class UserManager(DBOperator):
                 r =  cursor.fetchone(self.CHECK_USER_PASSWORD, (username, password,))
                 if not r:
                     return -1, LOGIN_ERROR
-
-        session_id = md5mgr.mkmd5fromstr('%s%s%s' % (uuid4(), username, password))
-        with self.cursor() as cursor:
         
-            r =  cursor.fetchone(self.CHECK_USER, (username,))
-            if not r:
-                return -1, "您不是from gba的授权用户，请联系相关人员授权。"
+        
+        session_id = md5mgr.mkmd5fromstr('%s%s%s%s' % (uuid4(), username, random.randint(1, 10000), time.time()))
+        with self.cursor() as cursor:
+            literal_now = ReserveLiteral('now()')
+            info = {'username': username, 'session_id': session_id, 'active_time': literal_now, 'created_time': literal_now}
             try:
-#                if r:
-                    cursor.execute(self.UPDATE_LOGIN_INFO,(session_id, password, username))
-#                else:
-#                    cursor.execute(self.ADD_USER_LOGIN, (username, session_id))
+                cursor.insert(info, 'session', True, ['created_time'])
             except Exception, e:
                 return -1, e
-           
-#            r =  cursor.fetchone(self.CHECK_USER, (username,))
-            data = r.to_dict()
-            self.set_cache(session_id, data, SESSION_EXPIRE_TIME)
+
+            self.set_cache(session_id, username, SESSION_EXPIRE_TIME)
             return 0, session_id
     
     def check_is_authentication(self, user_name, password=''):
-        session_id = md5mgr.mkmd5fromstr('%s%s%s' % (uuid4(), user_name, password))
+        session_id = md5mgr.mkmd5fromstr('%s%s%s%s' % (uuid4(), user_name, random.randint(1, 10000), time.time()))
         with self.cursor() as cursor:
             r =  cursor.fetchone(self.CHECK_USER, (user_name,))
             if not r:
@@ -130,25 +127,25 @@ class UserManager(DBOperator):
         """
         session_id = request.COOKIES.get(SESSION_KEY, None)
         if session_id is not None:
-            r = self.get_cache(session_id)
-            if r is None and not cache.get_stats(): # 只有cache挂了才从数据库中读取，防止恶意刷后台页面
+            username = self.get_cache(session_id)
+            if username is None and not cache.get_stats(): # 只有cache挂了才从数据库中读取，防止恶意刷后台页面
                 # get from database
                 with self.cursor() as cursor:
-                    record = cursor.fetchone(self.SELECT_USER, (session_id, ))
+                    record = cursor.fetchone(self.SELECT_SESSION, (session_id, ))
                 if record:
                     r = record.to_dict()
-            if r is not None:
-                cache.set(session_id, r, SESSION_EXPIRE_TIME)
+                    username = r['username']
+            if username is not None:
+                cache.set(session_id, username, SESSION_EXPIRE_TIME)
                 with self.cursor() as cursor:
-                    cursor.execute(self.UPDATE_ACTIVE_TIME, (r['username'], ))
-                return r
+                    cursor.execute(self.UPDATE_ACTIVE_TIME, (username, ))
+                return username
         return None
     
     def get_team_info(self, request):
         '''获取球队信息'''
-        user_info = self.get_userinfo(request)
-        if user_info:
-            username = user_info['username']
+        username = self.get_userinfo(request)
+        if username:
             team = Team.load(username=username)
             return team
     
@@ -210,7 +207,7 @@ class UserManager(DBOperator):
         password = md5mgr.mkmd5fromstr(md5mgr.mkmd5fromstr(password))
         session_id = md5mgr.mkmd5fromstr('%s%s%s' % (uuid4(), username, password))
         
-        user_info = {'username': username, 'password': password, 'session_id': session_id, 'nickname': nickname}
+        user_info = {'username': username, 'password': password, 'nickname': nickname}
         
         cursor = connection.cursor()
         try:
