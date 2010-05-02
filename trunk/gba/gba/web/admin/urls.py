@@ -10,4 +10,5 @@ urlpatterns = patterns('web.admin',
     url(r'^actiondesc/$', 'views.action_desc', name='action-desc'),
     url(r'^clients/$', 'views.list', name='client-list'),
     url(r'^engine_status/$', 'views.engine_status', name='engine-status'),
+    url(r'^round_update_log/$', 'views.round_update_log', name='round-update-log'),
 )

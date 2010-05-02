@@ -4,7 +4,7 @@
 
 from gba.web.render import render_to_response
 from gba.business.user_roles import login_required
-from gba.entity import ClientRunningLog, ActionDesc, EngineStatus
+from gba.entity import ClientRunningLog, ActionDesc, EngineStatus, RoundUpdateLog
 from gba.business.client import ClientManager
 from gba.business.common_client_monitor import CommonClientMonitor
 
@@ -99,3 +99,18 @@ def engine_status(request):
     infos = EngineStatus.query()
     datas = {'infos': infos}
     return render_to_response(request, 'admin/engine_status.html' , datas)
+
+def round_update_log(request):
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 15))
+
+
+    infos, total = RoundUpdateLog.paging(page, pagesize, order='id desc ')
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
+            'nextpage': page + 1, 'prevpage': page - 1}
+    return render_to_response(request, 'admin/round_update_log.html', datas)

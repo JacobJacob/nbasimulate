@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+
 from datetime import datetime
 
 from _mysql_exceptions import ProgrammingError
@@ -24,6 +25,9 @@ class TableNotExistException(Exception):
         
     def __str__(self):
         return '%s not exist' % self._table_name
+    
+class PersistableException(Exception):
+    pass
 
 class Persistable(object):
     
@@ -86,7 +90,10 @@ class Persistable(object):
                 meta.add_column(column)
                 cls._cache.set(cls._table, meta)
                 Persistable._meta_cache[cls._table] = meta
-
+        
+        except:
+            exception_mgr.on_except()
+            raise PersistableException()
         finally:
             cursor.close()
         cls.inited = True
@@ -139,7 +146,10 @@ class Persistable(object):
             if not hasattr(self, 'id'):
                 data = cursor.fetchone('select last_insert_id() as id')
                 if data:
-                    self.id = int(data['id']) 
+                    self.id = int(data['id'])
+        except:
+            exception_mgr.on_except()
+            raise PersistableException()
         finally:
             cursor.close()
         info('finish save object....[table:%s]' % self._table)
@@ -171,6 +181,9 @@ class Persistable(object):
         cursor = connection.cursor()           
         try:
             cursor.insert(datas, cls._table, True, update_skip_columns)
+        except:
+            exception_mgr.on_except()
+            raise PersistableException()
         finally:
             cursor.close()
         info('finish save objects....[table:%s]' % cls._table)
@@ -207,8 +220,8 @@ class Persistable(object):
                 info('query success, return %s records...' % len(objs))
                 return objs
         except:
-            exception_mgr.on_except('sql[%s]' % sql)
-            raise
+            exception_mgr.on_except()
+            raise PersistableException()
         finally:
             cursor.close()
         info('not record found')
@@ -259,6 +272,9 @@ class Persistable(object):
                     cls._cache.set(cache_key, obj, 1800)
                 info('success load object[%s, id=%s]' % (cls._table, obj.id)) 
                 return obj
+        except:
+            exception_mgr.on_except()
+            raise PersistableException()
         finally:
             cursor.close()
         info('load failure[table:%s]' % cls._table)
@@ -313,6 +329,9 @@ class Persistable(object):
         try:
             data = cursor.fetchone(sql)
             return data['count']
+        except:
+            exception_mgr.on_except()
+            raise PersistableException()
         finally:
             cursor.close()            
     
@@ -336,6 +355,9 @@ class Persistable(object):
         cursor = connection.cursor()
         try:
             cursor.execute(sql)
+        except:
+            exception_mgr.on_except()
+            raise PersistableException()
         finally:
             cursor.close()
 

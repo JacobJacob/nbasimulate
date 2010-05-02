@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 from filelocker import FileLocker
-from gba.config import PathSettings
+from gba.config import PathSettings, DEBUG
 import file_utility
 
 class ExceptionManager:
@@ -97,6 +97,8 @@ class ExceptionManager:
                     logFile.write("========================%s%s%s" % (os.linesep, now, os.linesep))
                     logFile.write(s)
                     if msg:
+                        if DEBUG:
+                            print msg
                         logFile.write(msg)
                         logFile.write(os.linesep)
                     logFile.write("========================" + os.linesep)
