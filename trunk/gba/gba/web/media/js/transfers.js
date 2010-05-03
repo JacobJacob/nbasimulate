@@ -11,7 +11,7 @@ count_down_all = function()
 
 count_down_one = function(div_id,value_id)
 {   
-    var spantime_obj = document.getElementById(value_id)
+    var spantime_obj = document.getElementById(value_id);
 	if(spantime_obj == null){
 	   return;
 	}
