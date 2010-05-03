@@ -17,7 +17,7 @@ from gba.business.user_roles import UserManager
 
 def user_info(request):
     user_manager = UserManager();
-    user_info = user_manager.get_userinfo(request);
+    username = user_manager.get_userinfo(request);
     team = user_manager.get_team_info(request);
     
     now = datetime.now()
@@ -26,4 +26,4 @@ def user_info(request):
     month = timetuple[1]
     day = timetuple[2]
     sec = int(time.time())
-    return {'user_info': user_info, 'team': team, 'year': year, 'month': month, 'day': day, 'sec': sec}
+    return {'username': username, 'team': team, 'year': year, 'month': month, 'day': day, 'sec': sec}

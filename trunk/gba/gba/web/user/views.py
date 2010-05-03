@@ -12,7 +12,7 @@ from gba.config import PathSettings
 from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import UserManager, login_required
 from gba.business import user_operator, match_operator, player_operator
-from gba.entity import Message, Team, ChatMessage, LeagueTeams, OutMessage
+from gba.entity import Message, Team, ChatMessage, LeagueTeams, OutMessage, UserInfo
 from gba.common.constants import MessageType, MatchTypeMaps
 from gba.common import exception_mgr
 
@@ -100,6 +100,7 @@ def send_match_request(request):
     else:
         success =  u'比赛请求发送成功'
         error = '';
+        team = request.team
         
         i = 1
         while i > 0:
@@ -109,9 +110,8 @@ def send_match_request(request):
             is_youth = request.GET.get('is_youth')
             
             match_type = 1 #debug
-            
-            team = UserManager().get_team_info(request)
-            user_info = UserManager().get_userinfo(request)
+        
+            user_info = UserInfo.load(username=team.username)
             if not team:
                 error = u'登录信息丢失'
                 break
@@ -130,7 +130,7 @@ def send_match_request(request):
             message.from_team_id = 0
             message.to_team_id = guest_team.id
             message.title = u'比赛请求(%s)' % user_info['nickname']
-            message.content = u'%s经理向你发送了%s比赛请求，您可以在我的比赛中查看' % (user_info['nickname'], MatchTypeMaps.get(match_type))
+            message.content = u'%s经理向你发送了%s比赛请求，您可以在我的比赛中查看' % (user_info.nickname, MatchTypeMaps.get(match_type))
             message.is_new = 1
     
             try:
@@ -302,9 +302,9 @@ def user_detail(request):
 @login_required                   
 def issue_message(request):
     '''发布消息'''
-    
+    team = request.team
     content = request.GET.get('msg', None)
-    user_info = UserManager().get_userinfo(request)
+    user_info = UserInfo.load(username=team.username)
     chat_message = ChatMessage()
     chat_message.content = content
     chat_message.username = user_info['nickname']

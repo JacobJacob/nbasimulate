@@ -215,7 +215,7 @@ def union_member_appove(request):
     '''审核会员'''
     team = request.team
     error = None
-    user_info = UserManager().get_userinfo(request)
+    user_info = UserInfo.load(username=team.username)
     result = int(request.GET.get('result'))
     apply_team_id = request.GET.get('team_id')
     success = u'您已经同意了该入盟请求' if result == 1 else u'您已经拒绝了该入盟请求'
@@ -233,7 +233,7 @@ def union_member_appove(request):
         message.type = MessageType.SYSTEM_MSG
         message.from_team_id = 0
         message.title = u'入盟申请被通过' if result == 1 else u'入盟申请被拒绝'
-        message.content = u'%s盟盟主%s%s了你的入盟申请' % (union.name, user_info['nickname'], u'通过' if result == 1 else u'拒绝')
+        message.content = u'%s盟盟主%s%s了你的入盟申请' % (union.name, user_info.nickname, u'通过' if result == 1 else u'拒绝')
         message.to_team_id = apply_team_id
         
         union_member = UnionMember()
