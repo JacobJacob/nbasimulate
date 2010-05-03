@@ -1,5 +1,5 @@
 //用于首页左侧数据的刷新
-var sy_rpc = new PHPRPC_Client('ajax/sy.php', ['shua_xin_zuo']);
+//var sy_rpc = new PHPRPC_Client('ajax/sy.php', ['shua_xin_zuo']);
 
 //失去焦点的时候执行此方法，发送请求到后台php
 function zuoResult(result) {
@@ -7,7 +7,7 @@ function zuoResult(result) {
 }
 
 function sy_zuo_shua_xin() {
-  sy_rpc.shua_xin_zuo(zuoResult);
+  //sy_rpc.shua_xin_zuo(zuoResult);
 }
 
 
