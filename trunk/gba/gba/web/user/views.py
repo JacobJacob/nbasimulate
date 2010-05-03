@@ -307,7 +307,7 @@ def issue_message(request):
     user_info = UserInfo.load(username=team.username)
     chat_message = ChatMessage()
     chat_message.content = content
-    chat_message.username = user_info['nickname']
+    chat_message.username = user_info.nickname
     chat_message.persist()
      
     chat_messages = ChatMessage.query(order='created_time desc', limit=15)
