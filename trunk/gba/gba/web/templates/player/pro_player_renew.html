@@ -1,0 +1,54 @@
+<form name="frm" action="i.php?a=453&amp;id_qiu_yuan=2004734" method="post">
+<div id="time"></div>
+<table class="list_table" align="center" border="0" cellpadding="5" cellspacing="5" width="80%">
+ <tbody>
+  <tr>
+   <td colspan="3" align="center">请选择要与球员{{player.name}}的时间</td>
+  </tr> 
+   <tr>
+	<th>合同</th>
+	<th width="33%">薪水/轮(资金)</th>
+	<th width="33%">选择</th>    
+  </tr>
+  <tr>
+    <td align="center">13</td><td align="center">1502</td>
+    <td align="center"><input name="xs" value="1502" onclick="javascript:document.getElementById('lun').value=13" type="radio"></td>
+  </tr>
+  <tr>
+    <td align="center">26</td>
+    <td align="center">1573</td>
+    <td align="center">
+     <input checked="checked" name="xs" value="1573" onclick="javascript:document.getElementById('lun').value=26" type="radio">
+    </td>
+  </tr>
+	<input id="lun" name="lun" value="26" type="hidden">
+  <tr><td>
+ </td>
+   <td align="center">
+	 <input src="/site_media/images/submit.gif" name="sub" id="sub" type="image" border="0" width="60" height="18">
+	 <a href="{% url profession-player-min %}" onclick="return href_to_div(this,'main_content');">
+	  <img src="/site_media/images/back.gif">
+	 </a>
+   </td>
+   <td></td>
+ </tr>					
+</tbody>
+</table>
+</form>
+<div class="blank10"></div>
+<div class="blank10"></div>
+<div class="blank10"></div>
+<div>　　
+ <font color="brown">
+ <ul>
+  <li>
+  1.如果球员合同期到零，系统将会自动续一个短约,而这短约薪水一般比较高。<br/>
+  </li>
+  <li>
+  2.如果续约的球员是您队中自己培养的年轻球员或者新秀球员,您在计算工资帽时，
+  将按新季特例计算（即只将其80%的工资计入工资帽）
+  </li>
+  </ul>
+ </font>
+ </div>
+</div>

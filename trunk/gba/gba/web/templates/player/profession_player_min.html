@@ -20,9 +20,15 @@
 <tr id="{{ info.id }}" no="{{ info.no }}">
   <td><img src="/site_media/images/number/{{info.player_no}}.gif"></td>
   <td>
-   <a href="{% url profession-player-detail %}?no={{info.no}}" onclick="return show_popup(this)" title="">
-    <font color="#0096f1">{{info.name}}</font>
-  </a>
+    {% if info.is_draft %}
+    <a href="{% url player-detail %}?no={{info.no}}&type=5" onclick="return show_popup(this)" title="">
+    <font color="#0096f1">{{info.name}}</font><font color="red">[秀]</font>
+    </a>
+    {% else %}
+       <a href="{% url profession-player-detail %}?no={{info.no}}" onclick="return show_popup(this)" title="">
+       <font color="#0096f1">{{info.name}}</font>
+       </a>
+    {% endif %}
   </td>
   <td>{{ info.age }}</td>
   <td><div style="display: block; clear: both;">
@@ -35,10 +41,30 @@
   <td>{{info.stature}}</td>
   <td>{{info.avoirdupois}}</td>
   <td><font color="black">{{info.ability|format_number}}</font></td>
-  <td>{{info.wage}}</td>
-  <td>{{info.contract }}</td>
+  <td>
+     {% if info.is_draft %}
+      <font color="red">[秀]</font>
+    {% else %}
+      {{info.wage}}
+    {% endif %}
+  </td>
+  <td>
+    {% if info.is_draft %}
+      <font color="red">[秀]</font>
+    {% else %}
+      {{info.contract }}
+    {% endif %}
+  </td>
   <td>阵容中</td>
-  <td>- -</td>
+  <td>
+    {% if info.need_renew %}
+       <a onclick="return href_to_div(this,'main_content');" id="href" href="{% url pro-player-renew %}?no={{info.no}}">
+       <font color="#0096f1">续约</font>
+      </a>
+    {% else %}
+      - -
+    {% endif %}
+  </td>
 </tr>
 {% endfor %}
 </tbody>

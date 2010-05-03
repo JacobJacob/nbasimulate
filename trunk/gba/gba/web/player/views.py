@@ -5,13 +5,13 @@
 from django.core.urlresolvers import reverse
 
 from gba.web.render import render_to_response
-from gba.common import playerutil
+from gba.common import playerutil, exception_mgr
 from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
 from gba.entity import Team, YouthPlayer, FreePlayer, YouthFreePlayer, \
                        ProfessionPlayer, ProPlayerSeasonStatTotal, ProPlayerCareerStatTotal, \
-                       DraftPlayer
-from gba.common.constants import attributes, hide_attributes, AttributeMaps
+                       DraftPlayer, AttentionPlayer
+from gba.common.constants import attributes, hide_attributes, AttributeMaps, MarketType
 
 @login_required
 def index(request, min=False):
@@ -64,13 +64,12 @@ def profession_player(request, min=False):
      
     infos = player_operator.get_profession_player(team.id)
     datas = {'infos': infos}
-    datas['nos'] = [i for i in range(30)]
-    show_attrs = {}
-    for attr in AttributeMaps.keys():
-        if attr not in hide_attributes:
-            show_attrs[attr] = AttributeMaps[attr]
     
-    datas['attrs'] = show_attrs
+    for info in infos:
+        if info['contract'] != None and info['contract'] < 13:
+            info['need_renew'] = 1
+        else:
+            info['need_renew'] = 0
     
     if min:
         return render_to_response(request, 'player/profession_player_min.html', datas)
@@ -84,7 +83,7 @@ def profession_player_detail(request):
     if not no:
         return render_to_response(request, 'message.html', {'error': u'球员id为空'})
     player = ProfessionPlayer.load(no=no)
-    if not player:
+    if not player or player.is_draft == 1:
         return render_to_response(request, 'message.html', {'error': u'球员不存在'})
     if player.team_id != team.id:
         return render_to_response(request, 'message.html', {'error': u'球员不在队中'})
@@ -448,3 +447,107 @@ def draft_player(request, min=False):
     if min:
         return render_to_response(request, 'player/draft_players_min.html', datas)
     return render_to_response(request, 'player/draft_players.html', datas)
+
+@login_required
+def draft_player_bid(request):
+    '''试训'''
+    team = request.team
+    no = request.GET.get('no')
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not no:
+            error = '球员不存在'
+            break
+        
+        player = DraftPlayer.load(no=no)
+        if not player:
+            error = '球员不存在'
+            break
+        
+        if player.status == 1: #1代表现在在其它队试训中
+            error = '该球员目前在其它队试训中'
+            break
+        
+        draft_count = ProfessionPlayer.count(condition='team_id="%s" and is_draft=1' % team.id)
+        if draft_count >= 2:
+            error = '您同一时间最多只能试训2名球员'
+            break
+            
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    if request.method == 'GET':
+        return render_to_response(request, 'player/draft_player_bid.html', {'player': player})
+    else:
+        success = '试训成功'
+        pro_player = playerutil.copy_player(player, 'draft_player', 'profession_player')    
+        pro_player.is_draft = 1
+        pro_player.team_id = team.id
+        n = 0
+        while n < 100:
+            n += 1
+            p = ProfessionPlayer.load(team_id=team.id, player_no=n)
+            if not p:
+                pro_player.player_no = n
+                break
+        player.status = 1
+        player.bid_count += 1
+        player.current_team_id = team.id
+        
+        attention_player = AttentionPlayer()
+        attention_player.team_id = team.id
+        attention_player.no = no
+        attention_player.type = MarketType.YOUTH_FREE
+        
+        DraftPlayer.transaction()
+        try:
+            pro_player.persist()
+            player.persist()
+            attention_player.persist()
+            DraftPlayer.commit()
+        except:
+            DraftPlayer.rollback()
+            error  = '服务器异常'
+            exception_mgr.on_except()
+            
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        return render_to_response(request, 'message.html', {'success': success})
+    
+
+def pro_player_renew(request):
+    '''职业球员续约'''
+    team = request.team
+    no = request.GET.get('no')
+    error = None
+    datas = {}
+    i = 0 
+    while i < 1:
+        i += 1
+        if not no:
+            error = '球员不存在'
+            break
+        
+        player = ProfessionPlayer.load(no=no)
+        if not player:
+            error = '球员不存在'
+            break
+        
+        datas['player'] = player
+        
+        if player.contract >= 13 or player.is_draft == 1:
+            error = '该球员不能续约'
+            break
+        
+        if player.team_id != team.id:
+            error = '该球员不在您队中'
+            break
+        
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    
+    if request.method == 'GET':
+        return render_to_response(request, 'player/pro_player_renew.html', datas)

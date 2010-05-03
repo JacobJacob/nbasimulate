@@ -171,6 +171,7 @@ def create_profession_player(location):
 def copy_player(player, source='youth_free_player', to='youth_player'):
     if source == 'youth_free_player' and to == 'youth_player':
         youth_free_player = copy.deepcopy(player)
+        delattr(youth_free_player, 'id')
         delattr(youth_free_player, 'price')
         delattr(youth_free_player, 'bid_count')
         delattr(youth_free_player, 'expired_time')
@@ -182,6 +183,7 @@ def copy_player(player, source='youth_free_player', to='youth_player'):
         return youth_free_player
     elif source == 'free_player' and to == 'profession_player':
         profession_player = copy.deepcopy(player)
+        delattr(profession_player, 'id')
         delattr(profession_player, 'bid_count')
         delattr(profession_player, 'expired_time')
         delattr(profession_player, 'delete_time')
@@ -192,6 +194,11 @@ def copy_player(player, source='youth_free_player', to='youth_player'):
         delattr(profession_player, 'worth')
         delattr(profession_player, 'current_team_id')
         delattr(profession_player, 'current_price')
+        profession_player.__class__ = ProfessionPlayer
+        return profession_player
+    elif source == 'draft_player' and to == 'profession_player':
+        profession_player = copy.deepcopy(player)
+        delattr(profession_player, 'id')
         profession_player.__class__ = ProfessionPlayer
         return profession_player
     return None

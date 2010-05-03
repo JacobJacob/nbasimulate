@@ -1,0 +1,22 @@
+{% load common_extras %}
+<form name='frm' action='{% url draft-player-bid %}' method='post' onsubmit="return submit_to_div(this,'popup_inner');">
+<div class="floatBox_sms">
+	<div><img src="/site_media/images/w_blank/blank_2_12.gif" width="91" height="70" alt="" /></div>
+	<div class="blank20"></div>
+	<div class="blank10"></div>
+	<p class="lh21">{{team.id|nickname}}经理，确定要邀请{{player.name}}到您队中试训吗?</p>
+	<div class="h25"></div>
+	<div></div>
+	<input type='hidden' name='no' id='no' value='{{player.no}}'>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="floatBox_sms_btn">
+		<div class="left"><input type="Submit" name="Submit" value="确定" class="btn_3"></div>
+		<div class="btn_3 right"><a href="#" onclick="return hide_popup();">取消</a></div>
+	</div>
+	<div class="clear"></div>
+	<div class="blank10"></div>
+</div>
+</form>

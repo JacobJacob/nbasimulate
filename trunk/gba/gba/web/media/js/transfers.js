@@ -131,3 +131,4 @@ check_form_youth_bid = function(myform)
 	}
 	return submit_to_div(myform,"popup_inner");
 }
+

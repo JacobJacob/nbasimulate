@@ -26,4 +26,6 @@ urlpatterns = patterns('web.player',
      url(r'^player_update/$', 'views.player_update', name='player-update'),
      url(r'^draft_player/$', 'views.draft_player', name='draft-player'),
      url(r'^draft_player_min/$', 'views.draft_player', {'min': True}, name='draft-player-min'),
+     url(r'^draft_player_bid/$', 'views.draft_player_bid', name='draft-player-bid'),
+     url(r'^pro_player_renew/$', 'views.pro_player_renew', name='pro-player-renew'),
 )

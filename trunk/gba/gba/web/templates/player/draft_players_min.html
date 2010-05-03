@@ -74,12 +74,18 @@
 <td>{{info.stature}}</td>
 <td>{{info.avoirdupois}}</td>
 <td><font color="#666666">未知</font></td>
-<td>{{ info.bid_count }}</td>
+<td>{{ info.bid_count }}
+    {% ifequal info.status 1%}
+       <a href="{% url user-detail %}?id={{info.current_team_id}}" onclick="return show_popup(this);">
+         <font color="#0096f1">{{ info.current_team_id|team_username}}</font>
+       </a>
+    {% endifequal %}
+</td>
 <td>
   <div id="time_1">{{ info.lave_time|format_lave_time }}</div>
 </td>
  <td>
-  <a href="{% url youth-free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
+  <a href="{% url draft-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">
   <font color="#0096f1">试训</font>
   </a>|
   <a href="{% url add-attention-player %}?no={{info.no}}&type=3" onclick="return show_popup(this)">

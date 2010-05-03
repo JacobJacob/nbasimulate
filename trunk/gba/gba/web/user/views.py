@@ -68,7 +68,7 @@ def register(request):
         return render_to_response(request, "user/register_error.html", locals())
     
 @login_required
-def online_user(request):
+def online_user(request, min=False):
     '''在线经理'''
     
     page = int(request.GET.get('page', 1))
@@ -86,7 +86,9 @@ def online_user(request):
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
             'nextpage': page + 1, 'prevpage': page - 1}
     
-    return render_to_response(request, "user/online_user.html", locals())
+    if min:
+        return render_to_response(request, "user/online_user_min.html", datas)
+    return render_to_response(request, "user/online_user.html", datas)
 
 @login_required
 def send_match_request(request):
