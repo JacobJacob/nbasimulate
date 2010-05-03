@@ -1,3 +1,4 @@
+{% load common_extras %}
 <form id="submitform" name="submitform" action="{% url profession-tactical-detail %}" method="post" onsubmit="return zhen_rong_check(this);">
 	<div class="tacticsNew" id="container" style="position: relative;">
 		<div class="tacticsNew_l">
@@ -49,22 +50,21 @@
 <div onmouseup="MouseUp(event);" onmousedown="MouseDown(this,event);" onmousemove="MouseMove(event);" id="{{info.no}}" style="z-index: 100; position: absolute; height: 38px; width: 29px;">
 <div title="姓名：{{info.name}}[{{info.age}}]
 位置：{{info.position}}
-身高：207CM
-体重：143KG
-体力：72
-综合：32.6
-
-速度：31
-弹跳：42
-强壮：41
-耐力：27
-投篮：37
-三分：33
-运球：35
-传球：36
-篮板：30
-抢断：23
-封盖：24" style="z-index: 1; background: url(/site_media/images/zhan_shu/{{info.player_no}}.gif) repeat scroll 0% 0% transparent;width: 29px; color: white; height: 38px;" align="center">
+身高：{{info.stature}}CM
+体重：{{info.avoirdupois}}KG
+体力：{{info.power}}
+综合：{{info.speed|format_number}}
+速度：{{info.speed|format_number}}
+弹跳：{{info.bounce|format_number}}
+强壮：{{info.strength|format_number}}
+耐力：{{info.stamina|format_number}}
+投篮：{{info.shooting|format_number}}
+三分：{{info.trisection|format_number}}
+运球：{{info.dribble|format_number}}
+传球：{{info.pass|format_number}}
+篮板：{{info.backboard|format_number}}
+抢断：{{info.steal|format_number}}
+封盖：{{info.blocked|format_number}}" style="z-index: 1; background: url(/site_media/images/zhan_shu/{{info.player_no}}.gif) repeat scroll 0% 0% transparent;width: 29px; color: white; height: 38px;" align="center">
 </div>
 </div></li>
 {% endfor %}
