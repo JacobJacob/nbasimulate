@@ -42,7 +42,7 @@
        {{ info.current_price }}/
        {% if info.current_team_id %}
          <a href="{% url user-detail %}?id={{info.current_team_id}}" onclick="return show_popup(this);">
-         <font color="#0096f1">{{ info.current_team_id|team_username}}</font>
+         <font color="#0096f1">{{ info.current_team_id|nickname}}</font>
          </a>
        {% else %}
          --
@@ -52,19 +52,25 @@
   {% endifequal %}
 </a>
 </td>
-<td><div id="time_1">{{ info.lave_time|format_lave_time }}</div>
+<td>
+  {% ifequal info.auction_status 0%}
+    <div id="time_1">{{ info.lave_time|format_lave_time }}</div>
+  {% else %} 
+    {% ifequal info.auction_status 1%}
+     <font color="#0096f1">
+      {{info.current_price}}/
+        <a href="{% url user-detail %}?id={{info.team_id}}" onclick="return show_popup(this)" title="">
+           <font color="#0096f1">{{info.current_team_id|nickname}} </font>
+        </a>
+      </font>
+    {% else %}
+        不成交
+    {% endifequal %}
+  {% endifequal %}   
 <input id="value_1" value="85678" type="hidden"></td>
 <td>
  {% ifless info.lave_time 0 %}
-     {% ifequal info.auction_status 1 %}
-       <a>成交详情</a>
-     {% else %}
-          {% ifequal info.auction_status 2 %}
-            未成交
-          {% else %}
-            结算中
-          {% endifequal %}
-     {% endifequal %}
+     
  {% else %}
      {% ifequal info.type 1%}
         <a href="{% url free-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">

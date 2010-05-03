@@ -1,0 +1,20 @@
+<form id='frm' action='{% url pro-player-sell %}' method='post' onsubmit='return submit_to_div(this,"popup_inner"); '>
+<div class='blank20'></div>
+<div class='floatBox_msg mauto'>
+  <p class='lh21 color_7'>
+    是否要将{{player.name}}出售,您将获得资金:{{social_status}}
+  </p>
+  <div class='blank20'>
+  </div>
+  <div class='floatBox_msg_btn mauto'>
+  <div class='left'>
+    <input id="no" type='hidden' name='no' value='{{player.no}}' class='btn_3'/>
+    <input type='submit' name='Submit' value='确定' class='btn_3'/>
+  </div>
+  <div class='btn_3 right'>
+   <a href='#' onclick='return hide_popup("floatBox");'>取消</a>
+  </div>
+  <div class='clear'></div>
+  </div>
+</div>
+<div class='blank20'></div>

@@ -81,13 +81,13 @@ def get_free_palyer_by_no(no):
     finally:
         cursor.close()
         
-_SELECT_PROFESSION_PLAYER = 'select * from profession_player where team_id=%s order by is_draft asc, ability desc'
+_SELECT_PROFESSION_PLAYER = 'select * from profession_player where team_id=%s and %s order by is_draft asc, ability desc'
 
-def get_profession_player(team_id):
+def get_profession_player(team_id, condition='1=1'):
     '''获取某队职业球员'''
     cursor = connection.cursor()
     try:
-        rs = cursor.fetchall(_SELECT_PROFESSION_PLAYER , (team_id, ))
+        rs = cursor.fetchall(_SELECT_PROFESSION_PLAYER % (team_id, condition))
         if rs:
             return rs.to_list()
     finally:

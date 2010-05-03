@@ -459,6 +459,7 @@ def profession_tactical_detail(request):
                     name = '第四节战术'
             
             info['name'] = name
+            info['is_youth'] = 0
             
             if not match_operator.save_tactical_detail(info):
                 error = '战术更新失败'
@@ -578,7 +579,7 @@ def tactical_grade(request):
 def profession_training(request, min=False):
     '''职业训练'''
     team = request.team
-    infos = player_operator.get_profession_player(team.id)
+    infos = player_operator.get_profession_player(team.id, condition='is_draft=0')
     datas = {'infos': infos}
     
     for info in infos:

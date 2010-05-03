@@ -6,12 +6,14 @@ from django.core.urlresolvers import reverse
 
 from gba.web.render import render_to_response
 from gba.common import playerutil, exception_mgr
+from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
 from gba.entity import Team, YouthPlayer, FreePlayer, YouthFreePlayer, \
                        ProfessionPlayer, ProPlayerSeasonStatTotal, ProPlayerCareerStatTotal, \
-                       DraftPlayer, AttentionPlayer
-from gba.common.constants import attributes, hide_attributes, AttributeMaps, MarketType
+                       DraftPlayer, AttentionPlayer, LeagueConfig, SeasonFinance, AllFinance
+from gba.common.constants import attributes, hide_attributes, AttributeMaps, MarketType, \
+                                 FinanceSubType, FinanceType
 
 @login_required
 def index(request, min=False):
@@ -538,6 +540,13 @@ def pro_player_renew(request):
             break
         
         player = ProfessionPlayer.load(no=no)
+        
+        wage = playerutil.calcul_wage(player, ran=False)
+        
+        datas['wage13'] = int(wage)
+        datas['wage26'] = int(wage * 1.2)
+        datas['wage39'] = int(wage * 1.4)
+        
         if not player:
             error = '球员不存在'
             break
@@ -558,3 +567,170 @@ def pro_player_renew(request):
     
     if request.method == 'GET':
         return render_to_response(request, 'player/pro_player_renew.html', datas)
+    else:
+        success = '续约成功!'
+        round = int(request.GET.get('round'))
+        wage = playerutil.calcul_wage(player, ran=False)
+        
+        if round == 26:
+            wage = int(wage * 1.2)
+        elif round == 39:
+            wage = int(wage * 1.4)
+        
+        player.wage = wage
+        if player.contract != None:
+            player.contract += round
+        else:
+            player.contract = round
+        player.persist()
+             
+        url = reverse('profession-player-min')
+        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+    
+def pro_player_sell(request):
+    '''职业球员出售'''
+    team = request.team
+    no = request.GET.get('no')
+    error = None
+    datas = {}
+    i = 0 
+    while i < 1:
+        i += 1
+        if not no:
+            error = '球员不存在'
+            break
+        
+        player = ProfessionPlayer.load(no=no)
+        
+        if not player:
+            error = '球员不存在'
+            break
+        
+        datas['player'] = player
+
+        if player.team_id != team.id:
+            error = '该球员不在您队中'
+            break
+        
+        social_status = playerutil.calcul_social_status(player)
+        datas['social_status'] = social_status
+        
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    if request.method == 'GET':
+        return render_to_response(request, 'player/pro_player_sell.html', datas)
+    else:
+        success = '出售成功!'
+        
+        social_status = playerutil.calcul_social_status(player)
+        free_player = playerutil.copy_player(player, 'profession_player', 'free_player') 
+        free_player.social_status = social_status
+        free_player.expired_time = ReserveLiteral('date_add(now(), interval 2 day)')
+        
+        league_config = LeagueConfig.load(id=1)
+        #赛季支出明细
+        tinance = SeasonFinance()
+        tinance.sub_type = FinanceSubType.SELL_PLAYER
+        tinance.team_id = team.id
+        tinance.type = FinanceType.INCOME
+        tinance.season = league_config.season
+        tinance.round = league_config.round
+        tinance.info = u'出售球员%s' % player.name
+        tinance.income = 0
+        tinance.outlay = social_status
+        
+        team.funds += social_status
+        
+        #赛季收入概要
+        all_tinance = AllFinance.load(team_id=team.id, season=league_config.season)
+        if not all_tinance:
+            all_tinance = AllFinance()
+            all_tinance.team_id = team.id
+            all_tinance.season = league_config.season
+            all_tinance.income = 0
+            all_tinance.outlay = 0
+        all_tinance.income += social_status
+        
+        FreePlayer.transaction()
+        try:
+            player.delete()
+            free_player.persist()
+            all_tinance.persist()
+            tinance.persist()
+            FreePlayer.commit()
+        except:
+            FreePlayer.rollback()
+            raise
+                     
+        url = reverse('profession-player-min')
+        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+    
+@login_required
+def finish_draft(request):
+    '''结束试训'''
+    team = request.team
+    no = request.GET.get('no')
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not no:
+            error = '球员不存在'
+            break
+        
+        player = DraftPlayer.load(no=no)
+        if not player:
+            error = '球员不存在'
+            break
+        
+        if player.status == 1: #1代表现在在其它队试训中
+            error = '该球员目前在其它队试训中'
+            break
+        
+        draft_count = ProfessionPlayer.count(condition='team_id="%s" and is_draft=1' % team.id)
+        if draft_count >= 2:
+            error = '您同一时间最多只能试训2名球员'
+            break
+            
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    if request.method == 'GET':
+        return render_to_response(request, 'player/draft_player_bid.html', {'player': player})
+    else:
+        success = '试训成功'
+        pro_player = playerutil.copy_player(player, 'draft_player', 'profession_player')    
+        pro_player.is_draft = 1
+        pro_player.team_id = team.id
+        n = 0
+        while n < 100:
+            n += 1
+            p = ProfessionPlayer.load(team_id=team.id, player_no=n)
+            if not p:
+                pro_player.player_no = n
+                break
+        player.status = 1
+        player.bid_count += 1
+        player.current_team_id = team.id
+        
+        attention_player = AttentionPlayer()
+        attention_player.team_id = team.id
+        attention_player.no = no
+        attention_player.type = MarketType.YOUTH_FREE
+        
+        DraftPlayer.transaction()
+        try:
+            pro_player.persist()
+            player.persist()
+            attention_player.persist()
+            DraftPlayer.commit()
+        except:
+            DraftPlayer.rollback()
+            error  = '服务器异常'
+            exception_mgr.on_except()
+            
+        if error:
+            return render_to_response(request, 'message.html', {'error': error})
+        return render_to_response(request, 'message.html', {'success': success})
+        

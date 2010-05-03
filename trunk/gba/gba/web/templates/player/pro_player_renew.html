@@ -1,4 +1,4 @@
-<form name="frm" action="i.php?a=453&amp;id_qiu_yuan=2004734" method="post">
+<form name="frm" action="{% url pro-player-renew %}" method="post" onsubmit="return submit_to_div(this,'popup_inner');">
 <div id="time"></div>
 <table class="list_table" align="center" border="0" cellpadding="5" cellspacing="5" width="80%">
  <tbody>
@@ -6,24 +6,36 @@
    <td colspan="3" align="center">请选择要与球员{{player.name}}的时间</td>
   </tr> 
    <tr>
-	<th>合同</th>
-	<th width="33%">薪水/轮(资金)</th>
-	<th width="33%">选择</th>    
+	<th style="text-align:center;">合同</th>
+	<th style="text-align:center;" width="33%">薪水/轮(资金)</th>
+	<th style="text-align:center;" width="33%">选择</th>    
   </tr>
   <tr>
-    <td align="center">13</td><td align="center">1502</td>
-    <td align="center"><input name="xs" value="1502" onclick="javascript:document.getElementById('lun').value=13" type="radio"></td>
+    <td align="center">13</td>
+    <td align="center">{{wage13}}</td>
+    <td align="center">
+    <input checked="checked" name="wage" value="{{wage13}}" onclick="javascript:document.getElementById('round').value=13" type="radio">
+    </td>
   </tr>
   <tr>
     <td align="center">26</td>
-    <td align="center">1573</td>
+    <td align="center">{{wage26}}</td>
     <td align="center">
-     <input checked="checked" name="xs" value="1573" onclick="javascript:document.getElementById('lun').value=26" type="radio">
+     <input name="wage" value="{{wage26}}" onclick="javascript:document.getElementById('round').value=26" type="radio">
     </td>
   </tr>
-	<input id="lun" name="lun" value="26" type="hidden">
-  <tr><td>
- </td>
+  <tr>
+    <td align="center">39</td>
+    <td align="center">{{wage39}}</td>
+    <td align="center">
+     <input name="wage" value="{{wage39}}" onclick="javascript:document.getElementById('round').value=39" type="radio">
+    </td>
+  </tr>
+	<input id="round" name="round" value="13" type="hidden">
+	<input id="no" name="no" value="{{player.no}}" type="hidden">
+  <tr>
+  <td>
+  </td>
    <td align="center">
 	 <input src="/site_media/images/submit.gif" name="sub" id="sub" type="image" border="0" width="60" height="18">
 	 <a href="{% url profession-player-min %}" onclick="return href_to_div(this,'main_content');">

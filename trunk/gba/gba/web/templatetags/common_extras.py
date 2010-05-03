@@ -217,7 +217,7 @@ def format_lave_time(seconds):
     if not seconds:
         return ''
     if seconds < 0:
-        return u'己截止'
+        return u'结算中'
 
     if seconds >= one_day_seconds:
         days = seconds // one_day_seconds

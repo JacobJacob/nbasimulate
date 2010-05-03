@@ -5,9 +5,8 @@ import random
 import time
 import copy
 
-from gba.common.constants import attributes
 from gba.common import md5mgr
-from gba.entity import ProfessionPlayer, YouthPlayer, TrainingCenter
+from gba.entity import ProfessionPlayer, YouthPlayer, FreePlayer
 from gba.client.betch.config import AttributeConfig, YouthAttributeConfig
 from gba.common.attribute_factory import AvoirdupoisFactory, NameFactory, AgeFactory, StatureFactory, PictrueFactory
 from gba.common.constants import attributes, hide_attributes
@@ -74,14 +73,15 @@ def calcul_otential(player):
             attr_otential = attr_max_value - attr_value
             setattr(player, '%s_oten' % attr, attr_otential if attr_otential > 0.1 else 0)
             
-def calcul_wage(player):
-    '''计算工资'''
+
+def calcul_social_status(player):
+    '''计算一个球员身价'''
     if isinstance(player, dict):
         ability = player['ability']
-        position = player['position']
+        position = player['position_base']
     else:
         ability = getattr(player, 'ability')
-        position = getattr(player, 'position')
+        position = getattr(player, 'position_base')
         
     times = 1
     if position == 'C':
@@ -95,11 +95,56 @@ def calcul_wage(player):
     else:
         position = 1.1
     
-    for i in range(3):
-        if random.randint(1, 2) == 1:
-            times += 0.1
-        else:
-            times -= 0.1
+    twice_as_much = 15
+     
+    if ability <= 20:
+        social_status = float(ability * twice_as_much) / 90 * 10000 + (times * 1000)
+    elif ability <= 30:
+        social_status = float(ability * twice_as_much) / 110 * 10000 + (times * 1000)
+    elif ability <= 40:
+        social_status = float(ability * twice_as_much) / 105 * 10000 + (times * 1000)
+    elif ability <= 50:
+        social_status = float(ability * twice_as_much) / 95 * 10000 + (times * 1000)
+    elif ability <= 60:
+        social_status = float(ability * twice_as_much) / 85 * 10000 + (times * 1000)
+    elif ability <= 70:
+        social_status = float(ability * twice_as_much) / 60 * 10000 + (times * 1000)
+    elif ability <= 80:
+        social_status = float(ability * twice_as_much) / 50 * 10000 + (times * 1000)
+    elif ability <= 90:
+        social_status = float(ability * twice_as_much) / 40 * 10000 + (times * 1000)
+    else:
+        social_status = float(ability * twice_as_much) / 30 * 10000 + (times * 1000)
+        
+    return int(social_status)
+            
+def calcul_wage(player, ran=True):
+    '''计算工资'''
+    if isinstance(player, dict):
+        ability = player['ability']
+        position = player['position_base']
+    else:
+        ability = getattr(player, 'ability')
+        position = getattr(player, 'position_base')
+        
+    times = 1
+    if position == 'C':
+        times = 1.5
+    elif position == 'PF':
+        times = 1.4
+    elif position == 'SF':
+        times = 1.3
+    elif position == 'SG':
+        times = 1.2
+    else:
+        position = 1.1
+    
+    if ran:
+        for i in range(3):
+            if random.randint(1, 2) == 1:
+                times += 0.1
+            else:
+                times -= 0.1
         
     if ability <= 20:
         wage = float(ability) / 90 * 10000 + (times * 1000)
@@ -125,6 +170,7 @@ def calcul_wage(player):
         player['wage'] = wage
     else:
         setattr(player, 'wage', wage)
+    return wage
     
 def calcul_ability(player):
     '''计算一个球员的综合'''
@@ -178,7 +224,6 @@ def copy_player(player, source='youth_free_player', to='youth_player'):
         delattr(youth_free_player, 'delete_time')
         delattr(youth_free_player, 'created_time')
         delattr(youth_free_player, 'updated_time')
-        delattr(youth_free_player, 'id')
         youth_free_player.__class__ = YouthPlayer
         return youth_free_player
     elif source == 'free_player' and to == 'profession_player':
@@ -189,7 +234,6 @@ def copy_player(player, source='youth_free_player', to='youth_player'):
         delattr(profession_player, 'delete_time')
         delattr(profession_player, 'created_time')
         delattr(profession_player, 'updated_time')
-        delattr(profession_player, 'id')
         delattr(profession_player, 'auction_status')
         delattr(profession_player, 'worth')
         delattr(profession_player, 'current_team_id')
@@ -201,6 +245,12 @@ def copy_player(player, source='youth_free_player', to='youth_player'):
         delattr(profession_player, 'id')
         profession_player.__class__ = ProfessionPlayer
         return profession_player
+    elif source == 'profession_player' and to == 'free_player':
+        free_player = copy.deepcopy(player)
+        delattr(free_player, 'id')
+        free_player.__class__ = FreePlayer
+        return free_player
+        
     return None
 
 def create_youth_player(location):
@@ -233,14 +283,8 @@ def create_youth_player(location):
     return player
 
 if __name__ == '__main__':
-    
-    abilitys = [20, 30, 40, 50, 60, 69.9, 70, 70.1, 80]
-    positions = ['PG', 'SG', 'SF', 'PF', 'C']
-    
-    for ability in abilitys:
-        for position in positions:
-            player = ProfessionPlayer()
-            player.ability = ability
-            player.position = position
-            calcul_wage(player)
-            print '[%s, %s][%s]' % (position, ability, player.wage)
+
+    player = ProfessionPlayer()
+    player.ability = 70
+    player.position = 'C'
+    print calcul_wage(player, ran=False)

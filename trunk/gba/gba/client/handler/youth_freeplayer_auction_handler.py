@@ -12,7 +12,7 @@ from gba.common import log_execption
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.entity import YouthFreePlayer, AttentionPlayer, YouthFreeplayerAuctionLog, \
                        Team, PlayerAuctionLog, Message, UserInfo, LeagueConfig, SeasonFinance, \
-                       AllFinance
+                       AllFinance, YouthPlayer
 from gba.common.client.base import BaseClient
 from gba.common.constants import MessageType, MarketStatus, FinanceSubType, FinanceType
 
@@ -29,7 +29,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         start_id = 0
         #把球员置为成交,或者不成交
         while True:
-            players = self.get_players(condition='id>%s and status=0 and expired_time<=now()' % start_id, limit=10)
+            players = self.get_players(condition='id>%s and auction_status=0 and expired_time<=now()' % start_id, limit=10)
             if not players:
                 break
             start_id = players[-1].id
@@ -75,12 +75,20 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         auction_logs = YouthFreeplayerAuctionLog.query(condition='player_no="%s"' % player.no, order='price desc, id asc')
         attention_players = AttentionPlayer.query(condition='no="%s"' % player.no)
         
-        if player.status == MarketStatus.FINISH:
+        if player.auction_status == MarketStatus.FINISH:
             team = Team.load(username=auction_logs[0].username)
             price = auction_logs[0].price
             player.team_id = team.id
             team.funds -= price
             youth_player = playerutil.copy_player(player)
+            youth_player.power = 100
+            
+            i = 0
+            while i < 100:
+                i += 1
+                if not YouthPlayer.load(team_id=team.id, player_no=i):
+                    youth_player.player_no = i
+                    break   
             
             player_auction_log = PlayerAuctionLog()
             player_auction_log.player_no = player.no
@@ -111,7 +119,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         
         YouthFreePlayer.transaction()
         try:
-            if player.team_id:
+            if player.auction_status == MarketStatus.FINISH:
                 youth_player.team_id = player.team_id
                 youth_player.persist()
                 team.persist()
@@ -123,7 +131,8 @@ class YouthFreePlayerAuctionHandler(BaseClient):
                 message.is_new = 1
                 user_info = UserInfo.load(username=team.username)
                 nickname = user_info.nickname
-                message.content = "[%s]" '%s经理,您以%s的价格购得球员%s,现已经到队' % (datetime.now(), nickname, player.price, player.name)
+                message.title = '[%s] 球员%s已经到队' % (datetime.now(), player.name)
+                message.content = '[%s] %s经理,您以%s的价格购得球员%s,现已经到队' % (datetime.now(), nickname, player.price, player.name)
                 message.persist()
                 all_tinance.persist()
                 tinance.persist()
@@ -156,10 +165,10 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         auction_logs = YouthFreeplayerAuctionLog.query(condition='player_no="%s"' % player.no, order='price desc, id asc')
         self._total += 1
         if not auction_logs:#没人出价
-            status = MarketStatus.FINISH_FAILURE
+            auction_status = MarketStatus.FINISH_FAILURE
             self._failure_total += 1
         else:
-            status = MarketStatus.FINISH
+            auction_status = MarketStatus.FINISH
             self._success_total += 1
             team = Team.load(username=auction_logs[0].username)
             player.team_id = team.id
@@ -167,7 +176,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         
         YouthFreeplayerAuctionLog.transaction()
         try:
-            player.status = status
+            player.auction_status = auction_status
             player.delete_time = ReserveLiteral('date_add(now(), interval 5 minute)')
             player.persist() 
             YouthFreeplayerAuctionLog.commit()

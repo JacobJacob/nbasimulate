@@ -5,7 +5,7 @@ from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MatchStatus, TacticalGroupTypeMap, MatchShowStatus
 from gba.common import log_execption
-from gba.common import playerutil
+from gba.common import playerutil, exception_mgr
 from gba.entity import Team, ProfessionPlayer, League, LeagueTeams, TeamArena
 from gba.business import player_operator
 
@@ -30,11 +30,42 @@ def send_match_request(home_team_id, guest_team_id, type):
 def save_tactical_detail(info):
     '''保存战术'''
     info['created_time'] = ReserveLiteral('now()')
+
     cursor = connection.cursor()
     try:
+        cursor.execute('start transaction;')
         cursor.insert(info, 'team_tactical_detail', True, ['created_time'])
+        team_id = info['team_id']
+        is_youth = info['is_youth']
+        if is_youth:
+            players = player_operator.get_youth_player(team_id)
+        else:
+            players = player_operator.get_profession_player(team_id, condition='is_draft=0')
+            
+        team_tactical_details = get_tactical_details(team_id, is_youth)
+        
+        on_tactical_nos = {}
+        for team_tactical_detail in team_tactical_details:
+            on_tactical_nos[team_tactical_detail['cid']] = None
+            on_tactical_nos[team_tactical_detail['pfid']] = None
+            on_tactical_nos[team_tactical_detail['sfid']] = None
+            on_tactical_nos[team_tactical_detail['sgid']] = None
+            on_tactical_nos[team_tactical_detail['pgid']] = None
+            
+        for player in players:
+            if player['no'] in on_tactical_nos:
+                player['in_tactical'] = 1
+            else:
+                player['in_tactical'] = 0
+                
+        if is_youth:
+            cursor.insert(players, 'youth_player', True, ['created_time'])
+        else:
+            cursor.insert(players, 'profession_player', True, ['created_time'])
+        cursor.execute('commit;')
     except:
-        log_execption()
+        cursor.execute('rollback;')
+        exception_mgr.on_except()
         return False
     finally:
         cursor.close()

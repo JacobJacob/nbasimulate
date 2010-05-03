@@ -52,6 +52,7 @@ class FinanceType(ConstantBase):
 class FinanceSubType(ConstantBase):
     TICKETS = 11 #球票收入
     AD = 12 #广告收入
+    SELL_PLAYER = 13 #出售球员
     PLAYER_WAGE = 21 #球员工资支出
     STAFF_WAGE = 22 #职员工资支出
     ARENA_BUILD = 23 #球场建设支出

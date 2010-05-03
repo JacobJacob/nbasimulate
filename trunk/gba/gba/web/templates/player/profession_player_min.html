@@ -55,7 +55,21 @@
       {{info.contract }}
     {% endif %}
   </td>
-  <td>阵容中</td>
+  <td>
+    {% if info.in_tactical %}
+      阵容中
+    {% else %}
+       {% if info.is_draft %}
+         <a href="{% url finish-draft %}?no={{info.no}}" onclick="return show_popup(this)" title="结束试训">
+           <font color="#0096f1">结束试训</font>
+        </a>
+       {% else %}
+         <a href="{% url pro-player-sell %}?no={{info.no}}" onclick="return show_popup(this)" title="出售">
+          <font color="#0096f1">出售</font>
+         </a>
+       {% endif %}
+    {% endif %}
+  </td>
   <td>
     {% if info.need_renew %}
        <a onclick="return href_to_div(this,'main_content');" id="href" href="{% url pro-player-renew %}?no={{info.no}}">
