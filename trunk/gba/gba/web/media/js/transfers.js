@@ -10,8 +10,12 @@ count_down_all = function()
 }	
 
 count_down_one = function(div_id,value_id)
-{
-	var spantime = document.getElementById(value_id).value;
+{   
+    var spantime_obj = document.getElementById(value_id)
+	if(spantime_obj == null){
+	   return;
+	}
+	var spantime = spantime_obj.value;
 	spantime --;
 	document.getElementById(value_id).value = spantime;
 	var d = Math.floor(spantime / (24 * 3600));
