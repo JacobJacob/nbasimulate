@@ -43,6 +43,13 @@
 		return false;
 	  }
 	  chat_refresh('');
+	  
+	  function set_to_bottom(){
+	    var div = document.getElementById('msg_list'); 
+        div.scrollTop = div.scrollHeight; 
+	  }
+	  
+	  set_to_bottom();
+	  
  </script>
 <!--chat end -->
-	
