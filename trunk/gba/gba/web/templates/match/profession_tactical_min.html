@@ -34,7 +34,7 @@
             {% endfor %}
           </select>
        </td>
-       <td class="right">
+       <td>
            <select name="others{{section}}" id="others{{section}}">
             {% for tactical_detail in tactical_details %}
               <option value="{{ tactical_detail.id }}" {% ifequal tactical_detail.id match_type_3.section_ %}selected=true{% endifequal %}>{{ tactical_detail.name }}</option>
