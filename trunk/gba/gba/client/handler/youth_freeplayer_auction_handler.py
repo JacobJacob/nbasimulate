@@ -12,25 +12,26 @@ from gba.common import log_execption
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.entity import YouthFreePlayer, YouthFreeplayerAuctionLog, Team, PlayerAuctionLog, Message, UserInfo
 from gba.common.client.base import BaseClient
-from gba.common.constants import MessageType
+from gba.common.constants import MessageType, MarketStatus
 
 class YouthFreePlayerAuctionHandler(BaseClient):
     
     def __init__(self):
         super(YouthFreePlayerAuctionHandler, self).__init__("YouthFreePlayerAuctionHandler")
-    
+        self._success_total = 0
+        self._failure_total = 0
+        self._total = 0
+        
     def run(self):
         
         start_id = 0
         #把球员置为成交,或者不成交
         while True:
-            players = self.get_players(condition='id>%s and expired_time<=now()' % start_id, limit=10)
+            players = self.get_players(condition='id>%s and status=0 and expired_time<=now()' % start_id, limit=10)
             if not players:
                 break
             start_id = players[-1].id
             for player in players:
-                if player.team_id or player.price == -1: #已经成交过的，不处理
-                    continue
                 self.handle_single_auction(player)
                 
         #1.成交则把球员->买入经理->扣钱
@@ -44,7 +45,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
             for player in players:
                 self.handle_has_auction(player)
         
-        self.current_info = "sleep 60s"
+        self.current_info = "sleep 60s, [total:%s][success:%s][failure:%s]" % (self._total, self._success_total, self._failure_total)
         return 60
     
     def get_players(self, condition, limit=10):
@@ -112,13 +113,18 @@ class YouthFreePlayerAuctionHandler(BaseClient):
         '''处理单个竟拍'''
     
         auction_logs = YouthFreeplayerAuctionLog.query(condition='player_no="%s"' % player.no, order='price desc, id asc')
+        self._total += 1
         if not auction_logs:#没人出价
             price = -1
             username = None
+            status = MarketStatus.FINISH_FAILURE
+            self._failure_total += 1
         else:
             price = auction_logs[0].price
             username = auction_logs[0].username
-            
+            status = MarketStatus.FINISH
+            self._success_total += 1
+        
         YouthFreeplayerAuctionLog.transaction()
         try:
             if auction_logs:
@@ -127,6 +133,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
                 for auction_log in auction_logs:
                     auction_log.delete()
             player.price = price
+            player.status = status
             player.delete_time = ReserveLiteral('date_add(now(), interval 5 minute)')
             player.persist() 
             YouthFreeplayerAuctionLog.commit()
