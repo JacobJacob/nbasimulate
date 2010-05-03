@@ -141,6 +141,13 @@ def youth_free_player(request, min=False):
         totalpage = 0
     else:
         totalpage = (total -1) / pagesize + 1
+        
+        
+    for info in infos:
+        if info['lave_time'] > 0:
+            info['can_bid'] = True
+        else:
+            info['can_bid'] = False
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
             'nextpage': page + 1, 'prevpage': page - 1, 'position': position, 'order_by': order_by, 

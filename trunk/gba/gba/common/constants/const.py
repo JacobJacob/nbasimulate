@@ -138,6 +138,11 @@ class MarketType(ConstantBase):
     FREE = 1 #职业自由
     YOUTH_FREE = 2 #年轻自由
     DRAFT = 3 #选秀球员
+
+class MarketStatus(ConstantBase):
+    DEFAULT = 0 #职业自由
+    FINISH = 1 #已经流拍
+    FINISH_FAILURE = 2 #已经成交
     
 class StaffType(ConstantBase):
     TRAINERS = 1 #训练员
