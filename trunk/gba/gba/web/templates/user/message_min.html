@@ -27,6 +27,7 @@
 </table>
 <div class="blank10"></div>
 <div class="mlr8 tr">
+{% if infos %}
 {% ifequal page 1 %}
     首页
     上一页
@@ -42,12 +43,18 @@
      <a href="{% url message-min %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
 {% endifequal %}
 [第{{page}}/{{totalpage}}页]
+{% else %}
+ 首页 上一页 下一页 末页 [第0/0页] 
+{% endif %}
 </div>
- <div class="blank10"></div>
- <div align="right">
-<a href="#" onclick="return checkdel()"><font color="red">删除选中</font></a>|
+<div class="blank10"></div>
+<div align="right">
+<a href="#" onclick="return checkdel()">
+ <font color="red">删除选中</font>
+</a>
+|
 <a href="{% url delete-all-message %}" onclick="return shan_chu(this)">
-<font color="red">全部删除</font>
+ <font color="red">全部删除</font>
 </a>
 </div>
 <div class="blank20"></div>

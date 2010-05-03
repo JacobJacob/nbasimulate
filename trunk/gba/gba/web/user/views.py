@@ -72,7 +72,7 @@ def online_user(request, min=False):
     '''在线经理'''
     
     page = int(request.GET.get('page', 1))
-    pagesize = int(request.GET.get('pagesize', 15))
+    pagesize = int(request.GET.get('pagesize', 10))
 
     infos, total = user_operator.get_online_users(page, pagesize)
     
@@ -85,7 +85,7 @@ def online_user(request, min=False):
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
             'nextpage': page + 1, 'prevpage': page - 1}
-    
+        
     if min:
         return render_to_response(request, "user/online_user_min.html", datas)
     return render_to_response(request, "user/online_user.html", datas)
@@ -129,7 +129,7 @@ def send_match_request(request):
             message.type = MessageType.SYSTEM_MSG
             message.from_team_id = 0
             message.to_team_id = guest_team.id
-            message.title = u'比赛请求(%s)' % user_info['nickname']
+            message.title = u'比赛请求(%s)' % user_info.nickname
             message.content = u'%s经理向你发送了%s比赛请求，您可以在我的比赛中查看' % (user_info.nickname, MatchTypeMaps.get(match_type))
             message.is_new = 1
     
@@ -247,8 +247,8 @@ def message(request, min=False):
             'nextpage': page + 1, 'prevpage': page - 1}
     
     if min:
-        return render_to_response(request, "user/message_min.html", locals())
-    return render_to_response(request, "user/message.html", locals())
+        return render_to_response(request, "user/message_min.html", datas)
+    return render_to_response(request, "user/message.html", datas)
 
 @login_required
 def out_message(request):

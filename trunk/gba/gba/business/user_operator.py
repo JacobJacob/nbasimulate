@@ -3,12 +3,12 @@
 
 from gba.common.db import connection
 
-_SELECT_ONLINE_USERS = 'select * from team where last_active_time>=date_sub(now(),interval 30 minute) order by id desc limit %s, %s'
-                
-_SELECT_ONLINE_USERS_TOTAL = 'select count(*) as count from team where last_active_time>=date_sub(now(),interval 30 minute)'
+_SELECT_ONLINE_USERS = 'select username from session where active_time>=date_sub(now(),interval 30 minute) order by id desc limit %s, %s'
+_SELECT_ONLINE_USERS_TOTAL = 'select count(*) as count from session where active_time>=date_sub(now(),interval 30 minute)'
+_SELECT_USER_DETAILS = 'select * from team where username in (%s)'
 
-def get_online_users(page=1, pagesize=15):
-    '''获取比赛记录'''
+def get_online_users(page=1, pagesize=10):
+    '''获取在线经理'''
     if page <= 0:
         page = 1
     index = (page - 1) * pagesize
@@ -19,6 +19,11 @@ def get_online_users(page=1, pagesize=15):
     try:
         rs = cursor.fetchall(_SELECT_ONLINE_USERS % (index, pagesize))
         if rs:
+            rs = rs.to_list()
+            usernames = []
+            for r in rs:
+                usernames.append(r['username'])
+            rs = cursor.fetchall(_SELECT_USER_DETAILS % ','.join(['"%s"' % username for username in usernames]))
             infos = rs.to_list()
             rs = cursor.fetchone(_SELECT_ONLINE_USERS_TOTAL)
             total = rs['count']
