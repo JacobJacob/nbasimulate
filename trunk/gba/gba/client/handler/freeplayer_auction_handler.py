@@ -75,7 +75,7 @@ class FreePlayerAuctionHandler(BaseClient):
             player_auction_log.content = u'交易成功 [球员:%s(%s)被经理%s以%s的价格购买]' % (player.name, player.no, team.username, player.current_price)
             player_auction_log.type = 2 #1代表自由球员接易
         
-        attentions = AttentionPlayer.query(no=player.no)
+        attentions = AttentionPlayer.query(condition='no="%s"' % player.no)
         
         FreePlayer.transaction()
         try:

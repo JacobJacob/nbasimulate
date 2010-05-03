@@ -37,7 +37,7 @@ _SELECT_YOUTH_FREEPLAYER = 'select *, unix_timestamp(expired_time)-unix_timestam
                        
 _SELECT_YOUTH_FREEPLAYER_TOTAL = 'select count(*) as count from youth_free_player where position=%s'
 
-def get_youth_freepalyer(page=1, pagesize=30, position='C', order_by='expired_time', order='asc'):
+def get_youth_freepalyer(page=1, pagesize=10, position='C', order_by='expired_time', order='asc'):
     '''年轻自由球员
     '''
     if page <= 0:
@@ -81,7 +81,7 @@ def get_free_palyer_by_no(no):
     finally:
         cursor.close()
         
-_SELECT_PROFESSION_PLAYER = 'select * from profession_player where team_id=%s order by ability desc'
+_SELECT_PROFESSION_PLAYER = 'select * from profession_player where team_id=%s order by is_draft asc, ability desc'
 
 def get_profession_player(team_id):
     '''获取某队职业球员'''
@@ -313,6 +313,16 @@ def attention_player(team_id, player_no, type):
         log_execption()
         return -1
     return 1
+
+def get_player_by_no(table, no):
+    '''获取球员'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchone('select *, unix_timestamp(expired_time)-unix_timestamp(now()) as lave_time from %s where no="%s"' % (table, no))
+        if rs:
+            return rs.to_dict()
+    finally:
+        cursor.close()
     
 def get_attention_player(team_id):
     '''获取某队关注球员'''
@@ -321,14 +331,15 @@ def get_attention_player(team_id):
     if attention_players:
         for attention_player in attention_players:
             if attention_player.type == MarketType.FREE:
-                player = FreePlayer.load(no=attention_player.no) 
+                #player = FreePlayer.load(no=attention_player.no)
+                player = get_player_by_no(table='free_player', no=attention_player.no) 
             elif attention_player.type == MarketType.YOUTH_FREE:
-                player = YouthFreePlayer.load(no=attention_player.no)
+                #player = YouthFreePlayer.load(no=attention_player.no)
+                player = get_player_by_no(table='youth_free_player', no=attention_player.no)
             elif attention_player.type == MarketType.DRAFT:
-                player = DraftPlayer.load(no=attention_player.no)
-            lave_time = player.expired_time - datetime.now()
-            player.lave_time = lave_time.days * 60 * 60 * 24 + lave_time.seconds
-            player.type = attention_player.type
+                #player = DraftPlayer.load(no=attention_player.no)
+                player = get_player_by_no(table='draft_player', no=attention_player.no)
+            player['type'] = attention_player.type
             infos.append(player)
     return infos
 

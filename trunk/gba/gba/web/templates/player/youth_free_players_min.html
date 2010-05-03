@@ -80,9 +80,12 @@
     <div id="time_1">{{ info.lave_time|format_lave_time }}</div>
   {% else %} 
     {% ifequal info.status 1%}
-      <a href="{% url player-detail %}?type=4&no={{info.no}}" onclick="return show_popup(this)" title="">
-        <font color="#0096f1">成交详情</font>
-      </a>
+     <font color="#0096f1">
+      {{info.price}}/
+        <a href="{% url user-detail %}?id={{info.team_id}}" onclick="return show_popup(this)" title="">
+           <font color="#0096f1">{{info.team_id|nickname}} </font>
+        </a>
+      </font>
     {% else %}
         不成交
     {% endifequal %}
