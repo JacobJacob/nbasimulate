@@ -105,17 +105,17 @@ def calcul_social_status(player):
     elif ability <= 40:
         social_status = float(ability * twice_as_much) / 105 * 10000 + (times * 1000)
     elif ability <= 50:
-        social_status = float(ability * twice_as_much) / 95 * 10000 + (times * 1000)
+        social_status = float(ability * twice_as_much) / 95 * 100000 + (times * 1000)
     elif ability <= 60:
-        social_status = float(ability * twice_as_much) / 85 * 10000 + (times * 1000)
+        social_status = float(ability * twice_as_much) / 85 * 100000 + (times * 1000)
     elif ability <= 70:
-        social_status = float(ability * twice_as_much) / 60 * 10000 + (times * 1000)
+        social_status = float(ability * twice_as_much) / 60 * 100000 + (times * 1000)
     elif ability <= 80:
-        social_status = float(ability * twice_as_much) / 50 * 10000 + (times * 1000)
+        social_status = float(ability * twice_as_much) / 50 * 100000 + (times * 1000)
     elif ability <= 90:
-        social_status = float(ability * twice_as_much) / 40 * 10000 + (times * 1000)
+        social_status = float(ability * twice_as_much) / 40 * 100000 + (times * 1000)
     else:
-        social_status = float(ability * twice_as_much) / 30 * 10000 + (times * 1000)
+        social_status = float(ability * twice_as_much) / 30 * 100000 + (times * 1000)
         
     return int(social_status)
             
@@ -318,7 +318,7 @@ def youth_player_promoted(player):
         setattr(profession_player, '%s_max' % attribute, new_attr)
         
     calcul_ability(profession_player)
-    calcul_wage(player)
+    calcul_wage(profession_player)
     profession_player.contract = 26
 
     return profession_player

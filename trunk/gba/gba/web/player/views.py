@@ -554,7 +554,7 @@ def draft_player_bid(request):
         attention_player = AttentionPlayer()
         attention_player.team_id = team.id
         attention_player.no = no
-        attention_player.type = MarketType.YOUTH_FREE
+        attention_player.type = MarketType.DRAFT
         
         DraftPlayer.transaction()
         try:
