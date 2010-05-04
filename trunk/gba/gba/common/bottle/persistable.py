@@ -262,7 +262,9 @@ class Persistable(object):
         param = [keys[k] for k in keys.keys()] 
         sql = 'select * from %s where %s' % (cls._table, condition) 
 
+        info(1)
         cursor = connection.cursor()
+        info(2)
         try:
             data = cursor.fetchone(sql, param)
             if data:

@@ -30,4 +30,7 @@ urlpatterns = patterns('web.player',
      url(r'^pro_player_renew/$', 'views.pro_player_renew', name='pro-player-renew'),
      url(r'^pro_player_sell/$', 'views.pro_player_sell', name='pro-player-sell'),
      url(r'^finish_draft/$', 'views.finish_draft', name='finish-draft'),
+     url(r'^youth_player_termination/$', 'views.youth_player_termination', name='youth-player-termination'),
+     url(r'^youth_player_sell/$', 'views.youth_player_sell', name='youth-player-sell'),
+     url(r'^youth_player_promoted/$', 'views.youth_player_promoted', name='youth-player-promoted'),
 )

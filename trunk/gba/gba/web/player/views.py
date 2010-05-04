@@ -11,9 +11,10 @@ from gba.business import player_operator
 from gba.business.user_roles import login_required, UserManager
 from gba.entity import Team, YouthPlayer, FreePlayer, YouthFreePlayer, \
                        ProfessionPlayer, ProPlayerSeasonStatTotal, ProPlayerCareerStatTotal, \
-                       DraftPlayer, AttentionPlayer, LeagueConfig, SeasonFinance, AllFinance
+                       DraftPlayer, AttentionPlayer, LeagueConfig, SeasonFinance, AllFinance, \
+                       YouthPlayerCareerStatTotal, YouthPlayerSeasonStatTotal
 from gba.common.constants import attributes, hide_attributes, AttributeMaps, MarketType, \
-                                 FinanceSubType, FinanceType
+                                 FinanceSubType, FinanceType, PlayerStatus
 
 @login_required
 def index(request, min=False):
@@ -185,10 +186,23 @@ def youth_player(request):
     '''youth player'''
     
     team = request.team
-    
     infos = player_operator.get_youth_player(team.id)
+    
+    for info in infos:
+        if info['in_tactical']:
+            info['termination'] = False
+            info['sell'] = False
+            info['promoted'] = False
+        else:
+            info['termination'] = True
+            if info['age'] >= 20:
+                info['sell'] = True
+                info['promoted'] = True
+            else:
+                info['sell'] = False
+                info['promoted'] = False
+            
     datas = {'infos': infos}
-    datas['nos'] = [i for i in range(30)]
     
     return render_to_response(request, 'player/youth_player.html', datas)
 
@@ -196,21 +210,53 @@ def youth_player(request):
 def youth_player_detail(request):
     """youth player detail"""
     no = request.GET.get('no', None)
+    team = request.team
     if not no:
-        return render_to_response(request, 'default_error.html', {'msg': u'球员id为空'})
+        return render_to_response(request, 'message.html', {'error': u'球员id为空'})
     player = YouthPlayer.load(no=no)
     if not player:
-        return render_to_response(request, 'default_error.html', {'msg': u'球员不存在'})
+        return render_to_response(request, 'message.html', {'error': u'球员不存在'})
+    if player.team_id != team.id:
+        return render_to_response(request, 'message.html', {'error': u'球员不在队中'})
     
     playerutil.calcul_otential(player)
     show_attributes = [i for i in attributes if i not in hide_attributes]
-    
+
     attributes_maps = {}
     for attribute in show_attributes:
         attributes_maps[attribute] = '%s_oten' % attribute
+        
+    season_stat_total = YouthPlayerSeasonStatTotal.load(player_no=no)
+    if not season_stat_total:
+        season_stat_total = YouthPlayerSeasonStatTotal()
+        season_stat_total.player_no = no
+        season_stat_total.persist()
+        season_stat_total = YouthPlayerSeasonStatTotal.load(player_no=no)
     
-    datas = {'id': id, 'player': player, 'attributes': attributes_maps}
-    return render_to_response(request, 'player/youth_player_detail.html', datas)
+    career_stat_total = YouthPlayerCareerStatTotal.load(player_no=no)
+    if not career_stat_total:
+        career_stat_total = YouthPlayerCareerStatTotal()
+        career_stat_total.player_no = no
+        career_stat_total.persist()
+        career_stat_total = YouthPlayerCareerStatTotal.load(player_no=no)
+    
+    use_nos = []   
+    players = YouthPlayer.query(condition='team_id="%s"' % team.id)
+        
+    for p in players:
+        use_nos.append(p.no)
+        
+    free_nos = []
+    for i in range(1, 110):
+        if i not in use_nos:
+            free_nos.append(i)
+
+    datas = {'id': id, 'player': player, 'attributes': attributes_maps, \
+             'season_stat_total': season_stat_total, 'career_stat_total': career_stat_total, \
+             'free_nos': free_nos}
+    
+    return render_to_response(request, 'player/player_detail.html', datas)
+
 
 @login_required
 def attention_player(request, min=False):
@@ -733,4 +779,184 @@ def finish_draft(request):
         if error:
             return render_to_response(request, 'message.html', {'error': error})
         return render_to_response(request, 'message.html', {'success': success})
+        
+@login_required    
+def youth_player_termination(request):
+    '''年轻球员下放'''
+    team = request.team
+    no = request.GET.get('no')
+    datas = {}
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not no:
+            error = '球员不存在'
+            break
+        
+        player = YouthPlayer.load(no=no)
+        if not player:
+            error = '球员不存在'
+            break
+        
+        if player.team_id != team.id:
+            error = '球员不在您队中'
+            break
+        
+        if player.in_tactical:
+            error = '该球员在阵容中'
+            break
+        
+        count = YouthPlayer.count(condition='team_id="%s" and status <> %s' % (team.id, PlayerStatus.HURT))
+        print count
+        if count <= 8:
+            error = '您的场上队员小于8名，不能下放'
+            break
+            
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    if request.method == 'GET':
+        social_status = playerutil.calcul_social_status(player)
+        datas['social_status'] = int(social_status * 0.7)
+        datas['player'] = player
+        return render_to_response(request, 'player/youth_player_termination.html', datas)
+    else:
+        success = u'%s已经被下放!' % player.name
+        
+        social_status = playerutil.calcul_social_status(player) 
+        league_config = LeagueConfig.load(id=1)
+        #赛季支出明细
+        tinance = SeasonFinance()
+        tinance.sub_type = FinanceSubType.TERM_PLAYER
+        tinance.team_id = team.id
+        tinance.type = FinanceType.INCOME
+        tinance.season = league_config.season
+        tinance.round = league_config.round
+        tinance.info = u'下放球员%s' % player.name
+        tinance.income = 0
+        tinance.outlay = social_status
+        
+        team.funds += social_status
+        
+        #赛季收入概要
+        all_tinance = AllFinance.load(team_id=team.id, season=league_config.season)
+        if not all_tinance:
+            all_tinance = AllFinance()
+            all_tinance.team_id = team.id
+            all_tinance.season = league_config.season
+            all_tinance.income = 0
+            all_tinance.outlay = 0
+        all_tinance.income += social_status
+        
+        FreePlayer.transaction()
+        try:
+            #player.delete()
+            all_tinance.persist()
+            tinance.persist()
+            FreePlayer.commit()
+        except:
+            FreePlayer.rollback()
+            raise               
+        url = reverse('youth-player')
+        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+
+@login_required    
+def youth_player_sell(request):
+    '''年轻球员出售'''
+    team = request.team
+    no = request.GET.get('no')
+    datas = {}
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not no:
+            error = '球员不存在'
+            break
+        
+        player = YouthPlayer.load(no=no)
+        if not player:
+            error = '球员不存在'
+            break
+        
+        if player.team_id != team.id:
+            error = '球员不在您队中'
+            break
+        
+        if player.in_tactical:
+            error = '该球员在阵容中'
+            break
+        
+        if player.age < 20:
+            error = '该球员年龄不足20,不能出售'
+            break
+        
+        count = YouthPlayer.count(condition='team_id="%s" and status <> %s' % (team.id, PlayerStatus.HURT))
+        if count <= 8:
+            error = '您的场上队员小于8名，不能出售'
+            break
+            
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    if request.method == 'GET':
+        social_status = playerutil.calcul_social_status(player)
+        datas['social_status'] = social_status
+        datas['player'] = player
+        return render_to_response(request, 'player/youth_player_sell.html', datas)
+    
+@login_required    
+def youth_player_promoted(request):
+    '''年轻球员提拔'''
+    team = request.team
+    no = request.GET.get('no')
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not no:
+            error = '球员不存在'
+            break
+        
+        player = YouthPlayer.load(no=no)
+        if not player:
+            error = '球员不存在'
+            break
+        
+        if player.team_id != team.id:
+            error = '球员不在您队中'
+            break
+        
+        if player.in_tactical:
+            error = '该球员在阵容中'
+            break
+        
+        count = YouthPlayer.count(condition='team_id="%s" and status <> %s' % (team.id, PlayerStatus.HURT))
+        if count <= 8:
+            error = '您的场上队员小于8名，不能提拔'
+            break
+        
+        #判断下有没有选拔卡
+            
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    if request.method == 'GET':
+        return render_to_response(request, 'player/youth_player_promoted.html', {'player': player})
+    else:
+        success = u'%s已经被提拔到职业队中!' % player.name
+        profession_player = playerutil.youth_player_promoted(player)
+        
+        YouthPlayer.transaction()
+        try:
+            profession_player.persist()
+            player.delete()
+            YouthPlayer.commit()
+        except:
+            YouthPlayer.rollback()
+            raise
+        
+        url = reverse('youth-player')
+        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
         

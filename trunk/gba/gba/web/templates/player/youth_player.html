@@ -12,13 +12,13 @@
       <th>身高</th>
       <th>体重</th>
       <th>综合</th>
-      <th class="end_cell">操作</th>
+      <th class="end_cell" style="text-align:center;">操作</th>
     </tr>
 {% for info in infos %}
 <tr>
      <td><img src="/site_media/images/number/{{info.player_no}}.gif"></td>
      <td>
-       <a href="{% url player-detail%}?type=3&no={{info.no}}" onclick="return show_popup(this)" title="">
+       <a href="{% url youth-player-detail %}?no={{info.no}}" onclick="return show_popup(this)" title="">
          <font color="#0096f1">{{info.name}}</font>
        </a>
      </td>
@@ -36,13 +36,27 @@
      <td><font color="#666666">{{info.ability|format_number}}</font></td>
      <td>
        <div align="center">
-        <a href="http://s3.dlm.17uxi.cn/source/n.php?a=263&amp;id_qiu_yuan=1941648" onclick='return href_to_div(this,"main_content")'>
-         <font color="#0096f1">拍卖</font>
-        </a>&nbsp;
-        <a href="http://s3.dlm.17uxi.cn/source/n.php?a=265&amp;id_qiu_yuan=1941648" onclick="return show_popup(this)">
-        <font color="#0096f1">出售</font></a>&nbsp;
-        <a href="http://s3.dlm.17uxi.cn/source/n.php?a=414&amp;id_qiu_yuan=1941648" onclick="return show_popup(this);">
-        <font color="#0096f1">提拔</font></a>
+       {% if info.termination %}
+         <a href="{% url youth-player-termination %}?no={{info.no}}" onclick="return show_popup(this)">
+          <font color="#0096f1">下放</font>
+         </a>
+       {% else %}
+         ----
+       {% endif %}
+       {% if info.sell %}
+         <a href="{% url youth-player-sell %}?no={{info.no}}" onclick="return show_popup(this)">
+          <font color="#0096f1">出售</font>
+         </a>
+       {% else %}
+         ----
+       {% endif %}
+       {% if info.promoted %}
+         <a href="{% url youth-player-promoted %}?no={{info.no}}" onclick="return show_popup(this)">
+          <font color="#0096f1">提拔</font>
+         </a>
+       {% else %}
+         ----
+       {% endif %}
        </div>
      </td>
  </tr>

@@ -14,7 +14,7 @@ from gba.entity import YouthFreePlayer, AttentionPlayer, YouthFreeplayerAuctionL
                        Team, PlayerAuctionLog, Message, UserInfo, LeagueConfig, SeasonFinance, \
                        AllFinance, YouthPlayer
 from gba.common.client.base import BaseClient
-from gba.common.constants import MessageType, MarketStatus, FinanceSubType, FinanceType
+from gba.common.constants import MessageType, MarketStatus, FinanceSubType, FinanceType, PlayerStatus
 
 class YouthFreePlayerAuctionHandler(BaseClient):
     
@@ -79,6 +79,7 @@ class YouthFreePlayerAuctionHandler(BaseClient):
             team = Team.load(username=auction_logs[0].username)
             price = auction_logs[0].price
             player.team_id = team.id
+            player.status = PlayerStatus.NORMAL  #刚买状态正常
             team.funds -= price
             youth_player = playerutil.copy_player(player)
             youth_player.power = 100

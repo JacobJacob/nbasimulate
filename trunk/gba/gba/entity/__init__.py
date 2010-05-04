@@ -1,19 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
-
-__all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
-           , 'YouthPlayer', 'Message', 'Team', 'ProfessionPlayer', 'Matchs',
-           'League', 'LeagueTeams', 'Names', 'UserInfo', 'YouthFreeplayerAuctionLog',
-           'PlayerAuctionLog', 'ClientRunningLog', 'AttentionPlayer', 'LeagueConfig',
-           'ActionDesc', 'TrainingCenter', 'TeamTacticalDetail', 'TeamTactical',
-           'MatchNotInPlayer', 'LeagueMatchs', 'RuntimeData', 'ProPlayerCareerStatTotal',
-           'ProPlayerSeasonStatTotal', 'ErrorLog', 'TeamStaff', 'MatchNodosityMain',
-           'MatchNodosityDetail', 'MatchNodosityTacticalDetail', 'TeamArena',
-           'RoundUpdateLog', 'SeasonFinance', 'AllFinance', 'TeamAd', 'ChatMessage',
-           'TacticalGrade', 'TrainingRemain', 'Friends', 'OutMessage', 'TeamHonor',
-           'Cup', 'ChallengePool', 'ChallengeTeam', 'ChallengeHistory', 'TeamTicketHistory',
-           'EngineStatus', 'Unions', 'UnionApply', 'UnionMember', 'DraftPlayer']
+#
+#
+#__all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
+#           , 'YouthPlayer', 'Message', 'Team', 'ProfessionPlayer', 'Matchs',
+#           'League', 'LeagueTeams', 'Names', 'UserInfo', 'YouthFreeplayerAuctionLog',
+#           'PlayerAuctionLog', 'ClientRunningLog', 'AttentionPlayer', 'LeagueConfig',
+#           'ActionDesc', 'TrainingCenter', 'TeamTacticalDetail', 'TeamTactical',
+#           'MatchNotInPlayer', 'LeagueMatchs', 'RuntimeData', 'ProPlayerCareerStatTotal',
+#           'ProPlayerSeasonStatTotal', 'ErrorLog', 'TeamStaff', 'MatchNodosityMain',
+#           'MatchNodosityDetail', 'MatchNodosityTacticalDetail', 'TeamArena',
+#           'RoundUpdateLog', 'SeasonFinance', 'AllFinance', 'TeamAd', 'ChatMessage',
+#           'TacticalGrade', 'TrainingRemain', 'Friends', 'OutMessage', 'TeamHonor',
+#           'Cup', 'ChallengePool', 'ChallengeTeam', 'ChallengeHistory', 'TeamTicketHistory',
+#           'EngineStatus', 'Unions', 'UnionApply', 'UnionMember', 'DraftPlayer', 
+#           'YouthPlayerCareerStatTotal', 'ProPlayerSeasonStatTotal']
 
 from gba.common.bottle.persistable import Persistable
 
@@ -151,6 +152,14 @@ class ProPlayerCareerStatTotal(Persistable):
 class ProPlayerSeasonStatTotal(Persistable):
     '''职业球员赛季总的统计，每赛季完要清空'''
     CACHE_KEY = 'pro_player_season_stat_total:player_no'
+    
+class YouthPlayerCareerStatTotal(Persistable):
+    '''街球球员生涯总的统计'''
+    CACHE_KEY = 'youth_player_career_stat_total:player_no'
+    
+class YouthPlayerSeasonStatTotal(Persistable):
+    '''街球球员赛季总的统计，每赛季完要清空'''
+    CACHE_KEY = 'youth_player_season_stat_total:player_no'
     
 class ErrorLog(Persistable):
     '''错误日志'''

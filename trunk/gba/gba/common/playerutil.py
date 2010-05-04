@@ -10,6 +10,7 @@ from gba.entity import ProfessionPlayer, YouthPlayer, FreePlayer
 from gba.client.betch.config import AttributeConfig, YouthAttributeConfig
 from gba.common.attribute_factory import AvoirdupoisFactory, NameFactory, AgeFactory, StatureFactory, PictrueFactory
 from gba.common.constants import attributes, hide_attributes
+from gba.common.config import import_attributes
 
 def finish_training(training_center):
     '''一个球队完成训练'''
@@ -245,12 +246,17 @@ def copy_player(player, source='youth_free_player', to='youth_player'):
         delattr(profession_player, 'id')
         profession_player.__class__ = ProfessionPlayer
         return profession_player
+    elif source == 'youth_player' and to == 'profession_player':
+        profession_player = copy.deepcopy(player)
+        delattr(profession_player, 'id')
+        profession_player.__class__ = ProfessionPlayer
+        return profession_player
     elif source == 'profession_player' and to == 'free_player':
         free_player = copy.deepcopy(player)
         delattr(free_player, 'id')
         free_player.__class__ = FreePlayer
         return free_player
-        
+    
     return None
 
 def create_youth_player(location):
@@ -282,6 +288,41 @@ def create_youth_player(location):
 
     return player
 
+def youth_player_promoted(player):
+    '''年轻球员提拔
+    1. 属性加潜力
+    2. 意识直接加能力
+    '''
+    profession_player = copy_player(player, source='youth_player', to='profession_player')
+    profession_player.status = 1
+    
+    add_base = 4
+    age = player.age
+    for attribute in attributes:
+        if attribute in import_attributes[player.position]:
+            add_base += 4
+        
+        if age < 21:
+            add_value = random.randint(0, 5)
+        else:
+            if age > 26:
+                add_value = random.randint(0, 26-age)
+            else:
+                add_value = random.randint(0, 2)
+        old_attr = getattr(profession_player, '%s_max' % attribute)
+        if old_attr + add_base + add_value >= 100:
+            new_attr = 99.9
+        else:
+            new_attr = old_attr + add_base + add_value
+        
+        setattr(profession_player, '%s_max' % attribute, new_attr)
+        
+    calcul_ability(profession_player)
+    calcul_wage(player)
+    profession_player.contract = 26
+
+    return profession_player
+        
 if __name__ == '__main__':
 
     player = ProfessionPlayer()
