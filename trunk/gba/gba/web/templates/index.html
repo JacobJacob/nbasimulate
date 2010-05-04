@@ -15,9 +15,16 @@
         <script type="text/javascript" src="/site_media/js/prototype.js"></script>
         <script type="text/javascript" src="/site_media/js/hide_show.js"></script>
         <script type="text/javascript" src="/site_media/js/shou_ye.js"></script>
-        {% block ext_head %}{% endblock %}
+        {% block ext_head %}
+          <script>    	  
+			  function set_to_bottom(){
+			    var div = document.getElementById('msg_list'); 
+		        div.scrollTop = div.scrollHeight; 
+			  }
+          </script>
+        {% endblock %}
     </head>
-    <body>
+    <body onload="set_to_bottom()">
         <div class="Area cut">
             {% include "info.html" %}
             <div class="right_box">
