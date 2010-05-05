@@ -23,7 +23,7 @@ class ExpiredMatchUpdate(BaseClient):
         expired_matchs = self.get_expired_match()
         if not expired_matchs:
             self._start_id = 0
-            self.current_info = 'not expired matchs now, sleep'
+            self.current_info = 'not expired matchs now, sleep, update total[%s] failure[%s]' % (self._update_count, self._failure_count)
             return 60
         
         self._start_id = expired_matchs[-1].id
