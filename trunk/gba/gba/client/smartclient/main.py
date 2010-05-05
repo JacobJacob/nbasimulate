@@ -211,7 +211,7 @@ def Main(funcs = None,
                         break
                     print 'svn update error, %s' % result
                     time.sleep(5)
-                cmd = 'python %s' % " ".join(globalparmas if globalparmas else sys.argv)
+                cmd = 'python2.5 %s' % " ".join(globalparmas if globalparmas else sys.argv)
                 print cmd
                 # 以前的方法可以升级硬盘上的代码，但是不能升级内存中的代码（更新，重新加载）
                 # 新方法都可以实现升级，这里完成后，启动一个进程，然后自己自杀（在下面退出循环）
