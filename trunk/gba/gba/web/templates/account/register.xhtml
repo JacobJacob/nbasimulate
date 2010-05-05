@@ -1,0 +1,85 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<script type="text/javascript" src="/site_media/js/jquery.min.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.validate.min.js"></script>
+<title>register</title>
+<script type="text/javascript">
+   $(document).ready(function(){
+    var rules = {
+        email: {
+            required: true,
+            email: true
+        },
+        password: {
+            required: true,
+        },
+        passwordcheck: {
+            required: true,
+            equalTo: "#password"
+        },
+        nickname:{
+            required: true,
+            rangelength: [5, 10]
+        },
+        captcha:{
+            required: true,
+            rangelength: [4, 4]
+        }
+    };
+    
+    var messages = {
+        email: {
+        	required: "Email地址必须填写",
+            email: "请输入一个有效的Email地址"
+        },
+        password:{
+            required: "请输入密码",
+        },
+        passwordcheck:{
+            required: "请确认密码",
+            equalTo: "两次输入密码不一致",
+        },
+        nickname:{
+            required: "请输入用户名",
+            rangelength: '用户名为5到10个字符',
+        },
+        captcha:{
+            required: "请输入验证码",
+            rangelength: "验证为4位数字"
+        }
+	};
+	
+	$("#register").validate({rules: rules, messages: messages});
+});
+</script>
+<style>
+  .error{color:red;}
+</style>
+</head>
+<body>
+<form id="register" action="{% url register %}" method="post">
+   <div>
+      <ul>
+       <li>
+        email : <input name="email"/>
+       </li>
+       <li>
+        password : <input name="password" id="password"/>
+       </li>
+       <li>
+        password check: <input name="passwordcheck"/>
+       </li>
+       <li>
+        nickname: <input name="nickname"/>
+       </li>
+       <li>
+        <img src="{% url captcha %}"/><br/>
+        captcha: <input name="captcha"/>
+       </li>
+      </ul>
+   </div>
+   <div><input type="submit" value="submit"/></div>
+</form>
+</body>
+</html>
