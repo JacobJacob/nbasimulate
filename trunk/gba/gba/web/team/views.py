@@ -384,8 +384,15 @@ def hire_staff(request):
                 break
             
         if error:
-            return render_to_response(request, 'message.html', {'error': error})    
-        return render_to_response(request, 'team/hire_staff.html', {'staff': staff, 'fund': staff.round * staff.wave})
+            return render_to_response(request, 'message.html', {'error': error})
+        if staff.type == StaffType.DOCTOR:
+            staff_type = '队医'
+        elif staff.type == StaffType.TRAINERS:
+            staff_type = '训练师'
+        elif staff.type == StaffType.DIETITIAN:
+            staff_type = '营养师'
+            
+        return render_to_response(request, 'team/hire_staff.html', {'staff': staff, 'staff_type': staff_type, 'fund': staff.round * staff.wave})
     
     else:
         error = None
@@ -428,7 +435,42 @@ def hire_staff(request):
             return render_to_response(request, 'message.html', {'error': error, 'success': success})
         url = reverse('team-staff-min')
         return render_to_response(request, 'message_update.html', {'error': error, 'success': success, 'url': '%s?is_youth=%s' % (url, staff.is_youth)})
+   
+@login_required
+def dismiss_staff(request):
+    '''解雇职员'''
+    team = request.team
+    id = request.GET.get('id') 
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        staff = TeamStaff.load(id=id)
+        if not staff:
+            error = '该职员不存在'
+            break
+        
+        team_staff = TeamStaff.load(team_id=request.team.id, type=staff.type, is_youth=staff.is_youth)
+        if not team_staff:
+            error = '该职员不在您队中'
+            break
+        
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})    
     
+    if request.method == 'GET':
+        return render_to_response(request, 'team/dismiss_staff.html', {'staff': staff})
+    
+    else:
+        success = '职员已经被解雇!'
+        staff.status = StaffStatus.NOT_IN_WORD
+        staff.team_id = None
+        staff.remain_round = 0
+        staff.persist()
+
+        url = reverse('team-staff-min')
+        return render_to_response(request, 'message_update.html', {'error': error, 'success': success, 'url': '%s?is_youth=%s' % (url, staff.is_youth)})
+ 
 @login_required
 def team_info(request):
     """球队信息"""

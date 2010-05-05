@@ -65,13 +65,24 @@
 	            alert(error.message);
 	         }
 	     
-		 });
+		});
+		
+		$('#action_name_tx').change(function(){
+		    var action_name = $(this).val();
+		    var url = '{% url action-desc %}?action_name=' + action_name;
+		    window.location = url;
+		});
 	 
 });
 </script>
 {% endblock %}
 {% block title %}客户端监控{% endblock %}
 {% block content %}
+<select id="action_name_tx">
+{% for name in action_names %}
+  <option value="{{name.action_name}}" {%ifequal name.action_name action_name%}selected=selected{%endifequal%}>{{name.action_name|action_name}}</option>
+{% endfor%}
+</select>
 <table cellspacing="1" class="tablesorter">
   <thead>
     <th>动作名称</th>

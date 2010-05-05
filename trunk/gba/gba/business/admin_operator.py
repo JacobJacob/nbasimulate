@@ -50,7 +50,16 @@ def full_profession_player(no):
         setattr(player, attribute, getattr(player, '%s_max' % attribute))
     playerutil.calcul_ability(player)
     player.persist()
-        
-        
+       
+def get_action_names():
+    '''获取动作名称'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchall('select distinct action_name from action_desc')
+        if rs:
+            return rs.to_list()
+    finally:
+        cursor.close()
+      
 if __name__ == '__main__':
     full_profession_player('f2502df3321f22a35df336c86e9ed10d')

@@ -69,7 +69,7 @@ def profession_player(request, min=False):
     datas = {'infos': infos}
     
     for info in infos:
-        if info['contract'] != None and info['contract'] < 13:
+        if info['contract'] != None and info['contract'] < 13 and info['is_draft'] == 0:
             info['need_renew'] = 1
         else:
             info['need_renew'] = 0

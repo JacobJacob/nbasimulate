@@ -25,7 +25,11 @@
    <td>{{trainer.remain_round}}</td>
    <td>{{trainer.wave}}</td>
    <td>{{trainer.level}}</td>
-   <td></td>
+   <td>
+     <a href="{% url dismiss-staff %}?id={{trainer.id}}" onclick="return show_popup(this);">
+      <font color="#0096f1">解雇</font>
+     </a>
+   </td>
   {% else %}
    <td colspan="6">&nbsp;</td>
   {% endif %}
@@ -42,7 +46,11 @@
    <td>{{dietitian.remain_round}}</td>
    <td>{{dietitian.wave}}</td>
    <td>{{dietitian.level}}</td>
-   <td></td>
+   <td>
+     <a href="{% url dismiss-staff %}?id={{dietitian.id}}" onclick="return show_popup(this);">
+      <font color="#0096f1">解雇</font>
+     </a>
+   </td>
   {% else %}
    <td colspan="6">&nbsp;</td>
   {% endif %}
@@ -51,7 +59,8 @@
    <td>
      <div class="left">队医</div>
      <div class="left top_5">
-      <img src="/site_media/images/icon_00.gif" alt="" align="absmiddle" width="11" height="11"></div>
+      <img src="/site_media/images/icon_00.gif" alt="" align="absmiddle" width="11" height="11"/>
+      </div>
    </td>
    {% if doctor %}
    <td>{{doctor.name}}</td>
@@ -59,7 +68,11 @@
    <td>{{doctor.remain_round}}</td>
    <td>{{doctor.wave}}</td>
    <td>{{doctor.level}}</td>
-   <td></td>
+   <td>
+     <a href="{% url dismiss-staff %}?id={{doctor.id}}" onclick="return show_popup(this);">
+      <font color="#0096f1">解雇</font>
+     </a>
+   </td>
   {% else %}
    <td colspan="6">&nbsp;</td>
   {% endif %}

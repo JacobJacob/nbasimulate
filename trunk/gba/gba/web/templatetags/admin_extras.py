@@ -6,7 +6,7 @@ import datetime
 
 from django import template
 
-from gba.common.constants import ClientStatus, CLIENT_STATUS_NAMES
+from gba.common.constants import ClientStatus, CLIENT_STATUS_NAMES, ActionNameMap
 
 
 register = template.Library()
@@ -31,3 +31,7 @@ def client_total_info(clients):
         status = _client_status(client)
         info[status] = info.get(status, 0) + 1
     return u', '.join([u'%s: %d' % (k, v) for k, v in info.items()])
+
+@register.filter
+def action_name(action_name):
+    return ActionNameMap.get(action_name, u'未知')

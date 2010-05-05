@@ -7,6 +7,7 @@ from gba.business.user_roles import login_required
 from gba.entity import ClientRunningLog, ActionDesc, EngineStatus, RoundUpdateLog
 from gba.business.client import ClientManager
 from gba.business.common_client_monitor import CommonClientMonitor
+from gba.business import admin_operator
 
 def index(request):
     """list"""
@@ -52,11 +53,13 @@ def betch_log(request):
 def action_desc(request):
     page = int(request.GET.get('page', 1))
     pagesize = int(request.GET.get('pagesize', 15))
-    action_name = request.GET.get('action_name', None)
+    action_name = request.GET.get('action_name', '')
 
     condition = '1=1'
     if action_name:
-        action_name += ' and action_name="%s"' % action_name
+        condition += ' and action_name="%s"' % action_name
+        
+    action_names = admin_operator.get_action_names()
 
     infos, total = ActionDesc.paging(page, pagesize, condition=condition)
     if total == 0:
@@ -65,7 +68,8 @@ def action_desc(request):
         totalpage = (total -1) / pagesize + 1
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
-            'nextpage': page + 1, 'prevpage': page - 1, 'client_type': action_name}
+            'nextpage': page + 1, 'prevpage': page - 1, 'action_name': action_name,
+            'action_names': action_names}
     return render_to_response(request, 'admin/action_desc.html', datas)
 
 def list(request):

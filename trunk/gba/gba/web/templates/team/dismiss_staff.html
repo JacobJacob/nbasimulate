@@ -1,18 +1,13 @@
-<form method="post" action="{% url hire-staff %}?id={{staff.id}}" name="frm" onsubmit='return submit_to_div(this,"popup_inner")'>
+<form method="post" action="{% url dismiss-staff %}?id={{staff.id}}" name="frm" onsubmit='return submit_to_div(this,"popup_inner")'>
 <div class="floatBox_sms">
 <div class="blank20"></div>
 <div class="blank10"></div>
 <p class="lh21">
- 花费资金: {{fund}}
 </p>
-<p class="lh21">{{staff_type}}：{{ staff.name }}。 </p>
+<p class="lh21">
+  是否要将{{staff.name}}解雇?
+</p>
 <div class="h25">	
- 球队:
- {% ifequal staff.is_youth 1%}
-  街头队
- {% else %}
-  职业队
- {% endifequal %}
 </div>
 <div class="blank10"></div>
 <div class="floatBox_sms_btn">
