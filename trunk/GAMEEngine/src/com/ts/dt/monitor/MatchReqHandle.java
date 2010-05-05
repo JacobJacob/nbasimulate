@@ -41,11 +41,11 @@ public class MatchReqHandle extends Thread {
 		try {
 		    match.save();
 		} catch (Exception e) {
-		    e.printStackTrace();
+		    Logger.logToDb("error", e.getMessage());
 		}
 		session.endTransaction();
 	    } catch (Exception e) {
-		Logger.logToDb("error", e.getMessage());
+		Logger.logToDb("error", e.toString());
 	    }
 	}
 
