@@ -223,7 +223,7 @@ def Main(funcs = None,
 #                procs[newProc.getPid()] = newProc
             elif code == SmartClientCommand.RESTART:
                 print 'restart ....'
-                cmd = 'python %s' % " ".join(globalparmas if globalparmas else sys.argv)
+                cmd = 'python2.5 %s' % " ".join(globalparmas if globalparmas else sys.argv)
                 print cmd
                 os.system(cmd) 
             elif code == SmartClientCommand.MACHINE_RESTART: # 机器重启
