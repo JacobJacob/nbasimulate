@@ -32,4 +32,4 @@ def set_pro_to_full(no):
     
 if __name__ == '__main__':
     set_youth_to_full('f331e8817d02b7076da3e4c60ee19683')
-    set_pro_to_full('f331e8817d02b7076da3e4c60ee19683')
+    set_pro_to_full('18224bc558abd768d170938c745608ce')

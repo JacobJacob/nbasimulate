@@ -60,7 +60,8 @@
 	            var result = service.add_action_desc(data);
 	            alert('动作描述更新成功');
 	            $("#edit_dialog").dialog('close');
-	
+	            window.location = window.location;
+	            
 	         }catch(error){
 	            alert(error.message);
 	         }
@@ -71,6 +72,20 @@
 		    var action_name = $(this).val();
 		    var url = '{% url action-desc %}?action_name=' + action_name;
 		    window.location = url;
+		});
+		
+		$('#add_action_desc').click(function(){
+		    
+		     $("#edit_dialog").show().dialog({
+	         height: 370, width: 400, modal: false,
+             title: '动作描述添加/更改',
+	         overlay: {
+               opacity: 0.5, 
+               background: "black" 
+             }
+          });
+          $("#edit_dialog").dialog('open'); 
+		    
 		});
 	 
 });
@@ -83,6 +98,7 @@
   <option value="{{name.action_name}}" {%ifequal name.action_name action_name%}selected=selected{%endifequal%}>{{name.action_name|action_name}}</option>
 {% endfor%}
 </select>
+<input type="button" id="add_action_desc" value="添加动作描述"/>
 <table cellspacing="1" class="tablesorter">
   <thead>
     <th>动作名称</th>

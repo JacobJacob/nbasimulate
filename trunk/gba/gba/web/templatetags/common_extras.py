@@ -190,7 +190,7 @@ def position(position):
 def format_number(number):
     '''位置'''
     if not number:
-        return 'error'
+        return '0'
     return '%.1f' % number
 
 @register.filter
