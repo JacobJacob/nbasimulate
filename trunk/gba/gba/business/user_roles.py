@@ -129,8 +129,8 @@ class UserManager(DBOperator):
         if session_id is not None:
             username = self.get_cache(session_id)
             if username is None and not cache.get_stats(): # 只有cache挂了才从数据库中读取，防止恶意刷后台页面
-                # get from database
                 with self.cursor() as cursor:
+                    print self.SELECT_SESSION % session_id
                     record = cursor.fetchone(self.SELECT_SESSION, (session_id, ))
                 if record:
                     r = record.to_dict()
@@ -422,12 +422,8 @@ def login_required(input_function):
                 exception_mgr.on_except('request url: %r' % full_path, 1)
                 log_execption('request url: %r' % full_path, 1)
                 raise
-#                return HttpResponseServerError("Server Error (500)")
         else:
-            path = urlquote(request.get_full_path())
-            response = HttpResponseRedirect('%s?%s=%s' % \
-                                            (reverse('login-page'), REDIRECT_FIELD_NAME, path))
-#            response.delete_cookie(SESSION_KEY) # 清楚cookies中的session_id
+            response = HttpResponseRedirect(reverse('timeout'))
             return response
     replace_function.func_name = input_function.func_name
     replace_function.__doc__ = input_function.__doc__
@@ -452,12 +448,8 @@ def rpc_login_required(input_function):
                 exception_mgr.on_except('request url: %r' % full_path, 1)
                 log_execption('request url: %r' % full_path, 1)
                 raise
-#                return HttpResponseServerError("Server Error (500)")
         else:
-            path = urlquote(request.get_full_path())
-            response = HttpResponseRedirect('%s?%s=%s' % \
-                                            (reverse('login-page'), REDIRECT_FIELD_NAME, path))
-#            response.delete_cookie(SESSION_KEY) # 清楚cookies中的session_id
+            response = HttpResponseRedirect(reverse('timeout'))
             return response
     replace_function.func_name = input_function.func_name
     replace_function.__doc__ = input_function.__doc__

@@ -12,5 +12,5 @@ class TeamInfoMiddleware(object):
     def process_request(self, request):
         team = UserManager().get_team_info(request)
         if not team:
-            render_to_response(request, 'not_login_error.html', {'error': '尚未登录'})
+            render_to_response(request, 'accounts/timeout.html', {'error': '尚未登录'})
         setattr(request, 'team', team)

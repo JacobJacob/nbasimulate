@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+<title>GBA通行证</title>
+<style type="text/css">
+body {
+	margin:0 auto;
+}
+body,td,th {
+	font-size: 14px;
+	color: #484848;
+	font-family: 宋体;
+}
+
+label{
+  font-size:12px;
+}
+
+.margin_top_10{
+  margin-top: 10px;
+}
+
+.margin_top_25{
+  margin-top: 25px;
+}
+
+.email, .passwd{
+  width:190px;
+  height:24px;
+}
+
+</style>
+</head>
+<body>
+<table style="margin-top: 20px; border-bottom: 3px solid rgb(204, 204, 204);" align="center" border="0" cellpadding="6" cellspacing="0" width="880">
+<tbody>
+ <tr>
+  <td align="left" valign="bottom"><a href="http://www.gbagame./">
+   <img src="MemberCenter.aspx_files/tlogo.gif" alt="GBA通行证" border="0" width="176" height="34"></a>
+ </td>
+ <td colspan="2" style="padding-right: 12px;" align="right" valign="bottom">
+ </td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top:100px;text-align:center;">
+<form action="{% url login %}" method="post">
+   <div>{%if error%}{{error}}{%endif%}</div>
+   <div class="margin_top_10">
+     <label>邮箱:</label>
+     <input type="text" class="email" id="email" name="email"/>
+   </div>
+   <div class="margin_top_10">
+     <label>密码:</label>
+     <input type="password" class="passwd" id="passwd" name="passwd"/>
+   </div>
+   <div class="margin_top_25">
+     <input type="submit" value="登陆"/>
+      <label><a href="#">忘记密码?</a></label>
+   </div>
+   <div class="margin_top_10">
+      <label><a href="#">还没有GBA通行证?点这<a href="#">注册</a></label>
+   </div>
+</form>
+</div>
+</form>
+</body>
+</html>

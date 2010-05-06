@@ -1,19 +1,34 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import random, cStringIO
 
 #from PIL import Image, ImageDraw, ImageFont
-from django.http import HttpResponse
-from gba.web.render import render_to_response
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
+from gba.web.render import render_to_response
 from gba.common import md5mgr
 from gba.common.db import connection
 #from gba.business import accounts
+from gba.business.user_roles import UserManager
+
+SESSION_KEY = '_auth_user_id'
 
 def login(request):
-    ""
+    "用户登陆"
     if request.method == 'GET':
-        return render_to_response(request, 'account/login.xhtml')
-
+        return render_to_response(request, 'accounts/login.html')
+    else:
+        username = request.POST.get('email')
+        password = request.POST.get('passwd')
+        result, session_id = UserManager().login(username, password)
+        if result == -1:
+            return render_to_response(request, 'accounts/login.html', {'error': u'用户名或密码错误'})
+        response = HttpResponseRedirect(reverse('ucenter'))
+        response.set_cookie(SESSION_KEY, session_id)
+        return response
+        
 def logout(request):
     "This view is a basic 'hello world' example in HTML."
     return HttpResponse('<h1>Hello, world.</h1>')
