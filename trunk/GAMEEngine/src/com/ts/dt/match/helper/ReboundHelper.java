@@ -35,7 +35,7 @@ public class ReboundHelper {
 
 	// 判断场上球员争抢篮板的能力
 	public static int[] checkPercentForGetRebound(Hashtable<String, Controller> controllers, boolean isHomeTeam) {
-		int[] percent = new int[] { 5, 15, 25, 40, 60 };
+		int[] percent = new int[] { 15, 25, 35, 44, 55 };
 
 		String teamFlg = "";
 		if (isHomeTeam) {
@@ -51,6 +51,9 @@ public class ReboundHelper {
 			if (power > 0) {
 				percent[i] += power;
 			}
+		}
+		for (int i = 0; i < 5; i++) {
+		    System.out.println(percent[i]);  
 		}
 		return percent;
 	}
