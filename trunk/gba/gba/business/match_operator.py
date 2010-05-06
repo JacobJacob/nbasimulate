@@ -3,7 +3,7 @@
 
 from gba.common.db import connection
 from gba.common.db.reserve_convertor import ReserveLiteral
-from gba.common.constants import MatchStatus, TacticalGroupTypeMap, MatchShowStatus
+from gba.common.constants import MatchStatus, TacticalGroupTypeMap, MatchShowStatus, MatchTypes
 from gba.common import log_execption
 from gba.common import playerutil, exception_mgr
 from gba.entity import Team, ProfessionPlayer, League, LeagueTeams, TeamArena
@@ -15,6 +15,7 @@ def send_match_request(home_team_id, guest_team_id, type):
     info['home_team_id'] = home_team_id
     info['guest_team_id'] = guest_team_id
     info['type'] = type
+    info['is_youth'] = 1 if type == MatchTypes.YOUTH_FRIENDLY or type == MatchTypes.YOUTH_TRAINING else 0  
     info['status'] = MatchStatus.SEND
     info['created_time'] = ReserveLiteral('now()')
     info['send_time'] = ReserveLiteral('now()')
@@ -279,13 +280,16 @@ def init_team(team_info):
     create_team_default_tactical(team.id)
     create_team_default_tactical(team.id, is_youth=True)
     
-_SELECT_MATCH = 'select *, unix_timestamp(next_status_time)-unix_timestamp(now()) as remain_time from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) order by id desc limit %s, %s '
+_SELECT_MATCH = 'select *, unix_timestamp(next_status_time)-unix_timestamp(now()) as remain_time from matchs where type=%s or type=%s and (home_team_id=%s or guest_team_id=%s ) order by id desc limit %s, %s '
                        
-_SELECT_MATCH_TOTAL = 'select count(*) as count from matchs where type=%s and (home_team_id=%s or guest_team_id=%s ) '
+_SELECT_MATCH_TOTAL = 'select count(*) as count from matchs where type=%s or type=%s and (home_team_id=%s or guest_team_id=%s ) '
 
-def get_match(team_id, type, page=1, pagesize=30):
+def get_match(team_id, type, type2=None, page=1, pagesize=30):
     '''获取比赛列表
     '''
+    if not type2:
+        type2 = type
+    
     if page <= 0:
         page = 1
     index = (page - 1) * pagesize
@@ -293,10 +297,10 @@ def get_match(team_id, type, page=1, pagesize=30):
     infos = []
     cursor = connection.cursor()
     try:
-        rs = cursor.fetchall(_SELECT_MATCH % (type, team_id, team_id, index, pagesize))
+        rs = cursor.fetchall(_SELECT_MATCH % (type, type2, team_id, team_id, index, pagesize))
         if rs:
             infos = rs.to_list()
-            rs = cursor.fetchone(_SELECT_MATCH_TOTAL, (type, team_id, team_id))
+            rs = cursor.fetchone(_SELECT_MATCH_TOTAL, (type, type2, team_id, team_id))
             total = rs['count']
     finally:
         cursor.close()

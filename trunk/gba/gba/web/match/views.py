@@ -29,7 +29,7 @@ def friendly_match(request, min=False):
     pagesize = int(request.GET.get('pagesize', 10))
     
     team = UserManager().get_team_info(request)
-    infos, total = match_operator.get_match(team.id, MatchTypes.FRIENDLY, page, pagesize)
+    infos, total = match_operator.get_match(team.id, MatchTypes.FRIENDLY, MatchTypes.YOUTH_FRIENDLY, page, pagesize)
 
     if total == 0:
         totalpage = 0
@@ -521,10 +521,7 @@ def match_accept(request):
             Message.rollback()
             break
         
-        if match.is_youth == 1:
-            url = ''
-        else:
-            url = reverse('friendly-match-min')
+        url = reverse('friendly-match-min')
     
     if error:
         return render_to_response(request, "message.html", {'success': success, 'error': error})

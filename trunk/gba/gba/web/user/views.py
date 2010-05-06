@@ -13,7 +13,7 @@ from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import UserManager, login_required
 from gba.business import user_operator, match_operator, player_operator
 from gba.entity import Message, Team, ChatMessage, LeagueTeams, OutMessage, UserInfo
-from gba.common.constants import MessageType, MatchTypeMaps
+from gba.common.constants import MessageType, MatchTypeMaps, MatchTypes
 from gba.common import exception_mgr
 
 SESSION_KEY = '_auth_user_id'
@@ -106,11 +106,20 @@ def send_match_request(request):
         while i > 0:
             i -= 1 
             team_id = request.GET.get('team_id')
-            type = request.GET.get('type')
-            is_youth = request.GET.get('is_youth')
+            type = int(request.GET.get('match_type'))
+            is_youth = int(request.GET.get('is_youth', 0))
             
-            match_type = 1 #debug
-        
+            if type == 1:
+                if is_youth == 1:
+                    match_type = MatchTypes.YOUTH_TRAINING
+                else:
+                    match_type = MatchTypes.TRAINING
+            else:
+                if is_youth == 1:
+                    match_type = MatchTypes.YOUTH_FRIENDLY
+                else:
+                    match_type = MatchTypes.FRIENDLY
+            
             user_info = UserInfo.load(username=team.username)
             if not team:
                 error = u'登录信息丢失'
@@ -134,7 +143,7 @@ def send_match_request(request):
             message.is_new = 1
     
             try:
-                match_operator.send_match_request(team.id, guest_team.id, type=1)
+                match_operator.send_match_request(team.id, guest_team.id, type=match_type)
                 message.persist()
             except:
                 error = u'服务器异常'
