@@ -3,10 +3,9 @@ package com.ts.dt.dao;
 import java.util.List;
 
 import com.ts.dt.po.Player;
-import com.ts.dt.po.Player;
 import com.ts.dt.po.ProfessionPlayer;
 
-public interface ProfessionPlayerDao {
+public interface ProfessionPlayerDao  extends PlayerDao{
 
 	public void save(ProfessionPlayer player);
 

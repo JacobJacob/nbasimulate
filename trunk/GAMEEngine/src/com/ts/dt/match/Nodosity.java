@@ -10,11 +10,12 @@ import com.ts.dt.constants.DefendTactical;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.constants.OffensiveTactical;
 import com.ts.dt.context.MatchContext;
-import com.ts.dt.dao.ProfessionPlayerDao;
+import com.ts.dt.dao.PlayerDao;
 import com.ts.dt.dao.TacticalDao;
 import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TacticalDaoImpl;
+import com.ts.dt.dao.impl.YouthPlayerDaoImpl;
 import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.MatchNodosityTacticalDetail;
 import com.ts.dt.po.Matchs;
@@ -177,10 +178,14 @@ public class Nodosity {
     private void initDataFromDb() {
 
 	TacticalDao tacticsDao = new TacticalDaoImpl();
-	ProfessionPlayerDao playerDao = new ProfessionPlayerDaoImpl();
-
+	PlayerDao playerDao = null;
+	if (context.isYouth()) {
+	    playerDao = new YouthPlayerDaoImpl();
+	} else {
+	    playerDao = new ProfessionPlayerDaoImpl();
+	}
 	int matchType = context.getMatchType();
-	int tacticalType = TacticalUtil.matchType2Tactical(matchType);
+	int tacticalType = TacticalUtil.matchType2Tactical(matchType, context.isYouth());
 
 	homeTeamTactical = tacticsDao.loadTeamTactical(context.getHomeTeamId(), tacticalType);
 	guestTeamTactical = tacticsDao.loadTeamTactical(context.getVisitingTeamId(), tacticalType);

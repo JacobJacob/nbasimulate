@@ -41,6 +41,7 @@ public class MatchEngineImpl implements MatchEngine {
 	matchDao.save(match);
 
 	context.setMatchId(match.getId());
+	context.isYouth(match.getIsYouth());
 	context.setMatchType(match.getType());
 	context.setHomeTeamId(homeTeamId);
 	context.setVisitingTeamId(visitingTeamId);
