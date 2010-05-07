@@ -10,7 +10,7 @@ import com.ts.dt.po.ActionDesc;
 
 public class ActionDescDaoImpl implements ActionDescDao {
 
-	public static final String QUERY_SQL = "SELECT * FROM action_desc WHERE action_name = ? AND result = ? AND flg = ?";
+	public static final String QUERY_SQL = "select * from action_desc where action_name = ? and result = ? and flg = ?";
 
 	public ActionDesc find(long id) {
 		// TODO Auto-generated method stub
@@ -33,8 +33,7 @@ public class ActionDescDaoImpl implements ActionDescDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Persistence> findWithActionAndResultAndFlg(String actionNm,
-			String result, String flg) {
+	public List<Persistence> findWithActionAndResultAndFlg(String actionNm, String result, String flg) {
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
 		String[] parm = { actionNm, result, flg };
