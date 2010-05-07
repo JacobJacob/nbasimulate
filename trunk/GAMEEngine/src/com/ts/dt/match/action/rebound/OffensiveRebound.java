@@ -20,14 +20,18 @@ public class OffensiveRebound implements Rebound {
 		String currtContrNm = context.getCurrentController().getControllerName();
 		String desc = description.load(context);
 
-		context.addOffensiveRebound(currtContrNm.endsWith("A"));
-		context.playerAddOffensiveRebound(player, currtContrNm.endsWith("A"));
+		if (!context.isNotStick()) {
+			context.addOffensiveRebound(currtContrNm.endsWith("A"));
+			context.playerAddOffensiveRebound(player, currtContrNm.endsWith("A"));
+		} else {
+			context.setNotStick(false);
+		}
 
 		desc = desc.replace("~1~", currtPlayerName.trim());
 
 		MessagesUtil.showLine(context, desc);
-		
-		MatchInfoHelper.save(context,desc);
+
+		MatchInfoHelper.save(context, desc);
 
 		return result;
 	}

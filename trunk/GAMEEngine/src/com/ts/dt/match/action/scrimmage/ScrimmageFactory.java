@@ -33,17 +33,19 @@ public class ScrimmageFactory {
 		Scrimmage scrimmage = null;
 		try {
 			if (context.isJustStart()) {
+				// 开球
 				scrimmage = new StartScrimmage();
+				context.setJustStart(false);
 			} else if (context.isOffensiveRebound()) {
 				scrimmage = new FoulScrimmage();
-			} else {
-				throw new Exception("why call this method ? ");
+			} else if (context.getSeq() > 4) {
+				// 加时赛争球
+				scrimmage = new OverTimeScrimmage();
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		context.setJustStart(false);
 
 		return scrimmage;
 	}

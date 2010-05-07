@@ -25,134 +25,108 @@ import com.ts.dt.util.Logger;
  */
 public class MatchEngineImpl implements MatchEngine {
 
-    MatchContext context = new MatchContext();
+	MatchContext context = new MatchContext();
 
-    public Matchs execute(long matchid) {
+	public Matchs execute(long matchid) {
 
-	MatchDao matchDao = new MatchDaoImpl();
-	Matchs match = matchDao.load(matchid);
-	long homeTeamId = match.getHomeTeamId();
-	long visitingTeamId = match.getGuestTeamId();
+		MatchDao matchDao = new MatchDaoImpl();
+		Matchs match = matchDao.load(matchid);
+		long homeTeamId = match.getHomeTeamId();
+		long visitingTeamId = match.getGuestTeamId();
 
-	match.setStartTime(new Date(new java.util.Date().getTime()));
-	match.setGuestTeamId(visitingTeamId);
+		match.setStartTime(new Date(new java.util.Date().getTime()));
+		match.setGuestTeamId(visitingTeamId);
 
-	match.setHomeTeamId(homeTeamId);
-	matchDao.save(match);
+		match.setHomeTeamId(homeTeamId);
+		matchDao.save(match);
 
-	context.setMatchId(match.getId());
-	context.isYouth(match.getIsYouth());
-	context.setMatchType(match.getType());
-	context.setHomeTeamId(homeTeamId);
-	context.setVisitingTeamId(visitingTeamId);
+		context.setMatchId(match.getId());
+		context.isYouth(match.getIsYouth());
+		context.setMatchType(match.getType());
+		context.setHomeTeamId(homeTeamId);
+		context.setVisitingTeamId(visitingTeamId);
 
-	// TODO Auto-generated method stub
-	Nodosity nodosity = new Nodosity();
-	nodosity.setNodosityNo(1);
+		// TODO Auto-generated method stub
+		Nodosity nodosity = new Nodosity();
+		nodosity.setNodosityNo(1);
 
-	boolean go = true;
-	Logger.info("match start......");
-	while (go) {
-	    long start = System.currentTimeMillis();
-	    context.put(MatchConstant.CURRT_CONT_TIME, 0L);
-	    int nodosityNo = nodosity.getNodosityNo();
-	    Logger.info("The" + nodosityNo + "nodosity start...");
-	    nodosity.execute(context);
-	    Logger.info("The" + nodosityNo + "nodosity end");
-	    go = nodosity.hasNextNodosity();
+		boolean go = true;
+		Logger.info("比赛开始......");
+		while (go) {
 
-	    nodosity = nodosity.getNextNodosity();
-	    long end = System.currentTimeMillis();
-	    System.out.println("nodosity " + nodosityNo + " use times:" + (end - start));
+			context.put(MatchConstant.CURRT_CONT_TIME, 0L);
+			nodosity.execute(context);
+			go = nodosity.hasNextNodosity();
+			nodosity = nodosity.getNextNodosity();
+
+		}
+
+		context.outPutMatchMessage();
+		long start = System.currentTimeMillis();
+		context.saveStatToDB();
+		long end = System.currentTimeMillis();
+		System.out.println("save stat use times:" + (end - start));
+
+		match.setPoint(context.currentScore());
+		match.setStatus(MatchStatus.FINISH);
+		matchDao.save(match);
+
+		// 保存未上场球员统计
+		this.saveNotInPlayer(context, matchid);
+
+		// 清除状态
+		context.clear();
+
+		return match;
+
 	}
 
-	context.outPutMatchMessage();
-	long start = System.currentTimeMillis();
-	context.saveStatToDB();
-	long end = System.currentTimeMillis();
-	System.out.println("save stat use times:" + (end - start));
+	// 保存未上场球员资料
+	private void saveNotInPlayer(MatchContext context, long matchid) {
 
-	match.setPoint(context.currentScore());
-	match.setStatus(MatchStatus.FINISH);
-	matchDao.save(match);
+		List<Player> home_players = null;
+		List<Player> guest_players = null;
 
-	// TestDataFactory.saveTestDateToDB();
+		if (context.isYouth()) {
+			home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
+			guest_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+		} else {
+			home_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
+			guest_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+		}
+		long start = System.currentTimeMillis();
+		Session session = BottleUtil.currentSession();
+		session.beginTransaction();
+		Iterator<Player> iterator = home_players.iterator();
+		while (iterator.hasNext()) {
+			Player player = iterator.next();
+			if (context.hadOnCourt(player.getNo())) {
+				continue;
+			}
+			MatchNotInPlayer matchNotInPlayer = new MatchNotInPlayer();
+			matchNotInPlayer.setMatchId(matchid);
+			matchNotInPlayer.setTeamId(context.getHomeTeamId());
+			matchNotInPlayer.setAbility(player.getAbility());
+			matchNotInPlayer.setPlayerNo(player.getNo());
+			matchNotInPlayer.save();
+		}
 
-	// 保存未上场球员统计
-	this.saveNotInPlayer(context, matchid);
-
-	// 清除状态
-	context.clear();
-
-	return match;
-
-    }
-
-    // 保存未上场球员资料
-    private void saveNotInPlayer(MatchContext context, long matchid) {
-
-	List<Player> home_players = null;
-	List<Player> guest_players = null;
-
-	if (context.isYouth()) {
-	    home_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
-	    guest_players = new YouthPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
-	} else {
-	    home_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
-	    guest_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
+		iterator = guest_players.iterator();
+		while (iterator.hasNext()) {
+			Player player = iterator.next();
+			if (context.hadOnCourt(player.getNo())) {
+				continue;
+			}
+			MatchNotInPlayer matchNotInPlayer = new MatchNotInPlayer();
+			matchNotInPlayer.setMatchId(matchid);
+			matchNotInPlayer.setTeamId(context.getVisitingTeamId());
+			matchNotInPlayer.setAbility(player.getAbility());
+			matchNotInPlayer.setPlayerNo(player.getNo());
+			matchNotInPlayer.save();
+		}
+		session.endTransaction();
+		long end = System.currentTimeMillis();
+		System.out.println("save not in player user times:" + (end - start));
 	}
-	long start = System.currentTimeMillis();
-	Session session = BottleUtil.currentSession();
-	session.beginTransaction();
-	Iterator<Player> iterator = home_players.iterator();
-	while (iterator.hasNext()) {
-	    Player player = iterator.next();
-	    if (context.hadOnCourt(player.getNo())) {
-		continue;
-	    }
-	    MatchNotInPlayer matchNotInPlayer = new MatchNotInPlayer();
-	    matchNotInPlayer.setMatchId(matchid);
-	    matchNotInPlayer.setTeamId(context.getHomeTeamId());
-	    matchNotInPlayer.setAbility(player.getAbility());
-	    matchNotInPlayer.setPlayerNo(player.getNo());
-	    matchNotInPlayer.save();
-	}
-
-	iterator = guest_players.iterator();
-	while (iterator.hasNext()) {
-	    Player player = iterator.next();
-	    if (context.hadOnCourt(player.getNo())) {
-		continue;
-	    }
-	    MatchNotInPlayer matchNotInPlayer = new MatchNotInPlayer();
-	    matchNotInPlayer.setMatchId(matchid);
-	    matchNotInPlayer.setTeamId(context.getVisitingTeamId());
-	    matchNotInPlayer.setAbility(player.getAbility());
-	    matchNotInPlayer.setPlayerNo(player.getNo());
-	    matchNotInPlayer.save();
-	}
-	session.endTransaction();
-	long end = System.currentTimeMillis();
-	System.out.println("save not in player user times:" + (end - start));
-    }
-
-    public static void main(String[] args) {
-
-	for (int i = 0; i < 1; i++) {
-	    new Test().start();
-	}
-    }
-
-    static class Test extends Thread {
-
-	@Override
-	public void run() {
-	    // TODO Auto-generated method stub
-	    for (int i = 0; i < 1; i++) {
-
-	    }
-	}
-
-    }
 
 }

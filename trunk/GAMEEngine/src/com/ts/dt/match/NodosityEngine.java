@@ -47,6 +47,10 @@ public class NodosityEngine {
 				// 如果是球进,犯规或者出界则不做篮板球争夺处理
 				if (!context.isFoul() && !context.isSuccess() && !context.isOutside()) {
 					BackboardCheckFactory.getInstance().createBackboardCheckFactory(context).check(context);
+				} else {
+					// 既不是前场篮板，也不是后场篮板
+					context.setDefensiveRebound(false);
+					context.setOffensiveRebound(false);
 				}
 				checkNextController(MatchConstant.ACTION_TYPE_SHOUT);
 				context.put(MatchConstant.HAS_PASS_TIMES, 0);

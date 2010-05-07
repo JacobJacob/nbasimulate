@@ -31,8 +31,12 @@ public class StartScrimmage implements Scrimmage {
 
 		String successerNm = null;
 		if (context.getScrimmageResult().equals(MatchConstant.RESULT_SUCCESS)) {
+			// 主队争球成功
+			context.setHomeStart(true);
 			successerNm = currtPlayerNm;
 		} else {
+			// 客队争球成功
+			context.setHomeStart(false);
 			successerNm = currtDefenderNm;
 		}
 		String nextControllerNm = context.getNextController().getPlayer().getName();
