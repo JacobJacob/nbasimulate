@@ -19,10 +19,10 @@ public class MatchContext {
 	private Hashtable<String, Object> data;
 
 	private DataStat dataStat;
-	
-	private boolean isNewLine = true ; //是不是新的一轮进攻
-	
-	private boolean notStick = false ; //三不沾
+
+	private boolean isNewLine = true; // 是不是新的一轮进攻
+
+	private boolean notStick = false; // 三不沾
 
 	private List<String> onCourtPlayers = new ArrayList<String>(); // 当前在场上的球员
 	private List<String> hadOnCourtPlayers = new ArrayList<String>(); // 当前比赛已经上过场的球员
@@ -53,6 +53,8 @@ public class MatchContext {
 	private boolean isBlock = false; // 是否封盖
 
 	private boolean isAssist = false;// 是否助攻
+
+	private boolean isHomeStart = false; // 是否是主队获得第一次争球
 
 	private int foulShootRemain = -1;
 	private int foulShootType;
@@ -834,8 +836,6 @@ public class MatchContext {
 	public int getGuestTeamDefendTactical() {
 		return guestTeamDefendTactical;
 	}
-	
-	
 
 	public boolean isNotStick() {
 		return notStick;
@@ -856,7 +856,13 @@ public class MatchContext {
 	public void setNewLine(boolean isNewLine) {
 		this.isNewLine = isNewLine;
 	}
-	
-	
+
+	public boolean isHomeStart() {
+		return isHomeStart;
+	}
+
+	public void setHomeStart(boolean isHomeStart) {
+		this.isHomeStart = isHomeStart;
+	}
 
 }
