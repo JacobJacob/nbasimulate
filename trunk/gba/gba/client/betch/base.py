@@ -90,3 +90,6 @@ class BaseBetchClient(object):
         '''获取状态'''
         if self._data.has_key(key):
             return self._data[key]
+        
+    def sleep(self):
+        time.sleep(10)

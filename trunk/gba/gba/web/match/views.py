@@ -80,7 +80,10 @@ def match_stat(request):
     home_stat_total['name'] = u'合计'
     for stat in home_stat:
         player_no = stat['player_no']
-        player = ProfessionPlayer.load(no=player_no)
+        if match.is_youth:
+            player = YouthPlayer.load(no=player_no)
+        else:
+            player = ProfessionPlayer.load(no=player_no)
         stat['name'] = player.name
         total_point = 0
         for i in range(1, 4):
@@ -107,7 +110,10 @@ def match_stat(request):
     guest_stat_total['name'] = u'合计'
     for stat in guest_stat:
         player_no = stat['player_no']
-        player = ProfessionPlayer.load(no=player_no)
+        if match.is_youth:
+            player = YouthPlayer.load(no=player_no)
+        else:
+            player = ProfessionPlayer.load(no=player_no)
         stat['name'] = player.name
         total_point = 0
         for i in range(1, 4):
