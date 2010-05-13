@@ -6,7 +6,7 @@ import time
 import traceback
 from datetime import datetime
 
-from gba.common import json, log_execption, serverinfo
+from gba.common import json, exception_mgr, serverinfo
 from gba.config import DEBUG
 from gba.entity import ClientRunningLog, RuntimeData
 
@@ -28,7 +28,7 @@ class BaseBetchClient(object):
             self.append_log(traceback.format_exc(3))
             self._status = 'error'
             self.log()
-            raise
+            exception_mgr.on_except()
         self._status = 'finish'
         self.append_log('client %s finish' % self.__class__.__name__)
         self.log()
@@ -66,7 +66,7 @@ class BaseBetchClient(object):
                 runtime_data.value = json.dumps(self._data)
                 break
             except:
-                log_execption()
+                exception_mgr.on_except()
                 time.sleep(20)
                 
     def load_status(self):
@@ -79,7 +79,7 @@ class BaseBetchClient(object):
                 runtime_data.value = json.dumps(self._data)
                 break
             except:
-                log_execption()
+                exception_mgr.on_except()
                 time.sleep(20)
                 
     def set_status(self, key, value):
