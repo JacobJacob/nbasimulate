@@ -20,22 +20,23 @@ public class MatchReqMonitor extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (true) {
-			List<Matchs> list = matchReqDao.getAllNewReq();
-			Iterator<Matchs> iterator = list.iterator();
-			if (list.size() > 0) {
-				Logger.info("Has New Request....");
-			} else {
-				// Logger.info("Not New Request....");
-			}
-			while (iterator.hasNext()) {
-				Matchs req = iterator.next();
-				req.setPoint("[0:0]");
-				req.setStatus(MatchStatus.START);
-				Session session = BottleUtil.currentSession();
-				session.beginTransaction();
-				req.save();
-				session.endTransaction();
-				MatchReqPool.put(req);
+			if (MatchReqPool.size() == 0) {
+
+				List<Matchs> list = matchReqDao.getAllNewReq();
+				Iterator<Matchs> iterator = list.iterator();
+				if (list.size() > 0) {
+					Logger.info("Has New Request....");
+				}
+				while (iterator.hasNext()) {
+					Matchs req = iterator.next();
+					req.setPoint("[0:0]");
+					req.setStatus(MatchStatus.START);
+					Session session = BottleUtil.currentSession();
+					session.beginTransaction();
+					req.save();
+					session.endTransaction();
+					MatchReqPool.put(req);
+				}
 			}
 			try {
 				sleep(5000);

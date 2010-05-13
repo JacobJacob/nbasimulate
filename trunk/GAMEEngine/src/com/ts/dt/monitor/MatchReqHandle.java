@@ -13,63 +13,64 @@ import com.ts.dt.util.Logger;
 
 public class MatchReqHandle extends Thread {
 
-    private String name;
-    private int finishCount = 0;
+	private String name;
+	private int finishCount = 0;
 
-    public MatchReqHandle(String name) {
-	this.name = name;
-    }
+	public MatchReqHandle(String name) {
+		this.name = name;
+	}
 
-    private MatchEngine engine = new MatchEngineImpl();
+	private MatchEngine engine = new MatchEngineImpl();
 
-    @Override
-    public void run() {
-	// TODO Auto-generated method stub
-	while (true) {
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while (true) {
 
-	    try {
-		this.reportStatus("start to get task");
-		Matchs match = MatchReqPool.get();
-		this.reportStatus("start to execute match");
-		match = engine.execute(match.getId());
+			// try {
+			this.reportStatus("start to get task");
+			Matchs match = MatchReqPool.get();
+			this.reportStatus("start to execute match");
+			match = engine.execute(match.getId());
+			Session session = BottleUtil.currentSession();
+			this.finishCount++;
+			this.reportStatus("finish execute match");
+			// req.setMatchId(matchId);
+			match.setStatus(MatchStatus.FINISH);
+			session.beginTransaction();
+			try {
+				match.save();
+			} catch (Exception e) {
+				Logger.logToDb("error", e.getMessage());
+			}
+			session.endTransaction();
+			// } catch (Exception e) {
+			// Logger.logToDb("error", e.toString());
+			// throw e;
+			// }
+		}
+
+	}
+
+	private void reportStatus(String status) {
+
+		EngineStatus engineStatus = null;
 		Session session = BottleUtil.currentSession();
-		this.finishCount++;
-		this.reportStatus("finish execute match");
-		// req.setMatchId(matchId);
-		match.setStatus(MatchStatus.FINISH);
 		session.beginTransaction();
 		try {
-		    match.save();
+			try {
+				engineStatus = (EngineStatus) session.load(EngineStatus.class, "name='" + this.name + "'");
+			} catch (ObjectNotFoundException e) {
+			}
+			if (engineStatus == null) {
+				engineStatus = new EngineStatus();
+				engineStatus.setName(this.name);
+			}
+			engineStatus.setStatus(status + "[handle total:" + this.finishCount + "]");
+			engineStatus.save();
 		} catch (Exception e) {
-		    Logger.logToDb("error", e.getMessage());
+			e.printStackTrace();
 		}
 		session.endTransaction();
-	    } catch (Exception e) {
-		Logger.logToDb("error", e.toString());
-	    }
 	}
-
-    }
-
-    private void reportStatus(String status) {
-
-	EngineStatus engineStatus = null;
-	Session session = BottleUtil.currentSession();
-	session.beginTransaction();
-	try {
-	    try {
-		engineStatus = (EngineStatus) session.load(EngineStatus.class, "name='" + this.name + "'");
-	    } catch (ObjectNotFoundException e) {
-	    }
-	    if (engineStatus == null) {
-		engineStatus = new EngineStatus();
-		engineStatus.setName(this.name);
-	    }
-	    engineStatus.setStatus(status + "[handle total:" + this.finishCount + "]");
-	    engineStatus.save();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	session.endTransaction();
-    }
 }

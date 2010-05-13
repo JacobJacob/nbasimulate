@@ -39,4 +39,12 @@ public class MatchReqPool {
 		}
 		return req;
 	}
+
+	public static int size() {
+		synchronized (lock) {
+			int size = pool.size();
+			lock.notifyAll();
+			return size;
+		}
+	}
 }

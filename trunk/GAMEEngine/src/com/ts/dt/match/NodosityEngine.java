@@ -114,6 +114,7 @@ public class NodosityEngine {
 
 		context.setFoul(false);
 		context.setOutside(false);
+		context.setNewLine(true);
 
 	}
 
