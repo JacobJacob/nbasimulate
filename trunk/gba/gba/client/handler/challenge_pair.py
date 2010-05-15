@@ -35,6 +35,7 @@ class ChallengePair(BaseClient):
                     if self.check_can_pair(challenge_pool.team_id, challenge_pools[j].team_id):#可以配对
                         self._pair_total += 1
                         self.pair(challenge_pool, challenge_pools[j])
+                        break
             
             self.current_info = 'pair total[%s]' % self._pair_total
             return 10
