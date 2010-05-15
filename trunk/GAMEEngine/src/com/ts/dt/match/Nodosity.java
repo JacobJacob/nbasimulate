@@ -1,6 +1,7 @@
 package com.ts.dt.match;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,9 +17,12 @@ import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TacticalDaoImpl;
 import com.ts.dt.dao.impl.YouthPlayerDaoImpl;
+import com.ts.dt.match.helper.PowerHelper;
+import com.ts.dt.po.MatchNodosityDetail;
 import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.MatchNodosityTacticalDetail;
 import com.ts.dt.po.Matchs;
+import com.ts.dt.po.Player;
 import com.ts.dt.po.TeamTactical;
 import com.ts.dt.po.TeamTacticalDetail;
 import com.ts.dt.util.DebugUtil;
@@ -43,6 +47,62 @@ public class Nodosity {
 	private Hashtable<String, Controller> controllers;
 	private MatchContext context;
 
+	public void execute(MatchContext context) {
+
+		int apoint = 0;
+		int bpoint = 0;
+		MatchNodosityMain main = new MatchNodosityMain();
+		context.setNodosityMain(main);
+
+		this.context = context;
+		context.setSeq(nodosityNo);
+		this.init();
+		long currentContinueTime = (Long) context.get(MatchConstant.CURRT_CONT_TIME);
+
+		Logger.info("第 " + nodosityNo + "节比赛开始.....");
+
+		while (currentContinueTime < PER_NODOSITY_TIME || context.getFoulShootRemain() > 0) {
+
+			NodosityEngine nodosityEngine = new NodosityEngine(context);
+			nodosityEngine.execute();
+			nodosityEngine.next();
+			currentContinueTime = (Long) context.get(MatchConstant.CURRT_CONT_TIME);
+
+		}
+		Logger.info("第" + nodosityNo + "节比赛结束.....");
+		apoint = (Integer) context.get(MatchConstant.POINT_TEAM_A);
+		bpoint = (Integer) context.get(MatchConstant.POINT_TEAM_B);
+
+		long start = System.currentTimeMillis();
+
+		// 体力计算
+		Iterator<Controller> iterator = context.getControllers().values().iterator();
+		while (iterator.hasNext()) {
+			Controller controller = iterator.next();
+			Player player = controller.getPlayer();
+			int cost = PowerHelper.checkPowerCost(controller, 0);
+			int newMatchPower = player.getMatchPower() - cost;
+			player.setMatchPower(newMatchPower >= 30 ? newMatchPower : 30);
+			if (context.getMatchType() == 5) {
+				int newLeaguePower = player.getLeaguePower() - cost;
+				player.setLeaguePower(newLeaguePower >= 30 ? newLeaguePower : 30);
+			}
+		}
+		this.updatePlayers(context);
+
+		logNodosityData(context);
+		long end = System.currentTimeMillis();
+		System.out.println("save nodosity data use time:" + (end - start));
+
+		if (nodosityNo < 4 || (apoint == bpoint)) {
+			hasNextNodosity = true;
+			nextNodosity = new Nodosity();
+			nextNodosity.setNodosityNo(++nodosityNo);
+		} else {
+			hasNextNodosity = false;
+		}
+	}
+
 	public void init() {
 
 		if (context.getControllers() == null) {
@@ -55,6 +115,7 @@ public class Nodosity {
 		context.put(MatchConstant.HAS_PASS_TIMES, 0);
 
 		initDataFromDb();
+		context.initTacticalPoint();
 
 		String currentControllerName = null;
 		String currentDefenderName = null;
@@ -65,6 +126,18 @@ public class Nodosity {
 			currentDefenderName = "CB";
 
 			context.setCurrentActionType(MatchConstant.ACTION_TYPE_SCRIMMAGE);
+
+			// 第一节的时候, 把体力值复制到比赛体力,如果是联赛,则同时复制到联赛体力上
+			Iterator<Controller> iterator = context.getControllers().values().iterator();
+			while (iterator.hasNext()) {
+				Controller controller = iterator.next();
+				Player player = controller.getPlayer();
+				player.setMatchPower(player.getPower());
+				if (context.getMatchType() == 5) {
+					player.setLeaguePower(player.getPower());
+				}
+			}
+			this.updatePlayers(context);
 
 		} else if (nodosityNo <= 4) {
 			// 如果不是第一节,则是发球,如果是A队得球并且第四节
@@ -106,43 +179,50 @@ public class Nodosity {
 
 	}
 
-	public void execute(MatchContext context) {
+	// 更新场上球员信息
+	private void updatePlayers(MatchContext context) {
 
-		int apoint = 0;
-		int bpoint = 0;
-		MatchNodosityMain main = new MatchNodosityMain();
-		context.setNodosityMain(main);
+		Connection conn = ConnectionPool.getInstance().connection();
+		boolean autoCommit = true;
+		try {
+			autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			String sql = null;
+			if (context.isYouth()) {
+				sql = "update youth_player set match_power=?, league_power=? where no=?";
+			} else {
+				sql = "update profession_player set match_power=?, league_power=? where no=?";
+			}
+			PreparedStatement statement = conn.prepareStatement(sql);
+			Iterator<Controller> iterator = context.getControllers().values().iterator();
+			while (iterator.hasNext()) {
+				Controller controller = iterator.next();
+				Player player = controller.getPlayer();
+				statement.setInt(1, player.getMatchPower());
+				statement.setInt(2, player.getLeaguePower());
+				statement.setString(3, player.getNo());
+				statement.addBatch();
+			}
+			statement.executeBatch();
 
-		this.context = context;
-		context.setSeq(nodosityNo);
-		init();
-		long currentContinueTime = (Long) context.get(MatchConstant.CURRT_CONT_TIME);
-
-		Logger.info("第 " + nodosityNo + "节比赛开始.....");
-
-		while (currentContinueTime < PER_NODOSITY_TIME || context.getFoulShootRemain() > 0) {
-
-			NodosityEngine nodosityEngine = new NodosityEngine(context);
-			nodosityEngine.execute();
-			nodosityEngine.next();
-			currentContinueTime = (Long) context.get(MatchConstant.CURRT_CONT_TIME);
-
-		}
-		Logger.info("第" + nodosityNo + "节比赛结束.....");
-		apoint = (Integer) context.get(MatchConstant.POINT_TEAM_A);
-		bpoint = (Integer) context.get(MatchConstant.POINT_TEAM_B);
-
-		long start = System.currentTimeMillis();
-		logNodosityData(context);
-		long end = System.currentTimeMillis();
-		System.out.println("save nodosity data use time:" + (end - start));
-
-		if (nodosityNo < 4 || (apoint == bpoint)) {
-			hasNextNodosity = true;
-			nextNodosity = new Nodosity();
-			nextNodosity.setNodosityNo(++nodosityNo);
-		} else {
-			hasNextNodosity = false;
+			conn.commit();
+		} catch (Exception e) {
+			if (conn != null) {
+				try {
+					conn.rollback();
+				} catch (Exception ex) {
+				}
+			}
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.setAutoCommit(autoCommit);
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -166,6 +246,9 @@ public class Nodosity {
 			match.setSubStatus(context.getSeq());
 		}
 		match.setPoint(context.currentScore());
+		if (context.getSeq() > 4) {
+			match.setOverTime(context.getSeq() - 4);
+		}
 
 		Iterator<String> iterator = map.keySet().iterator();
 		while (iterator.hasNext()) {
@@ -176,6 +259,7 @@ public class Nodosity {
 			detail.setPlayerNo(controller.getPlayer().getNo());
 			detail.setPlayerName(controller.getPlayer().getName());
 			detail.setPosition(key);
+			detail.setPower(controller.getPlayer().getMatchPower());
 
 			main.addDetail(detail);
 		}

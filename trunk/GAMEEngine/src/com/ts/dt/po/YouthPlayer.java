@@ -11,6 +11,8 @@ public class YouthPlayer extends Persistence implements Player {
 	private String position;
 	private int stature;
 	private int power;
+	private int leaguePower;
+	private int matchPower;
 	private int avoirdupois;
 	private long teamId;
 	private double ability;
@@ -250,6 +252,22 @@ public class YouthPlayer extends Persistence implements Player {
 
 	public void setTeamId(long teamId) {
 		this.teamId = teamId;
+	}
+
+	public int getLeaguePower() {
+		return leaguePower;
+	}
+
+	public void setLeaguePower(int leaguePower) {
+		this.leaguePower = leaguePower;
+	}
+
+	public int getMatchPower() {
+		return matchPower;
+	}
+
+	public void setMatchPower(int matchPower) {
+		this.matchPower = matchPower;
 	}
 
 }

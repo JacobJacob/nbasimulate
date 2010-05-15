@@ -8,7 +8,6 @@ import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.match.Controller;
 import com.ts.dt.po.Player;
-import com.ts.dt.po.Player;
 import com.ts.dt.util.Logger;
 
 public class SubstitutionHelper {
@@ -40,8 +39,7 @@ public class SubstitutionHelper {
 		System.out.println(onCourtPlayer.getName() + "替换上场");
 	}
 
-	// check whether the player is better than onCourtPlayer to on Court
-	//选择一个最适合的球员上场
+	// 选择一个最适合的球员上场
 	private static Player choosePlayer(String position, Player onCourtPlayer, Player player) {
 
 		if (onCourtPlayer == null) {

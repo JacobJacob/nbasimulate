@@ -13,13 +13,6 @@ public class ActionCostTimeHelper {
 		return costTime;
 	}
 
-	// //投篮所用时间
-	// public static long shootCostTime(Player player) {
-	// long costTime = 10;
-	// costTime += randomGetCostTime() * 10;
-	// return costTime;
-	// }
-
 	// 随机当前投篮以后所剩的时间
 	public static long shootRemainTime(Player player) {
 		long remainTime = 70;

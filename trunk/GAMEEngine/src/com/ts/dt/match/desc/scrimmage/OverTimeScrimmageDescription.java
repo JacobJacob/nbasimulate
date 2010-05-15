@@ -3,7 +3,7 @@ package com.ts.dt.match.desc.scrimmage;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.match.desc.ActionDescription;
 
-public class StartScrimmageDescription implements ActionDescription {
+public class OverTimeScrimmageDescription implements ActionDescription {
 
 	public String load(MatchContext context) {
 		// TODO Auto-generated method stub

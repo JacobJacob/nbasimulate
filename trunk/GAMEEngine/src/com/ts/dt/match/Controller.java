@@ -61,7 +61,7 @@ public class Controller {
 		context.currentOffensiveCostTimeAdd(costTime);
 	}
 
-	//发球动作
+	// 争球动作
 	public void scrimmage(MatchContext context) {
 		Scrimmage scrimmage = ScrimmageFactory.getInstance().createScrimmageAction(context);
 		scrimmage.before(context);

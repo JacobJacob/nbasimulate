@@ -36,8 +36,9 @@ public class ScrimmageFactory {
 				// 开球
 				scrimmage = new StartScrimmage();
 				context.setJustStart(false);
-			} else if (context.isOffensiveRebound()) {
-				scrimmage = new FoulScrimmage();
+				// } else if (context.isOffensiveRebound()) {
+				// scrimmage = new FoulScrimmage();
+				// 
 			} else if (context.getSeq() > 4) {
 				// 加时赛争球
 				scrimmage = new OverTimeScrimmage();

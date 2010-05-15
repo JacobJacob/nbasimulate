@@ -9,6 +9,8 @@ public class ProfessionPlayer extends Persistence implements Player {
 	private String name;
 	private int age;
 	private int power;
+	private int matchPower;
+	private int leaguePower;
 	private String position;
 	private int stature;
 	private int avoirdupois;
@@ -250,6 +252,22 @@ public class ProfessionPlayer extends Persistence implements Player {
 
 	public void setTeamId(long teamId) {
 		this.teamId = teamId;
+	}
+
+	public int getMatchPower() {
+		return matchPower;
+	}
+
+	public void setMatchPower(int matchPower) {
+		this.matchPower = matchPower;
+	}
+
+	public int getLeaguePower() {
+		return leaguePower;
+	}
+
+	public void setLeaguePower(int leaguePower) {
+		this.leaguePower = leaguePower;
 	}
 
 }

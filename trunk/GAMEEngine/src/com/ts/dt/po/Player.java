@@ -114,4 +114,12 @@ public interface Player extends Persistable {
 
 	public abstract void setTeamId(long teamId);
 
+	public abstract int getMatchPower();
+
+	public abstract void setMatchPower(int matchPower);
+
+	public abstract int getLeaguePower();
+
+	public abstract void setLeaguePower(int leaguePower);
+
 }

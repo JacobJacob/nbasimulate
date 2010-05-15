@@ -53,13 +53,22 @@ public class ShortShootCheck implements ResultCheck {
 		// 如果A进攻为 60 B防守为40,则进攻成功可能性为 70
 		point += (shootPower - defendPower);
 
+		// 战术对命中率的影响
+		int tacticalPoint = 0;
+		if (context.isHomeTeam()) {
+			tacticalPoint = context.getHomeTeamOffensiveTacticalPoint();
+		} else {
+			tacticalPoint = context.getGuestTeamOffensiveTacticalPoint();
+		}
+		point += ((tacticalPoint - 50) / 5);
+
 		Random random = new Random();
 		int a = random.nextInt(100);
 		DebugUtil.debug("[" + context.getCurrentController().getControllerName() + "]" + player.getName() + "投篮能力为" + shootPower);
 		DebugUtil.debug("[" + context.getCurrentDefender().getControllerName() + "]" + defender.getName() + "防守能力为" + defendPower);
 		DebugUtil.debug("本次命中可能性为" + point);
 		if (point > 80) {
-			point = 80;//如果大于80强制设为80
+			point = 80;// 如果大于80强制设为80
 		}
 		if (a < point) {
 			result = MatchConstant.RESULT_SUCCESS;
@@ -75,7 +84,7 @@ public class ShortShootCheck implements ResultCheck {
 		// *投篮 5 *进攻意识 4 *速度 3 *体力3 *三分 2
 		int total = 0;
 
-		double[] attr_power = { player.getShooting(), player.getOffencons(), player.getSpeed(), player.getPower() };
+		double[] attr_power = { player.getShooting(), player.getOffencons(), player.getSpeed(), player.getMatchPower() };
 		int[] weight = { 5, 4, 3, 3, 2 };
 		int[] max = { 100, 100, 100, 100, 100 };
 
@@ -98,7 +107,7 @@ public class ShortShootCheck implements ResultCheck {
 		// *封盖4 *防守意识4 *抢断3 *速度3 *弹跳3 *体力3
 		int total = 0;
 
-		double[] attr_power = { player.getBlocked(), player.getDefencons(), player.getSteal(), player.getSpeed(), player.getBounce(), player.getPower() };
+		double[] attr_power = { player.getBlocked(), player.getDefencons(), player.getSteal(), player.getSpeed(), player.getBounce(), player.getMatchPower() };
 		int[] weight = { 4, 4, 3, 3, 3, 3 };
 		int[] max = { 100, 100, 100, 100, 100, 100 };
 

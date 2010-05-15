@@ -8,6 +8,7 @@ import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.match.Controller;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.match.helper.ReboundHelper;
+import com.ts.dt.match.helper.TacticalHelper;
 import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.Player;
 import com.ts.dt.stat.DataStat;
@@ -37,6 +38,9 @@ public class MatchContext {
 	private int homeTeamDefendTactical = -1; // 主队防守战术
 	private int guestTeamOffensiveTactical = -1; // 客队进攻战术
 	private int guestTeamDefendTactical = -1; // 客队防守战术
+
+	private int homeTeamOffensiveTacticalPoint = -1;// 主队进攻战术克制分值, 以100分算
+	private int guestTeamOffensiveTacticalPoint = -1;// 克队进攻战术克制分值, 以100分算
 
 	private int currentOffensiveCostTime = 0; // 当前进攻所使用了的时间,以毫秒算
 
@@ -863,6 +867,19 @@ public class MatchContext {
 
 	public void setHomeStart(boolean isHomeStart) {
 		this.isHomeStart = isHomeStart;
+	}
+
+	public int getHomeTeamOffensiveTacticalPoint() {
+		return homeTeamOffensiveTacticalPoint;
+	}
+
+	public int getGuestTeamOffensiveTacticalPoint() {
+		return guestTeamOffensiveTacticalPoint;
+	}
+
+	public void initTacticalPoint() {
+		this.homeTeamOffensiveTacticalPoint = TacticalHelper.checkOffensivePoint(this.homeTeamOffensiveTactical, this.guestTeamDefendTactical);
+		this.guestTeamOffensiveTacticalPoint = TacticalHelper.checkOffensivePoint(this.guestTeamOffensiveTactical, this.homeTeamDefendTactical);
 	}
 
 }

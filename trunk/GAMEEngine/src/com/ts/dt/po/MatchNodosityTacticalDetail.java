@@ -8,6 +8,7 @@ public class MatchNodosityTacticalDetail extends Persistence {
 	private String position;
 	private String playerNo;
 	private String playerName;
+	private int power;
 	private float colligate;
 
 	public long getMatchNodosityMainId() {
@@ -48,6 +49,14 @@ public class MatchNodosityTacticalDetail extends Persistence {
 
 	public void setColligate(float colligate) {
 		this.colligate = colligate;
+	}
+
+	public int getPower() {
+		return power;
+	}
+
+	public void setPower(int power) {
+		this.power = power;
 	}
 
 }
