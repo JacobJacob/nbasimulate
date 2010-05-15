@@ -19,7 +19,7 @@ public class Matchs extends Persistence {
 	private Date startTime;
 	private String point;
 	private int type;
-	private int overTime = 0; // 一个多少个加时
+	private int overtime = 0; // 一个多少个加时
 	private boolean isYouth;
 
 	public boolean update(Connection connection) {
@@ -32,7 +32,7 @@ public class Matchs extends Persistence {
 			statement.setDate(5, new java.sql.Date(this.startTime.getTime()));
 			statement.setString(6, this.point);
 			statement.setInt(7, this.type);
-			statement.setInt(8, this.overTime);
+			statement.setInt(8, this.overtime);
 			statement.setLong(9, this.getId());
 			statement.execute();
 
@@ -107,11 +107,12 @@ public class Matchs extends Persistence {
 		this.isYouth = isYouth;
 	}
 
-	public int getOverTime() {
-		return overTime;
+	public int getOvertime() {
+		return overtime;
 	}
 
-	public void setOverTime(int overTime) {
-		this.overTime = overTime;
+	public void setOvertime(int overtime) {
+		this.overtime = overtime;
 	}
+
 }

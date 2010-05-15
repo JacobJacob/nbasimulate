@@ -247,7 +247,7 @@ public class Nodosity {
 		}
 		match.setPoint(context.currentScore());
 		if (context.getSeq() > 4) {
-			match.setOverTime(context.getSeq() - 4);
+			match.setOvertime(context.getSeq() - 4);
 		}
 
 		Iterator<String> iterator = map.keySet().iterator();
