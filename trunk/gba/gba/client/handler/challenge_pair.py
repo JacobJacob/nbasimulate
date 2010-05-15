@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import time
 from gba.entity import ChallengePool, ChallengeHistory, Matchs
 from gba.common.constants import MatchStatus , MatchTypes, MatchShowStatus
 from gba.common.db.reserve_convertor import ReserveLiteral
@@ -81,7 +80,7 @@ class ChallengePair(BaseClient):
     def check_can_pair(self, home_team_id, guest_team_id):
         '''判断下能不能配对,二个小时以上没打过则可以配对'''
         condition = '(home_team_id="%s" and guest_team_id="%s") or (home_team_id="%s" and guest_team_id="%s") \
-                     and date_add(created_time, interval 120 minute)<now()' % (home_team_id, guest_team_id, guest_team_id, home_team_id)
+                     and date_add(created_time, interval 3 minute)<now()' % (home_team_id, guest_team_id, guest_team_id, home_team_id)
         if ChallengeHistory.query(condition=condition):
             return False
         return True
