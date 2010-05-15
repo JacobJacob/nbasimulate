@@ -437,3 +437,17 @@ def match_nodosity_detail(nodosity_id):
     </table>''' 
     
     return html % (1, 2, 3, 4)
+
+@register.filter
+def challenge_out(win_count):
+    if win_count not in (3, 6, 9):
+        return '您已经连胜了%s场,现在退出将一无所有<br/>是否要退出?' % win_count
+    
+    if win_count == 3:
+        message = '您已经连胜了3胜，您现在退出将获得3分的胜者积分'
+    elif win_count == 6:
+        message = '您已经连胜了6胜，您现在退出将获得9分的胜者积分'
+    else:
+        message = '您已经连胜了9胜，您现在退出将获得21分的胜者积分'
+    return message
+        

@@ -133,4 +133,3 @@ if __name__ == '__main__':
     print '*' * 30
     print match.show_status, match.next_show_status
     print '*' * 30
-              

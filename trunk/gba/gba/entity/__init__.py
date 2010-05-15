@@ -1,20 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-#
-#__all__ = ['Player', 'PlayerBetchLog', 'YouthFreePlayer', 'SysConfig'
-#           , 'YouthPlayer', 'Message', 'Team', 'ProfessionPlayer', 'Matchs',
-#           'League', 'LeagueTeams', 'Names', 'UserInfo', 'YouthFreeplayerAuctionLog',
-#           'PlayerAuctionLog', 'ClientRunningLog', 'AttentionPlayer', 'LeagueConfig',
-#           'ActionDesc', 'TrainingCenter', 'TeamTacticalDetail', 'TeamTactical',
-#           'MatchNotInPlayer', 'LeagueMatchs', 'RuntimeData', 'ProPlayerCareerStatTotal',
-#           'ProPlayerSeasonStatTotal', 'ErrorLog', 'TeamStaff', 'MatchNodosityMain',
-#           'MatchNodosityDetail', 'MatchNodosityTacticalDetail', 'TeamArena',
-#           'RoundUpdateLog', 'SeasonFinance', 'AllFinance', 'TeamAd', 'ChatMessage',
-#           'TacticalGrade', 'TrainingRemain', 'Friends', 'OutMessage', 'TeamHonor',
-#           'Cup', 'ChallengePool', 'ChallengeTeam', 'ChallengeHistory', 'TeamTicketHistory',
-#           'EngineStatus', 'Unions', 'UnionApply', 'UnionMember', 'DraftPlayer', 
-#           'YouthPlayerCareerStatTotal', 'ProPlayerSeasonStatTotal']
 
 from gba.common.bottle.persistable import Persistable
 
@@ -220,6 +206,10 @@ class ChallengePool(Persistable):
 class ChallengeTeam(Persistable):
     '''胜者为王球队统计'''
     CACHE_KEY = 'challenge_team:team_id'
+    
+class ChallengeAll(Persistable):
+    '''胜者为王总的统计'''
+    CACHE_KEY = 'challenge_all:team_id'
     
 class ChallengeHistory(Persistable):
     '''胜者为王对战历史'''

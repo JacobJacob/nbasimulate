@@ -34,10 +34,9 @@ class MatchStatusMonitor(BaseClient):
                 new_match.persist()
                 if new_match.show_status == MatchShowStatus.FINISH and match.type == MatchTypes.CHALLENGE:
                     challenge_history = ChallengeHistory.load(match_id=match.id)
-                    if challenge_history:
-                        challenge_history.finish = 1
-                        challenge_history.point = match.point
-                        challenge_history.persist()
+                    challenge_history.finish = 1
+                    challenge_history.point = match.point
+                    challenge_history.persist()
                         
     def get_match(self, start_id):
         while True:

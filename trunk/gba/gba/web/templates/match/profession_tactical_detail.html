@@ -48,7 +48,29 @@
 {% for info in infos %}
 <li>
 <div onmouseup="MouseUp(event);" onmousedown="MouseDown(this,event);" onmousemove="MouseMove(event);" id="{{info.no}}" style="z-index: 100; position: absolute; height: 38px; width: 29px;">
-<div title="姓名：{{info.name}}[{{info.age}}]
+{%if info.is_draft%}
+<div title="
+姓名：{{info.name}}[{{info.age}}]
+位置：{{info.position}}
+身高：{{info.stature}}CM
+体重：{{info.avoirdupois}}KG
+体力：{{info.power}}
+综合：未知
+速度：未知
+弹跳：未知
+强壮：未知
+耐力：未知
+投篮：未知
+三分：未知
+运球：未知
+传球：未知
+篮板：未知
+抢断：未知
+封盖：未知 
+" style="z-index: 1; background: url(/site_media/images/zhan_shu/{{info.player_no}}.gif) repeat scroll 0% 0% transparent;width: 29px; color: white; height: 38px;" align="center">
+{%else%}
+<div title="
+姓名：{{info.name}}[{{info.age}}]
 位置：{{info.position}}
 身高：{{info.stature}}CM
 体重：{{info.avoirdupois}}KG
@@ -64,7 +86,9 @@
 传球：{{info.pass|format_number}}
 篮板：{{info.backboard|format_number}}
 抢断：{{info.steal|format_number}}
-封盖：{{info.blocked|format_number}}" style="z-index: 1; background: url(/site_media/images/zhan_shu/{{info.player_no}}.gif) repeat scroll 0% 0% transparent;width: 29px; color: white; height: 38px;" align="center">
+封盖：{{info.blocked|format_number}}
+" style="z-index: 1; background: url(/site_media/images/zhan_shu/{{info.player_no}}.gif) repeat scroll 0% 0% transparent;width: 29px; color: white; height: 38px;" align="center"> 
+{%endif%}
 </div>
 </div></li>
 {% endfor %}

@@ -9,10 +9,9 @@ from gba.business.user_roles import login_required, UserManager
 from gba.business import player_operator, match_operator
 
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
-                       TeamTactical, TeamTacticalDetail, YouthPlayer, \
-                       MatchNotInPlayer, UserInfo, TacticalGrade, \
+                       YouthPlayer, MatchNotInPlayer, UserInfo, TacticalGrade, \
                        TrainingRemain, Message, ChallengePool , MatchNodosityMain, \
-                       ChallengeHistory
+                       ChallengeHistory, ChallengeTeam, ChallengeAll
 from gba.common.constants import MatchTypes, DefendTacticalTypeMap, OffensiveTacticalTypeMap
 from gba.common.constants import MatchStatus, MatchShowStatus, MessageType, MatchTypeMaps
 from gba.common import exception_mgr
@@ -270,7 +269,7 @@ def youth_tactical(request, min=False):
         i = 0
         while i < 1:
             i += 1
-            if not match_operator.save_tactical_main((youth_tactical, )):
+            if not match_operator.save_tactical_main((youth_tactical,)):
                 error = '战术配置保存失败'
                 break
           
@@ -289,7 +288,7 @@ def youth_tactical_detail(request):
         datas['infos'] = players
         return render_to_response(request, 'match/youth_tactical_detail.html', datas)
     else:
-        success =  u'阵容保存成功'
+        success = u'阵容保存成功'
         error = None;
         
         i = 1
@@ -413,7 +412,7 @@ def profession_tactical_detail(request):
         datas['infos'] = players
         return render_to_response(request, 'match/profession_tactical_detail.html', datas)
     else:
-        success =  u'阵容保存成功'
+        success = u'阵容保存成功'
         error = None;
         
         i = 1
@@ -475,7 +474,7 @@ def profession_tactical_detail(request):
 @login_required
 def match_accept(request):
     '''接受比赛'''
-    success =  u'比赛请求己接受'
+    success = u'比赛请求己接受'
     error = None;
         
     team = None
@@ -572,7 +571,7 @@ def tactical_grade(request):
             if point <= grade:
                 tactical_grade.level = i - 1
                 tactical_grade.max = grade
-                tactical_grade.remain_point = point - grades[i-1]
+                tactical_grade.remain_point = point - grades[i - 1]
                 break
                 
     datas = {'infos': tactical_grades}
@@ -609,17 +608,17 @@ def profession_training_detail(request):
     
     playerutil.calcul_otential(player)
 
-    player['sd_max_add']  = 3 if player['speed_oten'] >= 3 else player['speed_oten']
-    player['tt_max_add']  = 3 if player['bounce_oten'] >= 3 else player['bounce_oten']
-    player['qz_max_add']  = 3 if player['strength_oten'] >= 3 else player['strength_oten']
-    player['nli_max_add']  = 3 if player['stamina_oten'] >= 3 else player['stamina_oten']
-    player['tlan_max_add']  = 3 if player['shooting_oten'] >= 3 else player['shooting_oten']
-    player['sf_max_add']  = 3 if player['trisection_oten'] >= 3 else player['trisection_oten']
-    player['yq_max_add']  = 3 if player['dribble_oten'] >= 3 else player['dribble_oten']
-    player['cq_max_add']  = 3 if player['pass_oten'] >= 3 else player['pass_oten']
-    player['lb_max_add']  = 3 if player['backboard_oten'] >= 3 else player['backboard_oten']
-    player['qd_max_add']  = 3 if player['steal_oten'] >= 3 else player['steal_oten']
-    player['fg_max_add']  = 3 if player['blocked_oten'] >= 3 else player['blocked_oten']
+    player['sd_max_add'] = 3 if player['speed_oten'] >= 3 else player['speed_oten']
+    player['tt_max_add'] = 3 if player['bounce_oten'] >= 3 else player['bounce_oten']
+    player['qz_max_add'] = 3 if player['strength_oten'] >= 3 else player['strength_oten']
+    player['nli_max_add'] = 3 if player['stamina_oten'] >= 3 else player['stamina_oten']
+    player['tlan_max_add'] = 3 if player['shooting_oten'] >= 3 else player['shooting_oten']
+    player['sf_max_add'] = 3 if player['trisection_oten'] >= 3 else player['trisection_oten']
+    player['yq_max_add'] = 3 if player['dribble_oten'] >= 3 else player['dribble_oten']
+    player['cq_max_add'] = 3 if player['pass_oten'] >= 3 else player['pass_oten']
+    player['lb_max_add'] = 3 if player['backboard_oten'] >= 3 else player['backboard_oten']
+    player['qd_max_add'] = 3 if player['steal_oten'] >= 3 else player['steal_oten']
+    player['fg_max_add'] = 3 if player['blocked_oten'] >= 3 else player['blocked_oten']
          
     datas = {'player': player}
     return render_to_response(request, 'match/profession_training_detail.html', datas)
@@ -648,7 +647,7 @@ def profession_training_save(request):
             break
             
         sd_add = float(request.GET.get('sd_add', 0))
-        if sd_add >  player.speed_oten:
+        if sd_add > player.speed_oten:
             sd_add = player.speed_oten
         player.speed += sd_add
             
@@ -709,7 +708,7 @@ def profession_training_save(request):
             error = u'训练异常'
             break
         
-        total_add =  sd_add + tt_add + qz_add + nli_add + tlan_add + sf_add + yq_add + cq_add + lb_add + qd_add + fg_add
+        total_add = sd_add + tt_add + qz_add + nli_add + tlan_add + sf_add + yq_add + cq_add + lb_add + qd_add + fg_add
         
         if player.power - total_add < 30:
             error = u'球队员体不足，不能训练'
@@ -788,8 +787,6 @@ def challenge_main(request, min=False):
             home_team = Team.load(id=match.home_team_id)
             guest_team = Team.load(id=match.guest_team_id)
             
-            print '-' * 100, match.show_status, '-' * 100
-            
             seq = 0
             if match.show_status == MatchShowStatus.READY:
                 entering = True
@@ -830,6 +827,9 @@ def challenge_main(request, min=False):
              'win': win, 'remain_time': remain_time, 'statistics': statistics, 'show_point': show_point, \
              'pool_count': pool_count}
     
+    if challenge_pool:
+        datas['seq'] = challenge_pool.win_count + 1
+    
     if point_data:
         datas.update(point_data)
     if min:
@@ -858,6 +858,9 @@ def challenge_apply(request):
             home_point, guest_point = commonutil.get_point_from_str(match.point)
             if (team.id == match.home_team_id and home_point > guest_point) or \
                (team.id != match.home_team_id and home_point < guest_point):
+                if challenge_pool.win_count >= 8:
+                    error = '您已经连胜了9场,不能继续了!'
+                    break
                 challenge_pool.win_count += 1
                 challenge_pool.status = 1
                 challenge_pool.start_wait_time = ReserveLiteral('now()')
@@ -870,7 +873,15 @@ def challenge_apply(request):
             challenge_pool.status = 1 #等待中
             challenge_pool.team_id = team.id
             challenge_pool.ability = team.agv_ability
-        
+            
+            #新报名的时候放一条记录到challenge_team 表中
+            challenge_team = ChallengeTeam()
+            challenge_team.team_id = team.id
+            challenge_team.persist()
+            challenge_all = ChallengeAll()
+            challenge_all.team_id = team.id
+            challenge_all.persist()
+            
         try:
             if apply:
                 challenge_pool.persist()
@@ -881,6 +892,8 @@ def challenge_apply(request):
             error = '服务器异常'
         
     datas = {'challenge_pool': challenge_pool, 'apply': apply}
+    if challenge_pool:
+        datas['seq'] = challenge_pool.win_count + 1
     if error:
         return render_to_response(request, 'message.html', {'error': error})
     return render_to_response(request, 'match/challenge_main_min.html', datas)
@@ -910,17 +923,99 @@ def challenge_out(request):
         else:#是新报名的
             error = '你没有报名参加比赛'
             break
-        
-        print win
+
+    datas = {'challenge_pool': challenge_pool, 'apply': False}
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    
+    if win:
+        #因为win_count 是在点继续的时候加的，所以实际赢的场数应该是 win_count + 1
+        win_count = challenge_pool.win_count + 1
+        datas['win_count'] = win_count
+        return render_to_response(request, 'match/challenge_out.html', datas)
+    else:
         try:
             challenge_pool.delete()
         except:
             exception_mgr.on_except()
             error = '服务器异常'
-        
+        pool_count = ChallengePool.count()
+        datas['pool_count'] = pool_count
+        return render_to_response(request, 'match/challenge_main_min.html', datas)
+    
+@login_required
+def challenge_out_confirm(request):
+    '''胜者为王,确定退出'''
+    
+    team = request.team
+    error = None
+    challenge_pool = ChallengePool.load(team_id=team.id)
+    win = False
+    i = 0
+    while i < 1:
+        i += 1
+        if challenge_pool:#
+            match_id = challenge_pool.match_id
+            match = Matchs.load(id=match_id)
+            if match.show_status != MatchShowStatus.FINISH:
+                error = '你有一场比赛正在进行中'
+                break
+            home_point, guest_point = commonutil.get_point_from_str(match.point)
+            if (team.id == match.home_team_id and home_point > guest_point) or \
+               (team.id != match.home_team_id and home_point < guest_point):
+                win = True
+        else:#是新报名的
+            error = '你没有报名参加比赛'
+            break
+
     datas = {'challenge_pool': challenge_pool, 'apply': False}
     if error:
         return render_to_response(request, 'message.html', {'error': error})
+    
+    if win:
+        #因为win_count 是在点继续的时候加的，所以实际赢的场数应该是 win_count + 1
+        win_count = challenge_pool.win_count + 1
+        point = 0
+        if win_count == 3:
+            point = 3
+        elif win_count == 6:
+            point = 6
+        elif win_count == 9:
+            point = 21
+        challenge_team = ChallengeTeam.load(team_id=team.id)
+        if not challenge_team:
+            challenge_team = ChallengeTeam()
+            challenge_team.team_id = team.id
+            challenge_team.point = 0
+            challenge_team.win_count = win_count
+        challenge_team.point += point
+        if challenge_team.win_count < win_count:
+            challenge_team.win_count = win_count
+            
+        challenge_all = ChallengeAll.load(team_id=team.id)
+        if not challenge_all:
+            challenge_all = ChallengeAll()
+            challenge_all.team_id = team.id
+            challenge_all.point = 0
+            challenge_all.win_count = win_count
+        challenge_all.point += point
+        if challenge_all.win_count < win_count:
+            challenge_all.win_count = win_count
+        
+    ChallengeTeam.transaction()
+    try:
+        if win:
+            challenge_team.persist()
+            challenge_all.persist()
+        challenge_pool.delete()
+        ChallengeTeam.commit()
+    except:
+        ChallengeTeam.rollback()
+        exception_mgr.on_except()
+        raise
+        
+    pool_count = ChallengePool.count()
+    datas['pool_count'] = pool_count
     return render_to_response(request, 'match/challenge_main_min.html', datas)
 
 @login_required
@@ -931,7 +1026,7 @@ def team_challenge(request):
     page = int(request.GET.get('page', 1))
     pagesize = int(request.GET.get('pagesize', 10))
     
-    infos, total = ChallengeHistory.paging(page, pagesize, condition='home_team_id="%s" or guest_team_id="%s" and finish=1' % (team.id, team.id), order='id desc')
+    infos, total = ChallengeHistory.paging(page, pagesize, condition='(home_team_id="%s" or guest_team_id="%s") and finish=1' % (team.id, team.id), order='id desc')
         
     if total == 0:
         totalpage = 0
@@ -940,3 +1035,43 @@ def team_challenge(request):
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
     return render_to_response(request, 'match/team_challenge_min.html', datas)
+
+@login_required
+def challenge_today_sort(request):
+    '''胜者为王，今日排名'''
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    
+    infos, total = ChallengeTeam.paging(page, pagesize, order='point desc')
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total - 1) / pagesize + 1
+        
+    for i, info in enumerate(infos):
+        info.sort = (page - 1) * pagesize + i + 1
+        
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    
+    return render_to_response(request, 'match/challenge_today_sort.html', datas)
+
+@login_required
+def challenge_all_sort(request):
+    '''胜者为王，历史排名'''
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    
+    infos, total = ChallengeAll.paging(page, pagesize, order='point desc')
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total - 1) / pagesize + 1
+        
+    for i, info in enumerate(infos):
+        info.sort = (page - 1) * pagesize + i + 1
+        
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    
+    return render_to_response(request, 'match/challenge_all_sort.html', datas)

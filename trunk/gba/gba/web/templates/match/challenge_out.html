@@ -1,0 +1,23 @@
+{% load common_extras %}
+<form method="post" action="{% url challenge-out-confirm %}" name="frm" onsubmit='return submit_to_div(this,"main_content")'>
+<div class="floatBox_sms">
+<div class="blank20"></div>
+<div class="blank20"></div>
+<div class="blank20"></div>
+<div class="blank20"></div>
+<div class="blank10"></div>
+<div class="h25">	
+  {{win_count|challenge_out|safe}}
+</div>
+<div class="blank10"></div>
+<div class="floatBox_sms_btn">
+<div class="left">
+ <input name="Submit" value="确定" class="btn_3" type="submit">
+</div>
+<div class="btn_3 right"><a href="{% url challenge-main-min %}" onclick='return href_to_div(this, "main_content");'>取消</a>
+</div>
+</div><div class="clear"></div>
+</div>
+<div class="blank20"></div>
+<div class="blank20"></div>
+</form>

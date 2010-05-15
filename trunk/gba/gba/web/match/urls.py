@@ -27,4 +27,8 @@ urlpatterns = patterns('web.match',
     url(r'^8919$', 'views.challenge_main', {'min': True}, name='challenge-main-min'),
     url(r'^8920$', 'views.challenge_apply', name='challenge-apply'),
     url(r'^8921$', 'views.team_challenge', name='team-challenge'),
+    url(r'^challenge_out/$', 'views.challenge_out', name='challenge-out'),
+    url(r'^challenge_today_sort/$', 'views.challenge_today_sort', name='challenge-today-sort'),
+    url(r'^challenge_all_sort/$', 'views.challenge_all_sort', name='challenge-all-sort'),
+    url(r'^challenge_out_confirm/$', 'views.challenge_out_confirm', name='challenge-out-confirm'),
 )
