@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 
+import com.dt.bottle.db.ConnectionPool;
 import com.dt.bottle.logger.Logger;
 import com.dt.bottle.util.DateConverter;
 import com.dt.bottle.util.StringConverter;
@@ -19,7 +20,8 @@ public class DBConnection {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection("jdbc:mysql://192.168.1.158/gba?user=gba&password=gba123&characterEncoding=utf-8");
-			//conn = DriverManager.getConnection("jdbc:mysql://192.168.1.158/gbadtgame?user=gbagameuser&password=gba@g1a2m3euser&characterEncoding=utf-8");
+			// conn =
+			// DriverManager.getConnection("jdbc:mysql://192.168.1.158/gbadtgame?user=gbagameuser&password=gba@g1a2m3euser&characterEncoding=utf-8");
 			setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -30,9 +32,8 @@ public class DBConnection {
 
 		Logger.logger("SQL: " + sql);
 		Logger.logger("PARAM:" + StringConverter.parmArray2String(parm));
-		if (conn == null) {
-			connect();
-		}
+
+		Connection conn = ConnectionPool.getInstance().connection();
 
 		try {
 			prepareStatement = conn.prepareStatement(sql);
@@ -68,9 +69,9 @@ public class DBConnection {
 
 		Logger.logger("SQL: " + sql);
 		ResultSet resultSet = null;
-		if (conn == null) {
-			connect();
-		}
+
+		Connection conn = ConnectionPool.getInstance().connection();
+
 		try {
 			prepareStatement = conn.prepareStatement(sql);
 			for (int i = 1; i <= parm.length; i++) {
@@ -83,7 +84,13 @@ public class DBConnection {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			commit();
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		return resultSet;
