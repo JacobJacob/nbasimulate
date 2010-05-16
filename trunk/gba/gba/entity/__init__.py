@@ -234,3 +234,7 @@ class UnionApply(Persistable):
 class UnionMember(Persistable):
     '''联盟成员'''
     CACHE_KEY = 'union_member:id'
+    
+class ErrorMatch(Persistable):
+    '''异常比赛'''
+    CACHE_KEY = 'match_id:id'

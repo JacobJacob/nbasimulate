@@ -71,11 +71,11 @@ class Persistable(object):
                 extra = column_info['Extra']
                 if type.startswith(Column.TYPE_INT):
                     temp_type = type[:len(Column.TYPE_INT)]
-                    length = type[len(Column.TYPE_INT)+1:-1]
+                    length = type[len(Column.TYPE_INT) + 1:-1]
                     type = temp_type
                 elif type.startswith(Column.TYPE_VARCHAR):
                     temp_type = type[:len(Column.TYPE_VARCHAR)]
-                    length = type[len(Column.TYPE_VARCHAR)+1:-1]
+                    length = type[len(Column.TYPE_VARCHAR) + 1:-1]
                     type = temp_type
                 else:
                     length = None
@@ -104,7 +104,7 @@ class Persistable(object):
         class_name = cls.__name__
         table_name = ''
         for i in range(len(class_name)):
-            c = class_name[i:i+1]
+            c = class_name[i:i + 1]
             if c.isupper():
                 if i != 0:
                     table_name += ('_%s' % c.lower())
@@ -204,7 +204,7 @@ class Persistable(object):
             
         columns = args.get('columns', '*')
             
-        sql =  'select %s from %s where %s %s %s ' % (columns, cls._table, where, order, limit)
+        sql = 'select %s from %s where %s %s %s ' % (columns, cls._table, where, order, limit)
         if len(sql) < 2000:
             info('start to load objects[%s] with sql:%s' % (cls._table, sql))
         info('start to load objects')
@@ -228,11 +228,14 @@ class Persistable(object):
         return []
     
     @classmethod
-    def paging(cls, page, pagesize, **args):
+    def paging(cls, page=1, pagesize=10, start=None, **args):
         '''分页查询'''
         if page <= 0:
             page = 1
-        index = (page - 1) * pagesize
+        if start:
+            index = start
+        else:
+            index = (page - 1) * pagesize
         limit = '%s, %s' % (index, pagesize)
         args['limit'] = limit
         objs = cls.query(**args)
@@ -244,7 +247,7 @@ class Persistable(object):
             else:
                 count = cls.count()
         return objs, count
-        
+    
     @classmethod
     def load(cls, **keys):
         '''load the object'''
@@ -343,7 +346,7 @@ class Persistable(object):
         if not key:
             key = 'id'
         if hasattr(self, key):
-            key_value= getattr(self, key)
+            key_value = getattr(self, key)
         else:
             raise 'key value not exist'
 
@@ -422,24 +425,24 @@ class Meta(object):
     def __str__(self):
         s = '-' * 120 + '\n'
         s += 'table:%s\n' % self._table
-        s += 'field' + ' ' * (15-len('field'))    
-        s += 'type' + ' ' * (15-len('type'))
-        s += 'length' + ' ' * (15-len('length'))
-        s += 'is unique' + ' ' * (15-len('is unique'))
-        s += 'default' + ' ' * (20-len('default'))
-        s += 'extra' + ' ' * (15-len('extra'))
+        s += 'field' + ' ' * (15 - len('field'))    
+        s += 'type' + ' ' * (15 - len('type'))
+        s += 'length' + ' ' * (15 - len('length'))
+        s += 'is unique' + ' ' * (15 - len('is unique'))
+        s += 'default' + ' ' * (20 - len('default'))
+        s += 'extra' + ' ' * (15 - len('extra'))
         s += '\n'
         for column in self.columns:
             length = column.length if column.length else ''
             default = column.default if column.default else ''
             extra = column.extra if column.extra else ''
             s += '%s%s%s%s%s%s\n' % \
-              (column.field + (' ' * (15-len(column.field))),\
-               column.type + (' ' * (15-len(column.type))),\
-               length + (' ' * (15-len(length))),\
-               str(column.is_unique) + (' ' * (15-len(str(column.is_unique)))),\
-               default + (' ' * (20-len(default))),\
-               extra + (' ' * (15-len(extra))))
+              (column.field + (' ' * (15 - len(column.field))), \
+               column.type + (' ' * (15 - len(column.type))), \
+               length + (' ' * (15 - len(length))), \
+               str(column.is_unique) + (' ' * (15 - len(str(column.is_unique)))), \
+               default + (' ' * (20 - len(default))), \
+               extra + (' ' * (15 - len(extra))))
         s += '-' * 120 + '\n'
         return s
     

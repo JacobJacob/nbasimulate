@@ -6,7 +6,8 @@ from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MatchStatus, TacticalGroupTypeMap, MatchShowStatus, MatchTypes
 from gba.common import log_execption
 from gba.common import playerutil, exception_mgr
-from gba.entity import Team, ProfessionPlayer, League, LeagueTeams, TeamArena
+from gba.entity import Team, ProfessionPlayer, League, LeagueTeams, TeamArena, Matchs, ErrorMatch, \
+                       MatchNodosityDetail, MatchNodosityMain, MatchNodosityTacticalDetail, MatchNotInPlayer, MatchStat
 from gba.business import player_operator
 
 def send_match_request(home_team_id, guest_team_id, type):
@@ -280,7 +281,7 @@ def init_team(team_info):
     create_team_default_tactical(team.id)
     create_team_default_tactical(team.id, is_youth=True)
     
-_SELECT_MATCH = 'select *, unix_timestamp(next_status_time)-unix_timestamp(now()) as remain_time from matchs where type=%s or type=%s and (home_team_id=%s or guest_team_id=%s ) order by id desc limit %s, %s '
+_SELECT_MATCH = 'select *, unix_timestamp(next_status_time)-unix_timestamp(now()) as remain_time from matchs where (type=%s or type=%s) and (home_team_id=%s or guest_team_id=%s ) order by id desc limit %s, %s '
                        
 _SELECT_MATCH_TOTAL = 'select count(*) as count from matchs where type=%s or type=%s and (home_team_id=%s or guest_team_id=%s ) '
 
@@ -356,5 +357,53 @@ def get_training_remain(team_id):
     finally:
         cursor.close()
         
+def handle_error_match(match_id, delete_error=False):
+    '''处理异常比赛
+    @param delete_error 是否删除error_match表中的记录: 
+    '''
+    match = Matchs.load(id=match_id)
+    if delete_error:
+        error_match = ErrorMatch.load(match_id=match_id)
+    match_stats = MatchStat.query(condition='match_id="%s"' % match.id)
+    match_nodosity_mains = MatchNodosityMain.query(condition='match_id="%s"' % match.id, order='seq asc')
+    match_nodosity_details = MatchNodosityDetail.query(condition='match_id="%s"' % match.id)
+    
+    match_nodosity_tactical_details =[]
+    if match_nodosity_mains:
+        for match_nodosity_main in match_nodosity_mains:
+            details = MatchNodosityTacticalDetail.query(condition='match_nodosity_main_id="%s"' % match_nodosity_main.id)
+            match_nodosity_tactical_details += details
+    
+    match_notin_players = MatchNotInPlayer.query(condition='match_id="%s"' % match_id)
+    
+    match.status = 1
+    match.expired_time = ReserveLiteral('date_add(now(), interval 60 minute)')
+    
+    Matchs.transaction()
+    try:
+        if match_stats:
+            for match_stat in match_stats:
+                match_stat.delete()
+        if match_nodosity_mains:
+            for match_nodosity_main in match_nodosity_mains:
+                match_nodosity_main.delete()
+        if match_nodosity_details:
+            for match_nodosity_detail in match_nodosity_details:
+                match_nodosity_detail.delete()
+        if match_nodosity_tactical_details:
+            for match_nodosity_tactical_detail in match_nodosity_tactical_details:
+                match_nodosity_tactical_detail.delete()
+        if match_notin_players:
+            for match_notin_player in match_notin_players:
+                match_notin_player.delete()
+        
+        if delete_error:
+            error_match.delete()
+        match.persist()
+        Matchs.commit()
+    except:
+        Matchs.rollback()
+        raise
+
 if __name__ == '__main__':
     init_team({'username': '测试用户3', 'teamname': '测试球队3'})

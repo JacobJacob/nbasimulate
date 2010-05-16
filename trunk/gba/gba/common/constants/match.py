@@ -42,7 +42,8 @@ MatchTypeMaps = {
     MatchTypes.TRAINING: u'职业训练 ',
     MatchTypes.YOUTH_FRIENDLY: u'街头友谊 ',
     MatchTypes.YOUTH_TRAINING: u'街头训练 ',
-    MatchTypes.LEAGUE: u'职业联赛',             
+    MatchTypes.LEAGUE: u'职业联赛',
+    MatchTypes.CHALLENGE:  u'胜者为王',        
 }
 
 class FinanceType(ConstantBase):
@@ -76,3 +77,21 @@ class MatchShowStatus(ConstantBase):
     FINISH = 13 #完了
     CANCEL = 14 #比赛取消
     WAITING = 15 #等待中
+    
+MatchShowStatusMaps = {
+    MatchShowStatus.READY: u'赛前准备中',
+    MatchShowStatus.FIRST: u'第一节',
+    MatchShowStatus.SECOND: u'第二节',
+    MatchShowStatus.THIRD: u'第三节',
+    MatchShowStatus.FOURTH: u'第四节',
+    MatchShowStatus.OVERTIME_ONE: u'第一加时',
+    MatchShowStatus.OVERTIME_TWO: u'第二加时',
+    MatchShowStatus.OVERTIME_THREE: u'第三加时',
+    MatchShowStatus.OVERTIME_FOUR: u'第四加时',
+    MatchShowStatus.OVERTIME_FIVE: u'第五加时',
+    MatchShowStatus.OVERTIME_SIX: u'第六加时',
+    MatchShowStatus.STATISTICS: u'统计中',
+    MatchShowStatus.FINISH: u'完成',
+    MatchShowStatus.CANCEL: u'取消',
+    MatchShowStatus.WAITING: u'等待中',  
+}

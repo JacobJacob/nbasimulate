@@ -78,12 +78,6 @@ def match_stat(request):
     home_stat_total['times'] = 240
     home_stat_total['name'] = u'合计'
     for stat in home_stat:
-        player_no = stat['player_no']
-        if match.is_youth:
-            player = YouthPlayer.load(no=player_no)
-        else:
-            player = ProfessionPlayer.load(no=player_no)
-        stat['name'] = player.name
         total_point = 0
         for i in range(1, 4):
             total_point += stat.get('point%s_doom_times' % i, 0) * i
@@ -108,12 +102,6 @@ def match_stat(request):
     guest_stat_total['times'] = 240
     guest_stat_total['name'] = u'合计'
     for stat in guest_stat:
-        player_no = stat['player_no']
-        if match.is_youth:
-            player = YouthPlayer.load(no=player_no)
-        else:
-            player = ProfessionPlayer.load(no=player_no)
-        stat['name'] = player.name
         total_point = 0
         for i in range(1, 4):
             total_point += stat.get('point%s_doom_times' % i, 0) * i
@@ -136,6 +124,7 @@ def match_stat(request):
             guest_stat_sub.append(stat)
 
     home_not_in_players = MatchNotInPlayer.query(condition="match_id=%s and team_id=%s" % (match_id, match.home_team_id))
+
     guest_not_in_players = MatchNotInPlayer.query(condition="match_id=%s and team_id=%s" % (match_id, match.guest_team_id))
 
     datas = {'home_stat_main': home_stat_main, 'home_stat_sub': home_stat_sub, 'guest_stat_main': guest_stat_main,

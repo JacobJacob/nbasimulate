@@ -6,8 +6,8 @@
 import traceback
 
 from gba.common.client.base import BaseClient
-from gba.entity import Matchs, MatchStat, MatchNodosityMain, MatchNodosityDetail, MatchNodosityTacticalDetail
-from gba.common.db.reserve_convertor import ReserveLiteral
+from gba.entity import Matchs
+from gba.business import match_operator
 
 class ExpiredMatchUpdate(BaseClient):
     
@@ -38,42 +38,12 @@ class ExpiredMatchUpdate(BaseClient):
         '''如果比赛出了异常。就要重赛
         如果已经开打，把所有信息删除，比赛状态改为1
         '''
-        match_stats = MatchStat.query(condition='match_id="%s"' % match.id)
-        match_nodosity_mains = MatchNodosityMain.query(condition='match_id="%s"' % match.id, order='seq asc')
-        match_nodosity_details = MatchNodosityDetail.query(condition='match_id="%s"' % match.id)
-        
-        match_nodosity_tactical_details =[]
-        if match_nodosity_mains:
-            for match_nodosity_main in match_nodosity_mains:
-                details = MatchNodosityTacticalDetail.query(condition='match_nodosity_main_id="%s"' % match_nodosity_main.id)
-                match_nodosity_tactical_details += details
-                
-        match.status = 1
-        match.expired_time = ReserveLiteral('date_add(now(), interval 60 minute)')
-        
-        Matchs.transaction()
-        try:
-            if match_stats:
-                for match_stat in match_stats:
-                    match_stat.delete()
-            if match_nodosity_mains:
-                for match_nodosity_main in match_nodosity_mains:
-                    match_nodosity_main.delete()
-            if match_nodosity_details:
-                for match_nodosity_detail in match_nodosity_details:
-                    match_nodosity_detail.delete()
-            if match_nodosity_tactical_details:
-                for match_nodosity_tactical_detail in match_nodosity_tactical_details:
-                    match_nodosity_tactical_detail.delete()
-                    
-            match.persist()
-            Matchs.commit()
-        except:
-            self.current_info = '%s' % traceback.format_exc()
-            Matchs.rollback()
-            return False
-    
-        return True
+        while True:
+            try:
+                return match_operator.handle_error_match(match.id)
+            except:
+                self.current_info = traceback.format_exc()
+                self._sleep()
             
     def get_expired_match(self):
         while True:

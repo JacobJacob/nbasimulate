@@ -6,12 +6,9 @@ import traceback
 
 from gba.common.client.base import BaseClient
 from gba.common import exception_mgr, logger
-from gba.common.constants import MatchTypes
 from gba.common.single_process import SingleProcess
-from gba.entity import League, LeagueMatchs, Matchs, LeagueTeams, \
-                       LeagueConfig, MatchStat, ProfessionPlayer, ProPlayerCareerStatTotal, \
-                       ProPlayerSeasonStatTotal
-                       
+from gba.entity import  LeagueMatchs, Matchs, LeagueTeams,  MatchStat, ProfessionPlayer, \
+                        ProPlayerCareerStatTotal, ProPlayerSeasonStatTotal, ErrorMatch
 from gba.common.constants.match import MatchStatus
 
 class PlayerStatisticsHandler(BaseClient):
@@ -109,6 +106,17 @@ class PlayerStatisticsHandler(BaseClient):
         
         match_stats = MatchStat.query(condition='match_id=%s' % match.id)
         if not match_stats or len(match_stats) < 10:
+            error_match = ErrorMatch()
+            error_match.match_id = match.id
+            error_match.type = match.type
+            error_match.remark = '比赛无统计或统计条数小于10'
+            while True:
+                try:
+                    error_match.persist()
+                    break
+                except:
+                    exception_mgr.on_except()
+                    self._sleep()
             logger.log_to_db('比赛无统计或统计条数小于10,比赛id[%s]' % match.id)
             
         for match_stat in match_stats:

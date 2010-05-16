@@ -1,11 +1,6 @@
 <html>
 <head>
 {% load common_extras %}
-<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="/site_media/js/rpc.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
-<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
-<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
 <link href="/site_media/css/stat.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 <title>比赛统计({{home_team_name }}--{{guest_team_name}})</title>
@@ -17,6 +12,8 @@
   <thead>
   <tr>
     <th class="pn">首发球员</th>
+    <th class="bnum">号码</th> 
+    <th class="bnum">位置</th> 
     <th class="bnum">投篮</th>  	
     <th class="bnum">三分</th>	
     <th class="bnum">罚球</th>
@@ -35,6 +32,8 @@
   {% for stat in home_stat_main %}
    <tr>
     <td class="pn">{{ stat.name }} </td>
+    <td class="bnum">{{stat.no}}</td>
+    <td class="bnum">{{stat.position}}</td>
     <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
     <td class="bnum">{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
     <td class="bnum">{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
@@ -51,6 +50,8 @@
   {% endfor %}
   <tr class="sub_title">
     <td class="pn">替补球员</td>
+    <td class="bnum">号码</td> 
+    <td class="bnum">位置</td> 
     <td class="bnum">投篮</td>  	
     <td class="bnum">三分</td>	
     <td class="bnum">罚球</td>
@@ -67,6 +68,8 @@
   {% for stat in home_stat_sub %}
    <tr>
     <td class="pn">{{ stat.name }} </td>
+    <td class="bnum">{{stat.no}}</td>
+    <td class="bnum">{{stat.position}}</td>
     <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
     <td class="bnum">{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
     <td class="bnum">{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
@@ -83,7 +86,9 @@
   {% endfor %}
   {% for home_not_in_player in home_not_in_players %}
     <tr>
-    <td class="pn">{{ home_not_in_player.player_no|profession_player_name}} </td>
+    <td class="pn">{{ home_not_in_player.name}}</td>
+    <td class="bnum">{{home_not_in_player.no}}</td>
+    <td class="bnum">{{home_not_in_player.position}}</td>
     <td class="bnum">0</td>
     <td class="bnum">0</td>
     <td class="bnum">0</td>
@@ -102,6 +107,8 @@
   <tbody class="sum">
    <tr>
     <td class="pn">{{ home_stat_total.name }} </td>
+    <td></td>
+    <td></td>
     <td class="bnum">{{home_stat_total.point2_doom_times}}-{{home_stat_total.point2_shoot_times}}</td>
     <td class="bnum">{{home_stat_total.point3_doom_times}}-{{home_stat_total.point3_shoot_times}}</td>
     <td class="bnum">{{home_stat_total.point1_doom_times}}-{{home_stat_total.point1_shoot_times}}</td>
@@ -122,6 +129,8 @@
   <thead>
   <tr>
     <th class="pn">球员</th>
+    <th class="bnum">号码</th> 
+    <th class="bnum">位置</th> 
     <th class="bnum">投篮</th>  	
     <th class="bnum">三分</th>	
     <th class="bnum">罚球</th>
@@ -140,6 +149,8 @@
   {% for stat in guest_stat_main %}
    <tr>
     <td class="pn">{{ stat.name }} </td>
+    <td class="bnum">{{stat.no}}</td>
+    <td class="bnum">{{stat.position}}</td>
     <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
     <td class="bnum">{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
     <td class="bnum">{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
@@ -156,6 +167,8 @@
   {% endfor %}
    <tr class="sub_title">
     <td class="pn">替补球员</td>
+    <td class="bnum">号码</td> 
+    <td class="bnum">位置</td> 
     <td class="bnum">投篮</td>  	
     <td class="bnum">三分</td>	
     <td class="bnum">罚球</td>
@@ -172,6 +185,8 @@
   {% for stat in guest_stat_sub %}
    <tr>
     <td class="pn">{{ stat.name }} </td>
+    <td class="bnum">{{stat.no}}</td>
+    <td class="bnum">{{stat.position}}</td>
     <td class="bnum">{{stat.point2_doom_times}}-{{stat.point2_shoot_times}}</td>
     <td class="bnum">{{stat.point3_doom_times}}-{{stat.point3_shoot_times}}</td>
     <td class="bnum">{{stat.point1_doom_times}}-{{stat.point1_shoot_times}}</td>
@@ -188,7 +203,9 @@
   {% endfor %}
   {% for guest_not_in_player in guest_not_in_players %}
     <tr>
-    <td class="pn">{{ guest_not_in_player.player_no|profession_player_name}} </td>
+    <td class="pn">{{ guest_not_in_player.name}}dd </td>
+    <td class="bnum">{{guest_not_in_player.no}}</td>
+    <td class="bnum">{{guest_not_in_player.position}}</td>
     <td class="bnum">0</td>
     <td class="bnum">0</td>
     <td class="bnum">0</td>
@@ -207,6 +224,8 @@
   <tbody class="sum">
    <tr>
     <td class="pn">{{ guest_stat_total.name }} </td>
+    <td class="bnum"></td>
+    <td class="bnum"></td>
     <td class="bnum">{{guest_stat_total.point2_doom_times}}-{{guest_stat_total.point2_shoot_times}}</td>
     <td class="bnum">{{guest_stat_total.point3_doom_times}}-{{guest_stat_total.point3_shoot_times}}</td>
     <td class="bnum">{{guest_stat_total.point1_doom_times}}-{{guest_stat_total.point1_shoot_times}}</td>

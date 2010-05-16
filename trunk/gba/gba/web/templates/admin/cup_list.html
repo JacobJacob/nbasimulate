@@ -1,0 +1,194 @@
+{% extends "admin/master.html" %}
+{% load admin_extras %}
+{% block head_ext %}
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<meta http-equiv="content-type" content="text/html; charset=utf8" />
+<script type="text/javascript">
+     
+  service = new rpc.ServiceProxy("/services/admin/", {asynchronous:false, methods: ['get_action_desc', 'add_action_desc']});
+  
+  $(document).ready(function(){
+    
+	 $('a.edit').click(function() {
+	      var id = $(this).parent().parent().attr('id');
+          try{
+              var obj = service.get_action_desc(id);
+          }catch(error){
+              alert(error.message);
+          }
+          var action_name = obj.action_name;
+          var action_desc= obj.action_desc;
+          var percent = obj.percent;
+          var flg = obj.flg;
+          var is_assist = obj.is_assist;
+          var result = obj.result;
+          
+          $('#id').val(id);
+          $('#action_name').val(action_name);
+          $('#action_desc').val(action_desc);
+          $('#percent').val(percent);
+          $('#flg').val(flg);
+          $('#is_assist').val(is_assist);
+          $('#result').val(result);
+          
+          $("#edit_dialog").show().dialog({
+	         height: 370, width: 400, modal: false,
+             title: '动作描述添加/更改',
+	         overlay: {
+               opacity: 0.5, 
+               background: "black" 
+             }
+          });
+          $("#edit_dialog").dialog('open');
+	 });
+
+	  $('#update_button').click(function(){
+	         var id = $('#id').val();
+		     var action_name = $('#action_name').val();
+	         var action_desc= $('#action_desc').val();
+	         var percent = $('#percent').val();
+	         var flg = $('#flg').val();
+	         var is_assist =$('#is_assist').val();
+	         var result =$('#result').val();
+	         var data = {'id': id, 'action_name': action_name, 'action_desc': action_desc, 'percent': percent, 
+	                     'flg': flg, 'is_assist': is_assist, 'result': result}
+
+	         try{
+	            var result = service.add_action_desc(data);
+	            alert('动作描述更新成功');
+	            $("#edit_dialog").dialog('close');
+	            window.location = window.location;
+	            
+	         }catch(error){
+	            alert(error.message);
+	         }
+	     
+		});
+		
+		$('#action_name_tx').change(function(){
+		    var action_name = $(this).val();
+		    var url = '{% url action-desc %}?action_name=' + action_name;
+		    window.location = url;
+		});
+		
+		$('#add_action_desc').click(function(){
+		    
+		     $("#edit_dialog").show().dialog({
+	         height: 370, width: 400, modal: false,
+             title: '动作描述添加/更改',
+	         overlay: {
+               opacity: 0.5, 
+               background: "black" 
+             }
+          });
+          $("#edit_dialog").dialog('open'); 
+		    
+		});
+	 
+});
+</script>
+{% endblock %}
+{% block title %}客户端监控{% endblock %}
+{% block content %}
+<select id="action_name_tx">
+{% for name in action_names %}
+  <option value="{{name.action_name}}" {%ifequal name.action_name action_name%}selected=selected{%endifequal%}>{{name.action_name|action_name}}</option>
+{% endfor%}
+</select>
+<input type="button" id="add_action_desc" value="添加动作描述"/>
+<table cellspacing="1" class="tablesorter">
+  <thead>
+    <th>动作名称</th>
+    <th>动作描述</th>
+    <th>结果</th>
+    <th>出现百分比</th>
+     <th>标志</th>
+    <th>是否助攻</th>
+    <th>创建时间</th>
+    <th class="right">操作</th>
+  </thead>
+  <tbody>
+    {% if infos %}
+      {% for info in infos %}
+       <tr id="{{ info.id }}">
+        <td class="left name">{{ info.action_name }}</td>
+        <td><div class="action_desc" title="{{ info.action_desc }}">{{ info.action_desc }}</div></td>
+        <td>{{ info.result }}</td>
+        <td>{{ info.percent }}</td>
+        <td>{{ info.flg }}</td>
+        <td>{{ info.is_assist }}</td>
+        <td>{{ info.created_time }}</td>
+        <td class="right"><a class="edit">编辑</a></td>
+        </td>
+       </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="8" class="right">
+          共{{page}}/{{totalpage}}页
+          {% ifequal page 1 %}
+            首页
+            上一页
+          {% else %}
+             <a href="{% url action-desc %}?page=1&action_name={{action_name}}">首页</a>
+             <a href="{% url action-desc %}?page={{prevpage}}&action_name={{action_name}}">上一页</a>
+          {% endifequal %}
+          {% ifequal page totalpage %}
+            末页
+            下一页
+          {% else %}
+             <a href="{% url action-desc %}?page={{totalpage}}&action_name={{action_name}}">末页</a>
+             <a href="{% url action-desc %}?page={{nextpage}}&action_name={{action_name}}">下一页</a>
+          {% endifequal %}
+        </td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+<div id="edit_dialog" class="flora" style="display: none;">
+    <form id="edit_form">
+        <input type="hidden" id="id"/>
+    	<p>
+    		<label>名称&nbsp;&nbsp;&nbsp;&nbsp:</label>
+			<span><input id="action_name" type="text"/></span>
+	    </p>
+	    <p>
+            <label>百分比:</label>
+			<span><input id="percent" type="text"/></span>
+	    </p>
+	    <p>
+            <label>标志&nbsp;&nbsp;&nbsp;&nbsp:</label>
+            <span><input id="flg" type="text"/></span>
+	    </p>
+	    <p>
+			<label>结果&nbsp;&nbsp;&nbsp;&nbsp:</label>
+			<span>
+			  <select name="result" id="result">
+			    <option value="success">成功</option>
+			    <option value="failure">失败</option>
+			  </select>
+			</span>
+		</p>
+	    <p>
+			<label>助攻&nbsp;&nbsp;&nbsp;&nbsp:</label>
+			<span>
+			  <select name="is_assist" id="is_assist">
+			    <option value="1">是</option>
+			    <option value="0">否</option>
+			  </select>
+			</span>
+		</p>
+		<p>
+			<label>描述:</label>
+			<span>
+			  <textarea id="action_desc" rows="10" cols="40"></textarea>
+			</span>
+		</p>
+		<p>
+		  <input id="update_button" type="button" value="更新" />
+		</p>
+    </form>
+</div>
+{% endblock %}

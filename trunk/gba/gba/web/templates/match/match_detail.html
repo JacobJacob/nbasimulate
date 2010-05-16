@@ -12,7 +12,6 @@ body/**/{
 <title>比赛战报({{home_team_name }}--{{guest_team_name}})</title>
 </head>
 <body>
-字体调不小
 <div class="rs_div_body">
  <table cellspacing="0" cellpadding="0" border="0" class="rs_table_t1">
   <tbody>
@@ -209,16 +208,16 @@ body/**/{
 	    <td>描 述</td>
 	   </tr>
       {% for detail in match_nodosity_main.details %}
-       <tr>
+        <tr onmouseout="this.style.backgroundColor=''" onmouseover="this.style.backgroundColor='#fff'" style="">	
         {% if detail.is_new_line %}
-         <td>{{ detail.time_msg }}</td>
-         <td>{{ detail.point_msg }}</td>
+         <td height="25" align="center" style="font-size: 12px;">{{ detail.time_msg }}</td>		
+		 <td align="center">{{ detail.point_msg }}</td>		
         {% else %}
-         <td>&nbsp;</td>	
-         <td>&nbsp;</td>		
-        {% endif %}
-         <td>{{ detail.description }}</td>
-       </tr>
+         <td height="25" align="center" style="font-size: 12px;">&nbsp;</td>	
+         <td align="center">&nbsp;</td>		
+        {% endif %}	
+		<td style="padding: 4px; text-align: left;">{{ detail.description }}</td>
+		</tr>
       {% endfor %}
         </tbody>
    </table>
