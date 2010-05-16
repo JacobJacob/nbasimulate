@@ -17,7 +17,7 @@ body/**/{
   <tbody>
    <tr>
     <td height="50">
-	 <div class="rs_div_clubname">alince</div>
+	 <div class="rs_div_clubname">{{home_team_name}}</div>
 	 <div class="rs_div_position">             
 	 </div>
 	</td>
@@ -27,7 +27,7 @@ body/**/{
    <td width="170" class="rs_div_score">67:91</td>
    <td align="center" width="50">
    <img height="46" width="46" src="http://match-3.xba.com.cn//images/club/logo/1.gif"></td>
-   <td align="left"><div class="rs_div_clubnamea">亚克西</div>
+   <td align="left"><div class="rs_div_clubnamea">{{guest_team_name}}</div>
    <div class="rs_div_position2">
    </div>
    </td>
@@ -44,12 +44,12 @@ body/**/{
      <tbody>
       <tr>
        <td>
-          <div class="rs_div_v1">alince</div>
-          <div class="rs_div_v2">整体配合　2-1-2联防　阵容状态：100%</div>
+          <div class="rs_div_v1">{{home_team_name }}</div>
+          <div class="rs_div_v2">{{match_nodosity_main.home_offensive_tactic|tactical}}　{{match_nodosity_main.home_defend_tactic|tactical}}</div>
        </td>        
        <td>
-          <div class="rs_div_v1">木兰</div>
-          <div class="rs_div_v2">整体配合　2-1-2联防　阵容状态：100%</div>
+          <div class="rs_div_v1">{{guest_team_name }}</div>
+          <div class="rs_div_v2">{{match_nodosity_main.guest_offensive_tactic|tactical}}　{{match_nodosity_main.guest_defend_tactic|tactical}}</div>
        </td>
      </tr>
     </tbody>
@@ -72,61 +72,59 @@ body/**/{
 	<tr align="center">
 	<td>[c]</td>
 	<td style="text-align: left;">
-	  <u>k.mutombo</u>
+	  <u>{{match_nodosity_main.CA.player_name}}</u>
 	</td>
-	<td>34</td>								
-	<td>28</td>								
-	<td>198</td>								
-	<td>93</td>								
-	<td>35</td>								
-	<td>31.5</td>		                        
+	<td>{{match_nodosity_main.CA.no}}</td>								
+	<td>{{match_nodosity_main.CA.age}}</td>								
+	<td>{{match_nodosity_main.CA.stature}}</td>								
+	<td>{{match_nodosity_main.CA.avoirdupois}}</td>								
+	<td>{{match_nodosity_main.CA.power}}</td>								
+	<td>{{match_nodosity_main.CA.ability}}</td>		                        
 	<td>&nbsp;</td>							
 	</tr>					
 	<tr align="center">								
 	<td>[pf]</td>								
-	<td style="text-align: left;"><u>j.pollard</u></td>								
-	<td>33</td>								
-	<td>21</td>								
-	<td>213</td>								
-	<td>100</td>								
-	<td>37</td>								
-	<td>26.5</td>		                        
-	<td>&nbsp;</td>							
+	<td style="text-align: left;"><u>{{match_nodosity_main.PFA.player_name}}</u></td>								
+	<td>{{match_nodosity_main.PFA.no}}</td>								
+	<td>{{match_nodosity_main.PFA.age}}</td>								
+	<td>{{match_nodosity_main.PFA.stature}}</td>								
+	<td>{{match_nodosity_main.PFA.avoirdupois}}</td>								
+	<td>{{match_nodosity_main.PFA.power}}</td>								
+	<td>{{match_nodosity_main.PFA.ability}}</td>		                        
+	<td>&nbsp;</td>								
 	</tr>					
 	<tr align="center">								
 	<td>[sf]</td>								
-	<td style="text-align: left;"><u>a.allen</u></td>								
-	<td>16</td>								
-	<td>19</td>								
-	<td>183</td>								
-	<td>75</td>								
-	<td>40</td>								
-	<td>26.1</td>		                        
-	<td>&nbsp;</td>							
+	<td style="text-align: left;"><u>{{match_nodosity_main.SFA.player_name}}</u></td>								
+	<td>{{match_nodosity_main.SFA.no}}</td>								
+	<td>{{match_nodosity_main.SFA.age}}</td>								
+	<td>{{match_nodosity_main.SFA.stature}}</td>								
+	<td>{{match_nodosity_main.SFA.avoirdupois}}</td>								
+	<td>{{match_nodosity_main.SFA.power}}</td>								
+	<td>{{match_nodosity_main.SFA.ability}}</td>		                        
+	<td>&nbsp;</td>						
 	</tr>					
 	<tr align="center">
 	<td>[sg]</td>
-	<td style="text-align: left;">
-	 <u>s.smith</u>
-	</td>				
-	<td>36</td>
-	<td>33</td>
-	<td>203</td>
-	<td>103</td>
-	<td>35</td>
-	<td>33.2</td>
+	<td style="text-align: left;"><u>{{match_nodosity_main.SGA.player_name}}</u></td>								
+	<td>{{match_nodosity_main.SGA.no}}</td>								
+	<td>{{match_nodosity_main.SGA.age}}</td>								
+	<td>{{match_nodosity_main.SGA.stature}}</td>								
+	<td>{{match_nodosity_main.SGA.avoirdupois}}</td>								
+	<td>{{match_nodosity_main.SGA.power}}</td>								
+	<td>{{match_nodosity_main.SGA.ability}}</td>		                        
 	<td>&nbsp;</td>	
 	</tr>
 	<tr align="center">
 	<td>[pg]</td>
-	<td style="text-align: left;">
-	 <u>t.green</u></td>
-	 <td>20</td>								
-	 <td>21</td>
-	 <td>101</td>								
-	 <td>35</td>								
-	 <td>29.3</td>		                        
-	 <td>&nbsp;</td>							
+	<td style="text-align: left;"><u>{{match_nodosity_main.PGA.player_name}}</u></td>								
+	<td>{{match_nodosity_main.PGA.no}}</td>								
+	<td>{{match_nodosity_main.PGA.age}}</td>								
+	<td>{{match_nodosity_main.PGA.stature}}</td>								
+	<td>{{match_nodosity_main.PGA.avoirdupois}}</td>								
+	<td>{{match_nodosity_main.PGA.power}}</td>								
+	<td>{{match_nodosity_main.PGA.ability}}</td>		                        
+	<td>&nbsp;</td>								
 	 </tr>				
 	 </tbody>
 	 </table>
@@ -145,57 +143,62 @@ body/**/{
 	 <tr align="center">	
 	 <td>&nbsp;</td>		
 	 <td height="25">[c]</td>	
-	 <td style="text-align: left;">k.mutombo</td>
-	 <td>34</td>						
-	 <td>28</td>					
-	 <td>198</td>						
-	 <td>93</td>						
-	 <td>100</td>					
-	 <td>29.8</td>					
+	<td style="text-align: left;">{{match_nodosity_main.CB.player_name}}</td>								
+	<td>{{match_nodosity_main.CB.no}}</td>								
+	<td>{{match_nodosity_main.CB.age}}</td>								
+	<td>{{match_nodosity_main.CB.stature}}</td>								
+	<td>{{match_nodosity_main.CB.avoirdupois}}</td>								
+	<td>{{match_nodosity_main.CB.power}}</td>								
+	<td>{{match_nodosity_main.CB.ability}}</td>		                        
+	<td>&nbsp;</td>						
 	 </tr>				
 	 <tr align="center">	
 	 <td>&nbsp;</td>		
 	 <td height="25">[pf]</td>	
-	 <td style="text-align: left;">m.jones</td>	
-	 <td>14</td>								
-	 <td>33</td>						
-	 <td>198</td>						
-	 <td>98</td>						
-	 <td>98</td>							
-	 <td>33.1</td>						
+	 <td style="text-align: left;">{{match_nodosity_main.PFB.player_name}}</td>								
+	 <td>{{match_nodosity_main.PFB.no}}</td>								
+	 <td>{{match_nodosity_main.PFB.age}}</td>								
+	 <td>{{match_nodosity_main.PFB.stature}}</td>								
+	 <td>{{match_nodosity_main.PFB.avoirdupois}}</td>								
+	 <td>{{match_nodosity_main.PFB.power}}</td>								
+	 <td>{{match_nodosity_main.PFB.ability}}</td>		                        
+	 <td>&nbsp;</td>						
 	 </tr>				
 	 <tr align="center">	
 	 <td>&nbsp;</td>			
 	 <td height="25">[sf]</td>		
-	 <td style="text-align: left;">j.pollard</td>	
-	 <td>33</td>							
-	 <td>21</td>						
-	 <td>213</td>					
-	 <td>100</td>						
-	 <td>84</td>					
-	 <td>24.5</td>					
+	 <td style="text-align: left;">{{match_nodosity_main.SFB.player_name}}</td>								
+	 <td>{{match_nodosity_main.SFB.no}}</td>								
+	 <td>{{match_nodosity_main.SFB.age}}</td>								
+	 <td>{{match_nodosity_main.SFB.stature}}</td>								
+	 <td>{{match_nodosity_main.SFB.avoirdupois}}</td>								
+	 <td>{{match_nodosity_main.SFB.power}}</td>								
+	 <td>{{match_nodosity_main.SFB.ability}}</td>		                        
+	 <td>&nbsp;</td>					
 	 </tr>				
 	 <tr align="center">	
 	 <td>&nbsp;</td>		
 	 <td height="25">[sg]</td>	
-	 <td style="text-align: left;">k.whitney</td>	
-	 <td>6</td>							
-	 <td>28</td>				
-	 <td>211</td>				
-	 <td>110</td>			
-	 <td>96</td>			
-	 <td>30.1</td>			
+	 <td style="text-align: left;">{{match_nodosity_main.SGB.player_name}}</td>								
+	 <td>{{match_nodosity_main.SGB.no}}</td>								
+	 <td>{{match_nodosity_main.SGB.age}}</td>								
+	 <td>{{match_nodosity_main.SGB.stature}}</td>								
+	 <td>{{match_nodosity_main.SGB.avoirdupois}}</td>								
+	 <td>{{match_nodosity_main.SGB.power}}</td>								
+	 <td>{{match_nodosity_main.SGB.ability}}</td>		                        
+	 <td>&nbsp;</td>			
 	 </tr>					
 	 <tr align="center">	
 	 <td>&nbsp;</td>			
 	 <td height="25">[pg]</td>
-	 <td style="text-align: left;">s.smith</td>		
-	 <td>36</td>						
-	 <td>33</td>				
-	 <td>203</td>				
-	 <td>103</td>			
-	 <td>81</td>			
-	 <td>32.9</td>			
+	 <td style="text-align: left;">{{match_nodosity_main.PGB.player_name}}</td>								
+	 <td>{{match_nodosity_main.PGB.no}}</td>								
+	 <td>{{match_nodosity_main.PGB.age}}</td>								
+	 <td>{{match_nodosity_main.PGB.stature}}</td>								
+	 <td>{{match_nodosity_main.PGB.avoirdupois}}</td>								
+	 <td>{{match_nodosity_main.PGB.power}}</td>								
+	 <td>{{match_nodosity_main.PGB.ability}}</td>		                        
+	 <td>&nbsp;</td>			
 	 </tr>				
 	 </tbody>
 	 </table>

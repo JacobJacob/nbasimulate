@@ -140,15 +140,21 @@ def match_detail(request):
     if not match_id:
         return None
     
-    #team = UserManager().get_team_info(request)
+    match = Matchs.load(id=match_id)
+    home_team = Team.load(id=match.home_team_id)
+    home_team_name = home_team.name if home_team else ''
+    guest_team = Team.load(id=match.guest_team_id)
+    guest_team_name = guest_team.name if guest_team else ''
     match_nodosity_mains = match_operator.get_match_nodosity_main(match_id)
     
     for match_nodosity_main in match_nodosity_mains:
         match_nodosity_details = match_operator.get_match_nodosity_detail(match_nodosity_main['id'])
-        print match_nodosity_details
         match_nodosity_main['details'] = match_nodosity_details
-        
-    datas = {'match_nodosity_mains': match_nodosity_mains}
+        match_nodosity_tactical_details = match_operator.get_match_nodosity_tactical_detail(match_nodosity_main['id'])
+        for match_nodosity_tactical_detail in match_nodosity_tactical_details:
+            match_nodosity_main[match_nodosity_tactical_detail['position']] = match_nodosity_tactical_detail
+
+    datas = {'match_nodosity_mains': match_nodosity_mains, 'home_team_name': home_team_name, 'guest_team_name': guest_team_name}
     return render_to_response(request, 'match/match_detail.html', datas)
 
 @login_required

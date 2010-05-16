@@ -343,6 +343,18 @@ def get_match_nodosity_detail(match_nodosity_main_id):
             return rs.to_list()
     finally:
         cursor.close()
+        
+_SELECT_MATCH_TACTICAL_DETAIL = 'select * from match_nodosity_tactical_detail where match_nodosity_main_id=%s'
+
+def get_match_nodosity_tactical_detail(match_nodosity_main_id):
+    '''获取每节的比赛人员详细'''
+    cursor = connection.cursor()
+    try:
+        rs = cursor.fetchall(_SELECT_MATCH_TACTICAL_DETAIL, (match_nodosity_main_id, ))
+        if rs:
+            return rs.to_list()
+    finally:
+        cursor.close()
 
 _SELECT_TRAININT_REMAIN = 'select (finish_time - now()) as remain from training_center where team_id="%s" and status=0'
 
