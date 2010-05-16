@@ -2,10 +2,12 @@ package com.ts.dt.dao.impl;
 
 import java.util.List;
 
+import com.dt.bottle.exception.ObjectNotFoundException;
 import com.dt.bottle.exception.SessionException;
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.dao.ProfessionPlayerDao;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.Player;
 import com.ts.dt.po.ProfessionPlayer;
 
@@ -25,24 +27,28 @@ public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 		session.endTransaction();
 	}
 
-	public Player load(long id) {
+	public Player load(long id) throws MatchException {
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
 		Player player = null;
 		try {
 			player = (Player) session.load(ProfessionPlayer.class, id);
+		} catch (ObjectNotFoundException ne) {
+			throw new MatchException("球员不存在ID[" + id + "]");
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new MatchException(e);
 		}
 		return player;
 	}
 
-	public Player load(String no) {
+	public Player load(String no) throws MatchException {
 		// TODO Auto-generated method stub
 		Session session = BottleUtil.currentSession();
 		Player player = null;
 		try {
 			player = (Player) session.load(ProfessionPlayer.class, "no='" + no + "'");
+		} catch (ObjectNotFoundException ne) {
+			throw new MatchException("球员不存在ID[" + no + "]");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,10 +67,5 @@ public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	public static void main(String[] args) {
-		Player player = new ProfessionPlayerDaoImpl().load("a58fc1d3ff1beffdc6bf51e17cf6ef47");
-		System.out.println(player);
 	}
 }

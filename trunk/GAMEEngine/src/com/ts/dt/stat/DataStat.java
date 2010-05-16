@@ -1,10 +1,15 @@
 package com.ts.dt.stat;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
+import com.dt.bottle.db.ConnectionPool;
+import com.ts.dt.match.Controller;
 import com.ts.dt.po.Player;
 
 public class DataStat {
@@ -362,19 +367,71 @@ public class DataStat {
 
 	public void saveToDB(long matchId) {
 
-		PlayerDataStat dataStat;
-		if (homeTeamPlayersDataStat.size() > 5) {
-			System.out.println("==================");
-		}
-		for (long key : homeTeamPlayersDataStat.keySet()) {
-			dataStat = homeTeamPlayersDataStat.get(key);
-			dataStat.saveToDB(matchId);
-		}
+		StringBuffer sb = new StringBuffer();
+		sb.append("insert into match_stat(team_id, player_no, no, position, name, match_id,");
+		sb.append(" point2_shoot_times, point2_doom_times, point3_shoot_times, point3_doom_times,");
+		sb.append(" point1_shoot_times, point1_doom_times,");
+		sb.append(" offensive_rebound, defensive_rebound, foul, lapsus ,assist,");
+		sb.append(" block, steals, is_main, created_time)");
+		sb.append(" values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now());");
 
-		for (long key : visitingTeamPlayersDataStat.keySet()) {
-			dataStat = visitingTeamPlayersDataStat.get(key);
-			dataStat.saveToDB(matchId);
+		Connection conn = ConnectionPool.getInstance().connection();
+		boolean autoCommit = true;
+		try {
+			autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+
+			PreparedStatement statement = conn.prepareStatement(sb.toString());
+
+			PlayerDataStat dataStat;
+			homeTeamPlayersDataStat.putAll(visitingTeamPlayersDataStat);
+			for (long key : homeTeamPlayersDataStat.keySet()) {
+				dataStat = homeTeamPlayersDataStat.get(key);
+				Player player = dataStat.getPlayer();
+				int i = 1;
+				statement.setLong(i++, player.getTeamid());
+				statement.setString(i++, player.getNo());
+				statement.setInt(i++, player.getPlayerNo());
+				statement.setString(i++, player.getPosition());
+				statement.setString(i++, player.getName());
+				statement.setLong(i++, matchId);
+				statement.setInt(i++, dataStat.getPoint2ShootTimes());
+				statement.setInt(i++, dataStat.getPoint2DoomTimes());
+				statement.setInt(i++, dataStat.getPoint3ShootTimes());
+				statement.setInt(i++, dataStat.getPoint3DoomTimes());
+				statement.setInt(i++, dataStat.getPoint1ShootTimes());
+				statement.setInt(i++, dataStat.getPoint1DoomTimes());
+				statement.setInt(i++, dataStat.getOffensiveRebound());
+				statement.setInt(i++, dataStat.getDefensiveRebound());
+				statement.setInt(i++, dataStat.getFoulTimes());
+				statement.setInt(i++, dataStat.getLapsus());
+				statement.setInt(i++, dataStat.getAssist());
+				statement.setInt(i++, dataStat.getBlock());
+				statement.setInt(i++, dataStat.getSteals());
+				statement.setBoolean(i++, dataStat.isIsMain());
+				statement.addBatch();
+			}
+
+			statement.executeBatch();
+
+			conn.commit();
+		} catch (Exception e) {
+			if (conn != null) {
+				try {
+					conn.rollback();
+				} catch (Exception ex) {
+				}
+			}
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.setAutoCommit(autoCommit);
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
-
 }

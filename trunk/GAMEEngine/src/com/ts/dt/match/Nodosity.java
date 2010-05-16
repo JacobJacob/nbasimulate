@@ -17,8 +17,8 @@ import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TacticalDaoImpl;
 import com.ts.dt.dao.impl.YouthPlayerDaoImpl;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.helper.PowerHelper;
-import com.ts.dt.po.MatchNodosityDetail;
 import com.ts.dt.po.MatchNodosityMain;
 import com.ts.dt.po.MatchNodosityTacticalDetail;
 import com.ts.dt.po.Matchs;
@@ -47,7 +47,7 @@ public class Nodosity {
 	private Hashtable<String, Controller> controllers;
 	private MatchContext context;
 
-	public void execute(MatchContext context) {
+	public void execute(MatchContext context) throws MatchException {
 
 		int apoint = 0;
 		int bpoint = 0;
@@ -73,8 +73,6 @@ public class Nodosity {
 		apoint = (Integer) context.get(MatchConstant.POINT_TEAM_A);
 		bpoint = (Integer) context.get(MatchConstant.POINT_TEAM_B);
 
-		long start = System.currentTimeMillis();
-
 		// 体力计算
 		Iterator<Controller> iterator = context.getControllers().values().iterator();
 		while (iterator.hasNext()) {
@@ -91,8 +89,6 @@ public class Nodosity {
 		this.updatePlayers(context);
 
 		logNodosityData(context);
-		long end = System.currentTimeMillis();
-		System.out.println("save nodosity data use time:" + (end - start));
 
 		if (nodosityNo < 4 || (apoint == bpoint)) {
 			hasNextNodosity = true;
@@ -103,7 +99,10 @@ public class Nodosity {
 		}
 	}
 
-	public void init() {
+	/*
+	 * 每节的数据初始化
+	 */
+	public void init() throws MatchException {
 
 		if (context.getControllers() == null) {
 			controllers = new Hashtable<String, Controller>();
@@ -255,11 +254,17 @@ public class Nodosity {
 
 			String key = iterator.next();
 			Controller controller = map.get(key);
+			Player player = controller.getPlayer();
 			detail = new MatchNodosityTacticalDetail();
-			detail.setPlayerNo(controller.getPlayer().getNo());
-			detail.setPlayerName(controller.getPlayer().getName());
+			detail.setPlayerNo(player.getNo());
+			detail.setPlayerName(player.getName());
 			detail.setPosition(key);
-			detail.setPower(controller.getPlayer().getMatchPower());
+			detail.setAge(player.getAge());
+			detail.setAvoirdupois(player.getAvoirdupois());
+			detail.setStature(player.getStature());
+			detail.setNo(player.getPlayerNo());
+			detail.setPower(player.getMatchPower());
+			detail.setAbility(player.getAbility());
 
 			main.addDetail(detail);
 		}
@@ -296,7 +301,7 @@ public class Nodosity {
 	/*
 	 * 每节比赛开始前加载数据,如阵容,战术等
 	 */
-	private void initDataFromDb() {
+	private void initDataFromDb() throws MatchException {
 
 		TacticalDao tacticsDao = new TacticalDaoImpl();
 		PlayerDao playerDao = null;
@@ -312,10 +317,10 @@ public class Nodosity {
 		guestTeamTactical = tacticsDao.loadTeamTactical(context.getVisitingTeamId(), tacticalType);
 
 		if (homeTeamTactical == null) {
-			Logger.logToDb("error", "tactical not exist team id:" + context.getHomeTeamId());
+			throw new MatchException("tactical not exist team id:" + context.getHomeTeamId());
 		}
 		if (guestTeamTactical == null) {
-			Logger.logToDb("error", "tactical not exist team id:" + context.getVisitingTeamId());
+			throw new MatchException("tactical not exist team id:" + context.getVisitingTeamId());
 		}
 
 		long homeTeamPoint = context.getInt(MatchConstant.POINT_TEAM_A);
@@ -367,7 +372,7 @@ public class Nodosity {
 		guestTeamTacticalDetail = tacticsDao.loadTeamTacticalDetail(visitingTeamTacticalDetailId);
 
 		if (homeTeamTacticalDetail == null || guestTeamTacticalDetail == null) {
-			System.out.println("ERROR");
+			throw new MatchException("战术详细为空");
 		}
 
 		// 设置战术

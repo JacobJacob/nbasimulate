@@ -1,6 +1,7 @@
 package com.ts.dt.match;
 
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.action.foul.Foul;
 import com.ts.dt.match.action.foul.FoulFactory;
 import com.ts.dt.match.action.pass.Pass;
@@ -25,7 +26,7 @@ public class Controller {
 	private String teamFlg;
 
 	// Í¶Çò¶¯×÷
-	public void shout(MatchContext context) {
+	public void shout(MatchContext context) throws MatchException {
 
 		Shoot shoot = ShootFactory.getInstance().createShootAction(context);
 		shoot.execute(context);

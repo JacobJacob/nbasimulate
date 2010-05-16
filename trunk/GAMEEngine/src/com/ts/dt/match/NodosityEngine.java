@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.factory.BackboardCheckFactory;
 import com.ts.dt.match.action.pass.Pass;
 import com.ts.dt.match.action.scrimmage.Scrimmage;
@@ -24,7 +25,7 @@ public class NodosityEngine {
 		this.context = context;
 	}
 
-	public void execute() {
+	public void execute() throws MatchException {
 
 		Controller currentController = context.getCurrentController();
 		if (context.getCurrentDefender() == null) {
@@ -91,7 +92,7 @@ public class NodosityEngine {
 	/**
 	 * next action
 	 */
-	public void next() {
+	public void next() throws MatchException {
 
 		Controller currentController = context.getCurrentController();
 		Controller nextController = context.getNextController();
@@ -118,7 +119,7 @@ public class NodosityEngine {
 
 	}
 
-	public void checkNextController(int action) {
+	public void checkNextController(int action) throws MatchException {
 
 		Controller nextController = null;
 		if (action == MatchConstant.ACTION_TYPE_PASS) {
@@ -134,13 +135,13 @@ public class NodosityEngine {
 		} else if (action == MatchConstant.ACTION_TYPE_FOUL) {
 			nextController = checkNextControllerForOffensiveTimeOut();
 		} else {
-			System.out.println("error");
+			throw new MatchException("动作类型不存在");
 		}
 		context.setNextController(nextController);
 	}
 
 	/**
-	 * check who is the next defender
+	 * 判断下一个防守者
 	 */
 	public void checkNextDefender() {
 
@@ -148,7 +149,7 @@ public class NodosityEngine {
 	}
 
 	/**
-	 * check who is the current defender
+	 * 判断当前防守者
 	 */
 	public void checkCurrentDefender() {
 
@@ -189,7 +190,9 @@ public class NodosityEngine {
 		return controller;
 	}
 
-	// 判断争球后下一个控球者
+	/*
+	 * 判断争球后下一个控球者
+	 */
 	public Controller checkNextControllerForScrimmageAction() {
 
 		Controller controller;

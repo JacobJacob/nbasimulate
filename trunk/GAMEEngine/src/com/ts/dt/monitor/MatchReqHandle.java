@@ -6,6 +6,7 @@ import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.engine.MatchEngine;
 import com.ts.dt.engine.impl.MatchEngineImpl;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.EngineStatus;
 import com.ts.dt.po.Matchs;
 import com.ts.dt.pool.MatchReqPool;
@@ -27,27 +28,25 @@ public class MatchReqHandle extends Thread {
 		// TODO Auto-generated method stub
 		while (true) {
 
-			// try {
-			this.reportStatus("start to get task");
-			Matchs match = MatchReqPool.get();
-			this.reportStatus("start to execute match");
-			match = engine.execute(match.getId());
-			Session session = BottleUtil.currentSession();
-			this.finishCount++;
-			this.reportStatus("finish execute match");
-			// req.setMatchId(matchId);
-			match.setStatus(MatchStatus.FINISH);
-			session.beginTransaction();
 			try {
+				this.reportStatus("start to get task");
+				Matchs match = MatchReqPool.get();
+				this.reportStatus("start to execute match");
+				match = engine.execute(match.getId());
+				Session session = BottleUtil.currentSession();
+				this.finishCount++;
+				this.reportStatus("finish execute match");
+
+				match.setStatus(MatchStatus.FINISH);
+				session.beginTransaction();
 				match.save();
+				session.endTransaction();
+			} catch (MatchException me) {
+				Logger.logToDb("error", me.getMessage());
+				me.printStackTrace();
 			} catch (Exception e) {
-				Logger.logToDb("error", e.getMessage());
+				e.printStackTrace();
 			}
-			session.endTransaction();
-			// } catch (Exception e) {
-			// Logger.logToDb("error", e.toString());
-			// throw e;
-			// }
 		}
 
 	}

@@ -8,6 +8,9 @@ public class MatchNotInPlayer extends Persistence {
 	private long matchId;
 	private String playerNo;
 	private double ability;
+	private String name;
+	private int no;
+	private String position;
 
 	public long getMatchId() {
 		return matchId;
@@ -39,6 +42,30 @@ public class MatchNotInPlayer extends Persistence {
 
 	public void setTeamId(long teamId) {
 		this.teamId = teamId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 }

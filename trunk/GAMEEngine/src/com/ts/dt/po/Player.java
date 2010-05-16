@@ -34,77 +34,77 @@ public interface Player extends Persistable {
 
 	public abstract void setTeamid(long teamId);
 
-	public abstract double getAbility();
+	public abstract float getAbility();
 
-	public abstract void setAbility(double ability);
+	public abstract void setAbility(float ability);
 
-	public abstract double getShooting();
+	public abstract float getShooting();
 
-	public abstract void setShooting(double shooting);
+	public abstract void setShooting(float shooting);
 
 	public abstract long getId();
 
 	public abstract void setId(long id);
 
-	public abstract double getSpeed();
+	public abstract float getSpeed();
 
-	public abstract void setSpeed(double speed);
+	public abstract void setSpeed(float speed);
 
-	public abstract double getStrength();
+	public abstract float getStrength();
 
-	public abstract void setStrength(double strength);
+	public abstract void setStrength(float strength);
 
-	public abstract double getBounce();
+	public abstract float getBounce();
 
-	public abstract void setBounce(double bounce);
+	public abstract void setBounce(float bounce);
 
-	public abstract double getStamina();
+	public abstract float getStamina();
 
-	public abstract void setStamina(double stamina);
+	public abstract void setStamina(float stamina);
 
-	public abstract double getTrisection();
+	public abstract float getTrisection();
 
-	public abstract void setTrisection(double trisection);
+	public abstract void setTrisection(float trisection);
 
-	public abstract double getDribble();
+	public abstract float getDribble();
 
-	public abstract void setDribble(double dribble);
+	public abstract void setDribble(float dribble);
 
-	public abstract double getPass();
+	public abstract float getPass();
 
-	public abstract void setPass(double pass);
+	public abstract void setPass(float pass);
 
-	public abstract double getBackboard();
+	public abstract float getBackboard();
 
-	public abstract void setBackboard(double backboard);
+	public abstract void setBackboard(float backboard);
 
-	public abstract double getSteal();
+	public abstract float getSteal();
 
-	public abstract void setSteal(double steal);
+	public abstract void setSteal(float steal);
 
-	public abstract double getBlocked();
+	public abstract float getBlocked();
 
-	public abstract void setBlocked(double blocked);
+	public abstract void setBlocked(float blocked);
 
-	public abstract double getDefencons();
+	public abstract float getDefencons();
 
-	public abstract void setDefencons(double defencons);
+	public abstract void setDefencons(float defencons);
 
-	public abstract double getOffencons();
+	public abstract float getOffencons();
 
-	public abstract void setOffencons(double offencons);
+	public abstract void setOffencons(float offencons);
 
-	public abstract double getBuildupcons();
+	public abstract float getBuildupcons();
 
-	public abstract void setBuildupcons(double buildupcons);
+	public abstract void setBuildupcons(float buildupcons);
 
-	public abstract double getLeadcons();
+	public abstract float getLeadcons();
 
-	public abstract void setLeadcons(double leadcons);
+	public abstract void setLeadcons(float leadcons);
 
-	public abstract double getBackbone();
+	public abstract float getBackbone();
 
-	public abstract void setBackbone(double backbone);
+	public abstract void setBackbone(float backbone);
 
 	public abstract String getNo();
 
@@ -122,4 +122,5 @@ public interface Player extends Persistable {
 
 	public abstract void setLeaguePower(int leaguePower);
 
+	public abstract int getPlayerNo();
 }

@@ -14,6 +14,7 @@ import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.YouthPlayerDaoImpl;
 import com.ts.dt.engine.MatchEngine;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.Nodosity;
 import com.ts.dt.po.MatchNotInPlayer;
 import com.ts.dt.po.Matchs;
@@ -27,7 +28,7 @@ public class MatchEngineImpl implements MatchEngine {
 
 	MatchContext context = new MatchContext();
 
-	public Matchs execute(long matchid) {
+	public Matchs execute(long matchid) throws MatchException {
 
 		MatchDao matchDao = new MatchDaoImpl();
 		Matchs match = matchDao.load(matchid);
@@ -108,6 +109,9 @@ public class MatchEngineImpl implements MatchEngine {
 			matchNotInPlayer.setTeamId(context.getHomeTeamId());
 			matchNotInPlayer.setAbility(player.getAbility());
 			matchNotInPlayer.setPlayerNo(player.getNo());
+			matchNotInPlayer.setName(player.getName());
+			matchNotInPlayer.setPosition(player.getPosition());
+			matchNotInPlayer.setNo(player.getPlayerNo());
 			matchNotInPlayer.save();
 		}
 
@@ -121,7 +125,10 @@ public class MatchEngineImpl implements MatchEngine {
 			matchNotInPlayer.setMatchId(matchid);
 			matchNotInPlayer.setTeamId(context.getVisitingTeamId());
 			matchNotInPlayer.setAbility(player.getAbility());
+			matchNotInPlayer.setName(player.getName());
 			matchNotInPlayer.setPlayerNo(player.getNo());
+			matchNotInPlayer.setPosition(player.getPosition());
+			matchNotInPlayer.setNo(player.getPlayerNo());
 			matchNotInPlayer.save();
 		}
 		session.endTransaction();

@@ -7,6 +7,11 @@ public class MatchStat extends Persistence {
 	private long teamId;
 
 	private String playerNo;
+	private double ability;
+	private int age;
+	private String name;
+	private int no;
+	private String position;
 
 	private long matchId;
 
@@ -28,7 +33,7 @@ public class MatchStat extends Persistence {
 
 	private int foul;
 	private int steals;
-	private boolean isMain; //是否主力
+	private boolean isMain; // 是否主力
 
 	public long getTeamId() {
 		return teamId;
@@ -165,5 +170,49 @@ public class MatchStat extends Persistence {
 	public void setIsMain(boolean isMain) {
 		this.isMain = isMain;
 	}
-	
+
+	public double getAbility() {
+		return ability;
+	}
+
+	public void setAbility(double ability) {
+		this.ability = ability;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+	public void setMain(boolean isMain) {
+		this.isMain = isMain;
+	}
+
 }

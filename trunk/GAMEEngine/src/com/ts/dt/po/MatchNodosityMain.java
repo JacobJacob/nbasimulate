@@ -14,7 +14,7 @@ public class MatchNodosityMain extends Persistence {
 
 	public static final String INSERT_SQL = "insert into match_nodosity_main(seq, match_id, home_offensive_tactic, home_defend_tactic, guest_offensive_tactic, guest_defend_tactic,point, created_time) values(?,?,?,?,?,?,?,now())";
 	public static final String GET_LAST_ID = "select LAST_INSERT_ID() as id from match_nodosity_main limit 1";
-	public static final String INSERT_LIST_SQL = "insert into match_nodosity_tactical_detail (match_nodosity_main_id,position, player_no, player_name, colligate, power, created_time) values(?,?,?,?,?,?,now())";
+	public static final String INSERT_LIST_SQL = "insert into match_nodosity_tactical_detail (match_nodosity_main_id,position, player_no, player_name, ability, power,age,stature,avoirdupois,no,created_time) values(?,?,?,?,?,?,?,?,?,?,now())";
 	public static final String INSERT_DETAIL_SQL = "insert into match_nodosity_detail (match_id, seq, description, time_msg, point_msg, match_nodosity_main_id, created_time, is_new_line) values(?,?,?,?,?,?,now(),?)";
 
 	private int seq;
@@ -56,8 +56,12 @@ public class MatchNodosityMain extends Persistence {
 					statement.setString(2, detail.getPosition());
 					statement.setString(3, detail.getPlayerNo());
 					statement.setString(4, detail.getPlayerName());
-					statement.setFloat(5, detail.getColligate());
+					statement.setFloat(5, detail.getAbility());
 					statement.setInt(6, detail.getPower());
+					statement.setInt(7, detail.getAge());
+					statement.setInt(8, detail.getStature());
+					statement.setInt(9, detail.getAvoirdupois());
+					statement.setInt(10, detail.getNo());
 					statement.addBatch();
 				}
 				statement.executeBatch();

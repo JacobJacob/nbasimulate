@@ -2,6 +2,7 @@ package com.ts.dt.match.action.shoot;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.BlockCheckFactory;
 import com.ts.dt.factory.FoulCheckFactory;
@@ -16,7 +17,7 @@ import com.ts.dt.util.MessagesUtil;
 
 public abstract class AbstractShoot implements Action {
 
-	public String execute(MatchContext context) {
+	public String execute(MatchContext context) throws MatchException {
 
 		String result = null;
 
@@ -48,8 +49,9 @@ public abstract class AbstractShoot implements Action {
 
 		String desc = description.load(context);
 		if (desc == null) {
-			Logger.logToDb("error", "desc is null");
+			throw new MatchException("比赛描述为空");
 		}
+
 		String currentTeamNm = context.getCurrentController().getTeamFlg();
 		String previousTeamNm = "";
 		if (context.getPreviousController() != null) {
@@ -120,8 +122,8 @@ public abstract class AbstractShoot implements Action {
 
 		context.setNewLine(false);
 
+		// 且功统计
 		if (context.isAssist()) {
-			// handle for assist
 			handleAssit(context);
 			context.setAssist(false);
 		}

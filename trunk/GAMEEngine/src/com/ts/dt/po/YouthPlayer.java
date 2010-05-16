@@ -15,24 +15,26 @@ public class YouthPlayer extends Persistence implements Player {
 	private int matchPower;
 	private int avoirdupois;
 	private long teamId;
-	private double ability;
-	private double shooting;
-	private double speed;
-	private double strength;
-	private double bounce;
-	private double stamina;
-	private double trisection;
-	private double dribble;
-	private double pass;
-	private double backboard;
-	private double steal;
-	private double blocked;
+	private float ability;
+	private float shooting;
+	private float speed;
+	private float strength;
+	private float bounce;
+	private float stamina;
+	private float trisection;
+	private float dribble;
+	private float pass;
+	private float backboard;
+	private float steal;
+	private float blocked;
 
-	private double defencons;
-	private double offencons;
-	private double buildupcons;
-	private double leadcons;
-	private double backbone;
+	private float defencons;
+	private float offencons;
+	private float buildupcons;
+	private float leadcons;
+	private float backbone;
+
+	private int playerNo;
 
 	public float getColligate() {
 		return 0;
@@ -94,19 +96,19 @@ public class YouthPlayer extends Persistence implements Player {
 		this.teamId = teamId;
 	}
 
-	public double getAbility() {
+	public float getAbility() {
 		return ability;
 	}
 
-	public void setAbility(double ability) {
+	public void setAbility(float ability) {
 		this.ability = ability;
 	}
 
-	public double getShooting() {
+	public float getShooting() {
 		return shooting;
 	}
 
-	public void setShooting(double shooting) {
+	public void setShooting(float shooting) {
 		this.shooting = shooting;
 	}
 
@@ -118,123 +120,123 @@ public class YouthPlayer extends Persistence implements Player {
 		this.id = id;
 	}
 
-	public double getSpeed() {
+	public float getSpeed() {
 		return speed;
 	}
 
-	public void setSpeed(double speed) {
+	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
 
-	public double getStrength() {
+	public float getStrength() {
 		return strength;
 	}
 
-	public void setStrength(double strength) {
+	public void setStrength(float strength) {
 		this.strength = strength;
 	}
 
-	public double getBounce() {
+	public float getBounce() {
 		return bounce;
 	}
 
-	public void setBounce(double bounce) {
+	public void setBounce(float bounce) {
 		this.bounce = bounce;
 	}
 
-	public double getStamina() {
+	public float getStamina() {
 		return stamina;
 	}
 
-	public void setStamina(double stamina) {
+	public void setStamina(float stamina) {
 		this.stamina = stamina;
 	}
 
-	public double getTrisection() {
+	public float getTrisection() {
 		return trisection;
 	}
 
-	public void setTrisection(double trisection) {
+	public void setTrisection(float trisection) {
 		this.trisection = trisection;
 	}
 
-	public double getDribble() {
+	public float getDribble() {
 		return dribble;
 	}
 
-	public void setDribble(double dribble) {
+	public void setDribble(float dribble) {
 		this.dribble = dribble;
 	}
 
-	public double getPass() {
+	public float getPass() {
 		return pass;
 	}
 
-	public void setPass(double pass) {
+	public void setPass(float pass) {
 		this.pass = pass;
 	}
 
-	public double getBackboard() {
+	public float getBackboard() {
 		return backboard;
 	}
 
-	public void setBackboard(double backboard) {
+	public void setBackboard(float backboard) {
 		this.backboard = backboard;
 	}
 
-	public double getSteal() {
+	public float getSteal() {
 		return steal;
 	}
 
-	public void setSteal(double steal) {
+	public void setSteal(float steal) {
 		this.steal = steal;
 	}
 
-	public double getBlocked() {
+	public float getBlocked() {
 		return blocked;
 	}
 
-	public void setBlocked(double blocked) {
+	public void setBlocked(float blocked) {
 		this.blocked = blocked;
 	}
 
-	public double getDefencons() {
+	public float getDefencons() {
 		return defencons;
 	}
 
-	public void setDefencons(double defencons) {
+	public void setDefencons(float defencons) {
 		this.defencons = defencons;
 	}
 
-	public double getOffencons() {
+	public float getOffencons() {
 		return offencons;
 	}
 
-	public void setOffencons(double offencons) {
+	public void setOffencons(float offencons) {
 		this.offencons = offencons;
 	}
 
-	public double getBuildupcons() {
+	public float getBuildupcons() {
 		return buildupcons;
 	}
 
-	public void setBuildupcons(double buildupcons) {
+	public void setBuildupcons(float buildupcons) {
 		this.buildupcons = buildupcons;
 	}
 
-	public double getLeadcons() {
+	public float getLeadcons() {
 		return leadcons;
 	}
 
-	public void setLeadcons(double leadcons) {
+	public void setLeadcons(float leadcons) {
 		this.leadcons = leadcons;
 	}
 
-	public double getBackbone() {
+	public float getBackbone() {
 		return backbone;
 	}
 
-	public void setBackbone(double backbone) {
+	public void setBackbone(float backbone) {
 		this.backbone = backbone;
 	}
 
@@ -268,6 +270,14 @@ public class YouthPlayer extends Persistence implements Player {
 
 	public void setMatchPower(int matchPower) {
 		this.matchPower = matchPower;
+	}
+
+	public int getPlayerNo() {
+		return playerNo;
+	}
+
+	public void setPlayerNo(int playerNo) {
+		this.playerNo = playerNo;
 	}
 
 }

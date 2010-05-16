@@ -9,7 +9,11 @@ public class MatchNodosityTacticalDetail extends Persistence {
 	private String playerNo;
 	private String playerName;
 	private int power;
-	private float colligate;
+	private float ability;
+	private int age;
+	private int stature;
+	private int avoirdupois;
+	private int no;
 
 	public long getMatchNodosityMainId() {
 		return matchNodosityMainId;
@@ -43,20 +47,52 @@ public class MatchNodosityTacticalDetail extends Persistence {
 		this.playerName = playerName;
 	}
 
-	public float getColligate() {
-		return colligate;
-	}
-
-	public void setColligate(float colligate) {
-		this.colligate = colligate;
-	}
-
 	public int getPower() {
 		return power;
 	}
 
 	public void setPower(int power) {
 		this.power = power;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public int getStature() {
+		return stature;
+	}
+
+	public void setStature(int stature) {
+		this.stature = stature;
+	}
+
+	public int getAvoirdupois() {
+		return avoirdupois;
+	}
+
+	public void setAvoirdupois(int avoirdupois) {
+		this.avoirdupois = avoirdupois;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
+	public float getAbility() {
+		return ability;
+	}
+
+	public void setAbility(float ability) {
+		this.ability = ability;
 	}
 
 }
