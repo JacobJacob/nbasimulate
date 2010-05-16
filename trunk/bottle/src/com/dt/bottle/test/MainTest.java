@@ -41,7 +41,10 @@ public class MainTest {
 		// test.setB(false);
 		// test.save();
 		for (int i = 0; i < 2000; i++) {
-           // MatchReq req = new MatchReq();
+			Test test = new Test();
+			test.setValue("Value-" + i);
+			test.setB(false);
+			test.save();
 		}
 
 		long end = System.currentTimeMillis();

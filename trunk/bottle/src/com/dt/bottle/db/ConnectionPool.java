@@ -7,11 +7,12 @@ public class ConnectionPool {
 	public static final String URL = "jdbc:mysql://192.168.1.158/gba?characterEncoding=utf-8";
 	public static final String USERNAME = "gba";
 	public static final String PASSWORD = "gba123";
-   
-//	public static final String URL = "jdbc:mysql://192.168.1.158/gbadtgame?characterEncoding=utf-8";
-//	public static final String USERNAME = "gbagameuser";
-//	public static final String PASSWORD = "gba@g1a2m3euser";
-	
+
+	// public static final String URL =
+	// "jdbc:mysql://192.168.1.158/gbadtgame?characterEncoding=utf-8";
+	// public static final String USERNAME = "gbagameuser";
+	// public static final String PASSWORD = "gba@g1a2m3euser";
+
 	private static ConnectionPool pool = null;
 	private snaq.db.ConnectionPool connPool = null;
 	private boolean inited = false;
@@ -29,8 +30,7 @@ public class ConnectionPool {
 	private void init() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			connPool = new snaq.db.ConnectionPool("local", 10, 30, 180000, URL,
-					USERNAME, PASSWORD);
+			connPool = new snaq.db.ConnectionPool("local", 10, 30, 180000, URL, USERNAME, PASSWORD);
 			inited = true;
 		} catch (Exception e) {
 			e.printStackTrace();
