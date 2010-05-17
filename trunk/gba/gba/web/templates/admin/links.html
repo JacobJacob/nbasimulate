@@ -12,9 +12,13 @@
 	<p class="menu_head">比赛相关</p>
 	<div class="menu_body">
 		<a href="{% url action-desc %}">比赛描述</a>
-		<a href="{% url cup-list %}">奖杯管理</a>
 		<a href="{% url match-list %}">比赛管理</a>
 		<a href="{% url error-match %}">异常比赛管理</a>
+	</div>
+	<p class="menu_head">联赛相关</p>
+	<div class="menu_body">
+	    <a href="{% url cup-list %}">奖杯管理</a>
+		<a href="{% url league-list %}">联赛管理</a>
 	</div>
 </div>
 <p id="menu_bar">&nbsp;</p>

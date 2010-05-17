@@ -219,7 +219,7 @@ body/**/{
          <td height="25" align="center" style="font-size: 12px;">&nbsp;</td>	
          <td align="center">&nbsp;</td>		
         {% endif %}	
-		<td style="padding: 4px; text-align: left;">{{ detail.description }}</td>
+		<td style="padding: 4px; text-align: left;">{{ detail.description|safe }}</td>
 		</tr>
       {% endfor %}
         </tbody>

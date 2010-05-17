@@ -4,10 +4,11 @@
 
 from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import login_required
-from gba.entity import ActionDesc, EngineStatus, RoundUpdateLog, Cup , ClientRunningLog, Matchs, ErrorMatch
+from gba.entity import ActionDesc, EngineStatus, RoundUpdateLog, Cup , ClientRunningLog, Matchs, \
+                       ErrorMatch, League
 from gba.business.client import ClientManager
 from gba.business.common_client_monitor import CommonClientMonitor
-from gba.common.constants import MatchTypeMaps, MatchStatusMap, MatchShowStatusMaps
+from gba.common.constants import MatchTypeMaps, MatchStatusMap, MatchShowStatusMaps, ActionNameMap
 from gba.business import admin_operator, match_operator
 
 def index(request):
@@ -35,27 +36,99 @@ def betch_log_json(request):
         ret_infos.append(info.__dict__)
     return json_response({'infos': ret_infos, 'total': total})
 
-def action_desc(request):
-    page = int(request.GET.get('page', 1))
-    pagesize = int(request.GET.get('pagesize', 15))
-    action_name = request.GET.get('action_name', '')
+#def action_desc(request):
+#    page = int(request.GET.get('page', 1))
+#    pagesize = int(request.GET.get('pagesize', 15))
+#    action_name = request.GET.get('action_name', '')
+#
+#    condition = '1=1'
+#    if action_name:
+#        condition += ' and action_name="%s"' % action_name
+#        
+#    action_names = admin_operator.get_action_names()
+#
+#    infos, total = ActionDesc.paging(page, pagesize, condition=condition)
+#    if total == 0:
+#        totalpage = 0
+#    else:
+#        totalpage = (total - 1) / pagesize + 1
+#    
+#    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
+#            'nextpage': page + 1, 'prevpage': page - 1, 'action_name': action_name,
+#            'action_names': action_names}
+#    return render_to_response(request, 'admin/action_desc.html', datas)
 
+@login_required
+def action_desc(request):
+    """比赛描述"""
+    return render_to_response(request, 'admin/action_desc_ex.html')
+
+@login_required
+def get_action_desc_json(request):
+    """比赛描述"""
+    id = request.POST.get('id')
+    action_desc = ActionDesc.load(id=id)
+    return json_response(action_desc.__dict__)
+
+@login_required
+def action_desc_update(request):
+    """比赛描述更新"""
+    id = request.POST.get('id')
+    action_name = request.POST.get('action_name')
+    action_desc = request.POST.get('action_desc')
+    result = request.POST.get('result')
+    flg = request.POST.get('flg')
+    percent = request.POST.get('percent')
+    is_assist = request.POST.get('is_assist')
+    not_stick = request.POST.get('not_stick')
+ 
+    obj = ActionDesc()
+    if id is not None:
+        obj.id = id
+    obj.action_name = action_name
+    obj.action_desc = action_desc
+    obj.result = result
+    obj.flg = flg
+    obj.percent = percent
+    obj.is_assist = 1 if is_assist == u'on' else 0
+    obj.not_stick = 1 if not_stick == u'on' else 0
+    
+    success = True
+    try:
+        obj.persist()
+    except:
+        raise
+        success = False
+    return json_response({'success': success})
+
+@login_required
+def action_name_list_json(request):
+    '''动作名称列表'''
+    action_names = admin_operator.get_action_names()
+    for action_name in action_names:
+        action_name['action_name_cn'] = ActionNameMap.get(action_name['action_name'])
+    return json_response({'infos': action_names})
+    
+@login_required
+def action_desc_json(request):
+    """json格式比赛描述"""
+    start = int(request.POST.get('start', 0))
+    limit = int(request.POST.get('limit', 20))
+    sort = request.POST.get('sort', 'id')
+    dir = request.POST.get('dir', 'desc')
+    action_name = request.POST.get('action_name', 'ShortShoot')
     condition = '1=1'
     if action_name:
         condition += ' and action_name="%s"' % action_name
-        
-    action_names = admin_operator.get_action_names()
-
-    infos, total = ActionDesc.paging(page, pagesize, condition=condition)
-    if total == 0:
-        totalpage = 0
-    else:
-        totalpage = (total - 1) / pagesize + 1
+    infos, total = ActionDesc.paging(pagesize=limit, start=start, condition=condition, order="%s %s" % (sort, dir))
     
-    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
-            'nextpage': page + 1, 'prevpage': page - 1, 'action_name': action_name,
-            'action_names': action_names}
-    return render_to_response(request, 'admin/action_desc.html', datas)
+    ret_infos = []
+    for info in infos:
+        info.action_name = ActionNameMap.get(info.action_name)
+        if info.created_time:
+            info.created_time = info.created_time.strftime("%Y-%m-%d %H:%M:%S")
+        ret_infos.append(info.__dict__)
+    return json_response({'infos': ret_infos, 'total': total})
 
 def list(request):
     clients = ClientManager.get_clients()
@@ -110,21 +183,6 @@ def daily_update_log_json(request):
             info.end_time = info.end_time.strftime("%Y-%m-%d %H:%M:%S")
         ret_infos.append(info.__dict__)
     return json_response({'infos': ret_infos, 'total': total})
-
-def cup_list(request):
-    '''将杯管理'''
-    page = int(request.GET.get('page', 1))
-    pagesize = int(request.GET.get('pagesize', 10))
-
-    infos, total = Cup.paging(page, pagesize, order='id desc ')
-    if total == 0:
-        totalpage = 0
-    else:
-        totalpage = (total - 1) / pagesize + 1
-    
-    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
-            'nextpage': page + 1, 'prevpage': page - 1}
-    return render_to_response(request, 'admin/cup_list.html', datas)
 
 @login_required
 def match_list(request):
@@ -185,3 +243,45 @@ def error_match_restart(request):
     except:
         result = 'error'    
     return json_response(result)
+ 
+@login_required
+def league_list(request):
+    """联赛管理"""
+    return render_to_response(request, 'admin/league_list_ex.html')
+
+@login_required
+def league_list_json(request):
+    """json联赛管理"""
+    start = int(request.POST.get('start', 0))
+    limit = int(request.POST.get('limit', 20))
+    sort = request.POST.get('sort', 'id')
+    dir = request.POST.get('dir', 'desc')
+    degree = request.POST.get('degree', 1)
+    infos, total = League.paging(pagesize=limit, start=start, condition='degree="%s"' % degree, order="%s %s" % (sort, dir))
+    ret_infos = []
+    for info in infos:
+        if info.updated_time:
+            info.updated_time = info.updated_time.strftime("%Y-%m-%d %H:%M:%S")
+        ret_infos.append(info.__dict__)
+    return json_response({'infos': ret_infos, 'total': total})
+
+@login_required
+def cup_list(request):
+    """奖杯管理"""
+    return render_to_response(request, 'admin/cup_list_ex.html')
+
+@login_required
+def cup_list_json(request):
+    """json奖杯管理"""
+    start = int(request.POST.get('start', 0))
+    limit = int(request.POST.get('limit', 20))
+    sort = request.POST.get('sort', 'id')
+    dir = request.POST.get('dir', 'desc')
+    degree = request.POST.get('degree', 1)
+    infos, total = League.paging(pagesize=limit, start=start, condition='degree="%s"' % degree, order="%s %s" % (sort, dir))
+    ret_infos = []
+    for info in infos:
+        if info.updated_time:
+            info.updated_time = info.updated_time.strftime("%Y-%m-%d %H:%M:%S")
+        ret_infos.append(info.__dict__)
+    return json_response({'infos': ret_infos, 'total': total})
