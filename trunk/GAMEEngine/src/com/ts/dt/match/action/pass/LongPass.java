@@ -33,14 +33,6 @@ public class LongPass implements Pass {
 		}
 
 		String desc = description.load(context);
-		if (desc == null) {
-
-		}
-		// String currentTeamNm = context.getCurrentController().getTeamFlg();
-		// String previousTeamNm = "";
-		// if (context.getPreviousController() != null) {
-		// previousTeamNm = context.getPreviousController().getTeamFlg();
-		// }
 
 		desc = desc.replace(MatchConstant.CURRENT_PLAYER_NAME_PLACEHOLDER, currtPlayerNm.trim());
 		desc = desc.replace(MatchConstant.CURRENT_DEFENDER_NAME_PLACEHOLDER, currtDefenderNm.trim());

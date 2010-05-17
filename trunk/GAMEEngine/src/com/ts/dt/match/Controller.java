@@ -85,6 +85,14 @@ public class Controller {
 		return player;
 	}
 
+	public String getPlayerName() {
+		String name = this.player.getName();
+		if (teamFlg.equals("A")) {
+			return "<u>" + name + "</u>";
+		}
+		return name;
+	}
+
 	public void setPlayer(Player player) {
 		DebugUtil.debug(this.controllerName + "±ª…Ë÷√≥…" + player.getName());
 		this.player = player;

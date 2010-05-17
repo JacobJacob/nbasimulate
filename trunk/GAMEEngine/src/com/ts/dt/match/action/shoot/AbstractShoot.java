@@ -25,12 +25,12 @@ public abstract class AbstractShoot implements Action {
 		ActionDescription description = ActionDescriptionFactory.getInstance().createActionDescription(context);
 
 		String currtContrNm = context.getCurrentController().getControllerName();
-		String currtPlayerNm = context.getCurrentController().getPlayer().getName();
+		String currtPlayerNm = context.getCurrentController().getPlayerName();
 		Player player = context.getCurrentController().getPlayer();
-		String currtDefenderNm = context.getCurrentDefender().getPlayer().getName();
+		String currtDefenderNm = context.getCurrentDefender().getPlayerName();
 		String previousPlayerNm = "";
 		if (context.getPreviousController() != null) {
-			previousPlayerNm = context.getPreviousController().getPlayer().getName();
+			previousPlayerNm = context.getPreviousController().getPlayerName();
 		}
 		// ≈–∂œ «∑Ò±ª∑‚∏«
 		BlockCheck blockCheck = BlockCheckFactory.getInstance().createBlockCheckFactory(context);
