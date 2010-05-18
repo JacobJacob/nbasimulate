@@ -187,6 +187,55 @@ class SeasonUpdate(BaseBetchClient):
                 Team.rollback()
                 exception_mgr.on_except()
             self.sleep()
+            
+    
+    def __single_league_update_2_10(self, degree, no):
+        '''2级到10级联赛的更新'''
+        update_league_teams = []
+        update_teams = []
+        update_leagues = []
+        league = self._get_league(degree, no)
+        league_teams = self._get_teams(league.id)
+        pre_degree = degree - 1
+        pre_no = (no + 1 ) // 2
+        pre_league = self._get_league(pre_degree, pre_no)
+        pre_league_teams = self._get_teams(pre_league.id)
+        team_count = league.team_count
+        if team_count == 0:
+            return
+        pre_team_count = pre_league.team_count
+        #上一级联赛没人
+        if pre_team_count == 0:
+            if no % 2 == 1:
+                base = 0
+            else:
+                base = 7
+            for i in range(7):
+                league_team_a = league_teams[i]
+                league_team_b = pre_league_teams[base+1]
+                if league_team_a.team_id != -1:
+                    team_a = self._get_team(league_team_a.team_id)
+                    team_a.profession_league_evel = league_team_b.degree
+                    team_a.profession_league_class = league_team_b.no
+                   
+                    league_team_b.team_id = league_team_a.id
+                    pre_league.team_count += 1
+                    league_team_a.team_id = -1
+                    league.team_count -= 1
+                   
+                    update_league_teams.append(league_team_a)
+                    update_league_teams.append(league_team_b)
+                    update_teams.append(team_a)
+            update_leagues.append(league)
+            update_leagues.append(pre_league)
+  
+            update_leagues.append(league)
+            update_leagues.append(pre_league)
+        
+        #执行降级操作
+        for j in rrange(10, 14):
+            league_team_a = league_teams[i]
+            league_team_b = pre_league_teams[base+1]
     
     def _get_demote_team(self, pre_league_teams):
         '''从一个联赛中获取所有的降级球队'''
@@ -205,59 +254,7 @@ class SeasonUpdate(BaseBetchClient):
                 return pre_league_teams[i]
             else:
                 i += 1
-#        start_id = 0
-#        while True:
-#            leagues = self._get_league(start_id)
-#            if not leagues:
-#                return
-#            
-#            league = leagues[0]
-#            
-#            if league.degree >= MIN_DEGREE:
-#                break
-#            
-#            start_id = league.id
-#            league_teams = self._get_teams(league.id)
-#            
-#            next_leagues = self._get_next_level(league.degree, league.no)
-#            next_league_a = next_leagues[0]
-#            next_league_b = next_leagues[1]
-#            
-#            next_league_a_teams = self._get_teams(next_league_a.id)
-#            next_league_b_teams = self._get_teams(next_league_b.id)
-#            
-#            update_teams = []
-#            #13 14 名和下一级a的第一第二名换, 11 12 名和下一级b的第一第二名换
-#            team_a, team_b = self._change_team(league_teams[13], next_league_a_teams[0])
-#            update_teams.append(team_a)
-#            update_teams.append(team_b)
-#            
-#            team_a, team_b = self._change_team(league_teams[12], next_league_a_teams[1])
-#            update_teams.append(team_a)
-#            update_teams.append(team_b)
-#            
-#            team_a, team_b = self._change_team(league_teams[11], next_league_b_teams[0])
-#            update_teams.append(team_a)
-#            update_teams.append(team_b)
-#            
-#            team_a, team_b = self._change_team(league_teams[10], next_league_b_teams[1])
-#            update_teams.append(team_a)
-#            update_teams.append(team_b)
-#            
-#            next_league_a_teams[0].demote = 1
-#            next_league_a_teams[1].demote = 1
-#            next_league_b_teams[0].demote = 1
-#            next_league_b_teams[1].demote = 1
-#            
-#            update_league_teams = []
-#            update_league_teams.append(league_teams[13])
-#            update_league_teams.append(league_teams[12])
-#            update_league_teams.append(league_teams[11])
-#            update_league_teams.append(league_teams[10])
-#            update_league_teams.append(next_league_a_teams[0])
-#            update_league_teams.append(next_league_a_teams[1])
-#            update_league_teams.append(next_league_b_teams[0])
-#            update_league_teams.append(next_league_b_teams[1])
+
             
     def _get_team(self, team_id):
         '''获取球队'''
