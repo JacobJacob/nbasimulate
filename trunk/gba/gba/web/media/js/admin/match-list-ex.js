@@ -51,6 +51,24 @@ Ext.onReady(function(){
             header: '比赛类型',
             dataIndex: 'type',
             width: 80,
+            renderer: function(value){
+                var html;
+                switch(value){
+                 case 1:
+                  html = "<font color=\"green\">职业友谊 </font>";
+                  break;
+                 case 5:
+                  html = "<font color=\"blue\">职业联赛</font>";
+                  break;
+                 case 6:
+                  html = "<font color=\"red\">胜者为王 </font>";
+                  break; 
+                 default:
+                  html = "未知类型";
+                  break;
+                }
+                return html;
+            }
         },{
             id: 'created_time',
             header: '创建时间',

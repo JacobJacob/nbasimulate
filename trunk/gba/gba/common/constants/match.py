@@ -95,3 +95,6 @@ MatchShowStatusMaps = {
     MatchShowStatus.CANCEL: u'取消',
     MatchShowStatus.WAITING: u'等待中',  
 }
+
+class CupType(ConstantBase):
+    LEAGUE_CUP = 'LEAGUE_CUP' #职业联赛冠军

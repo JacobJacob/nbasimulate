@@ -1,61 +1,18 @@
 
 Ext.onReady(function(){
 
-    var action_name_store = new Ext.data.Store({     
-						     proxy: new Ext.data.HttpProxy({     
-						         url: '/admin/action_name_list_json/' 
-						     }),
-						     reader: new Ext.data.JsonReader({     
-						     	root: 'infos',     
-						     	id: 'action_name'    
-						     },[     
-						         {name: 'action_name', mapping: 'action_name'},   
-						         {name: 'action_name_cn', mapping: 'action_name_cn'},    
-						     ])     
-						 });
-						 
-    action_name_store.load();
-    
-	var action_name_combobox = new Ext.form.ComboBox({
-                 id: 'action_name_combobox',
-                 store: action_name_store,
-                 displayField:'action_name_cn',
-                 valueField:'action_name',
-                 triggerAction: 'all',
-                 forceSelection: true,
-                 listeners: {
-                   "select": function(){
-                      var action_name = this.getValue();
-                      store.load({
-                         params: {
-                            start: 0,
-                            limit: 20,
-                            action_name: action_name,
-                         }
-                      });
-                   },
-                   "afterrender": function(comb){
-                      comb.setValue("ShortShoot");
-                      comb.setRawValue("中距离投篮");
-                   }
-                 }
-     });
-    
 	var data_record = new Ext.data.Record.create([
 		{name: 'id'},
-		{name: 'action_name'},
-		{name: 'action_desc'},
-		{name: 'result'},
-		{name: 'flg'},
-		{name: 'is_assist'},
-		{name: 'not_stick'},
-		{name: 'percent'},
+		{name: 'cup_name'},
+		{name: 'cup_key'},
+		{name: 'cup_icon'},
+		{name: 'is_youth'},
 		{name: 'created_time'},
 	]);
  	
 	var data_read = new Ext.data.JsonReader({totalProperty: 'total', root: 'infos', id: 'id'}, data_record);
 	
-	var store = new Ext.data.Store({proxy: new Ext.data.HttpProxy({url: '/admin/action_desc_json/'}),
+	var store = new Ext.data.Store({proxy: new Ext.data.HttpProxy({url: '/admin/cup_list_json/'}),
         						    reader: data_read,
         							remoteSort: true ,
         					       });
@@ -75,87 +32,60 @@ Ext.onReady(function(){
             hidden: true,
             width: 55,
         },{
-            id: 'action_name',
-            header: '动作名称',
-            dataIndex: 'action_name',
-            width: 80,
+            id: 'cup_name',
+            header: '奖杯名',
+            dataIndex: 'cup_name',
+            width: 120,
         },{
-            id: 'action_desc',
-            header: '动作描述',
-            dataIndex: 'action_desc',
-            width: 750,
+            id: 'cup_key',
+            header: '奖杯id',
+            dataIndex: 'cup_key',
+            width: 120,
+        },{
+            id: 'cup_icon',
+            header: '奖杯图标',
+            dataIndex: 'cup_icon',
+            width: 200,
             renderer: function(value){
-                return "<span title=\"" + value + "\">" + value + "</span>";
+                var html = "<img src=\"/site_media/images/cup/" + value + "\"/>";
+                return html;
             }
         },{
-            id: 'is_assist',
-            header: '助攻',
-            dataIndex: 'is_assist',
-            width: 50,
-            renderer: function(value){
-              if(value==1){
-                return "<font color=\"green\">是</font>";
-              }else{
-                return "<font color=\"red\">否</font>";
-              }
-            }
-        },{
-            id: 'result',
-            header: '成功',
-            dataIndex: 'result',
-            width:60,
-            renderer: function(value){
-              if(value=="success"){
-                return "<font color=\"green\">是</font>";
-              }else if(value=="failure"){
-                return "<font color=\"black\">否</font>";
-              }else{
-                return "<font color=\"red\">异常</font>";
-              }
-            }
-        },{
-            id: 'flg',
-            header: '标志',
-            dataIndex: 'flg',
-            width: 80,
-        },{
-            id: 'not_stick',
-            header: '三不沾',
-            dataIndex: 'not_stick',
-            width: 50,
+            id: 'is_youth',
+            header: '球队类型',
+            dataIndex: 'is_youth',
+            width: 90,
+            align: 'center',
             renderer: function(value){
               if(value==1){
-                return "<font color=\"green\">是</font>";
+                return "<font color=\"green\">街头</font>";
               }else{
-                return "<font color=\"red\">否</font>";
+                return "<font color=\"black\">职业</font>";
               }
             }
         },{
-            id: 'percent',
-            header: '百分比',
-            align: 'right',
-            dataIndex: 'percent',
-            width: 50,
+            id: 'created_time',
+            header: '创建时间',
+            dataIndex: 'created_time',
+            width: 150,
         },{
             id: 'edit',
             align: 'center',
             header: '编辑',
-            dataIndex: 'id',
+            dataIndex: 'cup_key',
             width: 100,
             renderer: function(value){
               var href = "<a href=\"javascript:void(0);\" onclick=\"javascript:edit('" + value + "');\">edit</a>";
-              href += "&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"javascript:copy('" + value + "');\">copy</a>";
               return href;
             }
         }],
         tbar: [
-          action_name_combobox,
           {
         	ref: '../addBtn',
             iconCls: 'task-add',
-            text: '新增描述',
+            text: '创建奖杯',
             handler: function(){
-			    add_action_desc();
+			    add_cup();
             }
         }],
         bbar: new Ext.PagingToolbar({
@@ -168,7 +98,7 @@ Ext.onReady(function(){
       
     });
     var downurl_panel = new Ext.Panel({
-        title: '比赛描述',
+        title: '奖杯管理',
         layout: 'border',
         renderTo: 'data_div',
         layoutConfig: {
@@ -180,34 +110,23 @@ Ext.onReady(function(){
     
     store.load();
     
-    edit = function(id){
-      edit_or_copy(id, 'edit');
-    };
-    
-    copy = function(id){
-      edit_or_copy(id, 'copy');
-    };
-    
-    edit_or_copy = function(id, type){
+    edit = function(key){
       
        Ext.Ajax.request({ 
-			url : '/admin/get_action_desc_json/',
+			url : '/admin/get_cup_json/',
 			sync : true,
 			params : { 
-			  id: id,
+			  cup_key: key,
 			},
 		    success : function(response) { 
 		        var data = response.responseText;
 			    var info = Ext.util.JSON.decode(data);
-			    if(type=='copy'){
-			        info.id = '';
-			    }
 			    show_edit_window(info);
 			}, 
 		    failure : function(response){ 
 			    Ext.Msg.show({ 
 			      title : '请求出错', 
-			      msg : '读取描述信息出错!', 
+			      msg : '读取信息出错!', 
 			      icon : Ext.Msg.ERROR, 
 			      buttons : Ext.Msg.OK 
 			    })
@@ -215,7 +134,7 @@ Ext.onReady(function(){
 	    }) 
     };
     
-   add_action_desc = function(){
+   add_cup = function(){
        show_edit_window(null)
    };
     
@@ -223,51 +142,36 @@ Ext.onReady(function(){
     	    	
     	var edit_form = new Ext.FormPanel({
 	        labelWidth: 65, 
-	        url: '/admin/action_desc_update/',
-	        width: 650,
-	        height: 340,
+	        url: '/admin/cup_update/',
+	        width: 450,
+	        height: 150,
 	        frame:true,
 	        defaultType: 'textfield',
+	        defaults: {width: 280},
 	        items: [{
 	             xtype: 'hidden',
 		         name: 'id',
 		         value: info!=null?info.id:'',
 	           },{
-	             fieldLabel: '动作名称',
-		         name: 'action_name',
-		         value: info!=null?info.action_name:'',
+	             fieldLabel: '奖杯名称',
+		         name: 'cup_name',
+		         value: info!=null?info.cup_name:'',
 	           },{
-	             fieldLabel: '动作标志',
-		         name: 'flg',
-		         value: info!=null?info.flg:'',
+	             fieldLabel: '奖杯ID',
+		         name: 'cup_key',
+		         value: info!=null?info.cup_key:'',
 	           },{
-	             fieldLabel: '动作结果',
-		         name: 'result',
-		         value: info!=null?info.result:'',
-	           },{
-	             fieldLabel: '百分比',
-		         name: 'percent',
-		         value: info!=null?info.percent:'',
+	             fieldLabel: '奖杯图标',
+		         name: 'cup_icon',
+		         value: info!=null?info.cup_icon:'',
 	           },{
 	             xtype: 'checkbox',
-	             fieldLabel: '助功',
+	             fieldLabel: '街头',
 	             style: 'margin-top:6px;',
-		         name: 'is_assist',
-		         checked: info!=null?info.is_assist==1:false,
-	           },{
-	             xtype: 'checkbox',
-	             style: 'margin-top:6px;',
-	             fieldLabel: '三不沾',
-		         name: 'not_stick',
-		         checked: info!=null?info.not_stick==1:false,
-	           },{
-	             xtype: 'textarea',
-                 fieldLabel: '描述',
-                 width: 540,
-                 height: 120,
-                 name: 'action_desc',
-                 value: info!=null?info.action_desc:'',
-               }
+		         name: 'is_youth',
+		         width: 25,
+		         checked: info!=null?info.is_youth==1:false,
+	           }
 	        ],
 	        buttons: [{
 	            text: '保存',
@@ -279,7 +183,7 @@ Ext.onReady(function(){
 	                 	 edit_window.close();
 	                 	 Ext.Msg.show({ 
 					       itle : '保存成功', 
-					       msg : '动作描述保存成功', 
+					       msg : '保存成功', 
 					       icon : Ext.Msg.SUCCESS, 
 					       buttons : Ext.Msg.OK 
 					     })
@@ -288,7 +192,7 @@ Ext.onReady(function(){
 	                 failure: function(){
 	                 	 Ext.Msg.show({ 
 					       itle : '保存失败', 
-					       msg : '动作描述保存失败', 
+					       msg : '保存失败', 
 					       icon : Ext.Msg.ERROR, 
 					       buttons : Ext.Msg.OK 
 					     })
@@ -309,9 +213,9 @@ Ext.onReady(function(){
 	    });
 	    
 	    var edit_window = new Ext.Window({  
-            title: '比赛描述编辑',  
-            width: 650,  
-            height: 370,  
+            title: '奖杯编辑',  
+            width: 450,  
+            height: 180,  
             closable: true,  
             closeAction: 'close',  
             resizable: false,   

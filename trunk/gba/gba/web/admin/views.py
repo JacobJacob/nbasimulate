@@ -97,7 +97,6 @@ def action_desc_update(request):
     try:
         obj.persist()
     except:
-        raise
         success = False
     return json_response({'success': success})
 
@@ -205,7 +204,7 @@ def match_list_json(request):
             info.start_time = info.start_time.strftime("%Y-%m-%d %H:%M:%S")
         if info.expired_time:
             info.expired_time = info.expired_time.strftime("%Y-%m-%d %H:%M:%S")
-        info.type = MatchTypeMaps.get(info.type, u'未知')
+        #info.type = MatchTypeMaps.get(info.type, u'未知')
         info.status = MatchStatusMap.get(info.status, u'未知')
         info.show_status = MatchShowStatusMaps.get(info.show_status, u'未知')
         info.next_show_status = MatchShowStatusMaps.get(info.next_show_status, u'未知')
@@ -277,11 +276,38 @@ def cup_list_json(request):
     limit = int(request.POST.get('limit', 20))
     sort = request.POST.get('sort', 'id')
     dir = request.POST.get('dir', 'desc')
-    degree = request.POST.get('degree', 1)
-    infos, total = League.paging(pagesize=limit, start=start, condition='degree="%s"' % degree, order="%s %s" % (sort, dir))
+    infos, total = Cup.paging(pagesize=limit, start=start, order="%s %s" % (sort, dir))
     ret_infos = []
     for info in infos:
-        if info.updated_time:
-            info.updated_time = info.updated_time.strftime("%Y-%m-%d %H:%M:%S")
+        if info.created_time:
+            info.created_time = info.created_time.strftime("%Y-%m-%d %H:%M:%S")
         ret_infos.append(info.__dict__)
     return json_response({'infos': ret_infos, 'total': total})
+
+@login_required
+def get_cup_json(request):
+    """获取奖杯信息"""
+    cup_key = request.POST.get('cup_key')
+    info = Cup.load(cup_key=cup_key)
+    return json_response(info.__dict__ if info else {})
+
+@login_required
+def cup_update(request):
+    """奖杯更新"""
+    cup_name = request.POST.get('cup_name')
+    cup_key = request.POST.get('cup_key')
+    cup_icon = request.POST.get('cup_icon')
+    is_youth = request.POST.get('is_youth')
+    
+    cup = Cup()
+    cup.cup_name = cup_name
+    cup.cup_key = cup_key
+    cup.cup_icon = cup_icon
+    cup.is_youth = 1 if is_youth == u'on' else 0
+    
+    success = True
+    try:
+        cup.persist()
+    except:
+        success = False
+    return json_response({'success': success})

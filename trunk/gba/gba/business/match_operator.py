@@ -216,7 +216,7 @@ def save_tactical_main(infos):
 
 def assign_league():
     '''分配联赛'''
-    leagues = League.query(condition='degree>=10 and team_count<14', order='id asc', limit=1)
+    leagues = League.query(condition='degree>=10 and team_count<14 and status <> 3 ', order='id asc', limit=1)
     if leagues:
         league = leagues[0]
         league.team_count += 1

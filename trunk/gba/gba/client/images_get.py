@@ -27,12 +27,12 @@ def main():
         
 def main2():
     
-    save_dir = 'E:\workspace\gba\gba\web\media\images\\xl\color%s.gif'
+    save_dir = 'E:\workspace\gba\gba\web\media\images\cup\%s.gif'
     
     
-    for i in range(12):
+    for i in range(20):
         i += 1 
-        url = "http://s3.dlm.17uxi.cn/source/images/xun_lian/Color%s.gif" % i
+        url = "http://s3.dlm.17uxi.cn/source/images/bei_sai/%s.gif" % i
         print url
         #url = 'http://s3.dlm.17uxi.cn/source/images/%s' % name
         
@@ -54,4 +54,4 @@ def main2():
             f.close()
                 
 if __name__ == '__main__':
-    main()
+    main2()

@@ -8,7 +8,8 @@ from const import TacticalSectionTypeMap, TacticalGroupType, TacticalGroupTypeMa
 from const import MarketType, StaffType, StaffMap, StaffStatus, DefendTacticalTypeMap, OffensiveTacticalTypeMap
 from user import User
 from match import ActionType, MatchStatus, MatchStatusMap, MatchTypes, MatchTypeMaps, \
-                  FinanceType, FinanceSubType, MatchShowStatus, MatchShowStatusMaps
+                  FinanceType, FinanceSubType, MatchShowStatus, MatchShowStatusMaps, \
+                  CupType
 from player import PlayerStatus
 from action import ActionNameMap
 
