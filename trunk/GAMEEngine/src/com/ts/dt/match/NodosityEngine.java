@@ -85,8 +85,8 @@ public class NodosityEngine {
 			Scrimmage scrimmage = (Scrimmage) context.getCurrentAction();
 			scrimmage.after(context);
 		}
-		checkNextActionType();
-		checkNextDefender();
+		this.checkNextActionType();
+		this.checkNextDefender();
 	}
 
 	/**

@@ -18,18 +18,18 @@ public class ShortPass implements Pass {
 
 	public String after(MatchContext context) {
 		// TODO Auto-generated method stub
-		String currtPlayerNm = context.getCurrentController().getPlayer().getName();
-		String nextPlayerNm = context.getNextController().getPlayer().getName();
+		String currtPlayerNm = context.getCurrentController().getPlayerName();
+		String nextPlayerNm = context.getNextController().getPlayerName();
 
 		String result = null;
 
 		context.setCurrentAction(this);
 		ActionDescription description = ActionDescriptionFactory.getInstance().createActionDescription(context);
 
-		String currtDefenderNm = context.getCurrentDefender().getPlayer().getName();
+		String currtDefenderNm = context.getCurrentDefender().getPlayerName();
 		String previousPlayerNm = "";
 		if (context.getPreviousController() != null) {
-			previousPlayerNm = context.getPreviousController().getPlayer().getName();
+			previousPlayerNm = context.getPreviousController().getPlayerName();
 		}
 
 		String desc = description.load(context);
@@ -53,6 +53,8 @@ public class ShortPass implements Pass {
 			if (context.getPassActionResult().equals(MatchConstant.RESULT_FAILURE_BE_STEAL)) {
 				this.handleBeSteal(context);
 			}
+		} else {
+			MatchInfoHelper.save(context, desc);
 		}
 
 		return result;
