@@ -76,102 +76,103 @@ class SeasonUpdate(BaseBetchClient):
     def _single_league_update(self, degree, no):
         '''单个联赛更新'''
         print 'start to handle degree:[%s] no[%s]' % (degree, no)
+        if degree == 11:
+            self.__single_league_update_11(degree, no)        
+        else:
+            self.__single_league_update_1_10(degree, no)
+        
+    def __single_league_update_11(self, degree, no):
+        '''11级联赛的更新'''
+        pass  
+                
+    def __single_league_update_1_10(self, degree, no):
+        '''1级到10级联赛的更新'''
+        league = self._get_league(degree, no)
+        if league.team_count >=10:#
+            #
+            self.degrade(degree, no)
+        else:
+            next_league_a = self._get_league(degree+1, no*2-1)
+            next_league_b = self._get_league(degree+1, no*2)
+            #下级联赛也没人
+            if next_league_a.team_count == 0 and next_league_b.team_count == 0:
+                return
+            else:
+                #执行降更多球队的操作
+                self.degrade_more(degree, no)   
+        
+    def degrade_more(self, degree, no):
+        '''对质一个联赛执行降更多球队的操作'''
+        #先获取所有空缺球队
         update_league_teams = []
         update_teams = []
-        update_leagues = []
-        #11级联赛,只升不降
-        if degree == 11:
-            league = self._get_league(degree, no)
-            league_teams = self._get_teams(league.id)
-            pre_degree = degree - 1
-            pre_no = (no + 1 ) // 2
-            pre_league = self._get_league(pre_degree, pre_no)
-            pre_league_teams = self._get_teams(pre_league.id)
-            team_count = league.team_count
-            if team_count == 0:
-                return
-            pre_team_count = pre_league.team_count
-            #上一级联赛没人
-            if pre_team_count == 0:
-                if no % 2 == 1:
-                    base = 0
-                else:
-                    base = 7
-                for i in range(7):
-                    league_team_a = league_teams[i]
-                    league_team_b = pre_league_teams[base+1]
-                    if league_team_a.team_id != -1:
-                        team_a = self._get_team(league_team_a.team_id)
-                        team_a.profession_league_evel = league_team_b.degree
-                        team_a.profession_league_class = league_team_b.no
-                        
-                        league_team_b.team_id = league_team_a.id
-                        pre_league.team_count += 1
-                        league_team_a.team_id = -1
-                        league.team_count -= 1
-                        
-                        update_league_teams.append(league_team_a)
-                        update_league_teams.append(league_team_b)
-                        update_teams.append(team_a)
-                update_leagues.append(league)
-                update_leagues.append(pre_league)
-            elif pre_team_count < 14:
-                pre_empty_count = 14 - pre_team_count #上一级空缺球队
-                if no % 2 == 1:
-                    up_team_count = pre_empty_count // 2
-                else:
-                    up_team_count = pre_empty_count - (pre_empty_count // 2)
- 
-                for i in range(up_team_count):
-                    league_team_a = league_teams[i]
-                    league_team_b = self._get_free_league_team(pre_league_teams)
-                    if league_team_a.team_id != -1:
-                        team_a = self._get_team(league_team_a.team_id)
-                        team_a.profession_league_evel = league_team_b.degree
-                        team_a.profession_league_class = league_team_b.no
-                        
-                        league_team_b.team_id = league_team_a.id
-                        pre_league.team_count += 1
-                        league_team_a.team_id = -1
-                        league.team_count -= 1
-                        
-                        update_league_teams.append(league_team_a)
-                        update_league_teams.append(league_team_b)
-                        update_teams.append(team_a)
-                        
-                    if up_team_count < 2: #如果空的球队只有一个,不足两个名额,则上一级联赛需要降极
-                        for i in range(2 - up_team_count):
-                            league_team_a = league_teams[i]
-                            league_team_b = self._get_demote_team(pre_league_teams)
-                            
-                            if league_team_a.team_id != -1:
-                                team_a = self._get_team(league_team_a.team_id)
-                                team_b = self._get_team(league_team_b.team_id)
-                                
-                                #升级
-                                team_a.profession_league_evel = league_team_b.degree
-                                team_a.profession_league_class = league_team_b.no
-                                #降级
-                                team_b.profession_league_evel = degree
-                                team_b.profession_league_class = no
-                        
-                                league_team_b.team_id = team_a.id
-                                league_team_a.team_id = team_b.id
-                            
-                            update_league_teams.append(league_team_a)
-                            update_league_teams.append(league_team_b)
-                            update_teams.append(team_a)
-                            update_teams.append(team_b)
-                update_leagues.append(league)
-                update_leagues.append(pre_league)
+        league = self._get_league(degree, no)
+        empty_league_teams = self._get_empty_teams(league.id)
+        index_a = 0
+        index_b = 0
+        next_league_a = self._get_league(degree+1, no*2-1)
+        next_league_a_teams = self._get_teams(next_league_a.id)
+        next_league_b = self._get_league(degree+1, no*2)
+        next_league_b_teams = self._get_teams(next_league_b.id)
+        for index, degrade_league_team in enumerate(empty_league_teams):
+            if index % 2 == 0:
+                next_league_team = next_league_a_teams[index_a]
+                index_a += 1
             else:
-                pass           
-        elif degree == 1:
-            pass
-        else:
-            pass
+                next_league_team = next_league_b_teams[index_b]
+                index_b += 1
+            index += 1
+            if next_league_team.team_id == -1:#如果下面是空，上面也是空，就没必要上来
+                continue
+            else:
+                upgrade_team = self._get_team(next_league_team.team_id)
+                degrade_league_team.team_id, next_league_team.team_id = next_league_team.team_id, degrade_league_team.team_id
+                league.team_count += 1
+                update_league_teams.append(degrade_league_team)
+                update_league_teams.append(next_league_team)
+                upgrade_team.profession_league_evel = degree
+                upgrade_team.profession_league_class = no
+                update_teams.append(upgrade_team)
         
-        #保存
+        #更新
+        self.update_all(update_league_teams, update_teams)
+        
+    def degrade(self, degree, no):
+        '''对一个联赛实行普通降级操作'''
+        update_league_teams = []
+        update_teams = []
+        league = self._get_league(degree, no)
+        league_teams = self._get_teams(league.id)
+        for index in range(10, 14):
+            degrade_league_team = league_teams[index]
+            degrade_team = None
+            upgrade_team = None
+            if degrade_league_team.team_id != -1:
+                degrade_team = self._get_team(degrade_league_team.team_id)
+            upgrade_league_team = self.get_upgrade_team(degree, no, index)
+            if upgrade_league_team.team_id == -1:
+                continue #如果都没队升上来,就不用降下去了
+            else:
+                upgrade_team = self._get_team(upgrade_league_team.team_id)
+                #互换
+                degrade_league_team.team_id, upgrade_league_team.team_id = upgrade_league_team.team_id, upgrade_league_team.team_id
+                update_league_teams.append(degrade_league_team)
+                update_league_teams.append(upgrade_league_team)
+                if degrade_team:
+                    degrade_team.profession_league_evel = upgrade_team.profession_league_evel
+                    degrade_team.profession_league_class = upgrade_team.profession_league_class
+                    update_teams.append(degrade_team)
+                upgrade_team.profession_league_evel = degree
+                upgrade_team.profession_league_class = no
+                update_teams.append(upgrade_team)
+            
+            #降了一支空队，升了一支实队
+
+        #更新   
+        self.update_all(update_league_teams, update_teams)
+            
+    def update_all(self, update_league_teams, update_teams):
+        '''更新联赛，联赛球队， 实际球队'''
         while True:
             Team.transaction()
             try:
@@ -179,63 +180,34 @@ class SeasonUpdate(BaseBetchClient):
                     LeagueTeams.inserts(update_league_teams)
                 if update_teams:
                     Team.inserts(update_teams)
-                if update_leagues:
-                    League.inserts(update_leagues)
                 Team.commit()
                 break
             except:
                 Team.rollback()
                 exception_mgr.on_except()
-            self.sleep()
-            
+                self.sleep()
     
-    def __single_league_update_2_10(self, degree, no):
-        '''2级到10级联赛的更新'''
-        update_league_teams = []
-        update_teams = []
-        update_leagues = []
-        league = self._get_league(degree, no)
-        league_teams = self._get_teams(league.id)
-        pre_degree = degree - 1
-        pre_no = (no + 1 ) // 2
-        pre_league = self._get_league(pre_degree, pre_no)
-        pre_league_teams = self._get_teams(pre_league.id)
-        team_count = league.team_count
-        if team_count == 0:
-            return
-        pre_team_count = pre_league.team_count
-        #上一级联赛没人
-        if pre_team_count == 0:
-            if no % 2 == 1:
-                base = 0
+    def get_upgrade_team(self, degree, no, index):
+        '''获取下一级联赛要升级的那支球队
+        @param index: 10 -> 下级A队第二名; 11 -> 下级B队第二名;  12 -> 下级A队第一名; 13 -> 下级B第一名
+        '''
+        if index in (10, 12):
+            next_league = self._get_league(degree+1, no*2-1)
+            next_league_teams = self._get_teams(next_league.id)
+            if index == 10:
+                return next_league_teams[1]
             else:
-                base = 7
-            for i in range(7):
-                league_team_a = league_teams[i]
-                league_team_b = pre_league_teams[base+1]
-                if league_team_a.team_id != -1:
-                    team_a = self._get_team(league_team_a.team_id)
-                    team_a.profession_league_evel = league_team_b.degree
-                    team_a.profession_league_class = league_team_b.no
-                   
-                    league_team_b.team_id = league_team_a.id
-                    pre_league.team_count += 1
-                    league_team_a.team_id = -1
-                    league.team_count -= 1
-                   
-                    update_league_teams.append(league_team_a)
-                    update_league_teams.append(league_team_b)
-                    update_teams.append(team_a)
-            update_leagues.append(league)
-            update_leagues.append(pre_league)
-  
-            update_leagues.append(league)
-            update_leagues.append(pre_league)
+                return next_league_teams[0]
+        elif index in (11, 13):
+            next_league = self._get_league(degree+1, no*2-1)
+            next_league_teams = self._get_teams(next_league.id)
+            if index == 11:
+                return next_league_teams[1]
+            else:
+                return next_league_teams[0]
+        else:
+            raise 'error'
         
-        #执行降级操作
-        for j in rrange(10, 14):
-            league_team_a = league_teams[i]
-            league_team_b = pre_league_teams[base+1]
     
     def _get_demote_team(self, pre_league_teams):
         '''从一个联赛中获取所有的降级球队'''
@@ -290,15 +262,24 @@ class SeasonUpdate(BaseBetchClient):
                 exception_mgr.on_except()
             self.sleep()
     
-    def _get_next_level(self, degree, no):
-        '''获取下一级的两支球队'''
+    def _get_empty_teams(self, league_id):
+        '''获取一个联赛的所有空缺球队'''
         while True:
             try:
-                return League.query(condition='where degree=%s (and no=%s or no=%s)' % (degree-1, no*2-1, no*2), order='no asc')
+                return LeagueTeams.query(condition='league_id=%s and team_id=-1' % league_id)
             except:
                 exception_mgr.on_except()
             self.sleep()
     
+    def _get_next_level(self, degree, no):
+        '''获取下一级的两支个联赛'''
+        while True:
+            try:
+                return League.query(condition='where degree=%s (and no=%s or no=%s)' % (degree+1, no*2-1, no*2), order='no asc')
+            except:
+                exception_mgr.on_except()
+            self.sleep()
+        
     def _get_ona_league_remain_team(self, degree, no):
         '''获取上一级联赛剩余球队'''
         
@@ -311,7 +292,12 @@ class SeasonUpdate(BaseBetchClient):
         '''
         while True:
             try:
-                return League.load(degree=degree, no=no)
+                league = League.load(degree=degree, no=no)
+                if league:
+                    return league
+                else:
+                    print degree, no
+                    self.sleep()
             except:
                 exception_mgr.on_except()
             self.sleep()
