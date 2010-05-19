@@ -30,7 +30,7 @@ public class ConnectionPool {
 	private void init() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			connPool = new snaq.db.ConnectionPool("local", 10, 30, 180000, URL, USERNAME, PASSWORD);
+			connPool = new snaq.db.ConnectionPool("local", 20, 30, 180000, URL, USERNAME, PASSWORD);
 			inited = true;
 		} catch (Exception e) {
 			e.printStackTrace();
