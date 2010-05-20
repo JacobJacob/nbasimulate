@@ -1,5 +1,32 @@
 
 Ext.onReady(function(){
+
+    var match_type_store = new Ext.data.SimpleStore({
+                       fields: ['match_type', 'match_type_name'],
+                       data: [
+                          ['5', '联业联赛'],
+                          ['1', '职业友谊'],
+                          ['6', '胜者为王'],
+                       ]
+                             
+    });
+    
+    var match_type_combobox = new Ext.form.ComboBox({
+                 id: 'match_type_combobox',
+                 store: match_type_store,
+                 mode: 'local',
+                 displayField:'match_type_name',
+                 valueField:'match_type',
+                 triggerAction: 'all',
+                 forceSelection: true,
+                 width:100,
+                 value: '5',
+                 listeners: {
+                   "select": function(){
+                      store.load();
+                   }
+                 }
+     });
     
 	var data_record = new Ext.data.Record.create([
 		{name: 'id'},
@@ -22,7 +49,14 @@ Ext.onReady(function(){
         						    reader: data_read,
         							remoteSort: true ,
         					       });
-        							         
+       
+    store.on('beforeload', function() {  
+       var match_type = match_type_combobox.getValue() ;
+       this.baseParams = {  
+         'match_type': match_type,
+       };  
+    });  
+     							         
     var data_grid_panel = new Ext.grid.GridPanel({
         store: store,
         width: 600,
@@ -110,6 +144,9 @@ Ext.onReady(function(){
             dataIndex: 'overtime',
             width: 40,
         }],
+        tbar: [
+            match_type_combobox,
+        ],
         bbar: new Ext.PagingToolbar({
 	        pageSize: 20,
 	        store: store,
@@ -120,7 +157,7 @@ Ext.onReady(function(){
       
     });
     var downurl_panel = new Ext.Panel({
-        title: '批处理日志',
+        title: '比赛管理',
         layout: 'border',
         renderTo: 'data_div',
         layoutConfig: {

@@ -21,7 +21,7 @@ MIN_DEGREE = 12 #最小一级，则只升升无降
 
 
 class SeasonUpdate(BaseBetchClient):
-    ''''''
+    '''赛季更新客户端'''
     
     def __init__(self):
         super(SeasonUpdate, self).__init__()
@@ -63,12 +63,24 @@ class SeasonUpdate(BaseBetchClient):
         league_config.round = 1
         league_config.persist()
 
+    def __league_update_before(self):
+        '''在进行联赛更新之前，将一些状态置为初始状态'''
+        while True:
+            cursor = connection.cursor()
+            try:
+                cursor.execute('update league set update_finish=0')
+                cursor.execute('update league set status=1 where team_id >0')
+                cursor.execute('update league_teams set degrade=0, upgrade=0')
+                break
+            except:
+                exception_mgr.on_except()
+                self.sleep()
+
     def _league_update(self):
         '''联赛更新
         1.从高往低, 如果是一级联赛, 则只有降级
         2. 下面的联赛, 如果一上级联赛球队不足,则补 1/2 * 不足
         '''
-        #for degree in [11, 10 ,9, 8, 7 , 6, 5, 4, 3, 2, 1]:
         for degree in range(1, 12):
             for no in range(1, 2 ** (degree-1) + 1):
                 self._single_league_update(degree, no)
@@ -98,8 +110,13 @@ class SeasonUpdate(BaseBetchClient):
             if next_league_a.team_count == 0 and next_league_b.team_count == 0:
                 return
             else:
-                #执行降更多球队的操作
+                #执行降更多球队降级的操作
                 self.degrade_more(degree, no)   
+        
+        #更新当前联赛,下级联赛两支球队的球队数
+        self.__update_league_team_count(degree, no)
+        self.__update_league_team_count(degree+1, no*2-1)
+        self.__update_league_team_count(degree+1, no*2)
         
     def degrade_more(self, degree, no):
         '''对质一个联赛执行降更多球队的操作'''
@@ -127,6 +144,8 @@ class SeasonUpdate(BaseBetchClient):
             else:
                 upgrade_team = self._get_team(next_league_team.team_id)
                 degrade_league_team.team_id, next_league_team.team_id = next_league_team.team_id, degrade_league_team.team_id
+                degrade_league_team.degrade = 1
+                next_league_team.upgrade = 1
                 league.team_count += 1
                 update_league_teams.append(degrade_league_team)
                 update_league_teams.append(next_league_team)
@@ -156,6 +175,8 @@ class SeasonUpdate(BaseBetchClient):
                 upgrade_team = self._get_team(upgrade_league_team.team_id)
                 #互换
                 degrade_league_team.team_id, upgrade_league_team.team_id = upgrade_league_team.team_id, upgrade_league_team.team_id
+                upgrade_league_team.upgrade = 1
+                degrade_league_team.degrade = 1
                 update_league_teams.append(degrade_league_team)
                 update_league_teams.append(upgrade_league_team)
                 if degrade_team:
@@ -171,6 +192,18 @@ class SeasonUpdate(BaseBetchClient):
         #更新   
         self.update_all(update_league_teams, update_teams)
             
+    def __update_league_team_count(self, degree, no):
+        '''更新联赛球队数'''
+        while True:
+            try:
+                league = self._get_league(degree, no)
+                league_team_count = LeagueTeams.count(condition='league_id=%s' % league.id)
+                league.team_count = league_team_count
+                league.persist()
+            except:
+                exception_mgr.on_except()
+                self.sleep()
+    
     def update_all(self, update_league_teams, update_teams):
         '''更新联赛，联赛球队， 实际球队'''
         while True:
@@ -207,8 +240,7 @@ class SeasonUpdate(BaseBetchClient):
                 return next_league_teams[0]
         else:
             raise 'error'
-        
-    
+          
     def _get_demote_team(self, pre_league_teams):
         '''从一个联赛中获取所有的降级球队'''
         i = 10
@@ -257,7 +289,7 @@ class SeasonUpdate(BaseBetchClient):
         '''获取一个联赛的所有球队'''
         while True:
             try:
-                return LeagueTeams.query(condition='league_id=%s' % league_id, order='rank asc')
+                return LeagueTeams.query(condition='league_id=%s' % league_id, order='status des, win_count desc, net_point desc')
             except:
                 exception_mgr.on_except()
             self.sleep()

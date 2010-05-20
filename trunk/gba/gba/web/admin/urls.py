@@ -28,4 +28,6 @@ urlpatterns = patterns('web.admin',
     url(r'^cup_list_json/$', 'views.cup_list_json', name='cup-list-json'),
     url(r'^cup_update/$', 'views.cup_update', name='cup-update'),
     url(r'^get_cup_json/$', 'views.get_cup_json', name='get-cup-json'),
+    url(r'^list_database_status/$', 'views.list_database_status', name='list-database-status'),
+    url(r'^database_status_json/$', 'views.database_status_json', name='databasestatus-json'),
 )

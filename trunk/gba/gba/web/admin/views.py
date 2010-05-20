@@ -9,7 +9,7 @@ from gba.entity import ActionDesc, EngineStatus, RoundUpdateLog, Cup , ClientRun
 from gba.business.client import ClientManager
 from gba.business.common_client_monitor import CommonClientMonitor
 from gba.common.constants import MatchTypeMaps, MatchStatusMap, MatchShowStatusMaps, ActionNameMap
-from gba.business import admin_operator, match_operator
+from gba.business import admin_operator, match_operator, database_status
 
 def index(request):
     """list"""
@@ -195,7 +195,8 @@ def match_list_json(request):
     limit = int(request.POST.get('limit', 20))
     sort = request.POST.get('sort', 'id')
     dir = request.POST.get('dir', 'desc')
-    infos, total = Matchs.paging(pagesize=limit, start=start, order="%s %s" % (sort, dir))
+    match_type  = request.POST.get('match_type', 5)
+    infos, total = Matchs.paging(pagesize=limit, start=start, condition='type=%s' % match_type, order="%s %s" % (sort, dir))
     ret_infos = []
     for info in infos:
         if info.created_time:
@@ -311,3 +312,15 @@ def cup_update(request):
     except:
         success = False
     return json_response({'success': success})
+
+@login_required
+def list_database_status(request):
+    return render_to_response(request, 'admin/database_status_ex.html')
+
+@login_required
+def database_status_json(request):
+    connections = database_status.get_connections()
+    cmp1 = lambda x, y: cmp(x['Time'], y['Time'])
+    connections = sorted(connections, cmp=cmp1)
+    total = len(connections)
+    return json_response({'infos': connections, 'total': total})

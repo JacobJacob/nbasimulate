@@ -1,0 +1,37 @@
+{% extends "admin/master.html" %}
+{% block title %}数据库状态{% endblock %}
+{% block content %}
+<h1>数据库连接信息</h1>
+<table cellspacing="1" class="tablesorter">
+	<thead>
+	<tr>
+		<th>序号</th>
+		<th>连接id</th>
+		<th>用户</th>
+		<th>客户端IP</th>
+		<th>数据库</th>
+		<th>命令</th>
+		<th>耗时(秒)</th>
+		<th>状态</th>
+		<th>详细信息</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for conn in connections %}
+	<tr>
+		<td>{{forloop.counter}}</td>
+		<td>{{conn.Id}}</td>
+		<td>{{conn.User}}</td>
+		<td>{{conn.Host}}</td>
+		<td>{{conn.db}}</td>
+		<td>{{conn.Command}}</td>
+		<td>{{conn.Time}}</td>
+		<td>{{conn.State}}</td>
+		<td>{% if conn.Info %}
+		<textarea rows="3" cols="80">{{conn.Info}}</textarea>
+		{% endif %}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
