@@ -21,8 +21,9 @@ public class YouthPlayerDaoImpl implements YouthPlayerDao {
 			session.save(player);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.endTransaction();
 		}
-		session.endTransaction();
 	}
 
 	public Player load(long id) {

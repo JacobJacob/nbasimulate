@@ -26,9 +26,21 @@ public class MatchReqDaoImpl implements MatchReqDao {
 		return list;
 	}
 
-	public void remove(Matchs matchReq) {
+	public void save(Matchs matchReq) {
 		// TODO Auto-generated method stub
+		Session session = BottleUtil.currentSession();
+		session.beginTransaction();
+		try {
+			if (matchReq.getId() > 0) {
+				session.update(matchReq);
+			} else {
+				session.save(matchReq);
+			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.endTransaction();
+		}
 	}
-
 }

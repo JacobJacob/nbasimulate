@@ -96,8 +96,6 @@ public class MatchEngineImpl implements MatchEngine {
 			guest_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
 		}
 		long start = System.currentTimeMillis();
-		Session session = BottleUtil.currentSession();
-		session.beginTransaction();
 		Iterator<Player> iterator = home_players.iterator();
 		while (iterator.hasNext()) {
 			Player player = iterator.next();
@@ -131,7 +129,6 @@ public class MatchEngineImpl implements MatchEngine {
 			matchNotInPlayer.setNo(player.getPlayerNo());
 			matchNotInPlayer.save();
 		}
-		session.endTransaction();
 		long end = System.currentTimeMillis();
 		System.out.println("save not in player user times:" + (end - start));
 	}

@@ -31,10 +31,7 @@ public class MatchReqMonitor extends Thread {
 					Matchs req = iterator.next();
 					req.setPoint("[0:0]");
 					req.setStatus(MatchStatus.START);
-					Session session = BottleUtil.currentSession();
-					session.beginTransaction();
-					req.save();
-					session.endTransaction();
+					matchReqDao.save(req);
 					MatchReqPool.put(req);
 				}
 			}

@@ -1,8 +1,10 @@
 package com.ts.dt.po;
 
-import com.dt.bottle.persistence.Persistence;
+import jpersist.PersistentObject;
 
-public class ProfessionPlayer extends Persistence implements Player {
+public class ProfessionPlayer extends PersistentObject implements Player {
+
+	private static final long serialVersionUID = 8434826016623726584L;
 
 	private long id;
 	private String no;

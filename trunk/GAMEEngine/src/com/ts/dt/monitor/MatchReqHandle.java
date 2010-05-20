@@ -4,6 +4,8 @@ import com.dt.bottle.exception.ObjectNotFoundException;
 import com.dt.bottle.session.Session;
 import com.dt.bottle.util.BottleUtil;
 import com.ts.dt.constants.MatchStatus;
+import com.ts.dt.dao.MatchDao;
+import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.engine.MatchEngine;
 import com.ts.dt.engine.impl.MatchEngineImpl;
 import com.ts.dt.exception.MatchException;
@@ -33,14 +35,13 @@ public class MatchReqHandle extends Thread {
 				Matchs match = MatchReqPool.get();
 				this.reportStatus("start to execute match");
 				match = engine.execute(match.getId());
-				Session session = BottleUtil.currentSession();
 				this.finishCount++;
 				this.reportStatus("finish execute match");
 
 				match.setStatus(MatchStatus.FINISH);
-				session.beginTransaction();
-				match.save();
-				session.endTransaction();
+				MatchDao matchDao = new MatchDaoImpl();
+				matchDao.save(match);
+
 			} catch (MatchException me) {
 				Logger.logToDb("error", me.getMessage());
 				me.printStackTrace();
@@ -69,7 +70,8 @@ public class MatchReqHandle extends Thread {
 			engineStatus.save();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.endTransaction();
 		}
-		session.endTransaction();
 	}
 }

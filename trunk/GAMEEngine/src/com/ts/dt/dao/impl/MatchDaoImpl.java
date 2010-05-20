@@ -20,8 +20,9 @@ public class MatchDaoImpl implements MatchDao {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.endTransaction();
 		}
-		session.endTransaction();
 	}
 
 	public Matchs load(long id) {

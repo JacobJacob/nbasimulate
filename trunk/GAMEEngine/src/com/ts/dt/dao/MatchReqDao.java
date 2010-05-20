@@ -8,5 +8,5 @@ public interface MatchReqDao {
 
 	public List<Matchs> getAllNewReq();
 
-	public void remove(Matchs matchReq);
+	public void save(Matchs matchReq);
 }

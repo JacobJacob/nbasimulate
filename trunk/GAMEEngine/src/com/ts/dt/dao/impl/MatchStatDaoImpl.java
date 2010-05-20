@@ -15,8 +15,8 @@ public class MatchStatDaoImpl implements MatchStatDao {
 			session.save(matchStat);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.endTransaction();
 		}
-		session.endTransaction();
 	}
-
 }

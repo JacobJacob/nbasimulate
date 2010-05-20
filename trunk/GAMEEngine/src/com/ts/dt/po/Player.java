@@ -1,8 +1,6 @@
 package com.ts.dt.po;
 
-import com.dt.bottle.persistence.Persistable;
-
-public interface Player extends Persistable {
+public interface Player {
 
 	public abstract float getColligate();
 

@@ -31,7 +31,8 @@ public class Logger {
 			session.save(log);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.endTransaction();
 		}
-		session.endTransaction();
 	}
 }

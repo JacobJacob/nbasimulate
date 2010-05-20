@@ -15,8 +15,9 @@ public class MatchDetailDaoImpl implements MatchDetailDao {
 			session.save(matchDetail);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.endTransaction();
 		}
-		session.endTransaction();
 	}
 
 }
