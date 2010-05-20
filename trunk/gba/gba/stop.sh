@@ -14,6 +14,7 @@ if [ -f $PIDFILE ]; then
     rm -f -- $PIDFILE
 fi
 
+python2.5 "$PROJDIR/kill_web_process.py"
 
 echo "python manage.py"
 ps -eLf | grep python |grep manage |wc -l
