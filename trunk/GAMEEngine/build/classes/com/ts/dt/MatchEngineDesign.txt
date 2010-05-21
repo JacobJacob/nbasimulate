@@ -1,9 +1,0 @@
-#this document is description for the nba simulate game's match engine
-
-
-
-
-
-match 
-   nodosity 
-     
