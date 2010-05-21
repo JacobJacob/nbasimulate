@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="GBK"?>
+<databases>
+	<database name="gba" username="root" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/gba?characterEncoding=utf-8" poolSize="12" catalogPattern="" schemaPattern="" password="821015">
+    </database>
+</databases> 
