@@ -2,8 +2,6 @@ package com.ts.dt.po;
 
 import java.io.Serializable;
 
-import com.dt.bottle.persistence.Persistence;
-
 public class ActionDesc extends Persistence implements Serializable {
 
     public static final long serialVersionUID = -2805454657233427093L;

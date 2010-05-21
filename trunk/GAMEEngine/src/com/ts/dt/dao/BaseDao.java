@@ -1,6 +1,5 @@
 package com.ts.dt.dao;
 
-import com.dt.bottle.persistence.Persistable;
 
 public interface BaseDao {
   public Object load(long ipkey);

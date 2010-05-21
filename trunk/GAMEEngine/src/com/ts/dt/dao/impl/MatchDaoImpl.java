@@ -1,35 +1,31 @@
 package com.ts.dt.dao.impl;
 
-import com.dt.bottle.session.Session;
-import com.dt.bottle.util.BottleUtil;
+import jpersist.DatabaseManager;
+
 import com.ts.dt.dao.MatchDao;
 import com.ts.dt.po.Matchs;
+import com.ts.dt.util.DatabaseManagerUtil;
 
 public class MatchDaoImpl implements MatchDao {
 
 	public void save(Matchs match) {
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		session.beginTransaction();
-		try {
-			if (match.getId() > 0) {
-				session.update(match);
-			} else {
-				session.save(match);
-			}
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
 
+		try {
+			dbm.saveObject(match);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			session.endTransaction();
 		}
 	}
 
 	public Matchs load(long id) {
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
 		try {
-			return (Matchs) session.load(Matchs.class, id);
+			Matchs matchs = new Matchs();
+			matchs.set
+			return (Matchs) dbm.loadObject(cs)
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

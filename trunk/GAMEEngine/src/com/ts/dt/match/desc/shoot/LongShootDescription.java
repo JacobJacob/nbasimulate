@@ -1,7 +1,5 @@
 package com.ts.dt.match.desc.shoot;
 
-import java.util.Random;
-
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.loader.ActionDescLoaderImpl;

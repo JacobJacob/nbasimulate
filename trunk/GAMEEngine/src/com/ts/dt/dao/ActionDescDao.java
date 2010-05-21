@@ -2,7 +2,6 @@ package com.ts.dt.dao;
 
 import java.util.List;
 
-import com.dt.bottle.persistence.Persistence;
 import com.ts.dt.po.ActionDesc;
 
 public interface ActionDescDao {
@@ -15,6 +14,6 @@ public interface ActionDescDao {
 
 	public ActionDesc find(long id);
 
-	public List<Persistence> findWithActionAndResultAndFlg(String actionNm, String result, String flg);
+	public List<ActionDesc> findWithActionAndResultAndFlg(String actionNm, String result, String flg);
 
 }

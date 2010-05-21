@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Date;
 
-import com.dt.bottle.persistence.Persistence;
-
 public class Matchs extends Persistence {
 
 	public static final long serialVersionUID = -2805454678543428303L;

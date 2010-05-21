@@ -2,11 +2,11 @@ package com.ts.dt.dao.impl;
 
 import java.util.List;
 
-import com.dt.bottle.persistence.Persistence;
-import com.dt.bottle.session.Session;
-import com.dt.bottle.util.BottleUtil;
+import jpersist.DatabaseManager;
+
 import com.ts.dt.dao.ActionDescDao;
 import com.ts.dt.po.ActionDesc;
+import com.ts.dt.util.DatabaseManagerUtil;
 
 public class ActionDescDaoImpl implements ActionDescDao {
 
@@ -32,14 +32,16 @@ public class ActionDescDaoImpl implements ActionDescDao {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Persistence> findWithActionAndResultAndFlg(String actionNm, String result, String flg) {
+	public List<ActionDesc> findWithActionAndResultAndFlg(String actionNm, String result, String flg) {
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		String[] parm = { actionNm, result, flg };
-		List<Persistence> list = null;
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		List<ActionDesc> list = null;
 		try {
-			list = session.query(ActionDesc.class, QUERY_SQL, parm);
+			ActionDesc actionDesc = new ActionDesc();
+			actionDesc.setResult(result);
+			actionDesc.setActionName(actionNm);
+			actionDesc.setFlg(flg);
+			dbm.loadObjects(list, actionDesc);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

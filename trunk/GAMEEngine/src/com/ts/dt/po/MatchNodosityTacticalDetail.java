@@ -1,6 +1,5 @@
 package com.ts.dt.po;
 
-import com.dt.bottle.persistence.Persistence;
 
 public class MatchNodosityTacticalDetail extends Persistence {
 

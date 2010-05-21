@@ -1,6 +1,5 @@
 package com.ts.dt.dao.impl;
 
-import com.dt.bottle.persistence.Persistable;
 import com.ts.dt.dao.UserDao;
 import com.ts.dt.po.User;
 

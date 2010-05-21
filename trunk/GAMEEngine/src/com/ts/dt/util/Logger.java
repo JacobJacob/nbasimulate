@@ -1,7 +1,7 @@
 package com.ts.dt.util;
 
-import com.dt.bottle.session.Session;
-import com.dt.bottle.util.BottleUtil;
+import jpersist.DatabaseManager;
+
 import com.ts.dt.po.ErrorLog;
 
 public class Logger {
@@ -25,14 +25,12 @@ public class Logger {
 		} else {
 			log.setLog("unknown error");
 		}
-		Session session = BottleUtil.currentSession();
-		session.beginTransaction();
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+
 		try {
-			session.save(log);
+			dbm.saveObject(log);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			session.endTransaction();
 		}
 	}
 }

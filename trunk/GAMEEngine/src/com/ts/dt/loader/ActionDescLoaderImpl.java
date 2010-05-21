@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.dt.bottle.persistence.Persistence;
 import com.ts.dt.cache.ActionDescCache;
 import com.ts.dt.dao.ActionDescDao;
 import com.ts.dt.dao.impl.ActionDescDaoImpl;
