@@ -1,11 +1,25 @@
 package com.ts.dt.po;
 
+import java.util.Date;
 
-public class Tactics extends Persistence {
+import jpersist.PersistentObject;
 
+public class Tactics extends PersistentObject {
+
+	private static final long serialVersionUID = 2868778652908220997L;
+
+	private long id;
 	private String name;
-
 	private String flg;
+	private Date createdTime = new Date();
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -23,4 +37,11 @@ public class Tactics extends Persistence {
 		this.flg = flg;
 	}
 
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

@@ -1,6 +1,5 @@
 package com.ts.dt.loader;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -49,12 +48,8 @@ public class ActionDescLoaderImpl implements ActionDescLoader {
 			// Logger.info("catch hit on,get from cache;key:" + key.toString());
 			actionDesclist = cache.get(key);
 		} else {
-			actionDesclist = new ArrayList<ActionDesc>();
 			ActionDescDao actionDescDao = new ActionDescDaoImpl();
-			List<Persistence> list = actionDescDao.findWithActionAndResultAndFlg(actionNm, result, flg);
-			for (Persistence p : list) {
-				actionDesclist.add((ActionDesc) p);
-			}
+			actionDesclist = actionDescDao.findWithActionAndResultAndFlg(actionNm, result, flg);
 			cache.put(key, actionDesclist);
 		}
 		if (actionDesclist.size() == 0) {

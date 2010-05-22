@@ -1,10 +1,17 @@
 package com.ts.dt.po;
 
+import java.util.Date;
 
-public class ErrorLog extends Persistence {
+import jpersist.PersistentObject;
 
+public class ErrorLog extends PersistentObject {
+
+	private static final long serialVersionUID = -1215064671692626507L;
+
+	private long id;
 	private String log;
 	private String type;
+	private Date createdTime = new Date();
 
 	public String getLog() {
 		return log;
@@ -22,4 +29,19 @@ public class ErrorLog extends Persistence {
 		this.type = type;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

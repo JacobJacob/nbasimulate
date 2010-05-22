@@ -1,5 +1,7 @@
 package com.ts.dt.po;
 
+import java.util.Date;
+
 import jpersist.PersistentObject;
 
 public class ProfessionPlayer extends PersistentObject implements Player {
@@ -36,6 +38,7 @@ public class ProfessionPlayer extends PersistentObject implements Player {
 	private float leadcons;
 	private float backbone;
 	private int playerNo;
+	private Date createdTime = new Date();
 
 	public float getColligate() {
 		return 0;
@@ -281,4 +284,11 @@ public class ProfessionPlayer extends PersistentObject implements Player {
 		this.playerNo = playerNo;
 	}
 
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

@@ -1,5 +1,8 @@
 package com.ts.dt.monitor;
 
+import jpersist.DatabaseManager;
+import jpersist.JPersistException;
+
 import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.dao.MatchDao;
 import com.ts.dt.dao.impl.MatchDaoImpl;
@@ -9,6 +12,7 @@ import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.EngineStatus;
 import com.ts.dt.po.Matchs;
 import com.ts.dt.pool.MatchReqPool;
+import com.ts.dt.util.DatabaseManagerUtil;
 import com.ts.dt.util.Logger;
 
 public class MatchReqHandle extends Thread {
@@ -49,26 +53,25 @@ public class MatchReqHandle extends Thread {
 
 	}
 
-	private void reportStatus(String status) {
-
+	private void reportStatus(String status) throws MatchException {
 		EngineStatus engineStatus = null;
-		Session session = BottleUtil.currentSession();
-		session.beginTransaction();
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
 		try {
-			try {
-				engineStatus = (EngineStatus) session.load(EngineStatus.class, "name='" + this.name + "'");
-			} catch (ObjectNotFoundException e) {
-			}
+			engineStatus = (EngineStatus) dbm.loadObject(EngineStatus.class, "where :name = ?", this.name);
 			if (engineStatus == null) {
 				engineStatus = new EngineStatus();
 				engineStatus.setName(this.name);
 			}
 			engineStatus.setStatus(status + "[handle total:" + this.finishCount + "]");
-			engineStatus.save();
+			dbm.saveObject(engineStatus);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new MatchException(e);
 		} finally {
-			session.endTransaction();
+			try {
+				dbm.close();
+			} catch (JPersistException je) {
+				je.printStackTrace();
+			}
 		}
 	}
 }

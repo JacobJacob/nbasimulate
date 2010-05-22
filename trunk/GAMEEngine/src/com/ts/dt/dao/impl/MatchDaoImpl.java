@@ -3,33 +3,37 @@ package com.ts.dt.dao.impl;
 import jpersist.DatabaseManager;
 
 import com.ts.dt.dao.MatchDao;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.Matchs;
 import com.ts.dt.util.DatabaseManagerUtil;
 
 public class MatchDaoImpl implements MatchDao {
 
-	public void save(Matchs match) {
+	public void save(Matchs match) throws MatchException {
 		// TODO Auto-generated method stub
 		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-
 		try {
 			dbm.saveObject(match);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new MatchException(e);
 		}
 	}
 
-	public Matchs load(long id) {
+	public Matchs load(long id) throws MatchException {
 		// TODO Auto-generated method stub
 		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		Matchs matchs = null;
 		try {
-			Matchs matchs = new Matchs();
-			matchs.set
-			return (Matchs) dbm.loadObject(cs)
+			matchs = dbm.loadObject(Matchs.class, "where :id = ?", id);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new MatchException(e);
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
 		}
-		return null;
+		return matchs;
 	}
-
 }

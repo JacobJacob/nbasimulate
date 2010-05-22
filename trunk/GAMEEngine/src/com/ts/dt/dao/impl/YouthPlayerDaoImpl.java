@@ -1,63 +1,86 @@
 package com.ts.dt.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import jpersist.DatabaseManager;
+
 import com.ts.dt.dao.YouthPlayerDao;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.Player;
 import com.ts.dt.po.YouthPlayer;
+import com.ts.dt.util.DatabaseManagerUtil;
 
 public class YouthPlayerDaoImpl implements YouthPlayerDao {
 
-	private static final String QUERY_SQL = "SELECT * FROM youth_player WHERE team_id = ? ";
-
-	public void save(YouthPlayer player) {
+	public void save(YouthPlayer player) throws MatchException {
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		session.beginTransaction();
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
 		try {
-			session.save(player);
+			dbm.saveObject(player);
+		} catch (Exception e) {
+			throw new MatchException(e);
+		}
+	}
+
+	public Player load(long id) throws MatchException {
+		// TODO Auto-generated method stub
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		Player player = null;
+		try {
+			player = dbm.loadObject(YouthPlayer.class, "where :id = ?", id);
+			if (player == null) {
+				throw new MatchException("«Ú‘±≤ª¥Ê‘⁄ID[" + id + "]");
+			}
+		} catch (Exception e) {
+			throw new MatchException(e);
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
+		}
+		return player;
+	}
+
+	public Player load(String no) throws MatchException {
+		// TODO Auto-generated method stub
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		Player player = null;
+		try {
+			player = dbm.loadObject(YouthPlayer.class, "where :no = ?", no);
+
+		} catch (Exception e) {
+			throw new MatchException(e);
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
+		}
+		return player;
+	}
+
+	public List<Player> getPlayerWithTeamId(long teamId) {
+
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		List<Player> list = new ArrayList<Player>();
+		try {
+			Collection<YouthPlayer> collection = dbm.loadObjects(new ArrayList<YouthPlayer>(), YouthPlayer.class, "where :teamId=?", teamId);
+			list.addAll(collection);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			session.endTransaction();
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
 		}
-	}
 
-	public Player load(long id) {
-		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		Player player = null;
-		try {
-			player = (Player) session.load(YouthPlayer.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return player;
-	}
-
-	public Player load(String no) {
-		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		Player player = null;
-		try {
-			player = (Player) session.load(YouthPlayer.class, "no='" + no + "'");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return player;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Player> getPlayerWithTeamId(long teamId) {
-
-		Session session = BottleUtil.currentSession();
-
-		List<Player> list = null;
-		try {
-			list = (List<Player>) session.query(YouthPlayer.class, QUERY_SQL, new Object[] { teamId });
-		} catch (SessionException e) {
-			e.printStackTrace();
-		}
 		return list;
 	}
 }

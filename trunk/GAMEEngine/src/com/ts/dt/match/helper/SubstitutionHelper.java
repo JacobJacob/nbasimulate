@@ -6,13 +6,14 @@ import java.util.List;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.Controller;
 import com.ts.dt.po.Player;
 import com.ts.dt.util.Logger;
 
 public class SubstitutionHelper {
 
-	public static void FoulOutSubstitution(MatchContext context) {
+	public static void FoulOutSubstitution(MatchContext context) throws MatchException {
 
 		Logger.info("start to substitution....");
 		Controller foutOutController = context.getFoulOutController();

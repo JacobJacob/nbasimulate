@@ -1,8 +1,14 @@
 package com.ts.dt.po;
 
+import java.util.Date;
 
-public class MatchNotInPlayer extends Persistence {
+import jpersist.PersistentObject;
 
+public class MatchNotInPlayer extends PersistentObject {
+
+	private static final long serialVersionUID = -4596994831782251544L;
+
+	private long id;
 	private long teamId;
 	private long matchId;
 	private String playerNo;
@@ -10,6 +16,7 @@ public class MatchNotInPlayer extends Persistence {
 	private String name;
 	private int no;
 	private String position;
+	private Date createdTime = new Date();
 
 	public long getMatchId() {
 		return matchId;
@@ -67,4 +74,19 @@ public class MatchNotInPlayer extends Persistence {
 		this.position = position;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

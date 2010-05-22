@@ -1,53 +1,57 @@
 package com.ts.dt.dao.impl;
 
-import java.util.List;
+import jpersist.DatabaseManager;
+import jpersist.JPersistException;
 
 import com.ts.dt.dao.TacticalDao;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.TeamTactical;
 import com.ts.dt.po.TeamTacticalDetail;
+import com.ts.dt.util.DatabaseManagerUtil;
 
 public class TacticalDaoImpl implements TacticalDao {
 
-	private static final String QUERY_TACTICS_SQL = "SELECT * FROM team_tactical WHERE team_id = ? AND type =? LIMIT 1";
-	private static final String QUERY_TACTICS_DETAIL_SQL = "SELECT * FROM team_tactical_detail WHERE id = ? LIMIT 1";
-
-	@SuppressWarnings("unchecked")
-	public TeamTactical loadTeamTactical(long teamId, int matchType) {
+	public TeamTactical loadTeamTactical(long teamId, int type) throws MatchException {
 
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		List<TeamTactical> list = null;
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		TeamTactical teamTactical = null;
 		try {
-			list = (List<TeamTactical>) session.query(TeamTactical.class, QUERY_TACTICS_SQL, new Object[] { teamId, matchType });
+			teamTactical = dbm.loadObject(TeamTactical.class, "where :teamId=? and :type=?", teamId, type);
+			if (teamTactical == null) {
+				throw new MatchException("球队战术为空球队ID[" + teamId + "]");
+			}
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new MatchException(e);
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
 		}
-		if (list.size() > 0) {
-			return list.get(0);
-		} else {
-			return null;
-		}
+
+		return teamTactical;
 	}
 
-	@SuppressWarnings("unchecked")
-	public TeamTacticalDetail loadTeamTacticalDetail(long id) {
+	public TeamTacticalDetail loadTeamTacticalDetail(long id) throws MatchException {
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		List<TeamTacticalDetail> list = null;
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		TeamTacticalDetail teamTacticalDetail = null;
 		try {
-			list = (List<TeamTacticalDetail>) session.query(TeamTacticalDetail.class, QUERY_TACTICS_DETAIL_SQL, new Object[] { id });
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (list.size() > 0) {
-			return list.get(0);
-		} else {
-			return null;
-		}
-	}
+			teamTacticalDetail = dbm.loadObject(TeamTacticalDetail.class, "where :id = ?", id);
 
-	public static void main(String[] args) {
-		System.out.println(new TacticalDaoImpl().loadTeamTactical(1, 1));
+		} catch (Exception e) {
+			throw new MatchException(e);
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
+		}
+		return teamTacticalDetail;
 	}
 
 }

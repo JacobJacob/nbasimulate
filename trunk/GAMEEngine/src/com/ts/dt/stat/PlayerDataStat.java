@@ -2,6 +2,7 @@ package com.ts.dt.stat;
 
 import com.ts.dt.dao.MatchStatDao;
 import com.ts.dt.dao.impl.MatchStatDaoImpl;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.MatchStat;
 import com.ts.dt.po.Player;
 
@@ -138,7 +139,7 @@ public class PlayerDataStat {
 		this.player = player;
 	}
 
-	public void saveToDB(long matchId) {
+	public void saveToDB(long matchId) throws MatchException {
 
 		MatchStatDao matchStatDao = new MatchStatDaoImpl();
 

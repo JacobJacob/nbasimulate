@@ -1,5 +1,7 @@
 package com.ts.dt.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import jpersist.DatabaseManager;
@@ -13,26 +15,35 @@ import com.ts.dt.util.DatabaseManagerUtil;
 
 public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 
-	private static final String QUERY_SQL = "SELECT * FROM profession_player WHERE team_id = ? ";
-
-	public void save(ProfessionPlayer player) {
+	public void save(ProfessionPlayer player) throws MatchException {
 		// TODO Auto-generated method stub
-		// DatabaseManager.getUrlDefinedDatabaseManager(databaseName, poolSize,
-		// driver, url, null, null, username, password)
-		// player.save(database)
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		try {
+			dbm.saveObject(player);
+		} catch (Exception e) {
+			throw new MatchException(e);
+		}
 	}
 
 	public Player load(long id) throws MatchException {
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
 		Player player = null;
 		try {
-			player = (Player) session.load(ProfessionPlayer.class, id);
-		} catch (ObjectNotFoundException ne) {
-			throw new MatchException("球员不存在ID[" + id + "]");
+			player = dbm.loadObject(ProfessionPlayer.class, "where :id = ?", id);
+			if (player == null) {
+				throw new MatchException("球员不存在ID[" + id + "]");
+			}
 		} catch (Exception e) {
 			throw new MatchException(e);
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
 		}
+
 		return player;
 	}
 
@@ -41,29 +52,40 @@ public class ProfessionPlayerDaoImpl implements ProfessionPlayerDao {
 		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
 		Player player = null;
 		try {
-			player = new ProfessionPlayer();
-			player.setNo(no);
-			player = dbm.loadObject(player);
+			player = dbm.loadObject(ProfessionPlayer.class, "where :no =?", no);
+			if (player == null) {
+				throw new MatchException("球员不存在NO[" + no + "]");
+			}
 		} catch (JPersistException jp) {
 			jp.printStackTrace();
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
 		}
 		return player;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Player> getPlayerWithTeamId(long teamId) {
+	public List<Player> getPlayerWithTeamId(long teamId) throws MatchException {
 
-		// Session session = BottleUtil.currentSession();
-		//
-		// List<Player> list = null;
-		// try {
-		// list = (List<Player>) session.query(ProfessionPlayer.class,
-		// QUERY_SQL, new Object[] { teamId });
-		// } catch (SessionException e) {
-		// e.printStackTrace();
-		// }
-		// return list;
-		return null;
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		List<Player> list = new ArrayList<Player>();
+		try {
+			Collection<ProfessionPlayer> collection = dbm.loadObjects(new ArrayList<ProfessionPlayer>(), ProfessionPlayer.class, "where :teamId=?", teamId);
+			list.addAll(collection);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
+		}
+
+		return list;
 	}
 
 	public static void main(String[] args) throws MatchException {

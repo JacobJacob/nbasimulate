@@ -8,9 +8,9 @@ import com.ts.dt.po.ProfessionPlayer;
 
 public interface ProfessionPlayerDao extends PlayerDao {
 
-	public void save(ProfessionPlayer player);
+	public void save(ProfessionPlayer player) throws MatchException;
 
 	public Player load(String id) throws MatchException;
 
-	public List<Player> getPlayerWithTeamId(long teamId);
+	public List<Player> getPlayerWithTeamId(long teamId) throws MatchException;
 }

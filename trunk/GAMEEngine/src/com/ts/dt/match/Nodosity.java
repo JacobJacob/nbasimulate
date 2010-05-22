@@ -6,8 +6,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
-import sun.jdbc.odbc.ee.ConnectionPool;
-
 import com.ts.dt.constants.DefendTactical;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.constants.OffensiveTactical;
@@ -18,6 +16,7 @@ import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TacticalDaoImpl;
 import com.ts.dt.dao.impl.YouthPlayerDaoImpl;
+import com.ts.dt.db.ConnectionPool;
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.helper.PowerHelper;
 import com.ts.dt.po.MatchNodosityMain;
@@ -226,7 +225,7 @@ public class Nodosity {
 		}
 	}
 
-	private void logNodosityData(MatchContext context) {
+	private void logNodosityData(MatchContext context) throws MatchException {
 
 		MatchNodosityMain main = context.getNodosityMain();
 		main.setHomeOffsiveTactic(homeTeamTacticalDetail.getOffensive_tactical_type());

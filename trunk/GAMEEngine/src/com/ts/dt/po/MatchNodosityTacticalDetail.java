@@ -1,8 +1,14 @@
 package com.ts.dt.po;
 
+import java.util.Date;
 
-public class MatchNodosityTacticalDetail extends Persistence {
+import jpersist.PersistentObject;
 
+public class MatchNodosityTacticalDetail extends PersistentObject {
+
+	private static final long serialVersionUID = 158899388567875270L;
+
+	private long id;
 	private long matchNodosityMainId;
 	private String position;
 	private String playerNo;
@@ -13,6 +19,7 @@ public class MatchNodosityTacticalDetail extends Persistence {
 	private int stature;
 	private int avoirdupois;
 	private int no;
+	private Date createdTime = new Date();
 
 	public long getMatchNodosityMainId() {
 		return matchNodosityMainId;
@@ -94,4 +101,19 @@ public class MatchNodosityTacticalDetail extends Persistence {
 		this.ability = ability;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

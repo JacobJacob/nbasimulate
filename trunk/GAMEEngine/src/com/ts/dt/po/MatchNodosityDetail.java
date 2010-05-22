@@ -1,88 +1,108 @@
 package com.ts.dt.po;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class MatchNodosityDetail extends Persistence implements Serializable {
+import jpersist.PersistentObject;
 
-    public static final long serialVersionUID = -2805454678543427093L;
+public class MatchNodosityDetail extends PersistentObject implements Serializable {
 
-    private long matchId;
-    private long seq;
-    private String description;
-    private String timeMsg;
-    private String pointMsg;
-    private boolean isNewLine;
-    private long matchNodosityMainId;
+	public static final long serialVersionUID = -2805454678543427093L;
 
-    public boolean delete() {
-	// TODO Auto-generated method stub
-	return false;
-    }
+	private long id;
+	private long matchId;
+	private long seq;
+	private String description;
+	private String timeMsg;
+	private String pointMsg;
+	private boolean isNewLine;
+	private long matchNodosityMainId;
+	private Date createdTime = new Date();
 
-    public void load(long id) {
-	// TODO Auto-generated method stub
+	public boolean delete() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    }
+	public void load(long id) {
+		// TODO Auto-generated method stub
 
-    public boolean update() {
-	// TODO Auto-generated method stub
-	return false;
-    }
+	}
 
-    public long getMatchId() {
-	return matchId;
-    }
+	public boolean update() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    public void setMatchId(long matchId) {
-	this.matchId = matchId;
-    }
+	public long getMatchId() {
+		return matchId;
+	}
 
-    public long getSeq() {
-	return seq;
-    }
+	public void setMatchId(long matchId) {
+		this.matchId = matchId;
+	}
 
-    public void setSeq(long seq) {
-	this.seq = seq;
-    }
+	public long getSeq() {
+		return seq;
+	}
 
-    public String getDescription() {
-	return description;
-    }
+	public void setSeq(long seq) {
+		this.seq = seq;
+	}
 
-    public void setDescription(String description) {
-	this.description = description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public String getTimeMsg() {
-	return timeMsg;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setTimeMsg(String timeMsg) {
-	this.timeMsg = timeMsg;
-    }
+	public String getTimeMsg() {
+		return timeMsg;
+	}
 
-    public String getPointMsg() {
-	return pointMsg;
-    }
+	public void setTimeMsg(String timeMsg) {
+		this.timeMsg = timeMsg;
+	}
 
-    public void setPointMsg(String pointMsg) {
-	this.pointMsg = pointMsg;
-    }
+	public String getPointMsg() {
+		return pointMsg;
+	}
 
-    public long getMatchNodosityMainId() {
-	return matchNodosityMainId;
-    }
+	public void setPointMsg(String pointMsg) {
+		this.pointMsg = pointMsg;
+	}
 
-    public void setMatchNodosityMainId(long matchNodosityMainId) {
-	this.matchNodosityMainId = matchNodosityMainId;
-    }
+	public long getMatchNodosityMainId() {
+		return matchNodosityMainId;
+	}
 
-    public boolean isNewLine() {
-	return isNewLine;
-    }
+	public void setMatchNodosityMainId(long matchNodosityMainId) {
+		this.matchNodosityMainId = matchNodosityMainId;
+	}
 
-    public void setNewLine(boolean isNewLine) {
-	this.isNewLine = isNewLine;
-    }
+	public boolean isNewLine() {
+		return isNewLine;
+	}
 
+	public void setNewLine(boolean isNewLine) {
+		this.isNewLine = isNewLine;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

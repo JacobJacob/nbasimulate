@@ -2,6 +2,7 @@ package com.ts.dt.match.check.foul;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.match.action.shoot.FoulShoot;
 import com.ts.dt.match.action.shoot.LongShoot;
@@ -12,7 +13,7 @@ import com.ts.dt.po.Player;
 
 public class DefaultFoulCheck implements FoulCheck {
 
-	public void check(MatchContext context) {
+	public void check(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		Action action = context.getCurrentAction();
 		// Foul Shoot Not Exist Foul
@@ -42,7 +43,7 @@ public class DefaultFoulCheck implements FoulCheck {
 			Player defender = context.getCurrentDefender().getPlayer();
 			boolean isHomeTeam = context.getCurrentDefender().getControllerName().endsWith("A");
 			context.playerAddFoulTimes(defender, isHomeTeam);
-			//判断防守者是不是已经6次犯规了
+			// 判断防守者是不是已经6次犯规了
 			if (context.checkFoulOut(defender, isHomeTeam)) {
 				// substitution
 				context.setFoutOutController(context.getCurrentDefender());

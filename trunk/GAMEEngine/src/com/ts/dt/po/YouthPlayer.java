@@ -1,7 +1,12 @@
 package com.ts.dt.po;
 
+import java.util.Date;
 
-public class YouthPlayer extends Persistence implements Player {
+import jpersist.PersistentObject;
+
+public class YouthPlayer extends PersistentObject implements Player {
+
+	private static final long serialVersionUID = -2356824140104983267L;
 
 	private long id;
 	private String no;
@@ -34,6 +39,7 @@ public class YouthPlayer extends Persistence implements Player {
 	private float backbone;
 
 	private int playerNo;
+	private Date createdTime = new Date();
 
 	public float getColligate() {
 		return 0;
@@ -279,4 +285,11 @@ public class YouthPlayer extends Persistence implements Player {
 		this.playerNo = playerNo;
 	}
 
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

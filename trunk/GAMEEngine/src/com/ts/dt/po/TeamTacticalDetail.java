@@ -1,13 +1,18 @@
 package com.ts.dt.po;
 
+import java.util.Date;
 
-public class TeamTacticalDetail extends Persistence {
+import jpersist.PersistentObject;
 
+public class TeamTacticalDetail extends PersistentObject {
+
+	private static final long serialVersionUID = -7415045201242653137L;
+
+	private long id;
 	private short offensive_tactical_type;
 	private short defend_tactical_type;
 	private long team_id;
 	private String name;
-
 	private char seq;
 
 	private String cid;
@@ -15,6 +20,15 @@ public class TeamTacticalDetail extends Persistence {
 	private String sfid;
 	private String sgid;
 	private String pgid;
+	private Date createdTime = new Date();
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public short getOffensive_tactical_type() {
 		return offensive_tactical_type;
@@ -96,4 +110,11 @@ public class TeamTacticalDetail extends Persistence {
 		this.pgid = pgid;
 	}
 
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

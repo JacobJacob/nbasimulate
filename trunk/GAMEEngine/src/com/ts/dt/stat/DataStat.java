@@ -7,8 +7,7 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
-import sun.jdbc.odbc.ee.ConnectionPool;
-
+import com.ts.dt.db.ConnectionPool;
 import com.ts.dt.po.Player;
 
 public class DataStat {

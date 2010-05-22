@@ -1,8 +1,14 @@
 package com.ts.dt.po;
 
+import java.util.Date;
 
-public class MatchStat extends Persistence {
+import jpersist.PersistentObject;
 
+public class MatchStat extends PersistentObject {
+
+	private static final long serialVersionUID = 5958071313823289836L;
+
+	private long id;
 	private long teamId;
 
 	private String playerNo;
@@ -33,6 +39,15 @@ public class MatchStat extends Persistence {
 	private int foul;
 	private int steals;
 	private boolean isMain; // ÊÇ·ñÖ÷Á¦
+	private Date createdTime = new Date();
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public long getTeamId() {
 		return teamId;
@@ -214,4 +229,11 @@ public class MatchStat extends Persistence {
 		this.isMain = isMain;
 	}
 
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

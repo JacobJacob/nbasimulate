@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Date;
 
-public class Matchs extends Persistence {
+import jpersist.PersistentObject;
+
+public class Matchs extends PersistentObject {
 
 	public static final long serialVersionUID = -2805454678543428303L;
 
 	public static final String UPDATE_SQL = "update matchs set home_team_id=?, guest_team_id=?, status=?, sub_status=?, start_time=?, point=?, type=?, overTime=? where id=?";
 
+	private long id;
 	private long homeTeamId;
 	private long guestTeamId;
 	private int status;
@@ -19,6 +22,7 @@ public class Matchs extends Persistence {
 	private int type;
 	private int overtime = 0; // 一个多少个加时
 	private boolean isYouth;
+	private Date createdTime = new Date();
 
 	public boolean update(Connection connection) {
 		try {
@@ -113,4 +117,19 @@ public class Matchs extends Persistence {
 		this.overtime = overtime;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
 }

@@ -1,44 +1,58 @@
 package com.ts.dt.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import jpersist.DatabaseManager;
+import jpersist.JPersistException;
 
 import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.dao.MatchReqDao;
 import com.ts.dt.po.Matchs;
+import com.ts.dt.util.DatabaseManagerUtil;
 
 public class MatchReqDaoImpl implements MatchReqDao {
 
-	private static final String QUERY_NEW_REQ_SQL = "select * from matchs where status = ? limit 5";
-	private static final Object[] QUERY_NEW_REQ_PARM = new Object[] { MatchStatus.ACCP };
-
-	@SuppressWarnings("unchecked")
 	public List<Matchs> getAllNewReq() {
 
-		Session session = BottleUtil.currentSession();
-		List<Matchs> list = null;
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
+		List<Matchs> list = new ArrayList<Matchs>();
 		try {
-			list = session.query(Matchs.class, QUERY_NEW_REQ_SQL, QUERY_NEW_REQ_PARM);
+			Collection<Matchs> collection = dbm.loadObjects(new ArrayList<Matchs>(), Matchs.class, "where :status=? limit 5", MatchStatus.ACCP);
+			list.addAll(collection);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
 		}
+
 		return list;
 	}
 
 	public void save(Matchs matchReq) {
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		session.beginTransaction();
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
 		try {
-			if (matchReq.getId() > 0) {
-				session.update(matchReq);
-			} else {
-				session.save(matchReq);
-			}
-
+			dbm.saveObject(matchReq);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			session.endTransaction();
+			// try {
+			// dbm.close();
+			// } catch (JPersistException je) {
+			// je.printStackTrace();
+			// }
 		}
+	}
+
+	public static void main(String[] args) {
+		MatchReqDaoImpl matchReqDaoImpl = new MatchReqDaoImpl();
+		List list = matchReqDaoImpl.getAllNewReq();
+		System.out.println(list.size());
 	}
 }

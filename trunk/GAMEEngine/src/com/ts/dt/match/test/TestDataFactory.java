@@ -3,6 +3,7 @@ package com.ts.dt.match.test;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.ProfessionPlayer;
 
 public class TestDataFactory {
@@ -102,7 +103,7 @@ public class TestDataFactory {
 
 	}
 
-	public static void saveTestDateToDB() {
+	public static void saveTestDateToDB() throws MatchException {
 		ProfessionPlayerDao playerDao = new ProfessionPlayerDaoImpl();
 
 		for (int i = 0; i < players.length; i++) {

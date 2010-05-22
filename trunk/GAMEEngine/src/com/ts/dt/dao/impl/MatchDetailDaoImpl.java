@@ -1,20 +1,21 @@
 package com.ts.dt.dao.impl;
 
+import jpersist.DatabaseManager;
+
 import com.ts.dt.dao.MatchDetailDao;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.MatchNodosityDetail;
+import com.ts.dt.util.DatabaseManagerUtil;
 
 public class MatchDetailDaoImpl implements MatchDetailDao {
 
-	public void save(MatchNodosityDetail matchDetail) {
+	public void save(MatchNodosityDetail matchDetail) throws MatchException {
 		// TODO Auto-generated method stub
-		Session session = BottleUtil.currentSession();
-		session.beginTransaction();
+		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
 		try {
-			session.save(matchDetail);
+			dbm.saveObject(matchDetail);
 		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			session.endTransaction();
+			throw new MatchException(e);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package com.ts.dt.engine.impl;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.MatchDao;
+import com.ts.dt.dao.MatchNotInPlayerDao;
 import com.ts.dt.dao.impl.MatchDaoImpl;
+import com.ts.dt.dao.impl.MatchNotInPlayerDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.YouthPlayerDaoImpl;
 import com.ts.dt.engine.MatchEngine;
@@ -81,7 +84,7 @@ public class MatchEngineImpl implements MatchEngine {
 	}
 
 	// 保存未上场球员资料
-	private void saveNotInPlayer(MatchContext context, long matchid) {
+	private void saveNotInPlayer(MatchContext context, long matchid) throws MatchException {
 
 		List<Player> home_players = null;
 		List<Player> guest_players = null;
@@ -93,6 +96,9 @@ public class MatchEngineImpl implements MatchEngine {
 			home_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getHomeTeamId());
 			guest_players = new ProfessionPlayerDaoImpl().getPlayerWithTeamId(context.getVisitingTeamId());
 		}
+
+		List<MatchNotInPlayer> matchNotInPlayerList = new ArrayList<MatchNotInPlayer>();
+
 		long start = System.currentTimeMillis();
 		Iterator<Player> iterator = home_players.iterator();
 		while (iterator.hasNext()) {
@@ -108,7 +114,7 @@ public class MatchEngineImpl implements MatchEngine {
 			matchNotInPlayer.setName(player.getName());
 			matchNotInPlayer.setPosition(player.getPosition());
 			matchNotInPlayer.setNo(player.getPlayerNo());
-			matchNotInPlayer.save();
+			matchNotInPlayerList.add(matchNotInPlayer);
 		}
 
 		iterator = guest_players.iterator();
@@ -125,8 +131,12 @@ public class MatchEngineImpl implements MatchEngine {
 			matchNotInPlayer.setPlayerNo(player.getNo());
 			matchNotInPlayer.setPosition(player.getPosition());
 			matchNotInPlayer.setNo(player.getPlayerNo());
-			matchNotInPlayer.save();
+			matchNotInPlayerList.add(matchNotInPlayer);
 		}
+
+		MatchNotInPlayerDao matchNotInPlayerDao = new MatchNotInPlayerDaoImpl();
+		matchNotInPlayerDao.saveMatchNotInPlayers(matchNotInPlayerList);
+
 		long end = System.currentTimeMillis();
 		System.out.println("save not in player user times:" + (end - start));
 	}
