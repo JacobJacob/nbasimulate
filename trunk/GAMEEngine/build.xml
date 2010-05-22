@@ -47,9 +47,8 @@
 	  <classpath refid="compile.classpath"/>
     </javac>
   	<copy file="${src}/hibernate.cfg.xml" todir="${build}"/>
-	<copy file="${src}/com/dt/ts/po/hbm/*.hbm" todir="${build}/com/dt/ts/po/hbm"/>
-  	<copy todir="${build}/com/dt/ts/po/hbm/">
-  	  <fileset dir="${src}/com/dt/ts/po/hbm/"/>
+  	<copy todir="${build}/com/ts/dt/po/hbm/">
+  	  <fileset dir="${src}/com/ts/dt/po/hbm/"/>
   	</copy>
   </target>
 
