@@ -3,8 +3,6 @@ package com.ts.dt.po;
 import java.io.Serializable;
 import java.util.Date;
 
-import jpersist.PersistentObject;
-
 public class ActionDesc implements Serializable {
 
 	public static final long serialVersionUID = -2805454657233427093L;

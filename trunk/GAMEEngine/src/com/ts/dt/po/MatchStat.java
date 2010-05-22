@@ -2,8 +2,6 @@ package com.ts.dt.po;
 
 import java.util.Date;
 
-import jpersist.PersistentObject;
-
 public class MatchStat {
 
 	private static final long serialVersionUID = 5958071313823289836L;

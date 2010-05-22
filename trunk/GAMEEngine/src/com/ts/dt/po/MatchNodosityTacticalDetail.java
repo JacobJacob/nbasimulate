@@ -2,8 +2,6 @@ package com.ts.dt.po;
 
 import java.util.Date;
 
-import jpersist.PersistentObject;
-
 public class MatchNodosityTacticalDetail {
 
 	private static final long serialVersionUID = 158899388567875270L;

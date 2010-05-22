@@ -2,8 +2,6 @@ package com.ts.dt.po;
 
 import java.util.Date;
 
-import jpersist.PersistentObject;
-
 public class ErrorLog {
 
 	private static final long serialVersionUID = -1215064671692626507L;

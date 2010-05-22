@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import jpersist.PersistentObject;
-
 import com.ts.dt.exception.MatchException;
 
 public class MatchNodosityMain {

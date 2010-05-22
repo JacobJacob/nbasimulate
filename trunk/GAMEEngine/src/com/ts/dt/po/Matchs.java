@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Date;
 
-import jpersist.PersistentObject;
-
 public class Matchs {
 
 	public static final long serialVersionUID = -2805454678543428303L;

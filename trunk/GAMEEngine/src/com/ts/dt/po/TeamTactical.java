@@ -2,8 +2,6 @@ package com.ts.dt.po;
 
 import java.util.Date;
 
-import jpersist.PersistentObject;
-
 public class TeamTactical {
 
 	private static final long serialVersionUID = -1033603893431540798L;
