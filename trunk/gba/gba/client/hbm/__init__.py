@@ -3,8 +3,8 @@
 from gba.entity import ProfessionPlayer
 from gba.common import responsehelper
 
-def tbname_to_clsname(name):
-    to_upper = True
+def db_to_cls(name, table=True):
+    to_upper = table
     cls_name = ''
     for n in name:
         if to_upper:
@@ -20,17 +20,19 @@ def tbname_to_clsname(name):
 def dbtype_to_javatype(dbtype):
     javatype = ''
     if dbtype.startswith('float'):
-        javatype = "java.util.Float"
+        javatype = "java.lang.Float"
     elif dbtype.startswith('int') or dbtype.startswith('bigint'):
-        javatype = "java.util.Long"
+        javatype = "java.lang.Long"
     elif dbtype.startswith('smallint'):
-        javatype = "java.util.Integer"
+        javatype = "java.lang.Integer"
     elif dbtype.startswith('tinyint'):
-        javatype = "java.util.Boolean"
+        javatype = "java.lang.Boolean"
     elif dbtype.startswith('varchar'):
-        javatype = "java.util.String"
+        javatype = "java.lang.String"
     elif dbtype.startswith("datetime") or dbtype.startswith("timestamp"):
-        javatype = "java.util.Date"
+        javatype = "java.lang.Date"
+    elif dbtype.startswith('double'):
+        javatype = "java.lang.Double"
     return javatype
         
 if __name__ == '__main__':
@@ -39,10 +41,10 @@ if __name__ == '__main__':
     infos = []
     columns = meta.columns
     for c in columns:
-        name = c.field
-        column = name
+        name = db_to_cls(c.field, table=False)
+        column = c.field
         type = dbtype_to_javatype(c.type)
         infos.append({'name': name, 'column': column, 'type': type})
     data = {'items': infos}
-    print responsehelper.render_to_xml(data, tbname_to_clsname(meta.table), meta.table)
+    print responsehelper.render_to_xml(data, db_to_cls(meta.table), meta.table)
     
