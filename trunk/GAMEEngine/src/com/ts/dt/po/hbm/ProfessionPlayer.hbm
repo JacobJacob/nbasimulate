@@ -17,20 +17,15 @@
            column="no"
            type="java.lang.String"
         />
-        <!--property
+        <property
            name="name"
            column="name"
            type="java.lang.String"
         />
         <property
-           name="player_no"
+           name="playerNo"
            column="player_no"
-           type="java.util.Long"
-        />
-        <property
-           name="age"
-           column="age"
-           type="java.util.Long"
+           type="java.lang.Integer"
         />
         <property
            name="position"
@@ -40,122 +35,117 @@
         <property
            name="stature"
            column="stature"
-           type="java.util.Long"
-        />
-        <property
-           name="wage"
-           column="wage"
-           type="java.util.Long"
+           type="java.lang.Integer"
         />
         <property
            name="avoirdupois"
            column="avoirdupois"
-           type="java.util.Long"
+           type="java.lang.Integer"
         />
         <property
-           name="team_id"
+           name="teamId"
            column="team_id"
-           type="java.util.Long"
+           type="java.lang.Long"
         />
         <property
            name="power"
            column="power"
-           type="java.util.Boolean"
+           type="java.lang.Integer"
         />
         <property
-           name="match_power"
+           name="matchPower"
            column="match_power"
-           type="java.util.Boolean"
+           type="java.lang.Integer"
         />
         <property
-           name="league_power"
+           name="leaguePower"
            column="league_power"
-           type="java.util.Long"
+           type="java.lang.Integer"
         />
         <property
            name="ability"
            column="ability"
-           type=""
+           type="java.lang.Float"
         />
         <property
            name="shooting"
            column="shooting"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="speed"
            column="speed"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="strength"
            column="strength"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="bounce"
            column="bounce"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="stamina"
            column="stamina"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="trisection"
            column="trisection"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="dribble"
            column="dribble"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="pass"
            column="pass"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="backboard"
            column="backboard"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="steal"
            column="steal"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="blocked"
            column="blocked"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="defencons"
            column="defencons"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="offencons"
            column="offencons"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="buildupcons"
            column="buildupcons"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="leadcons"
            column="leadcons"
-           type="java.util.Float"
+           type="java.lang.Float"
         />
         <property
            name="backbone"
            column="backbone"
-           type="java.util.Float"
-        /-->
+           type="java.lang.Float"
+        />
 </class>
 </hibernate-mapping>
