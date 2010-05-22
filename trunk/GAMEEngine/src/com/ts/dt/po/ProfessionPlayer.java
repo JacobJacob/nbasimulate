@@ -40,6 +40,10 @@ public class ProfessionPlayer extends PersistentObject implements Player {
 	private int playerNo;
 	private Date createdTime = new Date();
 
+	public ProfessionPlayer() {
+
+	}
+
 	public float getColligate() {
 		return 0;
 	}
