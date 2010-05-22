@@ -1,5 +1,7 @@
 package com.ts.dt;
 
+import java.util.Random;
+
 import com.ts.dt.monitor.MatchReqHandle;
 import com.ts.dt.monitor.MatchReqMonitor;
 
@@ -11,8 +13,12 @@ public class Main {
 		for (int i = 0; i <= 10; i++) {
 			String name = "Thread-" + String.valueOf(i);
 			new MatchReqHandle(name).start();
+			try {
+				Thread.sleep(new Random().nextInt(5000));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		// new MatchReqHandle().start();
-		// new MatchReqHandle().start();
+
 	}
 }
