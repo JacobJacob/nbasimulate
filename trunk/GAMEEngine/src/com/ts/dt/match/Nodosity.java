@@ -1,9 +1,10 @@
 package com.ts.dt.match;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.ts.dt.constants.DefendTactical;
@@ -11,7 +12,9 @@ import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.constants.OffensiveTactical;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.dao.PlayerDao;
+import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.TacticalDao;
+import com.ts.dt.dao.YouthPlayerDao;
 import com.ts.dt.dao.impl.MatchDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TacticalDaoImpl;
@@ -179,50 +182,24 @@ public class Nodosity {
 	}
 
 	// 更新场上球员信息
-	private void updatePlayers(MatchContext context) {
-
-		Connection conn = ConnectionPool.getInstance().connection();
-		boolean autoCommit = true;
-		try {
-			autoCommit = conn.getAutoCommit();
-			conn.setAutoCommit(false);
-			String sql = null;
-			if (context.isYouth()) {
-				sql = "update youth_player set match_power=?, league_power=? where no=?";
-			} else {
-				sql = "update profession_player set match_power=?, league_power=? where no=?";
-			}
-			PreparedStatement statement = conn.prepareStatement(sql);
-			Iterator<Controller> iterator = context.getControllers().values().iterator();
-			while (iterator.hasNext()) {
-				Controller controller = iterator.next();
-				Player player = controller.getPlayer();
-				statement.setInt(1, player.getMatchPower());
-				statement.setInt(2, player.getLeaguePower());
-				statement.setString(3, player.getNo());
-				statement.addBatch();
-			}
-			statement.executeBatch();
-
-			conn.commit();
-		} catch (Exception e) {
-			if (conn != null) {
-				try {
-					conn.rollback();
-				} catch (Exception ex) {
-				}
-			}
-			e.printStackTrace();
-		} finally {
-			if (conn != null) {
-				try {
-					conn.setAutoCommit(autoCommit);
-					conn.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+	private void updatePlayers(MatchContext context) throws MatchException {
+		List<Player> players = new ArrayList<Player>();
+		Iterator<Controller> iterator = context.getControllers().values().iterator();
+		while (iterator.hasNext()) {
+			Controller controller = iterator.next();
+			Player player = controller.getPlayer();
+			players.add(player);
 		}
+
+		if (context.isYouth()) {
+			ProfessionPlayerDao professionPlayerDao = new ProfessionPlayerDaoImpl();
+			professionPlayerDao.save(players);
+
+		} else {
+			YouthPlayerDao youthPlayerDao = new YouthPlayerDaoImpl();
+			youthPlayerDao.save(players);
+		}
+
 	}
 
 	private void logNodosityData(MatchContext context) throws MatchException {
