@@ -13,8 +13,15 @@
 	<pathelement path="${basedir}/lib/log4j-1.2.9.jar"/>
 	<pathelement path="${basedir}/lib/DBPool-4.9.3.jar"/>
 	<pathelement path="${basedir}/lib/mysql-connector-java-5.1.7-bin.jar"/>
-	<pathelement path="${basedir}/lib/bottle.jar"/>
-    <pathelement path="${classpath} "/>
+	<pathelement path="${basedir}/lib/antlr-2.7.6.jar"/>
+  	<pathelement path="${basedir}/lib/commons-collections-3.1.jar"/>
+	<pathelement path="${basedir}/lib/dom4j-1.6.1.jar"/>
+	<pathelement path="${basedir}/lib/hibernate3.jar"/>
+	<pathelement path="${basedir}/lib/javassist-3.9.0.GA.jar"/>
+	<pathelement path="${basedir}/lib/ajta-1.1.jar"/>
+	<pathelement path="${basedir}/lib/slf4j-api-1.5.8.jar"/>
+  	<pathelement path="${basedir}/lib/slf4j-nop-1.5.2.jar"/>
+  	<pathelement path="${classpath} "/>
   </path> 
   
   <target name="copy_lib" description="bottle build">
