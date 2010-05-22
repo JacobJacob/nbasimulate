@@ -7,16 +7,11 @@ import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.Matchs;
 import com.ts.dt.util.DatabaseManagerUtil;
 
-public class MatchDaoImpl implements MatchDao {
+public class MatchDaoImpl extends BaseDao implements MatchDao {
 
 	public void save(Matchs match) throws MatchException {
 		// TODO Auto-generated method stub
-		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-		try {
-			dbm.saveObject(match);
-		} catch (Exception e) {
-			throw new MatchException(e);
-		}
+		super.save(match);
 	}
 
 	public Matchs load(long id) throws MatchException {
