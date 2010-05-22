@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.ts.dt.po">
+	<class name="ProfessionPlayer" table="profession_player">
+		<id
+			name="id"
+			type="java.lang.Long"
+			column="id"
+		>
+			<generator class="native"/>
+		</id>
+		<property
+			name="inTeamRound"
+			column="in_team_round"
+			type="java.lang.String"
+		/>
+	</class>
+</hibernate-mapping>
