@@ -45,7 +45,8 @@
     <!-- Compile the java code from ${src} into ${build} -->
     <javac srcdir="${src}" destdir="${build}">
 	  <classpath refid="compile.classpath"/>
-    </javac>	  
+    </javac>
+  	<copy file="${src}/hibernate.cfg.xml" todir="${build}"/>
   </target>
 
   <target name="dist" depends="compile"
