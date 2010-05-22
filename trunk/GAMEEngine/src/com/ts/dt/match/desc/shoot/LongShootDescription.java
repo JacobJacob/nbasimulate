@@ -2,13 +2,14 @@ package com.ts.dt.match.desc.shoot;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.loader.ActionDescLoaderImpl;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.po.ActionDesc;
 
 public class LongShootDescription implements ActionDescription {
 
-	public String load(MatchContext context) {
+	public String load(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String desc = null;
 		String result = context.getShootActionResult();
@@ -20,7 +21,7 @@ public class LongShootDescription implements ActionDescription {
 		return desc;
 	}
 
-	public String failure(MatchContext context) {
+	public String failure(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String flg = null;
 		if (context.isFoul()) {
@@ -36,7 +37,7 @@ public class LongShootDescription implements ActionDescription {
 		return actionDesc.getActionDesc();
 	}
 
-	public String success(MatchContext context) {
+	public String success(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String flg = null;
 		if (context.isFoul()) {

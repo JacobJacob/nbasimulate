@@ -1,6 +1,7 @@
 package com.ts.dt.match.action.rebound;
 
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
@@ -9,7 +10,7 @@ import com.ts.dt.util.MessagesUtil;
 
 public class OffensiveRebound implements Rebound {
 
-	public String execute(MatchContext context) {
+	public String execute(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String result = null;
 		context.setCurrentAction(this);

@@ -48,13 +48,13 @@ public class Controller {
 	}
 
 	// the rebound action
-	public void loose(MatchContext context) {
+	public void loose(MatchContext context) throws MatchException {
 		Rebound rebound = ReboundFactory.getInstance().createReboundAction(context);
 		rebound.execute(context);
 	}
 
 	// the pass action
-	public void pass(MatchContext context) {
+	public void pass(MatchContext context) throws MatchException {
 		Pass pass = PassFactory.getInstance().createPassAction(context);
 		pass.before(context);
 		long costTime = ActionCostTimeHelper.passCostTime(player);
@@ -63,20 +63,20 @@ public class Controller {
 	}
 
 	// ÕùÇò¶¯×÷
-	public void scrimmage(MatchContext context) {
+	public void scrimmage(MatchContext context) throws MatchException {
 		Scrimmage scrimmage = ScrimmageFactory.getInstance().createScrimmageAction(context);
 		scrimmage.before(context);
 	}
 
 	// the foul action
-	public void foul(MatchContext context) {
+	public void foul(MatchContext context) throws MatchException {
 		Foul foul = FoulFactory.getInstance().createFoulAction(context);
 		foul.execute(context);
 		// reset 24 offensive cost time
 		context.currentOffensiveCostTimeReset();
 	}
 
-	public void service(MatchContext context) {
+	public void service(MatchContext context) throws MatchException {
 		Service service = ServiceFactory.getInstance().createServiceAction(context);
 		service.service(context);
 	}

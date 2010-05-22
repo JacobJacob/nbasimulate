@@ -25,12 +25,7 @@
         <property
            name="createdTime"
            column="created_time"
-           type="java.lang.Date"
-        />
-        <property
-           name="updatedTime"
-           column="updated_time"
-           type="java.lang.Date"
+           type="java.util.Date"
         />
 </class>
 </hibernate-mapping>

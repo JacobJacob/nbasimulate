@@ -2,6 +2,7 @@ package com.ts.dt.match.action.pass;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.PassResultCheckFactory;
 import com.ts.dt.match.desc.ActionDescription;
@@ -16,7 +17,7 @@ public class LongPass implements Pass {
 		return null;
 	}
 
-	public String after(MatchContext context) {
+	public String after(MatchContext context) throws MatchException{
 		// TODO Auto-generated method stub
 		String currtPlayerNm = context.getCurrentController().getPlayer().getName();
 		String nextPlayerNm = context.getNextController().getPlayer().getName();

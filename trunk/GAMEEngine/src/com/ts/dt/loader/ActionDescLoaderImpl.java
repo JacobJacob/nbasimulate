@@ -6,6 +6,7 @@ import java.util.Random;
 import com.ts.dt.cache.ActionDescCache;
 import com.ts.dt.dao.ActionDescDao;
 import com.ts.dt.dao.impl.ActionDescDaoImpl;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.key.ActionDescKey;
 import com.ts.dt.po.ActionDesc;
 
@@ -38,7 +39,7 @@ public class ActionDescLoaderImpl implements ActionDescLoader {
 		return null;
 	}
 
-	public ActionDesc loadWithNameAndResultAndFlg(String actionNm, String result, String flg) {
+	public ActionDesc loadWithNameAndResultAndFlg(String actionNm, String result, String flg) throws MatchException {
 		// TODO Auto-generated method stub
 		ActionDesc actionDesc = null;
 		List<ActionDesc> actionDesclist = null;

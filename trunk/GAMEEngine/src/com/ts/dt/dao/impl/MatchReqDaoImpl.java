@@ -1,53 +1,32 @@
 package com.ts.dt.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import jpersist.DatabaseManager;
-import jpersist.JPersistException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.dao.MatchReqDao;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.Matchs;
-import com.ts.dt.util.DatabaseManagerUtil;
+import com.ts.dt.util.HibernateUtil;
 
-public class MatchReqDaoImpl implements MatchReqDao {
+public class MatchReqDaoImpl extends BaseDao implements MatchReqDao {
 
 	public List<Matchs> getAllNewReq() {
 
-		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-		List<Matchs> list = new ArrayList<Matchs>();
-		try {
-			Collection<Matchs> collection = dbm.loadObjects(new ArrayList<Matchs>(), Matchs.class, "where :status=? limit 5", MatchStatus.ACCP);
-			list.addAll(collection);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			// try {
-			// dbm.close();
-			// } catch (JPersistException je) {
-			// je.printStackTrace();
-			// }
-		}
-
+		Session session = HibernateUtil.currentSession();
+		Query q = session.createQuery("from Matchs a where a.status = :status ");
+		q.setMaxResults(5);
+		q.setInteger("status", MatchStatus.ACCP);
+		List<Matchs> list = q.list();
 		return list;
+
 	}
 
-	public void save(Matchs matchReq) {
+	public void save(Matchs matchReq) throws MatchException {
 		// TODO Auto-generated method stub
-		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-		try {
-			dbm.saveObject(matchReq);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			// try {
-			// dbm.close();
-			// } catch (JPersistException je) {
-			// je.printStackTrace();
-			// }
-		}
+		super.save(matchReq);
 	}
 
 	public static void main(String[] args) {

@@ -83,7 +83,7 @@ public class MatchNodosityMain extends PersistentObject {
 					statement.setString(4, detail.getTimeMsg());
 					statement.setString(5, detail.getPointMsg());
 					statement.setFloat(6, id);
-					statement.setBoolean(7, detail.isNewLine());
+					statement.setBoolean(7, detail.getIsNewLine());
 					statement.addBatch();
 				}
 				statement.executeBatch();

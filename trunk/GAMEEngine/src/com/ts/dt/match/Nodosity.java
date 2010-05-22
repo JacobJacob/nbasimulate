@@ -228,10 +228,10 @@ public class Nodosity {
 	private void logNodosityData(MatchContext context) throws MatchException {
 
 		MatchNodosityMain main = context.getNodosityMain();
-		main.setHomeOffsiveTactic(homeTeamTacticalDetail.getOffensive_tactical_type());
-		main.setHomeDefendTactic(homeTeamTacticalDetail.getDefend_tactical_type());
-		main.setGuestOffsiveTactic(guestTeamTacticalDetail.getOffensive_tactical_type());
-		main.setGuestDefendTactic(guestTeamTacticalDetail.getDefend_tactical_type());
+		main.setHomeOffsiveTactic(homeTeamTacticalDetail.getOffensiveTacticalType());
+		main.setHomeDefendTactic(homeTeamTacticalDetail.getDefendTacticalType());
+		main.setGuestOffsiveTactic(guestTeamTacticalDetail.getOffensiveTacticalType());
+		main.setGuestDefendTactic(guestTeamTacticalDetail.getDefendTacticalType());
 		main.setPoint(context.currentScore());
 		main.setSeq(context.getSeq());
 		main.setMatchId(context.getMatchId());
@@ -330,40 +330,40 @@ public class Nodosity {
 		long visitingTeamTacticalDetailId;
 		// 判断用第几节战术
 		if ((homeTeamPoint - visitingTeamPoint) > 15) {// 领先15分
-			homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_7_id();
-			visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_8_id();
+			homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail7Id();
+			visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail8Id();
 		} else if ((homeTeamPoint - visitingTeamPoint) < -15) {// 落后15分
-			homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_8_id();
-			visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_7_id();
+			homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail8Id();
+			visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail7Id();
 		} else {
 			switch (context.getSeq()) {
 			case 1:
-				homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_1_id();
-				visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_1_id();
+				homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail1Id();
+				visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail1Id();
 				break;
 			case 2:
-				homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_2_id();
-				visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_2_id();
+				homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail2Id();
+				visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail2Id();
 				break;
 			case 3:
-				homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_3_id();
-				visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_3_id();
+				homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail3Id();
+				visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail3Id();
 				break;
 			case 4:
-				homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_4_id();
-				visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_4_id();
+				homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail4Id();
+				visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail4Id();
 				break;
 			case 5:
-				homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_5_id();
-				visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_5_id();
+				homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail5Id();
+				visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail5Id();
 				break;
 			case 6:
-				homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_6_id();
-				visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_6_id();
+				homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail6Id();
+				visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail6Id();
 				break;
 			default:
-				homeTeamTacticalDetailId = homeTeamTactical.getTactical_detail_6_id();
-				visitingTeamTacticalDetailId = guestTeamTactical.getTactical_detail_6_id();
+				homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail6Id();
+				visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail6Id();
 
 			}
 		}
@@ -376,10 +376,10 @@ public class Nodosity {
 		}
 
 		// 设置战术
-		this.context.setHomeTeamOffensiveTactical(homeTeamTacticalDetail.getOffensive_tactical_type());
-		this.context.setHomeTeamDefendTactical(homeTeamTacticalDetail.getDefend_tactical_type());
-		this.context.setGuestTeamOffensiveTactical(guestTeamTacticalDetail.getOffensive_tactical_type());
-		this.context.setGuestTeamDefendTactical(guestTeamTacticalDetail.getDefend_tactical_type());
+		this.context.setHomeTeamOffensiveTactical(homeTeamTacticalDetail.getOffensiveTacticalType());
+		this.context.setHomeTeamDefendTactical(homeTeamTacticalDetail.getDefendTacticalType());
+		this.context.setGuestTeamOffensiveTactical(guestTeamTacticalDetail.getOffensiveTacticalType());
+		this.context.setGuestTeamDefendTactical(guestTeamTacticalDetail.getDefendTacticalType());
 
 		DebugUtil.debug(this.context.getHomeTeamId() + "战术[" + OffensiveTactical.getOffensiveTacticalName(context.getHomeTeamOffensiveTactical()) + "]["
 				+ DefendTactical.getDefendTacticalName(context.getHomeTeamDefendTactical()) + "]");

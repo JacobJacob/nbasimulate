@@ -2,6 +2,7 @@ package com.ts.dt.match.action.scrimmage;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.ScrimmageResultCheckFactory;
 import com.ts.dt.match.desc.ActionDescription;
@@ -20,7 +21,7 @@ public class StartScrimmage implements Scrimmage {
 		return result;
 	}
 
-	public String after(MatchContext context) {
+	public String after(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String result = null;
 		context.setCurrentAction(this);

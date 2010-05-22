@@ -9,12 +9,12 @@
 
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost/gba?characterEncoding=utf-8</property>
-		<property name="connection.username">root</property>
-		<property name="connection.password">821015</property>
+		<property name="connection.url">jdbc:mysql://192.168.1.158/gba?characterEncoding=utf-8</property>
+		<property name="connection.username">gba</property>
+		<property name="connection.password">gba123</property>
 
 		<!-- JDBC connection pool (use the built-in) -->
-		<property name="connection.pool_size">1</property>
+		<property name="connection.pool_size">50</property>
 
 		<!-- SQL dialect -->
 		<property name="dialect">
@@ -27,10 +27,23 @@
 		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 
 		<!-- Echo all executed SQL to stdout -->
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 
 		<mapping resource="com/ts/dt/po/hbm/ProfessionPlayer.hbm" />
-
+		<mapping resource="com/ts/dt/po/hbm/ActionDesc.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/EngineStatus.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/ErrorLog.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/ErrorMatch.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/MatchNodosityDetail.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/MatchNodosityMain.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/MatchNodosityTacticalDetail.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/MatchNotInPlayer.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/Matchs.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/MatchStat.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/Team.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/TeamTactical.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/TeamTacticalDetail.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/YouthPlayer.hbm" />
 	</session-factory>
 
 </hibernate-configuration>

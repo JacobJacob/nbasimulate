@@ -2,6 +2,7 @@ package com.ts.dt.match.action.scrimmage;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.factory.ScrimmageResultCheckFactory;
 import com.ts.dt.match.desc.ActionDescription;
@@ -11,7 +12,7 @@ import com.ts.dt.util.MessagesUtil;
 //加进赛的争球
 public class OverTimeScrimmage implements Scrimmage {
 
-	public String after(MatchContext context) {
+	public String after(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String result = null;
 		context.setCurrentAction(this);
@@ -19,7 +20,7 @@ public class OverTimeScrimmage implements Scrimmage {
 		return result;
 	}
 
-	public String before(MatchContext context) {
+	public String before(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String result = null;
 		context.setCurrentAction(this);

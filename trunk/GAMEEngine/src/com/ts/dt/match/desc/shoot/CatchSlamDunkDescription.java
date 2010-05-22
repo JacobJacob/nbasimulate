@@ -2,13 +2,14 @@ package com.ts.dt.match.desc.shoot;
 
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.loader.ActionDescLoaderImpl;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.po.ActionDesc;
 
 public class CatchSlamDunkDescription implements ActionDescription {
 
-	public String load(MatchContext context) {
+	public String load(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String desc = null;
 		String result = context.getShootActionResult();
@@ -28,7 +29,7 @@ public class CatchSlamDunkDescription implements ActionDescription {
 		return null;
 	}
 
-	public String success(MatchContext context) {
+	public String success(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
 		String desc = null;
 
@@ -45,7 +46,7 @@ public class CatchSlamDunkDescription implements ActionDescription {
 		return desc;
 	}
 
-	public String blocked(MatchContext context) {
+	public String blocked(MatchContext context) throws MatchException {
 
 		ActionDesc actionDesc = ActionDescLoaderImpl.getInstance().loadWithNameAndResultAndFlg("CatchSlamDunk", "failure", "blocked");
 		return actionDesc.getActionDesc();

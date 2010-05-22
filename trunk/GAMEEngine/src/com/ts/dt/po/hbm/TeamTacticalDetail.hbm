@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping package="com.ts.dt.po">
-    <class name="EngineStatus" table="engine_status">
+    <class name="TeamTacticalDetail" table="team_tactical_detail">
         <id
             name="id"
             type="java.lang.Long"
@@ -23,59 +23,49 @@
            type="java.lang.Long"
         />
         <property
-           name="isYouth"
-           column="is_youth"
-           type="java.lang.Boolean"
-        />
-        <property
            name="offensiveTacticalType"
            column="offensive_tactical_type"
-           type="java.lang.Integer"
+           type="java.lang.Short"
         />
         <property
            name="defendTacticalType"
            column="defend_tactical_type"
-           type="java.lang.Integer"
+           type="java.lang.Short"
         />
         <property
            name="seq"
            column="seq"
-           type=""
+           type="character"
         />
         <property
            name="cid"
            column="cid"
-           type=""
+           type="java.lang.String"
         />
         <property
            name="pfid"
            column="pfid"
-           type=""
+           type="java.lang.String"
         />
         <property
            name="sfid"
            column="sfid"
-           type=""
+           type="java.lang.String"
         />
         <property
            name="sgid"
            column="sgid"
-           type=""
+           type="java.lang.String"
         />
         <property
            name="pgid"
            column="pgid"
-           type=""
+           type="java.lang.String"
         />
         <property
            name="createdTime"
            column="created_time"
-           type="java.lang.Date"
-        />
-        <property
-           name="updatedTime"
-           column="updated_time"
-           type="java.lang.Date"
+           type="java.util.Date"
         />
 </class>
 </hibernate-mapping>

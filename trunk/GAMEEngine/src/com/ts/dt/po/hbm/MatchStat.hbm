@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping package="com.ts.dt.po">
-    <class name="EngineStatus" table="engine_status">
+    <class name="MatchStat" table="match_stat">
         <id
             name="id"
             type="java.lang.Long"
@@ -20,7 +20,7 @@
         <property
            name="playerNo"
            column="player_no"
-           type=""
+           type="java.lang.String"
         />
         <property
            name="no"
@@ -108,11 +108,6 @@
            type="java.lang.Integer"
         />
         <property
-           name="times"
-           column="times"
-           type="java.lang.Integer"
-        />
-        <property
            name="isMain"
            column="is_main"
            type="java.lang.Integer"
@@ -120,12 +115,7 @@
         <property
            name="createdTime"
            column="created_time"
-           type="java.lang.Date"
-        />
-        <property
-           name="updatedTime"
-           column="updated_time"
-           type="java.lang.Date"
+           type="java.util.Date"
         />
 </class>
 </hibernate-mapping>

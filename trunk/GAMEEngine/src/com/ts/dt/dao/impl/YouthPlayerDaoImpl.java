@@ -1,86 +1,44 @@
 package com.ts.dt.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import jpersist.DatabaseManager;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import com.ts.dt.dao.YouthPlayerDao;
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.Player;
 import com.ts.dt.po.YouthPlayer;
-import com.ts.dt.util.DatabaseManagerUtil;
+import com.ts.dt.util.HibernateUtil;
 
-public class YouthPlayerDaoImpl implements YouthPlayerDao {
+public class YouthPlayerDaoImpl extends BaseDao implements YouthPlayerDao {
 
 	public void save(YouthPlayer player) throws MatchException {
 		// TODO Auto-generated method stub
-		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-		try {
-			dbm.saveObject(player);
-		} catch (Exception e) {
-			throw new MatchException(e);
-		}
+		super.save(player);
 	}
 
 	public Player load(long id) throws MatchException {
 		// TODO Auto-generated method stub
-		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-		Player player = null;
-		try {
-			player = dbm.loadObject(YouthPlayer.class, "where :id = ?", id);
-			if (player == null) {
-				throw new MatchException("«Ú‘±≤ª¥Ê‘⁄ID[" + id + "]");
-			}
-		} catch (Exception e) {
-			throw new MatchException(e);
-		} finally {
-			// try {
-			// dbm.close();
-			// } catch (JPersistException je) {
-			// je.printStackTrace();
-			// }
-		}
+		Player player = (Player) super.load(YouthPlayer.class, id);
 		return player;
 	}
 
 	public Player load(String no) throws MatchException {
 		// TODO Auto-generated method stub
-		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-		Player player = null;
-		try {
-			player = dbm.loadObject(YouthPlayer.class, "where :no = ?", no);
-
-		} catch (Exception e) {
-			throw new MatchException(e);
-		} finally {
-			// try {
-			// dbm.close();
-			// } catch (JPersistException je) {
-			// je.printStackTrace();
-			// }
-		}
+		Session session = HibernateUtil.currentSession();
+		Query q = session.createQuery("from YouthPlayer a where a.no = :no");
+		q.setString("no", no);
+		Player player = (Player) q.uniqueResult();
 		return player;
 	}
 
 	public List<Player> getPlayerWithTeamId(long teamId) {
 
-		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-		List<Player> list = new ArrayList<Player>();
-		try {
-			Collection<YouthPlayer> collection = dbm.loadObjects(new ArrayList<YouthPlayer>(), YouthPlayer.class, "where :teamId=?", teamId);
-			list.addAll(collection);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			// try {
-			// dbm.close();
-			// } catch (JPersistException je) {
-			// je.printStackTrace();
-			// }
-		}
-
+		Session session = HibernateUtil.currentSession();
+		Query q = session.createQuery("from YouthPlayer a where a.teamId = :teamId");
+		q.setLong("teamId", teamId);
+		List<Player> list = q.list();
 		return list;
 	}
 }

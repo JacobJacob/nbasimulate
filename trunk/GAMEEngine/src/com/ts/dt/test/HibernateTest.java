@@ -12,11 +12,5 @@ public class HibernateTest {
 
 		Session session = HibernateUtil.currentSession();
 
-		Transaction tran = session.beginTransaction();
-		ProfessionPlayer player = new ProfessionPlayer();
-		player.setNo("12eweqwe34");
-		session.save(player);
-		session.flush();
-		tran.commit();
 	}
 }

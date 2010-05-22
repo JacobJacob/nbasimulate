@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping package="com.ts.dt.po">
-    <class name="EngineStatus" table="engine_status">
+    <class name="ErrorLog" table="error_log">
         <id
             name="id"
             type="java.lang.Long"
@@ -25,12 +25,7 @@
         <property
            name="createdTime"
            column="created_time"
-           type="java.lang.Date"
-        />
-        <property
-           name="updatedTime"
-           column="updated_time"
-           type="java.lang.Date"
+           type="java.util.Date"
         />
 </class>
 </hibernate-mapping>

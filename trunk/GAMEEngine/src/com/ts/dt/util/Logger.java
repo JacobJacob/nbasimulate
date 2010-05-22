@@ -1,7 +1,8 @@
 package com.ts.dt.util;
 
-import jpersist.DatabaseManager;
-
+import com.ts.dt.dao.ErrorLogDao;
+import com.ts.dt.dao.impl.ErrorLogDaoImpl;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.ErrorLog;
 
 public class Logger {
@@ -25,12 +26,11 @@ public class Logger {
 		} else {
 			log.setLog("unknown error");
 		}
-		DatabaseManager dbm = DatabaseManagerUtil.getDatabaseManager();
-
 		try {
-			dbm.saveObject(log);
-		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorLogDao errorLogDao = new ErrorLogDaoImpl();
+			errorLogDao.save(log);
+		} catch (MatchException me) {
+			me.printStackTrace();
 		}
 	}
 }

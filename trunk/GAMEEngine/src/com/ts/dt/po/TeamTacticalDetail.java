@@ -9,9 +9,9 @@ public class TeamTacticalDetail extends PersistentObject {
 	private static final long serialVersionUID = -7415045201242653137L;
 
 	private long id;
-	private short offensive_tactical_type;
-	private short defend_tactical_type;
-	private long team_id;
+	private short offensiveTacticalType;
+	private short defendTacticalType;
+	private long teamId;
 	private String name;
 	private char seq;
 
@@ -30,28 +30,28 @@ public class TeamTacticalDetail extends PersistentObject {
 		this.id = id;
 	}
 
-	public short getOffensive_tactical_type() {
-		return offensive_tactical_type;
+	public short getOffensiveTacticalType() {
+		return offensiveTacticalType;
 	}
 
-	public void setOffensive_tactical_type(short offensiveTacticalType) {
-		offensive_tactical_type = offensiveTacticalType;
+	public void setOffensiveTacticalType(short offensiveTacticalType) {
+		this.offensiveTacticalType = offensiveTacticalType;
 	}
 
-	public short getDefend_tactical_type() {
-		return defend_tactical_type;
+	public short getDefendTacticalType() {
+		return defendTacticalType;
 	}
 
-	public void setDefend_tactical_type(short defendTacticalType) {
-		defend_tactical_type = defendTacticalType;
+	public void setDefendTacticalType(short defendTacticalType) {
+		this.defendTacticalType = defendTacticalType;
 	}
 
-	public long getTeam_id() {
-		return team_id;
+	public long getTeamId() {
+		return teamId;
 	}
 
-	public void setTeam_id(long teamId) {
-		team_id = teamId;
+	public void setTeamId(long teamId) {
+		this.teamId = teamId;
 	}
 
 	public String getName() {
@@ -117,4 +117,5 @@ public class TeamTacticalDetail extends PersistentObject {
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
+
 }

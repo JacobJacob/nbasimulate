@@ -12,14 +12,14 @@ public class TeamTactical extends PersistentObject {
 	private long teamId;
 	private int type;
 
-	private long tactical_detail_1_id;
-	private long tactical_detail_2_id;
-	private long tactical_detail_3_id;
-	private long tactical_detail_4_id;
-	private long tactical_detail_5_id;
-	private long tactical_detail_6_id;
-	private long tactical_detail_7_id;
-	private long tactical_detail_8_id;
+	private long tacticalDetail1Id;
+	private long tacticalDetail2Id;
+	private long tacticalDetail3Id;
+	private long tacticalDetail4Id;
+	private long tacticalDetail5Id;
+	private long tacticalDetail6Id;
+	private long tacticalDetail7Id;
+	private long tacticalDetail8Id;
 	private Date createdTime = new Date();
 
 	public long getId() {
@@ -39,67 +39,83 @@ public class TeamTactical extends PersistentObject {
 	}
 
 	public long getTactical_detail_1_id() {
-		return tactical_detail_1_id;
+		return tacticalDetail1Id;
 	}
 
 	public void setTactical_detail_1_id(long tacticalDetail_1Id) {
-		tactical_detail_1_id = tacticalDetail_1Id;
+		tacticalDetail1Id = tacticalDetail_1Id;
 	}
 
 	public long getTactical_detail_2_id() {
-		return tactical_detail_2_id;
+		return tacticalDetail2Id;
 	}
 
 	public void setTactical_detail_2_id(long tacticalDetail_2Id) {
-		tactical_detail_2_id = tacticalDetail_2Id;
+		tacticalDetail2Id = tacticalDetail_2Id;
 	}
 
-	public long getTactical_detail_3_id() {
-		return tactical_detail_3_id;
+	public long getTacticalDetail1Id() {
+		return tacticalDetail1Id;
 	}
 
-	public void setTactical_detail_3_id(long tacticalDetail_3Id) {
-		tactical_detail_3_id = tacticalDetail_3Id;
+	public void setTacticalDetail1Id(long tacticalDetail1Id) {
+		this.tacticalDetail1Id = tacticalDetail1Id;
 	}
 
-	public long getTactical_detail_4_id() {
-		return tactical_detail_4_id;
+	public long getTacticalDetail2Id() {
+		return tacticalDetail2Id;
 	}
 
-	public void setTactical_detail_4_id(long tacticalDetail_4Id) {
-		tactical_detail_4_id = tacticalDetail_4Id;
+	public void setTacticalDetail2Id(long tacticalDetail2Id) {
+		this.tacticalDetail2Id = tacticalDetail2Id;
 	}
 
-	public long getTactical_detail_5_id() {
-		return tactical_detail_5_id;
+	public long getTacticalDetail3Id() {
+		return tacticalDetail3Id;
 	}
 
-	public void setTactical_detail_5_id(long tacticalDetail_5Id) {
-		tactical_detail_5_id = tacticalDetail_5Id;
+	public void setTacticalDetail3Id(long tacticalDetail3Id) {
+		this.tacticalDetail3Id = tacticalDetail3Id;
 	}
 
-	public long getTactical_detail_6_id() {
-		return tactical_detail_6_id;
+	public long getTacticalDetail4Id() {
+		return tacticalDetail4Id;
 	}
 
-	public void setTactical_detail_6_id(long tacticalDetail_6Id) {
-		tactical_detail_6_id = tacticalDetail_6Id;
+	public void setTacticalDetail4Id(long tacticalDetail4Id) {
+		this.tacticalDetail4Id = tacticalDetail4Id;
 	}
 
-	public long getTactical_detail_7_id() {
-		return tactical_detail_7_id;
+	public long getTacticalDetail5Id() {
+		return tacticalDetail5Id;
 	}
 
-	public void setTactical_detail_7_id(long tacticalDetail_7Id) {
-		tactical_detail_7_id = tacticalDetail_7Id;
+	public void setTacticalDetail5Id(long tacticalDetail5Id) {
+		this.tacticalDetail5Id = tacticalDetail5Id;
 	}
 
-	public long getTactical_detail_8_id() {
-		return tactical_detail_8_id;
+	public long getTacticalDetail6Id() {
+		return tacticalDetail6Id;
 	}
 
-	public void setTactical_detail_8_id(long tacticalDetail_8Id) {
-		tactical_detail_8_id = tacticalDetail_8Id;
+	public void setTacticalDetail6Id(long tacticalDetail6Id) {
+		this.tacticalDetail6Id = tacticalDetail6Id;
+	}
+
+	public long getTacticalDetail7Id() {
+		return tacticalDetail7Id;
+	}
+
+	public void setTacticalDetail7Id(long tacticalDetail7Id) {
+		this.tacticalDetail7Id = tacticalDetail7Id;
+	}
+
+	public long getTacticalDetail8Id() {
+		return tacticalDetail8Id;
+	}
+
+	public void setTacticalDetail8Id(long tacticalDetail8Id) {
+		this.tacticalDetail8Id = tacticalDetail8Id;
 	}
 
 	public int getType() {

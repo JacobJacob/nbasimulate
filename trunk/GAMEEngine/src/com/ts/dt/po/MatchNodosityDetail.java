@@ -82,11 +82,11 @@ public class MatchNodosityDetail extends PersistentObject implements Serializabl
 		this.matchNodosityMainId = matchNodosityMainId;
 	}
 
-	public boolean isNewLine() {
+	public boolean getIsNewLine() {
 		return isNewLine;
 	}
 
-	public void setNewLine(boolean isNewLine) {
+	public void setIsNewLine(boolean isNewLine) {
 		this.isNewLine = isNewLine;
 	}
 

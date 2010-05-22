@@ -19,7 +19,7 @@ public class MatchInfoHelper {
 		matchDetail.setSeq(context.getCurrentSeq());
 		matchDetail.setTimeMsg(timeMsg);
 		matchDetail.setPointMsg(pointMsg);
-		matchDetail.setNewLine(context.isNewLine());
+		matchDetail.setIsNewLine(context.isNewLine());
 		// matchDetailDao.save(matchDetail);
 		context.getNodosityMain().addMatchDetailLog(matchDetail);
 	}

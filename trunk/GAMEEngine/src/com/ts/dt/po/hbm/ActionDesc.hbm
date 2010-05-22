@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping package="com.ts.dt.po">
-    <class name="EngineStatus" table="engine_status">
+    <class name="ActionDesc" table="action_desc">
         <id
             name="id"
             type="java.lang.Long"
@@ -35,27 +35,22 @@
         <property
            name="percent"
            column="percent"
-           type="java.lang.Long"
+           type="java.lang.Integer"
         />
         <property
            name="isAssist"
            column="is_assist"
-           type="java.lang.Integer"
+           type="java.lang.Boolean"
         />
         <property
            name="createdTime"
            column="created_time"
-           type="java.lang.Date"
-        />
-        <property
-           name="updatedTime"
-           column="updated_time"
-           type="java.lang.Date"
+           type="java.util.Date"
         />
         <property
            name="notStick"
            column="not_stick"
-           type="java.lang.Integer"
+           type="java.lang.Boolean"
         />
 </class>
 </hibernate-mapping>
