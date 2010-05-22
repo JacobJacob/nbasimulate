@@ -33,6 +33,12 @@ public class YouthPlayerDaoImpl extends BaseDao implements YouthPlayerDao {
 		return player;
 	}
 
+	public void save(List<Player> players) throws MatchException {
+		// TODO Auto-generated method stub
+		super.saveMany(players);
+
+	}
+
 	public List<Player> getPlayerWithTeamId(long teamId) {
 
 		Session session = HibernateUtil.currentSession();

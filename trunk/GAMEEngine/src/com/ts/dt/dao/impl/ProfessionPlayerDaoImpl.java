@@ -34,6 +34,11 @@ public class ProfessionPlayerDaoImpl extends BaseDao implements ProfessionPlayer
 
 	}
 
+	public void save(List<Player> players) throws MatchException {
+		// TODO Auto-generated method stub
+		super.saveMany(players);
+	}
+
 	public List<Player> getPlayerWithTeamId(long teamId) throws MatchException {
 
 		Session session = HibernateUtil.currentSession();
