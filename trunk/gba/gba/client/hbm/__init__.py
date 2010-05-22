@@ -26,7 +26,10 @@ def dbtype_to_javatype(dbtype):
     elif dbtype.startswith('smallint'):
         javatype = "java.lang.Integer"
     elif dbtype.startswith('tinyint'):
-        javatype = "java.lang.Boolean"
+        if dbtype.startswith('tinyint(1)'):
+            javatype = "java.lang.Boolean"
+        else:
+            javatype = "java.lang.Integer"
     elif dbtype.startswith('varchar'):
         javatype = "java.lang.String"
     elif dbtype.startswith("datetime") or dbtype.startswith("timestamp"):
