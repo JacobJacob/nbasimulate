@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.ts.dt.po">
+    <class name="EngineStatus" table="engine_status">
+        <id
+            name="id"
+            type="java.lang.Long"
+            column="id"
+        >
+            <generator class="native"/>
+        </id>
+        <property
+           name="name"
+           column="name"
+           type="java.lang.String"
+        />
+        <property
+           name="teamId"
+           column="team_id"
+           type="java.lang.Long"
+        />
+        <property
+           name="isYouth"
+           column="is_youth"
+           type="java.lang.Boolean"
+        />
+        <property
+           name="offensiveTacticalType"
+           column="offensive_tactical_type"
+           type="java.lang.Integer"
+        />
+        <property
+           name="defendTacticalType"
+           column="defend_tactical_type"
+           type="java.lang.Integer"
+        />
+        <property
+           name="seq"
+           column="seq"
+           type=""
+        />
+        <property
+           name="cid"
+           column="cid"
+           type=""
+        />
+        <property
+           name="pfid"
+           column="pfid"
+           type=""
+        />
+        <property
+           name="sfid"
+           column="sfid"
+           type=""
+        />
+        <property
+           name="sgid"
+           column="sgid"
+           type=""
+        />
+        <property
+           name="pgid"
+           column="pgid"
+           type=""
+        />
+        <property
+           name="createdTime"
+           column="created_time"
+           type="java.lang.Date"
+        />
+        <property
+           name="updatedTime"
+           column="updated_time"
+           type="java.lang.Date"
+        />
+</class>
+</hibernate-mapping>

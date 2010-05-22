@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.ts.dt.po">
+    <class name="EngineStatus" table="engine_status">
+        <id
+            name="id"
+            type="java.lang.Long"
+            column="id"
+        >
+            <generator class="native"/>
+        </id>
+        <property
+           name="result"
+           column="result"
+           type="java.lang.String"
+        />
+        <property
+           name="actionDesc"
+           column="action_desc"
+           type="java.lang.String"
+        />
+        <property
+           name="actionName"
+           column="action_name"
+           type="java.lang.String"
+        />
+        <property
+           name="flg"
+           column="flg"
+           type="java.lang.String"
+        />
+        <property
+           name="percent"
+           column="percent"
+           type="java.lang.Long"
+        />
+        <property
+           name="isAssist"
+           column="is_assist"
+           type="java.lang.Integer"
+        />
+        <property
+           name="createdTime"
+           column="created_time"
+           type="java.lang.Date"
+        />
+        <property
+           name="updatedTime"
+           column="updated_time"
+           type="java.lang.Date"
+        />
+        <property
+           name="notStick"
+           column="not_stick"
+           type="java.lang.Integer"
+        />
+</class>
+</hibernate-mapping>
