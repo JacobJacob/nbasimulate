@@ -4,7 +4,7 @@ import java.util.Date;
 
 import jpersist.PersistentObject;
 
-public class ProfessionPlayer extends PersistentObject implements Player {
+public class ProfessionPlayer implements Player {
 
 	private static final long serialVersionUID = 8434826016623726584L;
 

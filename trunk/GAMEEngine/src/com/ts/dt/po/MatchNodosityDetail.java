@@ -5,7 +5,7 @@ import java.util.Date;
 
 import jpersist.PersistentObject;
 
-public class MatchNodosityDetail extends PersistentObject implements Serializable {
+public class MatchNodosityDetail implements Serializable {
 
 	public static final long serialVersionUID = -2805454678543427093L;
 

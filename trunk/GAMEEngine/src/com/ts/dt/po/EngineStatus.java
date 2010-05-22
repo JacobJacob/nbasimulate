@@ -4,7 +4,7 @@ import java.util.Date;
 
 import jpersist.PersistentObject;
 
-public class EngineStatus extends PersistentObject {
+public class EngineStatus {
 
 	private static final long serialVersionUID = -7087943317305234555L;
 

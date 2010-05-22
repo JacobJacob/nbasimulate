@@ -4,7 +4,7 @@ import java.util.Date;
 
 import jpersist.PersistentObject;
 
-public class Team extends PersistentObject {
+public class Team {
 
 	private static final long serialVersionUID = -1193583213322117826L;
 

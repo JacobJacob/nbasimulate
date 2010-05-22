@@ -4,7 +4,7 @@ import java.util.Date;
 
 import jpersist.PersistentObject;
 
-public class MatchNodosityTacticalDetail extends PersistentObject {
+public class MatchNodosityTacticalDetail {
 
 	private static final long serialVersionUID = 158899388567875270L;
 

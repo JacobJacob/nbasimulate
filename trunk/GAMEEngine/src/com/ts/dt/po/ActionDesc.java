@@ -5,7 +5,7 @@ import java.util.Date;
 
 import jpersist.PersistentObject;
 
-public class ActionDesc extends PersistentObject implements Serializable {
+public class ActionDesc implements Serializable {
 
 	public static final long serialVersionUID = -2805454657233427093L;
 

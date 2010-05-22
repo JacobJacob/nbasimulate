@@ -4,7 +4,7 @@ import java.util.Date;
 
 import jpersist.PersistentObject;
 
-public class YouthPlayer extends PersistentObject implements Player {
+public class YouthPlayer implements Player {
 
 	private static final long serialVersionUID = -2356824140104983267L;
 

@@ -12,7 +12,7 @@ import jpersist.PersistentObject;
 
 import com.ts.dt.exception.MatchException;
 
-public class MatchNodosityMain extends PersistentObject {
+public class MatchNodosityMain {
 
 	private static final long serialVersionUID = 1951394299151330989L;
 

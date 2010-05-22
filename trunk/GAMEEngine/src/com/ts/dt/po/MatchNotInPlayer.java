@@ -4,7 +4,7 @@ import java.util.Date;
 
 import jpersist.PersistentObject;
 
-public class MatchNotInPlayer extends PersistentObject {
+public class MatchNotInPlayer {
 
 	private static final long serialVersionUID = -4596994831782251544L;
 
