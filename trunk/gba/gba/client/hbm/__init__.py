@@ -1,6 +1,8 @@
 
 
-from gba.entity import ProfessionPlayer
+from gba.entity import EngineStatus, ErrorLog, ErrorMatch, ActionDesc, YouthPlayer, \
+                       MatchNodosityMain, MatchNodosityDetail, MatchNodosityTacticalDetail, \
+                       MatchNotInPlayer, MatchStat, Matchs, TeamTactical, TeamTacticalDetail, Team
 from gba.common import responsehelper
 
 def db_to_cls(name, table=True):
@@ -40,14 +42,26 @@ def dbtype_to_javatype(dbtype):
         
 if __name__ == '__main__':
     
-    meta = ProfessionPlayer.get_meta()
-    infos = []
-    columns = meta.columns
-    for c in columns:
-        name = db_to_cls(c.field, table=False)
-        column = c.field
-        type = dbtype_to_javatype(c.type)
-        infos.append({'name': name, 'column': column, 'type': type})
-    data = {'items': infos}
-    print responsehelper.render_to_xml(data, db_to_cls(meta.table), meta.table)
-    
+    clss = [EngineStatus, ErrorLog, ErrorMatch, ActionDesc, YouthPlayer, \
+                       MatchNodosityMain, MatchNodosityDetail, MatchNodosityTacticalDetail, \
+                       MatchNotInPlayer, MatchStat, Matchs, TeamTactical, TeamTacticalDetail, Team]
+    for cls in clss:
+        meta = cls.get_meta()
+        infos = []
+        columns = meta.columns
+        for c in columns:
+            if c.field == 'id':
+                continue
+            name = db_to_cls(c.field, table=False)
+            column = c.field
+            type = dbtype_to_javatype(c.type)
+            infos.append({'name': name, 'column': column, 'type': type})
+        data = {'items': infos}
+        content = responsehelper.render_to_xml(data, db_to_cls(meta.table), meta.table)
+        f = open("K:\\hbm\\%s.hbm" % db_to_cls(meta.table), 'wb')
+        try:
+            f.write(content)
+        finally:
+            f.close()
+        
+        
