@@ -4,7 +4,7 @@ import java.sql.Connection;
 
 public class ConnectionPool {
 
-	public static final String URL = "jdbc:mysql://192.168.1.158/gba?characterEncoding=utf-8";
+	public static final String URL = "jdbc:mysql://192.168.1.152/gba?characterEncoding=utf-8";
 	public static final String USERNAME = "gba";
 	public static final String PASSWORD = "gba123";
 

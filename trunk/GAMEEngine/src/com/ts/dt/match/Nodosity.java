@@ -1,6 +1,5 @@
 package com.ts.dt.match;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -11,15 +10,17 @@ import com.ts.dt.constants.DefendTactical;
 import com.ts.dt.constants.MatchConstant;
 import com.ts.dt.constants.OffensiveTactical;
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.dao.MatchDao;
+import com.ts.dt.dao.MatchNodosityMainDao;
 import com.ts.dt.dao.PlayerDao;
 import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.TacticalDao;
 import com.ts.dt.dao.YouthPlayerDao;
 import com.ts.dt.dao.impl.MatchDaoImpl;
+import com.ts.dt.dao.impl.MatchNodosityMainDaoImpl;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.dao.impl.TacticalDaoImpl;
 import com.ts.dt.dao.impl.YouthPlayerDaoImpl;
-import com.ts.dt.db.ConnectionPool;
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.helper.PowerHelper;
 import com.ts.dt.po.MatchNodosityMain;
@@ -204,14 +205,14 @@ public class Nodosity {
 
 	private void logNodosityData(MatchContext context) throws MatchException {
 
-		MatchNodosityMain main = context.getNodosityMain();
-		main.setHomeOffsiveTactic(homeTeamTacticalDetail.getOffensiveTacticalType());
-		main.setHomeDefendTactic(homeTeamTacticalDetail.getDefendTacticalType());
-		main.setGuestOffsiveTactic(guestTeamTacticalDetail.getOffensiveTacticalType());
-		main.setGuestDefendTactic(guestTeamTacticalDetail.getDefendTacticalType());
-		main.setPoint(context.currentScore());
-		main.setSeq(context.getSeq());
-		main.setMatchId(context.getMatchId());
+		MatchNodosityMain matchNodosityMain = context.getNodosityMain();
+		matchNodosityMain.setHomeOffsiveTactic(homeTeamTacticalDetail.getOffensiveTacticalType());
+		matchNodosityMain.setHomeDefendTactic(homeTeamTacticalDetail.getDefendTacticalType());
+		matchNodosityMain.setGuestOffsiveTactic(guestTeamTacticalDetail.getOffensiveTacticalType());
+		matchNodosityMain.setGuestDefendTactic(guestTeamTacticalDetail.getDefendTacticalType());
+		matchNodosityMain.setPoint(context.currentScore());
+		matchNodosityMain.setSeq(context.getSeq());
+		matchNodosityMain.setMatchId(context.getMatchId());
 
 		MatchNodosityTacticalDetail detail = null;
 
@@ -243,35 +244,13 @@ public class Nodosity {
 			detail.setPower(player.getMatchPower());
 			detail.setAbility(player.getAbility());
 
-			main.addDetail(detail);
+			matchNodosityMain.addDetail(detail);
 		}
 
-		Connection conn = ConnectionPool.getInstance().connection();
-		boolean autoCommit = true;
-		try {
-			autoCommit = conn.getAutoCommit();
-			conn.setAutoCommit(false);
-			main.save(conn);
-			match.update(conn);
-			conn.commit();
-		} catch (Exception e) {
-			if (conn != null) {
-				try {
-					conn.rollback();
-				} catch (Exception ex) {
-				}
-			}
-			e.printStackTrace();
-		} finally {
-			if (conn != null) {
-				try {
-					conn.setAutoCommit(autoCommit);
-					conn.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		MatchNodosityMainDao matchNodosityMainDao = new MatchNodosityMainDaoImpl();
+		MatchDao matchDao = new MatchDaoImpl();
+		matchNodosityMainDao.save(matchNodosityMain);
+		matchDao.update(match);
 
 	}
 

@@ -14,14 +14,17 @@ public class BaseDao {
 	public void saveMany(List<?> list) throws MatchException {
 
 		Session session = HibernateUtil.currentSession();
-		Transaction tran = session.beginTransaction();
+		Transaction tran = null;
 		try {
+			tran = session.beginTransaction();
 			for (Object obj : list) {
 				session.save(obj);
 			}
 			tran.commit();
 		} catch (HibernateException he) {
-			tran.rollback();
+			if (tran != null) {
+				tran.rollback();
+			}
 			throw new MatchException(he);
 		}
 
@@ -30,9 +33,26 @@ public class BaseDao {
 	public void save(Object obj) throws MatchException {
 
 		Session session = HibernateUtil.currentSession();
+		Transaction tran = null;
+		try {
+			tran = session.beginTransaction();
+			session.save(obj);
+			tran.commit();
+		} catch (HibernateException he) {
+			if (tran != null) {
+				tran.rollback();
+			}
+			throw new MatchException(he);
+		}
+
+	}
+
+	public void update(Object obj) throws MatchException {
+
+		Session session = HibernateUtil.currentSession();
 		Transaction tran = session.beginTransaction();
 		try {
-			session.save(obj);
+			session.update(obj);
 			session.flush();
 			tran.commit();
 		} catch (HibernateException he) {
@@ -57,14 +77,12 @@ public class BaseDao {
 
 	}
 
-	public Object load(Class cls, long id) throws MatchException {
+	public Object load(Class<?> cls, long id) throws MatchException {
 
 		Session session = HibernateUtil.currentSession();
-		Transaction tran = session.beginTransaction();
 		try {
 			return session.load(cls, id);
 		} catch (HibernateException he) {
-			tran.rollback();
 			throw new MatchException(he);
 		}
 

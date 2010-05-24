@@ -25,27 +25,35 @@
         <property
            name="homeOffensiveTactic"
            column="home_offensive_tactic"
-           type="java.lang.Integer"
+           type="java.lang.Short"
         />
         <property
            name="homeDefendTactic"
            column="home_defend_tactic"
-           type="java.lang.Integer"
+           type="java.lang.Short"
         />
         <property
            name="guestOffensiveTactic"
            column="guest_offensive_tactic"
-           type="java.lang.Integer"
+           type="java.lang.Short"
         />
         <property
            name="guestDefendTactic"
            column="guest_defend_tactic"
-           type="java.lang.Integer"
+           type="java.lang.Short"
         />
         <property
            name="point"
            column="point"
            type="java.lang.String"
         />
-</class>
+        <set name="detail" cascade="all">
+	      <key column="match_nodosity_main_id" not-null="false"/>
+	      <one-to-many class="MatchNodosityDetail"/>
+	   </set>
+	    <set name="list" cascade="all">
+	      <key column="match_nodosity_main_id" not-null="false"/>
+	      <one-to-many class="MatchNodosityTacticalDetail"/>
+	   </set>  
+    </class>
 </hibernate-mapping>

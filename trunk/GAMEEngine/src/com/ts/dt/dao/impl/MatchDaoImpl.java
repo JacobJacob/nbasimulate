@@ -11,6 +11,11 @@ public class MatchDaoImpl extends BaseDao implements MatchDao {
 		super.save(match);
 	}
 
+	public void update(Matchs match) throws MatchException {
+		// TODO Auto-generated method stub
+		super.update(match);
+	}
+
 	public Matchs load(long id) throws MatchException {
 		// TODO Auto-generated method stub
 		return (Matchs) super.load(Matchs.class, id);

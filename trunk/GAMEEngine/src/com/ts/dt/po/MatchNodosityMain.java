@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.ts.dt.exception.MatchException;
 
@@ -28,8 +30,8 @@ public class MatchNodosityMain {
 	private short guestDefendTactic;
 	private String point;
 	private Date createdTime = new Date();
-	private List<MatchNodosityTacticalDetail> list;
-	private List<MatchNodosityDetail> detail;
+	private Set<MatchNodosityTacticalDetail> list;
+	private Set<MatchNodosityDetail> detail;
 
 	public boolean save(Connection connection) throws MatchException {
 		try {
@@ -96,7 +98,7 @@ public class MatchNodosityMain {
 
 	public void addDetail(MatchNodosityTacticalDetail detail) {
 		if (list == null) {
-			list = new ArrayList<MatchNodosityTacticalDetail>();
+			list = new HashSet<MatchNodosityTacticalDetail>();
 		}
 		list.add(detail);
 
@@ -104,7 +106,7 @@ public class MatchNodosityMain {
 
 	public void addMatchDetailLog(MatchNodosityDetail matchdetail) {
 		if (detail == null) {
-			detail = new ArrayList<MatchNodosityDetail>();
+			detail = new HashSet<MatchNodosityDetail>();
 		}
 		detail.add(matchdetail);
 	}
@@ -177,19 +179,19 @@ public class MatchNodosityMain {
 		this.point = point;
 	}
 
-	public List<MatchNodosityTacticalDetail> getList() {
+	public Set<MatchNodosityTacticalDetail> getList() {
 		return list;
 	}
 
-	public void setList(List<MatchNodosityTacticalDetail> list) {
+	public void setList(Set<MatchNodosityTacticalDetail> list) {
 		this.list = list;
 	}
 
-	public List<MatchNodosityDetail> getDetail() {
+	public Set<MatchNodosityDetail> getDetail() {
 		return detail;
 	}
 
-	public void setDetail(List<MatchNodosityDetail> detail) {
+	public void setDetail(Set<MatchNodosityDetail> detail) {
 		this.detail = detail;
 	}
 
@@ -224,4 +226,5 @@ public class MatchNodosityMain {
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
+
 }
