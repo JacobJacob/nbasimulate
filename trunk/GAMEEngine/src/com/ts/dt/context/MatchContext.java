@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import com.ts.dt.constants.MatchConstant;
+import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.Controller;
 import com.ts.dt.match.action.Action;
 import com.ts.dt.match.helper.ReboundHelper;
@@ -700,7 +701,7 @@ public class MatchContext {
 		this.matchId = matchId;
 	}
 
-	public void saveStatToDB() {
+	public void saveStatToDB() throws MatchException {
 		dataStat.saveToDB(matchId);
 	}
 
