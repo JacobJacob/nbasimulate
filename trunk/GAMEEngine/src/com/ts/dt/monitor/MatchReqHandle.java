@@ -54,13 +54,19 @@ public class MatchReqHandle extends Thread {
 	private void reportStatus(String status) throws MatchException {
 		EngineStatusDao engineStatusDao = new EngineStatusDaoImpl();
 		EngineStatus engineStatus = null;
+		boolean update = true;
 		engineStatus = engineStatusDao.load(this.name);
 		if (engineStatus == null) {
 			engineStatus = new EngineStatus();
 			engineStatus.setName(this.name);
 			engineStatus.setStatus(status + "[handle total:" + this.finishCount + "]");
+			update = false;
 		}
-		engineStatusDao.save(engineStatus);
+		if (update) {
+			engineStatusDao.update(engineStatus);
+		} else {
+			engineStatusDao.save(engineStatus);
+		}
 
 	}
 }

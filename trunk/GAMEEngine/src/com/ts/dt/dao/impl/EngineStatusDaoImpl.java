@@ -13,7 +13,7 @@ public class EngineStatusDaoImpl extends BaseDao implements EngineStatusDao {
 
 	public void save(EngineStatus engineStatus) throws MatchException {
 		// TODO Auto-generated method stub
-		super.saveOrUpdate(engineStatus);
+		super.save(engineStatus);
 	}
 
 	public void update(EngineStatus engineStatus) throws MatchException {

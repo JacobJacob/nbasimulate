@@ -7,5 +7,7 @@ public interface EngineStatusDao {
 
 	public void save(EngineStatus engineStatus) throws MatchException;
 
+	public void update(EngineStatus engineStatus) throws MatchException;
+
 	public EngineStatus load(String name) throws MatchException;
 }

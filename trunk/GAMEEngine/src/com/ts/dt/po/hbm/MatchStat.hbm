@@ -110,7 +110,7 @@
         <property
            name="isMain"
            column="is_main"
-           type="java.lang.Integer"
+           type="java.lang.Boolean"
         />
         <property
            name="createdTime"

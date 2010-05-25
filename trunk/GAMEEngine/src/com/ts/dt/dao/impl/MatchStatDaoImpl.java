@@ -17,4 +17,10 @@ public class MatchStatDaoImpl extends BaseDao implements MatchStatDao {
 		// TODO Auto-generated method stub
 		super.saveMany(matchStats);
 	}
+
+	public static void main(String[] args) throws MatchException {
+		MatchStatDao matchStatDao = new MatchStatDaoImpl();
+		MatchStat matchStat = new MatchStat();
+		matchStatDao.save(matchStat);
+	}
 }
