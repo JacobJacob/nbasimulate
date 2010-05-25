@@ -1,13 +1,14 @@
 package com.ts.dt.stat;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
-import com.ts.dt.db.ConnectionPool;
+import com.ts.dt.dao.MatchStatDao;
+import com.ts.dt.dao.impl.MatchStatDaoImpl;
+import com.ts.dt.exception.MatchException;
+import com.ts.dt.po.MatchStat;
 import com.ts.dt.po.Player;
 
 public class DataStat {
@@ -363,73 +364,42 @@ public class DataStat {
 		return sb.toString();
 	}
 
-	public void saveToDB(long matchId) {
+	public void saveToDB(long matchId) throws MatchException {
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("insert into match_stat(team_id, player_no, no, position, name, match_id,");
-		sb.append(" point2_shoot_times, point2_doom_times, point3_shoot_times, point3_doom_times,");
-		sb.append(" point1_shoot_times, point1_doom_times,");
-		sb.append(" offensive_rebound, defensive_rebound, foul, lapsus ,assist,");
-		sb.append(" block, steals, is_main, created_time)");
-		sb.append(" values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now());");
+		PlayerDataStat dataStat;
+		List<MatchStat> matchStats = new ArrayList<MatchStat>();
+		homeTeamPlayersDataStat.putAll(visitingTeamPlayersDataStat);
+		for (long key : homeTeamPlayersDataStat.keySet()) {
+			dataStat = homeTeamPlayersDataStat.get(key);
+			Player player = dataStat.getPlayer();
+			MatchStat matchStat = new MatchStat();
 
-		Connection conn = ConnectionPool.getInstance().connection();
-		boolean autoCommit = true;
-		try {
-			autoCommit = conn.getAutoCommit();
-			conn.setAutoCommit(false);
+			matchStat.setTeamId(player.getTeamid());
+			matchStat.setPlayerNo(player.getNo());
+			matchStat.setNo(player.getPlayerNo());
+			matchStat.setPosition(player.getPosition());
+			matchStat.setName(player.getName());
+			matchStat.setMatchId(matchId);
+			matchStat.setPoint1DoomTimes(dataStat.getPoint1DoomTimes());
+			matchStat.setPoint1ShootTimes(dataStat.getPoint1ShootTimes());
+			matchStat.setPoint2DoomTimes(dataStat.getPoint2DoomTimes());
+			matchStat.setPoint2ShootTimes(dataStat.getPoint2ShootTimes());
+			matchStat.setPoint3DoomTimes(dataStat.getPoint3DoomTimes());
+			matchStat.setPoint3ShootTimes(dataStat.getPoint3ShootTimes());
+			matchStat.setOffensiveRebound(dataStat.getOffensiveRebound());
+			matchStat.setDefensiveRebound(dataStat.getDefensiveRebound());
+			matchStat.setFoul(dataStat.getFoulTimes());
+			matchStat.setLapsus(dataStat.getLapsus());
+			matchStat.setAssist(dataStat.getAssist());
+			matchStat.setBlock(dataStat.getBlock());
+			matchStat.setSteals(dataStat.getSteals());
 
-			PreparedStatement statement = conn.prepareStatement(sb.toString());
+			matchStats.add(matchStat);
 
-			PlayerDataStat dataStat;
-			homeTeamPlayersDataStat.putAll(visitingTeamPlayersDataStat);
-			for (long key : homeTeamPlayersDataStat.keySet()) {
-				dataStat = homeTeamPlayersDataStat.get(key);
-				Player player = dataStat.getPlayer();
-				int i = 1;
-				statement.setLong(i++, player.getTeamid());
-				statement.setString(i++, player.getNo());
-				statement.setInt(i++, player.getPlayerNo());
-				statement.setString(i++, player.getPosition());
-				statement.setString(i++, player.getName());
-				statement.setLong(i++, matchId);
-				statement.setInt(i++, dataStat.getPoint2ShootTimes());
-				statement.setInt(i++, dataStat.getPoint2DoomTimes());
-				statement.setInt(i++, dataStat.getPoint3ShootTimes());
-				statement.setInt(i++, dataStat.getPoint3DoomTimes());
-				statement.setInt(i++, dataStat.getPoint1ShootTimes());
-				statement.setInt(i++, dataStat.getPoint1DoomTimes());
-				statement.setInt(i++, dataStat.getOffensiveRebound());
-				statement.setInt(i++, dataStat.getDefensiveRebound());
-				statement.setInt(i++, dataStat.getFoulTimes());
-				statement.setInt(i++, dataStat.getLapsus());
-				statement.setInt(i++, dataStat.getAssist());
-				statement.setInt(i++, dataStat.getBlock());
-				statement.setInt(i++, dataStat.getSteals());
-				statement.setBoolean(i++, dataStat.isIsMain());
-				statement.addBatch();
-			}
-
-			statement.executeBatch();
-
-			conn.commit();
-		} catch (Exception e) {
-			if (conn != null) {
-				try {
-					conn.rollback();
-				} catch (Exception ex) {
-				}
-			}
-			e.printStackTrace();
-		} finally {
-			if (conn != null) {
-				try {
-					conn.setAutoCommit(autoCommit);
-					conn.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 		}
+
+		MatchStatDao matchStatDao = new MatchStatDaoImpl();
+		matchStatDao.saveMatachStats(matchStats);
+
 	}
 }
