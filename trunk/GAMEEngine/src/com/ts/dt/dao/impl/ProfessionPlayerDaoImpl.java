@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.exception.MatchException;
@@ -21,6 +22,9 @@ public class ProfessionPlayerDaoImpl extends BaseDao implements ProfessionPlayer
 	public Player load(long id) throws MatchException {
 		// TODO Auto-generated method stub
 		Player player = (Player) super.load(ProfessionPlayer.class, id);
+		if (player == null) {
+			throw new MatchException("球员不存在[" + id + "]");
+		}
 		return player;
 	}
 
@@ -30,6 +34,9 @@ public class ProfessionPlayerDaoImpl extends BaseDao implements ProfessionPlayer
 		Query q = session.createQuery("from ProfessionPlayer a where a.no = :no");
 		q.setString("no", no);
 		Player player = (Player) q.uniqueResult();
+		if (player == null) {
+			throw new MatchException("球员不存在[" + no + "]");
+		}
 		return player;
 
 	}

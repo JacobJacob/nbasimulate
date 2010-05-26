@@ -37,6 +37,7 @@ public class BaseDao {
 		try {
 			tran = session.beginTransaction();
 			session.save(obj);
+			session.flush();
 			tran.commit();
 		} catch (HibernateException he) {
 			if (tran != null) {
@@ -44,7 +45,6 @@ public class BaseDao {
 			}
 			throw new MatchException(he);
 		}
-
 	}
 
 	public void update(Object obj) throws MatchException {

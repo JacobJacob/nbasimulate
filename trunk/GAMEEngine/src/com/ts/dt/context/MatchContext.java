@@ -118,8 +118,6 @@ public class MatchContext {
 		this.totalGuestBackboard = 0;
 		this.currentSeq = 0;
 		this.isYouth = false;
-		this.nodosityMain.clear();
-
 		this.init();
 	}
 

@@ -12,13 +12,11 @@
         >
             <generator class="native"/>
         </id>
-        <property
+        <!--property
            name="matchNodosityMainId"
            column="match_nodosity_main_id"
-           insert="false"
-           update="false"
            type="java.lang.Long"
-        />
+        /-->
         <property
            name="position"
            column="position"

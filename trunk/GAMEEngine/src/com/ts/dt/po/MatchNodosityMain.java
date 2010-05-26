@@ -111,18 +111,6 @@ public class MatchNodosityMain {
 		detail.add(matchdetail);
 	}
 
-	public void clear() {
-		this.seq = 0;
-		this.matchId = 0;
-		this.homeDefendTactic = 0;
-		this.homeOffensiveTactic = 0;
-		this.guestDefendTactic = 0;
-		this.guestOffensiveTactic = 0;
-		this.point = null;
-		this.list.clear();
-		this.detail.clear();
-	}
-
 	public int getSeq() {
 		return seq;
 	}

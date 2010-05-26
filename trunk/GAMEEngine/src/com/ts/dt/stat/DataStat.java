@@ -393,6 +393,7 @@ public class DataStat {
 			matchStat.setAssist(dataStat.getAssist());
 			matchStat.setBlock(dataStat.getBlock());
 			matchStat.setSteals(dataStat.getSteals());
+			matchStat.setIsMain(dataStat.isIsMain());
 
 			matchStats.add(matchStat);
 

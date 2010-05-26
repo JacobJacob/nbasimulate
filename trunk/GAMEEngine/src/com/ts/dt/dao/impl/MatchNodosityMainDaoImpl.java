@@ -4,6 +4,7 @@ import com.ts.dt.dao.MatchNodosityMainDao;
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.MatchNodosityDetail;
 import com.ts.dt.po.MatchNodosityMain;
+import com.ts.dt.po.MatchNodosityTacticalDetail;
 
 public class MatchNodosityMainDaoImpl extends BaseDao implements MatchNodosityMainDao {
 
@@ -16,7 +17,9 @@ public class MatchNodosityMainDaoImpl extends BaseDao implements MatchNodosityMa
 		MatchNodosityMainDao matchNodosityMainDao = new MatchNodosityMainDaoImpl();
 		MatchNodosityMain main = new MatchNodosityMain();
 		MatchNodosityDetail detail = new MatchNodosityDetail();
+		MatchNodosityTacticalDetail d = new MatchNodosityTacticalDetail();
 		main.addMatchDetailLog(detail);
+		main.addDetail(d);
 		matchNodosityMainDao.save(main);
 
 	}

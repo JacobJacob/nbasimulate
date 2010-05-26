@@ -47,12 +47,17 @@
            column="point"
            type="java.lang.String"
         />
+        <property
+           name="createdTime"
+           column="created_time"
+           type="java.util.Date"
+        />
         <set name="detail" cascade="all">
-	      <key column="match_nodosity_main_id" not-null="false"/>
+	      <key column="match_nodosity_main_id" not-null="true"/>
 	      <one-to-many class="MatchNodosityDetail"/>
 	   </set>
 	    <set name="list" cascade="all">
-	      <key column="match_nodosity_main_id" not-null="false"/>
+	      <key column="match_nodosity_main_id" not-null="true"/>
 	      <one-to-many class="MatchNodosityTacticalDetail"/>
 	   </set>  
     </class>
