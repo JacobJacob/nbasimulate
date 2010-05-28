@@ -4,6 +4,7 @@
 package com.ts.dt.match.action.scrimmage;
 
 import com.ts.dt.context.MatchContext;
+import com.ts.dt.exception.MatchException;
 
 /**
  * @author Administrator
@@ -28,7 +29,7 @@ public class ScrimmageFactory {
 	// check for player do which action
 	// that must depends on the previous action and the
 	// current player's position....
-	public Scrimmage createScrimmageAction(MatchContext context) {
+	public Scrimmage createScrimmageAction(MatchContext context) throws MatchException {
 
 		Scrimmage scrimmage = null;
 		try {
@@ -48,7 +49,10 @@ public class ScrimmageFactory {
 			e.printStackTrace();
 		}
 
+		if (scrimmage == null) {
+			throw new MatchException("发球动作异常[" + context.getSeq() + "]");
+		}
+
 		return scrimmage;
 	}
-
 }

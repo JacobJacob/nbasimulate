@@ -28,8 +28,12 @@ public class MatchReqDaoImpl extends BaseDao implements MatchReqDao {
 			tran.commit();
 			return list;
 		} catch (HibernateException he) {
-			tran.rollback();
+			if (tran != null) {
+				tran.rollback();
+			}
 			throw new MatchException(he);
+		} finally {
+			HibernateUtil.closeSession();
 		}
 	}
 

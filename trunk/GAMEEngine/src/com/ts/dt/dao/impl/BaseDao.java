@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.JDBCConnectionException;
+import org.hibernate.exception.LockAcquisitionException;
 
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.util.HibernateUtil;
@@ -13,19 +15,64 @@ public class BaseDao {
 
 	public void saveMany(List<?> list) throws MatchException {
 
-		Session session = HibernateUtil.currentSession();
-		Transaction tran = null;
-		try {
-			tran = session.beginTransaction();
-			for (Object obj : list) {
-				session.save(obj);
+		while (true) {
+			Session session = HibernateUtil.currentSession();
+			Transaction tran = null;
+			try {
+				tran = session.beginTransaction();
+				for (Object obj : list) {
+					session.save(obj);
+				}
+				tran.commit();
+				break;
+			} catch (HibernateException he) {
+				if (tran != null) {
+					tran.rollback();
+				}
+				if (he instanceof JDBCConnectionException || he instanceof LockAcquisitionException) {
+					try {
+						Thread.sleep(1000 * 10);
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+				} else {
+					throw new MatchException(he);
+				}
+			} finally {
+				HibernateUtil.closeSession();
 			}
-			tran.commit();
-		} catch (HibernateException he) {
-			if (tran != null) {
-				tran.rollback();
+		}
+
+	}
+
+	public void updateMany(List<?> list) throws MatchException {
+
+		while (true) {
+			Session session = HibernateUtil.currentSession();
+			Transaction tran = null;
+			try {
+				tran = session.beginTransaction();
+				for (Object obj : list) {
+					session.update(obj);
+				}
+				tran.commit();
+				break;
+			} catch (HibernateException he) {
+				if (tran != null) {
+					tran.rollback();
+				}
+				if (he instanceof JDBCConnectionException || he instanceof LockAcquisitionException) {
+					try {
+						Thread.sleep(1000 * 10);
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+				} else {
+					throw new MatchException(he);
+				}
+			} finally {
+				HibernateUtil.closeSession();
 			}
-			throw new MatchException(he);
 		}
 
 	}
@@ -37,27 +84,32 @@ public class BaseDao {
 		try {
 			tran = session.beginTransaction();
 			session.save(obj);
-			session.flush();
 			tran.commit();
 		} catch (HibernateException he) {
 			if (tran != null) {
 				tran.rollback();
 			}
 			throw new MatchException(he);
+		} finally {
+			HibernateUtil.closeSession();
 		}
 	}
 
 	public void update(Object obj) throws MatchException {
 
 		Session session = HibernateUtil.currentSession();
-		Transaction tran = session.beginTransaction();
+		Transaction tran = null;
 		try {
+			tran = session.beginTransaction();
 			session.update(obj);
-			session.flush();
 			tran.commit();
 		} catch (HibernateException he) {
-			tran.rollback();
+			if (tran != null) {
+				tran.rollback();
+			}
 			throw new MatchException(he);
+		} finally {
+			HibernateUtil.closeSession();
 		}
 
 	}
@@ -65,14 +117,18 @@ public class BaseDao {
 	public void saveOrUpdate(Object obj) throws MatchException {
 
 		Session session = HibernateUtil.currentSession();
-		Transaction tran = session.beginTransaction();
+		Transaction tran = null;
 		try {
+			tran = session.beginTransaction();
 			session.saveOrUpdate(obj);
-			session.flush();
 			tran.commit();
 		} catch (HibernateException he) {
-			tran.rollback();
+			if (tran != null) {
+				tran.rollback();
+			}
 			throw new MatchException(he);
+		} finally {
+			HibernateUtil.closeSession();
 		}
 
 	}
@@ -80,11 +136,19 @@ public class BaseDao {
 	public Object load(Class<?> cls, long id) throws MatchException {
 
 		Session session = HibernateUtil.currentSession();
+		Transaction tran = null;
+		Object obj;
 		try {
-			return session.load(cls, id);
+			tran = session.beginTransaction();
+			obj = session.load(cls, id);
+			tran.commit();
 		} catch (HibernateException he) {
+			if (tran != null) {
+				tran.rollback();
+			}
 			throw new MatchException(he);
 		}
+		return obj;
 
 	}
 }

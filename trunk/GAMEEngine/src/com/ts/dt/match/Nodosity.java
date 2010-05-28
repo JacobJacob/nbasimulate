@@ -194,11 +194,11 @@ public class Nodosity {
 
 		if (context.isYouth()) {
 			ProfessionPlayerDao professionPlayerDao = new ProfessionPlayerDaoImpl();
-			professionPlayerDao.save(players);
+			professionPlayerDao.update(players);
 
 		} else {
 			YouthPlayerDao youthPlayerDao = new YouthPlayerDaoImpl();
-			youthPlayerDao.save(players);
+			youthPlayerDao.update(players);
 		}
 
 	}

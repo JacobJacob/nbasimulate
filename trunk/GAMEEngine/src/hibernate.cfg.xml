@@ -25,12 +25,12 @@
 
 		<!-- Disable the second-level cache  -->
 		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-        
-        <property name="hibernate.cache.use_query_cache">false</property>
-        <property name="hibernate.cache.use_second_level_cache">false</property>
+
+		<property name="hibernate.cache.use_query_cache">false</property>
+		<property name="hibernate.cache.use_second_level_cache">false</property>
 
 		<!-- Echo all executed SQL to stdout -->
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 
 		<mapping resource="com/ts/dt/po/hbm/ProfessionPlayer.hbm" />
 		<mapping resource="com/ts/dt/po/hbm/ActionDesc.hbm" />

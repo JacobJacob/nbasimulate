@@ -13,9 +13,9 @@ import com.ts.dt.util.HibernateUtil;
 
 public class YouthPlayerDaoImpl extends BaseDao implements YouthPlayerDao {
 
-	public void save(YouthPlayer player) throws MatchException {
+	public void update(YouthPlayer player) throws MatchException {
 		// TODO Auto-generated method stub
-		super.save(player);
+		super.update(player);
 	}
 
 	public Player load(long id) throws MatchException {
@@ -33,9 +33,9 @@ public class YouthPlayerDaoImpl extends BaseDao implements YouthPlayerDao {
 		return player;
 	}
 
-	public void save(List<Player> players) throws MatchException {
+	public void update(List<Player> players) throws MatchException {
 		// TODO Auto-generated method stub
-		super.saveMany(players);
+		super.updateMany(players);
 
 	}
 

@@ -108,7 +108,7 @@ public class TestDataFactory {
 
 		for (int i = 0; i < players.length; i++) {
 			players[i].setId(0);
-			playerDao.save(players[i]);
+			playerDao.update(players[i]);
 		}
 
 	}

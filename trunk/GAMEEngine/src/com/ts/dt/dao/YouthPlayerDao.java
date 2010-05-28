@@ -8,9 +8,9 @@ import com.ts.dt.po.YouthPlayer;
 
 public interface YouthPlayerDao extends PlayerDao {
 
-	public void save(YouthPlayer player) throws MatchException;
+	public void update(YouthPlayer player) throws MatchException;
 
-	public void save(List<Player> players) throws MatchException;
+	public void update(List<Player> players) throws MatchException;
 
 	public Player load(String id) throws MatchException;
 
