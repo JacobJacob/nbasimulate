@@ -36,28 +36,6 @@ def betch_log_json(request):
         ret_infos.append(info.__dict__)
     return json_response({'infos': ret_infos, 'total': total})
 
-#def action_desc(request):
-#    page = int(request.GET.get('page', 1))
-#    pagesize = int(request.GET.get('pagesize', 15))
-#    action_name = request.GET.get('action_name', '')
-#
-#    condition = '1=1'
-#    if action_name:
-#        condition += ' and action_name="%s"' % action_name
-#        
-#    action_names = admin_operator.get_action_names()
-#
-#    infos, total = ActionDesc.paging(page, pagesize, condition=condition)
-#    if total == 0:
-#        totalpage = 0
-#    else:
-#        totalpage = (total - 1) / pagesize + 1
-#    
-#    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, \
-#            'nextpage': page + 1, 'prevpage': page - 1, 'action_name': action_name,
-#            'action_names': action_names}
-#    return render_to_response(request, 'admin/action_desc.html', datas)
-
 @login_required
 def action_desc(request):
     """比赛描述"""
@@ -157,9 +135,32 @@ def _get_common_client_monitor_info(client_type, monitor_type, time_type, time_l
 
 def engine_status(request):
     '''比赛引擎状态'''
-    infos = EngineStatus.query()
-    datas = {'infos': infos}
-    return render_to_response(request, 'admin/engine_status.html' , datas)
+    return render_to_response(request, 'admin/engine_status_ex.html')
+
+@login_required
+def engine_status_json(request):
+    """json格式比赛描述"""
+    infos = EngineStatus.query(order="updated_time desc")
+    ret_infos = []
+    for info in infos:
+        if info.updated_time:
+            info.updated_time = info.updated_time.strftime("%Y-%m-%d %H:%M:%S")
+        ret_infos.append(info.__dict__)
+    return json_response({'infos': ret_infos, 'total': len(infos)})
+
+@login_required
+def engine_status_cmd(request):
+    """给引擎发命令"""
+    name = request.POST.get('name')
+    cmd = request.POST.get('cmd')
+    engine_status = EngineStatus.load(name=name)
+    success = False
+    if engine_status:
+        engine_status.cmd = cmd
+        engine_status.persist()
+        success = True
+        
+    return json_response({'success': success})
 
 def daily_update_log(request):
     return render_to_response(request, 'admin/daily_update_log_ex.html')
@@ -195,7 +196,7 @@ def match_list_json(request):
     limit = int(request.POST.get('limit', 20))
     sort = request.POST.get('sort', 'id')
     dir = request.POST.get('dir', 'desc')
-    match_type  = request.POST.get('match_type', 5)
+    match_type = request.POST.get('match_type', 5)
     infos, total = Matchs.paging(pagesize=limit, start=start, condition='type=%s' % match_type, order="%s %s" % (sort, dir))
     ret_infos = []
     for info in infos:

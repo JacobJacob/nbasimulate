@@ -50,7 +50,13 @@
         }
 	};
 	
-	$("#register").validate({rules: rules, messages: messages});
+	$("#register").validate({
+	  rules: rules, 
+	  messages: messages,
+	  success: function(label){
+	    alert(1);
+	  }
+    });
 });
 </script>
 <style>

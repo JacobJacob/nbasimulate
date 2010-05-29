@@ -6,7 +6,7 @@ from email.MIMEMultipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 
 class Mail:
-    def __init__(self, smtp_server='mail.3-ya.com', user='info@3-ya.com', password='821015'):
+    def __init__(self, smtp_server='smtp.163.com', user='shixiangwen03@163.com', password='821015'):
         self.CRLF = "\r\n"
         self.smtpServer = smtp_server
         self.user = user
@@ -92,7 +92,7 @@ def send_to(subject, msg, to=[],
 
 if __name__ == '__main__':
     sender = 'info@3-ya.com'
-    to = ['340459528@qq.com']
+    to = ['114476513@qq.com']
     cc = []
     m = Mail()
 #    attachment = [ {'content': '文件测试', 'subject':'t1.txt'},

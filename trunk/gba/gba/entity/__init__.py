@@ -238,3 +238,7 @@ class UnionMember(Persistable):
 class ErrorMatch(Persistable):
     '''异常比赛'''
     CACHE_KEY = 'match_id:id'
+    
+class Captcha(Persistable):
+    '''验证码'''
+    CACHE_KEY = 'captcha:id'

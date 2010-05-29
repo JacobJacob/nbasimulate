@@ -5,6 +5,7 @@
 import os
 
 DEBUG = True
+DOMAIN = "localhost"
 
 class PathSettings:
     if os.name == 'nt':

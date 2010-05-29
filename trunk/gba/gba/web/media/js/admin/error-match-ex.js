@@ -43,7 +43,10 @@ Ext.onReady(function(){
             id: 'remark',
             header: '备注',
             dataIndex: 'remark',
-            width: 280,
+            width: 580,
+            renderer: function(value){
+              return "<span title=\"" + value + "\">" + value + "<span>";
+            }
         },{
             id: 'created_time',
             header: '创建时间',

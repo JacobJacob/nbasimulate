@@ -75,6 +75,8 @@ TEMPLATE_DIRS = (
 )
 
 STATIC_PATH = os.path.join(SETTINGS_CODE_FOLDER, "media").replace("\\", "/")
+CAPTCHA_PATH = os.path.join(STATIC_PATH, 'captcha')       # 验证码文件目录
+CAPTCHA_M = 'efa1f06ee6a611dd8afa005056c00008' #uuid.uuid1().get_hex()
 
 INSTALLED_APPS = (
     #'django.contrib.contenttypes',

@@ -7,4 +7,5 @@ urlpatterns = patterns('gba.web.accounts.views',
     url(r'^captcha/$', 'captcha', name='captcha'),
     url(r'^timeout/$', 'timeout', name='timeout'),
     url(r'^ucenter/$', 'ucenter', name='ucenter'),
+    url(r'^check_email/$', 'check_email', name='check-email'),
 )

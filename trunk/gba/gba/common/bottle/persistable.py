@@ -417,7 +417,11 @@ class Meta(object):
         
     def add_column(self, column):
         self._columns.append(column)
-        
+       
+    @property
+    def table(self):
+        return self._table
+     
     @property
     def columns(self):
         return self._columns
