@@ -433,7 +433,7 @@ public class NodosityEngine {
 		} else if (context.isDefensiveRebound() || context.isOffensiveRebound()) {
 			actionType = MatchConstant.ACTION_TYPE_REBOUND;
 
-		} else if (a > 60) {
+		} else if (hasPassTimes < 1 || a > 60) {
 			actionType = MatchConstant.ACTION_TYPE_PASS;
 		} else {
 			actionType = MatchConstant.ACTION_TYPE_SHOUT;
@@ -441,6 +441,9 @@ public class NodosityEngine {
 		context.setNextActionType(actionType);
 	}
 
+	/*
+	 * 判断当前动作类型
+	 */
 	public void checkCurrentActionType() {
 
 		int hasPassTimes = (Integer) context.get(MatchConstant.HAS_PASS_TIMES);
@@ -452,7 +455,7 @@ public class NodosityEngine {
 
 		a += (3 - hasPassTimes) * 10;
 
-		if (a > 50) {
+		if (hasPassTimes < 1 || a > 50) {
 			actionType = MatchConstant.ACTION_TYPE_PASS;
 		} else {
 			actionType = MatchConstant.ACTION_TYPE_SHOUT;

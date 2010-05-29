@@ -40,8 +40,9 @@ public class MatchEngineImpl implements MatchEngine {
 		match.setGuestTeamId(visitingTeamId);
 
 		match.setHomeTeamId(homeTeamId);
-		matchDao.save(match);
+		matchDao.update(match);
 
+		context.clear(); // 重新清除
 		context.setMatchId(match.getId());
 		context.isYouth(match.getIsYouth());
 		context.setMatchType(match.getType());
@@ -71,7 +72,7 @@ public class MatchEngineImpl implements MatchEngine {
 
 		match.setPoint(context.currentScore());
 		match.setStatus(MatchStatus.FINISH);
-		matchDao.save(match);
+		matchDao.update(match);
 
 		// 保存未上场球员统计
 		this.saveNotInPlayer(context, matchid);

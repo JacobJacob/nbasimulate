@@ -8,24 +8,10 @@ public class EngineStatus {
 
 	private long id;
 	private String name;
-	private String status;
+	private int status;
+	private String cmd;
+	private String info;
 	private Date createdTime = new Date();
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
 
 	public long getId() {
 		return id;
@@ -35,6 +21,38 @@ public class EngineStatus {
 		this.id = id;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getCmd() {
+		return cmd;
+	}
+
+	public void setCmd(String cmd) {
+		this.cmd = cmd;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
 	public Date getCreatedTime() {
 		return createdTime;
 	}
@@ -42,4 +60,5 @@ public class EngineStatus {
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
+
 }

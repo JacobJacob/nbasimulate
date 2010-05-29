@@ -28,7 +28,6 @@ public class DefensiveRebound implements Rebound {
 		} else {
 			context.setNotStick(false);
 		}
-		System.out.println(context.getCurrentControllerPlayer().getName() + "∑¿ ÿ¿∫∞Âº”1");
 
 		desc = desc.replace("~1~", currtPlayerName.trim());
 

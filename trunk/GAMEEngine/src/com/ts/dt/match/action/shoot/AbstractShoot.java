@@ -12,7 +12,6 @@ import com.ts.dt.match.check.block.BlockCheck;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
 import com.ts.dt.po.Player;
-import com.ts.dt.util.Logger;
 import com.ts.dt.util.MessagesUtil;
 
 public abstract class AbstractShoot implements Action {
@@ -59,7 +58,7 @@ public abstract class AbstractShoot implements Action {
 		}
 
 		if (!currentTeamNm.equals(previousTeamNm)) {
-			Logger.logToDb("error", "while occor same?");
+			throw new MatchException("比赛中当前投篮球员不等于上一控球球员");
 		}
 
 		String currentShootNo = "";

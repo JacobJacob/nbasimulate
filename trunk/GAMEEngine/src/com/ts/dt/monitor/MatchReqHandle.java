@@ -1,5 +1,8 @@
 package com.ts.dt.monitor;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.dao.EngineStatusDao;
 import com.ts.dt.dao.ErrorMatchDao;
@@ -14,7 +17,6 @@ import com.ts.dt.po.EngineStatus;
 import com.ts.dt.po.ErrorMatch;
 import com.ts.dt.po.Matchs;
 import com.ts.dt.pool.MatchReqPool;
-import com.ts.dt.util.HibernateUtil;
 import com.ts.dt.util.Logger;
 
 public class MatchReqHandle extends Thread {
@@ -22,6 +24,26 @@ public class MatchReqHandle extends Thread {
 	private String name;
 	private int finishCount = 0;
 	private boolean go = true;
+	private String msg = "";
+	private boolean pause = false;
+	private boolean error = false;
+	private int status;
+
+	public synchronized boolean isPause() {
+		return pause;
+	}
+
+	public synchronized void setPause(boolean pause) {
+		this.pause = pause;
+	}
+
+	public synchronized boolean isError() {
+		return error;
+	}
+
+	public synchronized void setError(boolean error) {
+		this.error = error;
+	}
 
 	public MatchReqHandle(String name) {
 		this.name = name;
@@ -32,27 +54,52 @@ public class MatchReqHandle extends Thread {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		MonitorThread t = new MonitorThread();
+		t.start();
 		while (go) {
+			while (this.isPause()) {
+				this.status = 1;
+				try {
+					sleep(1000 * 20);
+				} catch (InterruptedException ie) {
+					ie.printStackTrace();
+				}
+			}
+			while (this.isError()) {
+				this.status = 3;
+				try {
+					sleep(1000 * 20);
+				} catch (InterruptedException ie) {
+					ie.printStackTrace();
+				}
+			}
+			this.status = 2;
 			Matchs match = null;
 			try {
-				this.reportStatus("start to get task");
+				this.msg = "start to get task";
 				match = MatchReqPool.get();
-				this.reportStatus("start to execute match");
+				System.out.println(match.getId());
+				this.msg = "start to execute match";
 				match = engine.execute(match.getId());
 				this.finishCount++;
-				this.reportStatus("finish execute match");
+				this.msg = "finish execute match";
 
 				match.setStatus(MatchStatus.FINISH);
 				MatchDao matchDao = new MatchDaoImpl();
-				matchDao.save(match);
+				matchDao.update(match);
+				System.out.println(match.getId());
 
 			} catch (MatchException me) {
-				Logger.logToDb("error", me.getMessage());
+				this.error = true;
 				me.printStackTrace();
 				ErrorMatch errorMatch = new ErrorMatch();
 				errorMatch.setMatchId(match.getId());
-				errorMatch.setRemark(me.getMessage());
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				me.printStackTrace(pw);
+				errorMatch.setRemark(sw.toString());
 				errorMatch.setType(match.getType());
+				Logger.logToDb("error", sw.toString());
 
 				ErrorMatchDao errorMatchDao = new ErrorMatchDaoImpl();
 				try {
@@ -68,22 +115,63 @@ public class MatchReqHandle extends Thread {
 
 	}
 
-	private void reportStatus(String status) throws MatchException {
-		EngineStatusDao engineStatusDao = new EngineStatusDaoImpl();
-		EngineStatus engineStatus = null;
-		boolean update = true;
-		engineStatus = engineStatusDao.load(this.name);
-		if (engineStatus == null) {
-			engineStatus = new EngineStatus();
-			engineStatus.setName(this.name);
-			engineStatus.setStatus(status + "[handle total:" + this.finishCount + "]");
-			update = false;
+	public class MonitorThread extends Thread {
+
+		public void run() {
+
+			while (true) {
+				try {
+					this.reportStatus();
+					String cmd = this.getCommand();
+					if ("PAUSE".equals(cmd)) {
+						setPause(true);
+					} else if ("CONTINUE".equals(cmd)) {
+						setPause(false);
+						setError(false);
+					}
+					sleep(1000 * 20);
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
+
+			}
 		}
-		if (update) {
-			engineStatusDao.update(engineStatus);
-		} else {
-			engineStatusDao.save(engineStatus);
+
+		private void reportStatus() throws MatchException {
+			EngineStatusDao engineStatusDao = new EngineStatusDaoImpl();
+			EngineStatus engineStatus = null;
+			boolean update = true;
+			engineStatus = engineStatusDao.load(name);
+			if (engineStatus == null) {
+				engineStatus = new EngineStatus();
+				update = false;
+			}
+			engineStatus.setName(name);
+			engineStatus.setStatus(status);
+			engineStatus.setInfo(msg + "[handle total:" + finishCount + "]");
+
+			if (update) {
+				engineStatusDao.update(engineStatus);
+			} else {
+				engineStatusDao.save(engineStatus);
+			}
+
+		}
+
+		private String getCommand() throws MatchException {
+			EngineStatusDao engineStatusDao = new EngineStatusDaoImpl();
+			EngineStatus engineStatus = null;
+			engineStatus = engineStatusDao.load(name);
+			if (engineStatus != null) {
+				String cmd = engineStatus.getCmd();
+				engineStatus.setCmd(null);
+				engineStatusDao.update(engineStatus);
+				return cmd;
+			}
+			return null;
+
 		}
 
 	}
+
 }

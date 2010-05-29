@@ -6,11 +6,6 @@ import com.ts.dt.po.Matchs;
 
 public class MatchDaoImpl extends BaseDao implements MatchDao {
 
-	public void save(Matchs match) throws MatchException {
-		// TODO Auto-generated method stub
-		super.save(match);
-	}
-
 	public void update(Matchs match) throws MatchException {
 		// TODO Auto-generated method stub
 		super.update(match);

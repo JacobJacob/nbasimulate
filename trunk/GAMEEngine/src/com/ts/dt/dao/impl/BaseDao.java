@@ -53,7 +53,7 @@ public class BaseDao {
 			try {
 				tran = session.beginTransaction();
 				for (Object obj : list) {
-					session.update(obj);
+					session.merge(obj);
 				}
 				tran.commit();
 				break;

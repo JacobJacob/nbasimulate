@@ -20,6 +20,16 @@
         <property
            name="status"
            column="status"
+           type="java.lang.Integer"
+        />
+        <property
+           name="info"
+           column="info"
+           type="java.lang.String"
+        />
+        <property
+           name="cmd"
+           column="cmd"
            type="java.lang.String"
         />
         <property

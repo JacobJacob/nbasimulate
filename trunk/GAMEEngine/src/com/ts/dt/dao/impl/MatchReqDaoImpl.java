@@ -37,9 +37,9 @@ public class MatchReqDaoImpl extends BaseDao implements MatchReqDao {
 		}
 	}
 
-	public void save(Matchs matchReq) throws MatchException {
+	public void update(Matchs matchReq) throws MatchException {
 		// TODO Auto-generated method stub
-		super.save(matchReq);
+		super.update(matchReq);
 	}
 
 	public static void main(String[] args) throws MatchException {

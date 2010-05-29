@@ -8,7 +8,7 @@ public class ErrorMatch {
 	private long matchId;
 	private String remark;
 	private int type;
-	private Date createdTime;
+	private Date createdTime = new Date();
 
 	public long getMatchId() {
 		return matchId;

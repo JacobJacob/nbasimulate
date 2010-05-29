@@ -9,5 +9,5 @@ public interface MatchReqDao {
 
 	public List<Matchs> getAllNewReq() throws MatchException;
 
-	public void save(Matchs matchReq) throws MatchException;
+	public void update(Matchs matchReq) throws MatchException;
 }

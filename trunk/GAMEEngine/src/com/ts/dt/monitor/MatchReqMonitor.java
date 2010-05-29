@@ -32,7 +32,7 @@ public class MatchReqMonitor extends Thread {
 						Matchs req = iterator.next();
 						req.setPoint("[0:0]");
 						req.setStatus(MatchStatus.START);
-						matchReqDao.save(req);
+						matchReqDao.update(req);
 						MatchReqPool.put(req);
 					}
 				} catch (MatchException em) {

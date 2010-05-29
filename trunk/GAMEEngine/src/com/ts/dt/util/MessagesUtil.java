@@ -8,9 +8,11 @@ public class MessagesUtil {
 
 		long time = context.getContinueTime();
 		if (context.isHomeTeam()) {
-			Logger.info("[主队]" + TimeUtil.timeMillis2TimeFormat(time) + desc + context.currentScore());
+			// Logger.info("[主队]" + TimeUtil.timeMillis2TimeFormat(time) + desc
+			// + context.currentScore());
 		} else {
-			Logger.error("[客队]" + TimeUtil.timeMillis2TimeFormat(time) + desc + context.currentScore());
+			// Logger.error("[客队]" + TimeUtil.timeMillis2TimeFormat(time) + desc
+			// + context.currentScore());
 		}
 
 	}
