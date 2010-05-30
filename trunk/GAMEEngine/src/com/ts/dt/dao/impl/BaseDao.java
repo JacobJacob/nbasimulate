@@ -38,8 +38,6 @@ public class BaseDao {
 				} else {
 					throw new MatchException(he);
 				}
-			} finally {
-				HibernateUtil.closeSession();
 			}
 		}
 
@@ -70,85 +68,117 @@ public class BaseDao {
 				} else {
 					throw new MatchException(he);
 				}
-			} finally {
-				HibernateUtil.closeSession();
 			}
 		}
 
 	}
 
 	public void save(Object obj) throws MatchException {
-
-		Session session = HibernateUtil.currentSession();
-		Transaction tran = null;
-		try {
-			tran = session.beginTransaction();
-			session.save(obj);
-			tran.commit();
-		} catch (HibernateException he) {
-			if (tran != null) {
-				tran.rollback();
+		while (true) {
+			Session session = HibernateUtil.currentSession();
+			Transaction tran = null;
+			try {
+				tran = session.beginTransaction();
+				session.save(obj);
+				tran.commit();
+				break;
+			} catch (HibernateException he) {
+				if (tran != null) {
+					tran.rollback();
+				}
+				if (he instanceof JDBCConnectionException || he instanceof LockAcquisitionException) {
+					try {
+						Thread.sleep(1000 * 10);
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+				} else {
+					throw new MatchException(he);
+				}
 			}
-			throw new MatchException(he);
-		} finally {
-			HibernateUtil.closeSession();
 		}
 	}
 
 	public void update(Object obj) throws MatchException {
 
-		Session session = HibernateUtil.currentSession();
-		Transaction tran = null;
-		try {
-			tran = session.beginTransaction();
-			session.update(obj);
-			tran.commit();
-		} catch (HibernateException he) {
-			if (tran != null) {
-				tran.rollback();
+		while (true) {
+			Session session = HibernateUtil.currentSession();
+			Transaction tran = null;
+			try {
+				tran = session.beginTransaction();
+				session.update(obj);
+				tran.commit();
+				break;
+			} catch (HibernateException he) {
+				if (tran != null) {
+					tran.rollback();
+				}
+				if (he instanceof JDBCConnectionException || he instanceof LockAcquisitionException) {
+					try {
+						Thread.sleep(1000 * 10);
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+				} else {
+					throw new MatchException(he);
+				}
 			}
-			throw new MatchException(he);
-		} finally {
-			HibernateUtil.closeSession();
 		}
 
 	}
 
 	public void saveOrUpdate(Object obj) throws MatchException {
-
-		Session session = HibernateUtil.currentSession();
-		Transaction tran = null;
-		try {
-			tran = session.beginTransaction();
-			session.saveOrUpdate(obj);
-			tran.commit();
-		} catch (HibernateException he) {
-			if (tran != null) {
-				tran.rollback();
+		while (true) {
+			Session session = HibernateUtil.currentSession();
+			Transaction tran = null;
+			try {
+				tran = session.beginTransaction();
+				session.saveOrUpdate(obj);
+				tran.commit();
+				break;
+			} catch (HibernateException he) {
+				if (tran != null) {
+					tran.rollback();
+				}
+				if (he instanceof JDBCConnectionException || he instanceof LockAcquisitionException) {
+					try {
+						Thread.sleep(1000 * 10);
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+				} else {
+					throw new MatchException(he);
+				}
 			}
-			throw new MatchException(he);
-		} finally {
-			HibernateUtil.closeSession();
 		}
 
 	}
 
 	public Object load(Class<?> cls, long id) throws MatchException {
-
-		Session session = HibernateUtil.currentSession();
-		Transaction tran = null;
-		Object obj;
-		try {
-			tran = session.beginTransaction();
-			obj = session.load(cls, id);
-			tran.commit();
-		} catch (HibernateException he) {
-			if (tran != null) {
-				tran.rollback();
+		while (true) {
+			Session session = HibernateUtil.currentSession();
+			Transaction tran = null;
+			Object obj;
+			try {
+				tran = session.beginTransaction();
+				obj = session.load(cls, id);
+				tran.commit();
+				return obj;
+			} catch (HibernateException he) {
+				if (tran != null) {
+					tran.rollback();
+				}
+				if (he instanceof JDBCConnectionException || he instanceof LockAcquisitionException) {
+					try {
+						Thread.sleep(1000 * 10);
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+				} else {
+					throw new MatchException(he);
+				}
 			}
-			throw new MatchException(he);
-		}
-		return obj;
 
+		}
 	}
 }
