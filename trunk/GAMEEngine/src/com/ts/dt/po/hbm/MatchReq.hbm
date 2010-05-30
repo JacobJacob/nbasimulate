@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping package="com.ts.dt.po">
-    <class name="ErrorMatch" table="error_match" lazy="true">
+    <class name="MatchReq" table="matchs" lazy="true">
         <id
             name="id"
             type="java.lang.Long"
@@ -13,29 +13,14 @@
             <generator class="native"/>
         </id>
         <property
-           name="matchId"
-           column="match_id"
-           type="java.lang.Long"
-        />
-        <property
-           name="type"
-           column="type"
+           name="status"
+           column="status"
            type="java.lang.Integer"
         />
         <property
-           name="remark"
-           column="remark"
+           name="point"
+           column="point"
            type="java.lang.String"
-        />
-        <property
-           name="client"
-           column="client"
-           type="java.lang.String"
-        />
-        <property
-           name="createdTime"
-           column="created_time"
-           type="java.util.Date"
         />
 </class>
 </hibernate-mapping>

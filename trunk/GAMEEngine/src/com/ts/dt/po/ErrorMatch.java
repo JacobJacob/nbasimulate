@@ -8,6 +8,7 @@ public class ErrorMatch {
 	private long matchId;
 	private String remark;
 	private int type;
+	private String client;
 	private Date createdTime = new Date();
 
 	public long getMatchId() {
@@ -48,6 +49,14 @@ public class ErrorMatch {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getClient() {
+		return client;
+	}
+
+	public void setClient(String client) {
+		this.client = client;
 	}
 
 }

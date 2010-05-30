@@ -1,14 +1,10 @@
 package com.ts.dt.po;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.Date;
 
 public class Matchs {
 
 	public static final long serialVersionUID = -2805454678543428303L;
-
-	public static final String UPDATE_SQL = "update matchs set home_team_id=?, guest_team_id=?, status=?, sub_status=?, start_time=?, point=?, type=?, overTime=? where id=?";
 
 	private long id;
 	private long homeTeamId;
@@ -20,28 +16,8 @@ public class Matchs {
 	private int type;
 	private int overtime = 0; // 一个多少个加时
 	private boolean isYouth;
+	private String client;
 	private Date createdTime = new Date();
-
-	public boolean update(Connection connection) {
-		try {
-			PreparedStatement statement = connection.prepareStatement(UPDATE_SQL);
-			statement.setLong(1, this.homeTeamId);
-			statement.setLong(2, this.guestTeamId);
-			statement.setInt(3, this.status);
-			statement.setInt(4, this.subStatus);
-			statement.setDate(5, new java.sql.Date(this.startTime.getTime()));
-			statement.setString(6, this.point);
-			statement.setInt(7, this.type);
-			statement.setInt(8, this.overtime);
-			statement.setLong(9, this.getId());
-			statement.execute();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 
 	public long getHomeTeamId() {
 		return homeTeamId;
@@ -130,4 +106,13 @@ public class Matchs {
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
+
+	public String getClient() {
+		return client;
+	}
+
+	public void setClient(String client) {
+		this.client = client;
+	}
+
 }

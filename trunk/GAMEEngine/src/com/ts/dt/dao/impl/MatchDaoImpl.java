@@ -14,6 +14,12 @@ public class MatchDaoImpl extends BaseDao implements MatchDao {
 	public Matchs load(long id) throws MatchException {
 		// TODO Auto-generated method stub
 		return (Matchs) super.load(Matchs.class, id);
+	}
 
+	public static void main(String[] args) throws MatchException {
+		MatchDao matchDao = new MatchDaoImpl();
+		Matchs match = matchDao.load(100);
+		match.setStatus(1);
+		matchDao.update(match);
 	}
 }

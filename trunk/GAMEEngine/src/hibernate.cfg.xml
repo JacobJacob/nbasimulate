@@ -21,7 +21,7 @@
 			org.hibernate.dialect.MySQLInnoDBDialect</property>
 
 		<!-- Enable Hibernate's automatic session context management -->
-		<!--property name="current_session_context_class">thread</property-->
+		<property name="current_session_context_class">thread</property>
 
 		<!-- Disable the second-level cache  -->
 		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
@@ -42,6 +42,7 @@
 		<mapping resource="com/ts/dt/po/hbm/MatchNodosityTacticalDetail.hbm" />
 		<mapping resource="com/ts/dt/po/hbm/MatchNotInPlayer.hbm" />
 		<mapping resource="com/ts/dt/po/hbm/Matchs.hbm" />
+		<mapping resource="com/ts/dt/po/hbm/MatchReq.hbm" />
 		<mapping resource="com/ts/dt/po/hbm/MatchStat.hbm" />
 		<mapping resource="com/ts/dt/po/hbm/Team.hbm" />
 		<mapping resource="com/ts/dt/po/hbm/TeamTactical.hbm" />

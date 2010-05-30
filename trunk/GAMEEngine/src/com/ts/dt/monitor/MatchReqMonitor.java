@@ -7,13 +7,14 @@ import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.dao.MatchReqDao;
 import com.ts.dt.dao.impl.MatchReqDaoImpl;
 import com.ts.dt.exception.MatchException;
+import com.ts.dt.po.MatchReq;
 import com.ts.dt.po.Matchs;
 import com.ts.dt.pool.MatchReqPool;
 import com.ts.dt.util.Logger;
 
 public class MatchReqMonitor extends Thread {
 
-	MatchReqDao matchReqDao = new MatchReqDaoImpl();
+	MatchReqDao matchReqDao = null;
 
 	@Override
 	public void run() {
@@ -22,19 +23,24 @@ public class MatchReqMonitor extends Thread {
 			if (MatchReqPool.size() == 0) {
 
 				try {
-					List<Matchs> list = matchReqDao.getAllNewReq();
 
-					Iterator<Matchs> iterator = list.iterator();
+					matchReqDao = new MatchReqDaoImpl();
+
+					List<MatchReq> list = matchReqDao.getAllNewReq();
+
+					Iterator<MatchReq> iterator = list.iterator();
 					if (list.size() > 0) {
 						Logger.info("Has New Request....");
 					}
 					while (iterator.hasNext()) {
-						Matchs req = iterator.next();
+						MatchReq req = iterator.next();
 						req.setPoint("[0:0]");
 						req.setStatus(MatchStatus.START);
-						matchReqDao.update(req);
-						MatchReqPool.put(req);
+
 					}
+					matchReqDao.update(list);
+					MatchReqPool.put(list);
+
 				} catch (MatchException em) {
 					em.printStackTrace();
 				}

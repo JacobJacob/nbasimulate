@@ -63,8 +63,6 @@ public class Nodosity {
 		this.init();
 		long currentContinueTime = (Long) context.get(MatchConstant.CURRT_CONT_TIME);
 
-		Logger.info("第 " + nodosityNo + "节比赛开始.....");
-
 		while (currentContinueTime < PER_NODOSITY_TIME || context.getFoulShootRemain() > 0) {
 
 			NodosityEngine nodosityEngine = new NodosityEngine(context);
@@ -73,7 +71,6 @@ public class Nodosity {
 			currentContinueTime = (Long) context.get(MatchConstant.CURRT_CONT_TIME);
 
 		}
-		Logger.info("第" + nodosityNo + "节比赛结束.....");
 		apoint = (Integer) context.get(MatchConstant.POINT_TEAM_A);
 		bpoint = (Integer) context.get(MatchConstant.POINT_TEAM_B);
 

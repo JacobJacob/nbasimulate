@@ -15,6 +15,7 @@ import com.ts.dt.engine.impl.MatchEngineImpl;
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.EngineStatus;
 import com.ts.dt.po.ErrorMatch;
+import com.ts.dt.po.MatchReq;
 import com.ts.dt.po.Matchs;
 import com.ts.dt.pool.MatchReqPool;
 import com.ts.dt.util.Logger;
@@ -74,20 +75,23 @@ public class MatchReqHandle extends Thread {
 				}
 			}
 			this.status = 2;
+			MatchReq matchReq = null;
 			Matchs match = null;
 			try {
 				this.msg = "start to get task";
-				match = MatchReqPool.get();
-				System.out.println(match.getId());
-				this.msg = "start to execute match";
-				match = engine.execute(match.getId());
+				matchReq = MatchReqPool.get();
+				System.out.println(matchReq.getId());
+				long match_id = matchReq.getId();
+				this.msg = "start to execute match:" + match_id;
+				engine.execute(match_id);
 				this.finishCount++;
-				this.msg = "finish execute match";
+				this.msg = "finish execute match:" + match_id;
 
-				match.setStatus(MatchStatus.FINISH);
 				MatchDao matchDao = new MatchDaoImpl();
+				match = matchDao.load(match_id);
+				match.setStatus(MatchStatus.FINISH);
+				match.setClient(name);
 				matchDao.update(match);
-				System.out.println(match.getId());
 
 			} catch (MatchException me) {
 				this.error = true;
@@ -99,6 +103,7 @@ public class MatchReqHandle extends Thread {
 				me.printStackTrace(pw);
 				errorMatch.setRemark(sw.toString());
 				errorMatch.setType(match.getType());
+				errorMatch.setClient(name);
 				Logger.logToDb("error", sw.toString());
 
 				ErrorMatchDao errorMatchDao = new ErrorMatchDaoImpl();
@@ -119,7 +124,7 @@ public class MatchReqHandle extends Thread {
 
 		public void run() {
 
-			while (true) {
+			while (go) {
 				try {
 					this.reportStatus();
 					String cmd = this.getCommand();
@@ -128,6 +133,10 @@ public class MatchReqHandle extends Thread {
 					} else if ("CONTINUE".equals(cmd)) {
 						setPause(false);
 						setError(false);
+					} else if ("EXIT".equals(cmd)) {
+						go = false;
+						status = 4;
+						reportStatus();
 					}
 					sleep(1000 * 20);
 				} catch (Throwable t) {

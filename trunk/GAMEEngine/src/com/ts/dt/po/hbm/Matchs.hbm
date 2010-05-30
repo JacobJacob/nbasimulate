@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping package="com.ts.dt.po">
-    <class name="Matchs" table="matchs">
+    <class name="Matchs" table="matchs" lazy="true">
         <id
             name="id"
             type="java.lang.Long"
@@ -56,6 +56,11 @@
            name="overtime"
            column="overtime"
            type="java.lang.Integer"
+        />
+        <property
+           name="client"
+           column="client"
+           type="java.lang.String"
         />
 </class>
 </hibernate-mapping>

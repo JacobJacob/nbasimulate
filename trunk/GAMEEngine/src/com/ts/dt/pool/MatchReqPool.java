@@ -3,24 +3,40 @@ package com.ts.dt.pool;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ts.dt.constants.MatchStatus;
+import com.ts.dt.dao.MatchReqDao;
+import com.ts.dt.dao.impl.MatchDaoImpl;
+import com.ts.dt.dao.impl.MatchReqDaoImpl;
+import com.ts.dt.exception.MatchException;
+import com.ts.dt.po.MatchReq;
 import com.ts.dt.po.Matchs;
 
 public class MatchReqPool {
 
-	private static List<Matchs> pool = new LinkedList<Matchs>();
+	private static List<MatchReq> pool = new LinkedList<MatchReq>();
 	private static Object lock = new Object();
+	private static Object dbLock = new Object();
 
-	public static void put(Matchs req) {
+	public static void put(MatchReq req) {
 		System.err.println("Thread:" + Thread.currentThread() + " start to put a obj....");
-		pool.add(req);
 		synchronized (lock) {
+			pool.add(req);
 			System.err.println("Thread:" + Thread.currentThread() + " start to notify others thread....");
 			lock.notifyAll();
 		}
 	}
 
-	public static Matchs get() {
-		Matchs req = null;
+	public static void put(List<MatchReq> reqs) {
+		System.err.println("Thread:" + Thread.currentThread() + " start to put a objs....");
+		synchronized (lock) {
+			pool.addAll(reqs);
+			System.err.println("Thread:" + Thread.currentThread() + " start to notify others thread....");
+			lock.notifyAll();
+		}
+	}
+
+	public static MatchReq get() {
+		MatchReq req = null;
 		synchronized (lock) {
 			while (pool.size() == 0) {
 
@@ -46,5 +62,28 @@ public class MatchReqPool {
 			lock.notifyAll();
 			return size;
 		}
+	}
+
+	public static MatchReq getFromDb() throws MatchException {
+		MatchReq req = null;
+		synchronized (dbLock) {
+			MatchReqDao matchReqDao = new MatchReqDaoImpl();
+			req = matchReqDao.getOneNewReq();
+			while (req == null) {
+				try {
+					System.out.println("Thread:" + Thread.currentThread() + " start to wait....");
+					dbLock.wait();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				req = matchReqDao.getOneNewReq();
+			}
+			req.setPoint("[0:0]");
+			req.setStatus(MatchStatus.START);
+			matchReqDao.update(req);
+			dbLock.notifyAll();
+			System.out.println("Thread:" + Thread.currentThread() + " success get a obj from db....");
+		}
+		return req;
 	}
 }
