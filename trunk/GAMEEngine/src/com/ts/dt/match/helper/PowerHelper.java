@@ -6,7 +6,7 @@ import com.ts.dt.match.Controller;
 
 public class PowerHelper {
 
-	// ¼ÆËãÃ¿½ÚµÄÌåÁ¦ÏûºÄ
+	// è®¡ç®—æ¯èŠ‚çš„ä½“åŠ›æ¶ˆè€—
 	public static int checkPowerCost(Controller controller, int tactical) {
 
 		int[] positionCost = { 16, 18, 20, 22, 24 }; // C -> PF -> SF -> SG ->

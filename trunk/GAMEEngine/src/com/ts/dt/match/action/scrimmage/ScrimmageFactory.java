@@ -34,14 +34,14 @@ public class ScrimmageFactory {
 		Scrimmage scrimmage = null;
 		try {
 			if (context.isJustStart()) {
-				// ¿ªÇò
+				// å¼€çƒ
 				scrimmage = new StartScrimmage();
 				context.setJustStart(false);
 				// } else if (context.isOffensiveRebound()) {
 				// scrimmage = new FoulScrimmage();
 				// 
 			} else if (context.getSeq() > 4) {
-				// ¼ÓÊ±ÈüÕùÇò
+				// åŠ æ—¶èµ›äº‰çƒ
 				scrimmage = new OverTimeScrimmage();
 			}
 
@@ -50,7 +50,7 @@ public class ScrimmageFactory {
 		}
 
 		if (scrimmage == null) {
-			throw new MatchException("·¢Çò¶¯×÷Òì³£[" + context.getSeq() + "]");
+			throw new MatchException("å‘çƒåŠ¨ä½œå¼‚å¸¸[" + context.getSeq() + "]");
 		}
 
 		return scrimmage;

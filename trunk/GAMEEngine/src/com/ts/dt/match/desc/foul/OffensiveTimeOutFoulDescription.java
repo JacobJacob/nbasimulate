@@ -12,7 +12,7 @@ public class OffensiveTimeOutFoulDescription implements ActionDescription {
 
 	public String load(MatchContext context) {
 		// TODO Auto-generated method stub
-		return "½ø¹¥24ÃëÎ¥Àı";
+		return "è¿›æ”»24ç§’è¿ä¾‹";
 	}
 
 	public String success(MatchContext context) {

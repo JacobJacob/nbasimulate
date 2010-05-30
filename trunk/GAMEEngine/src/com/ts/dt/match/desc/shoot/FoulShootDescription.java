@@ -11,9 +11,9 @@ public class FoulShootDescription implements ActionDescription {
 		String desc = null;
 		if (context.getFoulShootType() == MatchConstant.FOUL_SHOOT_TYPE_ONE) {
 			if (context.isSuccess()) {
-				desc = "¼Ó·£ÃüÖĞ";
+				desc = "åŠ ç½šå‘½ä¸­";
 			} else {
-				desc = "¼Ó·£²»ÖĞ";
+				desc = "åŠ ç½šä¸ä¸­";
 			}
 		} else {
 			if (context.isSuccess()) {
@@ -27,12 +27,12 @@ public class FoulShootDescription implements ActionDescription {
 
 	public String failure(MatchContext context) {
 		// TODO Auto-generated method stub
-		return "µÚ~6~·£Ã»½ø!";
+		return "ç¬¬~6~ç½šæ²¡è¿›!";
 	}
 
 	public String success(MatchContext context) {
 		// TODO Auto-generated method stub
-		return "µÚ~6~·£½øÁË!";
+		return "ç¬¬~6~ç½šè¿›äº†!";
 	}
 
 }

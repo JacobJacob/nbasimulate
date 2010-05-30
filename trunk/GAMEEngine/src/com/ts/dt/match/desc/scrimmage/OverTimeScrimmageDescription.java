@@ -8,7 +8,7 @@ public class OverTimeScrimmageDescription implements ActionDescription {
 	public String load(MatchContext context) {
 		// TODO Auto-generated method stub
 		String desc = "";
-		desc = "~1~ºÍ~2~ÕùÇò,~3~½«Çò²¦ÁË»ØÀ´,~4~µÃµ½Çò,±ÈÈü¿ªÊ¼";
+		desc = "~1~å’Œ~2~äº‰çƒ,~3~å°†çƒæ‹¨äº†å›æ¥,~4~å¾—åˆ°çƒ,æ¯”èµ›å¼€å§‹";
 		return desc;
 	}
 

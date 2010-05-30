@@ -37,26 +37,26 @@ public class NodosityEngine {
 		}
 		int action = context.getCurrentActionType();
 
-		// Í¶Çò¶¯×÷
+		// æŠ•çƒåŠ¨ä½œ
 		if (action == MatchConstant.ACTION_TYPE_SHOUT) {
 			if (context.currentOffensiveTimeOut()) {
-				// ×ö½ø¹¥24Ãë´¦Àí
+				// åšè¿›æ”»24ç§’å¤„ç†
 				currentController.foul(context);
 				checkNextController(MatchConstant.ACTION_TYPE_FOUL);
 			} else {
 				currentController.shout(context);
-				// Èç¹ûÊÇÇò½ø,·¸¹æ»òÕß³ö½çÔò²»×öÀº°åÇòÕù¶á´¦Àí
+				// å¦‚æœæ˜¯çƒè¿›,çŠ¯è§„æˆ–è€…å‡ºç•Œåˆ™ä¸åšç¯®æ¿çƒäº‰å¤ºå¤„ç†
 				if (!context.isFoul() && !context.isSuccess() && !context.isOutside()) {
 					BackboardCheckFactory.getInstance().createBackboardCheckFactory(context).check(context);
 				} else {
-					// ¼È²»ÊÇÇ°³¡Àº°å£¬Ò²²»ÊÇºó³¡Àº°å
+					// æ—¢ä¸æ˜¯å‰åœºç¯®æ¿ï¼Œä¹Ÿä¸æ˜¯ååœºç¯®æ¿
 					context.setDefensiveRebound(false);
 					context.setOffensiveRebound(false);
 				}
 				checkNextController(MatchConstant.ACTION_TYPE_SHOUT);
 				context.put(MatchConstant.HAS_PASS_TIMES, 0);
 			}
-			// ´«Çò¶¯×÷
+			// ä¼ çƒåŠ¨ä½œ
 		} else if (action == MatchConstant.ACTION_TYPE_PASS) {
 			if (context.currentOffensiveTimeOut()) {
 				currentController.foul(context);
@@ -70,15 +70,15 @@ public class NodosityEngine {
 				hasPassTimes++;
 				context.put(MatchConstant.HAS_PASS_TIMES, hasPassTimes);
 			}
-			// ÇÀÀº°å¶¯×÷
+			// æŠ¢ç¯®æ¿åŠ¨ä½œ
 		} else if (action == MatchConstant.ACTION_TYPE_REBOUND) {
 			currentController.loose(context);
 			checkNextController(MatchConstant.ACTION_TYPE_REBOUND);
-			// ·¢Çò¶¯×÷
+			// å‘çƒåŠ¨ä½œ
 		} else if (action == MatchConstant.ACTION_TYPE_SERVICE) {
 			currentController.service(context);
 			checkNextController(MatchConstant.ACTION_TYPE_SERVICE);
-			// ÕùÇò¶¯×÷
+			// äº‰çƒåŠ¨ä½œ
 		} else if (action == MatchConstant.ACTION_TYPE_SCRIMMAGE) {
 			currentController.scrimmage(context);
 			checkNextController(MatchConstant.ACTION_TYPE_SCRIMMAGE);
@@ -135,13 +135,13 @@ public class NodosityEngine {
 		} else if (action == MatchConstant.ACTION_TYPE_FOUL) {
 			nextController = checkNextControllerForOffensiveTimeOut();
 		} else {
-			throw new MatchException("¶¯×÷ÀàĞÍ²»´æÔÚ");
+			throw new MatchException("åŠ¨ä½œç±»å‹ä¸å­˜åœ¨");
 		}
 		context.setNextController(nextController);
 	}
 
 	/**
-	 * ÅĞ¶ÏÏÂÒ»¸ö·ÀÊØÕß
+	 * åˆ¤æ–­ä¸‹ä¸€ä¸ªé˜²å®ˆè€…
 	 */
 	public void checkNextDefender() {
 
@@ -149,7 +149,7 @@ public class NodosityEngine {
 	}
 
 	/**
-	 * ÅĞ¶Ïµ±Ç°·ÀÊØÕß
+	 * åˆ¤æ–­å½“å‰é˜²å®ˆè€…
 	 */
 	public void checkCurrentDefender() {
 
@@ -191,7 +191,7 @@ public class NodosityEngine {
 	}
 
 	/*
-	 * ÅĞ¶ÏÕùÇòºóÏÂÒ»¸ö¿ØÇòÕß
+	 * åˆ¤æ–­äº‰çƒåä¸‹ä¸€ä¸ªæ§çƒè€…
 	 */
 	public Controller checkNextControllerForScrimmageAction() {
 
@@ -215,7 +215,7 @@ public class NodosityEngine {
 		} else {
 			index = 5;
 		}
-		// Èç¹û²»³É¹¦,ÔòÊÇ¶Ô·½ÄÃµ½Çò
+		// å¦‚æœä¸æˆåŠŸ,åˆ™æ˜¯å¯¹æ–¹æ‹¿åˆ°çƒ
 		if (!context.getScrimmageResult().equals(MatchConstant.RESULT_SUCCESS)) {
 			index += 5;
 		}
@@ -302,18 +302,18 @@ public class NodosityEngine {
 		return controller;
 	}
 
-	// ÅĞ¶ÏÍ¶Àº¶¯×÷ºóµÄÏÂÒ»¸ö¿ØÇòÕß
+	// åˆ¤æ–­æŠ•ç¯®åŠ¨ä½œåçš„ä¸‹ä¸€ä¸ªæ§çƒè€…
 	public Controller checkNextControllerForShootAction() {
 
 		Controller controller = null;
-		// Èç¹ûÊÇ·£Àº,²¢ÇÒÉĞÎ´·£Íê,Ôò¼ÌĞø
+		// å¦‚æœæ˜¯ç½šç¯®,å¹¶ä¸”å°šæœªç½šå®Œ,åˆ™ç»§ç»­
 		if (context.getFoulShootRemain() > 0) {
 			controller = context.getCurrentController();
 			context.setNextActionType(MatchConstant.ACTION_TYPE_SHOUT);
 			context.setNextAction(new FoulShoot());
 			return controller;
 		}
-		// Èç¹ûÍ¶ÀºÍ¶ÖĞ,ÔòÊÇ¶Ô·½¿ØÎÀ·¢Çò
+		// å¦‚æœæŠ•ç¯®æŠ•ä¸­,åˆ™æ˜¯å¯¹æ–¹æ§å«å‘çƒ
 		if (context.getShootActionResult() == MatchConstant.RESULT_SUCCESS) {
 			if (context.isHomeTeam()) {
 				controller = (Controller) context.getControllers().get("PGB");
@@ -324,7 +324,7 @@ public class NodosityEngine {
 			return controller;
 		}
 
-		// ÅĞ¶ÏÕùÀº°åµÄÊÇË­
+		// åˆ¤æ–­äº‰ç¯®æ¿çš„æ˜¯è°
 		int index = -1;
 		Random random = new Random();
 		int[] percent = ReboundHelper.checkPercentForGetRebound(context.getControllers(), context.isHomeTeam());
@@ -373,7 +373,7 @@ public class NodosityEngine {
 
 	}
 
-	// ÅĞ¶ÏÏÂÒ»¶¯×÷ÊÇ¿ÛÀºµÄ¿ÉÄÜĞÔ
+	// åˆ¤æ–­ä¸‹ä¸€åŠ¨ä½œæ˜¯æ‰£ç¯®çš„å¯èƒ½æ€§
 	public void checkSlamDunk() {
 
 		String nextContrNm = context.getNextController().getControllerName();
@@ -405,7 +405,7 @@ public class NodosityEngine {
 		}
 	}
 
-	// ÅĞ¶ÏÍ¶ÀºÖ®Ç°ÓĞÃ»ÓĞ·¸¹æ
+	// åˆ¤æ–­æŠ•ç¯®ä¹‹å‰æœ‰æ²¡æœ‰çŠ¯è§„
 	public void checkWhetherFoulBeforeShoot() {
 		int percent = FoulHelper.checkDefensiveFoulAfterShoot(context);
 		if (RandomCheckHelper.defaultCheck(percent)) {
@@ -442,7 +442,7 @@ public class NodosityEngine {
 	}
 
 	/*
-	 * ÅĞ¶Ïµ±Ç°¶¯×÷ÀàĞÍ
+	 * åˆ¤æ–­å½“å‰åŠ¨ä½œç±»å‹
 	 */
 	public void checkCurrentActionType() {
 

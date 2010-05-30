@@ -9,7 +9,7 @@ public class OffensiveReboundDescription implements ActionDescription {
 		// TODO Auto-generated method stub
 		String desc = null;
 
-		desc = "~1~ÅĞ¶Ï×¼È·,ÇÀµ½Ò»¸ö½ø¹¥Àº°å!";
+		desc = "~1~åˆ¤æ–­å‡†ç¡®,æŠ¢åˆ°ä¸€ä¸ªè¿›æ”»ç¯®æ¿!";
 		return desc;
 	}
 

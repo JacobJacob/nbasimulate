@@ -24,7 +24,7 @@ public class LongPassCheck implements ResultCheck {
 			if (RandomCheckHelper.defaultCheck(70)) {
 				context.setPassActionResult(MatchConstant.RESULT_FAILURE_OUTSIDE);
 			} else {
-				//±»¶Ï
+				//è¢«æ–­
 				context.setPassActionResult(MatchConstant.RESULT_FAILURE_BE_STEAL);
 			}
 		}

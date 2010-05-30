@@ -7,7 +7,7 @@ public class DefaultServiceDescription implements ActionDescription {
 
 	public String load(MatchContext context) {
 		// TODO Auto-generated method stub
-		return "~1~¿ªÇò";
+		return "~1~å¼€çƒ";
 	}
 
 	public String failure(MatchContext context) {

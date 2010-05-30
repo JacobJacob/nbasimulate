@@ -91,9 +91,9 @@ public class MatchConstant {
 
 	public static final String NULL_STRING = "NULL";
 
-	public static final int FOUL_SHOOT_TYPE_ONE = 1; // ¼Ó·£
-	public static final int FOUL_SHOOT_TYPE_TWO = 2; // Á½·Ö·£
-	public static final int FOUL_SHOOT_TYPE_THREE = 3; // Èý·Ö·£
+	public static final int FOUL_SHOOT_TYPE_ONE = 1; // åŠ ç½š
+	public static final int FOUL_SHOOT_TYPE_TWO = 2; // ä¸¤åˆ†ç½š
+	public static final int FOUL_SHOOT_TYPE_THREE = 3; // ä¸‰åˆ†ç½š
 
 	public static final String CURRENT_PLAYER_NAME_PLACEHOLDER = "~1~";
 	public static final String CURRENT_DEFENDER_NAME_PLACEHOLDER = "~2~";

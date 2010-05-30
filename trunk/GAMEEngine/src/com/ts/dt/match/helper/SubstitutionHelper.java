@@ -37,10 +37,10 @@ public class SubstitutionHelper {
 			}
 		}
 		foutOutController.setPlayer(onCourtPlayer);
-		System.out.println(onCourtPlayer.getName() + "Ìæ»»ÉÏ³¡");
+		System.out.println(onCourtPlayer.getName() + "æ›¿æ¢ä¸Šåœº");
 	}
 
-	// Ñ¡ÔñÒ»¸ö×îÊÊºÏµÄÇòÔ±ÉÏ³¡
+	// é€‰æ‹©ä¸€ä¸ªæœ€é€‚åˆçš„çƒå‘˜ä¸Šåœº
 	private static Player choosePlayer(String position, Player onCourtPlayer, Player player) {
 
 		if (onCourtPlayer == null) {

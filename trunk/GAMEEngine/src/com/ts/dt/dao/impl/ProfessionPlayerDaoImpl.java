@@ -23,7 +23,7 @@ public class ProfessionPlayerDaoImpl extends BaseDao implements ProfessionPlayer
 		// TODO Auto-generated method stub
 		Player player = (Player) super.load(ProfessionPlayer.class, id);
 		if (player == null) {
-			throw new MatchException("球员不存在[" + id + "]");
+			throw new MatchException("鐞冨憳涓嶅瓨鍦╗" + id + "]");
 		}
 		return player;
 	}
@@ -35,7 +35,7 @@ public class ProfessionPlayerDaoImpl extends BaseDao implements ProfessionPlayer
 		q.setString("no", no);
 		Player player = (Player) q.uniqueResult();
 		if (player == null) {
-			throw new MatchException("球员不存在[" + no + "]");
+			throw new MatchException("鐞冨憳涓嶅瓨鍦╗" + no + "]");
 		}
 		return player;
 

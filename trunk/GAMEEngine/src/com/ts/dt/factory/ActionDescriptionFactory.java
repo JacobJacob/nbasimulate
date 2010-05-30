@@ -6,7 +6,7 @@ import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.util.StringUtil;
 
 /*
- * ¶¯×÷ÃèÊö¹¤³§Àà
+ * åŠ¨ä½œæè¿°å·¥å‚ç±»
  */
 public class ActionDescriptionFactory {
 

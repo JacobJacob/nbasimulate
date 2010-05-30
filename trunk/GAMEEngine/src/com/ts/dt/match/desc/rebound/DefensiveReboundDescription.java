@@ -12,28 +12,28 @@ public class DefensiveReboundDescription implements ActionDescription {
 	String desc = null;
 
 	if (context.isNotStick()) {
-	    desc = "~1~½«ÇòµÃµ½!";
+	    desc = "~1~å°†çƒå¾—åˆ°!";
 	} else {
 	    Random random = new Random();
 	    int ran = random.nextInt(5);
 	    switch (ran) {
 	    case 1:
-		desc = "¶ÓÓÑ½«ÆäËüÇòÔ±µ²ÔÚÍâÃæ,~1~¿ØÖÆÁË·ÀÊØÀº°å!";
+		desc = "é˜Ÿå‹å°†å…¶å®ƒçƒå‘˜æŒ¡åœ¨å¤–é¢,~1~æ§åˆ¶äº†é˜²å®ˆç¯®æ¿!";
 		break;
 	    case 2:
-		desc = "~1~´Ó½ø¹¥ÇòÔ±Í·ÉÏ½«ÇòÔ±µÃµ½!";
+		desc = "~1~ä»è¿›æ”»çƒå‘˜å¤´ä¸Šå°†çƒå‘˜å¾—åˆ°!";
 		break;
 	    case 3:
-		desc = "~1~µ¯Ìø¾ªÈË,Ó²ÉúÉúµÄ½«Àº°å±§×¡!";
+		desc = "~1~å¼¹è·³æƒŠäºº,ç¡¬ç”Ÿç”Ÿçš„å°†ç¯®æ¿æŠ±ä½!";
 		break;
 	    case 4:
-		desc = "~1~¿¨Î»¿¨µÃ²»´í£¬ÇáËÉ½«ÇòµÃµ½!!";
+		desc = "~1~å¡ä½å¡å¾—ä¸é”™ï¼Œè½»æ¾å°†çƒå¾—åˆ°!!";
 		break;
 	    case 5:
-		desc = "~1~¼ñµ½Ò»¸öÀº°å!";
+		desc = "~1~æ¡åˆ°ä¸€ä¸ªç¯®æ¿!";
 		break;
 	    default:
-		desc = "~1~µ¥ÊÖ½«ÇòµÃµ½!";
+		desc = "~1~å•æ‰‹å°†çƒå¾—åˆ°!";
 		break;
 	    }
 

@@ -43,7 +43,7 @@ public class DefaultFoulCheck implements FoulCheck {
 			Player defender = context.getCurrentDefender().getPlayer();
 			boolean isHomeTeam = context.getCurrentDefender().getControllerName().endsWith("A");
 			context.playerAddFoulTimes(defender, isHomeTeam);
-			// 判断防守者是不是已经6次犯规了
+			// 鍒ゆ柇闃插畧鑰呮槸涓嶆槸宸茬粡6娆＄姱瑙勪簡
 			if (context.checkFoulOut(defender, isHomeTeam)) {
 				// substitution
 				context.setFoutOutController(context.getCurrentDefender());

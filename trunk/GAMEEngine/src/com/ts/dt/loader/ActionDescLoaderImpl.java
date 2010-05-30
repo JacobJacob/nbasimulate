@@ -11,13 +11,13 @@ import com.ts.dt.key.ActionDescKey;
 import com.ts.dt.po.ActionDesc;
 
 /**
- * ¶¯×÷ÃèÊö¼ÓÔØÀà
+ * åŠ¨ä½œæè¿°åŠ è½½ç±»
  * 
  */
 
 public class ActionDescLoaderImpl implements ActionDescLoader {
 
-	/** »º´æ* */
+	/** ç¼“å­˜* */
 	private ActionDescCache cache;
 
 	private static ActionDescLoaderImpl actionDescLoaderImpl;

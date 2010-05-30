@@ -9,7 +9,7 @@ import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
 import com.ts.dt.util.MessagesUtil;
 
-//开场的争球
+//寮�鍦虹殑浜夌悆
 public class StartScrimmage implements Scrimmage {
 
 	public String before(MatchContext context) {
@@ -32,11 +32,11 @@ public class StartScrimmage implements Scrimmage {
 
 		String successerNm = null;
 		if (context.getScrimmageResult().equals(MatchConstant.RESULT_SUCCESS)) {
-			// 主队争球成功
+			// 涓婚槦浜夌悆鎴愬姛
 			context.setHomeStart(true);
 			successerNm = currtPlayerNm;
 		} else {
-			// 客队争球成功
+			// 瀹㈤槦浜夌悆鎴愬姛
 			context.setHomeStart(false);
 			successerNm = currtDefenderNm;
 		}

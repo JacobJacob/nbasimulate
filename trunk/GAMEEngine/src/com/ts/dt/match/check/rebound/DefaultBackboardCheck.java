@@ -16,10 +16,10 @@ public class DefaultBackboardCheck implements BackboardCheck {
 		int totalGuestBackboard = context.getTotalGuestBackboard() / 5;
 
 		if (context.isHomeTeam()) {
-			// Ö÷¶Ó¿ØÇò,¾ÍÊÇÇ°³¡Àº°å
+			// ä¸»é˜Ÿæ§çƒ,å°±æ˜¯å‰åœºç¯®æ¿
 			totalGuestBackboard += BackboardCheck.defensiveReboundInc;
 		} else {
-			// ¿Í¶Ó¶Ó¿ØÇò,¾ÍÊÇºó³¡Àº°å
+			// å®¢é˜Ÿé˜Ÿæ§çƒ,å°±æ˜¯ååœºç¯®æ¿
 			totalHomeBackboard += BackboardCheck.defensiveReboundInc;
 		}
 
@@ -37,21 +37,21 @@ public class DefaultBackboardCheck implements BackboardCheck {
 
 		if (context.isHomeTeam()) {
 			if (i < point) {
-				// Èç¹ûÊÇÖ÷¶Ó,ÇÒ¸ÅÂÊÔÚÖ÷¶ÓÕâ±ß,ÔòÊÇÇ°³¡Àº°å
+				// å¦‚æœæ˜¯ä¸»é˜Ÿ,ä¸”æ¦‚ç‡åœ¨ä¸»é˜Ÿè¿™è¾¹,åˆ™æ˜¯å‰åœºç¯®æ¿
 				context.setOffensiveRebound(true);
 				context.setDefensiveRebound(false);
 			} else {
-				// Èç¹ûÊÇÖ÷¶Ó,ÇÒ¸ÅÂÊÔÚ¿Í¶ÓÕâ±ß,ÔòÊÇºó³¡Àº°å
+				// å¦‚æœæ˜¯ä¸»é˜Ÿ,ä¸”æ¦‚ç‡åœ¨å®¢é˜Ÿè¿™è¾¹,åˆ™æ˜¯ååœºç¯®æ¿
 				context.setOffensiveRebound(false);
 				context.setDefensiveRebound(true);
 			}
 		} else {
 			if (i < point) {
-				// Èç¹ûÊÇ¿Í¶Ó,ÇÒ¸ÅÂÊÔÚÖ÷¶ÓÕâ±ß,ÔòÊÇºó³¡Àº°å
+				// å¦‚æœæ˜¯å®¢é˜Ÿ,ä¸”æ¦‚ç‡åœ¨ä¸»é˜Ÿè¿™è¾¹,åˆ™æ˜¯ååœºç¯®æ¿
 				context.setOffensiveRebound(false);
 				context.setDefensiveRebound(true);
 			} else {
-				// Èç¹ûÊÇ¿Í¶Ó,ÇÒ¸ÅÂÊÔÚ¿Í¶ÓÕâ±ß,ÔòÊÇÇ°³¡Àº°å
+				// å¦‚æœæ˜¯å®¢é˜Ÿ,ä¸”æ¦‚ç‡åœ¨å®¢é˜Ÿè¿™è¾¹,åˆ™æ˜¯å‰åœºç¯®æ¿
 				context.setOffensiveRebound(true);
 				context.setDefensiveRebound(false);
 			}

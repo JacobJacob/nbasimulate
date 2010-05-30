@@ -5,7 +5,7 @@ import com.ts.dt.context.MatchContext;
 /**
  * 
  * @author Administrator
- * 判断各种动作成功的Check接口
+ * 鍒ゆ柇鍚勭鍔ㄤ綔鎴愬姛鐨凜heck鎺ュ彛
  *
  */
 public interface ResultCheck {

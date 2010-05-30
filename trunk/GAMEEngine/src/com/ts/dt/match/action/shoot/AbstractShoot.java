@@ -31,7 +31,7 @@ public abstract class AbstractShoot implements Action {
 		if (context.getPreviousController() != null) {
 			previousPlayerNm = context.getPreviousController().getPlayerName();
 		}
-		// ÅĞ¶ÏÊÇ·ñ±»·â¸Ç
+		// åˆ¤æ–­æ˜¯å¦è¢«å°ç›–
 		BlockCheck blockCheck = BlockCheckFactory.getInstance().createBlockCheckFactory(context);
 		blockCheck.check(context);
 		// check the shoot result
@@ -41,14 +41,14 @@ public abstract class AbstractShoot implements Action {
 		} else {
 			ShootResultCheckFactory.getInstance().createResultCheck(context).check(context);
 			// if (!context.isSuccess()) {
-			// Èç¹û²»½ø,ÅĞ¶ÏÒ»ÏÂÊÇ·ñ·¸¹æ
+			// å¦‚æœä¸è¿›,åˆ¤æ–­ä¸€ä¸‹æ˜¯å¦çŠ¯è§„
 			FoulCheckFactory.getInstance().createFoulCheckFactory(context).check(context);
 			// }
 		}
 
 		String desc = description.load(context);
 		if (desc == null) {
-			throw new MatchException("±ÈÈüÃèÊöÎª¿Õ");
+			throw new MatchException("æ¯”èµ›æè¿°ä¸ºç©º");
 		}
 
 		String currentTeamNm = context.getCurrentController().getTeamFlg();
@@ -58,11 +58,11 @@ public abstract class AbstractShoot implements Action {
 		}
 
 		if (!currentTeamNm.equals(previousTeamNm)) {
-			throw new MatchException("±ÈÈüÖĞµ±Ç°Í¶ÀºÇòÔ±²»µÈÓÚÉÏÒ»¿ØÇòÇòÔ±");
+			throw new MatchException("æ¯”èµ›ä¸­å½“å‰æŠ•ç¯®çƒå‘˜ä¸ç­‰äºä¸Šä¸€æ§çƒçƒå‘˜");
 		}
 
 		String currentShootNo = "";
-		// ÕâÖÖÊÇ·£Çò
+		// è¿™ç§æ˜¯ç½šçƒ
 		if (this instanceof FoulShoot) {
 			int remainFoulShoot = context.getFoulShootRemain();
 			if (context.getFoulShootType() == MatchConstant.FOUL_SHOOT_TYPE_TWO) {
@@ -82,9 +82,9 @@ public abstract class AbstractShoot implements Action {
 			}
 		}
 
-		desc = desc.replace("~1~", currtPlayerNm.trim()); // µ±Ç°¿ØÇò¶ÓÔ±
-		desc = desc.replace("~2~", currtDefenderNm.trim()); // µ±Ç°·ÀÊØ¶ÓÔ±
-		desc = desc.replace("~3~", previousPlayerNm.trim()); // ÉÏÒ»¸ö¿ØÇòÇòÔ±
+		desc = desc.replace("~1~", currtPlayerNm.trim()); // å½“å‰æ§çƒé˜Ÿå‘˜
+		desc = desc.replace("~2~", currtDefenderNm.trim()); // å½“å‰é˜²å®ˆé˜Ÿå‘˜
+		desc = desc.replace("~3~", previousPlayerNm.trim()); // ä¸Šä¸€ä¸ªæ§çƒçƒå‘˜
 		desc = desc.replace("~6~", currentShootNo);
 
 		boolean isHomeTeam = currtContrNm.endsWith("A");
@@ -121,19 +121,19 @@ public abstract class AbstractShoot implements Action {
 
 		context.setNewLine(false);
 
-		// ÇÒ¹¦Í³¼Æ
+		// ä¸”åŠŸç»Ÿè®¡
 		if (context.isAssist()) {
 			handleAssit(context);
 			context.setAssist(false);
 		}
 
-		// ±£´æ±ÈÈüÃèÊö
+		// ä¿å­˜æ¯”èµ›æè¿°
 		MatchInfoHelper.save(context, desc);
 		MessagesUtil.showLine(context, desc);
 		return result;
 	}
 
-	// ×öÖú¹¥Í³¼Æ
+	// åšåŠ©æ”»ç»Ÿè®¡
 	final private void handleAssit(MatchContext context) {
 
 		String previousControllerNm = context.getPreviousController().getControllerName();
@@ -144,7 +144,7 @@ public abstract class AbstractShoot implements Action {
 		}
 	}
 
-	// ×ö·â¸ÇÍ³¼Æ
+	// åšå°ç›–ç»Ÿè®¡
 	final private void handleBlock(MatchContext context) {
 
 		String currentDefenderNm = context.getCurrentDefender().getControllerName();

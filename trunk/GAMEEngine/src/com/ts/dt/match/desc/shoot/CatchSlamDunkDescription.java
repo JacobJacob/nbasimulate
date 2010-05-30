@@ -18,7 +18,7 @@ public class CatchSlamDunkDescription implements ActionDescription {
 		} else if (MatchConstant.RESULT_FAILURE_BLOCKED.equals(result)) {
 			desc = blocked(context);
 		} else {
-			desc = "~1~½Óµ½~3~µÄÃî´«,¿ÕÖĞÏëÖ±½Ó¿ÛÀº,~2~ÌøÆğ·ÀÊØ,¸ÉÈÅÁË~1~µÄ¿ÛÀº,ÇòÃ»ÓĞ½ø . ";
+			desc = "~1~æ¥åˆ°~3~çš„å¦™ä¼ ,ç©ºä¸­æƒ³ç›´æ¥æ‰£ç¯®,~2~è·³èµ·é˜²å®ˆ,å¹²æ‰°äº†~1~çš„æ‰£ç¯®,çƒæ²¡æœ‰è¿› . ";
 		}
 
 		return desc;
@@ -41,7 +41,7 @@ public class CatchSlamDunkDescription implements ActionDescription {
 
 		desc = actionDesc.getActionDesc();
 		if (context.isFoul()) {
-			desc += "Í¬Ê±Ôì³ÉÁË~2~µÄ·¸¹æ!";
+			desc += "åŒæ—¶é€ æˆäº†~2~çš„çŠ¯è§„!";
 		}
 		return desc;
 	}

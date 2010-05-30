@@ -21,7 +21,7 @@ public class ShortPassDescription implements ActionDescription {
 	public String success(MatchContext context) {
 
 		String desc = null;
-		desc = "~1~将球传给了~4~";
+		desc = "~1~灏嗙悆浼犵粰浜唦4~";
 		return desc;
 
 	}
@@ -34,7 +34,7 @@ public class ShortPassDescription implements ActionDescription {
 	public String loadBeSteal() {
 
 		String desc = null;
-		desc = "~3~传球,被~2~断了";
+		desc = "~3~浼犵悆,琚珇2~鏂簡";
 		return desc;
 
 	}
@@ -42,7 +42,7 @@ public class ShortPassDescription implements ActionDescription {
 	public String loadIsOutSide() {
 
 		String desc = null;
-		desc = "~1~传球出界";
+		desc = "~1~浼犵悆鍑虹晫";
 		return desc;
 
 	}

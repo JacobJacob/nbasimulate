@@ -21,7 +21,7 @@ public class ActionDescDaoImpl extends BaseDao implements ActionDescDao {
 		q.setString("flg", flg);
 		List<ActionDesc> list = q.list();
 		if (list.isEmpty()) {
-			throw new MatchException("出现比赛描述为空的情况[" + actionNm + "][" + result + "][" + flg + "]");
+			throw new MatchException("鍑虹幇姣旇禌鎻忚堪涓虹┖鐨勬儏鍐礫" + actionNm + "][" + result + "][" + flg + "]");
 		}
 		return list;
 

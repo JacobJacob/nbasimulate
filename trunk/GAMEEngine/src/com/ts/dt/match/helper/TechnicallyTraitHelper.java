@@ -8,11 +8,11 @@ import com.ts.dt.po.Player;
 
 public class TechnicallyTraitHelper {
 
-	public static final int TECHNICALLY_TRAIT_OUT = 1; // ÍâÏß¹¥»÷ĞÍ
-	public static final int TECHNICALLY_TRAIT_INT = 2; // ÄÚÏßÍ»ÆÆĞÍ
-	public static final int TECHNICALLY_TRAIT_MID = 3; // ÖĞÍ¶ĞÍ
-	public static final int TECHNICALLY_TRAIT_SWIPE = 4; // ÄÚÏßÇ¿´òĞÍ
-	public static final int TECHNICALLY_TRAIT_BREAK = 5; // Í»ÆÆĞÍ
+	public static final int TECHNICALLY_TRAIT_OUT = 1; // å¤–çº¿æ”»å‡»å‹
+	public static final int TECHNICALLY_TRAIT_INT = 2; // å†…çº¿çªç ´å‹
+	public static final int TECHNICALLY_TRAIT_MID = 3; // ä¸­æŠ•å‹
+	public static final int TECHNICALLY_TRAIT_SWIPE = 4; // å†…çº¿å¼ºæ‰“å‹
+	public static final int TECHNICALLY_TRAIT_BREAK = 5; // çªç ´å‹
 
 	public static int check(Player player) {
 

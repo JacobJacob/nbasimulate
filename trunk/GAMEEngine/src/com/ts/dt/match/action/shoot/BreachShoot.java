@@ -3,7 +3,7 @@ package com.ts.dt.match.action.shoot;
 import com.ts.dt.context.MatchContext;
 import com.ts.dt.exception.MatchException;
 
-//Í»ÆÆºóµÄÍ¶Àº
+//Í»ï¿½Æºï¿½ï¿½Í¶ï¿½ï¿½
 public class BreachShoot extends AbstractShoot implements Shoot {
 
 	public String execute(MatchContext context) throws MatchException {

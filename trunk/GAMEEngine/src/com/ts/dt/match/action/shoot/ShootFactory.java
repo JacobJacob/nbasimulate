@@ -36,7 +36,7 @@ public class ShootFactory {
 
 		Shoot shoot = null;
 
-		//хГ╧Шря╬╜спобр╩╦Ж╤╞вВ,тРж╠╫с╥╣╩ь
+		//Е╕┌Ф·°Е╥╡Г╩▐Ф°┴Д╦▀Д╦─Д╦╙Е┼╗Д╫°,Е┬≥Г⌡╢Ф▌╔Х©■Е⌡·
 		if (context.getNextAction() != null) {
 			shoot = (Shoot) context.getNextAction();
 			context.removeNextAction();

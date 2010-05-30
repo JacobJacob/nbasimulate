@@ -74,7 +74,7 @@ public class Nodosity {
 		apoint = (Integer) context.get(MatchConstant.POINT_TEAM_A);
 		bpoint = (Integer) context.get(MatchConstant.POINT_TEAM_B);
 
-		// ÌåÁ¦¼ÆËã
+		// ä½“åŠ›è®¡ç®—
 		Iterator<Controller> iterator = context.getControllers().values().iterator();
 		while (iterator.hasNext()) {
 			Controller controller = iterator.next();
@@ -101,7 +101,7 @@ public class Nodosity {
 	}
 
 	/*
-	 * Ã¿½ÚµÄÊı¾İ³õÊ¼»¯
+	 * æ¯èŠ‚çš„æ•°æ®åˆå§‹åŒ–
 	 */
 	public void init() throws MatchException {
 
@@ -121,13 +121,13 @@ public class Nodosity {
 		String currentDefenderName = null;
 
 		if (nodosityNo == 1) {
-			// µÚÒ»½Ú±ÈÈü,ÕùÇò
+			// ç¬¬ä¸€èŠ‚æ¯”èµ›,äº‰çƒ
 			currentControllerName = "CA";
 			currentDefenderName = "CB";
 
 			context.setCurrentActionType(MatchConstant.ACTION_TYPE_SCRIMMAGE);
 
-			// µÚÒ»½ÚµÄÊ±ºò, °ÑÌåÁ¦Öµ¸´ÖÆµ½±ÈÈüÌåÁ¦,Èç¹ûÊÇÁªÈü,ÔòÍ¬Ê±¸´ÖÆµ½ÁªÈüÌåÁ¦ÉÏ
+			// ç¬¬ä¸€èŠ‚çš„æ—¶å€™, æŠŠä½“åŠ›å€¼å¤åˆ¶åˆ°æ¯”èµ›ä½“åŠ›,å¦‚æœæ˜¯è”èµ›,åˆ™åŒæ—¶å¤åˆ¶åˆ°è”èµ›ä½“åŠ›ä¸Š
 			Iterator<Controller> iterator = context.getControllers().values().iterator();
 			while (iterator.hasNext()) {
 				Controller controller = iterator.next();
@@ -140,32 +140,32 @@ public class Nodosity {
 			this.updatePlayers(context);
 
 		} else if (nodosityNo <= 4) {
-			// Èç¹û²»ÊÇµÚÒ»½Ú,ÔòÊÇ·¢Çò,Èç¹ûÊÇA¶ÓµÃÇò²¢ÇÒµÚËÄ½Ú
+			// å¦‚æœä¸æ˜¯ç¬¬ä¸€èŠ‚,åˆ™æ˜¯å‘çƒ,å¦‚æœæ˜¯Aé˜Ÿå¾—çƒå¹¶ä¸”ç¬¬å››èŠ‚
 			if (context.isHomeStart()) {
 				if (nodosityNo == 4) {
-					// Ö÷¶Ó·¢Çò
+					// ä¸»é˜Ÿå‘çƒ
 					currentControllerName = "SGA";
 					currentDefenderName = "SGB";
 
 				} else {
-					// ¿Í¶Ó·¢Çò
+					// å®¢é˜Ÿå‘çƒ
 					currentControllerName = "SGB";
 					currentDefenderName = "SGA";
 				}
 			} else {
 				if (nodosityNo == 4) {
-					// ¿Í¶Ó·¢Çò
+					// å®¢é˜Ÿå‘çƒ
 					currentControllerName = "SGB";
 					currentDefenderName = "SGA";
 				} else {
-					// Ö÷¶Ó·¢Çò
+					// ä¸»é˜Ÿå‘çƒ
 					currentControllerName = "SGA";
 					currentDefenderName = "SGB";
 				}
 			}
 			context.setCurrentActionType(MatchConstant.ACTION_TYPE_SERVICE);
 		} else {
-			// ¼ÓÊ±ÈüÒ²ÊÇÕùÇò
+			// åŠ æ—¶èµ›ä¹Ÿæ˜¯äº‰çƒ
 			currentControllerName = "CA";
 			currentDefenderName = "CB";
 			context.setCurrentActionType(MatchConstant.ACTION_TYPE_SCRIMMAGE);
@@ -179,7 +179,7 @@ public class Nodosity {
 
 	}
 
-	// ¸üĞÂ³¡ÉÏÇòÔ±ĞÅÏ¢
+	// æ›´æ–°åœºä¸Šçƒå‘˜ä¿¡æ¯
 	private void updatePlayers(MatchContext context) throws MatchException {
 		List<Player> players = new ArrayList<Player>();
 		Iterator<Controller> iterator = context.getControllers().values().iterator();
@@ -251,7 +251,7 @@ public class Nodosity {
 	}
 
 	/*
-	 * Ã¿½Ú±ÈÈü¿ªÊ¼Ç°¼ÓÔØÊı¾İ,ÈçÕóÈİ,Õ½ÊõµÈ
+	 * æ¯èŠ‚æ¯”èµ›å¼€å§‹å‰åŠ è½½æ•°æ®,å¦‚é˜µå®¹,æˆ˜æœ¯ç­‰
 	 */
 	private void initDataFromDb() throws MatchException {
 
@@ -280,11 +280,11 @@ public class Nodosity {
 
 		long homeTeamTacticalDetailId;
 		long visitingTeamTacticalDetailId;
-		// ÅĞ¶ÏÓÃµÚ¼¸½ÚÕ½Êõ
-		if ((homeTeamPoint - visitingTeamPoint) > 15) {// ÁìÏÈ15·Ö
+		// åˆ¤æ–­ç”¨ç¬¬å‡ èŠ‚æˆ˜æœ¯
+		if ((homeTeamPoint - visitingTeamPoint) > 15) {// é¢†å…ˆ15åˆ†
 			homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail7Id();
 			visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail8Id();
-		} else if ((homeTeamPoint - visitingTeamPoint) < -15) {// Âäºó15·Ö
+		} else if ((homeTeamPoint - visitingTeamPoint) < -15) {// è½å15åˆ†
 			homeTeamTacticalDetailId = homeTeamTactical.getTacticalDetail8Id();
 			visitingTeamTacticalDetailId = guestTeamTactical.getTacticalDetail7Id();
 		} else {
@@ -324,18 +324,18 @@ public class Nodosity {
 		guestTeamTacticalDetail = tacticsDao.loadTeamTacticalDetail(visitingTeamTacticalDetailId);
 
 		if (homeTeamTacticalDetail == null || guestTeamTacticalDetail == null) {
-			throw new MatchException("Õ½ÊõÏêÏ¸Îª¿Õ");
+			throw new MatchException("æˆ˜æœ¯è¯¦ç»†ä¸ºç©º");
 		}
 
-		// ÉèÖÃÕ½Êõ
+		// è®¾ç½®æˆ˜æœ¯
 		this.context.setHomeTeamOffensiveTactical(homeTeamTacticalDetail.getOffensiveTacticalType());
 		this.context.setHomeTeamDefendTactical(homeTeamTacticalDetail.getDefendTacticalType());
 		this.context.setGuestTeamOffensiveTactical(guestTeamTacticalDetail.getOffensiveTacticalType());
 		this.context.setGuestTeamDefendTactical(guestTeamTacticalDetail.getDefendTacticalType());
 
-		DebugUtil.debug(this.context.getHomeTeamId() + "Õ½Êõ[" + OffensiveTactical.getOffensiveTacticalName(context.getHomeTeamOffensiveTactical()) + "]["
+		DebugUtil.debug(this.context.getHomeTeamId() + "æˆ˜æœ¯[" + OffensiveTactical.getOffensiveTacticalName(context.getHomeTeamOffensiveTactical()) + "]["
 				+ DefendTactical.getDefendTacticalName(context.getHomeTeamDefendTactical()) + "]");
-		DebugUtil.debug(this.context.getVisitingTeamId() + "Õ½Êõ[" + OffensiveTactical.getOffensiveTacticalName(context.getGuestTeamOffensiveTactical()) + "]["
+		DebugUtil.debug(this.context.getVisitingTeamId() + "æˆ˜æœ¯[" + OffensiveTactical.getOffensiveTacticalName(context.getGuestTeamOffensiveTactical()) + "]["
 				+ DefendTactical.getDefendTacticalName(context.getGuestTeamDefendTactical()) + "]");
 
 		Controller controller_ca = new Controller();

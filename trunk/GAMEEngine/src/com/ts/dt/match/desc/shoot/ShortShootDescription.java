@@ -50,7 +50,7 @@ public class ShortShootDescription implements ActionDescription {
 
 		ActionDesc actionDesc = ActionDescLoaderImpl.getInstance().loadWithNameAndResultAndFlg("ShortShoot", "success", flg);
 
-		// 看是不是一个助攻球
+		// 鐪嬫槸涓嶆槸涓�涓姪鏀荤悆
 		if (actionDesc.getIsAssist() == true) {
 			context.setAssist(true);
 		}

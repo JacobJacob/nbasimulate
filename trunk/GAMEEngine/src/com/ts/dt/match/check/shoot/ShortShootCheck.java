@@ -1,31 +1,31 @@
 package com.ts.dt.match.check.shoot;
 
-/*ÅÐ¶ÏÖÐ¾àÀëÍ¶ÀºÓÐÃ»ÓÐ½ø
+/*åˆ¤æ–­ä¸­è·ç¦»æŠ•ç¯®æœ‰æ²¡æœ‰è¿›
  * 
- * Èç¹ûË«·½ÇòÔ±Ë®Æ½Ïàµ±,Ôò½øÓë²»½øµÄ¸ÅÂÊÎª50%
+ * å¦‚æžœåŒæ–¹çƒå‘˜æ°´å¹³ç›¸å½“,åˆ™è¿›ä¸Žä¸è¿›çš„æ¦‚çŽ‡ä¸º50%
  * 
- * Í¶ÀºÄÜÁ¦È¡¾öÓÚ ,Í¶Àº ,½ø¹¥ÒâÊ¶ ,ËÙ¶È ,Èý·Ö , ÌåÁ¦,´«Çò¶ÓÔ±µÄ´«ÇòÖµ ,±¾¶ÓÕ½ÊõÓ°ÏìÖµ,±¾¶¯×÷³É¹¦Öµ
+ * æŠ•ç¯®èƒ½åŠ›å–å†³äºŽ ,æŠ•ç¯® ,è¿›æ”»æ„è¯† ,é€Ÿåº¦ ,ä¸‰åˆ† , ä½“åŠ›,ä¼ çƒé˜Ÿå‘˜çš„ä¼ çƒå€¼ ,æœ¬é˜Ÿæˆ˜æœ¯å½±å“å€¼,æœ¬åŠ¨ä½œæˆåŠŸå€¼
  * 
  * 
- *ÊôÐÔ                                      »ù×¼                                      ¶¥¼¶                                     È¨ÖØ                                  ×î´ó¿ÉÄÜ
- *Í¶Àº                                     0                  100              5
- *½ø¹¥ÒâÊ¶                           0                  100              4
- *ËÙ¶È                                     0                  100              3
- *ÌåÁ¦                                     0                  100              3
- *Èý·Ö                                     0                  100              2
- *´«ÇòÖ¸Êý                           0                  100              2
- *±¾¶ÓÕ½Êõ                           0                  100              2
+ *å±žæ€§                                      åŸºå‡†                                      é¡¶çº§                                     æƒé‡                                  æœ€å¤§å¯èƒ½
+ *æŠ•ç¯®                                     0                  100              5
+ *è¿›æ”»æ„è¯†                           0                  100              4
+ *é€Ÿåº¦                                     0                  100              3
+ *ä½“åŠ›                                     0                  100              3
+ *ä¸‰åˆ†                                     0                  100              2
+ *ä¼ çƒæŒ‡æ•°                           0                  100              2
+ *æœ¬é˜Ÿæˆ˜æœ¯                           0                  100              2
  *
  *
- *·ÀÊØ³É¹¦ÄÜÁ¦È¡¾öÓÚ ·â¸Ç, ·ÀÊØÒâÊ¶, ÇÀ¶Ï, ËÙ¶È , µ¯Ìø, ±¾¶ÓÕ½ÊõÓ°ÏìÖµ,  ÌåÁ¦
+ *é˜²å®ˆæˆåŠŸèƒ½åŠ›å–å†³äºŽ å°ç›–, é˜²å®ˆæ„è¯†, æŠ¢æ–­, é€Ÿåº¦ , å¼¹è·³, æœ¬é˜Ÿæˆ˜æœ¯å½±å“å€¼,  ä½“åŠ›
  *
- *·â¸Ç                                   0
- *·ÀÊØÒâÊ¶                         0
- *ÍÆ¶Ï                                   0
- *ËÙ¶È                                   0
- *µ¯Ìø                                   0
- *±¾¶ÓÕ½ÊõÓ°ÏìÖµ          0
- *ÌåÁ¦                                   0
+ *å°ç›–                                   0
+ *é˜²å®ˆæ„è¯†                         0
+ *æŽ¨æ–­                                   0
+ *é€Ÿåº¦                                   0
+ *å¼¹è·³                                   0
+ *æœ¬é˜Ÿæˆ˜æœ¯å½±å“å€¼          0
+ *ä½“åŠ›                                   0
  *
  * */
 
@@ -39,7 +39,7 @@ import com.ts.dt.util.DebugUtil;
 
 public class ShortShootCheck implements ResultCheck {
 
-	// ÅÐ¶ÏÍ¶ÀºÓÐÃ»ÓÐ½ø
+	// åˆ¤æ–­æŠ•ç¯®æœ‰æ²¡æœ‰è¿›
 	public void check(MatchContext context) {
 
 		String result = MatchConstant.RESULT_FAILURE;
@@ -49,11 +49,11 @@ public class ShortShootCheck implements ResultCheck {
 		int shootPower = this.checkShootPower(player, 0, 0);
 		int defendPower = this.checkDefenPower(defender, 0);
 
-		int point = 50; // ÕâÊÇÖÐ¾àÀëÍ¶ÀºµÄ¿ÉÄÜÐÔ
-		// Èç¹ûA½ø¹¥Îª 60 B·ÀÊØÎª40,Ôò½ø¹¥³É¹¦¿ÉÄÜÐÔÎª 70
+		int point = 50; // è¿™æ˜¯ä¸­è·ç¦»æŠ•ç¯®çš„å¯èƒ½æ€§
+		// å¦‚æžœAè¿›æ”»ä¸º 60 Bé˜²å®ˆä¸º40,åˆ™è¿›æ”»æˆåŠŸå¯èƒ½æ€§ä¸º 70
 		point += (shootPower - defendPower);
 
-		// Õ½Êõ¶ÔÃüÖÐÂÊµÄÓ°Ïì
+		// æˆ˜æœ¯å¯¹å‘½ä¸­çŽ‡çš„å½±å“
 		int tacticalPoint = 0;
 		if (context.isHomeTeam()) {
 			tacticalPoint = context.getHomeTeamOffensiveTacticalPoint();
@@ -64,24 +64,24 @@ public class ShortShootCheck implements ResultCheck {
 
 		Random random = new Random();
 		int a = random.nextInt(100);
-		DebugUtil.debug("[" + context.getCurrentController().getControllerName() + "]" + player.getName() + "Í¶ÀºÄÜÁ¦Îª" + shootPower);
-		DebugUtil.debug("[" + context.getCurrentDefender().getControllerName() + "]" + defender.getName() + "·ÀÊØÄÜÁ¦Îª" + defendPower);
-		DebugUtil.debug("±¾´ÎÃüÖÐ¿ÉÄÜÐÔÎª" + point);
+		DebugUtil.debug("[" + context.getCurrentController().getControllerName() + "]" + player.getName() + "æŠ•ç¯®èƒ½åŠ›ä¸º" + shootPower);
+		DebugUtil.debug("[" + context.getCurrentDefender().getControllerName() + "]" + defender.getName() + "é˜²å®ˆèƒ½åŠ›ä¸º" + defendPower);
+		DebugUtil.debug("æœ¬æ¬¡å‘½ä¸­å¯èƒ½æ€§ä¸º" + point);
 		if (point > 80) {
-			point = 80;// Èç¹û´óÓÚ80Ç¿ÖÆÉèÎª80
+			point = 80;// å¦‚æžœå¤§äºŽ80å¼ºåˆ¶è®¾ä¸º80
 		}
 		if (a < point) {
 			result = MatchConstant.RESULT_SUCCESS;
-			DebugUtil.debug("±¾´ÎÍ¶ÀºÃüÖÐ");
+			DebugUtil.debug("æœ¬æ¬¡æŠ•ç¯®å‘½ä¸­");
 		} else {
-			DebugUtil.debug("±¾´ÎÍ¶ÀºÎ´ÖÐ");
+			DebugUtil.debug("æœ¬æ¬¡æŠ•ç¯®æœªä¸­");
 		}
 		context.setShootActionResult(result);
 	}
 
-	// ¼ÆËãÍ¶ÀºÄÜÁ¦
+	// è®¡ç®—æŠ•ç¯®èƒ½åŠ›
 	private int checkShootPower(Player player, int prev_action_point, int tactical_point) {
-		// *Í¶Àº 5 *½ø¹¥ÒâÊ¶ 4 *ËÙ¶È 3 *ÌåÁ¦3 *Èý·Ö 2
+		// *æŠ•ç¯® 5 *è¿›æ”»æ„è¯† 4 *é€Ÿåº¦ 3 *ä½“åŠ›3 *ä¸‰åˆ† 2
 		int total = 0;
 
 		double[] attr_power = { player.getShooting(), player.getOffencons(), player.getSpeed(), player.getMatchPower() };
@@ -102,9 +102,9 @@ public class ShortShootCheck implements ResultCheck {
 
 	}
 
-	// ¼ÆËã·ÀÊØÄÜÁ¦
+	// è®¡ç®—é˜²å®ˆèƒ½åŠ›
 	private int checkDefenPower(Player player, int tactical_point) {
-		// *·â¸Ç4 *·ÀÊØÒâÊ¶4 *ÇÀ¶Ï3 *ËÙ¶È3 *µ¯Ìø3 *ÌåÁ¦3
+		// *å°ç›–4 *é˜²å®ˆæ„è¯†4 *æŠ¢æ–­3 *é€Ÿåº¦3 *å¼¹è·³3 *ä½“åŠ›3
 		int total = 0;
 
 		double[] attr_power = { player.getBlocked(), player.getDefencons(), player.getSteal(), player.getSpeed(), player.getBounce(), player.getMatchPower() };

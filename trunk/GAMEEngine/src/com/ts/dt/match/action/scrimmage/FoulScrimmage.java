@@ -2,7 +2,7 @@ package com.ts.dt.match.action.scrimmage;
 
 import com.ts.dt.context.MatchContext;
 
-//犯规后的争球
+//鐘鍚庣殑浜夌悆
 public class FoulScrimmage implements Scrimmage {
 
 	public String after(MatchContext context) {

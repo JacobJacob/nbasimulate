@@ -25,24 +25,24 @@ public class Controller {
 	private String controllerName;
 	private String teamFlg;
 
-	// Í¶Çò¶¯×÷
+	// æŠ•çƒåŠ¨ä½œ
 	public void shout(MatchContext context) throws MatchException {
 
 		Shoot shoot = ShootFactory.getInstance().createShootAction(context);
 		shoot.execute(context);
-		long remainTime = ActionCostTimeHelper.shootRemainTime(player); // Í¶ÇòÒÔºó»¹Ê£ÓàµÄÊ±¼ä
-		long currentOffensiveCostTime = context.getCurrentOffensiveCostTime(); // µ±Ç°½ø¹¥ÒÑ¾­»¨·ÑÊ±¼ä
+		long remainTime = ActionCostTimeHelper.shootRemainTime(player); // æŠ•çƒä»¥åè¿˜å‰©ä½™çš„æ—¶é—´
+		long currentOffensiveCostTime = context.getCurrentOffensiveCostTime(); // å½“å‰è¿›æ”»å·²ç»èŠ±è´¹æ—¶é—´
 		long thisActionCostTime = 240 - remainTime;
 
 		if (thisActionCostTime < currentOffensiveCostTime) {
 			thisActionCostTime = currentOffensiveCostTime;
 		}
 
-		// Õû¸ö¶¯×÷Ëù»¨·ÑµÄÊ±¼ä-Ö®Ç°Ëù¼ÆËãµÄÊ±¼ä,µÈÓÚ±¾´ÎÒª¼ÓÉÏÈ¥µÄÊ±¼ä, ·£ÇòµÄ»°ÊÇÍ£±í
+		// æ•´ä¸ªåŠ¨ä½œæ‰€èŠ±è´¹çš„æ—¶é—´-ä¹‹å‰æ‰€è®¡ç®—çš„æ—¶é—´,ç­‰äºæœ¬æ¬¡è¦åŠ ä¸Šå»çš„æ—¶é—´, ç½šçƒçš„è¯æ˜¯åœè¡¨
 		if (!(shoot instanceof FoulShoot)) {
 			long addTime = thisActionCostTime - currentOffensiveCostTime;
 			context.nodosityCostTimeAdd(addTime);
-			context.currentOffensiveCostTimeReset(); // ÖØÖÃÒÑ¾­»¨·ÑµÄÊ±¼ä
+			context.currentOffensiveCostTimeReset(); // é‡ç½®å·²ç»èŠ±è´¹çš„æ—¶é—´
 		}
 
 	}
@@ -62,7 +62,7 @@ public class Controller {
 		context.currentOffensiveCostTimeAdd(costTime);
 	}
 
-	// ÕùÇò¶¯×÷
+	// äº‰çƒåŠ¨ä½œ
 	public void scrimmage(MatchContext context) throws MatchException {
 		Scrimmage scrimmage = ScrimmageFactory.getInstance().createScrimmageAction(context);
 		scrimmage.before(context);
@@ -94,7 +94,7 @@ public class Controller {
 	}
 
 	public void setPlayer(Player player) {
-		DebugUtil.debug(this.controllerName + "±»ÉèÖÃ³É" + player.getName());
+		DebugUtil.debug(this.controllerName + "è¢«è®¾ç½®æˆ" + player.getName());
 		this.player = player;
 	}
 

@@ -58,15 +58,15 @@ public class LongPass implements Pass {
 		return null;
 	}
 
-	// ±»¶ÏÊ±×ö¼¼ÊõÍ³¼Æ
+	// è¢«æ–­æ—¶åšæŠ€æœ¯ç»Ÿè®¡
 	public void handleBeSteal(MatchContext context) {
 
-		// ¿ØÇòÕßÊ§Îó¼Ó1
+		// æ§çƒè€…å¤±è¯¯åŠ 1
 		String currentControllerNm = context.getCurrentController().getControllerName();
 		Player currentControllerPlayer = context.getCurrentController().getPlayer();
 		context.playerLapsusTimesInc(currentControllerPlayer, currentControllerNm.endsWith("A"));
 
-		// ·ÀÊØÕßÇÀ¶Ï¼Ó1
+		// é˜²å®ˆè€…æŠ¢æ–­åŠ 1
 		String currentDefenderNm = context.getCurrentDefender().getControllerName();
 		Player currentDefenderPlayer = context.getCurrentDefender().getPlayer();
 		context.playerStealsTimesInc(currentDefenderPlayer, currentDefenderNm.endsWith("A"));

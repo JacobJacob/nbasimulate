@@ -23,7 +23,7 @@ import com.ts.dt.po.Player;
 import com.ts.dt.util.Logger;
 
 /*
- * ±ÈÈüÒıÇæ,ÊµÏÖ±ÈÈüÒıÇæ½Ó¿Ú
+ * æ¯”èµ›å¼•æ“,å®ç°æ¯”èµ›å¼•æ“æ¥å£
  */
 public class MatchEngineImpl implements MatchEngine {
 
@@ -42,7 +42,7 @@ public class MatchEngineImpl implements MatchEngine {
 		match.setHomeTeamId(homeTeamId);
 		matchDao.update(match);
 
-		context.clear(); // ÖØĞÂÇå³ı
+		context.clear(); // é‡æ–°æ¸…é™¤
 		context.setMatchId(match.getId());
 		context.isYouth(match.getIsYouth());
 		context.setMatchType(match.getType());
@@ -54,7 +54,7 @@ public class MatchEngineImpl implements MatchEngine {
 		nodosity.setNodosityNo(1);
 
 		boolean go = true;
-		Logger.info("±ÈÈü¿ªÊ¼......");
+		Logger.info("æ¯”èµ›å¼€å§‹......");
 		while (go) {
 
 			context.put(MatchConstant.CURRT_CONT_TIME, 0L);
@@ -74,17 +74,17 @@ public class MatchEngineImpl implements MatchEngine {
 		match.setStatus(MatchStatus.FINISH);
 		matchDao.update(match);
 
-		// ±£´æÎ´ÉÏ³¡ÇòÔ±Í³¼Æ
+		// ä¿å­˜æœªä¸Šåœºçƒå‘˜ç»Ÿè®¡
 		this.saveNotInPlayer(context, matchid);
 
-		// Çå³ı×´Ì¬
+		// æ¸…é™¤çŠ¶æ€
 		context.clear();
 
 		return match;
 
 	}
 
-	// ±£´æÎ´ÉÏ³¡ÇòÔ±×ÊÁÏ
+	// ä¿å­˜æœªä¸Šåœºçƒå‘˜èµ„æ–™
 	private void saveNotInPlayer(MatchContext context, long matchid) throws MatchException {
 
 		List<Player> home_players = null;

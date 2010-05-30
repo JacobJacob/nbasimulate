@@ -6,7 +6,7 @@ import java.util.List;
 import com.ts.dt.key.ActionDescKey;
 import com.ts.dt.po.ActionDesc;
 /*
- * ¶¯×÷ÃèÊö»º´æÀà
+ * åŠ¨ä½œæè¿°ç¼“å­˜ç±»
  */
 public class ActionDescCache {
 

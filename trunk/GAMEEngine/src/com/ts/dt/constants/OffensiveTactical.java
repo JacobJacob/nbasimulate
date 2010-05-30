@@ -2,28 +2,28 @@ package com.ts.dt.constants;
 
 public class OffensiveTactical {
 
-	public static final int STRONG_INSIDE = 1;// : u'Ç¿´òÄÚÏß',
-	public static final int CENTER_COORDINATE = 2;// : u'ÖĞ·æ²ßÓ¦',
-	public static final int OUTSIDE_SHOT = 3;// : u'ÍâÏßÍ¶Àº',
-	public static final int FAST_ATTACK = 4;// : u'¿ìËÙ½ø¹¥',
-	public static final int OVERALL_CO_ORDINATION = 5;// : u'ÕûÌåÅäºÏ',
-	public static final int COVER_SCREENS_FOR = 6;// : u'ÑÚ»¤µ²²ğ',
+	public static final int STRONG_INSIDE = 1;// : u'å¼ºæ‰“å†…çº¿',
+	public static final int CENTER_COORDINATE = 2;// : u'ä¸­é”‹ç­–åº”',
+	public static final int OUTSIDE_SHOT = 3;// : u'å¤–çº¿æŠ•ç¯®',
+	public static final int FAST_ATTACK = 4;// : u'å¿«é€Ÿè¿›æ”»',
+	public static final int OVERALL_CO_ORDINATION = 5;// : u'æ•´ä½“é…åˆ',
+	public static final int COVER_SCREENS_FOR = 6;// : u'æ©æŠ¤æŒ¡æ‹†',
 
 	public static String getOffensiveTacticalName(int tactical) {
 
 		switch (tactical) {
 		case STRONG_INSIDE:
-			return "Ç¿´òÄÚÏß";
+			return "å¼ºæ‰“å†…çº¿";
 		case CENTER_COORDINATE:
-			return "ÖĞ·æ²ßÓ¦";
+			return "ä¸­é”‹ç­–åº”";
 		case OUTSIDE_SHOT:
-			return "ÍâÏßÍ¶Àº";
+			return "å¤–çº¿æŠ•ç¯®";
 		case FAST_ATTACK:
-			return "¿ìËÙ½ø¹¥";
+			return "å¿«é€Ÿè¿›æ”»";
 		case OVERALL_CO_ORDINATION:
-			return "ÕûÌåÅäºÏ";
+			return "æ•´ä½“é…åˆ";
 		case COVER_SCREENS_FOR:
-			return "ÑÚ»¤µ²²ğ";
+			return "æ©æŠ¤æŒ¡æ‹†";
 		}
 		return String.valueOf(tactical);
 	}

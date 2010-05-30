@@ -6,14 +6,14 @@ import com.ts.dt.po.Player;
 
 public class ActionCostTimeHelper {
 
-	// ´«ÇòËùÓÃÊ±¼ä
+	// ä¼ çƒæ‰€ç”¨æ—¶é—´
 	public static long passCostTime(Player player) {
 		long costTime = 0;
 		costTime += randomGetCostTime() * 5;
 		return costTime;
 	}
 
-	// Ëæ»úµ±Ç°Í¶ÀºÒÔºóËùÊ£µÄÊ±¼ä
+	// éšæœºå½“å‰æŠ•ç¯®ä»¥åæ‰€å‰©çš„æ—¶é—´
 	public static long shootRemainTime(Player player) {
 		long remainTime = 70;
 		remainTime += randomGetCostTime() * 10;

@@ -1,18 +1,18 @@
 package com.ts.dt.match.helper;
 
 /*
-           ¶¢ÄÚ       ¶¢ÈË      ¶¢Íâ       23   212  32  
- Ç¿     75     45    30    55   30   20  
+           ç›¯å†…       ç›¯äºº      ç›¯å¤–       23   212  32  
+ å¼º     75     45    30    55   30   20  
  
- ÖÐ     40     30    20    75   55   35 
+ ä¸­     40     30    20    75   55   35 
  
-  Íâ     35     55    75    15   30   45  
+  å¤–     35     55    75    15   30   45  
 
- ¿ì     40     75    55    20   30   35  
+ å¿«     40     75    55    20   30   35  
 
- Õû     20     30    15    60   75   55
+ æ•´     20     30    15    60   75   55
 
- ÑÚ     20     30    35    35   65   75
+ æŽ©     20     30    35    35   65   75
  */
 
 public class TacticalHelper {
@@ -26,7 +26,7 @@ public class TacticalHelper {
 	    { 20, 30, 35, 35, 65, 75 }
 	};
 
-	// ¼ÆËã½ø¹¥Õ½Êõ¶Ô·ÀÊØÕ½ÊõµÄ¿ËÖÆÖµ
+	// è®¡ç®—è¿›æ”»æˆ˜æœ¯å¯¹é˜²å®ˆæˆ˜æœ¯çš„å…‹åˆ¶å€¼
 	public static int checkOffensivePoint(int offensiveTactical, int defendTactical) {
 		return 100 - TACTICAL_RESTRAINT_TABLE[offensiveTactical-1][defendTactical-7];
 	}

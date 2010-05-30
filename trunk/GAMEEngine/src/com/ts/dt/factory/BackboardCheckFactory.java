@@ -24,7 +24,7 @@ public class BackboardCheckFactory {
 		}
 		return backboardCheckFactory;
 	}
-    //¸ù¾İ¸÷ÖÖÍ¶Àº¶¯×÷·µ»Ø²»Í¬µÄÀº°åÕù¶áÅĞ¶Ï¶ÔÏó
+    //æ ¹æ®å„ç§æŠ•ç¯®åŠ¨ä½œè¿”å›ä¸åŒçš„ç¯®æ¿äº‰å¤ºåˆ¤æ–­å¯¹è±¡
 	public BackboardCheck createBackboardCheckFactory(MatchContext context) {
 
 		BackboardCheck backboardCheck = null;
