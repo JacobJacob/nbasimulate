@@ -22,44 +22,44 @@ public class MatchContext {
 
 	private DataStat dataStat;
 
-	private boolean isNewLine = true; // ÊÇ²»ÊÇĞÂµÄÒ»ÂÖ½ø¹¥
+	private boolean isNewLine = true; // æ˜¯ä¸æ˜¯æ–°çš„ä¸€è½®è¿›æ”»
 
-	private boolean notStick = false; // Èı²»Õ´
+	private boolean notStick = false; // ä¸‰ä¸æ²¾
 
-	private List<String> onCourtPlayers = new ArrayList<String>(); // µ±Ç°ÔÚ³¡ÉÏµÄÇòÔ±
-	private List<String> hadOnCourtPlayers = new ArrayList<String>(); // µ±Ç°±ÈÈüÒÑ¾­ÉÏ¹ı³¡µÄÇòÔ±
+	private List<String> onCourtPlayers = new ArrayList<String>(); // å½“å‰åœ¨åœºä¸Šçš„çƒå‘˜
+	private List<String> hadOnCourtPlayers = new ArrayList<String>(); // å½“å‰æ¯”èµ›å·²ç»ä¸Šè¿‡åœºçš„çƒå‘˜
 
-	private long homeTeamId; // Ö÷¶Óid
-	private long visitingTeamId; // ¿Í¶Óid
+	private long homeTeamId; // ä¸»é˜Ÿid
+	private long visitingTeamId; // å®¢é˜Ÿid
 
-	private int matchType; // ±ÈÈüÀàĞÍ
-	private int seq; // ½ÚÊı
+	private int matchType; // æ¯”èµ›ç±»å‹
+	private int seq; // èŠ‚æ•°
 
-	private int homeTeamOffensiveTactical = -1; // Ö÷¶Ó½ø¹¥Õ½Êõ
-	private int homeTeamDefendTactical = -1; // Ö÷¶Ó·ÀÊØÕ½Êõ
-	private int guestTeamOffensiveTactical = -1; // ¿Í¶Ó½ø¹¥Õ½Êõ
-	private int guestTeamDefendTactical = -1; // ¿Í¶Ó·ÀÊØÕ½Êõ
+	private int homeTeamOffensiveTactical = -1; // ä¸»é˜Ÿè¿›æ”»æˆ˜æœ¯
+	private int homeTeamDefendTactical = -1; // ä¸»é˜Ÿé˜²å®ˆæˆ˜æœ¯
+	private int guestTeamOffensiveTactical = -1; // å®¢é˜Ÿè¿›æ”»æˆ˜æœ¯
+	private int guestTeamDefendTactical = -1; // å®¢é˜Ÿé˜²å®ˆæˆ˜æœ¯
 
-	private int homeTeamOffensiveTacticalPoint = -1;// Ö÷¶Ó½ø¹¥Õ½Êõ¿ËÖÆ·ÖÖµ, ÒÔ100·ÖËã
-	private int guestTeamOffensiveTacticalPoint = -1;// ¿Ë¶Ó½ø¹¥Õ½Êõ¿ËÖÆ·ÖÖµ, ÒÔ100·ÖËã
+	private int homeTeamOffensiveTacticalPoint = -1;// ä¸»é˜Ÿè¿›æ”»æˆ˜æœ¯å…‹åˆ¶åˆ†å€¼, ä»¥100åˆ†ç®—
+	private int guestTeamOffensiveTacticalPoint = -1;// å…‹é˜Ÿè¿›æ”»æˆ˜æœ¯å…‹åˆ¶åˆ†å€¼, ä»¥100åˆ†ç®—
 
-	private int currentOffensiveCostTime = 0; // µ±Ç°½ø¹¥ËùÊ¹ÓÃÁËµÄÊ±¼ä,ÒÔºÁÃëËã
+	private int currentOffensiveCostTime = 0; // å½“å‰è¿›æ”»æ‰€ä½¿ç”¨äº†çš„æ—¶é—´,ä»¥æ¯«ç§’ç®—
 
-	private int currentTeam = MatchConstant.CURRENT_TEAM_A; // 0´ú±íÖ÷¶Ó¿ØÇò
+	private int currentTeam = MatchConstant.CURRENT_TEAM_A; // 0ä»£è¡¨ä¸»é˜Ÿæ§çƒ
 
-	private int previousActionAffect = 0;// ÉÏÒ»¶¯×÷¶Ô±¾´Î¶¯×÷³É¹¦Óë·ñµÄÓ°Ïì
+	private int previousActionAffect = 0;// ä¸Šä¸€åŠ¨ä½œå¯¹æœ¬æ¬¡åŠ¨ä½œæˆåŠŸä¸å¦çš„å½±å“
 
-	private int tacticsAffect = 0; // Õ½Êõ¶Ô¶¯×÷³É¹¦µÄÓ°Ïì
+	private int tacticsAffect = 0; // æˆ˜æœ¯å¯¹åŠ¨ä½œæˆåŠŸçš„å½±å“
 
-	private boolean isOutside = false; // ÊÇ·ñ³ö½ç
+	private boolean isOutside = false; // æ˜¯å¦å‡ºç•Œ
 
-	private boolean isFoul = false; // ÊÇ·ñ·¸¹æ
+	private boolean isFoul = false; // æ˜¯å¦çŠ¯è§„
 
-	private boolean isBlock = false; // ÊÇ·ñ·â¸Ç
+	private boolean isBlock = false; // æ˜¯å¦å°ç›–
 
-	private boolean isAssist = false;// ÊÇ·ñÖú¹¥
+	private boolean isAssist = false;// æ˜¯å¦åŠ©æ”»
 
-	private boolean isHomeStart = false; // ÊÇ·ñÊÇÖ÷¶Ó»ñµÃµÚÒ»´ÎÕùÇò
+	private boolean isHomeStart = false; // æ˜¯å¦æ˜¯ä¸»é˜Ÿè·å¾—ç¬¬ä¸€æ¬¡äº‰çƒ
 
 	private int foulShootRemain = -1;
 	private int foulShootType;
@@ -70,13 +70,13 @@ public class MatchContext {
 
 	private boolean isDefensiveRebound = false;
 
-	private int totalHomeBackboard = 0;// Ö÷¶ÓÕûÌåÀº°åÄÜÁ¦
+	private int totalHomeBackboard = 0;// ä¸»é˜Ÿæ•´ä½“ç¯®æ¿èƒ½åŠ›
 
-	private int totalGuestBackboard = 0;// ¿Í¶ÓÕûÌåÀº°åÄÜÁ¦
+	private int totalGuestBackboard = 0;// å®¢é˜Ÿæ•´ä½“ç¯®æ¿èƒ½åŠ›
 
 	private long currentSeq = 0;
 
-	private boolean isYouth = false; // ÊÇ·ñÊÇÄêÇáÇò¶Ó
+	private boolean isYouth = false; // æ˜¯å¦æ˜¯å¹´è½»çƒé˜Ÿ
 
 	private MatchNodosityMain nodosityMain;
 
@@ -85,7 +85,7 @@ public class MatchContext {
 		init();
 	}
 
-	// Çå³ıËùÓĞÊı¾İ,ÖØÓÃ,²»ÒªÃ¿´Î¶¼¿ªÒ»¸ö
+	// æ¸…é™¤æ‰€æœ‰æ•°æ®,é‡ç”¨,ä¸è¦æ¯æ¬¡éƒ½å¼€ä¸€ä¸ª
 	public void clear() {
 
 		this.matchId = 0;
@@ -133,11 +133,11 @@ public class MatchContext {
 		data.put(key, value);
 	}
 
-	// ÉèÖÃ³¡ÉÏ¿ØÖÆÕß
+	// è®¾ç½®åœºä¸Šæ§åˆ¶è€…
 	@SuppressWarnings("unchecked")
 	public void putController(Controller controller) {
 
-		// ÉèÖÃ³¡ÉÏÇòÔ±Ê±,°ÑÇòÔ±¼Óµ½ÒÑ¾­ÉÏ¹ı³¡µÄÃûµ¥ÖĞ, µ±Ç°ÉÏ³¡ÇòÔ±ÁĞ±íÖĞ
+		// è®¾ç½®åœºä¸Šçƒå‘˜æ—¶,æŠŠçƒå‘˜åŠ åˆ°å·²ç»ä¸Šè¿‡åœºçš„åå•ä¸­, å½“å‰ä¸Šåœºçƒå‘˜åˆ—è¡¨ä¸­
 		String controllerName = controller.getControllerName();
 
 		Hashtable<String, Controller> controllers = (Hashtable<String, Controller>) this.get(MatchConstant.CURRENT_CONTROLLERS);
@@ -146,15 +146,15 @@ public class MatchContext {
 		if (!this.hadOnCourt(playerNo)) {
 			this.addHadOnCourtPlayer(playerNo);
 		}
-		// Èç¹û¸ÃÎ»ÖÃ¾ÉµÄÇòÔ±´æÔÚ,ÔòÇåµô×´Ì¬
+		// å¦‚æœè¯¥ä½ç½®æ—§çš„çƒå‘˜å­˜åœ¨,åˆ™æ¸…æ‰çŠ¶æ€
 		Controller old_controller = controllers.get(controllerName);
 		if (old_controller != null) {
 			if (this.onCourt(playerNo)) {
 				this.onCourtPlayers.remove(playerNo);
 			}
-			// °Ñ¾ÉµÄÄÜÁ¦¼õµô
+			// æŠŠæ—§çš„èƒ½åŠ›å‡æ‰
 			int reboundPower = ReboundHelper.checkReboundPower(old_controller.getPlayer());
-			// °ÑÕû¶ÓÀº°åÄÜÁ¦¼ÓÆğÀ´
+			// æŠŠæ•´é˜Ÿç¯®æ¿èƒ½åŠ›åŠ èµ·æ¥
 			if (old_controller.getTeamFlg().equals("A")) {
 				this.totalHomeBackboard -= reboundPower;
 			} else {
@@ -163,7 +163,7 @@ public class MatchContext {
 		}
 		if (!this.onCourt(playerNo)) {
 			int reboundPower = ReboundHelper.checkReboundPower(controller.getPlayer());
-			// °ÑÕû¶ÓÀº°åÄÜÁ¦¼ÓÆğÀ´
+			// æŠŠæ•´é˜Ÿç¯®æ¿èƒ½åŠ›åŠ èµ·æ¥
 			if (controller.getTeamFlg().equals("A")) {
 				this.totalHomeBackboard += reboundPower;
 			} else {
@@ -172,7 +172,7 @@ public class MatchContext {
 
 			this.addOnCourtPlayer(playerNo);
 		}
-		// Èç¹ûÊÇµÚÒ»½Ú,ÔòÉèÖÃ¸ÃÇòÔ±ÎªÖ÷Á¦
+		// å¦‚æœæ˜¯ç¬¬ä¸€èŠ‚,åˆ™è®¾ç½®è¯¥çƒå‘˜ä¸ºä¸»åŠ›
 		if (this.seq == 1) {
 			this.playerIsMain(controller.getPlayer(), controllerName.endsWith("A"));
 		}
@@ -468,7 +468,7 @@ public class MatchContext {
 
 	}
 
-	// ÇòÔ±Í¶Àº´Î¶Ï¼Ó1
+	// çƒå‘˜æŠ•ç¯®æ¬¡æ–­åŠ 1
 	public void playerShootTimesInc(int point, Player player, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
@@ -481,7 +481,7 @@ public class MatchContext {
 
 	}
 
-	// ÇòÔ±¶ÓÃüÖĞ¼Ó1
+	// çƒå‘˜é˜Ÿå‘½ä¸­åŠ 1
 	public void doomTimesInc(int point, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
@@ -506,7 +506,7 @@ public class MatchContext {
 
 	}
 
-	// ÇòÔ±ÃüÖĞ¼Ó1
+	// çƒå‘˜å‘½ä¸­åŠ 1
 	public void playerDoomTimesInc(int point, Player player, boolean isHomeTeam) {
 
 		if (point == MatchConstant.INC_ONE_POINT) {
@@ -519,22 +519,22 @@ public class MatchContext {
 
 	}
 
-	// ÇòÔ±Öú¹¥¼Ó1
+	// çƒå‘˜åŠ©æ”»åŠ 1
 	public void playerAssitTimesInc(Player player, boolean isHomeTeam) {
 		dataStat.playerAssitTimesInc(player, isHomeTeam);
 	}
 
-	// ÇòÔ±·â¸Ç¼Ó1
+	// çƒå‘˜å°ç›–åŠ 1
 	public void playerBlockTimesInc(Player player, boolean isHomeTeam) {
 		dataStat.playerBlockTimesInc(player, isHomeTeam);
 	}
 
-	// ÇòÔ±ÇÀ¶Ï¼Ó1
+	// çƒå‘˜æŠ¢æ–­åŠ 1
 	public void playerStealsTimesInc(Player player, boolean isHomeTeam) {
 		dataStat.playerStealsTimesInc(player, isHomeTeam);
 	}
 
-	// ÇòÔ±Ê§Îó¼Ó1
+	// çƒå‘˜å¤±è¯¯åŠ 1
 	public void playerLapsusTimesInc(Player player, boolean isHomeTeam) {
 		dataStat.playerLapsusTimesInc(player, isHomeTeam);
 	}
@@ -584,7 +584,7 @@ public class MatchContext {
 		dataStat.playerDefensiveReboundInc(player, isHomeTeam);
 	}
 
-	// ÉèÖÃÇòÔ±ÊÇ·ñÎªÖ÷Á¦
+	// è®¾ç½®çƒå‘˜æ˜¯å¦ä¸ºä¸»åŠ›
 	public void playerIsMain(Player player, boolean isHomeTeam) {
 		dataStat.playerIsMain(player, isHomeTeam);
 	}
@@ -759,7 +759,7 @@ public class MatchContext {
 		this.nodosityMain = nodosityMain;
 	}
 
-	// ÅĞ¶ÏÊÇ·ñÔø¾­ÉÏ¹ı³¡
+	// åˆ¤æ–­æ˜¯å¦æ›¾ç»ä¸Šè¿‡åœº
 	public boolean hadOnCourt(String playerNo) {
 		if (hadOnCourtPlayers.contains(playerNo)) {
 			return true;
@@ -767,7 +767,7 @@ public class MatchContext {
 		return false;
 	}
 
-	// Ìí¼Óµ½ÒÑ¾­ÉÏ¹ı³¡ÇòÔ±ÁĞ±í
+	// æ·»åŠ åˆ°å·²ç»ä¸Šè¿‡åœºçƒå‘˜åˆ—è¡¨
 	public void addHadOnCourtPlayer(String playerNo) {
 		if (hadOnCourtPlayers.contains(playerNo)) {
 			return;
@@ -783,7 +783,7 @@ public class MatchContext {
 		this.isYouth = isYouth;
 	}
 
-	// ÅĞ¶Ïµ±Ç°ÊÇ·ñÔÚ³¡
+	// åˆ¤æ–­å½“å‰æ˜¯å¦åœ¨åœº
 	public boolean onCourt(String playerNo) {
 		if (onCourtPlayers.contains(playerNo)) {
 			return true;
@@ -791,7 +791,7 @@ public class MatchContext {
 		return false;
 	}
 
-	// Ìí¼ÓÒ»¸öÇòÔ±µ½µ±Ç°³¡ÉÏÇòÔ±ÁĞ±í
+	// æ·»åŠ ä¸€ä¸ªçƒå‘˜åˆ°å½“å‰åœºä¸Šçƒå‘˜åˆ—è¡¨
 	public void addOnCourtPlayer(String playerNo) {
 		if (onCourtPlayers.contains(playerNo)) {
 			return;
@@ -799,7 +799,7 @@ public class MatchContext {
 		onCourtPlayers.add(playerNo);
 	}
 
-	// ÖÃ¿Õ³¡ÉÏÇòÔ±ÁĞ±í
+	// ç½®ç©ºåœºä¸Šçƒå‘˜åˆ—è¡¨
 	public void clearAllOnCourtPlayer() {
 		onCourtPlayers.clear();
 	}
