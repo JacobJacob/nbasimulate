@@ -6,7 +6,8 @@ import com.ts.dt.factory.ActionDescriptionFactory;
 import com.ts.dt.match.desc.ActionDescription;
 import com.ts.dt.match.helper.MatchInfoHelper;
 import com.ts.dt.util.MessagesUtil;
- class OffensiveTimeOutFoul implements Foul {
+
+public class OffensiveTimeOutFoul implements Foul {
 
 	public void execute(MatchContext context) throws MatchException {
 		// TODO Auto-generated method stub
