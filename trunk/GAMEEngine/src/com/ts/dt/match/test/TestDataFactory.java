@@ -15,7 +15,7 @@ public class TestDataFactory {
 		player.setId(1);
 		player.setShooting(80);
 		player.setAvoirdupois(212);
-		player.setName("Ò¦Ã÷    ");
+		player.setName("å§šæ˜    ");
 		player.setPosition(MatchConstant.LOCATION_C);
 		player.setTeamid(2);
 		players[0] = player;
@@ -23,7 +23,7 @@ public class TestDataFactory {
 		player = new ProfessionPlayer();
 		player.setId(2);
 		player.setShooting(80);
-		player.setName("ÆÚ¿ÆÀ­  ");
+		player.setName("æœŸç§‘æ‹‰  ");
 		player.setPosition(MatchConstant.LOCATION_PF);
 		player.setAvoirdupois(210);
 		player.setTeamid(2);
@@ -32,7 +32,7 @@ public class TestDataFactory {
 		player = new ProfessionPlayer();
 		player.setId(3);
 		player.setShooting(80);
-		player.setName("°¢Ì©Ë¹ÌØ");
+		player.setName("é˜¿æ³°æ–¯ç‰¹");
 		player.setPosition(MatchConstant.LOCATION_SF);
 		player.setAvoirdupois(200);
 		player.setTeamid(2);
@@ -42,7 +42,7 @@ public class TestDataFactory {
 		player.setId(4);
 		player.setAvoirdupois(190);
 		player.setPosition(MatchConstant.LOCATION_SG);
-		player.setName("ÂóµÏ    ");
+		player.setName("éº¦è¿ª    ");
 		player.setShooting(80);
 		player.setTeamid(2);
 		players[3] = player;
@@ -50,7 +50,7 @@ public class TestDataFactory {
 		player = new ProfessionPlayer();
 		player.setId(5);
 		player.setShooting(80);
-		player.setName("°¢¶ûË¹Í¨");
+		player.setName("é˜¿å°”æ–¯é€š");
 		player.setPosition(MatchConstant.LOCATION_PG);
 		player.setAvoirdupois(180);
 		player.setTeamid(2);
@@ -59,7 +59,7 @@ public class TestDataFactory {
 		player = new ProfessionPlayer();
 		player.setId(6);
 		player.setShooting(70);
-		player.setName("²¼Ôó¶û  ");
+		player.setName("å¸ƒæ³½å°”  ");
 		player.setPosition(MatchConstant.LOCATION_C);
 		player.setAvoirdupois(210);
 		player.setTeamid(1);
@@ -68,7 +68,7 @@ public class TestDataFactory {
 		player = new ProfessionPlayer();
 		player.setId(7);
 		player.setShooting(70);
-		player.setName("Ğ¡°ÂÄá¶û");
+		player.setName("å°å¥¥å°¼å°”");
 		player.setPosition(MatchConstant.LOCATION_PF);
 		player.setAvoirdupois(200);
 		player.setTeamid(1);
@@ -78,7 +78,7 @@ public class TestDataFactory {
 		player.setId(8);
 		player.setShooting(70);
 		player.setPosition(MatchConstant.LOCATION_SF);
-		player.setName("°²¶«Äá  ");
+		player.setName("å®‰ä¸œå°¼  ");
 		player.setAvoirdupois(190);
 		player.setTeamid(1);
 		players[7] = player;
@@ -86,7 +86,7 @@ public class TestDataFactory {
 		player = new ProfessionPlayer();
 		player.setId(9);
 		player.setShooting(70);
-		player.setName("¿Æ±È    ");
+		player.setName("ç§‘æ¯”    ");
 		player.setPosition(MatchConstant.LOCATION_SG);
 		player.setAvoirdupois(180);
 		player.setTeamid(1);
@@ -95,7 +95,7 @@ public class TestDataFactory {
 		player = new ProfessionPlayer();
 		player.setId(10);
 		player.setShooting(70);
-		player.setName("±£ÂŞ    ");
+		player.setName("ä¿ç½—    ");
 		player.setPosition(MatchConstant.LOCATION_PG);
 		player.setAvoirdupois(180);
 		player.setTeamid(1);

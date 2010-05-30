@@ -36,7 +36,7 @@ public class MatchStat {
 
 	private int foul;
 	private int steals;
-	private boolean isMain; // ÊÇ·ñÖ÷Á¦
+	private boolean isMain; // æ˜¯å¦ä¸»åŠ›
 	private Date createdTime = new Date();
 
 	public long getId() {
