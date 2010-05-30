@@ -22,7 +22,7 @@ public class MatchReqDaoImpl extends BaseDao implements MatchReqDao {
 		Transaction tran = null;
 		try {
 			tran = session.beginTransaction();
-			Query q = session.createQuery("from Matchs a where a.status = :status ");
+			Query q = session.createQuery("from MatchReq a where a.status = :status ");
 			q.setMaxResults(5);
 			q.setInteger("status", MatchStatus.ACCP);
 			list = q.list();
