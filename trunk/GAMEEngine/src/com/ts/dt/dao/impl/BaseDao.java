@@ -157,17 +157,12 @@ public class BaseDao {
 	public Object load(Class<?> cls, long id) throws MatchException {
 		while (true) {
 			Session session = HibernateUtil.currentSession();
-			Transaction tran = null;
 			Object obj;
 			try {
-				tran = session.beginTransaction();
 				obj = session.load(cls, id);
-				tran.commit();
 				return obj;
 			} catch (HibernateException he) {
-				if (tran != null) {
-					tran.rollback();
-				}
+
 				if (he instanceof JDBCConnectionException || he instanceof LockAcquisitionException) {
 					try {
 						Thread.sleep(1000 * 10);
