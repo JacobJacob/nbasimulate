@@ -5,7 +5,7 @@
 from gba.web.render import render_to_response, json_response
 from gba.business.user_roles import login_required
 from gba.entity import ActionDesc, EngineStatus, RoundUpdateLog, Cup , ClientRunningLog, Matchs, \
-                       ErrorMatch, League
+                       ErrorMatch, League, EmailSendLog
 from gba.business.client import ClientManager
 from gba.business.common_client_monitor import CommonClientMonitor
 from gba.common.constants import MatchTypeMaps, MatchStatusMap, MatchShowStatusMaps, ActionNameMap
@@ -325,3 +325,23 @@ def database_status_json(request):
     connections = sorted(connections, cmp=cmp1)
     total = len(connections)
     return json_response({'infos': connections, 'total': total})
+
+@login_required
+def email_send_log(request):
+    """激活邮件发送记录"""
+    return render_to_response(request, 'admin/email_send_log_ex.html')
+
+@login_required
+def email_send_log_json(request):
+    """"""
+    start = int(request.POST.get('start', 0))
+    limit = int(request.POST.get('limit', 20))
+    sort = request.POST.get('sort', 'id')
+    dir = request.POST.get('dir', 'desc')
+    infos, total = EmailSendLog.paging(pagesize=limit, start=start, order="%s %s" % (sort, dir))
+    ret_infos = []
+    for info in infos:
+        if info.created_time:
+            info.created_time = info.created_time.strftime("%Y-%m-%d %H:%M:%S")
+        ret_infos.append(info.__dict__)
+    return json_response({'infos': ret_infos, 'total': total})

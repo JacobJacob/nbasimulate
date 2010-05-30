@@ -1,0 +1,19 @@
+<!doctype html public "-//w3c//dtd xhtml 1.0 transitional//en" "http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>
+{% if success %}
+  注册成功
+{% else %}
+  注册失败
+{% endif %}
+</title>
+</head>
+<body>
+    {% if success %}
+        恭喜你,注册成功,请登陆您的邮箱,激活您的帐号
+    {% else %}
+       {{ message }}
+    {% endif %}
+</body>
+</html>

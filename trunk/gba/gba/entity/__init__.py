@@ -242,3 +242,8 @@ class ErrorMatch(Persistable):
 class Captcha(Persistable):
     '''验证码'''
     CACHE_KEY = 'captcha:id'
+    
+class EmailSendLog(Persistable):
+    '''激活邮件发送历史'''
+    CACHE_KEY = 'email_send_log:id'
+    

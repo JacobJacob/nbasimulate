@@ -19,7 +19,7 @@ from gba.web.settings import CAPTCHA_PATH, CAPTCHA_M
 class CustomDefie:
     '''自用常量定义'''
     captcha = 'ckey__'    # 存在客户端验证码的hash_key的key
-    captcha_total = 100 #验证码个数 
+    captcha_total = 10 #验证码个数 
 
 CAPTCHA_RI = random.Random() 
 def get_captcha():
@@ -91,14 +91,8 @@ def __set_captcha_memcache(file_ls):
         
 def __make_captcha(cnt):
     file_utility.ensure_dir_exists(CAPTCHA_PATH)
-    
-    dt = datetime.datetime.now()
 
     for i in range(cnt):
-        dt += datetime.timedelta(seconds=i)
-        rand_str = __get_captcha_str(str(dt))
-        rand_str_hash = __get_captcha_hash_by_str(rand_str)
-        
         im = Image.new('RGBA', (90, 26), (50, 50, 50, 50))
         draw = ImageDraw.Draw(im)
         rands = []
@@ -108,6 +102,9 @@ def __make_captcha(cnt):
         draw.text((24, 0), rands[1], font=ImageFont.truetype("tahomabd.TTF", random.randrange(18, 24)), fill='yellow')
         draw.text((43, 0), rands[2], font=ImageFont.truetype("tahomabd.TTF", random.randrange(18, 24)), fill='blue')
         draw.text((64, 0), rands[3], font=ImageFont.truetype("tahomabd.TTF", random.randrange(18, 24)), fill='white')
+        
+        rand_str = "".join(rands)
+        rand_str_hash = __get_captcha_hash_by_str(rand_str)
         
         fpath = os.path.join(CAPTCHA_PATH, '%s.jpg' % rand_str_hash)
         fp = file(fpath, 'wb')
@@ -136,8 +133,14 @@ def __get_mcaptchahash_by_captchahash(captcha_hash):
         captcha_hash = captcha_hash.encode('utf8')
     return md5mgr.mkmd5fromstr('%s%s' % (CAPTCHA_M, captcha_hash.lower()))
 
+def is_captcha(captcha_str, captcha_key):
+    b = valid_captcha_str(captcha_str, captcha_key)
+    if b: 
+        m_captcha_key, fpath = "", ""
+    else:
+        m_captcha_key, fpath = get_captcha()
+    return b, m_captcha_key, fpath
+
 if __name__ == '__main__':
     print get_captcha()
-#    print valid_captcha_str('8201', '850986e6bd15185d604ae371a3936e20')
-#    print valid_captcha_str('ef16', '9071021ac12ff88a3fcab22de7d82005')
-#    print '__end'
+    print valid_captcha_str("6691", "0f457d38866d1a2ecb49c9f3a95a750d")

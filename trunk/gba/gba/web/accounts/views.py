@@ -1,19 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import random, cStringIO
-import time, random
 
-from PIL import Image, ImageDraw, ImageFont
+import time, random
+import datetime
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from gba.config import DOMAIN
 from gba.web.render import render_to_response, json_response
 from gba.common import md5mgr, mailutil, json
-from gba.common.db import connection
-from gba.common.captcha import get_captcha
-from gba.entity import Captcha, UserInfo
+from gba.common.captcha import get_captcha, is_captcha
+from gba.entity import UserInfo, EmailSendLog
 from gba.business.user_roles import UserManager
 
 SESSION_KEY = '_auth_user_id'
@@ -43,7 +42,6 @@ def register(request):
     
     else:
         captcha = request.POST.get('captcha')
-        key_hash = request.COOKIES.get('CAPTCHA')
         email = request.POST.get('email')
         password = request.POST.get('password')
         nickname = request.POST.get('nickname')
@@ -53,60 +51,45 @@ def register(request):
         city = request.POST.get('city')
         ddlgender = request.POST.get('ddlgender')
         
-        success = False
-        if captcha and key_hash:
-            cursor = connection.cursor()
-            try:
-                rs = cursor.fetchone('select 1 from captcha where captcha_hash=%s and captcha=%s', (key_hash, captcha))
-                if rs:
-                    success = True
-            finally:
-                cursor.close()
-                
-        if success:
+        captcha_key = request.COOKIES.get("CAPTCHA")
+        b_captcha, m_captcha_key, fpath = is_captcha(captcha, captcha_key)
+
+        success = True
+        message = ""
+        if b_captcha:
             user_info = UserInfo()
             user_info.username = email
             user_info.nickname = nickname
             user_info.password = md5mgr.mkmd5fromstr(md5mgr.mkmd5fromstr(password))
             user_info.active = 0
+            user_info.city = city
+            user_info.sex = ddlgender
+            try:
+                user_info.birthday  = datetime.datetime(int(yyyy), int(mm), int(dd))
+            except:
+                raise
             user_info.persist()
             
             code = '%s%s%s' % (md5mgr.mkmd5fromstr(email), md5mgr.mkmd5fromstr('%s' % random.randint(0, 100)), md5mgr.mkmd5fromstr('%s' % time.time())) 
             
             active_link = "http://%s/accounts/active/?c=%s" % (DOMAIN, code)
             msg = u'请点击下面的链接激活:<br><a href="%s">%s</a>' % (active_link, active_link)
+            success = 1
             try:
                 mailutil.send_to(u'GBA篮球经理用激活邮件', msg, email)
             except:
-                pass
-        if success:
-            return HttpResponse('<h1>register success.</h1>')
+                success = 0
+            email_send_log = EmailSendLog()
+            email_send_log.username = email
+            email_send_log.active_code = code
+            email_send_log.success = 1 if success else 0
+            email_send_log.persist()
         else:
-            return HttpResponse('<h1>register failure.</h1>')
-    
-#def captcha(request):
-#    im = Image.new('RGBA', (90, 26), (50,50,50,50))
-#    draw = ImageDraw.Draw(im)
-#    rands = []
-#    for i in range(4):
-#        rands.append('%s' % random.randint(0, 9))
-#    draw.text((2,0), rands[0], font=ImageFont.truetype("tahomabd.TTF", random.randrange(18,24)), fill='red')
-#    draw.text((24,0), rands[1], font=ImageFont.truetype("tahomabd.TTF", random.randrange(18,24)), fill='yellow')
-#    draw.text((43,0), rands[2], font=ImageFont.truetype("tahomabd.TTF", random.randrange(18,24)), fill='blue')
-#    draw.text((64,0), rands[3], font=ImageFont.truetype("tahomabd.TTF", random.randrange(18,24)), fill='white') 
-#    del draw
-#    buf = cStringIO.StringIO()
-#    im.save(buf, 'gif')
-#    response = HttpResponse(buf.getvalue(),'image/gif')
-#    key = ''.join(rands)
-#    key_hash = md5mgr.mkmd5fromstr(key)
-#    captcha = Captcha()
-#    captcha.captcha = key
-#    captcha.captcha_hash = key_hash
-#    captcha.persist()
-#    response.set_cookie('CAPTCHA', key_hash)
-#    return response
-
+            success = False
+            message = "验证码错误"
+        
+        return render_to_response(request, 'accounts/register_result.html', {'success': success, 'message': message})
+        
 def captcha(request):
     '''获取生成的验证码'''
     r_dic = {'success' : True, 'img' : ''}
@@ -114,7 +97,7 @@ def captcha(request):
     
     r_dic['img'] = img
     response = HttpResponse(json.dumps(r_dic))
-    response.set_cookie("CAPTCHA", ckey, max_age=60, path="/")
+    response.set_cookie("CAPTCHA", ckey, max_age=300, path="/")
     return response  
 
 def check_email(request):

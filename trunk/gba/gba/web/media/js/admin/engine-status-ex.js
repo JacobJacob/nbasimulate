@@ -46,6 +46,7 @@ Ext.onReady(function(){
                 case 1 : return '<font color="orange">pause</font>';
                 case 2 : return '<font color="green">running</font>';
                 case 3 : return '<font color="red">error</font>';
+                case 4 : return '<font color="blue">exit</font>';
               }
             }
         },{
@@ -69,10 +70,11 @@ Ext.onReady(function(){
             align: 'center',
             header: '操作',
             dataIndex: 'name',
-            width: 100,
+            width: 150,
             renderer: function(value){
               var html = "<a href=\"javascript:void(0);\" onclick=\"javascript:send_cmd('" + value + "', 'PAUSE');\">pause</a>";
               html += "&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"javascript:send_cmd('" + value + "', 'CONTINUE');\">continue</a>";
+              html += "&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"javascript:send_cmd('" + value + "', 'EXIT');\">exit</a>";
               return html;
             }
         }],

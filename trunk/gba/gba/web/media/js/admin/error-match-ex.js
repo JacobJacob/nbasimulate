@@ -6,8 +6,16 @@ Ext.onReady(function(){
 		{name: 'match_id'},
 		{name: 'type'},
 		{name: 'remark'},
+		{name: 'client'},
 		{name: 'created_time'},
 	]);
+ 	
+ 	var expander = new Ext.ux.grid.RowExpander({
+        tpl : new Ext.Template(
+            '<p><b>Company:</b> {remark}</p>'
+        )
+    });
+ 	
  	
 	var data_read = new Ext.data.JsonReader({totalProperty: 'total', root: 'infos', id: 'id'}, data_record);
 	
@@ -20,9 +28,11 @@ Ext.onReady(function(){
         store: store,
         width: 600,
         height: 645,
+        plugins: expander,
         region:'center',
         loadMask: true,
         columns: [
+           expander,
            new Ext.grid.RowNumberer()
         ,{
             id: 'id',
@@ -38,6 +48,11 @@ Ext.onReady(function(){
             id: 'type',
             header: '比赛类型',
             dataIndex: 'type',
+            width: 80,
+        },{
+            id: 'client',
+            header: '客户端',
+            dataIndex: 'client',
             width: 80,
         },{
             id: 'remark',
