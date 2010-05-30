@@ -1,0 +1,1 @@
+Min-Class: com.ts.dt.Main
