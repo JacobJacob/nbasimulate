@@ -14,7 +14,7 @@ public class Matchs {
 	private Date startTime;
 	private String point;
 	private int type;
-	private int overtime = 0; // 一个多少个加时
+	private int overtime = 0;
 	private boolean isYouth;
 	private String client;
 	private Date createdTime = new Date();
