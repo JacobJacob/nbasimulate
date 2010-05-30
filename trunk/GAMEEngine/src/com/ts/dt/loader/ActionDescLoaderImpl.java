@@ -47,7 +47,8 @@ public class ActionDescLoaderImpl implements ActionDescLoader {
 		ActionDescKey key = new ActionDescKey(actionNm, result, flg);
 
 		if (cache.containKey(key)) {
-			System.out.println("catch hit on,get from cache;key:" + key.toString());
+			// System.out.println("catch hit on,get from cache;key:" +
+			// key.toString());
 			actionDesclist = cache.get(key);
 		} else {
 			ActionDescDao actionDescDao = new ActionDescDaoImpl();
