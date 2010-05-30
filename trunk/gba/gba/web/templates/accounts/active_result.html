@@ -1,0 +1,19 @@
+<!doctype html public "-//w3c//dtd xhtml 1.0 transitional//en" "http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>
+{% if error %}
+  帐号激活失败
+{% else %}
+  帐号激活失败
+{% endif %}
+</title>
+</head>
+<body>
+    {% if error %}
+        {{ error }}
+    {% else %}
+      恭喜你,帐号激活成功,点此<a href="{% url login %}">登陆</a>
+    {% endif %}
+</body>
+</html>

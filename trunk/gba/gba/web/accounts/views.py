@@ -112,3 +112,28 @@ def timeout(request):
 
 def ucenter(request):
     return render_to_response(request, 'accounts/ucenter.html')
+
+def account_active(request):
+    code = request.GET.get('c')
+    success = u'帐户激活成功'
+    error = None
+    i = 0
+    while i < 1:
+        i += 1
+        if not code:
+            error = u'激活失败,请联系客服'
+            break
+            
+        email_send_log = EmailSendLog.load(active_code=code)
+        if not email_send_log:
+            error = u'激活失败,请联系客服'
+            break
+        user_info = UserInfo.load(username=email_send_log.username)
+        if user_info.active == 1:
+            error = u'该帐号已经激活,无须重新激活'
+            break
+            
+        user_info.active = 1
+        user_info.persist()
+            
+    return render_to_response(request, 'accounts/active_result.html', {'success': success, 'error': error})
