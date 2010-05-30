@@ -5,6 +5,11 @@ import java.util.Comparator;
 
 public class DataStatComparator<T> implements Comparator<PlayerDataStat>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5408154875432283156L;
+
 	public int compare(PlayerDataStat playerDataStat1, PlayerDataStat playerDataStat2) {
 		// TODO Auto-generated method stub
 		int point1 = playerDataStat1.getTotalPoint();

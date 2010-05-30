@@ -45,7 +45,7 @@ public class DataStat {
 		visitingTeamPlayersDataStat = new Hashtable<Long, PlayerDataStat>();
 	}
 
-	// ³ı³ı×´Ì¬
+	// é™¤é™¤çŠ¶æ€
 	public void clear() {
 		this.homeTeamPlayersDataStat.clear();
 		this.visitingTeamPlayersDataStat.clear();
@@ -198,7 +198,7 @@ public class DataStat {
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("=======================================================================================================\n");
-		sb.append("Çò¶Ó       ¶ş·Ö       ¶ş·ÖÃüÖĞÂÊ       Èı·Ö       Èı·ÖÃüÖĞÂÊ        ·£Çò      ºó³¡Àº°å     Ç°³¡Àº°å    ×ÜÀº°å       µÃ·Ö  \n");
+		sb.append("çƒé˜Ÿ       äºŒåˆ†       äºŒåˆ†å‘½ä¸­ç‡       ä¸‰åˆ†       ä¸‰åˆ†å‘½ä¸­ç‡        ç½šçƒ      ååœºç¯®æ¿     å‰åœºç¯®æ¿    æ€»ç¯®æ¿       å¾—åˆ†  \n");
 		sb.append("-------------------------------------------------------------------------------------------------------\n");
 		sb.append(createHomePlayerDataStat());
 		sb.append("         " + homeTeam2DoomTimes + "\\" + homeTeam2ShootTimes);
@@ -277,7 +277,7 @@ public class DataStat {
 		playerDataStat.assistTimesInc();
 	}
 
-	// ÇòÔ±·â¸Ç¼Ó1
+	// çƒå‘˜å°ç›–åŠ 1
 	public void playerBlockTimesInc(Player player, boolean isHomeTeam) {
 		PlayerDataStat playerDataStat = getPlayerDataStatByPlayer(player, isHomeTeam);
 		playerDataStat.blockTimesInc();
