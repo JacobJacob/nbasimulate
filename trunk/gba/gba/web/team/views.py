@@ -699,3 +699,10 @@ def team_honor(request, min=False):
     if min:
         return render_to_response(request, 'team/team_honor_min.html', datas)
     return render_to_response(request, 'team/team_honor.html', datas)
+
+@login_required
+def register_team(request):
+    '''注册球队'''
+    step = int(request.POST.get('step', 1))
+    datas = {'step': step, 'next_step': step+1}
+    return render_to_response(request, 'team/team_register_step4.html', datas)

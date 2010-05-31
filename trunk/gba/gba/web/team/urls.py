@@ -30,4 +30,5 @@ urlpatterns = patterns('web.team',
     url(r'^arena_update/$', 'views.arena_update', name='arena-update'),
     url(r'^arena_update_save/$', 'views.arena_update_save', name='arena-update-save'),
     url(r'^arena_price_update/$', 'views.arena_price_update', name='arena-price-update'),
+    url(r'^register/$', 'views.register_team', name='register-team'),
 )
