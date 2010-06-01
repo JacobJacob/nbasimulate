@@ -1,5 +1,7 @@
 {% extends "team/team_register_master.html" %}
 {% block main %}
+<form method="post" name="register_form" action="{% url register-team  %}">
+<input type="text" name="step" value="{{next_step}}"/>
 <div class="creatBox1">
     <div class="blank10">
     </div>
@@ -33,7 +35,7 @@
     <div style="font-size: 13px;">
         <font color="red">
             <strong>
-                组建业余队
+                组建街球队
             </strong>
         </font>
     </div>
@@ -42,293 +44,34 @@
 <table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
     <tbody>
         <tr>
-            <th>
-                姓名
-            </th>
-            <th>
-                年龄
-            </th>
-            <th>
-                位置
-            </th>
-            <th>
-                身高
-            </th>
-            <th>
-                体重
-            </th>
-            <th>
-                综合
-            </th>
-            <th>
-                薪水
-            </th>
-            <th class="end_cell">
-                操作
-            </th>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>位置</th>
+            <th>身高</th>
+            <th>体重</th>
+            <th>综合</th>
+            <th class="end_cell">操作</th>
         </tr>
+        {% for info in infos %}
         <tr>
             <td>
-                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=17"
-                onclick="return show_popup(this)" title="分卫">
-                    <font color="#0096f1">
-                        约什-麦克 罗伯茨
-                    </font>
+                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=17"  onclick="return show_popup(this)" title="分卫">
+                    <font color="#0096f1">{{info.name}}</font>
                 </a>
             </td>
+            <td>{{info.age}}</td>
+            <td>{{info.position}}</td>
+            <td>{{info.stature}}</td>
+            <td>{{info.avoirdupois}}</td>
+            <td>{{info.ability}}</td>
             <td>
-                18
-            </td>
-            <td>
-                SG
-            </td>
-            <td>
-                190
-            </td>
-            <td>
-                82
-            </td>
-            <td>
-                12.9
-            </td>
-            <td>
-                827
-            </td>
-            <td>
-                <input checked="checked" name="qiu_yuan[]" onclick="return 
-                checkSelect();" value="17" type="checkbox">
+                <input checked="checked" name="qiu_yuan[]" onclick="return checkSelect();" value="17" type="checkbox">
             </td>
         </tr>
-        <tr class="td_bgcolor_blue1">
-            <td>
-                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=13"
-                onclick="return show_popup(this)" title="中锋">
-                    <font color="#0096f1">
-                        沃尔特-夏 普
-                    </font>
-                </a>
-            </td>
-            <td>
-                17
-            </td>
-            <td>
-                C
-            </td>
-            <td>
-                222
-            </td>
-            <td>
-                162
-            </td>
-            <td>
-                12.8
-            </td>
-            <td>
-                825
-            </td>
-            <td>
-                <input checked="checked" name="qiu_yuan[]" onclick="return 
-                checkSelect();" value="13" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=14"
-                onclick="return show_popup(this)" title="中锋">
-                    <font color="#0096f1">
-                        安德烈-欧 文斯
-                    </font>
-                </a>
-            </td>
-            <td>
-                17
-            </td>
-            <td>
-                C
-            </td>
-            <td>
-                212
-            </td>
-            <td>
-                153
-            </td>
-            <td>
-                12.7
-            </td>
-            <td>
-                823
-            </td>
-            <td>
-                <input checked="checked" name="qiu_yuan[]" onclick="return 
-                checkSelect();" value="14" type="checkbox">
-            </td>
-        </tr>
-        <tr class="td_bgcolor_blue1">
-            <td>
-                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=16"
-                onclick="return show_popup(this)" title="小前">
-                    <font color="#0096f1">
-                        厄尔-博伊 金斯
-                    </font>
-                </a>
-            </td>
-            <td>
-                19
-            </td>
-            <td>
-                SF
-            </td>
-            <td>
-                201
-            </td>
-            <td>
-                99
-            </td>
-            <td>
-                12.3
-            </td>
-            <td>
-                816
-            </td>
-            <td>
-                <input checked="checked" name="qiu_yuan[]" onclick="return 
-                checkSelect();" value="16" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=25"
-                onclick="return show_popup(this)" title="控卫">
-                    <font color="#0096f1">
-                        罗伊-希伯 特
-                    </font>
-                </a>
-            </td>
-            <td>
-                18
-            </td>
-            <td>
-                PG
-            </td>
-            <td>
-                182
-            </td>
-            <td>
-                80
-            </td>
-            <td>
-                12
-            </td>
-            <td>
-                811
-            </td>
-            <td>
-                <input name="qiu_yuan[]" onclick="return checkSelect();" value="25" type="checkbox">
-            </td>
-        </tr>
-        <tr class="td_bgcolor_blue1">
-            <td>
-                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=26"
-                onclick="return show_popup(this)" title="控卫">
-                    <font color="#0096f1">
-                        加瑞特-杰 克
-                    </font>
-                </a>
-            </td>
-            <td>
-                17
-            </td>
-            <td>
-                PG
-            </td>
-            <td>
-                187
-            </td>
-            <td>
-                85
-            </td>
-            <td>
-                11.8
-            </td>
-            <td>
-                808
-            </td>
-            <td>
-                <input name="qiu_yuan[]" onclick="return checkSelect();" value="26" type="checkbox">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=18"
-                onclick="return show_popup(this)" title="分卫">
-                    <font color="#0096f1">
-                        马奎斯-丹 尼尔斯
-                    </font>
-                </a>
-            </td>
-            <td>
-                21
-            </td>
-            <td>
-                SG
-            </td>
-            <td>
-                192
-            </td>
-            <td>
-                92
-            </td>
-            <td>
-                11.5
-            </td>
-            <td>
-                804
-            </td>
-            <td>
-                <input name="qiu_yuan[]" onclick="return checkSelect();" value="18" type="checkbox">
-            </td>
-        </tr>
-        <tr class="td_bgcolor_blue1">
-            <td>
-                <a href="http://s1.dlm.17uxi.cn/source/n.php?a=416&amp;id_mb_qiu_yuan=15"
-                onclick="return show_popup(this)" title="大前">
-                    <font color="#0096f1">
-                        理查德-杰 弗森
-                    </font>
-                </a>
-            </td>
-            <td>
-                20
-            </td>
-            <td>
-                PF
-            </td>
-            <td>
-                213
-            </td>
-            <td>
-                152
-            </td>
-            <td>
-                9.3
-            </td>
-            <td>
-                794
-            </td>
-            <td>
-                <input name="qiu_yuan[]" onclick="return checkSelect();" value="15" type="checkbox">
-            </td>
-        </tr>
+        {% endfor %}
     </tbody>
 </table>
-</div>
-<div class="clear">
-</div>
-<div class="create_bot">
-</div>
-</div>
-<div id="floatBoxBg" style="display: none; position: fixed; height: 
-100%; width: 100%;">
+<div id="floatBoxBg" style="display: none; position: fixed; height: 100%; width: 100%;">
 </div>
 <div id="floatBox" class="floatBox" style="display: none;">
     <div class="floatBox_header">
@@ -346,4 +89,5 @@
     <div class="floatBox_footer">
     </div>
 </div>
+</form>
 {% endblock %}

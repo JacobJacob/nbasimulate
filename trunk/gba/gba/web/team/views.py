@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from gba.business.user_roles import login_required
 from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, \
                        LeagueConfig, Friends, Team, ProfessionPlayer, TeamHonor, UserInfo, \
-                       TeamTicketHistory
+                       TeamTicketHistory, InitProfessionPlayer, InitYouthPlayer
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
@@ -704,5 +704,15 @@ def team_honor(request, min=False):
 def register_team(request):
     '''注册球队'''
     step = int(request.POST.get('step', 1))
+    print step
+    if step >= 5:
+        step = 1
     datas = {'step': step, 'next_step': step+1}
-    return render_to_response(request, 'team/team_register_step4.html', datas)
+    if step == 3:
+        infos = InitProfessionPlayer.query(order="ability desc")
+        datas['infos'] = infos
+    elif step == 4:
+        infos = InitYouthPlayer.query(order="ability desc")
+        datas['infos'] = infos
+        
+    return render_to_response(request, 'team/team_register_step%s.html' % step, datas)

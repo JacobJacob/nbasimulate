@@ -7,6 +7,10 @@ from gba.common.bottle.persistable import Persistable
 class ProfessionPlayer(Persistable):
     '''职业球员'''
     CACHE_KEY = 'profession_player:no'
+    
+class InitProfessionPlayer(Persistable):
+    '''初始化职业球员'''
+    CACHE_KEY = 'init_profession_player:no'
      
 class FreePlayer(Persistable):
     '''职业自由球员'''
@@ -15,6 +19,10 @@ class FreePlayer(Persistable):
 class YouthFreePlayer(Persistable):
     '''街头自由球员'''
     CACHE_KEY = 'youth_free_player:no'
+    
+class InitYouthPlayer(Persistable):
+    '''初始化街头球员'''
+    CACHE_KEY = 'init_youth_player:no'
     
 class DraftPlayer(Persistable):
     '''选秀球员'''

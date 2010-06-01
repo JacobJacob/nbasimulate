@@ -1,31 +1,18 @@
+var service = new rpc.ServiceProxy("/services/user/", {asynchronous:false, methods: ['check_teamname_exist']});
+
 //失去焦点的时候执行此方法，发送请求到后台php
-function usernameResult(result) {
-  var mes;
-
-	if(result==1)
-	{
+team_name_check = function(){
+  var team_name = $('team_name').value;
+  var result = service.check_teamname_exist(team_name);
+  if(result==0){
 		$('can_shu').value=1;
-		if($('message').innerHTML != "")
+		if($('message').innerHTML != ""){
 			$('message').innerHTML = "恭喜您，该俱乐部名可以使用！" ;
-	}
-	if(result==3)
-	{
-		$('can_shu').value=1;
-		if($('message').innerHTML != "")
-			$('message').innerHTML = "该俱乐部名可以使用！" ;
-	}
-
-  if(result==-2)
-  {
-	  mes = "俱乐部名已存在，请重新输入！";
+	    }
+  }else{
 	  $('can_shu').value=-2;
-	  $('message').innerHTML = mes;
+	  $('message').innerHTML = "俱乐部名已存在，请重新输入！";
   } 
-}
-
-function jlb_ming_chengCheck() {						//判断是否执行此方法
-  var input = $('team_name').value;
-  rpc.jlb_ming_cheng_check(input, usernameResult);
 }
 //--------------------------------填充页面-------------------------------------
 
