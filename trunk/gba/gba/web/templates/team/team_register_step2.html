@@ -2,17 +2,18 @@
 {% block main %}
 <form method="post" name="register_form" action="{% url register-team  %}" onsubmit="return checkform()">
 <input type="text" name="step" value="{{next_step}}"/>
+<input type="text" name="manager_name" value="{{manager_name}}"/>
 <div class="creatBox1">
 <div class="blank10"></div>
 <div class="blank10"></div>
 <p>
-  尊敬的@大头@经理，您的经理信息，已经提交成功，下面请创建属于您的球队，并挑选球队球员，这些球员将是您俱乐部初期比赛的顶梁柱，挑 选符合你球队风格的球员，将会使你在以后的排兵布阵中轻松很多。
+  尊敬的{{manager_name}}经理，您的经理信息，已经提交成功，下面请创建属于您的球队，并挑选球队球员，这些球员将是您俱乐部初期比赛的顶梁柱，挑 选符合你球队风格的球员，将会使你在以后的排兵布阵中轻松很多。
 </p>
 <div class="blank10"></div>
 <div class="blank5"></div>
 <ul>
     <li class="creatBox1_l">俱乐部经理：</li>
-    <li class="creatBox1_r">@大头@</li>
+    <li class="creatBox1_r">{{manager_name}}</li>
 </ul>
 <div class="clear"></div>
 <div class="blank10"></div>
@@ -22,18 +23,18 @@
     <li class="creatBox1_r">
         <input name="team_name" id="team_name" class="in1" type="text" onblur="team_name_check();">
         最多不超过16个字符，8个汉字
+        <span class="red" id="message">
     </li>
     <input name="can_shu" id="can_shu" value="1" type="hidden">
 </ul>
 <div class="clear"></div>
 <div class="blank10"></div>
-<font color="red"><div id="message"></div></font>
 <div class="blank10"></div>
 <ul>
     <li class="creatBox1_l lh21">俱乐部队徽：</li>
     <li class="creatBox1_r">
         <img id="imgClothes2" src="/site_media/images/team/0.gif" width="55" height="55" onclick="ShowMenu2()">
-        <input id="hidClothes" value="0" name="hidClothes" type="text">
+        <input id="hidClothes" value="/site_media/images/team/0.gif" name="hidClothes" type="text">
         点击图标选择其他队徽！
     </li>
 </ul>

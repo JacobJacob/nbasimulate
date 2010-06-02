@@ -1,12 +1,7 @@
 {% extends "team/team_register_master.html" %}
-{% load common_extras %}
 {% block main %}
 <form method="post" name="register_form" action="{% url register-team  %}">
 <input type="text" name="step" value="{{next_step}}"/>
-<input type="text" name="team_name" value="{{team_name}}"/>
-<input type="text" name="manager_name" value="{{manager_name}}"/>
-<input type="text" name="hidClothes" value="{{hidClothes}}"/>
-<input type="text" name="pro_player_ids" value="{{pro_player_ids}}"/>
 <div class="creatBox1">
     <div class="blank10"></div>
     <p>
@@ -60,7 +55,7 @@
             <td>{{info.position}}</td>
             <td>{{info.stature}}</td>
             <td>{{info.avoirdupois}}</td>
-            <td>{{info.ability|format_number}}</td>
+            <td>{{info.ability}}</td>
             <td>
                 <input name="player[]" onclick="return checkSelect();" value="17" type="checkbox">
             </td>

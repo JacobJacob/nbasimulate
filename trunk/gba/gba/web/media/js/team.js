@@ -14,6 +14,21 @@ team_name_check = function(){
 	  $('message').innerHTML = "俱乐部名已存在，请重新输入！";
   } 
 }
+
+manager_name_check = function(){
+  var manager_name = $('manager_name').value;
+  var result = service.check_teamname_exist(manager_name);
+  if(result==0){
+		$('can_shu').value=1;
+		if($('message').innerHTML != ""){
+			$('message').innerHTML = "恭喜您，该经理名称可以使用！" ;
+	    }
+  }else{
+	  $('can_shu').value=-2;
+	  $('message').innerHTML = "经理名称已存在，请重新输入！";
+  } 
+}
+
 //--------------------------------填充页面-------------------------------------
 
 
@@ -128,5 +143,35 @@ function check_file()
 		$('myfile').focus();
 		return false;
 	}
+	return true;
+}
+
+check_manager_form = function (myform){
+
+	if($('can_shu').value==-2){
+	  mes = "经理名称已存在，请重新输入！";
+	  $('message').innerHTML=mes;
+	  return false;
+	}
+
+	if(!isNull('manager_name')){
+		$('message').innerHTML = "经理名称不能为空！";
+		return false;
+	}
+	//过滤内容
+	if(is_political_words($('manager_name').value)||is_dirty_words($('manager_name').value))
+	{
+		$("message").innerHTML = "经理名称不合法！";
+		return false;
+	}
+	if(!isNaN($('manager_name').value)){
+		$('message').innerHTML = "经理名称不能全是数字！";
+		return false;
+	}
+	if(!checkCharLength('manager_name',16)){
+		$('message').innerHTML = "填写的经理名称字符太长！";
+		return false;
+	}
+
 	return true;
 }

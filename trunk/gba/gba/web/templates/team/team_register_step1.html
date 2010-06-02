@@ -1,6 +1,6 @@
 {% extends "team/team_register_master.html" %}
 {% block main %}
-<form method="post" name="register_form" action="{% url register-team  %}">
+<form method="post" name="register_form" action="{% url register-team  %}" onsubmit="return check_manager_form()">
 <input type="text" name="step" value="{{next_step}}"/>
 <div class="creatBox1">
     <div class="blank10"></div>
@@ -21,16 +21,14 @@
     <div class="h25"></div>
     <ul>
         <li class="creatBox1_l lh21">
-            <span class="red">
-                *
-            </span>
+            <span class="red"> *</span>
             经理名称：
         </li>
         <li class="creatBox1_r">
-            <input name="jiao_se_ming_cheng" id="jiao_se_ming_cheng" maxlength="16" onblur="jiao_se_ming_chengCheck();" type="text">
+            <input name="manager_name" id="manager_name" maxlength="16" onblur="manager_name_check();" type="text">
               最多不超过16个字符，8个汉字。
-            <span class="red" id="notice">
-            </span>
+            <span class="red" id="message"></span>
+            <input name="can_shu" id="can_shu" value="1" type="hidden">
         </li>
     </ul>
     <div class="clear"></div>

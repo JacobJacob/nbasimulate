@@ -704,15 +704,20 @@ def team_honor(request, min=False):
 def register_team(request):
     '''注册球队'''
     step = int(request.POST.get('step', 1))
-    print step
+    manager_name = request.POST.get('manager_name', '')
+    team_name = request.POST.get('team_name', '')
+    hidClothes = request.POST.get('hidClothes', '')
     if step >= 5:
         step = 1
-    datas = {'step': step, 'next_step': step+1}
+    datas = {'step': step, 'next_step': step+1, 'manager_name': manager_name, 'team_name': team_name, 'hidClothes': hidClothes}
     if step == 3:
         infos = InitProfessionPlayer.query(order="ability desc")
         datas['infos'] = infos
     elif step == 4:
+        ids = request.POST.getlist('player[]')
+        pro_player_ids = ','.join(ids)
         infos = InitYouthPlayer.query(order="ability desc")
         datas['infos'] = infos
+        datas['pro_player_ids'] = pro_player_ids
         
     return render_to_response(request, 'team/team_register_step%s.html' % step, datas)

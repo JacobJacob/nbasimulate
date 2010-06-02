@@ -1,7 +1,11 @@
 {% extends "team/team_register_master.html" %}
+{% load common_extras %}
 {% block main %}
 <form method="post" name="register_form" action="{% url register-team  %}">
+<input type="text" name="team_name" value="{{team_name}}"/>
+<input type="text" name="manager_name" value="{{manager_name}}"/>
 <input type="text" name="step" value="{{next_step}}"/>
+<input type="text" name="hidClothes" value="{{hidClothes}}"/>
 <div class="creatBox1">
     <div class="blank10">
     </div>
@@ -13,11 +17,11 @@
     </p>
     <div class="tr mr20">
         <div class="right ml15">
-           <input id="sub" value="完成" type="submit">
+           <input id="sub" value="完成" type="submit" disabled="true">
         </div>
         <font color="red">
             <div id="notice">
-                <font xmlns="http://www.w3.org/1999/xhtml">您已选择'8',还可以选择'0'</font>
+                <font xmlns="http://www.w3.org/1999/xhtml">您已选择0,还可以选择8</font>
             </div>
         </font>
         <div class="right red lh18">点击球员名称可查看球员属性</div>
@@ -56,10 +60,10 @@
             <td>{{info.position}}</td>
             <td>{{info.stature}}</td>
             <td>{{info.avoirdupois}}</td>
-            <td>{{info.ability}}</td>
+            <td>{{info.ability|format_number}}</td>
             <td>{{info.wage}}</td>
             <td>
-              <input checked="checked" name="qiu_yuan[]" onclick="return  checkSelect();" value="5" type="checkbox">
+              <input name="player[]" onclick="return checkSelect();" value="{{info.id}}" type="checkbox">
             </td>
         </tr>
         {% endfor %}
