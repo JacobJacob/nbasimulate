@@ -4,11 +4,13 @@
 
 from copy import deepcopy
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
-from gba.business.user_roles import login_required
+from gba.business.user_roles import login_required, UserManager
+from gba.business import match_operator
 from gba.entity import TeamStaff, SeasonFinance, AllFinance, TeamArena, TeamAd, \
                        LeagueConfig, Friends, Team, ProfessionPlayer, TeamHonor, UserInfo, \
-                       TeamTicketHistory, InitProfessionPlayer, InitYouthPlayer
+                       TeamTicketHistory, InitProfessionPlayer, InitYouthPlayer, LeagueTeams
 from gba.web.render import render_to_response
 from gba.common.constants import StaffStatus, StaffType, FinanceSubType, FinanceType
 from gba.common import exception_mgr
@@ -439,7 +441,6 @@ def hire_staff(request):
 @login_required
 def dismiss_staff(request):
     '''解雇职员'''
-    team = request.team
     id = request.GET.get('id') 
     error = None
     i = 0
@@ -701,14 +702,13 @@ def team_honor(request, min=False):
     return render_to_response(request, 'team/team_honor.html', datas)
 
 @login_required
-def register_team(request):
+def register(request):
     '''注册球队'''
     step = int(request.POST.get('step', 1))
     manager_name = request.POST.get('manager_name', '')
     team_name = request.POST.get('team_name', '')
     hidClothes = request.POST.get('hidClothes', '')
-    if step >= 5:
-        step = 1
+
     datas = {'step': step, 'next_step': step+1, 'manager_name': manager_name, 'team_name': team_name, 'hidClothes': hidClothes}
     if step == 3:
         infos = InitProfessionPlayer.query(order="ability desc")
@@ -719,5 +719,37 @@ def register_team(request):
         infos = InitYouthPlayer.query(order="ability desc")
         datas['infos'] = infos
         datas['pro_player_ids'] = pro_player_ids
+    elif step == 5:#创建球队
+        username = UserManager().get_userinfo(request)
+        team = Team()
+        team.username = username
+        team.name = team_name
+        team.micro = hidClothes
+        team.funds = 500000
+        league = match_operator.assign_league()
+        team.profession_league_evel = league.degree
+        team.profession_league_class = league.no
+        team.persist()
+        
+        league_team = LeagueTeams.load(league_id=league.id, status=0, team_id= -1)
+        if not league_team:
+            raise 'league team is not exit'
+        league_team.team_id = team.id
+        league_team.status = 1 #状态改为了，表示有人了
+        league_team.persist()
+        
+        #创建球馆
+        team_arena = TeamArena()
+        team_arena.team_id = team.id
+        team_arena.level = 1
+        team_arena.fare = 20 #票价
+        team_arena.fan_count = 1000 #球迷
+        team_arena.persist()
+        
+        pro_player_ids = request.POST.get('pro_player_ids').split(',')
+        youth_player_ids = request.POST.getlist('player[]')
+        match_operator.created_init_player_and_tactical(team.id, pro_player_ids, youth_player_ids)
+        
+        return HttpResponseRedirect('/')
         
     return render_to_response(request, 'team/team_register_step%s.html' % step, datas)

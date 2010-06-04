@@ -6,7 +6,8 @@
 <script type="text/javascript" src="/site_media/js/ucenter.js"></script>
 <script type="text/javascript" src="/site_media/js/select_list.js"></script>
 <script type="text/javascript">
-    var DEFAULT_THEME = '{{settings.mediaDomain}}/theme/{{settings.defaultTheme}}';
+
+    var DEFAULT_THEME = '/site_media';
     var CONSTANTS = {URI:{}};
     CONSTANTS.URI.CAPTCHA = {
         IMG : '{% url captcha %}' 
@@ -17,74 +18,75 @@
 <link href="/site_media/css/ucenter.css" rel="stylesheet" type="text/css"/>
   <title>gba通行证注册</title>
 <script type="text/javascript">
+
    $(document).ready(function(){
-    var rules = {
-        email: {
-            required: true,
-            email: true,
-            remote: {
-                url: "{% url check-email %}",     //后台处理程序
-                type: "post",               //数据发送方式
-                dataType: "json",           //接受数据格式    (一定是json 数据)
-                data: {                     //要传递的数据
-                  email: function() {
-                     return $("#email").val();
-                  }
-                }
-            }
-        },
-        password: {
-            required: true,
-        },
-        passwordcheck: {
-            required: true,
-            equalTo: "#password"
-        },
-        nickname:{
-            required: true,
-            rangelength: [5, 10]
-        },
-        captcha:{
-            required: true,
-            rangelength: [4, 4]
-        }  
-    };
+	    var rules = {
+	        email: {
+	            required: true,
+	            email: true,
+	            remote: {
+	                url: "{% url check-email %}",
+	                type: "post",
+	                dataType: "json",
+	                data: {
+	                  email: function() {
+	                     return $("#email").val();
+	                  }
+	                }
+	            }
+	        },
+	        password: {
+	            required: true
+	        },
+	        passwordcheck: {
+	            required: true,
+	            equalTo: "#password"
+	        },
+	        nickname:{
+	            required: true,
+	            rangelength: [5, 10]
+	        },
+	        captcha:{
+	            required: true,
+	            rangelength: [4, 4]
+	        }  
+	    };
     
-    var messages = {
-        email: {
-        	required: "Email地址必须填写",
-            email: "请输入一个有效的Email地址",
-            remote: "该邮箱已经注册过了",
-        }, 
-        password:{
-            required: "请输入密码",
-        },
-        passwordcheck:{
-            required: "请确认密码",
-            equalTo: "两次输入密码不一致",
-        },
-        nickname:{
-            required: "请输入用户名",
-            rangelength: '用户名为5到10个字符',
-        },
-        captcha:{
-            required: "请输入验证码",
-            rangelength: "验证为4位数字"
-        }
-	};
+	    var messages = {
+	        email: {
+	        	required: "Email地址必须填写",
+	            email: "请输入一个有效的Email地址",
+	            remote: "该邮箱已经注册过了"
+	        }, 
+	        password:{
+	            required: "请输入密码"
+	        },
+	        passwordcheck:{
+	            required: "请确认密码",
+	            equalTo: "两次输入密码不一致"
+	        },
+	        nickname:{
+	            required: "请输入用户名",
+	            rangelength: '用户名为5到10个字符'
+	        },
+	        captcha:{
+	            required: "请输入验证码",
+	            rangelength: "验证为4位数字"
+	        }
+		};
 	 
-	$("#register").validate({
-	  rules: rules, 
-	  messages: messages,
-	  errorPlacement: function(error, element) { 
-	     error.appendTo( element.parent() );     
-      }, 
-    });
+		$("#register").validate({
+		  rules: rules, 
+		  messages: messages,
+		  errorPlacement: function(error, element) { 
+		     error.appendTo(element.parent());     
+	      }
+	    });
     
-    YYYYMMDDstart();
-    
-    Captach.getFirstCaptcha();
-});
+	    YYYYMMDDstart();
+	    Captach.getFirstCaptcha();
+
+   });
 </script>
 <style>
   .error{color:red;margin-left:10px;}
@@ -112,35 +114,35 @@
                 <td class="regtd1">电子邮件：
                 </td>
                 <td class="regtd2">
-                   <input name="email" id="email" class="regftxt">
+                   <input name="email" id="email" class="regftxt"/>
                 </td>
             </tr>
             <tr>
                 <td class="regtd1">密码：
                 </td>
                 <td class="regtd2">
-                 <input type="password" name="password" id="password" class="regftxt">
+                 <input type="password" name="password" id="password" class="regftxt"/>
                 </td>
             </tr>
             <tr>
                 <td class="regtd1">确认密码：
                 </td>
                 <td class="regtd2">
-                  <input type="password" id="passwordcheck" name="passwordcheck" class="regftxt">
+                  <input type="password" id="passwordcheck" name="passwordcheck" class="regftxt"/>
                 </td>
             </tr>
             <tr>
                 <td class="regtd1" style=" padding-top:12px;">昵称：
                 </td>
                 <td class="regtd2" style=" padding-top:12px;">
-                    <input type="text" name="nickname" id="nickname" class="regftxt">
+                    <input type="text" name="nickname" id="nickname" class="regftxt"/>
                 </td>
             </tr>
 	        <tr>
                <td style="line-height:20px;" class="regtd1">验证码：
                </td>
                <td class="regtd2">
-                 <input id="captcha" name="captcha" class="regftxt">&nbsp;&nbsp;
+                 <input id="captcha" name="captcha" class="regftxt"/>&nbsp;&nbsp;
                     <img class="captchaimg"  height="21" hspace="0" vspace="0"/>
                    <a href="javascript:void(0);" onclick="return Captach.getCaptcha()">刷新验证码</a>
                </td>
@@ -149,7 +151,7 @@
               <td>
               </td>
               <td>
-                <input type="submit" style="width:100px; line-height:24px;" value="完成注册" title="完成注册" id="btnregnext">
+                <input type="submit" style="width:100px; line-height:24px;" value="完成注册" title="完成注册" id="btnregnext"/>
               </td>
             </tr>
 	     <tr>

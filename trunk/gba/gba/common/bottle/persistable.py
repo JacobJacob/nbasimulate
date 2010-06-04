@@ -17,6 +17,11 @@ def format_now():
 def info(msg):
     if DEBUG:
         print '[%s]:%s' % (format_now(), msg)
+        log_file = file('e:/log/sql.log', "ab")
+        try:
+            log_file.write('%s\n'% msg)
+        finally:
+            log_file.close() 
 
 class TableNotExistException(Exception):
     
@@ -265,9 +270,7 @@ class Persistable(object):
         param = [keys[k] for k in keys.keys()] 
         sql = 'select * from %s where %s' % (cls._table, condition) 
 
-        info(1)
         cursor = connection.cursor()
-        info(2)
         try:
             data = cursor.fetchone(sql, param)
             if data:

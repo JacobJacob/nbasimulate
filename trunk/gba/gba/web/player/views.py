@@ -683,8 +683,8 @@ def pro_player_sell(request):
         tinance.season = league_config.season
         tinance.round = league_config.round
         tinance.info = u'出售球员%s' % player.name
-        tinance.income = 0
-        tinance.outlay = social_status
+        tinance.income = social_status
+        tinance.outlay = 0
         
         team.funds += social_status
         

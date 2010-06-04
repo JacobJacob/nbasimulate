@@ -1,9 +1,7 @@
 #-*- coding:utf-8 -*-
 
-import time
-
 from gba.web.render import render_to_response
-from gba.business.user_roles import UserManager, login_required
+from gba.business.user_roles import login_required
 from gba.entity import LeagueConfig, LeagueMatchs, LeagueTeams, TeamTicketHistory
 from gba.common import commonutil
 

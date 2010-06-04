@@ -130,7 +130,6 @@ class UserManager(DBOperator):
             username = self.get_cache(session_id)
             if username is None and not cache.get_stats(): # 只有cache挂了才从数据库中读取，防止恶意刷后台页面
                 with self.cursor() as cursor:
-                    print self.SELECT_SESSION % session_id
                     record = cursor.fetchone(self.SELECT_SESSION, (session_id, ))
                 if record:
                     r = record.to_dict()

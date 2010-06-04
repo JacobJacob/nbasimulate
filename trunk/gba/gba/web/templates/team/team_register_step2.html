@@ -1,6 +1,6 @@
 {% extends "team/team_register_master.html" %}
 {% block main %}
-<form method="post" name="register_form" action="{% url register-team  %}" onsubmit="return checkform()">
+<form method="post" name="register_form" action="{% url team-register  %}" onsubmit="return checkform()">
 <input type="text" name="step" value="{{next_step}}"/>
 <input type="text" name="manager_name" value="{{manager_name}}"/>
 <div class="creatBox1">

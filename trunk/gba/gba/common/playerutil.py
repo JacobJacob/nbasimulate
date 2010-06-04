@@ -256,6 +256,16 @@ def copy_player(player, source='youth_free_player', to='youth_player'):
         delattr(free_player, 'id')
         free_player.__class__ = FreePlayer
         return free_player
+    elif source == 'init_profession_player' and to == 'profession_player':
+        profession_player = copy.deepcopy(player)
+        delattr(profession_player, 'id')
+        profession_player.__class__ = ProfessionPlayer
+        return profession_player
+    elif source == 'init_youth_player' and to == 'youth_player':
+        youth_player = copy.deepcopy(player)
+        delattr(youth_player, 'id')
+        youth_player.__class__ = YouthPlayer
+        return youth_player
     
     return None
 

@@ -2,7 +2,6 @@
 #coding=utf8
 
 import os
-import datetime
 import glob
 
 

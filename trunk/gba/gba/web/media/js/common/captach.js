@@ -18,7 +18,7 @@ var Captach = new function() {
 	
 	this.getCaptcha = function() {
 		firstCaptach = true;
-		$(CAPTACH_EL).attr("src", DEFAULT_THEME + "/css/images/loading1.gif").show();
+		$(CAPTACH_EL).attr("src", DEFAULT_THEME + "/images/common/loading.gif").show();
 		$.get(CAPTACH_IMG, 'timestamp=' + new Date().getTime(), function(data) {
 			$(CAPTACH_EL).attr("src", data.img).show();
 		}, 'json');
