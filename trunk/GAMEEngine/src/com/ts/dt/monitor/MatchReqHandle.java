@@ -80,7 +80,6 @@ public class MatchReqHandle extends Thread {
 			try {
 				this.msg = "start to get task";
 				matchReq = MatchReqPool.get();
-				System.out.println(matchReq.getId());
 				long match_id = matchReq.getId();
 				this.msg = "start to execute match:" + match_id;
 				engine.execute(match_id);
