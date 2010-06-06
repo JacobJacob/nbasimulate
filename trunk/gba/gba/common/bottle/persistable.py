@@ -17,11 +17,6 @@ def format_now():
 def info(msg):
     if DEBUG:
         print '[%s]:%s' % (format_now(), msg)
-        log_file = file('e:/log/sql.log', "ab")
-        try:
-            log_file.write('%s\n'% msg)
-        finally:
-            log_file.close() 
 
 class TableNotExistException(Exception):
     
