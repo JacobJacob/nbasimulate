@@ -11,7 +11,7 @@ public class Main {
 
 		new MatchReqMonitor().start();
 		for (int i = 0; i < 3; i++) {
-			String name = "Thread-" + String.valueOf(i);
+			String name = "match_handle_client-" + String.valueOf(i);
 			new MatchReqHandle(name).start();
 			try {
 				Thread.sleep(new Random().nextInt(5000));
