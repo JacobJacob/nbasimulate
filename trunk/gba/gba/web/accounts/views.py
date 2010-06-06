@@ -38,8 +38,10 @@ def logout(request):
 def register(request):
     "This view is a basic 'hello world' example in HTML."
     if request.method == 'GET':
+        user_name = UserManager().get_userinfo(request)
+        if user_name:
+            return HttpResponseRedirect('/accounts/ucenter/')
         return render_to_response(request, 'accounts/register.html')
-    
     else:
         captcha = request.POST.get('captcha')
         email = request.POST.get('email')
