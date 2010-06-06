@@ -9,7 +9,7 @@
 
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://192.168.1.158/gba?characterEncoding=utf-8</property>
+		<property name="connection.url">jdbc:mysql://192.168.1.152/gba?characterEncoding=utf-8</property>
 		<property name="connection.username">gba</property>
 		<property name="connection.password">gba123</property>
 
