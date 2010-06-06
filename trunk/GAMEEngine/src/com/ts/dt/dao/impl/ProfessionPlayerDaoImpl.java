@@ -1,41 +1,119 @@
 package com.ts.dt.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import com.ts.dt.dao.ProfessionPlayerDao;
+import com.ts.dt.db.ConnectionManager;
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.Player;
 import com.ts.dt.po.ProfessionPlayer;
-import com.ts.dt.util.HibernateUtil;
+import com.ts.dt.util.PlayerUtil;
 
 public class ProfessionPlayerDaoImpl extends BaseDao implements ProfessionPlayerDao {
 
+	public static final String LOAD_BY_ID_SQL = "select * from profession_player where id=?";
+	public static final String LOAD_BY_NO_SQL = "select * from profession_player where no=?";
+	public static final String QUERY_BY_TEAM_ID_SQL = "select * from profession_player where team_id=?";
+	public static final String UPDATE_SQL = "update profession_player set power=?, match_power=?, league_power=? where no=?";
+
 	public void update(ProfessionPlayer player) throws MatchException {
 		// TODO Auto-generated method stub
-		super.update(player);
+		throw new MatchException("方法未实现");
 	}
 
 	public Player load(long id) throws MatchException {
 		// TODO Auto-generated method stub
-		Player player = (Player) super.load(ProfessionPlayer.class, id);
-		if (player == null) {
-			throw new MatchException("球员不存在[" + id + "]");
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ProfessionPlayer player = null;
+		try {
+			conn = ConnectionManager.getInstance().getConnection();
+			stmt = conn.prepareStatement(LOAD_BY_ID_SQL);
+			stmt.setLong(1, id);
+			rs = stmt.executeQuery();
+			if (!rs.next()) {
+				throw new MatchException("球员不存在[" + id + "]");
+			}
+			player = new ProfessionPlayer();
+			PlayerUtil.result2Object(player, rs);
+
+		} catch (Exception e) {
+			throw new MatchException(e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
 		}
 		return player;
 	}
 
 	public Player load(String no) throws MatchException {
 		// TODO Auto-generated method stub
-		Session session = HibernateUtil.currentSession();
-		Query q = session.createQuery("from ProfessionPlayer a where a.no = :no");
-		q.setString("no", no);
-		Player player = (Player) q.uniqueResult();
-		if (player == null) {
-			throw new MatchException("球员不存在[" + no + "]");
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ProfessionPlayer player = null;
+		try {
+			conn = ConnectionManager.getInstance().getConnection();
+			stmt = conn.prepareStatement(LOAD_BY_NO_SQL);
+			stmt.setString(1, no);
+			rs = stmt.executeQuery();
+			if (!rs.next()) {
+				throw new MatchException("球员不存在[" + no + "]");
+			}
+			player = new ProfessionPlayer();
+			PlayerUtil.result2Object(player, rs);
+
+		} catch (Exception e) {
+			throw new MatchException(e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
 		}
 		return player;
 
@@ -43,15 +121,92 @@ public class ProfessionPlayerDaoImpl extends BaseDao implements ProfessionPlayer
 
 	public void update(List<Player> players) throws MatchException {
 		// TODO Auto-generated method stub
-		super.updateMany(players);
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = ConnectionManager.getInstance().getConnection();
+			conn.setAutoCommit(false);
+			stmt = conn.prepareStatement(UPDATE_SQL);
+			Iterator<Player> iterator = players.iterator();
+			while (iterator.hasNext()) {
+				Player player = iterator.next();
+				int i = 1;
+				stmt.setInt(i++, player.getPower());
+				stmt.setInt(i++, player.getMatchPower());
+				stmt.setInt(i++, player.getLeaguePower());
+				stmt.setString(i++, player.getNo());
+				stmt.addBatch();
+			}
+			stmt.executeBatch();
+			conn.commit();
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException sqlex) {
+				throw new MatchException(sqlex);
+			}
+			throw new MatchException(e);
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.setAutoCommit(true);
+					conn.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+		}
 	}
 
 	public List<Player> getPlayerWithTeamId(long teamId) throws MatchException {
 
-		Session session = HibernateUtil.currentSession();
-		Query q = session.createQuery("from ProfessionPlayer a where a.teamId = :teamId");
-		q.setLong("teamId", teamId);
-		List<Player> list = q.list();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Player> list = new ArrayList<Player>();
+		try {
+			conn = ConnectionManager.getInstance().getConnection();
+			stmt = conn.prepareStatement(QUERY_BY_TEAM_ID_SQL);
+			stmt.setLong(1, teamId);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				ProfessionPlayer player = new ProfessionPlayer();
+				PlayerUtil.result2Object(player, rs);
+				list.add(player);
+			}
+
+		} catch (Exception e) {
+			throw new MatchException(e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+		}
 		return list;
 	}
 

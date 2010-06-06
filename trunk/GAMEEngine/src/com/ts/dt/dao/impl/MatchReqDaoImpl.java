@@ -1,64 +1,57 @@
 package com.ts.dt.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import com.ts.dt.constants.MatchStatus;
 import com.ts.dt.dao.MatchReqDao;
+import com.ts.dt.db.ConnectionManager;
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.po.MatchReq;
-import com.ts.dt.util.HibernateUtil;
 
 public class MatchReqDaoImpl extends BaseDao implements MatchReqDao {
 
+	public static final String UPDATE_SQL = "update matchs set status=?, point=? where id=?";
+	public static final String QUERY_SQL = "select id, status, point from matchs where status=? limit 5";
+
 	public List<MatchReq> getAllNewReq() throws MatchException {
 
-		Session session = HibernateUtil.currentSession();
-		List<MatchReq> list = null;
-		Transaction tran = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<MatchReq> list = new ArrayList<MatchReq>();
 		try {
-			tran = session.beginTransaction();
-			Query q = session.createQuery("from MatchReq a where a.status = :status ");
-			q.setMaxResults(5);
-			q.setInteger("status", MatchStatus.ACCP);
-			list = q.list();
-			tran.commit();
-		} catch (HibernateException he) {
-			if (tran != null) {
-				tran.rollback();
+			conn = ConnectionManager.getInstance().getConnection();
+			stmt = conn.prepareStatement(QUERY_SQL);
+			stmt.setInt(1, MatchStatus.ACCP);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				MatchReq matchReq = new MatchReq();
+				matchReq.setId(rs.getLong("id"));
+				matchReq.setPoint(rs.getString("point"));
+				matchReq.setStatus(rs.getInt("status"));
+				list.add(matchReq);
 			}
-			throw new MatchException(he);
+		} catch (Exception e) {
+			throw new MatchException(e);
 		} finally {
-			HibernateUtil.closeSession();
+			try {
+				conn.close();
+			} catch (Exception ex) {
+
+			}
 		}
+
 		return list;
 	}
 
 	public MatchReq getOneNewReq() throws MatchException {
-
-		Session session = HibernateUtil.currentSession();
-		MatchReq matchReq = null;
-		Transaction tran = null;
-		try {
-			tran = session.beginTransaction();
-			Query q = session.createQuery("from MatchReq a where a.status = :status ");
-			q.setMaxResults(1);
-			q.setInteger("status", MatchStatus.ACCP);
-			matchReq = (MatchReq) q.uniqueResult();
-			tran.commit();
-		} catch (HibernateException he) {
-			if (tran != null) {
-				tran.rollback();
-			}
-			throw new MatchException(he);
-		} finally {
-			HibernateUtil.closeSession();
-		}
-		return matchReq;
+		return null;
 	}
 
 	public void update(MatchReq matchReq) throws MatchException {
@@ -68,7 +61,46 @@ public class MatchReqDaoImpl extends BaseDao implements MatchReqDao {
 
 	public void update(List<MatchReq> matchReqs) throws MatchException {
 		// TODO Auto-generated method stub
-		super.updateMany(matchReqs);
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = ConnectionManager.getInstance().getConnection();
+			conn.setAutoCommit(false);
+			stmt = conn.prepareStatement(UPDATE_SQL);
+			Iterator<MatchReq> iterator = matchReqs.iterator();
+			while (iterator.hasNext()) {
+				MatchReq matchReq = iterator.next();
+				stmt.setInt(1, matchReq.getStatus());
+				stmt.setString(2, matchReq.getPoint());
+				stmt.setLong(3, matchReq.getId());
+				stmt.addBatch();
+			}
+			stmt.executeBatch();
+			conn.commit();
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException sqlex) {
+				throw new MatchException(sqlex);
+			}
+			throw new MatchException(e);
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.setAutoCommit(true);
+					conn.close();
+				} catch (Exception ex) {
+					throw new MatchException(ex);
+				}
+			}
+		}
 	}
 
 	public static void main(String[] args) throws MatchException {
