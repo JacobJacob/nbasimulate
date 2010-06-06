@@ -89,7 +89,10 @@ public class Nodosity {
 		}
 		this.updatePlayers(context);
 
+		long start = System.currentTimeMillis();
 		logNodosityData(context);
+		long end = System.currentTimeMillis();
+		Logger.info("log nodosity data use:" + (end - start));
 
 		if (nodosityNo < 4 || (apoint == bpoint)) {
 			hasNextNodosity = true;
@@ -245,7 +248,10 @@ public class Nodosity {
 
 		MatchNodosityMainDao matchNodosityMainDao = new MatchNodosityMainDaoImpl();
 		MatchDao matchDao = new MatchDaoImpl();
+		long start = System.currentTimeMillis();
 		matchNodosityMainDao.save(matchNodosityMain);
+		long end = System.currentTimeMillis();
+		Logger.info("save match nodosity main use:" + (end - start));
 		matchDao.update(match);
 
 	}
