@@ -36,22 +36,6 @@ public class TeamTactical {
 		this.teamId = teamId;
 	}
 
-	public long getTactical_detail_1_id() {
-		return tacticalDetail1Id;
-	}
-
-	public void setTactical_detail_1_id(long tacticalDetail_1Id) {
-		tacticalDetail1Id = tacticalDetail_1Id;
-	}
-
-	public long getTactical_detail_2_id() {
-		return tacticalDetail2Id;
-	}
-
-	public void setTactical_detail_2_id(long tacticalDetail_2Id) {
-		tacticalDetail2Id = tacticalDetail_2Id;
-	}
-
 	public long getTacticalDetail1Id() {
 		return tacticalDetail1Id;
 	}

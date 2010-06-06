@@ -1,25 +1,12 @@
 package com.ts.dt.po;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-
-import com.ts.dt.exception.MatchException;
 
 public class MatchNodosityMain {
 
 	private static final long serialVersionUID = 1951394299151330989L;
-
-	public static final String INSERT_SQL = "insert into match_nodosity_main(seq, match_id, home_offensive_tactic, home_defend_tactic, guest_offensive_tactic, guest_defend_tactic,point, created_time) values(?,?,?,?,?,?,?,now())";
-	public static final String GET_LAST_ID = "select LAST_INSERT_ID() as id from match_nodosity_main limit 1";
-	public static final String INSERT_LIST_SQL = "insert into match_nodosity_tactical_detail (match_nodosity_main_id,position, player_no, player_name, ability, power,age,stature,avoirdupois,no,created_time) values(?,?,?,?,?,?,?,?,?,?,now())";
-	public static final String INSERT_DETAIL_SQL = "insert into match_nodosity_detail (match_id, seq, description, time_msg, point_msg, match_nodosity_main_id, created_time, is_new_line) values(?,?,?,?,?,?,now(),?)";
 
 	private long id;
 	private int seq;
@@ -32,69 +19,6 @@ public class MatchNodosityMain {
 	private Date createdTime = new Date();
 	private Set<MatchNodosityTacticalDetail> list;
 	private Set<MatchNodosityDetail> detail;
-
-	public boolean save(Connection connection) throws MatchException {
-		try {
-			PreparedStatement statement = connection.prepareStatement(INSERT_SQL);
-			statement.setInt(1, this.seq);
-			statement.setLong(2, this.matchId);
-			statement.setShort(3, this.homeOffensiveTactic);
-			statement.setShort(4, this.homeDefendTactic);
-			statement.setShort(5, this.guestOffensiveTactic);
-			statement.setShort(6, this.guestDefendTactic);
-			statement.setString(7, this.point);
-			statement.execute();
-
-			statement = connection.prepareStatement(GET_LAST_ID);
-			ResultSet rs = statement.executeQuery();
-			if (!rs.next()) {
-				throw new MatchException("error occor while get last id");
-			}
-			Long id = rs.getLong("id");
-
-			if (this.list.size() > 0) {
-				statement = connection.prepareStatement(INSERT_LIST_SQL);
-				Iterator<MatchNodosityTacticalDetail> iterator = this.list.iterator();
-				while (iterator.hasNext()) {
-					MatchNodosityTacticalDetail detail = iterator.next();
-					statement.setLong(1, id);
-					statement.setString(2, detail.getPosition());
-					statement.setString(3, detail.getPlayerNo());
-					statement.setString(4, detail.getPlayerName());
-					statement.setFloat(5, detail.getAbility());
-					statement.setInt(6, detail.getPower());
-					statement.setInt(7, detail.getAge());
-					statement.setInt(8, detail.getStature());
-					statement.setInt(9, detail.getAvoirdupois());
-					statement.setInt(10, detail.getNo());
-					statement.addBatch();
-				}
-				statement.executeBatch();
-			}
-
-			if (this.detail.size() > 0) {
-				statement = connection.prepareStatement(INSERT_DETAIL_SQL);
-				Iterator<MatchNodosityDetail> iterator = this.detail.iterator();
-				while (iterator.hasNext()) {
-					MatchNodosityDetail detail = iterator.next();
-					statement.setLong(1, detail.getMatchId());
-					statement.setLong(2, detail.getSeq());
-					statement.setString(3, detail.getDescription());
-					statement.setString(4, detail.getTimeMsg());
-					statement.setString(5, detail.getPointMsg());
-					statement.setFloat(6, id);
-					statement.setBoolean(7, detail.getIsNewLine());
-					statement.addBatch();
-				}
-				statement.executeBatch();
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 
 	public void addDetail(MatchNodosityTacticalDetail detail) {
 		if (list == null) {
