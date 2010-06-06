@@ -13,7 +13,7 @@ public final class ConnectionManager {
 		dataSource = new ComboPooledDataSource();
 		dataSource.setUser("gba");
 		dataSource.setPassword("gba123");
-		dataSource.setJdbcUrl("jdbc:mysql://192.168.1.152/gba?characterEncoding=utf-8");
+		dataSource.setJdbcUrl("jdbc:mysql://192.168.1.158/gba?characterEncoding=utf-8");
 		dataSource.setDriverClass("com.mysql.jdbc.Driver");
 		dataSource.setInitialPoolSize(10);
 		dataSource.setMinPoolSize(1);
