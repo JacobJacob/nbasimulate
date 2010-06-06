@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		new MatchReqMonitor().start();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 1; i++) {
 			String name = "match_handle_client-" + String.valueOf(i);
 			new MatchReqHandle(name).start();
 			try {

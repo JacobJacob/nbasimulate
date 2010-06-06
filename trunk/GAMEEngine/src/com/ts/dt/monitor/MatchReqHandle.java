@@ -137,7 +137,7 @@ public class MatchReqHandle extends Thread {
 						status = 4;
 						reportStatus();
 					}
-					sleep(1000 * 20);
+					sleep(1000 * 60);
 				} catch (Throwable t) {
 					t.printStackTrace();
 				}
