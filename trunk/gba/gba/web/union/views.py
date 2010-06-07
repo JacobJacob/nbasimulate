@@ -57,6 +57,18 @@ def team_union(request, min=False):
         return render_to_response(request, 'union/team_union_min.html', datas)
     return render_to_response(request, 'union/team_union.html', datas)
 
+def union_detail(request, min=False):
+    '''联盟详细'''
+    union_id = request.GET.get('union_id')
+    datas = {}
+
+    union = Unions.load(id=union_id)
+    datas['union'] = union
+    
+    if min:
+        return render_to_response(request, 'union/team_union_min.html', datas)
+    return render_to_response(request, 'union/team_union.html', datas)
+
 @login_required
 def union_add(request):
     """创建联盟"""

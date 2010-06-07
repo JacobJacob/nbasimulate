@@ -1,10 +1,8 @@
 <script language="javascript">
-   is_youth_change=function(is_youth)
-	{
+    is_youth_change=function(is_youth){
 		$("is_youth").value = is_youth
 	}
-	check_request = function(myform)
-	{
+	check_form = function(myform){
 		var temp = true;
 		var type_1  ="LENGTH";
 		var ids_1   = new Array("remark");
@@ -13,15 +11,14 @@
 		if(!checkPublic(type_1,ids_1,msgs_1,other_1))
 			return  false;
 		//内容过滤
-		if(is_political_words($("remark").value)||is_dirty_words($("remark").value))
-		{
+		if(is_political_words($("remark").value)||is_dirty_words($("remark").value)){
 			alert("附言内容不合法！");
 			return false;
 		}
 		return submit_to_div(myform,"popup_inner");
 	}
 </script>
-<form name="yue_zhan_form" id="yue_zhan_form" action="{% url send-match-request %}" method="post" onsubmit='return check_frm(this);'>
+<form name="yue_zhan_form" id="yue_zhan_form" action="{% url send-match-request %}" method="post" onsubmit='return check_form(this);'>
     <div class="blank20">
     </div>
     <div class="floatBox_msg">

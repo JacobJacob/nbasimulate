@@ -105,6 +105,7 @@ def send_match_request(request):
         i = 1
         while i > 0:
             i -= 1 
+            print request.GET
             team_id = request.GET.get('team_id')
             type = int(request.GET.get('match_type'))
             is_youth = int(request.GET.get('is_youth', 0))

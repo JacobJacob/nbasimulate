@@ -28,9 +28,7 @@ class DailyUpdate(BaseBetchClient):
         self._round = round
         
     def _run(self):
-        pass
-        #self._sys_update()
-        #self._youth_player_update()
+        self._youth_player_update()
         self._prefission_player_update()
     
     def _youth_player_update(self):

@@ -157,7 +157,10 @@ def engine_status_cmd(request):
     success = False
     if engine_status:
         engine_status.cmd = cmd
-        engine_status.persist()
+        if str(cmd) == 'DELETE':
+            engine_status.delete()
+        else:
+            engine_status.persist()
         success = True
         
     return json_response({'success': success})

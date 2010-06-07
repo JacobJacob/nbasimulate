@@ -499,6 +499,17 @@ def match_accept(request):
             error = '比赛信息异常'
             break
         
+#        count = Matchs.count(condition="(home_team_id=%s or guest_team_id=%s) and status <> 3" % (team.id, team.id))
+#        if count > 0:
+#            error = "你有一场比赛进行中,无法开始"
+#            break
+#        
+#        team_b_id = match.host_team_id if match.host_team_id != team.id else match.guest_team_id
+#        count = Matchs.count(condition="(home_team_id=%s or guest_team_id=%s) and status <> 3" % (team_b_id, team_b_id))
+#        if count > 0:
+#            error = "对方有一场比赛进行中,无法开始"
+#            break
+        
         match.status = MatchStatus.ACCP
         match.show_status = MatchShowStatus.READY
         match.next_show_status = MatchShowStatus.FIRST

@@ -43,7 +43,7 @@ class DjangoSettings:
     #DATABASE_HOST = '10.20.238.169'
     DATABASE_USER = 'gba'
     DATABASE_PASSWORD = 'gba123'
-    DATABASE_HOST = '192.168.1.158'
+    DATABASE_HOST = '192.168.1.152'
     DATABASE_PORT = 3306
         
     URL_PREFIX = ''

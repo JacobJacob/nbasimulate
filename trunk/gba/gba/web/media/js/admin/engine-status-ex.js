@@ -70,11 +70,12 @@ Ext.onReady(function(){
             align: 'center',
             header: '操作',
             dataIndex: 'name',
-            width: 150,
+            width: 180,
             renderer: function(value){
               var html = "<a href=\"javascript:void(0);\" onclick=\"javascript:send_cmd('" + value + "', 'PAUSE');\">pause</a>";
               html += "&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"javascript:send_cmd('" + value + "', 'CONTINUE');\">continue</a>";
               html += "&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"javascript:send_cmd('" + value + "', 'EXIT');\">exit</a>";
+              html += "&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"javascript:send_cmd('" + value + "', 'DELETE');\">delete</a>";
               return html;
             }
         }],

@@ -3,6 +3,11 @@
 
 '''每轮更新'''
 
+"""每轮更新客户端
+"""
+
+
+
 import time
 from datetime import datetime
 
@@ -13,43 +18,66 @@ from gba.client.betch.daily_league_update import DailyLeagueUpdate
 from gba.client.betch.daily_league_rank_update import DailyLeagueRankUpdate
 from gba.entity import RoundUpdateLog, LeagueConfig, LeagueMatchs
 
+class RoundUpdateClient(object):
+    
+    def __init__(self):
+        self.__season = None
+        self.__round = None
+        
+    def __before_run(self):
+        '''开始更新之前始初化数据,如果返回True则执行后面的操作,反之则不'''
+        config = LeagueConfig.load(id=1)
+        self.__season = config.season
+        self.__round = config.round
+        if self.__round >= 27:
+            return False
+        return True
+    
+    def run(self):
+        if self.__before_run():
+            self.__player_update()
+            self.__team_update()
+            self.__challenge_update()
+            self.__league_update()
+            self.__before_finish()
+            self.__finish()
+
+    def __player_update(self):
+        '''球员数据更新'''
+        daily_update = DailyUpdate(self.__round)
+        daily_update.start()
+            
+    def __team_update(self):
+        '''球队数据更新'''
+        pass
+    
+    def __challenge_update(self):
+        '''胜者为王数据更新'''
+        pass
+        
+    def __league_update(self):
+        '''联赛更新'''
+        daily_league_update = DailyLeagueUpdate(self.__season, self.__round)
+        daily_league_update.start()
+    
+    def __before_finish(self):
+        while True:
+            match = LeagueMatchs.query(condition="round=%s and status=1 " % self.__round, limit=1)
+            if not match:
+                return
+            time.sleep(60)
+            print '.',
+    
+    def __finish(self):
+        config = LeagueConfig()
+        config.round = self.__round + 1
+        config.persist()
+      
 def main():
-    
-    config = LeagueConfig.load(id=1)
-    
-    log = RoundUpdateLog()
-    log.season = config.season
-    log.round = config.round
-    if log.round >= 27:
-        return
-    log.start_time = datetime.now()
-    log.persist()
-    
-    daily_update = DailyUpdate(config.round)
-    daily_update.start()
-    
-    daily_league_update = DailyLeagueUpdate(config.season, config.round)
-    daily_league_update.start()
-    
-    while True:
-        match = LeagueMatchs.query(condition="round=%s and status=1 " % config.round, limit=1)
-        if not match:
-            break
-        time.sleep(60)
-        print '.',
-       
-    log.end_time = datetime.now() 
-    log.log = 'finish'
-    log.persist()
-    
-    config.round += 1
-    config.persist()
-    
-    daily_league_rank_update = DailyLeagueRankUpdate()
-    daily_league_rank_update.start()
-    
-def test():
-    
+    client = RoundUpdateClient()
+    client.run()
+           
+def test():    
     for i in range(26):
         main()
 
