@@ -96,7 +96,7 @@ public class MatchReqHandle extends Thread {
 				this.error = true;
 				me.printStackTrace();
 				ErrorMatch errorMatch = new ErrorMatch();
-				errorMatch.setMatchId(match.getId());
+				errorMatch.setMatchId(matchReq.getId());
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				me.printStackTrace(pw);
