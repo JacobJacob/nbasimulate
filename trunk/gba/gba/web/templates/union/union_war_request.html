@@ -1,0 +1,38 @@
+{% load common_extras %}
+<script type="text/javascript">
+  
+  check_form = function(myform){
+	
+	if(!isNull('prestige')){
+		$('notice').innerHTML = "抵压威望不能为空！";
+		return false;
+	}
+	
+	return submit_to_div(myform,"popup_inner");
+}
+</script>
+<form name='frm' action='{% url union-war-request %}' method='post' onsubmit="return check_form(this);">
+<div class="floatBox_sms">
+	<div class="blank20"></div>
+	<div class="blank10"></div>
+	<p class="lh21">请输入您要抵压的威望</p>
+	<div class="h25"></div>
+	<div><span class="blue lh21 left">抵压威望：
+	</span>
+	 <input name="prestige" id="prestige" type="text" class="in1" onfocus="this.className='in2';" onblur="this.className='in1';" />
+	</div>
+	<input type='hidden' name='to_union_id' id='to_union_id' value='{{to_union_id}}'>
+	<input type='hidden' name='funds' id='funds' value='{{team.funds}}'>
+	<div class="blank10"></div>
+	<font color='red'><div id='notice' align="center"></div></font>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="floatBox_sms_btn">
+		<div class="left"><input type="Submit" name="Submit" value="确定" class="btn_3"></div>
+		<div class="btn_3 right"><a href="#" onclick="return hide_popup();">取消</a></div>
+	</div>
+	<div class="clear"></div>
+	<div class="blank10"></div>
+</div>
+</form>

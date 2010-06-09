@@ -6,9 +6,10 @@ from django.core.urlresolvers import reverse
 
 from gba.web.render import render_to_response
 from gba.business.user_roles import login_required, UserManager
-from gba.entity import Unions, UnionApply, Team, Message, UnionMember, UserInfo
+from gba.entity import Unions, UnionApply, Team, Message, UnionMember, UserInfo, \
+                       UnionWar
 from gba.common import exception_mgr
-from gba.common.constants import MessageType
+from gba.common.constants import MessageType, UnionWarStatus
 from gba.business.client import ClientManager
 from gba.business.common_client_monitor import CommonClientMonitor
 
@@ -416,4 +417,52 @@ def union_title_setting(request):
         if error:
             return render_to_response(request, 'message.html', {'error': error})
         url = reverse('union-member')
+        return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+    
+@login_required
+def union_war_list(request, min=False):
+    '''联盟战争'''
+    team = request.team
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    to_union_id = request.GET.get('to_union_id')
+    infos, total = UnionWar.paging(page, pagesize, condition="home_union_id='%s'" % to_union_id)
+    
+    for info in infos:
+        setattr(info, 'finish', False)
+        if info.status == UnionWarStatus.DEFEN_SUCCESS or info.status == UnionWarStatus.DEFEN_FAILURE:
+            if info.match_id:
+                setattr(info, 'finish', True)
+    
+    is_self_union = False
+    if to_union_id == team.union_id:
+        is_self_union = True
+    
+    datas = {'to_union_id': to_union_id, 'infos': infos, 'total': total, 'is_self_union': is_self_union}
+    if min:
+        return render_to_response(request, 'union/union_war_list_min.html', datas)
+    return render_to_response(request, 'union/union_war_list.html', datas)
+
+@login_required
+def union_war_request(request):
+    '''联盟战争请求'''
+    team = request.team
+    to_union_id = request.GET.get('to_union_id')
+    if request.method == 'GET':
+        datas = {'to_union_id': to_union_id}
+        return render_to_response(request, 'union/union_war_request.html', datas)
+    else:
+        success = u'联盟战争发起成功'
+        error = None
+        to_union_id = request.GET.get('to_union_id')
+        prestige = request.GET.get('prestige')
+        union_war = UnionWar()
+        union_war.guest_team_id = team.id
+        union_war.guest_union_id = 0 #team.union_id
+        union_war.home_union_id = to_union_id
+        union_war.prestige = prestige
+        union_war.status = UnionWarStatus.SENDED
+        union_war.persist()
+        
+        url = reverse('union-war-list-min')
         return render_to_response(request, 'message_update.html', {'success': success, 'url': url})

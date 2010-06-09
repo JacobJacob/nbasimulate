@@ -718,67 +718,45 @@ def finish_draft(request):
     team = request.team
     no = request.GET.get('no')
     error = None
+    success = u'球员已经离队'
     i = 0
     while i < 1:
         i += 1
         if not no:
-            error = '球员不存在'
+            error = u'球员不存在'
             break
         
         player = DraftPlayer.load(no=no)
         if not player:
-            error = '球员不存在'
+            error = u'球员不存在'
             break
         
-        if player.status == 1: #1代表现在在其它队试训中
-            error = '该球员目前在其它队试训中'
+        pro_player = ProfessionPlayer.load(team_id=team.id, no=player.no)
+        if not pro_player:
+            error = u'该球员不在您队中试训'
             break
         
-        draft_count = ProfessionPlayer.count(condition='team_id="%s" and is_draft=1' % team.id)
-        if draft_count >= 2:
-            error = '您同一时间最多只能试训2名球员'
+        if pro_player.in_tactical:
+            error = u'请先将队员移出阵容'
             break
             
     if error:
         return render_to_response(request, 'message.html', {'error': error})
+
+    player.status = 0 #没有试训
+    player.current_team_id = 0
     
-    if request.method == 'GET':
-        return render_to_response(request, 'player/draft_player_bid.html', {'player': player})
-    else:
-        success = '试训成功'
-        pro_player = playerutil.copy_player(player, 'draft_player', 'profession_player')    
-        pro_player.is_draft = 1
-        pro_player.team_id = team.id
-        n = 0
-        while n < 100:
-            n += 1
-            p = ProfessionPlayer.load(team_id=team.id, player_no=n)
-            if not p:
-                pro_player.player_no = n
-                break
-        player.status = 1
-        player.bid_count += 1
-        player.current_team_id = team.id
-        
-        attention_player = AttentionPlayer()
-        attention_player.team_id = team.id
-        attention_player.no = no
-        attention_player.type = MarketType.YOUTH_FREE
-        
-        DraftPlayer.transaction()
-        try:
-            pro_player.persist()
-            player.persist()
-            attention_player.persist()
-            DraftPlayer.commit()
-        except:
-            DraftPlayer.rollback()
-            error  = '服务器异常'
-            exception_mgr.on_except()
-            
-        if error:
-            return render_to_response(request, 'message.html', {'error': error})
-        return render_to_response(request, 'message.html', {'success': success})
+    DraftPlayer.transaction()
+    try:
+        pro_player.delete()
+        player.persist()
+        DraftPlayer.commit()
+    except:
+        DraftPlayer.rollback()
+        raise
+    
+    url = reverse('profession-player-min')
+    return render_to_response(request, 'message_update.html', {'url': url, 'success': success})
         
 @login_required    
 def youth_player_termination(request):

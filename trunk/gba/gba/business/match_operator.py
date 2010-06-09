@@ -449,6 +449,7 @@ def handle_error_match(match_id, delete_error=False):
         Matchs.rollback()
         raise
     
+    
 def created_init_player_and_tactical(team_id, pro_ids, youth_ids):
     '''根据用户选的球员，创建初始队员, 创建战术
     @param pro_ids: 列表类型，职业球员id

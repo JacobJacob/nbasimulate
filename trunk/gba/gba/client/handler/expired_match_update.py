@@ -40,10 +40,11 @@ class ExpiredMatchUpdate(BaseClient):
         '''
         while True:
             try:
-                return match_operator.handle_error_match(match.id)
+                match_operator.handle_error_match(match.id)
             except:
                 self.current_info = traceback.format_exc()
                 self._sleep()
+        return True
             
     def get_expired_match(self):
         while True:

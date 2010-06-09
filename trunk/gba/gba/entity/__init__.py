@@ -255,3 +255,6 @@ class EmailSendLog(Persistable):
     '''激活邮件发送历史'''
     CACHE_KEY = 'email_send_log:id'
     
+class UnionWar(Persistable):
+    '''联盟战争'''
+    CACHE_KEY = 'union_war:id'

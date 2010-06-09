@@ -13,6 +13,7 @@ from datetime import datetime
 
 from gba.common.single_process import SingleProcess
 from gba.common import exception_mgr
+from gba.common.db import connection
 from gba.client.betch.daily_update import DailyUpdate
 from gba.client.betch.daily_league_update import DailyLeagueUpdate
 from gba.client.betch.daily_league_rank_update import DailyLeagueRankUpdate
@@ -54,7 +55,21 @@ class RoundUpdateClient(object):
     def __challenge_update(self):
         '''胜者为王数据更新'''
         pass
-        
+    
+    def __staff_update(self):
+        '''职员更新'''
+        cursor = connection.cursor()
+        try:
+            cursor.execute('start transaction;')
+            cursor.execute('update team_staff set remain_round=remain_round-1 where remain_round>=1')
+            cursor.execute('update team_staff set status=2, team_id=null where remain_round=0')
+            cursor.execute('commit;')
+        except:
+            cursor.execute('rollback;')
+            raise
+        finally:
+            cursor.close()
+            
     def __league_update(self):
         '''联赛更新'''
         daily_league_update = DailyLeagueUpdate(self.__season, self.__round)

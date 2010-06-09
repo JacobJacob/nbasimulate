@@ -8,8 +8,8 @@ from django import template
 from django.core.urlresolvers import reverse
 
 from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap, OffensiveTacticalTypeMap, \
-                                 DefendTacticalTypeMap
-from gba.common.constants import TacticalSectionTypeMap, MatchStatusMap, StaffMap, MatchShowStatus
+                                 DefendTacticalTypeMap, TacticalSectionTypeMap, StaffMap, MatchShowStatus, \
+                                 UnionWarStatusMap
 from gba.entity import Team, UserInfo, ProfessionPlayer, LeagueTeams, \
                        MatchNodosityTacticalDetail, MatchNodosityMain, Matchs
 
@@ -451,3 +451,6 @@ def challenge_out(win_count):
         message = '您已经连胜了9胜，您现在退出将获得21分的胜者积分'
     return message
         
+@register.filter
+def union_war_status(status):
+    return UnionWarStatusMap.get(status, u'未知')

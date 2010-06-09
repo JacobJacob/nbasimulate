@@ -57,7 +57,7 @@
 <th>试训次数</th>
 <th>
  <a href="{% url draft-player-min %}?position={{ position }}&order_by=expired_time&order={% ifequal order 'asc' %}desc{% else %}asc {% endifequal %}" id="href" onclick='return href_to_div(this,"main_content")' title="按照该项排序">
-   <font color="#0096f1">截止时间</font>
+   <font color="#0096f1">截止轮数</font>
  </a>
 </th>
 <th class="end_cell">操作</th>
@@ -82,7 +82,7 @@
     {% endifequal %}
 </td>
 <td>
-  <div id="time_1">{{ info.lave_time|format_lave_time }}</div>
+  第25轮
 </td>
  <td>
   <a href="{% url draft-player-bid %}?no={{info.no}}" onclick="return show_popup(this)">

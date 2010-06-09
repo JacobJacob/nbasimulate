@@ -1,0 +1,79 @@
+{% load common_extras %}
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+   <tr>
+    <th width="20%">挑战球队</th>
+    <th width="10%">威望抵押</th>
+     <th width="20%">应战球队</th>
+    <th>挑战时间</th>
+    <th>操作</th>
+    <th class="end_cell">&nbsp;</th>
+</tr>
+{% for info in infos %}
+ <tr>
+  <td>
+    <a href="{% url user-detail %}?id={{info.guest_team_id}}" onclick="return show_popup(this);">
+     <font color="#0096f1">{{info.guest_team_id|team_name}}</font>
+    </a>
+ </td>
+ <td>{{info.prestige}}</td>
+ <td>
+   {% if info.home_team_id %}
+    <a href="{% url user-detail %}?id={{info.home_team_id}}" onclick="return show_popup(this)">
+     <font color="#0096f1">{{info.home_team_id|team_name}}</font>
+    </a>
+   {% else %}
+     -- --
+   {% endif %}
+ </td>
+ <td>{{info.created_time}}</td>
+<td>
+ {% if is_self_union %}
+  <a href="http://s3.dlm.17uxi.cn/source/n.php?a=700&amp;id_lian_meng=577" onclick="return show_popup(this);">
+    <font color="#0096f1">应战</font>
+  </a>
+ {% else %}
+   {{info.status|union_war_status}}
+ {% endif %} 
+</td>
+<td>
+  {% if info.finish %}
+   <a href="{% url match-stat %}?match_id={{info.match_id}}" target="_blank">统计</a>
+   |
+   <a href="{% url match-detail%}?match_id={{info.match_id}}" target="_blank">战报</a>
+  {% else %}
+    -- --
+  {% endif %}
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url union-list-min %}?page=1" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url union-list-min %}?page={{prevpage}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url union-list-min %}?page={{nextpage}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url union-list-min %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+</div>
+<div class="blank20"></div>
+{% if can_send_war %}
+<div style="width:95%;text-align:center;">
+	<div class="r_box_btn right">
+	  <a href="{% url union-war-request %}?to_union_id={{to_union_id}}" onclick="return show_popup(this)">
+	    发起盟战
+	  </a>
+	</div>
+</div>
+{% endif %}

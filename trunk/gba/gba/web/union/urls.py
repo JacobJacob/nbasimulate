@@ -19,4 +19,7 @@ urlpatterns = patterns('web.union',
     url(r'^union_title_setting/$', 'views.union_title_setting', name='union-title-setting'),
     url(r'^union_detail/$', 'views.union_detail', name='union-detail'),
     url(r'^union_detail_min/$', 'views.union_detail', {'min': True}, name='union-detail-min'),
+    url(r'^union_war_list/$', 'views.union_war_list', name='union-war-list'),
+    url(r'^union_war_list_min/$', 'views.union_war_list', {'min': True}, name='union-war-list-min'),
+    url(r'^union_war_request/$', 'views.union_war_request', name='union-war-request'),
 )
