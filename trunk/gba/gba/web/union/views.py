@@ -9,6 +9,7 @@ from gba.business.user_roles import login_required, UserManager
 from gba.entity import Unions, UnionApply, Team, Message, UnionMember, UserInfo, \
                        UnionWar
 from gba.common import exception_mgr
+from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MessageType, UnionWarStatus
 from gba.business.client import ClientManager
 from gba.business.common_client_monitor import CommonClientMonitor
@@ -426,6 +427,10 @@ def union_war_list(request, min=False):
     page = int(request.GET.get('page', 1))
     pagesize = int(request.GET.get('pagesize', 10))
     to_union_id = request.GET.get('to_union_id')
+    
+    if not to_union_id and team.union_id:
+        to_union_id = team.union_id
+    
     infos, total = UnionWar.paging(page, pagesize, condition="home_union_id='%s'" % to_union_id)
     
     for info in infos:
@@ -438,7 +443,11 @@ def union_war_list(request, min=False):
     if to_union_id == team.union_id:
         is_self_union = True
     
-    datas = {'to_union_id': to_union_id, 'infos': infos, 'total': total, 'is_self_union': is_self_union}
+    can_send_war = False
+    if not is_self_union and team.union_id:
+        can_send_war = True
+    
+    datas = {'to_union_id': to_union_id, 'infos': infos, 'total': total, 'is_self_union': is_self_union, 'can_send_war': can_send_war}
     if min:
         return render_to_response(request, 'union/union_war_list_min.html', datas)
     return render_to_response(request, 'union/union_war_list.html', datas)
@@ -458,7 +467,7 @@ def union_war_request(request):
         prestige = request.GET.get('prestige')
         union_war = UnionWar()
         union_war.guest_team_id = team.id
-        union_war.guest_union_id = 0 #team.union_id
+        union_war.guest_union_id = team.union_id
         union_war.home_union_id = to_union_id
         union_war.prestige = prestige
         union_war.status = UnionWarStatus.SENDED
@@ -466,3 +475,88 @@ def union_war_request(request):
         
         url = reverse('union-war-list-min')
         return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+    
+@login_required
+def union_war_accept(request):
+    '''联盟战争应战'''
+    team = request.team
+    error = None
+    success = u'盟战应战成功'
+    id = request.GET.get('id')
+    i = 0
+    while i < 1:
+        i += 1
+        union_war = UnionWar.load(id=id)
+        if not union_war:
+            error = u'该盟战不存在'
+            break
+        
+        if union_war.status != UnionWarStatus.SENDED:
+            error = u'该比赛已经开始'
+            break
+        
+        if not team.union_id:
+            error = u'您不是该盟成员,不能应战'
+            break
+        
+        if team.union_id != union_war.home_union_id:
+            error = u'您不是该盟成员,不能应战'
+            break
+        
+        count = UnionWar.count(condition='(home_team_id="%s" or guest_team_id="%s") and status in (1, 2)' % (team.id, team.id))
+        if count > 0:
+            error = u'您有一场盟战在进行中'
+            break
+        
+        union_member = UnionMember.load(team_id=team.id)
+        if union_member.prestige < union_war.prestige:
+            error = u'您的威望不足'
+            break
+        
+        
+        union_war.status = UnionWarStatus.RECIVED
+        union_war.home_team_id
+        union_war.start_time =  ReserveLiteral('date_add(now(), interval %s minute)' % 60 % 12)
+        
+        try:
+            union_war.persist()
+        except:
+            error = u'服务器异常'
+            
+    if error:
+        return render_to_response(request, 'message.html', {'error': error})
+    url = reverse('union-war-list-min')
+    return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
+
+def union_war_history(request):
+    '''比赛历史'''
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    infos, total = UnionWar.paging(page, pagesize, condition='(home_team_id="%s" or guest_team_id="%s") and status in (3, 4)', order='id desc ')
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    return render_to_response(request, 'union_war_history.html', datas)
+
+def union_event(request):
+    '''大事件'''
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    infos, total = UnionWar.paging(page, pagesize, condition='(home_team_id="%s" or guest_team_id="%s") and status in (3, 4)', order='id desc ')
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+    
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    return render_to_response(request, 'union_war_history.html', datas)
+
+def team_union_war(request):
+    '''我的比赛(盟战)'''
+    datas = {}
+    return render_to_response(request, 'union_war_history.html', datas)

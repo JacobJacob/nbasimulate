@@ -22,4 +22,8 @@ urlpatterns = patterns('web.union',
     url(r'^union_war_list/$', 'views.union_war_list', name='union-war-list'),
     url(r'^union_war_list_min/$', 'views.union_war_list', {'min': True}, name='union-war-list-min'),
     url(r'^union_war_request/$', 'views.union_war_request', name='union-war-request'),
+    url(r'^union_war_accept/$', 'views.union_war_accept', name='union-war-accept'),
+    url(r'^union_war_history/$', 'views.union_war_history', name='union-war-history'),
+    url(r'^union_event/$', 'views.union_event', name='union-event'),
+    url(r'^team_union_war/$', 'views.team_union_war', name='team-union-war'),
 )

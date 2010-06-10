@@ -760,6 +760,7 @@ def challenge_main(request, min=False):
     finish = False
     win = False
     if challenge_pool:
+        print challenge_pool.team_id
         apply = True
         if challenge_pool.status == 1:
             cursor = connection.cursor()
