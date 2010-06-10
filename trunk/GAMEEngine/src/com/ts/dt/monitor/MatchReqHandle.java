@@ -81,13 +81,13 @@ public class MatchReqHandle extends Thread {
 				this.msg = "start to get task";
 				matchReq = MatchReqPool.get();
 				long match_id = matchReq.getId();
+				MatchDao matchDao = new MatchDaoImpl();
+				match = matchDao.load(match_id);
 				this.msg = "start to execute match:" + match_id;
 				engine.execute(match_id);
 				this.finishCount++;
 				this.msg = "finish execute match:" + match_id;
 
-				MatchDao matchDao = new MatchDaoImpl();
-				match = matchDao.load(match_id);
 				match.setStatus(MatchStatus.FINISH);
 				match.setClient(name);
 				matchDao.update(match);
