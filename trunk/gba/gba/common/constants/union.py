@@ -17,3 +17,13 @@ UnionWarStatusMap = {
     UnionWarStatus.DEFEN_SUCCESS: u'防守成功',                     
     UnionWarStatus.DEFEN_FAILURE: u'防守失败',                 
 }
+
+class UnionPrestigeFromType(ConstantBase):
+    """联盟威望来源"""
+    ChallengeMatch = 1
+    UnionWar = 2
+    
+UnionPrestigeFromTypeMap = {
+    UnionPrestigeFromType.ChallengeMatch: u'胜者为王',
+    UnionPrestigeFromType.UnionWar: u'联盟战争',                 
+}

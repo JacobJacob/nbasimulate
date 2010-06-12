@@ -12,4 +12,4 @@ from match import ActionType, MatchStatus, MatchStatusMap, MatchTypes, MatchType
                   CupType
 from player import PlayerStatus
 from action import ActionNameMap
-from union import UnionWarStatus, UnionWarStatusMap
+from union import UnionWarStatus, UnionWarStatusMap, UnionPrestigeFromType, UnionPrestigeFromTypeMap

@@ -540,7 +540,7 @@ def union_war_history(request):
         totalpage = (total -1) / pagesize + 1
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
-    return render_to_response(request, 'union_war_history.html', datas)
+    return render_to_response(request, 'union/union_war_history.html', datas)
 
 def union_event(request):
     '''大事件'''
@@ -554,9 +554,14 @@ def union_event(request):
         totalpage = (total -1) / pagesize + 1
     
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
-    return render_to_response(request, 'union_war_history.html', datas)
+    return render_to_response(request, 'union/union_event.html', datas)
 
 def team_union_war(request):
     '''我的比赛(盟战)'''
-    datas = {}
-    return render_to_response(request, 'union_war_history.html', datas)
+    team = request.team
+    union_wars = UnionWar.query(condition='(home_team_id="%s" or guest_team_id="%s")' % (team.id, team.id), order='id desc', limit=1)
+    union_war = None
+    if union_wars:
+        union_war = union_wars[0]
+    datas = {'union_war': union_war}
+    return render_to_response(request, 'union/team_union_war.html', datas)

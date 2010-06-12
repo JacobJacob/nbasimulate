@@ -52,7 +52,7 @@
 </a>
 </span></td>
 <td>{{player.position}}</td>
-<td><font color='#FF8000'>{{player.ability|format_number}}</font></td>
+<td><font color='{{player.ability|attr_color}}'>{{player.ability|format_number}}</font></td>
 </tr>
 {% endfor %}
 </table>   <!--业余队球员列表  -->

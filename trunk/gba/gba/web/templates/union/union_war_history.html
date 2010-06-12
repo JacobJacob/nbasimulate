@@ -1,0 +1,58 @@
+{% load common_extras %}
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+   <tr>
+    <th width="18%">&nbsp;</th>
+    <th width="10%">比分</th>
+    <th width="18%">&nbsp;</th>
+    <th>联盟威望</th>
+    <th>比赛时间</th>
+    <th class="end_cell">战报</th>
+</tr>
+{% for info in infos %}
+ <tr>
+  <td>
+    <a href="{% url union-detail-min %}?union_id={{info.id}}" onclick="return href_to_div(this,'main_content');">
+     <font color="#0096f1">{{info.name}}</font>
+    </a>
+ </td>
+ <td>
+    <a href="{% url user-detail %}?id={{info.leader}}" onclick="return show_popup(this)">
+     <font color="#0096f1">{{info.leader|nickname}}</font>
+    </a>
+ </td>
+ <td>{{info.prestige}}</td>
+ <td>{{info.member}}</td>
+<td>
+ <a href="{% url union-war-list %}?to_union_id={{info.id}}">
+  <font color="#0096f1">竞技场</font>
+ </a> 
+ | 
+ <a href="{% url union-apply %}?union_id={{info.id}}" onclick="return show_popup(this);">
+ <font color="#0096f1">申请入盟</font>
+ </a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url union-list-min %}?page=1" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url union-list-min %}?page={{prevpage}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url union-list-min %}?page={{nextpage}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url union-list-min %}?page={{totalpage}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+</div>
+<div></div>
+<div class="blank10"></div>

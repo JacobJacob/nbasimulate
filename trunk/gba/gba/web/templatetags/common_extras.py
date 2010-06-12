@@ -377,20 +377,17 @@ def attr_color(value):
     elif value >= 90:
         return '#ff8000'
     elif value >= 80:
-        return '#0096f1'
-    elif value >= 70:
-        return '#0096f1'
+        return '#a335ee'
     elif value >= 60:
-        return '#0096f1'
+        return '#0070dd'
     elif value >= 50:
         return '#00d034'
     else:
-        return '#000'
+        return '#333333'
     
 @register.filter
 def power_color(value):
     '''球员体力颜色条'''
-    print 1, value
     if not value:
         return '#000' 
     elif value == 100:

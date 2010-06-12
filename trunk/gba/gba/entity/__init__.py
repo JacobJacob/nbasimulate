@@ -258,3 +258,11 @@ class EmailSendLog(Persistable):
 class UnionWar(Persistable):
     '''联盟战争'''
     CACHE_KEY = 'union_war:id'
+    
+class UnionHonor(Persistable):
+    '''联盟荣誉榜'''
+    CACHE_KEY = 'union_honor:team_id'
+    
+class UnionHonorDetail(Persistable):
+    '''联盟荣誉榜详细'''
+    CACHE_KEY = 'union_honor_detail:id'

@@ -1,0 +1,43 @@
+{% load common_extras %}
+{% if union_war %}
+ {% ifequal union_war.status 1%} 
+  <div class="r_box_1">
+	<div class="r_box_1_title"></div>
+	<div class="r_box_1_1">
+		<div class="w160 tr">
+		  <h2>
+		   <a href="{% url user-detail %}?id={{team.id}}" onclick="return show_popup(this);">{{team.name}}</a>
+		  </h2>
+		  <h3></h3>
+		</div>
+		<div class="w55">
+		   <img id="imgClothes" src="{{team.micro}}" width="55" height="55">
+		</div>
+		<div class="w173" align="center">
+			<div class="blank10"></div>
+			<img id="imgLogo1" src="/site_media/images/zero.gif">
+		</div>
+		<div class="w55"><img id="imgLogo1" src="/site_media/images/99.gif" width="40" height="42"></div>
+		<div class="w160"><h2>等待对方应战...</h2><h3></h3></div>
+
+	</div><div class="clear"></div>
+	<div class="blank5"></div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="w173" align="center">
+	
+	</div>
+  </div>
+ {% else %}
+ 
+ 
+ {% endifequal %}
+{% else %}
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="blank10"></div>
+	<div class="w173" align="center">
+	   您暂时没有比赛
+	</div>
+{% endif %}
