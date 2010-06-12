@@ -8,6 +8,7 @@ import com.ts.dt.dao.ProfessionPlayerDao;
 import com.ts.dt.dao.impl.ProfessionPlayerDaoImpl;
 import com.ts.dt.exception.MatchException;
 import com.ts.dt.match.Controller;
+import com.ts.dt.po.ActionDesc;
 import com.ts.dt.po.Player;
 import com.ts.dt.util.Logger;
 
@@ -18,6 +19,7 @@ public class SubstitutionHelper {
 		Logger.info("start to substitution....");
 		Controller foutOutController = context.getFoulOutController();
 		String position = foutOutController.getPlayer().getPosition();
+		String foutOutPlayerName = foutOutController.getPlayer().getName();
 		long teamId = foutOutController.getPlayer().getTeamid();
 
 		ProfessionPlayerDao playerDao = new ProfessionPlayerDaoImpl();
@@ -36,7 +38,10 @@ public class SubstitutionHelper {
 				onCourtPlayer = choosePlayer(position, onCourtPlayer, player);
 			}
 		}
+		// 将替换上场的球员添加到已上场列表
+		context.addOnCourtPlayer(onCourtPlayer.getNo());
 		foutOutController.setPlayer(onCourtPlayer);
+		MatchInfoHelper.save(context, "<font color=\"red\">" + foutOutPlayerName + "犯满离场," + onCourtPlayer.getName() + "替换上场</font>");
 		System.out.println(onCourtPlayer.getName() + "替换上场");
 	}
 

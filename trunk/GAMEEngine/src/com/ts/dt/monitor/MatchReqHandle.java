@@ -87,7 +87,7 @@ public class MatchReqHandle extends Thread {
 				engine.execute(match_id);
 				this.finishCount++;
 				this.msg = "finish execute match:" + match_id;
-
+				match = matchDao.load(match_id);
 				match.setStatus(MatchStatus.FINISH);
 				match.setClient(name);
 				matchDao.update(match);
