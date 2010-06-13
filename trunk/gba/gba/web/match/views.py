@@ -11,7 +11,7 @@ from gba.business import player_operator, match_operator
 from gba.entity import Team, Matchs, ProfessionPlayer, TrainingCenter, \
                        YouthPlayer, MatchNotInPlayer, UserInfo, TacticalGrade, \
                        TrainingRemain, Message, ChallengePool , MatchNodosityMain, \
-                       ChallengeHistory, ChallengeTeam, ChallengeAll, UnionHonor, \
+                       ChallengeHistory, ChallengeTeam, ChallengeAll, UnionMember, \
                        UnionHonorDetail, Unions
 from gba.common.constants import MatchTypes, DefendTacticalTypeMap, OffensiveTacticalTypeMap
 from gba.common.constants import MatchStatus, MatchShowStatus, MessageType, MatchTypeMaps, UnionPrestigeFromType
@@ -1018,13 +1018,8 @@ def challenge_out_confirm(request):
         if point > 0 and team.union_id:#联盟威望
             union = Unions.load(id=team.union_id)
             union.prestige += point
-            union_honor = UnionHonor.load(team_id=team.id)
-            if not union_honor:
-                union_honor = UnionHonor()
-                union_honor.team_id = team.id
-                union_honor.union_id = team.union_id
-                union_honor.prestige = 0
-            union_honor.prestige += point
+            union_member = UnionMember.load(team_id=team.id)
+            union_member.honor += point
             union_honor_detail = UnionHonorDetail()
             union_honor_detail.team_id = team.id
             union_honor_detail.union_id = team.union_id
@@ -1032,7 +1027,7 @@ def challenge_out_confirm(request):
             union_honor_detail.type = UnionPrestigeFromType.ChallengeMatch
             
             union.persist()
-            union_honor.persist()
+            union_member.persist()
             union_honor_detail.persist()
             
         challenge_pool.delete()

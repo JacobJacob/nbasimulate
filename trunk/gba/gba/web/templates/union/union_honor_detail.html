@@ -1,0 +1,46 @@
+{% load common_extras %}
+<table class="list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+   <tr>
+    <th width="45%">经理名</th>
+     <th width="20%">功勋</th>
+    <th>事件</th>
+    <th class="end_cell">时间</th>
+</tr>
+{% for info in infos %}
+ <tr>
+  <td>
+    <a href="{% url user-detail %}?id={{info.team_id}}" onclick="return show_popup(this);">
+     <font color="#0096f1">{{info.team_id|team_name}}</font>
+    </a>
+ </td>
+ <td>{{info.prestige}}</td>
+ <td>
+  <font color="#0096f1">{{info.type|honor_type}}</font>
+ </td>
+ <td>
+  {{info.created_time}}
+ </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<div class="blank10"></div>
+<div class="mlr8 tr">
+{% ifequal page 1 %}
+    首页
+    上一页
+{% else %}
+     <a href="{% url union-honor-detail %}?page=1&team_id={{team_id}}" onclick="return href_to_div(this,'main_content');">首页</a>
+     <a href="{% url union-honor-detail %}?page={{prevpage}}&team_id={{team_id}}" onclick="return href_to_div(this,'main_content');">&lt;上一页</a>
+{% endifequal %}
+{% ifequal page totalpage %}
+    下一页
+    末页
+{% else %}
+     <a href="{% url union-honor-detail %}?page={{nextpage}}&team_id={{team_id}}" onclick="return href_to_div(this,'main_content');">下一页&gt;</a>
+     <a href="{% url union-honor-detail %}?page={{totalpage}}&team_id={{team_id}}" onclick="return href_to_div(this,'main_content');">末页</a>
+{% endifequal %}
+[第{{page}}/{{totalpage}}页]
+</div>
+<div class="blank20"></div>

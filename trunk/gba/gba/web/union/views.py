@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from gba.web.render import render_to_response
 from gba.business.user_roles import login_required, UserManager
 from gba.entity import Unions, UnionApply, Team, Message, UnionMember, UserInfo, \
-                       UnionWar
+                       UnionWar, UnionHonorDetail
 from gba.common import exception_mgr
 from gba.common.db.reserve_convertor import ReserveLiteral
 from gba.common.constants import MessageType, UnionWarStatus
@@ -276,6 +276,7 @@ def union_member_appove(request):
     url = reverse('wait-appove-list')
     return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
 
+@login_required
 def union_member(request):
     '''联盟盟员'''
     team = request.team
@@ -307,6 +308,7 @@ def union_member(request):
     
     return render_to_response(request, 'union/union_member.html', datas)
 
+@login_required
 def union_manager_setting(request):
     '''联盟设置管理员'''
     team = request.team
@@ -371,7 +373,8 @@ def union_manager_setting(request):
             return render_to_response(request, 'message.html', {'error': error})
         url = reverse('union-member')
         return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
-             
+ 
+@login_required            
 def union_title_setting(request):
     '''联盟成员封号设置'''
     team = request.team
@@ -528,6 +531,7 @@ def union_war_accept(request):
     url = reverse('union-war-list-min')
     return render_to_response(request, 'message_update.html', {'success': success, 'url': url})
 
+@login_required
 def union_war_history(request):
     '''比赛历史'''
     page = int(request.GET.get('page', 1))
@@ -542,6 +546,7 @@ def union_war_history(request):
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
     return render_to_response(request, 'union/union_war_history.html', datas)
 
+@login_required
 def union_event(request):
     '''大事件'''
     page = int(request.GET.get('page', 1))
@@ -556,6 +561,7 @@ def union_event(request):
     datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
     return render_to_response(request, 'union/union_event.html', datas)
 
+@login_required
 def team_union_war(request):
     '''我的比赛(盟战)'''
     team = request.team
@@ -565,3 +571,42 @@ def team_union_war(request):
         union_war = union_wars[0]
     datas = {'union_war': union_war}
     return render_to_response(request, 'union/team_union_war.html', datas)
+
+@login_required
+def union_honor_list(request):
+    '''联盟功勋榜'''
+    team = request.team
+    if not team.union_id:
+        return render_to_response(request, 'union/team_not_union.html')
+    
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    infos, total = UnionMember.paging(page, pagesize, condition='union_id="%s"' % team.union_id, order='honor desc')
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+        
+    for i, info in enumerate(infos):
+        setattr(info, 'sort', (page-1) * 10 + i + 1) 
+        
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1}
+    return render_to_response(request, 'union/union_honor_list.html', datas)
+
+@login_required
+def union_honor_detail(request):
+    '''功勋详细'''
+    team_id = request.GET.get('team_id')
+    page = int(request.GET.get('page', 1))
+    pagesize = int(request.GET.get('pagesize', 10))
+    
+    infos, total = UnionHonorDetail.paging(page, pagesize, condition='team_id="%s"' % team_id, order='id desc')
+    
+    if total == 0:
+        totalpage = 0
+    else:
+        totalpage = (total -1) / pagesize + 1
+                
+    datas = {'infos': infos, 'totalpage': totalpage, 'page': page, 'nextpage': page + 1, 'prevpage': page - 1, 'team_id': team_id}
+    return render_to_response(request, 'union/union_honor_detail.html', datas)

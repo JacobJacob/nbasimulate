@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 
 from gba.common.constants import oten_color_map, AttributeMaps, PositioneMap, OffensiveTacticalTypeMap, \
                                  DefendTacticalTypeMap, TacticalSectionTypeMap, StaffMap, MatchShowStatus, \
-                                 UnionWarStatusMap
+                                 UnionWarStatusMap, UnionPrestigeFromTypeMap
 from gba.entity import Team, UserInfo, ProfessionPlayer, LeagueTeams, \
                        MatchNodosityTacticalDetail, MatchNodosityMain, Matchs
 
@@ -451,3 +451,9 @@ def challenge_out(win_count):
 @register.filter
 def union_war_status(status):
     return UnionWarStatusMap.get(status, u'未知')
+
+@register.filter
+def honor_type(honor_type):
+    print honor_type == 1
+    print type(honor_type)
+    return UnionPrestigeFromTypeMap.get(honor_type, honor_type)
