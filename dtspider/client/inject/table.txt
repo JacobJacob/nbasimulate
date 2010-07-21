@@ -1,0 +1,5 @@
+user 
+userinfo 
+admintable 
+admin 
+article_admin

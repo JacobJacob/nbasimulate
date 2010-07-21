@@ -1,0 +1,14 @@
+﻿{% extends "master.html" %}
+{% block title %}计划任务管理{% endblock %}
+{% block head_ext %}
+    <link rel="stylesheet" type="text/css" href="/site_media/ext3/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="/site_media/css/plan-task.css" />
+	<script type="text/javascript" src="/site_media/ext3/ext-base.js"></script>
+    <script type="text/javascript" src="/site_media/ext3/ext-all.js"></script>
+    <script type="text/javascript" src="/site_media/js/json-rpc.js"></script>
+    <script type="text/javascript" src="/site_media/js/plan_task/plan-task.js"></script>
+{% endblock %}
+{% block content %}
+<div id="plan_task_div"></div>
+<div id="current_task_div"></div>
+{% endblock %}

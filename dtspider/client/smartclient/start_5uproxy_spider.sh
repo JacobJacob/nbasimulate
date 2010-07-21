@@ -1,0 +1,1 @@
+python2.5 /home/jacky/workspace/dtspider/dtspider/client/smartclient/main.py 5UPROXY_SPIDER > /home/jacky/dtspider_working/5uproxy_spider.log

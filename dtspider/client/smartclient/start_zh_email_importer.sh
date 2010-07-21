@@ -1,0 +1,2 @@
+export LD_LIBRARY_PATH=/usr/local/lib/mysql:$LD_LIBRARY_PATH
+python2.5 /home/jacky/workspace/dtspider/dtspider/client/smartclient/main.py ZHUHAI_EMAIL_IMPORTER > /home/jacky/dtspider_working/zhuhai_email_importer.log

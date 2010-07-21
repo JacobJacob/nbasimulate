@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="imagetoolbar" content="no" />
+		<meta name="Copyright" content="This site's design and contents Copyright &copy; 2007 Kingsoft." />
+		<title>网址认证每日报表</title>
+	    <style type="text/css">
+	        body{
+	            font-size:12px;
+				font-family:"ￋￎￌ￥", Verdana, Arial, Helvetica, sans-serif;
+	            color:#000;
+	            margin:0;
+	            background-color:#fff;
+	        }
+	        .summary{
+	            margin:5px 10px 10px 10px;
+	            padding: 18px 8px 8px 8px;
+	            background:#E0ECFF;
+	            overflow:hidden;
+	        }
+	        legend{
+	            font-weight:bold;
+	            font-size:18px
+	        }
+	        fieldset table{
+	            margin:0 3px;
+	        }
+	        fieldset{
+	            border:1px solid #bbb;
+	            background-color:white;
+	            padding:10px 10px 15px 10px;
+	        }
+	        * html legend{
+	            margin: -26px 0 0 0;
+	            position:fixed;
+	        }
+
+	        .spec{
+	            padding-left:8px;
+	            color:#888;
+	        }
+	        h1{
+	            font-size:28px;
+	            margin:10px 0 0;
+	        }
+	        h2{
+	            font-size:18px;
+	            margin:10px 0 0;
+	        }
+	        h3{
+	            padding-top:10px;
+	            padding-left:3px;
+	            font-size:14px;
+	            margin:0px 0 0;
+	        }
+
+	        #content{
+	            background:#C3D9FF;
+	            padding:10px;
+	        }
+
+	        h1{
+	            font-size:28px;
+	            font-family:"ￎﾢ￈￭￑ￅﾺￚ";
+	            margin:10px 0 0;
+	        }
+
+	        .reportclass{
+	            margin:10px 0;
+	            border-collapse:collapse;
+	            width:98%;
+	        }
+	        .reportclass th{
+	            color:#333;
+	            font-size:12px;
+	            background:#f7f7f7;
+	            font-weight:bold;
+	        }
+	        .reportclass td, th{
+	            padding:2px;
+	            font-size:12px;
+	            border:1px solid #bbb;
+	        }
+
+			.reportclassth{
+			background-color:#F7F7F7;
+			border:1px;
+			border-color:#bbb;
+			}
+
+	        .reporttime{
+	            text-align:right;
+	            padding-right:15px;
+	        }
+
+	        .fieldsetcss{
+	            background-color:#FFFFFF;
+	            padding:15px;
+	            padding-left:2px;
+
+	        }
+
+	        .focus{
+	            font-style:normal;
+	            color:red;
+	            font-weight:bold;
+	        }
+	        .focus2{
+	            font-style:normal;
+	            color:green;
+	            font-weight:bold;
+	        }
+	    </style>
+	</head>
+	<body>
+	<div style="padding:8px;background-color:#C3D9FF;">
+		<div id="header">
+			<div align="center"><h1>网站认证每日报表</h1></div>
+			<div>
+				<div class="reporttime">报表类型:日报表</div>
+				<div class="reporttime">报表时间:{{lastday}}</div>
+			</div>
+		</div>
+		<div class="summary">
+
+			<fieldset class="fieldsetcss">
+				<legend>数据总体情况</legend>
+				<div align="center">
+				<table class="reportclass">
+						<tr class="reportclassth">
+							<th align="center">来源</th>
+							<th align="center">URL数</th>
+							<th align="center">黑URL数</th>
+							<th align="center">黑URL百分比%</th>
+						</tr>
+						{% for item in total_type_data %}
+						<tr>
+							<td>{{item.from_type}}</td>
+							<td align="right">{{item.url_count|default:""}}</td>
+							<td align="right">{{item.black_url_count|default:"0"}}</td>
+							<td align="right">{{item.percentage}}</td>
+						</tr>
+						{% endfor %}
+						<tr>
+							<td>总计</td>
+							<td align="right">{{total_data.url_count}}</td>
+							<td align="right">{{total_data.black_url_count}}</td>
+							<td align="right">{{total_data.percentage}}</td>
+						</tr>
+				</table>
+				</div>
+			</fieldset>
+			<br>
+
+
+			<fieldset class="fieldsetcss">
+				<legend>排名前10当前黑URL最多的Domain</legend>
+				<div align="center">
+				<table class="reportclass">
+						<tr class="reportclassth">
+							<th align="center">domain</th>
+							<th align="center">总url数</th>
+							<th align="center">黑url数</th>
+							<th align="center">黑URL百分比%</th>
+						</tr>
+						{% for item in top10_domain %}
+						<tr>
+							<td>{{item.0}}</td>
+							<td align="right">{{item.1}}</td>
+							<td align="right">{{item.2}}</td>
+							<td align="right">{{item.3|default:""}}</td>
+						</tr>
+						{% endfor %}
+				</table>
+				</div>
+			</fieldset>
+			<br/>
+
+			<fieldset class="fieldsetcss">
+				<legend>昨日新增黑Domain</legend>
+				<div align="center">
+				<table class="reportclass">
+						<tr class="reportclassth">
+							<th align="center">domain</th>
+							<th align="center">总url数</th>
+							<th align="center">黑url数</th>
+							<th align="center">黑URL百分比%</th>
+						</tr>
+						{% for item in lastday_domain %}
+						<tr>
+							<td>{{item.0}}</td>
+							<td align="right">{{item.1}}</td>
+							<td align="right">{{item.2}}</td>
+							<td align="right">{{item.3|default:""}}</td>
+						</tr>
+						{% endfor %}
+				</table>
+				</div>
+			</fieldset>
+			<br/>
+
+			<fieldset class="fieldsetcss">
+				<legend>昨日数据情况</legend>
+				<div align="center">
+				<table class="reportclass">
+						<tr class="reportclassth">
+							<th align="center">来源</th>
+							<th align="center">URL数</th>
+							<th align="center">黑URL数</th>
+							<th align="center">黑URL百分比%</th>
+						</tr>
+						{% for item in lastday_type_data %}
+						<tr>
+							<td>{{item.from_type}}</td>
+							<td align="right">{{item.url_count|default:""}}</td>
+							<td align="right">{{item.black_url_count|default:"0"}}</td>
+							<td align="right">{{item.percentage}}</td>
+						</tr>
+						{% endfor %}
+						<tr>
+							<td>总计</td>
+							<td align="right">{{lastday_data.url_count}}</td>
+							<td align="right">{{lastday_data.black_url_count}}</td>
+							<td align="right">{{lastday_data.percentage}}</td>
+						</tr>
+				</table>
+				</div>
+			</fieldset>
+			<br>
+		</div>
+	</div>
+	</body>
+</html>

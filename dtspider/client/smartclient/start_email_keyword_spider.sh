@@ -1,0 +1,2 @@
+export LD_LIBRARY_PATH=/usr/local/lib/mysql:$LD_LIBRARY_PATH
+python2.5 /home/jacky/workspace/dtspider/dtspider/client/smartclient/main.py EMAIL_KEYWORD_SPIDER > /home/jacky/dtspider_working/email_keyword_spider.log
