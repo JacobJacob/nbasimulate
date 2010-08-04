@@ -35,7 +35,7 @@ class DjangoSettings:
     DATABASE_NAME = 'ant'
     DATABASE_USER = 'ant'
     DATABASE_PASSWORD = 'ant123'
-    DATABASE_HOST = '192.168.1.158'
+    DATABASE_HOST = '192.168.1.152'
     DATABASE_PORT = 3306
         
     URL_PREFIX = ''
@@ -54,7 +54,7 @@ COMMON_CACHE_CMD = 'memcached -d -m 1024 -p 11212 -u dtspider'
 MinDiskSize = 10 * 1024 * 1024 * 1024
 
 SYSLOG_HOST = 'localhost'
-SERVICE_HOST = '192.168.1.153'
+SERVICE_HOST = 'localhost'
 
 
 # 数据同步服务器

@@ -12,6 +12,7 @@ from dtspider.client.rpc_proxy import proxy_service_proxy
 from dtspider.common.constants import ClientType
 from dtspider.common import log_execption
 from dtspider.common import proxyutil 
+from dtspider.common import exception_mgr
 
 _res = {
     "host": r"([0-9a-zA-Z-_]+\.[\.0-9a-zA-Z-_]+)",

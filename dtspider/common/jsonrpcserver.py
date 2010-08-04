@@ -56,6 +56,7 @@ from django.http import HttpResponse
 
 #import simplejson as json
 from dtspider.common import json
+from dtspider.common import exception_mgr
 
 _dispatchers_dict = {}
 
