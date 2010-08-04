@@ -136,9 +136,9 @@ class SanyaxunfangSpider(BaseClient):
             sanya_info.persist()
             type_mapping.persist()
         except:
-             self.current_info = u'%s' % traceback.format_exc()
-             logging.error(self.current_info)
-             return False
+            self.current_info = u'%s' % traceback.format_exc()
+            logging.error(self.current_info)
+            return False
         return True
         
     def get_content(self, url):
@@ -147,8 +147,8 @@ class SanyaxunfangSpider(BaseClient):
             content = self._spider.read(url)
             return content
         except:
-             self.current_info = u'%s' % traceback.format_exc()
-             logging.error(self.current_info)
+            self.current_info = u'%s' % traceback.format_exc()
+            logging.error(self.current_info)
         return ''
     
     
