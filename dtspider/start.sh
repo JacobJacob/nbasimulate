@@ -5,7 +5,7 @@ sudo sh stop.sh
 memcached -d -m 1024 -p 11211 -u jacky
 
 # Replace these three settings.
-PROJDIR="/home/jacky/workspace/dtspider"
+PROJDIR="/data/apps/workspace/dtspider"
 PIDFILE="$PROJDIR/fastcgi.pid"
 SOCKET="$PROJDIR/fastcgi.sock"
 
