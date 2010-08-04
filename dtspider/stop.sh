@@ -4,7 +4,7 @@ sudo killall nginx
 killall memcached
 
 # Replace these three settings.
-PROJDIR="/home/jacky/workspace/dtspider"
+PROJDIR="/data/apps/dtspider"
 PIDFILE="$PROJDIR/fastcgi.pid"
 SOCKET="$PROJDIR/fastcgi.sock"
 
