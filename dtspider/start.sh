@@ -2,7 +2,7 @@
 export LD_LIBRARY_PATH=/usr/local/lib/mysql:$LD_LIBRARY_PATH
 sudo sh stop.sh
 
-memcached -d -m 1024 -p 11211 -u jacky
+memcached -d -m 1024 -p 11211 -u sxwailyc
 
 # Replace these three settings.
 PROJDIR="/data/apps/dtspider"
