@@ -74,7 +74,7 @@ def _insert_proxy(proxy_info):
     try:
         cursor.insert(proxy_info, 'http_proxy')
     
-    except Exceptin, e:
+    except Exception, e:
         print e
     finally:
         cursor.close()
