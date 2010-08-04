@@ -10,7 +10,7 @@ class PathSettings:
     if os.name == 'nt':
         WORKING_FOLDER = "c:/dtspider_working"
     else:
-        WORKING_FOLDER = "/data/dtspider_working"
+        WORKING_FOLDER = "/data/appdatas/dtspider_working"
     LOG = WORKING_FOLDER + "/logs"
     EXCEPTION = WORKING_FOLDER + "/exception"
     WEBSERVER_LOG_FOLDER = EXCEPTION + "/lighttpd"
