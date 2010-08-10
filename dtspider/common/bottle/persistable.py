@@ -18,7 +18,12 @@ def info(msg):
     print '[%s]:%s' % (format_now(), msg)
 
 class TableNotExistException(Exception):
-    pass
+    
+    def __init__(self, table):
+        self._table = table
+        
+    def __str__(self):
+        return "table %s not exist" % self._table
 
 class Persistable(object):
     
@@ -50,7 +55,7 @@ class Persistable(object):
             try:
                 data = cursor.fetchall(sql % cls._table)
             except ProgrammingError, err:
-                raise TableNotExistException()
+                raise TableNotExistException(cls._table)
             meta = Meta(cls._table)
             column_infos = data.to_list()
             for column_info in column_infos:
@@ -125,6 +130,8 @@ class Persistable(object):
                 data[field_name] = getattr(self, field_name)
             elif field_name == 'created_at':
                 data['created_at'] = ReserveLiteral('now()')
+            elif field_name == 'created_time':
+                data['created_time'] = ReserveLiteral('now()')
                     
         try:
             cursor.insert(data, self._table, True, update_skip_columns)
