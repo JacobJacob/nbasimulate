@@ -71,16 +71,31 @@ class SanyaxunfangSpider(BaseClient):
         data['id'] = ''
         data['filepass'] = '1259474509'
         data['classid'] = type_mapping.classid
-        data['title'] = info.title
+        data['title'] = self._encode(info.title)
         data['titlepicfile'] = ''
-        data['mycontact'] = info.phone
+        data['phone'] = info.phone
         data['enews'] = 'MAddInfo'
-        data['smalltext'] =   info.content
-        data['myarea'] = u'河东区'
-        data['address'] = info.address
+        data['smalltext'] =   self._encode(info.content)
+        data['myarea'] = '三亚市区'.encode('gb2312')
+        data['not_key'] = 1
+        data['address'] = self._encode(info.address)
+        data['zhongjie'] = '否'.encode('gb2312')
+        data['jiage'] = '面议'.encode('gb2312')
+        data['xiu'] = '简单装修'.encode('gb2312')
+        data['lianxiren'] = info.phone
+        data['gotoinfourl'] = 1
+        data['editgotoinfourl'] = 1
         post = Post(data, 'www.3-ya.com', '/e/DoInfo/ecms.php')
         success = post.submit(result_keyword=u'成功')
         return success
+    
+    def _encode(self, s):
+        if not s:
+            return s
+        try:
+            return s.encode('gb2312')
+        except:
+            return s.encode('gb2312', 'replace')
        
     def _load_status(self):
         '''load status'''
@@ -132,13 +147,15 @@ class SanyaxunfangSpider(BaseClient):
         
         type_mapping = SanyaTypeMapping()
         type_mapping.type = info['type']
-        try:
-            sanya_info.persist()
-            type_mapping.persist()
-        except:
-            self.current_info = u'%s' % traceback.format_exc()
-            logging.error(self.current_info)
-            return False
+        while True:
+            try:
+                sanya_info.persist()
+                type_mapping.persist()
+                break
+            except:
+                self.current_info = u'%s' % traceback.format_exc()
+                logging.error(self.current_info)
+                self._sleep()
         return True
         
     def get_content(self, url):
@@ -151,10 +168,14 @@ class SanyaxunfangSpider(BaseClient):
             logging.error(self.current_info)
         return ''
     
+    def test_issue(self, id):
+        info = SanyaInfo.load(id=id)
+        self.publish(info)
     
 def main():
     spider = SanyaxunfangSpider()
     spider.main()
+    #print spider.test_issue(1)
     #spider._load_status()
     #spider._hand_link('http://www.sanyaxunfang.com/yh/1259408319.html')
     
