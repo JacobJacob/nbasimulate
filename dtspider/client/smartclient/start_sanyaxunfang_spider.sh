@@ -1,1 +1,1 @@
-python2.5 /data/apps/dtspider/dtspider/client/smartclient/main.py SANYAXUNFANG_SPIDER
+nohup python2.5 main.py SANYAXUNFANG_SPIDER&
