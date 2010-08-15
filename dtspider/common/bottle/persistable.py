@@ -231,7 +231,7 @@ class Persistable(object):
                 else:
                     cache_key_value = getattr(parms, cache_key)
                     
-            cache_key_str += cache_key_value
+            cache_key_str += str(cache_key_value)
             cache_key_str += ';'
         cache_key_str = cache_key_str[:-1]
         return cache_key_str
