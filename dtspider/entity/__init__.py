@@ -36,5 +36,14 @@ class SanyaInfo(Persistable):
 class RuntimeData(Persistable):
     CACHE_KEY = 'runtime_data:program;value_key'
     
+class AskTypeMapping(Persistable):
+    CACHE_KEY = 'ask_type_mapping:type'
+    
 class SanyaTypeMapping(Persistable):
     CACHE_KEY = 'sanya_type_mapping:type'
+    
+class AskInfo(Persistable):
+    CACHE_KEY = 'ask_info:id'
+    
+class AnswerInfo(Persistable):
+    CACHE_KEY = 'answer_info:id'
