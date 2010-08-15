@@ -11,4 +11,9 @@ CLIENTS = {
     "SANYAXUNFANG_SPIDER": "dtspider.client.3ya.sanyaxunfang_spider.main",
     "INJECT_DETECT_CLIENT": "dtspider.client.inject.injection_detect_client.main",
     "INJECT_URL_SPIDER": "dtspider.client.inject.inject_url_spider.main",
+    
+    "SOSO_ANSWER_PUBLISHER": "dtspider.client.3ya.soso_answer_publisher.main",
+    "SOSO_ASK_PUBLISHER": "dtspider.client.3ya.soso_ask_publisher.main",
+    "SOSO_ASK_SPIDER": "dtspider.client.3ya.soso_ask_spider.main",
+    
 }
