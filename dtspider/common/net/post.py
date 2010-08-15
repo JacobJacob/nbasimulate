@@ -15,7 +15,7 @@ class Post(object):
         self._host = host
         self._path = path
         
-    def submit(self, result_keyword=u"发表成功"):
+    def submit(self, result_keyword=u"发表成功", get_content=False, debug=False):
         """提交
         @param result_keyword: 判断是否提交成功的关键字 
         """
@@ -38,7 +38,10 @@ class Post(object):
                     data = data.decode('gb2312')
                 except:
                     pass
-                #print data
+                if debug:
+                    print data
+                if get_content:
+                    return data
                 if data.find(result_keyword) != -1:
                     return True
                 else:
