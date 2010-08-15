@@ -171,6 +171,8 @@ class SanyaxunfangSpider(BaseClient):
     def test_issue(self, id):
         info = SanyaInfo.load(id=id)
         self.publish(info)
+        
+
     
 def main():
     spider = SanyaxunfangSpider()
