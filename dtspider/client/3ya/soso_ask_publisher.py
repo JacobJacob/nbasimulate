@@ -25,7 +25,7 @@ class SosoAskPublisher(BaseClient):
     def issue_info(self):
         
         self._load_status()
-        infos = AskInfo.query(condition=" status=0 and from_type='soso'", limit=10)
+        infos = AskInfo.query(condition=" status=0 and from_type='soso' and id>%s" % self._last_id, limit=100)
         if not infos:
             return
         self._last_id = infos[-1].id
@@ -33,7 +33,8 @@ class SosoAskPublisher(BaseClient):
             success = self.publish(info)
             now = datetime.now()
             self.current_info = "%s: message publish %s..." % (now.strftime("%Y-%m-%d %H:%M:%S"), 'success' if success else 'failure')
-            self._sleep(random.randint(10, 20))
+            if success:
+                self._sleep(random.randint(10, 20))
             logging.info(self.current_info) 
         self._save_status()    
         
