@@ -59,8 +59,10 @@ class SosoAskPublisher(BaseClient):
         if id:
             info.status = 1
             info.ask_id = id
-            info.persist()
-            
+            try:
+                info.persist()
+            except:
+                return False
         return True
     
     def _load_status(self):
