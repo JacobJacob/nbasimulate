@@ -18,7 +18,7 @@ class SosoAskSpider(BaseClient):
     
     REMOVE_HTMLTAG_RE = re.compile(r'(<.*?>)', re.I)
     LINK_PATTERN = ur'''<a[\S\s]*?href="(/z/q\d*?.htm)"'''
-    LIST_LINK_PATTERN = ur'''<li[\S\s]*?class="categoryName"><a[\S\s]*?href="(/z/c\d*?.htm)">(.*?)</a></li>'''
+    LIST_LINK_PATTERN = ur'''<dd[\S\s]*?ch=".*?"><a[\S\s]*?href="(/z/c\d*?.htm)">(.*?)</a>'''
     CONTENT_PATTERN = ur'''
                             ([\S\s]*?<div[\S\s]*?class="question_main">[\S\s]*?<h3>(?P<title>[\S\s]*?)</h3>)?         
                             ([\S\s]*?<div[\S\s]*?class="question_con">(?P<content>[\S\s]*?)</div>)? 
@@ -46,7 +46,7 @@ class SosoAskSpider(BaseClient):
         links = self._spider.get_urls(content, SosoAskSpider.LIST_LINK_PATTERN)
         for link in links:
             url, type = link[0], link[1]
-            
+            print url, type
             type_mapping = AskTypeMapping()
             type_mapping.type = type
             while True:
