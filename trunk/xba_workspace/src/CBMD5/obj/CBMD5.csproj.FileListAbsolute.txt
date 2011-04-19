@@ -1,0 +1,5 @@
+D:\xba_workspace\src\CBMD5\bin\Debug\CBMD5.dll
+D:\xba_workspace\src\CBMD5\bin\Debug\CBMD5.pdb
+D:\xba_workspace\src\CBMD5\obj\Debug\ResolveAssemblyReference.cache
+D:\xba_workspace\src\CBMD5\obj\Debug\CBMD5.dll
+D:\xba_workspace\src\CBMD5\obj\Debug\CBMD5.pdb

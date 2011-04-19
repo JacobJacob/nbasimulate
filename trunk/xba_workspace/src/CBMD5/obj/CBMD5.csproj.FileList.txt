@@ -1,0 +1,5 @@
+bin\Debug\CBMD5.dll
+bin\Debug\CBMD5.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\CBMD5.dll
+obj\Debug\CBMD5.pdb

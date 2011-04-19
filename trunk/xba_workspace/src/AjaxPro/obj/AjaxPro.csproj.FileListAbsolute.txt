@@ -1,0 +1,4 @@
+D:\xba_workspace\src\AjaxPro\obj\Debug\ResolveAssemblyReference.cache
+D:\xba_workspace\src\AjaxPro\obj\Debug\AjaxPro.core.js
+D:\xba_workspace\src\AjaxPro\obj\Debug\AjaxPro.prototype.js
+D:\xba_workspace\src\AjaxPro\obj\Debug\ms\AjaxPro.js
