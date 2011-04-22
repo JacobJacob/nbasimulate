@@ -123,7 +123,7 @@
         protected HtmlTable tbSay;
         protected HtmlTable tbWealthOrder;
         protected HtmlTableRow tr1;
-        protected HtmlTableRow Tr1;
+        //protected HtmlTableRow Tr1;
         protected HtmlTableRow tr2;
         protected HtmlTableRow tr3;
         protected HtmlTableRow trOther;
