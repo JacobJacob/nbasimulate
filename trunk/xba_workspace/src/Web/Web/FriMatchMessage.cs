@@ -927,7 +927,7 @@
                 this.btnReg.Click += new ImageClickEventHandler(this.btnReg_Click_AD);
             }
             this.btnReg5.Click += new ImageClickEventHandler(this.btnReg5_Click);
-            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
+            //this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
 
