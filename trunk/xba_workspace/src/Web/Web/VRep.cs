@@ -121,6 +121,7 @@
             {
                 XmlDataDocument document = new XmlDataDocument();
                 document.DataSet.ReadXmlSchema(base.Server.MapPath("MatchXML/RepSchema.xsd"));
+                String temp = base.Server.MapPath(path);
                 XmlTextReader reader = new XmlTextReader(base.Server.MapPath(path));
                 try
                 {

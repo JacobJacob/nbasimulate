@@ -233,11 +233,6 @@ D:\xba_workspace\src\Web\obj\Debug\Web._51Login.resources
 D:\xba_workspace\src\Web\obj\Debug\Web._51LoginOK.resources
 D:\xba_workspace\src\Web\obj\Debug\Web._51Reg.resources
 D:\xba_workspace\src\Web\obj\Debug\Web._51RegOK.resources
-D:\develop\xba_workspace\src\Web\bin\Debug\Web.dll
-D:\develop\xba_workspace\src\Web\bin\Debug\Web.pdb
-D:\develop\xba_workspace\src\Web\bin\Debug\LoginParameter.dll
-D:\develop\xba_workspace\src\Web\bin\Debug\ServerManage.dll
-D:\develop\xba_workspace\src\Web\bin\Debug\ServerManage.pdb
 D:\develop\xba_workspace\src\Web\obj\Debug\ResolveAssemblyReference.cache
 D:\develop\xba_workspace\src\Web\obj\Debug\Test.WebHttp.Request.resources
 D:\develop\xba_workspace\src\Web\obj\Debug\Test.WebHttp.Response.resources
@@ -473,5 +468,13 @@ D:\develop\xba_workspace\src\Web\obj\Debug\Web._51Login.resources
 D:\develop\xba_workspace\src\Web\obj\Debug\Web._51LoginOK.resources
 D:\develop\xba_workspace\src\Web\obj\Debug\Web._51Reg.resources
 D:\develop\xba_workspace\src\Web\obj\Debug\Web._51RegOK.resources
+D:\develop\xba_workspace\src\Web\bin\Debug\Web.dll
+D:\develop\xba_workspace\src\Web\bin\Debug\Web.pdb
+D:\develop\xba_workspace\src\Web\bin\Debug\AjaxPro.dll
+D:\develop\xba_workspace\src\Web\bin\Debug\CBMD5.dll
+D:\develop\xba_workspace\src\Web\bin\Debug\Interop.jmail.dll
+D:\develop\xba_workspace\src\Web\bin\Debug\LoginParameter.dll
+D:\develop\xba_workspace\src\Web\bin\Debug\ServerManage.dll
+D:\develop\xba_workspace\src\Web\bin\Debug\ServerManage.pdb
 D:\develop\xba_workspace\src\Web\obj\Debug\Web.dll
 D:\develop\xba_workspace\src\Web\obj\Debug\Web.pdb

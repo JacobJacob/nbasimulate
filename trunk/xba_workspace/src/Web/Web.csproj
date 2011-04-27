@@ -42,15 +42,15 @@
   <ItemGroup>
     <Reference Include="AjaxPro, Version=6.6.14.2, Culture=neutral, PublicKeyToken=4735ae9824c7d3ec">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\inetpub\wwwroot\bin\AjaxPro.dll</HintPath>
+      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\AjaxPro.dll</HintPath>
     </Reference>
     <Reference Include="CBMD5, Version=1.0.1934.17073, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\inetpub\wwwroot\bin\CBMD5.dll</HintPath>
+      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\CBMD5.dll</HintPath>
     </Reference>
     <Reference Include="Interop.jmail, Version=4.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\inetpub\wwwroot\bin\Interop.jmail.dll</HintPath>
+      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\Interop.jmail.dll</HintPath>
     </Reference>
     <Reference Include="LoginParameter, Version=1.0.2861.31937, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

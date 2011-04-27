@@ -228,7 +228,7 @@
 
         public static string GetMatchURL()
         {
-            int intGameCategory = ServerParameter.intGameCategory;
+            /*int intGameCategory = ServerParameter.intGameCategory;
             if (ServerParameter.blnMoreServer)
             {
                 if (ServerParameter.blnUseServer)
@@ -240,7 +240,7 @@
                     return ("http://match" + intGameCategory + ".xba.cga.com.cn/");
                 }
                 return "http://game.xba.com.cn/";
-            }
+            }*/
             return "";
         }
 
