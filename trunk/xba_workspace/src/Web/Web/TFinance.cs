@@ -154,8 +154,8 @@
                 while (reader.Read())
                 {
                     int num = (int) reader["Season"];
-                    int num2 = (int) reader["Income"];
-                    int num3 = (int) reader["Outcome"];
+                    long num2 = (long)reader["Income"];
+                    long num3 = (long)reader["Outcome"];
                     DateTime datIn = (DateTime) reader["CreateTime"];
                     object strList = this.strList;
                     this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='30'><font color='#7B1F76'>", num, "</font></td><td><font color='green'>", num2, "</font></td><td><font color='red'>", num3, "</font></td><td>", StringItem.FormatDate(datIn, "yy-MM-dd"), "</td></tr>" });
@@ -186,8 +186,8 @@
                 {
                     int num = (int) reader["Season"];
                     int num2 = (byte) reader["Turn"];
-                    int num3 = (int) reader["Income"];
-                    int num4 = (int) reader["Outcome"];
+                    long num3 = (long)reader["Income"];
+                    long num4 = (long)reader["Outcome"];
                     DateTime datIn = (DateTime) reader["CreateTime"];
                     int num5 = (int) reader["TFinanceID"];
                     object strList = this.strList;

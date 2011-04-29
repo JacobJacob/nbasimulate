@@ -957,8 +957,8 @@
                     this.FMatchList();
                     break;
             }
-            this.btnSend.Click += new ImageClickEventHandler(this.btnSend_Click);
-            this.btnReg.Click += new ImageClickEventHandler(this.btnReg_Click);
+            //this.btnSend.Click += new ImageClickEventHandler(this.btnSend_Click);
+            //this.btnReg.Click += new ImageClickEventHandler(this.btnReg_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -985,7 +985,7 @@
                 this.tblFMatchHistory.Visible = false;
                 this.tblTrainCenter.Visible = false;
                 this.tblWealth.Visible = false;
-                this.btnReg.ImageUrl = SessionItem.GetImageURL() + "button_29.GIF";
+                //this.btnReg.ImageUrl = SessionItem.GetImageURL() + "button_29.GIF";
                 this.strType = (string) SessionItem.GetRequest("Type", 1);
                 this.InitializeComponent();
                 base.OnInit(e);

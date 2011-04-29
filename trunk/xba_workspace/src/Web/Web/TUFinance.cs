@@ -127,7 +127,7 @@
                 this.intPerPage = 10;
                 if ((this.intSeason != 0) && (this.intTurn != 0))
                 {
-                    this.strPageIntro = string.Concat(new object[] { "<td height='24'><ul><li class='qian1'></li>财政详情</ul></td><td align='right' style='padding-right:5px'>第", this.intSeason, "赛季 第", this.intTurn, "轮</td>" });
+                    this.strPageIntro = string.Concat(new object[] { "<td height='24'><ul><li class='qian1'>财政详情</li></ul></td><td align='right' style='padding-right:5px'>第", this.intSeason, "赛季 第", this.intTurn, "轮</td>" });
                 }
                 else
                 {
@@ -170,8 +170,8 @@
                         {
                             str2 = "<font color='#FF0000'>职业</font>";
                         }
-                        int num2 = (int) reader["Income"];
-                        int num3 = (int) reader["Outcome"];
+                        long num2 = (long)reader["Income"];
+                        long num3 = (long)reader["Outcome"];
                         string str3 = reader["Event"].ToString().Trim();
                         DateTime datIn = (DateTime) reader["CreateTime"];
                         object strList = this.strList;
