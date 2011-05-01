@@ -152,6 +152,7 @@
     <Compile Include="Web\ClubSetting.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\Helper\PlayerHelper.cs" />
     <Compile Include="Web\zh\com\cga\xba\match1\VOnlineReport.cs">
       <SubType>Component</SubType>
     </Compile>
