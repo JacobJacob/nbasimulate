@@ -1999,9 +1999,9 @@
                     this.tblDemise.Visible = true;
                     return;
             }
-            this.strPageIntro2 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&Page=1'>杯赛管理</a>";
-            this.tblSetIntro.Visible = true;
-            this.SetIntros();
+            //this.strPageIntro2 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&Page=1'>杯赛管理</a>";
+            //this.tblSetIntro.Visible = true;
+            //this.SetIntros();
         }
 
         private void SetIntros()

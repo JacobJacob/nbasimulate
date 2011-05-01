@@ -250,6 +250,8 @@
                     int num1 = (int) playerRowByPlayerID["AttackMax"];
                     int num49 = (int) playerRowByPlayerID["DefenseMax"];
                     int num50 = (int) playerRowByPlayerID["TeamMax"];
+                    int skillPotential = (int)playerRowByPlayerID["SkillPotential"];
+                   
                     if ((intAbility + 50) < intAbilityMax)
                     {
                         num27 = 0;
@@ -298,7 +300,7 @@
                     int num52 = this.intDefense + 50;
                     int num53 = this.intTeam + 50;
                     int intPosition = (byte) playerRowByPlayerID["Pos"];
-                    int num39 = (byte) playerRowByPlayerID["Age"];
+                    int num39 = (byte)playerRowByPlayerID["Age"];
                     this.intParameter = ((((400 - (((30 - num39) * 100) / 20)) + 100) * 200) - 0x1388) / 400;
                     int num40 = (byte) playerRowByPlayerID["PlayedYear"];
                     int num41 = (byte) playerRowByPlayerID["Height"];
@@ -391,7 +393,7 @@
                     this.sbAbility.Append("\t\t\t\t速度</td>\n");
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility1'>" + this.GetHtmlTable(intAbility, intAbilityMax, "tblAbility1") + "</td>");
                     this.sbAbility.Append("\t\t\t<td width=\"20\" align=\"center\"><img id='btnAdd1' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt1'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt1'></span><input type=\"hidden\" id=\"UserPoint1\" value=\"" + PlayerHelper.GetUsePoint3(10, intAbility, intAbilityMax, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num3 < num14)
                     {
@@ -405,7 +407,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">弹跳<input type='hidden' id='Ability2' value='", num3, "'><input type='hidden' id='AbilityMax2' value='", num28, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility2'>" + this.GetHtmlTable(num3, num14, "tblAbility2") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd2' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt2'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt2'></span><input type=\"hidden\" id=\"UserPoint2\" value=\"" + PlayerHelper.GetUsePoint3(10, num3, num14, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num4 < num15)
                     {
@@ -419,7 +421,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">强壮<input type='hidden' id='Ability3' value='", num4, "'><input type='hidden' id='AbilityMax3' value='", num29, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility3'>" + this.GetHtmlTable(num4, num15, "tblAbility3") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd3' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt3'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt3'></span><input type=\"hidden\" id=\"UserPoint3\" value=\"" + PlayerHelper.GetUsePoint3(10, num4, num15, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num5 < num16)
                     {
@@ -433,7 +435,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">耐力<input type='hidden' id='Ability4' value='", num5, "'><input type='hidden' id='AbilityMax4' value='", num30, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility4'>" + this.GetHtmlTable(num5, num16, "tblAbility4") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd4' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt4'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt4'></span><input type=\"hidden\" id=\"UserPoint4\" value=\"" + PlayerHelper.GetUsePoint3(10, num4, num16, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num6 < num17)
                     {
@@ -447,7 +449,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">投篮<input type='hidden' id='Ability5' value='", num6, "'><input type='hidden' id='AbilityMax5' value='", num31, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility5'>" + this.GetHtmlTable(num6, num17, "tblAbility5") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd5' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt5'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt5'></span><input type=\"hidden\" id=\"UserPoint5\" value=\"" + PlayerHelper.GetUsePoint3(10, num6, num17, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num7 < num18)
                     {
@@ -461,7 +463,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">三分<input type='hidden' id='Ability6' value='", num7, "'><input type='hidden' id='AbilityMax6' value='", num32, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility6'>" + this.GetHtmlTable(num7, num18, "tblAbility6") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd6' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt6'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt6'></span><input type=\"hidden\" id=\"UserPoint6\" value=\"" + PlayerHelper.GetUsePoint3(10, num7, num18, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num8 < num19)
                     {
@@ -475,7 +477,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">运球<input type='hidden' id='Ability7' value='", num8, "'><input type='hidden' id='AbilityMax7' value='", num33, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility7'>" + this.GetHtmlTable(num8, num19, "tblAbility7") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd7' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt7'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt7'></span><input type=\"hidden\" id=\"UserPoint7\" value=\"" + PlayerHelper.GetUsePoint3(10, num8, num19, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num9 < num20)
                     {
@@ -489,7 +491,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">传球<input type='hidden' id='Ability8' value='", num9, "'><input type='hidden' id='AbilityMax8' value='", num34, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility8'>" + this.GetHtmlTable(num9, num20, "tblAbility8") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd8' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt8'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt8'></span><input type=\"hidden\" id=\"UserPoint8\" value=\"" + PlayerHelper.GetUsePoint3(10, num9, num20, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num10 < num21)
                     {
@@ -503,7 +505,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">篮板<input type='hidden' id='Ability9' value='", num10, "'><input type='hidden' id='AbilityMax9' value='", num35, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility9'>" + this.GetHtmlTable(num10, num21, "tblAbility9") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd9' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt9'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt9'></span><input type=\"hidden\" id=\"UserPoint9\" value=\"" + PlayerHelper.GetUsePoint3(10, num10, num21, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num11 < num22)
                     {
@@ -517,7 +519,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">抢断<input type='hidden' id='Ability10' value='", num11, "'><input type='hidden' id='AbilityMax10' value='", num36, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility10'>" + this.GetHtmlTable(num11, num22, "tblAbility10") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd10' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt10'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt10'></span><input type=\"hidden\" id=\"UserPoint10\" value=\"" + PlayerHelper.GetUsePoint3(10, num11, num22, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num12 < num23)
                     {
@@ -531,9 +533,10 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">封盖<input type='hidden' id='Ability11' value='", num12, "'><input type='hidden' id='AbilityMax11' value='", num37, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility11'>" + this.GetHtmlTable(num12, num23, "tblAbility11") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd11' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt11'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt11'></span><input type=\"hidden\" id=\"UserPoint11\" value=\"" + PlayerHelper.GetUsePoint3(10, num12, num23, skillPotential, num39) + "\"></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     this.sbAbility.Append("\t</table>\n");
+
                 }
             }
             else
