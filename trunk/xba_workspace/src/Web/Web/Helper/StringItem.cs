@@ -37,28 +37,32 @@
 
         public static string Get51laURL()
         {
-            if (ServerParameter.strCopartner == "CGA")
-            {
-                return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/155/27/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/155/27/ystat.gif\"></a></noscript>";
-            }
-            if (ServerParameter.strCopartner == "ZHW")
-            {
-                return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/374/412/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/374/412/ystat.gif\"></a></noscript>";
-            }
-            if (ServerParameter.strCopartner == "51WAN")
-            {
-                return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/41/206/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/41/206/ystat.gif\"></a></noscript>";
-            }
-            if (ServerParameter.strCopartner == "17173")
-            {
-                return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/41/324/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/41/324/ystat.gif\"></a></noscript>";
-            }
-            if (ServerParameter.strCopartner == "DUNIU")
-            {
-                return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/204/216/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/204/216/ystat.gif\"></a></noscript>";
-            }
-            return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/155/28/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/155/28/ystat.gif\"></a></noscript>";
-        }
+
+            return "";
+
+
+        //    if (ServerParameter.strCopartner == "CGA")
+        //    {
+        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/155/27/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/155/27/ystat.gif\"></a></noscript>";
+        //    }
+        //    if (ServerParameter.strCopartner == "ZHW")
+        //    {
+        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/374/412/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/374/412/ystat.gif\"></a></noscript>";
+        //    }
+        //    if (ServerParameter.strCopartner == "51WAN")
+        //    {
+        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/41/206/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/41/206/ystat.gif\"></a></noscript>";
+        //    }
+        //    if (ServerParameter.strCopartner == "17173")
+        //    {
+        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/41/324/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/41/324/ystat.gif\"></a></noscript>";
+        //    }
+        //    if (ServerParameter.strCopartner == "DUNIU")
+        //    {
+        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/204/216/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/204/216/ystat.gif\"></a></noscript>";
+        //    }
+        //    return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/155/28/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/155/28/ystat.gif\"></a></noscript>";
+        //}
 
         public static string GetBuyCoinURL()
         {

@@ -1437,6 +1437,7 @@
             this.btnXResult.ImageUrl = SessionItem.GetImageURL() + "button_35.gif";
             this.btnXSchedule.ImageUrl = SessionItem.GetImageURL() + "button_36.gif";
             this.btnDemise.ImageUrl = SessionItem.GetImageURL() + "btn_Demise.gif";
+            this.btnAdd.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
         }
 
         private void SetImperialCupList()

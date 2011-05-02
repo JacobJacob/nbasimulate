@@ -368,6 +368,12 @@
             this.tblChampionCup.Visible = false;
             this.tblReputation.Visible = false;
             this.tblDelMaster.Visible = false;
+
+            this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnSend.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnSendMsg.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnSetReputation.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+
             switch (SessionItem.GetRequest("Type", 1).ToString().Trim())
             {
                 case "AUTOTRAIN":
