@@ -30,6 +30,7 @@
         private int intUserID;
         private long lngPlayerID;
         public StringBuilder sbAbility = new StringBuilder("");
+        public StringBuilder sbAbility1 = new StringBuilder("");
         public StringBuilder sbReturn = new StringBuilder("");
         public string strFace = "";
         public string strNumber = "";
@@ -335,8 +336,6 @@
                     this.sbReturn.Append("\t<tr>\n");
                     this.sbReturn.Append("\t\t<td width='92' valign='top'><img id='imgCharactor' src='" + SessionItem.GetImageURL() + "Player/Charactor/NewPlayer.png' width='90' height='130'><br>\n");
                     this.sbReturn.Append(string.Concat(new object[] { "\t\t\t&nbsp;&nbsp;<a href='PlayerCenter.aspx?RT=", this.lngPlayerID, "&amp;PlayerType=5&amp;Type=9&amp;PlayerID=", this.lngPlayerID, "' target='Center'><img src='Images/llzc.gif' width='12' height='12' border='0' alt='理疗中心'></a></td>\n" }));
-                    this.sbReturn.Append("\t</tr>\n");
-                    this.sbReturn.Append("\t<tr>\n");
                     this.sbReturn.Append("\t\t<td valign='top'>\n");
                     this.sbReturn.Append("\t\t\t<table width='109' border='0' cellspacing='0' cellpadding='2'>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
@@ -382,13 +381,13 @@
                     {
                         str4 = "src=\"images/zengjia_C.gif\"";
                     }
-                    this.sbAbility.Append("<table width=\"341\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#fcf2ec\" id=\"tblDetail\">\n");
+                    this.sbAbility.Append("<table width=\"230\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#fcf2ec\" id=\"tblDetail\">\n");
                     this.sbAbility.Append("\t\t<tr>\n");
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td width=\"44\" height=\"22\" align=\"center\"><input type='hidden' id='Ability1' value='", intAbility, "'><input type='hidden' id='AbilityMax1' value='", num30, "'>\n" }));
                     this.sbAbility.Append("\t\t\t\t速度</td>\n");
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility1'>" + this.GetHtmlTable(intAbility, intAbilityMax, "tblAbility1") + "</td>");
                     this.sbAbility.Append("\t\t\t<td width=\"20\" align=\"center\"><img id='btnAdd1' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt1'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt1'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num3 < num17)
                     {
@@ -402,7 +401,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">弹跳<input type='hidden' id='Ability2' value='", num3, "'><input type='hidden' id='AbilityMax2' value='", num31, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility2'>" + this.GetHtmlTable(num3, num17, "tblAbility2") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd2' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt2'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt2'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num4 < num18)
                     {
@@ -416,7 +415,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">强壮<input type='hidden' id='Ability3' value='", num4, "'><input type='hidden' id='AbilityMax3' value='", num32, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility3'>" + this.GetHtmlTable(num4, num18, "tblAbility3") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd3' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt3'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt3'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num5 < num19)
                     {
@@ -430,7 +429,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">耐力<input type='hidden' id='Ability4' value='", num5, "'><input type='hidden' id='AbilityMax4' value='", num33, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility4'>" + this.GetHtmlTable(num5, num19, "tblAbility4") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd4' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt4'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt4'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num6 < num20)
                     {
@@ -444,7 +443,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">投篮<input type='hidden' id='Ability5' value='", num6, "'><input type='hidden' id='AbilityMax5' value='", num34, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility5'>" + this.GetHtmlTable(num6, num20, "tblAbility5") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd5' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt5'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt5'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num7 < num21)
                     {
@@ -458,7 +457,7 @@
                     this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">三分<input type='hidden' id='Ability6' value='", num7, "'><input type='hidden' id='AbilityMax6' value='", num35, "'></td>\n" }));
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility6'>" + this.GetHtmlTable(num7, num21, "tblAbility6") + "\n");
                     this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd6' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt6'></span></td>");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt6'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num8 < num22)
                     {
@@ -468,12 +467,16 @@
                     {
                         str4 = "src=\"images/zengjia_C.gif\"";
                     }
-                    this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">运球<input type='hidden' id='Ability7' value='", num8, "'><input type='hidden' id='AbilityMax7' value='", num36, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility7'>" + this.GetHtmlTable(num8, num22, "tblAbility7") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd7' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt7'></span></td>");
-                    this.sbAbility.Append("\t\t</tr>\n");
+                    this.sbAbility.Append("\t</table>\n");
+
+
+                    this.sbAbility1.Append("<table width=\"230\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#fcf2ec\" id=\"tblDetail2\">\n");
+                    this.sbAbility1.Append("\t\t<tr>\n");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">运球<input type='hidden' id='Ability7' value='", num8, "'><input type='hidden' id='AbilityMax7' value='", num36, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility7'>" + this.GetHtmlTable(num8, num22, "tblAbility7") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd7' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt7'></span></td>");
+                    this.sbAbility1.Append("\t\t</tr>\n");
                     if (num9 < num23)
                     {
                         str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
@@ -482,12 +485,12 @@
                     {
                         str4 = "src=\"images/zengjia_C.gif\"";
                     }
-                    this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">传球<input type='hidden' id='Ability8' value='", num9, "'><input type='hidden' id='AbilityMax8' value='", num37, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility8'>" + this.GetHtmlTable(num9, num23, "tblAbility8") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd8' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt8'></span></td>");
-                    this.sbAbility.Append("\t\t</tr>\n");
+                    this.sbAbility1.Append("\t\t<tr>\n");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">传球<input type='hidden' id='Ability8' value='", num9, "'><input type='hidden' id='AbilityMax8' value='", num37, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility8'>" + this.GetHtmlTable(num9, num23, "tblAbility8") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd8' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt8'></span></td>");
+                    this.sbAbility1.Append("\t\t</tr>\n");
                     if (num10 < num24)
                     {
                         str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
@@ -496,12 +499,12 @@
                     {
                         str4 = "src=\"images/zengjia_C.gif\"";
                     }
-                    this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">篮板<input type='hidden' id='Ability9' value='", num10, "'><input type='hidden' id='AbilityMax9' value='", num38, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility9'>" + this.GetHtmlTable(num10, num24, "tblAbility9") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd9' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt9'></span></td>");
-                    this.sbAbility.Append("\t\t</tr>\n");
+                    this.sbAbility1.Append("\t\t<tr>\n");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">篮板<input type='hidden' id='Ability9' value='", num10, "'><input type='hidden' id='AbilityMax9' value='", num38, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility9'>" + this.GetHtmlTable(num10, num24, "tblAbility9") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd9' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt9'></span></td>");
+                    this.sbAbility1.Append("\t\t</tr>\n");
                     if (num11 < num25)
                     {
                         str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
@@ -510,12 +513,12 @@
                     {
                         str4 = "src=\"images/zengjia_C.gif\"";
                     }
-                    this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">抢断<input type='hidden' id='Ability10' value='", num11, "'><input type='hidden' id='AbilityMax10' value='", num39, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility10'>" + this.GetHtmlTable(num11, num25, "tblAbility10") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd10' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt10'></span></td>");
-                    this.sbAbility.Append("\t\t</tr>\n");
+                    this.sbAbility1.Append("\t\t<tr>\n");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">抢断<input type='hidden' id='Ability10' value='", num11, "'><input type='hidden' id='AbilityMax10' value='", num39, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility10'>" + this.GetHtmlTable(num11, num25, "tblAbility10") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd10' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt10'></span></td>");
+                    this.sbAbility1.Append("\t\t</tr>\n");
                     if (num12 < num26)
                     {
                         str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
@@ -524,13 +527,13 @@
                     {
                         str4 = "src=\"images/zengjia_C.gif\"";
                     }
-                    this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">封盖<input type='hidden' id='Ability11' value='", num12, "'><input type='hidden' id='AbilityMax11' value='", num40, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility11'>" + this.GetHtmlTable(num12, num26, "tblAbility11") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd11' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td width=\"120\" align=\"left\"><span id='alt11'></span></td>");
-                    this.sbAbility.Append("\t\t</tr>\n");
-                    this.sbAbility.Append("\t</table>\n");
+                    this.sbAbility1.Append("\t\t<tr>\n");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">封盖<input type='hidden' id='Ability11' value='", num12, "'><input type='hidden' id='AbilityMax11' value='", num40, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility11'>" + this.GetHtmlTable(num12, num26, "tblAbility11") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd11' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt11'></span></td>");
+                    this.sbAbility1.Append("\t\t</tr>\n");
+                    this.sbAbility1.Append("\t</table>\n");
                 }
             }
             else

@@ -40,6 +40,8 @@
 
             return "";
 
+        }
+
 
         //    if (ServerParameter.strCopartner == "CGA")
         //    {

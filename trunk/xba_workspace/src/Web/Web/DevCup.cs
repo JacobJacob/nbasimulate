@@ -1118,49 +1118,49 @@
                     this.strPageIntro = "<ul><li class='qian1'>杯赛报名</li><li class='qian2a'><a href='DevCup.aspx?Type=DEVCUPSTATS'>杯赛成绩</a></li><li class='qian2a'><a href='DevCup.aspx?Type=DEVCUPCHAMPION'>冠军榜</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>";
                     break;
             }
-            switch (this.strStatus)
-            {
-                case "CREATE":
-                    this.strPageIntro1 = "<font color='red'>创建杯赛</font>&nbsp;|&nbsp;<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=MANAGER'>杯赛管理</a>";
-                    if (!base.IsPostBack)
-                    {
-                        DataView view = new DataView(DDLItem.GetDevLevelItem());
-                        this.ddlClubLevel.DataSource = view;
-                        this.ddlClubLevel.DataTextField = "Name";
-                        this.ddlClubLevel.DataValueField = "Category";
-                        this.ddlClubLevel.DataBind();
-                    }
-                    this.tblCreateDevCup.Visible = true;
-                    this.strModalTime = StringItem.FormatDate(DateTime.Today.AddHours(63.0), "yyyy-MM-dd hh:mm");
-                    return;
+            //switch (this.strStatus)
+            //{
+            //    case "CREATE":
+            //        this.strPageIntro1 = "<font color='red'>创建杯赛</font>&nbsp;|&nbsp;<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=MANAGER'>杯赛管理</a>";
+            //        if (!base.IsPostBack)
+            //        {
+            //            DataView view = new DataView(DDLItem.GetDevLevelItem());
+            //            this.ddlClubLevel.DataSource = view;
+            //            this.ddlClubLevel.DataTextField = "Name";
+            //            this.ddlClubLevel.DataValueField = "Category";
+            //            this.ddlClubLevel.DataBind();
+            //        }
+            //        this.tblCreateDevCup.Visible = true;
+            //        this.strModalTime = StringItem.FormatDate(DateTime.Today.AddHours(63.0), "yyyy-MM-dd hh:mm");
+            //        return;
 
-                case "MANAGER":
-                    this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-                    this.tblManager.Visible = true;
-                    this.GetCupList();
-                    return;
+            //    case "MANAGER":
+            //        this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
+            //        this.tblManager.Visible = true;
+            //        this.GetCupList();
+            //        return;
 
-                case "MODIFYDEVCUP":
-                    this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-                    this.tblModifyDevCup.Visible = true;
-                    this.ModifyDevCup();
-                    return;
+            //    case "MODIFYDEVCUP":
+            //        this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
+            //        this.tblModifyDevCup.Visible = true;
+            //        this.ModifyDevCup();
+            //        return;
 
-                case "CUPREGMANAGE":
-                    this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-                    this.tblCupRegManager.Visible = true;
-                    this.CupRegManager();
-                    return;
-            }
+            //    case "CUPREGMANAGE":
+            //        this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
+            //        this.tblCupRegManager.Visible = true;
+            //        this.CupRegManager();
+            //        return;
+            //}
             this.strPageIntro1 = "<font color='red'>创建杯赛</font>&nbsp;|&nbsp;<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=MANAGER'>杯赛管理</a>";
-            if (!base.IsPostBack)
-            {
-                DataView view2 = new DataView(DDLItem.GetDevLevelItem());
-                this.ddlClubLevel.DataSource = view2;
-                this.ddlClubLevel.DataTextField = "Name";
-                this.ddlClubLevel.DataValueField = "Category";
-                this.ddlClubLevel.DataBind();
-            }
+            //if (!base.IsPostBack)
+            //{
+            //    DataView view2 = new DataView(DDLItem.GetDevLevelItem());
+            //    this.ddlClubLevel.DataSource = view2;
+            //    this.ddlClubLevel.DataTextField = "Name";
+            //    this.ddlClubLevel.DataValueField = "Category";
+            //    this.ddlClubLevel.DataBind();
+            //}
             this.tblCreateDevCup.Visible = true;
             this.strModalTime = StringItem.FormatDate(DateTime.Today.AddHours(63.0), "yyyy-MM-dd hh:mm");
         }
