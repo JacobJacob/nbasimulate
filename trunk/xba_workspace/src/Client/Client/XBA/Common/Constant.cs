@@ -30,5 +30,12 @@ namespace Client.XBA.Common
 
         /*胜者为王*/
         public static int MATCH_CATEGORY_ONLY_ONE = 8;
+        
+        
+        /* 这是街球的, > 2的为经典赛事*/
+        /*小杯赛*/
+        public static int CUP_TYPE_SMALL = 2;
+        /*大杯赛*/
+        public static int CUP_TYPE_BIG = 1;
     }
 }
