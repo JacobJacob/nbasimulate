@@ -241,7 +241,7 @@
                 }
                 return "http://game.xba.com.cn/";
             }*/
-            return "";
+            return "http://localhost:34591/xbaweb/";
         }
 
         public static string TestConnString(int intCategory)

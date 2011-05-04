@@ -2501,7 +2501,7 @@
             if (this.intType <= 9)
             {
                 string str7 = StringItem.FormatDate(DateTime.Now, "yyyyMMdd");
-                string path = Path.GetFullPath(@"\BestXBA" + MatchItem.GetMatchPath() + @"\MatchXML\VRep\") + str7 + @"\";
+                string path = Path.GetFullPath(@"" + MatchItem.GetMatchPath() + @"\MatchXML\VRep\") + str7 + @"\";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -2526,7 +2526,7 @@
                 {
                     writer.Write(this.sbRepXml.ToString());
                 }
-                path = Path.GetFullPath(@"\BestXBA" + MatchItem.GetMatchPath() + @"\MatchXML\VStas\") + str7 + @"\";
+                path = Path.GetFullPath(@"" + MatchItem.GetMatchPath() + @"\MatchXML\VStas\") + str7 + @"\";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);

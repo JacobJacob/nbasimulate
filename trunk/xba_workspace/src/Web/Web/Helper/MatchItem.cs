@@ -71,7 +71,7 @@
 
         public static string GetMatchPath()
         {
-            return "";
+            return "\\develop\\xba_workspace\\xbaweb";
         }
 
         public static int GetOneByOneLosePower(int intStamina, int intHard)

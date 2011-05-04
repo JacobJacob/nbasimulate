@@ -223,7 +223,7 @@
                         goto Label_08CA;
 
                     case "TOOLS":
-                        this.strCenterURL = "ManagerTool.aspx?Type=STORE&Page=1";
+                        this.strCenterURL = "ManagerTool.aspx?Type=TOOLS&Page=1";
                         this.strRightURL = "Intro/Tools.aspx";
                         goto Label_08CA;
 

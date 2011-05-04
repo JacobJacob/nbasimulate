@@ -14,7 +14,7 @@ namespace Client.XBA.Client
         public void run()
         {
 
-            DataTable matchs = BTPFriMatchManager.GetFriMatch(Constant.MATCH_TYPE_ONLY_ONE);
+            DataTable matchs = BTPFriMatchManager.GetFriMatch(Constant.MATCH_TYPE_5);
             foreach(DataRow row in matchs.Rows)
             {
                 int matchId =(int)row["FMatchID"];
@@ -23,7 +23,7 @@ namespace Client.XBA.Client
                 Console.WriteLine(matchId);
                 Console.WriteLine(clubIDA);
                 Console.WriteLine(clubIDB);
-                Match match = new Match(clubIDA, clubIDB, true, Constant.MATCH_TYPE_ONLY_ONE, 1, false, false, 0, 0);
+                Match match = new Match(clubIDA, clubIDB, true, Constant.MATCH_CATEGORY_ONLY_ONE, 1, false, false, 0, 0);
                 match.Run();
                 String reportUrl = match.sbRepURL.ToString();
                 String statUrl = match.sbStasURL.ToString();
@@ -37,14 +37,6 @@ namespace Client.XBA.Client
 
 
         }
-        
-        static void Main(string[] args)
-        {
-            new OnlyOneMatchHandler().run();
-            Console.ReadLine();
-            return;
-        }
-
 
     }
 }
