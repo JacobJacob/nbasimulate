@@ -209,6 +209,7 @@
                 str7 = "";
                 num10 = (long) focusTableByUserID["PlayerID"];
                 num = (byte) focusTableByUserID["Category"];
+                num2 = Convert.ToInt32(focusTableByUserID["Status"]);
                 switch (((byte) focusTableByUserID["Status"]))
                 {
                     case 3:
@@ -218,7 +219,7 @@
                         if (devTranTopUser.Read())
                         {
                             num3 = (int) devTranTopUser["UserID"];
-                            num4 = (int) devTranTopUser["Price"];
+                            num4 = Convert.ToInt32(devTranTopUser["Price"]);
                             this.strNickName = BTPAccountManager.GetNickNameByUserID(num3);
                             str4 = num4 + "<br>" + AccountItem.GetNickNameInfo(num3, this.strNickName, "Right");
                         }
@@ -235,7 +236,7 @@
                         if (row2 != null)
                         {
                             num3 = (int) row2["BidderID"];
-                            num4 = (int) row2["BidPrice"];
+                            num4 = Convert.ToInt32(row2["BidPrice"]);
                             if (num3 != 0)
                             {
                                 this.strNickName = BTPAccountManager.GetNickNameByUserID(num3);

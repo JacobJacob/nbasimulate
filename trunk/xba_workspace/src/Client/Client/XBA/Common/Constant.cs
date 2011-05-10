@@ -37,5 +37,7 @@ namespace Client.XBA.Common
         public static int CUP_TYPE_SMALL = 2;
         /*大杯赛*/
         public static int CUP_TYPE_BIG = 1;
+        /*联盟至尊杯*/
+        public static int CUP_TYPE_IMPERIAL = 4;
     }
 }

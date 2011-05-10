@@ -1369,7 +1369,7 @@
                             else
                             {
                                 DataRow row4 = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                                int num10 = (int) row4["BidPrice"];
+                                int num10 = Convert.ToInt32(row4["BidPrice"]);
                                 int num11 = (num10 * 13) / 10;
                                 if ((num10 > num4) || (num11 < num4))
                                 {
@@ -2141,7 +2141,7 @@
                             else
                             {
                                 DataRow row4 = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                                int num9 = (int) row4["BidPrice"];
+                                int num9 = Convert.ToInt32(row4["BidPrice"]);
                                 if (num9 > num4)
                                 {
                                     devTranTopUser.Close();
@@ -4485,13 +4485,13 @@
             {
                 return -7;
             }
-            int num10 = (int) playerRowByPlayerID["BidPrice"];
+            int num10 = Convert.ToInt32(playerRowByPlayerID["BidPrice"]);
             int num1 = num10 / 10;
             int num11 = (int) playerRowByPlayerID["BidCount"];
-            if (num11 > 0)
-            {
-                num10 = num10;
-            }
+            //if (num11 > 0)
+            //{
+            //    num10 = num10;
+            //}
             if (intCheckType == 8)
             {
                 num10 = (int) playerRowByPlayerID["BidWealth"];

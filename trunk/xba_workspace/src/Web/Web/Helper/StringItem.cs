@@ -182,43 +182,44 @@
 
         public static string GetLogoutURL()
         {
-            if (!ServerParameter.blnUseServer)
-            {
-                return "LogOut.aspx";
-            }
-            if (ServerParameter.strCopartner == "CGA")
-            {
-                return ("http://xba.cga.com.cn/Logout.aspx?S=web" + ServerParameter.intGameCategory + ".xba.cga.com.cn");
-            }
-            if (ServerParameter.strCopartner == "ZHW")
-            {
-                return ("http://xba.game.china.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".game.china.com");
-            }
-            if (ServerParameter.strCopartner == "17173")
-            {
-                if (ServerParameter.intGameCategory == 2)
-                {
-                    return ("http://xba.web.17173.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".web.17173.com");
-                }
-                return ("http://xba.web.17173.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".web.17173.com");
-            }
-            if (ServerParameter.strCopartner == "51WAN")
-            {
-                if (ServerParameter.intGameCategory == 2)
-                {
-                    return ("http://xba.51wan.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".51wan.com");
-                }
-                return ("http://xba.51wan.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".51wan.com");
-            }
-            if (ServerParameter.strCopartner == "DUNIU")
-            {
-                return ("http://xbas.mmoabc.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".mmoabc.com");
-            }
-            if (ServerParameter.strCopartner == "DW")
-            {
-                return ("http://xbas.xba.duowan.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".xba.duowan.com");
-            }
-            return (DBLogin.URLString(40) + "MemberCenter.aspx?IsLogout=1");
+            return "LogOut.aspx";
+            //if (!ServerParameter.blnUseServer)
+            //{
+            //    return "LogOut.aspx";
+            //}
+            //if (ServerParameter.strCopartner == "CGA")
+            //{
+            //    return ("http://xba.cga.com.cn/Logout.aspx?S=web" + ServerParameter.intGameCategory + ".xba.cga.com.cn");
+            //}
+            //if (ServerParameter.strCopartner == "ZHW")
+            //{
+            //    return ("http://xba.game.china.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".game.china.com");
+            //}
+            //if (ServerParameter.strCopartner == "17173")
+            //{
+            //    if (ServerParameter.intGameCategory == 2)
+            //    {
+            //        return ("http://xba.web.17173.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".web.17173.com");
+            //    }
+            //    return ("http://xba.web.17173.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".web.17173.com");
+            //}
+            //if (ServerParameter.strCopartner == "51WAN")
+            //{
+            //    if (ServerParameter.intGameCategory == 2)
+            //    {
+            //        return ("http://xba.51wan.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".51wan.com");
+            //    }
+            //    return ("http://xba.51wan.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".51wan.com");
+            //}
+            //if (ServerParameter.strCopartner == "DUNIU")
+            //{
+            //    return ("http://xbas.mmoabc.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".mmoabc.com");
+            //}
+            //if (ServerParameter.strCopartner == "DW")
+            //{
+            //    return ("http://xbas.xba.duowan.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".xba.duowan.com");
+            //}
+            //return (DBLogin.URLString(40) + "MemberCenter.aspx?IsLogout=1");
         }
 
         public static string GetPercent(int intA, int intB, int intNum)

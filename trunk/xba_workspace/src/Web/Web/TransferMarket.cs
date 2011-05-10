@@ -78,7 +78,7 @@
             if (row != null)
             {
                 int intUserID = (int) row["BidderID"];
-                num8 = (int) row["BidPrice"];
+                num8 = Convert.ToInt32(row["BidPrice"]);
                 if (intUserID != 0)
                 {
                     string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
@@ -91,7 +91,7 @@
             }
             else
             {
-                num8 = (int) reader["BidPrice"];
+                num8 = Convert.ToInt32(reader["BidPrice"]);
                 str3 = "<a title='选秀顺位' style='CURSOR:hand'>" + num8 + "</a><br>--";
             }
             this.sb.Append("<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
@@ -791,7 +791,7 @@
             }
             else
             {
-                num8 = (int) reader["BidPrice"];
+                num8 = Convert.ToInt32(reader["BidPrice"]);
                 str3 = num8 + "<br>--";
             }
             reader2.Close();
