@@ -7,12 +7,14 @@ namespace Client.XBA.Client
 {
     abstract class BaseClient
     {
+        protected bool go = true;
+
         abstract protected void run();
 
 
         public void start()
         {
-            while (true)
+            while (go)
             {
                 this.run();
             }

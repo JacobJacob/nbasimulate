@@ -24,12 +24,18 @@ namespace Client.XBA.Common
         /*比赛处理客户端*/
         public static String CLIENT_TYPE_MATCH_HANDLER = "match_handler";
 
+        /*联赛比赛处理客户端*/
+        public static String CLIENT_TYPE_DEV_MATCH_HANDLER = "dev_match_handler";
+
 
         /*友谊赛*/
         public static int MATCH_CATEGORY_FRIEND = 1;
 
         /*胜者为王*/
         public static int MATCH_CATEGORY_ONLY_ONE = 8;
+
+        /*职业联赛*/
+        public static int MATCH_CATEGORY_DEV_MATCH = 2;
         
         
         /* 这是街球的, > 2的为经典赛事*/

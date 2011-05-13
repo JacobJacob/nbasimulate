@@ -785,7 +785,7 @@
             if (reader2.Read())
             {
                 int intUserID = (int) reader2["UserID"];
-                num8 = (int) reader2["Price"];
+                num8 = Convert.ToInt32(reader2["Price"]);
                 string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
                 str3 = num8 + "<br>" + AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right");
             }
