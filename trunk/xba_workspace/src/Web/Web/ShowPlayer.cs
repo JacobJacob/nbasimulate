@@ -13,7 +13,7 @@
     public class ShowPlayer : Page
     {
         public bool blnShowSkill;
-        protected ImageButton btnModifyBody;
+        //protected ImageButton btnModifyBody;
         protected ImageButton btnOK;
         protected DropDownList ddlNumber;
         protected DropDownList ddlPlayerBody;
@@ -87,14 +87,14 @@
         public string strStrength;
         public string strTeam;
         protected HtmlTable tbHide;
-        protected HtmlTable tblBody;
+        //protected HtmlTable tblBody;
         protected HtmlTable tblDetail;
         protected HtmlTable tblModify;
         protected HtmlTable tblStas;
         protected HtmlTable tblStasing;
         protected TextBox tbName;
         protected HtmlTableRow trName;
-        protected HtmlTableRow trNoName;
+        //protected HtmlTableRow trNoName;
 
         private void btnModifyBody_Click(object sender, ImageClickEventArgs e)
         {
@@ -144,7 +144,7 @@
                 }
                 if (this.intType == 3)
                 {
-                    if (((this.intPayType == 1) || (this.intCreateTime <= 15)) && (strPlayerName != this.strName))
+                    if (strPlayerName != this.strName)
                     {
                         if (BTPPlayer3Manager.GetPlayer3IDByPlayerName(strPlayerName) > 0L)
                         {
@@ -165,7 +165,7 @@
                         BTPPlayer3Manager.UpdateNumPosByPlayerID3(this.longPlayerID, intNumber, intPosition);
                     }
                 }
-                else if (((this.intPayType == 1) || (this.intCreateTime <= 15)) && (strPlayerName != this.strName))
+                else if (strPlayerName != this.strName)
                 {
                     if (BTPPlayer5Manager.GetPlayer5IDByPlayerName(strPlayerName) > 0L)
                     {
@@ -291,7 +291,7 @@
 
         private void InitializeComponent()
         {
-            this.btnModifyBody.Click += new ImageClickEventHandler(this.btnModifyBody_Click);
+            //this.btnModifyBody.Click += new ImageClickEventHandler(this.btnModifyBody_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -320,9 +320,9 @@
             this.tblModify.Visible = false;
             this.tblStasing.Visible = false;
             this.trName.Visible = false;
-            this.trNoName.Visible = false;
+            //this.trNoName.Visible = false;
             this.tbHide.Visible = false;
-            this.tblBody.Visible = false;
+            //this.tblBody.Visible = false;
             this.strShow = base.Request.QueryString["Show"];
             if ((this.strShow == "") || (this.strShow == null))
             {
@@ -482,7 +482,7 @@
                     goto Label_0F14;
                 }
             }
-            this.tblBody.Visible = true;
+            //this.tblBody.Visible = true;
             this.SetInfo();
             if (!base.IsPostBack)
             {
@@ -500,7 +500,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            this.btnModifyBody.Attributes["OnClick"] = "return ModifyBody();";
+            //this.btnModifyBody.Attributes["OnClick"] = "return ModifyBody();";
         }
 
         private void SetAbility()
@@ -814,15 +814,11 @@
             if (!base.IsPostBack)
             {
                 DataTable playerTableByClubID;
-                if ((this.intPayType > 0) || (this.intCreateTime <= 15))
-                {
-                    this.trName.Visible = true;
-                    this.tbName.Text = this.strName.Trim();
-                }
-                else
-                {
-                    this.trNoName.Visible = true;
-                }
+ 
+                this.trName.Visible = true;
+                this.tbName.Text = this.strName.Trim();
+ 
+
                 if (this.intType == 3)
                 {
                     playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
@@ -857,6 +853,7 @@
                 this.ddlPosition.SelectedValue = this.intPosition.ToString();
             }
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
+            this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
         }
 
         private void SetPlayerRow()
