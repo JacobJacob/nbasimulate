@@ -1,0 +1,49 @@
+body, td, th {
+   color:#484848;
+   font-family:宋体;
+   font-size:12px;
+}
+
+.content {
+   height:480px;
+   margin:0 auto;
+   text-align:center;
+   width:880px;
+}
+
+.part1 {
+   clear:both;
+   padding:0 6px 0 5px;
+   text-align:left;
+}
+
+.reg_table{
+   margin-top:20px;
+}
+
+.reg_table tr{
+   line-height:35px;
+}
+
+.regtd1{
+    width:150px; 
+    padding-right:4px;
+    text-align:right;
+}
+
+.regtd2{
+    text-align:left;
+}
+.regftxt{
+    width:195px; 
+    height:15px;
+    margin-left:10px;
+}
+
+.register_remark{
+    width: 880px; 
+    line-height: 47px; 
+    margin: 0pt 0pt 0pt 0px; 
+    background: url(../images/ucenter/tbg.jpg) repeat scroll 0% 0% transparent; 
+    text-align: center;
+}
