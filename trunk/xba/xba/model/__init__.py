@@ -22,6 +22,20 @@ class Player5(Base):
     weight = Column(Integer)
     number = Column(Integer)
     
+class Player3(Base):
+    
+    __tablename__ = 'btp_player3'
+    playerid = Column(Integer, primary_key=True)
+    clubid = Column(Integer)
+    name = Column(String)
+    category = Column(Integer)
+    status = Column(Integer)
+    age = Column(Integer)
+    pos = Column(Integer)
+    power = Column(Integer)
+    height = Column(Integer)
+    weight = Column(Integer)
+    number = Column(Integer)
     
 class Game(Base):
     

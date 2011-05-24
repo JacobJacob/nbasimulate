@@ -9,12 +9,10 @@ def get_round_dev_matchs(last_id, round):
     cursor = connection.cursor()
     try:
         sql = "exec GetMatchTableByRound %s, %s" % (last_id, round)
-        print sql
         cursor.execute(sql)
         return cursor.fetchall()
     except Exception, e:
         a = e.message.decode("gbk")
-        print a
         raise "error"
     finally:
         connection.close()

@@ -16,10 +16,8 @@ def set_club_main_xml(club_id, map):
         main_xml = club_info["MainXML"]
         new_main_xml = main_xml_util.build_main_xml(main_xml, map)
         sql = "exec SetMainXMLByClubID %s, '%s'" % (club_id, new_main_xml)
-        print sql
         cursor.execute(sql)
     except Exception, e:
-        print e.message.decode("gbk")
         raise "sql error"
     finally:
         connection.close()
@@ -43,7 +41,7 @@ def get_club_by_id(club_id):
     """根据ID查询俱乐部"""
     cursor = connection.cursor()
     try:
-        sql = "exec GetClubRowByID %s" % club_id
+        sql = "select *,  convert(text,MainXML) as MainXML from btp_club where clubid = %s " % club_id
         cursor.execute(sql)
         return cursor.fetchone()
     except Exception, e:
@@ -121,6 +119,6 @@ def get_club_list(page, pagesize, category):
     return total, infos
         
 if __name__ == "__main__":
-    set_club_main_xmls()
-    
+    info = get_club_by_id(44)
+    print info["MainXML"]
     

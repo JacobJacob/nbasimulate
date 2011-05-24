@@ -3,7 +3,8 @@
 """公共custom tags and filter"""
 
 from django import template
-from xba.common.constants.market import ProfessionMarketCategoryMap
+from xba.common.constants.market import ProfessionMarketCategoryMap, StreeMarketCategoryMap
+from xba.common.constants.player import PositionMap
 
 register = template.Library()
 
@@ -12,9 +13,14 @@ def check_attr(attr_oten):
     return 0
 
 @register.filter
-def player_category(category):
+def player5_category(category):
     """球员类型"""
     return "[%s]%s" % (category, ProfessionMarketCategoryMap.get(category, '未知'))
+
+@register.filter
+def player3_category(category):
+    """球员类型"""
+    return "[%s]%s" % (category, StreeMarketCategoryMap.get(category, '未知'))
 
 @register.filter
 def club_category(category):
@@ -24,3 +30,11 @@ def club_category(category):
     elif category == 5:
         return "职业队"
     return "未知"
+
+@register.filter
+def position(pos):
+    """球员位置"""
+    return PositionMap.get(pos, "未知")
+
+
+

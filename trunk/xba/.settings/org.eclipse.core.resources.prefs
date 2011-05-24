@@ -1,13 +1,16 @@
-#Thu May 19 23:15:06 CST 2011
+#Mon May 23 20:35:13 CST 2011
 eclipse.preferences.version=1
 encoding//xba/business/bid_manager.py=utf-8
 encoding//xba/business/club_manager.py=utf-8
 encoding//xba/business/dev_manager.py=utf-8
 encoding//xba/business/dev_match_manager.py=utf-8
 encoding//xba/business/game_manager.py=utf-8
+encoding//xba/business/player3_manager.py=utf-8
 encoding//xba/business/player5_manager.py=utf-8
 encoding//xba/business/user_roles.py=utf-8
 encoding//xba/client/add_player_3.py=utf-8
+encoding//xba/client/base.py=utf-8
+encoding//xba/client/bid_handler.py=utf-8
 encoding//xba/client/dev_match_handler.py=utf-8
 encoding//xba/client/round_update_handler.py=utf-8
 encoding//xba/common/__init__.py=utf-8
@@ -15,6 +18,9 @@ encoding//xba/common/constants/__init__.py=utf-8
 encoding//xba/common/constants/client.py=utf-8
 encoding//xba/common/constants/club.py=utf-8
 encoding//xba/common/constants/market.py=utf-8
+encoding//xba/common/constants/match.py=utf-8
+encoding//xba/common/constants/player.py=utf-8
+encoding//xba/common/decorators.py=utf-8
 encoding//xba/common/exception_mgr.py=utf-8
 encoding//xba/common/file_utility.py=utf-8
 encoding//xba/common/filelocker.py=utf-8

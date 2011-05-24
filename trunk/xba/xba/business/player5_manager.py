@@ -30,12 +30,57 @@ def player_list(page, pagesize, category):
         infos = session.query(Player5).filter(Player5.category==category).order_by(Player5.clubid).offset(index).limit(pagesize).all()
     return total, infos
 
-    
-    
+def recover_power5():
+    """职业球员体力恢复，将当天训练点清空"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec RecoverPower5"
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
         
         
+def update_season_mvp_value():
+    """更新球员的MVP值"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec UpdateSeasonMVPValue"
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+        
+def reset_all_player_shirt():
+    """重置球员的球衣销售量"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec ResetAllPlayerShirt"
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+        
+def reset_all_player_pop():
+    """重置球员受欢迎程度"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec ResetAllPlayerPop"
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+    
 if __name__ == "__main__":
-    
-    end_bid_time = datetime.now() + timedelta(hours=36)
-    create_player(1, 2, end_bid_time.strftime("%Y-%m-%d %H:%M:%S") , 48, 68)
+    #update_season_mvp_value()
+    reset_all_player_pop()
+    reset_all_player_shirt()
 
