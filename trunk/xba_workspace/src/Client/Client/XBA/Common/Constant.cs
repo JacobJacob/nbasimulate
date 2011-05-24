@@ -21,8 +21,11 @@ namespace Client.XBA.Common
         public static int MATCH_STATUS_FINISH = 4;
 
 
-        /*比赛处理客户端*/
-        public static String CLIENT_TYPE_MATCH_HANDLER = "match_handler";
+        /*街球比赛处理客户端*/
+        public static String CLIENT_TYPE_CLUB3_MATCH_HANDLER = "club3_match_handler";
+
+        /*职业比赛处理客户端*/
+        public static String CLIENT_TYPE_CLUB5_MATCH_HANDLER = "club5_match_handler";
 
         /*联赛比赛处理客户端*/
         public static String CLIENT_TYPE_DEV_MATCH_HANDLER = "dev_match_handler";

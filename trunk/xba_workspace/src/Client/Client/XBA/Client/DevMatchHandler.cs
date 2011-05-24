@@ -80,14 +80,22 @@ namespace Client.XBA.Client
               info.Add("ClubLogoH", homeClub["Logo"]);
               info.Add("ClubLogoA", awayClub["Logo"]);
               info.Add("MVPName", match.pMVP.strName);
-              info.Add("MVPStas", string.Format("{0}|{1}|{2}|{3}|{4}", match.pMVP.intScore, match.pMVP.intRebound, match.pMVP.intAst, match.pMVP.intBlock, match.pMVP.intSteal));
+              info.Add("MVPStas", string.Format("{0}|{1}|{2}|{3}|{4}", match.pMVP.intScore, match.pMVP.intOReb + match.pMVP.intDReb, match.pMVP.intAst, match.pMVP.intBlk, match.pMVP.intStl));
 
               /*更新主队的MainXML*/
-              string homeOldXml = (string)homeClub["MainXML"];
+              string homeOldXml = null;
+              if (homeClub["MainXML"] != DBNull.Value)
+              {
+                  homeOldXml = (string)homeClub["MainXML"];
+              }
               string homeNewXml = MainXmlHelper.GetNewMainXml(homeOldXml, info);
               BTPClubManager.SetMainXMLByClubID(clubIDA, homeNewXml);
               /*更新客队的MainXML*/
-              string awayOldXml = (string)awayClub["MainXML"];
+              string awayOldXml = null;
+              if (awayClub["MainXML"] != DBNull.Value)
+              {
+                  awayOldXml = (string)awayClub["MainXML"];
+              }
               string awayNewXml = MainXmlHelper.GetNewMainXml(awayOldXml, info);
               BTPClubManager.SetMainXMLByClubID(clubIDB, awayNewXml);
         }

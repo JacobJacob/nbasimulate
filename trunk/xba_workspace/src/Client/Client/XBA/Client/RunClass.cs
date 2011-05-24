@@ -16,10 +16,15 @@ namespace Client.XBA.Client
             {
                 Console.WriteLine(args[0]);
                 LogManager.WriteLog("run", args[0]);
-                if (args[0] == Constant.CLIENT_TYPE_MATCH_HANDLER)
+                if (args[0] == Constant.CLIENT_TYPE_CLUB5_MATCH_HANDLER)
                 {
                     Console.WriteLine(String.Format("start to run {0}", args[0]));
-                    new MatchHandler().start();
+                    new Club5MatchHandler().start();
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_CLUB3_MATCH_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    new Club3MatchHandler().start();
                 }
                 else if (args[0] == Constant.CLIENT_TYPE_DEV_MATCH_HANDLER)
                 {
