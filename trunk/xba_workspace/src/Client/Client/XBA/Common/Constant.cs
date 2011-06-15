@@ -30,6 +30,9 @@ namespace Client.XBA.Common
         /*联赛比赛处理客户端*/
         public static String CLIENT_TYPE_DEV_MATCH_HANDLER = "dev_match_handler";
 
+        /*轮次更新客户端*/
+        public static String CLIENT_TYPE_ROUND_UPDATE_HANDLER = "round_update_handler";
+
 
         /*友谊赛*/
         public static int MATCH_CATEGORY_FRIEND = 1;

@@ -53,12 +53,18 @@ namespace Client.XBA.Client
 
         private void HandleMatch(DataRow row)
         {
+
+              int homeClubHScore = (int)row["ClubHScore"];
+              int homeClubAScore = (int)row["ClubAScore"];
+              if (homeClubHScore > 0 || homeClubAScore > 0)
+              {
+                  Console.WriteLine("match has finish, return");
+                  return; 
+              }
               int matchId = (int)row["DevMatchID"];
               int clubIDA = (int)row["ClubHID"];
               int clubIDB = (int)row["ClubAID"];
-              Console.WriteLine(matchId);
-              Console.WriteLine(clubIDA);
-              Console.WriteLine(clubIDB);
+              Console.WriteLine(string.Format("MatchID:{0}, Home Club ID:{1}, Away Club ID:{2}",matchId, clubIDA, clubIDB));
               Match match = new Match(clubIDA, clubIDB, true, Constant.MATCH_CATEGORY_DEV_MATCH, matchId, false, false, 0, 0);
               match.Run();
               String reportUrl = match.sbRepURL.ToString();
@@ -98,6 +104,29 @@ namespace Client.XBA.Client
               }
               string awayNewXml = MainXmlHelper.GetNewMainXml(awayOldXml, info);
               BTPClubManager.SetMainXMLByClubID(clubIDB, awayNewXml);
+
+              /*更新联赛胜负场次*/
+              int homeWin = 0;
+              int homeLose = 0;
+              int awayWin = 0;
+              int awayLose = 0;
+              int diff = 0;
+              if (homeScore > awayScore)
+              {
+                  homeWin = 1;
+                  awayLose = 1;
+                  diff = homeScore - awayScore;
+              }
+              else
+              {
+                  homeLose = 1;
+                  awayWin = 1;
+                  diff = awayScore - homeScore;
+              }
+              /*主队*/
+              BTPDevManager.UpdateResult(clubIDA, homeWin, homeLose, diff);
+              /*客队*/
+              BTPDevManager.UpdateResult(clubIDB, awayWin, awayLose, diff);
         }
 
     }

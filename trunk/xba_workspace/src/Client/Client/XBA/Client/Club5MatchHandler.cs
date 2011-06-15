@@ -23,7 +23,7 @@ namespace Client.XBA.Client
                     int category = Convert.ToInt32(row["Category"]);
                     if (category != Constant.MATCH_CATEGORY_FRIEND && category != Constant.MATCH_CATEGORY_ONLY_ONE)
                     {
-                        Console.WriteLine(String.Format("not need handle category:%s", category));
+                        Console.WriteLine(String.Format("not need handle category:{0}", category));
                         continue;
                     }
                     this.HandleMatch(row);
@@ -32,8 +32,8 @@ namespace Client.XBA.Client
             else
             {
                 Console.WriteLine("not matchs now, sleep 10s");
-                Thread.Sleep(10*1000);
             }
+            Thread.Sleep(10 * 1000);
             
         }
 

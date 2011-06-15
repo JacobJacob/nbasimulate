@@ -39,6 +39,19 @@ namespace Client.XBA.Client
                         Console.WriteLine(String.Format("please input the match id"));
                     }
                 }
+                else if (args[0] == Constant.CLIENT_TYPE_ROUND_UPDATE_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 2)
+                    {
+                        int step = Convert.ToInt32(args[1]);
+                        new RoundUpdateHandler(step).start();
+                    }
+                    else
+                    {
+                        new RoundUpdateHandler().start();
+                    }
+                }
             }
             else
             {
@@ -46,16 +59,6 @@ namespace Client.XBA.Client
                 Console.WriteLine("please input the command");
             }
 
-            Hashtable info = new Hashtable();
-            info.Add("ScoreH", 4);
-            info.Add("ScoreA", 5);
-            info.Add("ClubNameH", "name11");
-            info.Add("ClubNameA", "name22");
-            info.Add("ClubLogoH", "logo11");
-            info.Add("ClubLogoA", "logo22");
-            info.Add("MVPName", "mvp1");
-            string value = MainXmlHelper.GetNewMainXml(null, info);
-            Console.WriteLine(value);
             return;
         }
 

@@ -51,14 +51,9 @@
 
         private void btnReg_Click(object sender, ImageClickEventArgs e)
         {
-            if (ServerParameter.strCopartner == "CGA")
-            {
-                base.Response.Redirect("http://xba.cga.com.cn");
-            }
-            else
-            {
-                base.Response.Redirect("http://www.xba.com.cn/Register.aspx");
-            }
+
+            base.Response.Redirect(SessionItem.GetMainUrl() + "Register.aspx");
+
         }
 
         private void InitializeComponent()

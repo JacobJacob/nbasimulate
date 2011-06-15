@@ -90,58 +90,58 @@
             str12 = StringItem.GetHtmlEncode(str12);
             if (!flag2)
             {
-                switch (ROOTUserManager.HasInputInfo(text, htmlEncode, str6))
-                {
-                    case 1:
-                        this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
-                        flag2 = true;
-                        break;
+                //switch (ROOTUserManager.HasInputInfo(text, htmlEncode, str6))
+                //{
+                //    case 1:
+                //        this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
+                //        flag2 = true;
+                //        break;
 
-                    case 2:
-                        this.strErrNickName = "<font color='#FF0000'>*昵称已存在，请重新输入！</font>";
-                        flag2 = true;
-                        break;
+                //    case 2:
+                //        this.strErrNickName = "<font color='#FF0000'>*昵称已存在，请重新输入！</font>";
+                //        flag2 = true;
+                //        break;
 
-                    case 3:
-                        this.strErrEmail = "<font color='#FF0000'>*Email已存在，请重新输入！</font>";
-                        flag2 = true;
-                        break;
+                //    case 3:
+                //        this.strErrEmail = "<font color='#FF0000'>*Email已存在，请重新输入！</font>";
+                //        flag2 = true;
+                //        break;
 
-                    case 4:
-                        this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
-                        this.strErrNickName = "<font color='#FF0000'>*昵称已存在，请重新输入！</font>";
-                        flag2 = true;
-                        break;
+                //    case 4:
+                //        this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
+                //        this.strErrNickName = "<font color='#FF0000'>*昵称已存在，请重新输入！</font>";
+                //        flag2 = true;
+                //        break;
 
-                    case 5:
-                        this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
-                        this.strErrEmail = "<font color='#FF0000'>*Email已存在，请重新输入！</font>";
-                        flag2 = true;
-                        break;
+                //    case 5:
+                //        this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
+                //        this.strErrEmail = "<font color='#FF0000'>*Email已存在，请重新输入！</font>";
+                //        flag2 = true;
+                //        break;
 
-                    case 6:
-                        this.strErrNickName = "<font color='#FF0000'>*昵称已存在，请重新输入！</font>";
-                        this.strErrEmail = "<font color='#FF0000'>*Email已存在，请重新输入！</font>";
-                        flag2 = true;
-                        break;
+                //    case 6:
+                //        this.strErrNickName = "<font color='#FF0000'>*昵称已存在，请重新输入！</font>";
+                //        this.strErrEmail = "<font color='#FF0000'>*Email已存在，请重新输入！</font>";
+                //        flag2 = true;
+                //        break;
 
-                    case 7:
-                        this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
-                        this.strErrNickName = "<font color='#FF0000'>*昵称已存在，请重新输入！</font>";
-                        this.strErrEmail = "<font color='#FF0000'>*Email已存在，请重新输入！</font>";
-                        flag2 = true;
-                        break;
-                }
-                if ((str7 != "") && !ROOTUserManager.HasNickName(str7))
-                {
-                    this.strErrIntroNickName = "<font color='#FF0000'>*您输入的介绍人并不存在，请重新输入或留空！</font>";
-                    flag2 = true;
-                }
-                if (DateTime.Now.AddMinutes(-60.0) < ROOTUserManager.GetLatestRegTimeByIP(base.Request.ServerVariables["REMOTE_ADDR"]))
-                {
-                    this.strMsg = "<font color='#FF0000'>使用同一IP注册间隔时间必须在60分钟以上。</font>";
-                }
-                else if (!flag2)
+                //    case 7:
+                //        this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
+                //        this.strErrNickName = "<font color='#FF0000'>*昵称已存在，请重新输入！</font>";
+                //        this.strErrEmail = "<font color='#FF0000'>*Email已存在，请重新输入！</font>";
+                //        flag2 = true;
+                //        break;
+               // }
+                //if ((str7 != "") && !ROOTUserManager.HasNickName(str7))
+                //{
+                //    this.strErrIntroNickName = "<font color='#FF0000'>*您输入的介绍人并不存在，请重新输入或留空！</font>";
+                //    flag2 = true;
+                //}
+                //if (DateTime.Now.AddMinutes(-60.0) < ROOTUserManager.GetLatestRegTimeByIP(base.Request.ServerVariables["REMOTE_ADDR"]))
+                //{
+                //    this.strMsg = "<font color='#FF0000'>使用同一IP注册间隔时间必须在60分钟以上。</font>";
+                //}
+                if (!flag2)
                 {
                     bool flag3;
                     string str14;
@@ -156,7 +156,9 @@
                     }
                     try
                     {
-                        ROOTUserManager.AddUser(text, 0, strIn, htmlEncode, blnSex, strFace, selectedValue, strMonth, "", str6, strProvince, str5, str7, str12, base.Request.ServerVariables["REMOTE_ADDR"], strDiskURL, str14, "", "", "");
+                        //ROOTUserManager.AddUser(text, 0, strIn, htmlEncode, blnSex, strFace, selectedValue, strMonth, "", str6, strProvince, str5, str7, str12, base.Request.ServerVariables["REMOTE_ADDR"], strDiskURL, str14, "", "", "");
+                        //BTPAccountManager.add
+                        BTPAccountManager.AddFullAccount(0, text, htmlEncode, strIn, blnSex, 0, strDiskURL, "", strProvince, str5, "");
                         flag3 = true;
                     }
                     catch

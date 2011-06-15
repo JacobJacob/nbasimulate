@@ -64,15 +64,18 @@
                         return;
 
                     case -1:
-                        base.Response.Redirect("Report.aspx?Parameter=913c!PID=" + this.lngPlayerID);
+                        //base.Response.Redirect("Report.aspx?Parameter=913c!PID=" + this.lngPlayerID);
+                        base.Response.Redirect("Report.aspx?Parameter=913c");
                         return;
 
                     case -2:
-                        base.Response.Redirect("Report.aspx?Parameter=913b!PID=" + this.lngPlayerID);
+                        //base.Response.Redirect("Report.aspx?Parameter=913b!PID=" + this.lngPlayerID);
+                        base.Response.Redirect("Report.aspx?Parameter=913b");
                         return;
 
                     case -3:
-                        base.Response.Redirect("Report.aspx?Parameter=913d!PID=" + this.lngPlayerID);
+                        //base.Response.Redirect("Report.aspx?Parameter=913d!PID=" + this.lngPlayerID);
+                        base.Response.Redirect("Report.aspx?Parameter=913d");
                         return;
                 }
             }

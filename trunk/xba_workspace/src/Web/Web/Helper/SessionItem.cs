@@ -602,6 +602,12 @@
                 status = HttpValidationStatus.Valid;
             }
         }
+
+        public static string GetMainUrl()
+        {
+            return "http://localhost:34591/xbaweb/";
+
+        }
     }
 }
 
