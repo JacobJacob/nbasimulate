@@ -8,9 +8,9 @@ DEBUG = True
 
 class PathSettings:
     if os.name == 'nt':
-        WORKING_FOLDER = "c:/dtspider_working"
+        WORKING_FOLDER = "D:/data/appdatas/xba_working"
     else:
-        WORKING_FOLDER = "/data/appdatas/dtspider_working"
+        WORKING_FOLDER = "/data/appdatas/xba_working"
     LOG = WORKING_FOLDER + "/logs"
     EXCEPTION = WORKING_FOLDER + "/exception"
     WEBSERVER_LOG_FOLDER = EXCEPTION + "/lighttpd"
@@ -28,6 +28,8 @@ class PathSettings:
         os.makedirs(WEBSERVER_LOG_FOLDER)
     if not os.path.exists(WEB_LOGS):
         os.makedirs(WEB_LOGS)
+    if not os.path.exists(LOG):
+        os.makedirs(LOG)
     PROJECT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class DbSetting:
@@ -56,7 +58,9 @@ class DjangoSettings:
         os.makedirs(WEB_ROOT)
     if not os.path.exists(WEB_ROOT + '/rrd'): # rrd image path
         os.makedirs(WEB_ROOT + '/rrd')
+        
 
+CUP_LADDER = 'http://localhost:34591/xbaweb/'
 
 COMMON_CACHE = ["192.168.1.158:11211"]
 SYSLOG_HOST = '127.0.0.1'

@@ -30,7 +30,54 @@ def player_list(page, pagesize, category):
         infos = session.query(Player3).filter(Player3.category==category).order_by(Player3.clubid).offset(index).limit(pagesize).all()
     return total, infos
 
+def recover_healthy3():
+    """年轻球员受伤及事件更新"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec RecoverHealthy3"
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
         
+def player_grow3():
+    """年轻球员身高体重增长"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec PlayerGrow3"
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+        
+def player_skill_max_up3():
+    """年轻球员能力增长"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec PlayerSkillMaxUP3"
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+        
+def recover_power3():
+    """年轻球员体力恢复"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec RecoverPower3"
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+
 if __name__ == "__main__":
     
     end_bid_time = datetime.now() + timedelta(hours=36)

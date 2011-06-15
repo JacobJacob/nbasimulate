@@ -1,12 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 from xba.common.sqlserver import connection
 from xba.business import game_manager
 from xba.common.constants.club import MainXMLTag
 from xba.common import main_xml_util
 from xba.model import Club
 from xba.common.orm import Session
+from xba.common import log_execption
 
 def set_club_main_xml(club_id, map):
     """设置俱乐部的MainXML"""
@@ -16,8 +18,10 @@ def set_club_main_xml(club_id, map):
         main_xml = club_info["MainXML"]
         new_main_xml = main_xml_util.build_main_xml(main_xml, map)
         sql = "exec SetMainXMLByClubID %s, '%s'" % (club_id, new_main_xml)
+        sql = sql.encode("gbk")
         cursor.execute(sql)
-    except Exception, e:
+    except:
+        log_execption()
         raise "sql error"
     finally:
         connection.close()
@@ -48,7 +52,7 @@ def get_club_by_id(club_id):
         print e.message.decode("gbk")
         raise
     finally:
-        connection.close()
+        cursor.close()
         
 def get_all_club(category):
     """得到所有俱乐部"""

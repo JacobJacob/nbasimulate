@@ -37,7 +37,7 @@ class _InitLog(object):
     
     def force_init(self, prefix=''):        
         format1 = '%(process)d|%(threadName)s|%(levelname)s|%(pathname)s|%(lineno)s|%(funcName)s|%(message)s'
-        format2 = '%(asctime)s|' + format1
+        format2 = '%(asctime)s|%(message)s'
         
         [x.close() for x in logging.root.handlers]
         del logging.root.handlers[:]
@@ -104,6 +104,14 @@ def get_logging():
     init_log()
     return logging
 
+def ensure_utf8(s):
+    for charset in ("utf8", "gbk", "gb2312"):
+        try:
+            return s.decode(charset)
+        except:
+            pass
+    return s
+
 def log_execption(msg = None, track_index = 0):
     """自动记录异常信息"""
     init_log()
@@ -112,6 +120,7 @@ def log_execption(msg = None, track_index = 0):
     if not msg:
         msg = traceback.format_exc(track_index)
         need_format = False
+    msg = ensure_utf8(msg)
     try:
         currentframe = lambda: sys._getframe(5)
         logging.currentframe = currentframe # hook, get the real frame
@@ -131,3 +140,8 @@ if __name__ == '__main__':
         a = 1 / 0
     except:
         log_execption()
+        
+    logging.error("test")
+    logging.debug("debug test")
+        
+    

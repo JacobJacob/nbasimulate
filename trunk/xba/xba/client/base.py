@@ -3,6 +3,7 @@
 
 import time
 import traceback
+from datetime import datetime
 
 class BaseClient(object):
     
@@ -25,11 +26,10 @@ class BaseClient(object):
                     break
             except:
                 self.log(traceback.format_exc())
-                time.sleep(60)
+                break
                 
     def log(self, msg):
-        print msg
-        
+        print "[%s]%s" % (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg)
         
     def sleep(self, seconds=10):
         self.log("start to sleep:%s seconds" % seconds)

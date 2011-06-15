@@ -20,7 +20,7 @@ def _clear_ie():
 
 def main():
 
-    for i in range(18, 100):
+    for i in range(500):
         reg(i)
     
 def reg(i):
@@ -28,10 +28,11 @@ def reg(i):
     import os
     #os.system("D:\\clear.bat")
     
+    start = 2052
+    
     ie = PAMIE("http://localhost:34591/xbaweb/login.aspx")
     
-    
-    ie.setTextBox("tbUserName", "sxwailyc%s" % i)
+    ie.setTextBox("tbUserName", "sxwailyc-%s" % (start + i))
     ie.setTextBox("tbPassword", "123")
     import time
     #time.sleep(1000)
@@ -47,7 +48,7 @@ def reg(i):
     if not ie.textBoxExists("tbClubName"):
         print "tbClubName not exist"
     else:
-        ie.setTextBox("tbClubName", "Club%s" % i)
+        ie.setTextBox("tbClubName", "Club%s" % (start + i))
         ie.clickButton("btnRegClub")
         ie._wait()
     

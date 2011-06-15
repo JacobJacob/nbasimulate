@@ -5,16 +5,17 @@
 from xba.common.sqlserver import connection
 from xba.common.orm import Session
 from xba.model import Game
+from xba.common import log_execption
 
 def get_game_info():
     """获取游戏行"""
     cursor = connection.cursor()
     try:
-        sql = "exec GetGameRow"
+        sql = "EXEC GetGameRow"
         cursor.execute(sql)
         return cursor.fetchone()
-    except Exception, e:
-        a = e.message.decode("gbk")
+    except:
+        log_execption()
         raise
     finally:
         connection.close()
@@ -29,10 +30,34 @@ def set_to_next_turn():
     """联赛前进一轮"""
     cursor = connection.cursor()
     try:
-        sql = "exec SetTurn"
+        sql = "EXEC SetTurn"
         cursor.execute(sql)
-    except Exception, e:
-        a = e.message.decode("gbk")
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def set_to_next_days():
+    """联赛天数前进一天"""
+    cursor = connection.cursor()
+    try:
+        sql = "EXEC SetDays"
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def set_season():
+    """赛季开始"""
+    cursor = connection.cursor()
+    try:
+        sql = "EXEC SetSeason"
+        cursor.execute(sql)
+    except:
+        log_execption()
         raise
     finally:
         connection.close()

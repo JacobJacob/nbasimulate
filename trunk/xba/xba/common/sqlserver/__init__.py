@@ -10,7 +10,5 @@ connection = __Connection(
                           charset = "gbk",
                           as_dict= True
                           )
-del __Connection
 del __DbSetting
-
-__all__ = ("connection")
+del __Connection

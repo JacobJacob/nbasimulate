@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 
 import pymssql
+from xba.common.sqlserver.cursor_wrapper import Cursor
 from threading import Lock
 
 class Connection(object):
@@ -36,8 +37,19 @@ class Connection(object):
         if check_conn or self._connection is None:
             self.ensure_connected()
         c = self._connection.cursor()
-        return c
-            
+        return Cursor(c, self)
+    
+    def rollback(self):
+        self._connection.rollback()
+        self._connection.autocommit(True)
+        
+    def start_transaction(self):
+        self._connection.autocommit(False)
+        
+    def commit(self):
+        self._connection.commit()
+        self._connection.autocommit(True) 
+ 
     def _close(self):
         if self._connection:
             self._connection.close()

@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import time
+
 import pymssql
 import traceback
 from xba.business import dev_manager
@@ -40,24 +42,26 @@ class DevMatchHandler(object):
         pass
     
     def run(self):
-        self.dev_assign()
-        
-        
-    def dev_assign(self):
-        """联赛分配"""
+        while True:
+            self.dev_assign()
+            time.sleep(10)
+            
+    def dev_assign(self):   
         info = self.get_full_dev()
         if not info:
+            print "return"
             return
             
         dev_code = info["devcode"]
+        self.do_dev_assign(dev_code)
+        
+    def do_dev_assign(self, dev_code):
+        """联赛分配"""
         club_infos = dev_manager.get_dev_clubs(dev_code)
         club_map = {}
         for i, club_info in enumerate(club_infos):
-            club_map[i+1] = club_info["clubid"]
-            
-        for k, v in club_map.iteritems():
-            print k, v
-            
+            club_map[i+1] = club_info["ClubID"]
+             
         conn = pymssql.connect(host='127.0.0.1', user='BTPAdmin', password='BTPAdmin123', database='NewBTP', as_dict=True)
         try:
             conn.autocommit(False)
@@ -67,8 +71,10 @@ class DevMatchHandler(object):
                 for item in items:
                     home = club_map.get(item[0])
                     away = club_map.get(item[1])
+                    if home == 0 and away == 0:
+                        continue
                     print "round:%s home:%s away:%s dev:%s" % (round, home, away, dev_code)
-                    cursor.execute("exec AddDevMatch %s, %s, %s, %s", (round, home, away, dev_code))
+                    cursor.execute("EXEC AddDevMatch %s, %s, %s, %s", (round, home, away, dev_code))
                 round += 1
              
             cursor.execute("update btp_dev set win=0 where devcode = %s", dev_code)   
