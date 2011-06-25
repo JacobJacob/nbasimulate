@@ -1,4 +1,4 @@
-#Sun Jun 12 10:39:38 CST 2011
+#Sun Jun 26 00:49:24 CST 2011
 eclipse.preferences.version=1
 encoding//xba/business/account_manager.py=utf-8
 encoding//xba/business/bid_manager.py=utf-8
@@ -14,6 +14,7 @@ encoding//xba/business/player5_manager.py=utf-8
 encoding//xba/business/user_roles.py=utf-8
 encoding//xba/client/add_player_3.py=utf-8
 encoding//xba/client/base.py=utf-8
+encoding//xba/client/basic_ftpd.py=utf-8
 encoding//xba/client/bid_handler.py=utf-8
 encoding//xba/client/clear_dev.py=utf-8
 encoding//xba/client/db_backup.py=utf-8
@@ -37,10 +38,13 @@ encoding//xba/common/file_utility.py=utf-8
 encoding//xba/common/filelocker.py=utf-8
 encoding//xba/common/json.py=utf-8
 encoding//xba/common/jsonrpclib.py=utf-8
+encoding//xba/common/mailutil.py=utf-8
 encoding//xba/common/main_xml_util.py=utf-8
 encoding//xba/common/md5mgr.py=utf-8
 encoding//xba/common/memcache.py=utf-8
 encoding//xba/common/net/post.py=utf-8
+encoding//xba/common/serverinfo.py=utf-8
+encoding//xba/common/single_process.py=utf-8
 encoding//xba/common/sqlserver/__init__.py=utf-8
 encoding//xba/common/sqlserver/connection_wrapper.py=utf-8
 encoding//xba/common/sqlserver/cursor_wrapper.py=utf-8

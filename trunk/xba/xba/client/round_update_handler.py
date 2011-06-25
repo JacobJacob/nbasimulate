@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
+from subprocess import Popen, PIPE
 
 from xba.business import dev_match_manager
 from xba.business import game_manager
@@ -53,13 +53,13 @@ class RoundUpdateHandler(BaseClient):
         """常规数据更新1(赛前)"""
         command = "%s %s %s" % (RoundUpdateHandler.MATCH_ENGINE_EXE_PATH, "round_update_handler", 1)
         self.log("start to run command:%s" % command) 
-        os.system(command)
+        self.call_cmd(command)
         
     def normal_update_step_two(self):
         """常规数据更新2(赛后)"""
         command = "%s %s %s" % (RoundUpdateHandler.MATCH_ENGINE_EXE_PATH, "round_update_handler", 2)
         self.log("start to run command:%s" % command) 
-        os.system(command)
+        self.call_cmd(command)
     
     def before_run(self):
         """运行前的初始化"""
@@ -94,6 +94,9 @@ class RoundUpdateHandler(BaseClient):
         self.log("start dev match update....")
         dev_match_infos = self.get_dev_match()
         for dev_match_info in dev_match_infos:
+            if not dev_match_info["ClubHID"] or not dev_match_info["ClubAID"]:
+                self.log("one club is empty continue")
+                continue
             match_id = dev_match_info["DevMatchID"]
             club_home_score = dev_match_info["ClubHScore"]
             club_away_score = dev_match_info["ClubAScore"]
@@ -104,7 +107,7 @@ class RoundUpdateHandler(BaseClient):
             command = "%s %s %s" % (RoundUpdateHandler.MATCH_ENGINE_EXE_PATH, "dev_match_handler", match_id)
             self.log("start to run command:%s" % command)
             
-            os.system(command)
+            self.call_cmd(command)
             
     def update_next_match_info_to_mainxml(self):
         """将下一轮的对阵更新到club的main xml中"""
@@ -148,6 +151,18 @@ class RoundUpdateHandler(BaseClient):
         """获取某轮的比赛列表"""
         turn = self._turn + 1 if next else self._turn
         return dev_match_manager.get_round_dev_matchs(0, turn)
+    
+    def call_cmd(self, cmd):
+        """调用命令"""
+        p = Popen(cmd, stdout=PIPE)
+        while True:
+            line = p.stdout.readline()
+            if not line:
+                break
+            self.log(line)
+            
+        if p.wait() == 0:
+            self.log("call %s success" % cmd)
  
 if __name__ == "__main__":
     handler = RoundUpdateHandler()

@@ -36,7 +36,7 @@ class SeasonUpdateHandler(BaseClient):
         self.delete_all_matches()
         
         #联赛更新
-        self.dev_update()
+        #self.dev_update()
         
         #将球队往前面挤一挤
         self.reset_dev()
@@ -48,7 +48,7 @@ class SeasonUpdateHandler(BaseClient):
         self.dev_match_assign()
         
         #更新结束,设置赛季开始
-        self.season_update_finish()
+        #self.season_update_finish()
 
         return "exist"
     
@@ -226,6 +226,5 @@ class SeasonUpdateHandler(BaseClient):
             
 if __name__ == "__main__":
     handler = SeasonUpdateHandler()
-    #handler.start()
-    handler.assign_dev()
-    handler.season_update_finish()
+    handler.start()
+
