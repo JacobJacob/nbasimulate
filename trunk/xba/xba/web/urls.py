@@ -5,6 +5,9 @@ urlpatterns = patterns('',
     # Example:
      url(r'^$', 'xba.web.views.index', name='index'),
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_PATH}), 
+    (r'^player/', include('web.player.urls')),
+    (r'^game/', include('web.game.urls')),
+    (r'^club/', include('web.club.urls')),
 )
 
 # json rpc settings
