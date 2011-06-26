@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     (r'^player/', include('web.player.urls')),
     (r'^game/', include('web.game.urls')),
     (r'^club/', include('web.club.urls')),
+    (r'^cup/', include('web.cup.urls')),
 )
 
 # json rpc settings
