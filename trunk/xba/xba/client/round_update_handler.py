@@ -43,8 +43,8 @@ class RoundUpdateHandler(BaseClient):
             #normal update step two
             self.normal_update_step_two()
             
-            #after run
-            self.after_run()
+        #after run
+        self.after_run()
             
         return "exist"
     

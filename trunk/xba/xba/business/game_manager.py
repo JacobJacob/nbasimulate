@@ -61,6 +61,18 @@ def set_season():
         raise
     finally:
         connection.close()
+ 
+def add_power_by_online():
+    """在线体力恢复"""
+    cursor = connection.cursor()
+    try:
+        sql = "EXEC AddPowerByOnline"
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()       
         
 if __name__ == "__main__":
     set_to_next_turn()

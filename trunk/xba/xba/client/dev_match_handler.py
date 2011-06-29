@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import time
-
 import pymssql
 import traceback
 from xba.business import dev_manager
@@ -42,10 +40,8 @@ class DevMatchHandler(object):
         pass
     
     def run(self):
-        while True:
-            self.dev_assign()
-            time.sleep(10)
-            
+        self.dev_assign()
+  
     def dev_assign(self):   
         info = self.get_full_dev()
         if not info:
