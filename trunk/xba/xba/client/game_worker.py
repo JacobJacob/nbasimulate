@@ -19,11 +19,14 @@ class GameWorker(BaseClient):
     def work(self):
         
         #胜者配对
+        self.log("start set only one match")
         self.set_only_one_match()     
         
         #在线体力恢复
+        self.log("start add power by online")
         self.add_power_by_online()
         
+        self.log("start sleep")
         self.sleep()
         
     @ensure_success()
