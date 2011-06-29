@@ -787,7 +787,7 @@
         {
             DataTable playerTableByClubID = BTPPlayer5Manager.GetPlayerTableByClubID(this.intClub5ID);
             string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(this.intClub5ID);
-            this.strToolsImg = string.Concat(new object[] { "<a href='DevisionView.aspx?UserID=", this.intUserIDA, "&Type=MATCHLOOK&Devision=", devCodeByClubID, "&Status=1&Page=1' target='Center'><img src='", SessionItem.GetImageURL(), "MinMatchLook.gif' width='12' height='12' border='0' alt='查看比赛录像'><a>" });
+            //this.strToolsImg = string.Concat(new object[] { "<a href='DevisionView.aspx?UserID=", this.intUserIDA, "&Type=MATCHLOOK&Devision=", devCodeByClubID, "&Status=1&Page=1' target='Center'><img src='", SessionItem.GetImageURL(), "MinMatchLook.gif' width='12' height='12' border='0' alt='查看比赛录像'><a>" });
             SqlDataReader reader = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub5ID, 5);
             bool flag = false;
             while (reader.Read())
@@ -799,14 +799,15 @@
                 }
             }
             reader.Close();
-            if (flag)
+            /*if (flag)
             {
                 this.strToolsImg = string.Concat(new object[] { this.strToolsImg, "&nbsp;&nbsp;<a href='VArrange.aspx?ClubID=", this.intClub5ID, "&UserID=", this.intUserIDA, "&Type=6' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
             }
             else
             {
                 this.strToolsImg = string.Concat(new object[] { this.strToolsImg, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?ClubID=", this.intClub5ID, "&UserID=", this.intUserIDA, "&Type=MATCHLEV&ClubType=5' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
-            }
+            }*/
+            this.strToolsImg = "";
             if (playerTableByClubID == null)
             {
                 this.strPlayerList = "<tr  class='BarContent'><td colspan='4'>没有任何球员！</td></tr>";
@@ -860,14 +861,15 @@
                 }
             }
             reader.Close();
-            if (flag)
+            /*if (flag)
             {
                 this.strToolsImg = string.Concat(new object[] { "<a href='SArrange.aspx?ClubID=", this.intClub3ID, "&UserID=", this.intUserIDA, "&Type=5' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
             }
             else
             {
-                this.strToolsImg = string.Concat(new object[] { "<a href='SecretaryPage.aspx?ClubID=", this.intClub3ID, "&UserID=", this.intUserIDA, "&Type=MATCHLEV&ClubType=3' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
-            }
+                this.strToolsImg = string.Concat(new object[] { "" });
+            }*/
+            this.strToolsImg = "";
             DataTable playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClub3ID);
             if (playerTableByClubID == null)
             {

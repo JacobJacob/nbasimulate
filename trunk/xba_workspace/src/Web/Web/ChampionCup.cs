@@ -125,7 +125,7 @@
                 string str5 = lastGameRowByCategory["LadderURL"].ToString().Trim();
                 if (((this.intStatus > 0) && (str5 != "")) && (str5.ToLower().IndexOf("http://match") == -1))
                 {
-                    str5 = DBLogin.GetMatchURL() + str5;
+                    str5 = Config.GetDomain() + str5;
                 }
                 TagReader reader = new TagReader();
                 IEnumerator enumerator = reader.GetItems(line, "<Reward>", "</Reward>").GetEnumerator();
@@ -412,7 +412,7 @@
                         {
                             if (str3.ToLower().IndexOf("http://match") == -1)
                             {
-                                str3 = DBLogin.GetMatchURL() + str3;
+                                str3 = Config.GetDomain() + str3;
                             }
                             this.tblChampionCup.Visible = false;
                             this.tblXCupXml.Visible = true;
@@ -518,7 +518,7 @@
                         num21 = (byte) groupTeamRowByCID["Status"];
                         if (((num21 > 0) && (str13 != "")) && (str13.ToLower().IndexOf("http://match") == -1))
                         {
-                            str13 = DBLogin.GetMatchURL() + str13;
+                            str13 = Config.GetDomain() + str13;
                         }
                         str11 = "冠军杯小组赛结束，当前正停赛一轮安排淘汰赛的赛程，查看赛程<a href='javascript:;' onclick=window.open('" + str13 + "')>请点击此处</a>";
                     }
@@ -539,7 +539,7 @@
                         string str14 = groupTeamRowByCID["LadderURL"].ToString().Trim();
                         if (((num21 > 0) && (str14 != "")) && (str14.ToLower().IndexOf("http://match") == -1))
                         {
-                            str14 = DBLogin.GetMatchURL() + str14;
+                            str14 = Config.GetDomain() + str14;
                         }
                         if (num21 == 1)
                         {
@@ -643,7 +643,7 @@
                     string str7 = groupTeamRowByCID["LadderURL"].ToString().Trim();
                     if (((this.intStatus > 0) && (str7 != "")) && (str7.ToLower().IndexOf("http://match") == -1))
                     {
-                        str7 = DBLogin.GetMatchURL() + str7;
+                        str7 = Config.GetDomain() + str7;
                     }
                     this.strChampionSay = "本赛季冠军杯正式结束，" + str6 + "获得总冠军！详情<a href='javascript:;' onclick=window.open('" + str7 + "')>请点击此处</a> ";
                     return;
@@ -670,7 +670,7 @@
                     this.sbReturn.Append("\t<td width=\"43%\" align=\"right\">" + strNickName + "</td>\n");
                     this.sbReturn.Append(string.Concat(new object[] { "\t<td align=\"center\">", num5, ":", num6, "</td>\n" }));
                     this.sbReturn.Append("\t<td width=\"43%\" align=\"left\">" + str2 + string.Concat(new object[] { 
-                        "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Tag=", num7, "&Type=", num8, "&A=", num, "&B=", num2, "' style='padding-left:12px' target='_blank'>战报</a>|<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Tag=", num7, "&Type=", num8, 
+                        "<a href='",  Config.GetDomain(), "VRep.aspx?Tag=", num7, "&Type=", num8, "&A=", num, "&B=", num2, "' style='padding-left:12px' target='_blank'>战报</a>|<a href='",  Config.GetDomain(), "VStas.aspx?Tag=", num7, "&Type=", num8, 
                         "&A=", num, "&B=", num2, "' target='_blank'>统计</a>"
                      }) + "</td>\n");
                     this.sbReturn.Append("</tr>\n");
@@ -784,7 +784,7 @@
                 string str4 = groupTeamRowByCID["LadderURL"].ToString().Trim();
                 if (((this.intStatus > 0) && (str4 != "")) && (str4.ToLower().IndexOf("http://match") == -1))
                 {
-                    str4 = DBLogin.GetMatchURL() + str4;
+                    str4 = Config.GetDomain() + str4;
                 }
                 if (this.blnIsStop)
                 {
@@ -957,8 +957,8 @@
                     str4 = AccountItem.GetNickNameInfo(num10, str4, "Right", 0x10);
                     if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else
                     {
@@ -1068,8 +1068,8 @@
                         }
                         if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
                         {
-                            str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                            str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                         }
                         else
                         {
@@ -1140,8 +1140,8 @@
                         }
                         if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
                         {
-                            str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                            str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                         }
                         else
                         {
@@ -1303,8 +1303,8 @@
                         int num1 = (int) xCupMatchByClubID["OScoreB"];
                         if ((num12 > 0) && (num12 > 0))
                         {
-                            str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=5&Tag=", num, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo2.gif' border='0' width='13' height='13'></a>" });
-                            str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=5&Tag=", num, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo2.gif' border='0' width='13' height='13'></a>" });
+                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=5&Tag=", num, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo2.gif' border='0' width='13' height='13'></a>" });
+                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=5&Tag=", num, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo2.gif' border='0' width='13' height='13'></a>" });
                         }
                         else
                         {
@@ -1323,8 +1323,8 @@
                     }
                     else if (((num2 != 0) && (num4 != 0)) && ((num3 != 0) || (num5 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=5&Tag=", num, "&A=", num2, "&B=", num4, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=5&Tag=", num, "&A=", num2, "&B=", num4, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=5&Tag=", num, "&A=", num2, "&B=", num4, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=5&Tag=", num, "&A=", num2, "&B=", num4, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else
                     {
@@ -1361,7 +1361,7 @@
                         string line = xCupRegRowByClubID["RewardXML"].ToString().Trim();
                         if (line.ToLower().IndexOf("http://match") == -1)
                         {
-                            line = DBLogin.GetMatchURL() + line;
+                            line = Config.GetDomain() + line;
                         }
                         this.strXML = line;
                         byte num17 = (byte) xCupRegRowByClubID["Round"];
@@ -1402,7 +1402,7 @@
                 int num16 = (byte) lastGameRowByCategory["Status"];
                 if (((num16 > 0) && (str14 != "")) && (str14.ToLower().IndexOf("http://match") == -1))
                 {
-                    str14 = DBLogin.GetMatchURL() + str14;
+                    str14 = Config.GetDomain() + str14;
                 }
                 this.strXML = str14;
             }

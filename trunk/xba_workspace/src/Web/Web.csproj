@@ -54,7 +54,7 @@
     </Reference>
     <Reference Include="LoginParameter, Version=1.0.2861.31937, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LoginParameter\bin\Release\LoginParameter.dll</HintPath>
+      <HintPath>..\LoginParameter\bin\Debug\LoginParameter.dll</HintPath>
     </Reference>
     <Reference Include="ServerManage, Version=1.0.2847.26731, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -152,6 +152,8 @@
     <Compile Include="Web\ClubSetting.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\Helper\Config.cs" />
+    <Compile Include="Web\Helper\IniUtil.cs" />
     <Compile Include="Web\Helper\MainXmlHelper.cs" />
     <Compile Include="Web\Helper\PlayerHelper.cs" />
     <Compile Include="Web\Util\LogManager.cs" />

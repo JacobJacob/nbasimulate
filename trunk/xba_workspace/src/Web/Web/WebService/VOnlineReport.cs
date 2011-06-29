@@ -74,7 +74,7 @@
                     }
                     else
                     {
-                        url = DBLogin.GetMatchURL() + "/" + url;
+                        url = Config.GetDomain() + "/" + url;
                         XmlDataDocument document = new XmlDataDocument();
                         document.DataSet.ReadXmlSchema(base.Server.MapPath("../MatchXML/RepSchema.xsd"));
                         XmlTextReader reader = new XmlTextReader(url);

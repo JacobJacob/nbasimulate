@@ -263,8 +263,9 @@
                 num2 -= num7;
             }
             string str11 = string.Concat(new object[] { "<table width='150' border='0' cellspacing='0' cellpadding='0'><tr><td width=\"38\"><strong>资金</strong>：</td><td width=\"112\" valign=\"middle\"><div id=\"divMoney\" style=\"CURSOR:hand\"><a target='Main' href=\"Main_S.aspx?Tag=", this.intUserID, "&Type=FINANCE\">", num2, "</a>&nbsp;&nbsp;<span  title=\"点击更新资金\" onclick=\"RefreshMoney();\">更新</span></div></td></tr></table>" });
-            str = string.Concat(new object[] { "<table width='763' style='padding:4px;' border='0' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='center' rowspan='2' width='170' style='line-height:150%'><font style='font-size:14px'><strong>", str7, "</strong></font><br><strong>职业联赛</strong>：", str8, "</td><td rowspan='2' width='55'><a href='Main_P.aspx?Tag=", this.intUserID, "&Type=MODIFYCLUB' target='Main'>", str9, "</a></td><td width='150' height='25' valign='baseline'><strong>球队</strong>：", str2, "</td><td width='168' valign='baseline'><strong>王者积分</strong>：", num, "</td><td width='150' valign='baseline'><strong>客服</strong>：", kFURL, "</td><td width='70' align='right'><a href='" });
-            if (ServerParameter.strCopartner == "CGA")
+            //str = string.Concat(new object[] { "<table width='763' style='padding:4px;' border='0' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='center' rowspan='2' width='170' style='line-height:150%'><font style='font-size:14px'><strong>", str7, "</strong></font><br><strong>职业联赛</strong>：", str8, "</td><td rowspan='2' width='55'><a href='Main_P.aspx?Tag=", this.intUserID, "&Type=MODIFYCLUB' target='Main'>", str9, "</a></td><td width='150' height='25' valign='baseline'><strong>球队</strong>：", str2, "</td><td width='168' valign='baseline'><strong>王者积分</strong>：", num, "</td><td width='150' valign='baseline'><strong>客服</strong>：", kFURL, "</td><td width='70' align='right'><a href='" });
+            str = string.Concat(new object[] { "<table width='763' style='padding:4px;' border='0' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='center' rowspan='2' width='170' style='line-height:150%'><font style='font-size:14px'><strong>", str7, "</strong></font><br><strong>职业联赛</strong>：", str8, "</td><td rowspan='2' width='55'><a href='Main_P.aspx?Tag=", this.intUserID, "&Type=MODIFYCLUB' target='Main'>", str9, "</a></td><td width='150' height='25' valign='baseline'><strong>球队</strong>：", str2, "</td><td width='168' valign='baseline'><strong>王者积分</strong>：", num, "</td><td width='150' valign='baseline'>&nbsp;</td><td width='70' align='right'>&nbsp;" });
+            /*if (ServerParameter.strCopartner == "CGA")
             {
                 str = str + "http://xba.cga.com.cn/service.html";
             }
@@ -291,9 +292,10 @@
             else
             {
                 str = str + "http://www.xba.com.cn/page/service.html";
-            }
+            }*/
             object obj2 = str;
-            str = string.Concat(new object[] { obj2, "' target='_blank'><img border=0 src='Images/xinshou.gif'  height='21px' width='60' /></a></td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'><a href='javascript:;'onclick=window.open('ShowClubIFrom.aspx?UserID=-99','XBA','height=392,width=224,status=no,toolbar=no,menubar=no,location=no');><font color='red'>在线聊天</font></a>" });
+            //str = string.Concat(new object[] { obj2, "' target='_blank'><img border=0 src='Images/xinshou.gif'  height='21px' width='60' /></a></td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'><a href='javascript:;'onclick=window.open('ShowClubIFrom.aspx?UserID=-99','XBA','height=392,width=224,status=no,toolbar=no,menubar=no,location=no');><font color='red'>在线聊天</font></a>" });
+            str = string.Concat(new object[] { obj2, "</td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'>&nbsp;</a>" });
             if (ServerParameter.strCopartner == "CGA")
             {
                 str = str + " <a style='cursor:hand;' href=\"http://bbs.cga.com.cn/list/list_285.asp?bid=285\" target=\"_blank\">论坛</a>";
@@ -306,7 +308,8 @@
             {
                 str = str + " ";
             }
-            return (str + " <a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\">经理手册</a></td><td align='right'><a href='" + StringItem.GetBuyCoinURL() + "' target='_blank'><img border=0 src='Images/chongzhi.gif'  height='21px' width='60' /></a></td></tr></table>");
+            //return (str + " <a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\">经理手册</a></td><td align='right'><a href='" + StringItem.GetBuyCoinURL() + "' target='_blank'><img border=0 src='Images/chongzhi.gif'  height='21px' width='60' /></a></td></tr></table>");
+            return (str + " &nbsp;</td><td align='right'>&nbsp;</td></tr></table>");
         }
 
         [AjaxMethod]

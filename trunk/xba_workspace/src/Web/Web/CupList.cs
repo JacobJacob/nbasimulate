@@ -748,12 +748,12 @@
                     {
                         if (str4.ToLower().IndexOf("http://match") == -1)
                         {
-                            str4 = DBLogin.GetMatchURL() + str4;
+                            str4 = Config.GetDomain() + str4;
                         }
                     }
                     else if (str4.ToLower().IndexOf("http://xbam") == -1)
                     {
-                        str4 = DBLogin.GetMatchURL() + str4;
+                        str4 = Config.GetDomain() + str4;
                     }
                     string str5 = "<a href='" + str4 + "'>查看</a>";
                     DateTime datIn = (DateTime) championListNew["EndRegTime"];
@@ -984,12 +984,12 @@
                 {
                     if (str6.ToLower().IndexOf("http://match") == -1)
                     {
-                        str6 = DBLogin.GetMatchURL() + str6;
+                        str6 = Config.GetDomain() + str6;
                     }
                 }
                 else if (str6.ToLower().IndexOf("http://xbam") == -1)
                 {
-                    str6 = DBLogin.GetMatchURL() + str6;
+                    str6 = Config.GetDomain() + str6;
                 }
                 if (deadRound == 100)
                 {

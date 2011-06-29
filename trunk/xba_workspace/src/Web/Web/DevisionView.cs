@@ -427,8 +427,8 @@
                     bool flag5 = (bool) row["AddArrangeLvlA"];
                     if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else if (num < this.intTurn)
                     {
@@ -439,20 +439,20 @@
                     {
                         if (num7 > 0)
                         {
-                            str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";'><img alt='球队状态较平时提升", num7, "%' src='", SessionItem.GetImageURL(), "louder", num7, ".gif' border='0' width='14' height='16'></a>" });
+                            //str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";'><img alt='球队状态较平时提升", num7, "%' src='", SessionItem.GetImageURL(), "louder", num7, ".gif' border='0' width='14' height='16'></a>" });
                         }
                         else
                         {
-                            str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";' ><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'></a>" });
+                            //str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";' ><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'></a>" });
                         }
                     }
                     else if (num8 > 0)
                     {
-                        str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";' ><img alt='球队状态较平时提升", num8, "%' src='", SessionItem.GetImageURL(), "louder", num8, ".gif' border='0' width='14' height='16'></a>" });
+                        //str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";' ><img alt='球队状态较平时提升", num8, "%' src='", SessionItem.GetImageURL(), "louder", num8, ".gif' border='0' width='14' height='16'></a>" });
                     }
                     else
                     {
-                        str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";'><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'></a>" });
+                        //str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";'><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'></a>" });
                     }
                     if (num3 != 0)
                     {
@@ -529,8 +529,8 @@
                     bool flag7 = (bool) row2["AddArrangeLvlA"];
                     if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else if (num < this.intTurn)
                     {
@@ -541,20 +541,24 @@
                     {
                         if (num9 > 0)
                         {
-                            str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";'><img alt='球队状态较平时提升", num9, "%' src='", SessionItem.GetImageURL(), "louder", num9, ".gif' border='0' width='14' height='16'></a>" });
+                            //str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";'><img alt='球队状态较平时提升", num9, "%' src='", SessionItem.GetImageURL(), "louder", num9, ".gif' border='0' width='14' height='16'></a>" });
+                            str2 = "";
                         }
                         else
                         {
-                            str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";'><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'></a>" });
+                            //str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";'><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'></a>" });
+                            str2 = "";
                         }
                     }
                     else if (num10 > 0)
                     {
-                        str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";' ><img alt='球队状态较平时提升", num10, "%' src='", SessionItem.GetImageURL(), "louder", num10, ".gif' border='0' width='14' height='16'></a>" });
+                        //str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";' ><img alt='球队状态较平时提升", num10, "%' src='", SessionItem.GetImageURL(), "louder", num10, ".gif' border='0' width='14' height='16'></a>" });
+                        str2 = "";
                     }
                     else
                     {
-                        str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";' ><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'></a>" });
+                       // str2 = string.Concat(new object[] { "<a onclick='javascript:window.top.main.Center.location=\"SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", num2, "\";' ><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'></a>" });
+                        str2 = "";
                     }
                     if (num3 != 0)
                     {

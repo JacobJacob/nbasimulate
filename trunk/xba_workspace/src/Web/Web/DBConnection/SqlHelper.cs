@@ -322,8 +322,16 @@
             }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                return ExecuteDataset(connection, commandType, commandText, commandParameters);
+                try
+                {
+                    connection.Open();
+                    DataSet dataSet = ExecuteDataset(connection, commandType, commandText, commandParameters);
+                    return dataSet;
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
 

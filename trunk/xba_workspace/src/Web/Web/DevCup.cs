@@ -181,7 +181,7 @@
                                 string strLogo = str + ".gif";
                                 int intHortationAll = ((num6 + num7) + (num8 * 2)) + (num9 * 4);
                                 string str8 = StringItem.FormatDate(DateTime.Now, "yyyyMM");
-                                string strCupLadder = DBLogin.GetMatchURL() + "DevCupLadder/" + str8 + "/";
+                                string strCupLadder = Config.GetDomain() + "DevCupLadder/" + str8 + "/";
                                 DevCupData data = new DevCupData(intUserID, intRegClub, validWords, str3, strIn, intRegCharge, strLogo, str5, strRewardXML, intCupSize, time, intCreateCharge, intMedalCharge, intHortationAll, strCupLadder);
                                 this.Session["DevCup" + this.intUserID] = data;
                                 base.Response.Redirect("SecretaryPage.aspx?Type=CREATEUSERCUP");

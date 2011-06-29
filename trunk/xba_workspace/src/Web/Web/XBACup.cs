@@ -107,12 +107,12 @@
 
         private void btnXResult_Click(object sender, ImageClickEventArgs e)
         {
-            base.Response.Redirect(string.Concat(new object[] { DBLogin.GetMatchURL(), "XCupLadder/XResult", this.intGameID, ".htm" }));
+            base.Response.Redirect(string.Concat(new object[] { Config.GetDomain(), "XCupLadder/XResult", this.intGameID, ".htm" }));
         }
 
         private void btnXSchedule_Click(object sender, ImageClickEventArgs e)
         {
-            base.Response.Redirect(string.Concat(new object[] { DBLogin.GetMatchURL(), "XCupLadder/XSchedule", this.intGameID, ".htm" }));
+            base.Response.Redirect(string.Concat(new object[] { Config.GetDomain(), "XCupLadder/XSchedule", this.intGameID, ".htm" }));
         }
 
         private string GetScript(string strCurrentURL)
@@ -352,7 +352,7 @@
                                 {
                                     obj2 = this.strList;
                                     this.strList = string.Concat(new object[] { 
-                                        obj2, " <a href='", DBLogin.GetMatchURL(), "VRep.aspx?Tag=", num2, "&Type=4&A=", num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a> <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Tag=", num2, "&Type=4&A=", 
+                                        obj2, " <a href='", Config.GetDomain(), "VRep.aspx?Tag=", num2, "&Type=4&A=", num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a> <a href='", Config.GetDomain(), "VStas.aspx?Tag=", num2, "&Type=4&A=", 
                                         num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                                      });
                                 }
@@ -429,7 +429,7 @@
                             {
                                 obj2 = this.strList;
                                 this.strList = string.Concat(new object[] { 
-                                    obj2, " <a href='", DBLogin.GetMatchURL(), "VRep.aspx?Tag=", num2, "&Type=4&A=", num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a> <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Tag=", num2, "&Type=4&A=", 
+                                    obj2, " <a href='", Config.GetDomain(), "VRep.aspx?Tag=", num2, "&Type=4&A=", num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a> <a href='", Config.GetDomain(), "VStas.aspx?Tag=", num2, "&Type=4&A=", 
                                     num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                                  });
                             }

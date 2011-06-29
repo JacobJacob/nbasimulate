@@ -276,7 +276,7 @@
                     else
                     {
                         str7 = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", DBLogin.GetMatchURL(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                            "<a href='", Config.GetDomain(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                             "' target='_blank'>统计</a>"
                          });
                     }
@@ -291,7 +291,7 @@
                     else
                     {
                         str7 = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                             "' target='_blank'>统计</a>"
                          });
                     }
@@ -450,7 +450,7 @@
                         else
                         {
                             str2 = string.Concat(new object[] { 
-                                "<a href='", DBLogin.GetMatchURL(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", DBLogin.GetMatchURL(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                                "<a href='", Config.GetDomain(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                                 "' target='_blank'>统计</a>"
                              });
                         }
@@ -484,7 +484,7 @@
                     {
                         str3 = "已结束";
                         str2 = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                             "' target='_blank'>统计</a>"
                          });
                     }
@@ -710,7 +710,7 @@
                                 goto Label_132D;
                         }
                         str2 = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", DBLogin.GetMatchURL(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                            "<a href='", Config.GetDomain(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                             "' target='_blank'>统计</a>"
                          });
                     }
@@ -751,7 +751,7 @@
                             goto Label_132D;
                     }
                     str2 = string.Concat(new object[] { 
-                        "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                        "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                         "' target='_blank'>统计</a>"
                      });
                 }
@@ -875,7 +875,7 @@
                 num2 = 1;
             }
             string str2 = "";
-            str2 = "<span style='margin-right:40px;color:red'> 购买“双倍训练卡”可获得双倍训练点，<a href=\"ManagerTool.aspx?Type=STORE&amp;Page=1\">点此购买</a></span>";
+            //str2 = "<span style='margin-right:40px;color:red'> 购买“双倍训练卡”可获得双倍训练点，<a href=\"ManagerTool.aspx?Type=STORE&amp;Page=1\">点此购买</a></span>";
             if (this.intPage == 1)
             {
                 str2 = str2 + "上一页";

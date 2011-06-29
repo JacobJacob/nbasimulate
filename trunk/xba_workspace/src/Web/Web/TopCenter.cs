@@ -669,8 +669,8 @@
                 else
                 {
                     DataRow row9 = BTPDevMatchManager.GetDevMRowByClubIDRound(this.intClubID5, intRound - 1);
-                    string str27 = DBLogin.GetMatchURL() + "VRep.aspx?Tag=" + row9["DevMatchID"].ToString() + "&Type=2&A=" + row9["ClubHID"].ToString() + "&B=" + row9["ClubAID"].ToString();
-                    string str28 = DBLogin.GetMatchURL() + "VStas.aspx?Tag=" + row9["DevMatchID"].ToString() + "&Type=2&A=" + row9["ClubHID"].ToString() + "&B=" + row9["ClubAID"].ToString();
+                    string str27 = Config.GetDomain() + "VRep.aspx?Tag=" + row9["DevMatchID"].ToString() + "&Type=2&A=" + row9["ClubHID"].ToString() + "&B=" + row9["ClubAID"].ToString();
+                    string str28 = Config.GetDomain() + "VStas.aspx?Tag=" + row9["DevMatchID"].ToString() + "&Type=2&A=" + row9["ClubHID"].ToString() + "&B=" + row9["ClubAID"].ToString();
                     int num12 = (int) row9["DevMatchID"];
                     int num13 = (int) row9["MsgCount"];
                     builder.Append("\t\t<table width='100%' border='0' cellspacing='0' cellpadding='0'>");
@@ -864,7 +864,7 @@
                     this.intTag = (int) SessionItem.GetRequest("Tag", 0);
                     this.intA = (int) SessionItem.GetRequest("A", 0);
                     this.intB = (int) SessionItem.GetRequest("B", 0);
-                    this.strURL = DBLogin.GetMatchURL();
+                    this.strURL = Config.GetDomain();
                     this.tblInstant.Visible = true;
                     string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(this.intClubID5);
                     this.intLevelI = DevCalculator.GetLevel(devCodeByClubID);

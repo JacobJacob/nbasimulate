@@ -196,7 +196,7 @@
                             if ((num13 > 0) || (num14 > 0))
                             {
                                 str5 = string.Concat(new object[] { 
-                                    "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", intFMatchID, "&A=", num15, "&B=", num16, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", intFMatchID, "&A=", num15, 
+                                    "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", intFMatchID, "&A=", num15, "&B=", num16, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", intFMatchID, "&A=", num15, 
                                     "&B=", num16, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                                  });
                             }
@@ -219,7 +219,7 @@
                                     if ((num17 > 0) || (num18 > 0))
                                     {
                                         str5 = string.Concat(new object[] { 
-                                            "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", intFMatchID, "&A=", num19, "&B=", num20, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", intFMatchID, "&A=", num19, 
+                                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", intFMatchID, "&A=", num19, "&B=", num20, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", intFMatchID, "&A=", num19, 
                                             "&B=", num20, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                                          });
                                     }
@@ -364,7 +364,7 @@
             int num3 = (int) dr["ScoreA"];
             int num4 = (int) dr["ScoreB"];
             int count = 0;
-            string url = DBLogin.GetMatchURL() + dr["RepURL"].ToString().Trim();
+            string url = Config.GetDomain() + dr["RepURL"].ToString().Trim();
             bool flag = false;
             if ((((num3 == 20) || (num3 == 2)) && (num4 == 0)) || (((num4 == 20) || (num4 == 2)) && (num3 == 0)))
             {
@@ -919,7 +919,7 @@
                     if (num16 == 1)
                     {
                         string str21 = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", intFMatchID, "&A=", num14, "&B=", num15, "' target='_blank'>比赛战报</a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", intFMatchID, "&A=", num14, "&B=", num15, 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", intFMatchID, "&A=", num14, "&B=", num15, "' target='_blank'>比赛战报</a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", intFMatchID, "&A=", num14, "&B=", num15, 
                             "' target='_blank'>比赛统计</a>"
                          });
                         builder.Append("  <tr>\n");
@@ -929,7 +929,7 @@
                     else
                     {
                         string str22 = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", intFMatchID, "&A=", num14, "&B=", num15, "' target='_blank'>比赛战报</a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", intFMatchID, "&A=", num14, "&B=", num15, 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", intFMatchID, "&A=", num14, "&B=", num15, "' target='_blank'>比赛战报</a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", intFMatchID, "&A=", num14, "&B=", num15, 
                             "' target='_blank'>比赛统计</a>"
                          });
                         builder.Append("  <tr id='trMatchEnd'style=\"display:none\">\n");
@@ -1038,7 +1038,7 @@
                     if ((num7 > 0) || (num8 > 0))
                     {
                         str4 = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", num, "&A=", num5, "&B=", num6, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", num, "&A=", num5, 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num, "&A=", num5, "&B=", num6, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num, "&A=", num5, 
                             "&B=", num6, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                          });
                     }

@@ -26,7 +26,7 @@
 
         public static string GameNameChinese(int intCategory)
         {
-            if (ServerParameter.strCopartner == "XBA")
+            /*if (ServerParameter.strCopartner == "XBA")
             {
                 switch (intCategory)
                 {
@@ -76,8 +76,8 @@
                         return "主站";
                 }
                 return null;
-            }
-            return null;
+            }*/
+            return "老玩家永无道具服";
         }
 
         public static string GameNameEnglish(int intCategory)
@@ -226,24 +226,7 @@
             //return null;
         }
 
-        public static string GetMatchURL()
-        {
-            /*int intGameCategory = ServerParameter.intGameCategory;
-            if (ServerParameter.blnMoreServer)
-            {
-                if (ServerParameter.blnUseServer)
-                {
-                    if (ServerParameter.strCopartner == "XBA")
-                    {
-                        return ("http://match-" + intGameCategory + ".xba.com.cn/");
-                    }
-                    return ("http://match" + intGameCategory + ".xba.cga.com.cn/");
-                }
-                return "http://game.xba.com.cn/";
-            }*/
-            return "http://localhost:34591/xbaweb/";
-        }
-
+     
         public static string TestConnString(int intCategory)
         {
             return GetConnWithTime(intCategory, 5);

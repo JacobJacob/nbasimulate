@@ -71,7 +71,7 @@
             {
                 base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=-8");
             }
-            else if (StringItem.IsNumber(this.tbTopWealth.Text))
+            /*else if (StringItem.IsNumber(this.tbTopWealth.Text))
             {
                 int num2;
                 int intTopWealth = Convert.ToInt32(this.tbTopWealth.Text);
@@ -83,15 +83,22 @@
                 {
                     num2 = BTPOnlyOneCenterReg.OnlyOneCenterReg(this.intUserID, 0, 0);
                 }
+                
+                num2 = BTPOnlyOneCenterReg.OnlyOneCenterReg(this.intUserID, 0, 0);  
+                
                 if ((num2 == 1) && this.tbOnlyPay.Checked)
                 {
                     num2 = 2;
                 }
                 base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=" + num2);
-            }
+            }*/
             else
             {
-                base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=-6");
+                //base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=-6");
+
+                int num2;
+                num2 = BTPOnlyOneCenterReg.OnlyOneCenterReg(this.intUserID, 0, 0);
+                base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=" + num2);
             }
         }
 
@@ -605,7 +612,7 @@
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 12);
                     str4 = AccountItem.GetNickNameInfo(num5, str4, "Right", 12);
                     string str = string.Concat(new object[] { 
-                        "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", num6, "&A=", num2, "&B=", num3, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", num6, "&A=", num2, 
+                        "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num6, "&A=", num2, "&B=", num3, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num6, "&A=", num2, 
                         "&B=", num3, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                      });
                     if (num2 != this.intClubID5)
@@ -705,7 +712,7 @@
                     else
                     {
                         str = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num3, "&B=", num4, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num3, 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num3, "&B=", num4, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num3, 
                             "&B=", num4, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                          });
                     }
@@ -834,7 +841,7 @@
                 {
                     flag2 = true;
                 }
-                string url = DBLogin.GetMatchURL() + dr["RepURL"].ToString().Trim();
+                string url = Config.GetDomain() + dr["RepURL"].ToString().Trim();
                 string str12 = dr["ClubIDA"].ToString().Trim();
                 string str13 = dr["ClubIDB"].ToString().Trim();
                 if (intClubID == num13)
@@ -1031,7 +1038,7 @@
                 {
                     builder.Append(" <tr  id='TimeTitle'>   <td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\"><span id='MatchTime'></span></td></tr>\n");
                     builder.Append("<tr style='display:none' id='MatchEndTitle'><td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\">比赛已结束 " + string.Concat(new object[] { 
-                        "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, "' target='_blank'>本场战报</a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, 
+                        "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, "' target='_blank'>本场战报</a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, 
                         "' target='_blank'>本场统计</a>"
                      }) + "</td>\n");
                 }
@@ -1041,7 +1048,7 @@
                     if (!flag2)
                     {
                         str20 = string.Concat(new object[] { 
-                            "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, "' target='_blank'>本场战报</a>  <a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, "' target='_blank'>本场战报</a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, 
                             "' target='_blank'>本场统计</a>"
                          });
                     }
@@ -1289,14 +1296,14 @@
                 this.intWealth = (int) onlyOneMatchRow["Wealth"];
                 if (this.intWealth >= 10)
                 {
-                    this.tbOnlyPay.Checked = true;
-                    this.tbTopWealth.Text = "10";
+                    //this.tbOnlyPay.Checked = true;
+                    //this.tbTopWealth.Text = "10";
                 }
                 else
                 {
-                    this.tbOnlyPay.Enabled = false;
-                    this.tbTopWealth.Text = "0";
-                    this.tbTopWealth.Enabled = false;
+                    //this.tbOnlyPay.Enabled = false;
+                    //this.tbTopWealth.Text = "0";
+                    //this.tbTopWealth.Enabled = false;
                 }
             }
             else

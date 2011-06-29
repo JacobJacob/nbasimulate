@@ -94,8 +94,8 @@
                     bool flag4 = (bool) row["AddArrangeLvlA"];
                     if (((intClubHID != 0) && (intClubID != 0)) && ((num4 != 0) || (num6 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", intDevMatchID, "&A=", intClubHID, "&B=", intClubID, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", intDevMatchID, "&A=", intClubHID, "&B=", intClubID, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", intDevMatchID, "&A=", intClubHID, "&B=", intClubID, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", intDevMatchID, "&A=", intClubHID, "&B=", intClubID, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else if (num < this.intTurn)
                     {

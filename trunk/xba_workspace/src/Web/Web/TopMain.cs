@@ -216,8 +216,8 @@
             else
             {
                 DataRow row8 = BTPDevMatchManager.GetDevMRowByClubIDRound(this.intClubID5, intRound - 1);
-                string text1 = DBLogin.GetMatchURL() + "VRep.aspx?Tag=" + row8["DevMatchID"].ToString() + "&Type=2&A=" + row8["ClubHID"].ToString() + "&B=" + row8["ClubAID"].ToString();
-                string text2 = DBLogin.GetMatchURL() + "VStas.aspx?Tag=" + row8["DevMatchID"].ToString() + "&Type=2&A=" + row8["ClubHID"].ToString() + "&B=" + row8["ClubAID"].ToString();
+                string text1 = Config.GetDomain() + "VRep.aspx?Tag=" + row8["DevMatchID"].ToString() + "&Type=2&A=" + row8["ClubHID"].ToString() + "&B=" + row8["ClubAID"].ToString();
+                string text2 = Config.GetDomain() + "VStas.aspx?Tag=" + row8["DevMatchID"].ToString() + "&Type=2&A=" + row8["ClubHID"].ToString() + "&B=" + row8["ClubAID"].ToString();
                 int num12 = (int) row8["DevMatchID"];
                 int num13 = (int) row8["MsgCount"];
                 str24 = str19;

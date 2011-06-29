@@ -882,17 +882,20 @@
                                     string strName = row3["Name"].ToString().Trim();
                                     int intPos = (byte) row3["Pos"];
                                     int num5 = RandomItem.rnd.Next(0, 260);
+                                    Console.WriteLine(string.Format("{0}-->{1}", num3, num5));
                                     if (num3 > num5)
                                     {
                                         int num6;
                                         if ((longPlayerID % 4L) == (num4 % 4))
                                         {
                                             num6 = RandomItem.rnd.Next(0x23, 70);
+                                            Console.WriteLine("start add skill max");
                                             AddSkillMax(intClubID, longPlayerID, num6, intPos, strName);
                                         }
                                         else
                                         {
                                             num6 = RandomItem.rnd.Next(20, 0x29);
+                                            Console.WriteLine("start add skill max");
                                             AddSkillMax(intClubID, longPlayerID, num6, intPos, strName);
                                         }
                                         if ((num % 500) == 0)

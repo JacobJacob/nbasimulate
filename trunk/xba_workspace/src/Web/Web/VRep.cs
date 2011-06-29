@@ -154,7 +154,7 @@
                 {
                     num = 0;
                 }
-                str4 = DBLogin.URLString(ServerParameter.intGameCategory) + str4;
+                str4 = Config.GetDomain() + str4;
                 DataRow row8 = XmlHelper.GetRow(dt, "Type=2", "");
                 string str6 = row8["ClubID"].ToString();
                 string str7 = row8["ClubName"].ToString();
@@ -171,7 +171,7 @@
                 }
                 BTPAccountManager.GetAccountRowByClubID(this.intClubIDA);
                 BTPAccountManager.GetAccountRowByClubID(this.intClubIDB);
-                str8 = DBLogin.URLString(ServerParameter.intGameCategory) + str8;
+                str8 = Config.GetDomain() + str8;
                 if (table6.Rows.Count > 0)
                 {
                     DataRow row9 = XmlHelper.GetRow(table6, "", "");

@@ -350,7 +350,7 @@
                     }
                     this.strLinkURL = string.Concat(new object[] { 
                         "<a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=ABILITY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>能力</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=STAS&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
-                        "'>统计</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>修改</a> | <font color='#FF0000'>整容</font>"
+                        "'>统计</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>修改</a>"
                      });
                     this.intPlayerFaceCost = (int) Global.drParameter["PlayerFaceCost"];
                     if (this.intPayType == 1)
@@ -374,9 +374,14 @@
                     byte num3 = (byte) this.drPlayer["Category"];
                     if (((num == this.intClubID3) && ((this.intType == 3) & (this.intCategory != 0x58))) || ((num == this.intClubID5) && ((this.intType == 5) & (this.intCategory != 0x58))))
                     {
-                        this.strLinkURL = string.Concat(new object[] { 
+                        /*this.strLinkURL = string.Concat(new object[] { 
                             "<font color='#FF0000'>能力</font> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=STAS&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>统计</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
                             "'>修改</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFYBODY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>整容</a>"
+                         });*/
+                         
+                         this.strLinkURL = string.Concat(new object[] { 
+                            "<font color='#FF0000'>能力</font> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=STAS&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>统计</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
+                            "'>修改</a>"
                          });
                     }
                     else
@@ -399,9 +404,14 @@
                     byte num4 = (byte) this.drPlayer["Category"];
                     if (((num == this.intClubID3) && ((this.intType == 3) & (this.intCategory != 0x58))) || ((num == this.intClubID5) && ((this.intType == 5) & (this.intCategory != 0x58))))
                     {
-                        this.strLinkURL = string.Concat(new object[] { 
+                        /*this.strLinkURL = string.Concat(new object[] { 
                             "<a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=ABILITY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>能力</a> | <font color='#FF0000'>统计</font> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
                             "'>修改</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFYBODY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>整容</a>"
+                         });*/
+                         
+                          this.strLinkURL = string.Concat(new object[] { 
+                            "<a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=ABILITY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>能力</a> | <font color='#FF0000'>统计</font> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
+                            "'>修改</a>"
                          });
                     }
                     else
@@ -436,10 +446,15 @@
                         base.Response.Redirect("Report.aspx?Parameter=3");
                         return;
                     }
-                    this.strLinkURL = string.Concat(new object[] { 
+                    /*this.strLinkURL = string.Concat(new object[] { 
                         "<a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=ABILITY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>能力</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=STAS&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
                         "'>统计</a> | <font color='#FF0000'>修改</font> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFYBODY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>整容</a>"
+                     });*/
+                     this.strLinkURL = string.Concat(new object[] { 
+                        "<a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=ABILITY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>能力</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=STAS&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
+                        "'>统计</a> | <font color='#FF0000'>修改</font>"
                      });
+                     
                     this.tblModify.Visible = true;
                     this.SetInfo();
                     this.SetModify();
@@ -467,9 +482,14 @@
                     byte num5 = (byte) this.drPlayer["Category"];
                     if (((num == this.intClubID3) && ((this.intType == 3) & (this.intCategory != 0x58))) || ((num == this.intClubID5) && ((this.intType == 5) & (this.intCategory != 0x58))))
                     {
-                        this.strLinkURL = string.Concat(new object[] { 
+                        /*this.strLinkURL = string.Concat(new object[] { 
                             "<font color='#FF0000'>能力</font> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=STAS&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>统计</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
                             "'>修改</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFYBODY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>整容</a>"
+                         });*/
+                         
+                         this.strLinkURL = string.Concat(new object[] { 
+                            "<font color='#FF0000'>能力</font> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=STAS&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, "'>统计</a> | <a href='ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck, 
+                            "'>修改</a>"
                          });
                     }
                     else
@@ -659,11 +679,13 @@
                     {
                         if (flag)
                         {
-                            str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=0&PlayerID=", this.longPlayerID, "><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
+                            //str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=0&PlayerID=", this.longPlayerID, "><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
+                            str2 = "";
                         }
                         else
                         {
-                            str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=PRIVATESKILL&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
+                            //str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=PRIVATESKILL&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
+                            str2 = "";
                         }
                     }
                     else
@@ -673,16 +695,19 @@
                 }
                 if (flag2)
                 {
-                    str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Show=HIDE&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "><img  align='absmiddle'src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
+                    //str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Show=HIDE&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "><img  align='absmiddle'src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
+                    str2 = "";
                 }
                 else
                 {
-                    str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=HIDE&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
+                    //str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=HIDE&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
+                    str2 = "";
                 }
                 if (((this.intCheck == 1) && ((intClubID == this.intClubID3) || (intClubID == this.intClubID5))) && (this.intCategory == 1))
                 {
                     obj2 = str2;
-                    str2 = string.Concat(new object[] { obj2, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=REFASHION&PlayerID=", this.longPlayerID, "' target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinRefashion.gif' width='12' height='12' border='0' alt='球员洗点'><a>" });
+                    //str2 = string.Concat(new object[] { obj2, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=REFASHION&PlayerID=", this.longPlayerID, "' target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinRefashion.gif' width='12' height='12' border='0' alt='球员洗点'><a>" });
+                    str2 = "";
                 }
             }
             if (this.intType == 10)
@@ -749,7 +774,8 @@
             string str6 = "";
             if (((num17 == 1) && (intClubID == this.intClubID3)) || ((num17 == 1) && (intClubID == this.intClubID5)))
             {
-                str6 = string.Concat(new object[] { "<span style='padding-left:15px' width='90' ><img align='absmiddle' src='", SessionItem.GetImageURL(), "llzc.gif' width='12' height='12' border='0' alt='理疗中心'>&nbsp;<a href='PlayerCenter.aspx?PlayerType=", this.intType, "&Type=9&PlayerID=", this.longPlayerID, "' target='Center'>理疗中心</a></span>" });
+                //str6 = string.Concat(new object[] { "<span style='padding-left:15px' width='90' ><img align='absmiddle' src='", SessionItem.GetImageURL(), "llzc.gif' width='12' height='12' border='0' alt='理疗中心'>&nbsp;<a href='PlayerCenter.aspx?PlayerType=", this.intType, "&Type=9&PlayerID=", this.longPlayerID, "' target='Center'>理疗中心</a></span>" });
+                str6 = "";
                 str2 = str2 + "&nbsp;&nbsp;";
             }
             string strInfo = this.strInfo;

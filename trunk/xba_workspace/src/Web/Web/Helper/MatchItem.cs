@@ -3,6 +3,9 @@
     using System;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Text;
+    using System.IO;
+    using System.Runtime.InteropServices;
     using Web.DBConnection;
     using Web.VMatchEngine;
 
@@ -71,7 +74,8 @@
 
         public static string GetMatchPath()
         {
-            return "\\develop\\xba_workspace\\xbaweb";
+            //return "\\develop\\xba_workspace\\xbaweb";
+            return IniUtil.ReadIniData("PathConfig", "MatchPath", "", "C:\\xba.ini");
         }
 
         public static int GetOneByOneLosePower(int intStamina, int intHard)

@@ -850,7 +850,7 @@
             string str2 = "";
             if (this.strType == "TRAINCENTER")
             {
-                str2 = "<span style='margin-right:30px;color:red'> 购买“双倍训练卡”可获得双倍训练点，<a href=\"ManagerTool.aspx?Type=STORE&amp;Page=1\">点此购买</a></span>";
+                str2 = "";
             }
             else
             {

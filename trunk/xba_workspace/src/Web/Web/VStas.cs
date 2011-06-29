@@ -161,7 +161,7 @@
                 string str11 = row8["Logo"].ToString();
                 string str12 = row8["Score"].ToString();
                 DataView view = XmlHelper.GetView(table2, "ClubID=" + str9, "Score DESC");
-                str11 = DBLogin.URLString(ServerParameter.intGameCategory) + str11;
+                str11 = Config.GetDomain() + str11;
                 int num31 = 0;
                 try
                 {
@@ -176,7 +176,7 @@
                 string str14 = row9["ClubName"].ToString();
                 string str15 = row9["Logo"].ToString();
                 string str16 = row9["Score"].ToString();
-                str15 = DBLogin.URLString(ServerParameter.intGameCategory) + str15;
+                str15 = Config.GetDomain() + str15;
                 int num32 = 0;
                 try
                 {

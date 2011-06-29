@@ -184,11 +184,11 @@
             int num2 = ToolItem.HasTool(this.intUserID, 10, 0);
             if ((num > 0) || (num2 > 0))
             {
-                str = "<span style='color:red;margin-left:130px;line-height:20px;margin-top:4px'><strong>双倍训练卡:</strong> 已使用 球员训练效果翻倍</span>";
+                str = "";
             }
             else
             {
-                str = "<span style='color:red;margin-left:30px;line-height:20px;margin-top:4px'><strong>双倍训练卡:</strong> 未使用 <a href=\"ManagerTool.aspx?Type=STORE&Page=1\">点此购买</a> 球员将获得双倍训练效果</span>";
+                str = "";
             }
             this.strPageIntro = string.Concat(new object[] { "<ul><li class='qian1'>街球队</li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/TrainPlayer.aspx?Type=PLAYER5\"' href='TrainPlayerCenter.aspx?Type=5&UserID=", this.intUserID, "'>职业队</a></a></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='", SessionItem.GetImageURL(), "MenuCard/Help.GIF' border='0' height='24' width='19'></a>", str });
             this.SetTrainPlayer3();
@@ -346,7 +346,7 @@
                     this.sbReturn.Append("<table width='92' border='0' cellspacing='0' cellpadding='0'>\n");
                     this.sbReturn.Append("\t<tr>\n");
                     this.sbReturn.Append("\t\t<td width='92' valign='top'><img id='imgCharactor' src='" + SessionItem.GetImageURL() + "Player/Charactor/NewPlayer.png' width='90' height='130'><br>\n");
-                    this.sbReturn.Append(string.Concat(new object[] { "\t\t\t&nbsp;&nbsp;<a href='PlayerCenter.aspx?RT=", this.lngPlayerID, "&amp;PlayerType=3&amp;Type=9&amp;PlayerID=", this.lngPlayerID, "' target='Center'><img src='Images/llzc.gif' width='12' height='12' border='0' alt='理疗中心'></a></td>\n" }));
+                    this.sbReturn.Append(string.Concat(new object[] { "\t\t\t&nbsp;&nbsp;</td>\n" }));
                     this.sbReturn.Append("\t</tr>\n");
                     this.sbReturn.Append("\t<tr>\n");
                     this.sbReturn.Append("\t\t<td valign='top'>\n");

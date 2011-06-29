@@ -49,23 +49,23 @@
             }
             if (num4 == num)
             {
-                if (num5 > 0)
+                /*if (num5 > 0)
                 {
                     str = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", num5, "&Pos=3&Type=MANGERSAY&DevMatchID=", num3, "'><img align='absmiddle' alt='球队状态较平时提升", num5, "%' src='", SessionItem.GetImageURL(), "louder", num5, ".gif' border='0' width='14' height='16'> 球队状态较平时提升", num5, "%</a>" });
                 }
                 else
                 {
                     str = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", num5, "&Pos=3&Type=MANGERSAY&DevMatchID=", num3, "'><img align='absmiddle' alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'> 给球员发奖金</a>" });
-                }
+                }*/
             }
-            else if (num6 > 0)
+            /*else if (num6 > 0)
             {
                 str = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", num6, "&Pos=3&Type=MANGERSAY&DevMatchID=", num3, "'><img align='absmiddle' alt='球队状态较平时提升", num6, "%' src='", SessionItem.GetImageURL(), "louder", num6, ".gif' border='0' width='14' height='16'> 球队状态较平时提升", num6, "%</a>" });
             }
             else
             {
                 str = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", num6, "&Pos=3&Type=MANGERSAY&DevMatchID=", num3, "'><img align='absmiddle' alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'> 给球员发奖金</a>" });
-            }
+            }*/
             return ("<span style='margin:30px'>" + str + "</span>");
         }
 
@@ -323,14 +323,14 @@
                     }
                     if (num10 == this.intClubID5)
                     {
-                        if (num11 > 0)
+                        /*if (num11 > 0)
                         {
                             str28 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", num11, "&Pos=3&Type=MANGERSAY&DevMatchID=", num9, "'><img alt='球员状态提升", num11, "%' src='", SessionItem.GetImageURL(), "louder", num11, ".gif' border='0' width='14' height='16'> 球员状态提升", num11, "%</a>" });
                         }
                         else
                         {
                             str28 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", num11, "&Pos=3&Type=MANGERSAY&DevMatchID=", num9, "'><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'> 给球员发奖金</a>" });
-                        }
+                        }*/
                         if (flag3)
                         {
                             string text1 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", request, "&Pos=1&Type=USESTAFF&DevMatchID=", num9, "'><img alt='已设置助理教练' src='", SessionItem.GetImageURL(), "coach2ok.gif' border='0' width='14' height='16'></a>" });
@@ -342,14 +342,14 @@
                     }
                     else
                     {
-                        if (num12 > 0)
+                        /*if (num12 > 0)
                         {
                             str28 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", num12, "&Pos=3&Type=MANGERSAY&DevMatchID=", num9, "'><img alt='球员状态提升", num12, "%' src='", SessionItem.GetImageURL(), "louder", num12, ".gif' border='0' width='14' height='16'> 球员状态提升", num12, "%</a>" });
                         }
                         else
                         {
                             str28 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", num12, "&Pos=3&Type=MANGERSAY&DevMatchID=", num9, "'><img alt='给球员发奖金' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'> 给球员发奖金</a>" });
-                        }
+                        }*/
                         if (flag4)
                         {
                             string text3 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Ref=", request, "&Pos=1&Type=USESTAFF&DevMatchID=", num9, "'><img alt='已设置助理教练' src='", SessionItem.GetImageURL(), "coach2ok.gif' border='0' width='14' height='16'></a>" });
@@ -435,8 +435,8 @@
                 else
                 {
                     DataRow row10 = BTPDevMatchManager.GetDevMRowByClubIDRound(this.intClubID5, intRound - 1);
-                    string str29 = DBLogin.GetMatchURL() + "VRep.aspx?Tag=" + row10["DevMatchID"].ToString() + "&Type=2&A=" + row10["ClubHID"].ToString() + "&B=" + row10["ClubAID"].ToString();
-                    string str30 = DBLogin.GetMatchURL() + "VStas.aspx?Tag=" + row10["DevMatchID"].ToString() + "&Type=2&A=" + row10["ClubHID"].ToString() + "&B=" + row10["ClubAID"].ToString();
+                    string str29 = Config.GetDomain() + "VRep.aspx?Tag=" + row10["DevMatchID"].ToString() + "&Type=2&A=" + row10["ClubHID"].ToString() + "&B=" + row10["ClubAID"].ToString();
+                    string str30 = Config.GetDomain() + "VStas.aspx?Tag=" + row10["DevMatchID"].ToString() + "&Type=2&A=" + row10["ClubHID"].ToString() + "&B=" + row10["ClubAID"].ToString();
                     int num19 = (int) row10["DevMatchID"];
                     int num20 = (int) row10["MsgCount"];
                     builder.Append("\t\t<table width='100%' border='0' cellspacing='0' cellpadding='0'>");
@@ -519,7 +519,7 @@
                         string str2 = lastGameRowByCategory["LadderURL"].ToString().Trim();
                         if (((num4 > 0) && (str2 != "")) && (str2.ToLower().IndexOf("http://match") == -1))
                         {
-                            str2 = DBLogin.GetMatchURL() + str2;
+                            str2 = Config.GetDomain() + str2;
                         }
                         if (num4 == 3)
                         {
@@ -570,13 +570,13 @@
                             {
                                 if (((num4 > 0) && (str13 != "")) && (str13.ToLower().IndexOf("http://match") == -1))
                                 {
-                                    str13 = DBLogin.GetMatchURL() + str13;
+                                    str13 = Config.GetDomain() + str13;
                                 }
                                 str12 = "冠军杯小组赛结束，当前正停赛一轮安排淘汰赛的赛程，查看赛程<a href='javascript:;' onclick=window.open('" + str13 + "')>请点击此处</a>";
                             }
                             else if (((num4 > 0) && (str13 != "")) && (str13.ToLower().IndexOf("http://match") == -1))
                             {
-                                str13 = DBLogin.GetMatchURL() + str13;
+                                str13 = Config.GetDomain() + str13;
                             }
                             if (num4 == 1)
                             {
@@ -674,7 +674,7 @@
                 if ((num7 > 0) && (num8 > 0))
                 {
                     string str8 = string.Concat(new object[] { 
-                        "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Tag=", num11, "&Type=", num12, "&A=", num7, "&B=", num8, "' target='_blank'>战报</a>|<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Tag=", num11, "&Type=", num12, 
+                        "<a href='", Config.GetDomain(), "VRep.aspx?Tag=", num11, "&Type=", num12, "&A=", num7, "&B=", num8, "' target='_blank'>战报</a>|<a href='", Config.GetDomain(), "VStas.aspx?Tag=", num11, "&Type=", num12, 
                         "&A=", num7, "&B=", num8, "' target='_blank'>统计</a>"
                      });
                     builder.Append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"4\" align=\"center\" style=\"border-top:1px solid #f1c2a3; background:#fcc6a4; margin-top:6px;\">");
@@ -719,7 +719,7 @@
                     string str10 = lastGameRowByCategory["LadderURL"].ToString().Trim();
                     if (((num4 > 0) && (str10 != "")) && (str10.ToLower().IndexOf("http://match") == -1))
                     {
-                        str10 = DBLogin.GetMatchURL() + str10;
+                        str10 = Config.GetDomain() + str10;
                     }
                     if (num4 == 1)
                     {

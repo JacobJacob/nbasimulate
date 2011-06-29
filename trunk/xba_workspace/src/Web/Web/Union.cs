@@ -442,7 +442,7 @@
             string strLogo = str + ".gif";
             int intHortationAll = ((num6 + num7) + (num8 * 2)) + (num9 * 4);
             string str8 = StringItem.FormatDate(DateTime.Now, "yyyyMM");
-            string strCupLadder = DBLogin.GetMatchURL() + "DevCupLadder/" + str8 + "/";
+            string strCupLadder = Config.GetDomain() + "DevCupLadder/" + str8 + "/";
             DevCupData data = new DevCupData(intUnionIDS, intRegClub, validWords, str3, str4, intRegCharge, strLogo, str5, strRewardXML, num10, time, num12, num11, intHortationAll, strCupLadder);
             this.Session["DevCup" + intUnionIDS] = data;
             base.Response.Redirect("SecretaryPage.aspx?Type=CREATEDEVCUP");
@@ -808,7 +808,7 @@
                         this.strMsg = "<font color='Red'>联盟介绍中含有非法字符，或长度不符合要求。</font>";
                         return;
                     }
-                    strIn = strIn;
+                   // strIn = strIn;
                     BTPUnionManager.SetUnionRemark(this.intUnionID, strIn, validWords, str3);
                     this.strMsg = "<font color='Red'>联盟介绍修改成功。</font>";
                     return;

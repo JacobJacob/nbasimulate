@@ -370,8 +370,8 @@
                     num5 = (int) row2["ClubAScore"];
                     if (((num2 != 0) && (num4 != 0)) && ((num3 != 0) || (num5 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else
                     {
@@ -426,8 +426,8 @@
                     num5 = (int) row3["ClubAScore"];
                     if (((num2 != 0) && (num4 != 0)) && ((num3 != 0) || (num5 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else
                     {
@@ -856,8 +856,8 @@
                     num6 = (int) row["ClubAScore"];
                     if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else
                     {
@@ -909,8 +909,8 @@
                     num6 = (int) row2["ClubAScore"];
                     if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", num2, "&A=", num3, "&B=", num5, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else
                     {

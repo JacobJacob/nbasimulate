@@ -5906,8 +5906,8 @@
             this.intLookUserID = (int) SessionItem.GetRequest("UserID", 0);
             if (this.intPayType == 1)
             {
-                string str2 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                string str3 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                string str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                string str3 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                 this.strToolMsg = "<p align='left'>尊敬的会员您可以免费观看此场比赛战报！</p><p align='center'>" + str2 + "&nbsp;" + str3 + "</p>";
                 this.btnOK.Visible = false;
             }
@@ -5919,8 +5919,8 @@
             }
             else
             {
-                string str4 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VRep.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                string str5 = string.Concat(new object[] { "<a href='", DBLogin.GetMatchURL(), "VStas.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                string str4 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                string str5 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='统计' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                 this.strToolMsg = "<p align='left'>点击下面的战报和技术统计图标进行查看</p><p align='center'>" + str4 + "&nbsp;" + str5 + "</p>";
                 this.btnOK.Visible = false;
             }

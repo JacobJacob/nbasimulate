@@ -977,6 +977,23 @@
             commandParameters[1].Value = strQQ;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
+
+        public static int CheckRegisterInfo(string strUserName, string strNickName, string strEmail)
+        {
+            string commandText = "Exec NewBTP.dbo.CheckRegisterInfo @UserName,@NickName,@Email";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@Email", SqlDbType.NVarChar, 50) };
+            commandParameters[0].Value = strUserName;
+            commandParameters[1].Value = strNickName;
+            commandParameters[2].Value = strEmail;
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        }
+
+        public static int GetMaxUserID()
+        {
+            string commandText = "Exec NewBTP.dbo.[GetMaxUserID] ";
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
     }
 }
 
