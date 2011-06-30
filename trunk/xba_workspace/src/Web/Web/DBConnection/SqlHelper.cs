@@ -630,8 +630,15 @@
             }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                return ExecuteNonQuery(connection, commandType, commandText, commandParameters);
+                try
+                {
+                    connection.Open();
+                    return ExecuteNonQuery(connection, commandType, commandText, commandParameters);
+                }
+                finally
+                {
+                    connection.Close();
+                } 
             }
         }
 
@@ -1045,8 +1052,16 @@
             }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                return ExecuteScalar(connection, commandType, commandText, commandParameters);
+                try
+                {
+                    connection.Open();
+                    return ExecuteScalar(connection, commandType, commandText, commandParameters);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
             }
         }
 
@@ -1398,8 +1413,16 @@
             }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                FillDataset(connection, commandType, commandText, dataSet, tableNames);
+                try
+                {
+                    connection.Open();
+                    FillDataset(connection, commandType, commandText, dataSet, tableNames);
+
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
 
@@ -1415,8 +1438,15 @@
             }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                FillDataset(connection, spName, dataSet, tableNames, parameterValues);
+                try
+                {
+                    connection.Open();
+                    FillDataset(connection, spName, dataSet, tableNames, parameterValues);
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
 
@@ -1442,8 +1472,15 @@
             }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                FillDataset(connection, commandType, commandText, dataSet, tableNames, commandParameters);
+                try
+                {
+                    connection.Open();
+                    FillDataset(connection, commandType, commandText, dataSet, tableNames, commandParameters);
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
 

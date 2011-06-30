@@ -35,7 +35,7 @@
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
             int intTicketPrice = Convert.ToInt32(this.ddlTicketPrice.SelectedValue);
-            if ((intTicketPrice > 30) && (this.intPayType != 1))
+            if ((intTicketPrice > 100) && (this.intPayType != 1))
             {
                 base.Response.Redirect("Report.aspx?Parameter=127!Type.STADIUM");
             }
