@@ -1,21 +1,34 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""职业转会"""
+"""转会"""
 
 import random
 from datetime import datetime
 
 from xba.common.sqlserver import connection
 from xba.common import logging
-from xba.business import club_manager
+from xba.common import log_execption
+from xba.common.constants.market import MarketCategory
 
+def get_postfix(category):
+    """获取后缀"""
+    if category == MarketCategory.STREET_FREE:
+        return "Free"
+    elif category == MarketCategory.STREET_SELECTION:
+        return "Close"
+    elif category == MarketCategory.PROFESSION_TRANSFER:
+        return "Open"
+    elif category == MarketCategory.PROFESSION_SELECTION:
+        return "Rookie"    
+    else:
+        logging.error("unknow category")  
 
-def finish_bid_open(player_id, number):
-    """职业转会(明拍)完成"""
+def finish_bid(player_id, number, category):
+    """转会完成"""
     cursor = connection.cursor()
     try:
-        sql = "exec Bid_EndOpen %s, %s" % (player_id, number)
+        sql = "exec Bid_End%s %s, %s" % (get_postfix(category), player_id, number)
         cursor.execute(sql)
     except Exception, e:
         logging.error(e.message.decode("gbk"))
@@ -23,36 +36,49 @@ def finish_bid_open(player_id, number):
     finally:
         connection.close()
 
-def prepare_bid_open(player_id):
-    """职业转会(明拍)准备完成"""
+def prepare_bid(player_id, category):
+    """转会准备完成"""
     cursor = connection.cursor()
     try:
-        sql = "exec Bid_PreOpen %s" % player_id
+        sql = "exec Bid_Pre%s %s" % (get_postfix(category), player_id)
         cursor.execute(sql)
-    except Exception, e:
-        logging.error(e.message.decode("gbk"))
+    except:
+        log_execption()
         raise "error"
     finally:
         connection.close()
         
-def get_end_bid_open_for_end():
-    """得到已经截止职业转会(超过20分钟的)"""
+def get_end_bid_for_end(category):
+    """得到已经截止转会(超过20分钟的)"""
     cursor = connection.cursor()
     try:
-        sql = "exec Bid_GetEndOpen '%s'" % datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        sql = "exec Bid_GetEnd%s '%s'" % (get_postfix(category), datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         cursor.execute(sql)
         return cursor.fetchall()
-    except Exception, e:
-        logging.error(e.message.decode("gbk"))
+    except:
+        log_execption()
         raise "error"
     finally:
         connection.close()
 
-def get_club_player5_number(club_id):
-    """get club player 5 number"""
+def get_end_bid(category):
+    """差不多了的"""
     cursor = connection.cursor()
     try:
-        sql = "select number from btp_player5 where ClubID = %s " % club_id
+        sql = "exec Bid_Get%s '%s'" % (get_postfix(category), datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except:
+        log_execption()
+        raise "error"
+    finally:
+        connection.close()
+
+def get_club_player_number(club_id, type):
+    """get club player number"""
+    cursor = connection.cursor()
+    try:
+        sql = "select number from btp_player%s where ClubID = %s " % (type, club_id)
         cursor.execute(sql)
         infos = cursor.fetchall()
         numbers = set()
@@ -65,45 +91,12 @@ def get_club_player5_number(club_id):
             if number not in numbers:
                 return number
     
-    except Exception, e:
-        logging.error(e.message.decode("gbk"))
-        raise "error"
-    finally:
-        connection.close()
-    
-def get_end_bid_open():
-    """差不多了的"""
-    cursor = connection.cursor()
-    try:
-        sql = "exec Bid_GetOpen '%s'" % datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        cursor.execute(sql)
-        return cursor.fetchall()
-    except Exception, e:
-        logging.error(e.message.decode("gbk"))
+    except:
+        log_execption()
         raise "error"
     finally:
         connection.close()
     
 if __name__ == "__main__":
-    infos = get_end_bid_open()
-    for info in infos:
-        player_id = info['PlayerID']
-        logging.info("start to handler player with id:%s" % player_id)
-        prepare_bid_open(player_id)
-        
-    infos = get_end_bid_open_for_end()
-    for info in infos:
-        player_id = info['PlayerID']
-        bidder_id = info["BidderID"]
-        logging.info("start to finish player with id:%s, bidder id:%s" % (player_id, bidder_id))
-        number = 0
-        if bidder_id > 0:
-            club_id = club_manager.get_club_by_user_id(bidder_id)
-            if not club_id:
-                logging.error("club with user id:%s not exist" % bidder_id)
-                continue
-             
-            number = get_club_player5_number(club_id)
-            
-        finish_bid_open(player_id, number)
+    pass
         

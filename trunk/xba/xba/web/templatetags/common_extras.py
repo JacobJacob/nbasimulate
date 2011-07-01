@@ -5,6 +5,7 @@
 from django import template
 from xba.common.constants.market import ProfessionMarketCategoryMap, StreeMarketCategoryMap
 from xba.common.constants.player import PositionMap
+from xba.common.constants.account import InviteCodeStatusMap
 
 register = template.Library()
 
@@ -35,6 +36,11 @@ def club_category(category):
 def position(pos):
     """球员位置"""
     return PositionMap.get(pos, "未知")
+
+@register.filter
+def invite_code_status(status):
+    """邀请码状态"""
+    return InviteCodeStatusMap.get(status, "未知")
 
 
 

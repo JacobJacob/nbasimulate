@@ -58,7 +58,12 @@ class DjangoSettings:
         os.makedirs(WEB_ROOT)
     if not os.path.exists(WEB_ROOT + '/rrd'): # rrd image path
         os.makedirs(WEB_ROOT + '/rrd')
-        
+
+if DEBUG:
+    CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
+else:
+    CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
+     
 
 CUP_LADDER = 'http://localhost:34591/xbaweb/'
 

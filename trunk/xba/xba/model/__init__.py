@@ -2,7 +2,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, mapper
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP
 
 Base = declarative_base()
 
@@ -83,3 +83,13 @@ class Cup(Base):
     regcount = Column("RegCount", Integer)
     coin = Column(Integer)
     ticket_category = Column("TicketCategory", Integer)
+    
+class InviteCode(Base):
+    
+    __tablename__ = 'btp_invitecode'
+    id = Column(Integer, primary_key=True)
+    code = Column(String)
+    status = Column(Integer)
+    created_time = Column("CreatedTime", DateTime)
+    updated_time = Column("UpdatedTime", TIMESTAMP, )
+

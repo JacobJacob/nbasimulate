@@ -9,9 +9,11 @@ urlpatterns = patterns('',
     (r'^game/', include('web.game.urls')),
     (r'^club/', include('web.club.urls')),
     (r'^cup/', include('web.cup.urls')),
+    (r'^account/', include('web.account.urls')),
 )
 
 # json rpc settings
 jsonrpc_urlpatterns = patterns('',
     (r'^services/player/$', 'web.services.player_service'),
+    (r'^services/account/$', 'web.services.account_service'),
 )
