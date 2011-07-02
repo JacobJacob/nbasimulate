@@ -302,21 +302,24 @@
             string strCurrentURL = "DevCup.aspx?Type=CREATEDEVCUP&Status=CUPREGMANAGE&DevCupID=" + request + "&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbCupRegManagePage.Append(this.GetViewPage(strCurrentURL));
-            SqlDataReader reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request);
-            while (reader.Read())
+            DataTable reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request);
+            if (reader != null)
             {
-                int intUserID = (int) reader["UserID"];
-                string strNickName = reader["NickName"].ToString().Trim();
-                string str3 = reader["ClubName"].ToString().Trim();
-                bool blnSex = (bool) reader["Sex"];
-                string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
-                this.sbCupRegManager.Append("<tr><td height=\"25\" style=\"padding-left:4px\" algin=\"align\" >" + AccountItem.GetNickNameInfo(intUserID, str3, "Right") + "</td>");
-                this.sbCupRegManager.Append("<td style=\"padding-left:4px\" align=\"left\">" + AccountItem.GetNickNameInfoA(intUserID, strNickName, "Right", blnSex) + "</td>");
-                this.sbCupRegManager.Append("<td align=\"center\">" + dev + "</td>");
-                this.sbCupRegManager.Append(string.Concat(new object[] { "<td align=\"center\"><a href='SecretaryPage.aspx?Type=KICKOUTUSERDEVCUP&DevCupID=", request, "&UserID=", intUserID, "'>踢出</a></td></tr>" }));
-                this.sbCupRegManager.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>");
+                foreach (DataRow row in reader.Rows)
+                {
+                    int intUserID = (int)row["UserID"];
+                    string strNickName = row["NickName"].ToString().Trim();
+                    string str3 = row["ClubName"].ToString().Trim();
+                    bool blnSex = (bool)row["Sex"];
+                    string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
+                    this.sbCupRegManager.Append("<tr><td height=\"25\" style=\"padding-left:4px\" algin=\"align\" >" + AccountItem.GetNickNameInfo(intUserID, str3, "Right") + "</td>");
+                    this.sbCupRegManager.Append("<td style=\"padding-left:4px\" align=\"left\">" + AccountItem.GetNickNameInfoA(intUserID, strNickName, "Right", blnSex) + "</td>");
+                    this.sbCupRegManager.Append("<td align=\"center\">" + dev + "</td>");
+                    this.sbCupRegManager.Append(string.Concat(new object[] { "<td align=\"center\"><a href='SecretaryPage.aspx?Type=KICKOUTUSERDEVCUP&DevCupID=", request, "&UserID=", intUserID, "'>踢出</a></td></tr>" }));
+                    this.sbCupRegManager.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>");
+                }
             }
-            reader.Close();
+            //reader.Close();
             if ((this.sbCupRegManager.ToString().Trim() == "") || (this.sbCupRegManager == null))
             {
                 this.sbCupRegManager.Append("<tr><td height=\"25\" align=\"center\" style=\"padding-left:4px\" colspan=\"4\">暂无人员报名</td></tr>");
@@ -333,39 +336,42 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPCHAMPION&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbDevCupChampionPage.Append(this.GetViewPage(strCurrentURL));
-            SqlDataReader reader = BTPDevCupManager.GetDevCupTableByPage(0, this.intPage, this.intPrePage, 3);
-            while (reader.Read())
+            DataTable reader = BTPDevCupManager.GetDevCupTableByPage(0, this.intPage, this.intPrePage, 3);
+            if (reader != null)
             {
-                string str5;
-                int num1 = (int) reader["DevCupID"];
-                int num = (int) reader["RegCount"];
-                int num2 = (int) reader["Capacity"];
-                num = (int) reader["RegCount"];
-                string str2 = reader["ChampionClubName"].ToString().Trim();
-                string str3 = reader["Name"].ToString().Trim();
-                bool flag = (bool) reader["IsSelfUnion"];
-                DateTime datIn = (DateTime) reader["MatchTime"];
-                int num3 = (int) reader["ChampionUserID"];
-                string str6 = reader["LadderURL"].ToString().Trim();
-                string str4 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + reader["BigLogo"].ToString().Trim() + "'>";
-                if (flag)
+                foreach (DataRow row in reader.Rows)
                 {
-                    str5 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
+                    string str5;
+                    int num1 = (int)row["DevCupID"];
+                    int num = (int)row["RegCount"];
+                    int num2 = (int)row["Capacity"];
+                    num = (int)row["RegCount"];
+                    string str2 = row["ChampionClubName"].ToString().Trim();
+                    string str3 = row["Name"].ToString().Trim();
+                    bool flag = (bool)row["IsSelfUnion"];
+                    DateTime datIn = (DateTime)row["MatchTime"];
+                    int num3 = (int)row["ChampionUserID"];
+                    string str6 = row["LadderURL"].ToString().Trim();
+                    string str4 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "'>";
+                    if (flag)
+                    {
+                        str5 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
+                    }
+                    else
+                    {
+                        str5 = "";
+                    }
+                    this.sbDevCupChampion.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\" width=\"50\">" + str4 + "</td>");
+                    this.sbDevCupChampion.Append("<td width=\"107\" align=\"left\" style='padding-left:4px'><font color=#3333>" + str3 + "</font></td>");
+                    this.sbDevCupChampion.Append("<td width=20>" + str5 + "</td>");
+                    this.sbDevCupChampion.Append(string.Concat(new object[] { "<td width=\"90\" align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
+                    this.sbDevCupChampion.Append("<td  align=\"center\" width=\"80\">" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</td>");
+                    this.sbDevCupChampion.Append("<td align=\"center\" width=\"50\"><a href='" + str6 + "'>赛程</a></td>");
+                    this.sbDevCupChampion.Append("<td align=\"left\" style='padding-left:4px' width=\"136\"><font color='#fc5402'>" + str2 + "</font></td></tr>");
+                    this.sbDevCupChampion.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
-                else
-                {
-                    str5 = "";
-                }
-                this.sbDevCupChampion.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\" width=\"50\">" + str4 + "</td>");
-                this.sbDevCupChampion.Append("<td width=\"107\" align=\"left\" style='padding-left:4px'><font color=#3333>" + str3 + "</font></td>");
-                this.sbDevCupChampion.Append("<td width=20>" + str5 + "</td>");
-                this.sbDevCupChampion.Append(string.Concat(new object[] { "<td width=\"90\" align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
-                this.sbDevCupChampion.Append("<td  align=\"center\" width=\"80\">" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</td>");
-                this.sbDevCupChampion.Append("<td align=\"center\" width=\"50\"><a href='" + str6 + "'>赛程</a></td>");
-                this.sbDevCupChampion.Append("<td align=\"left\" style='padding-left:4px' width=\"136\"><font color='#fc5402'>" + str2 + "</font></td></tr>");
-                this.sbDevCupChampion.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
             }
-            reader.Close();
+            //reader.Close();
             if (this.sbDevCupChampion.ToString().Trim() == "")
             {
                 this.sbDevCupChampion.Append("<tr><td colspan=7 align=\"center\" height=\"25\">没有自定义冠军榜</td></tr>");
@@ -383,56 +389,59 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPREG&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbWealthPage.Append(this.GetViewPage(strCurrentURL));
-            SqlDataReader reader = BTPDevCupManager.GetDevCupTableByPage(0, this.intPage, this.intPrePage, 0);
+            DataTable reader = BTPDevCupManager.GetDevCupTableByPage(0, this.intPage, this.intPrePage, 0);
             string str2 = BTPAccountManager.GetAccountRowByUserID(this.intUserID)["DevCupIDs"].ToString();
-            while (reader.Read())
+            if (reader != null)
             {
-                string str5;
-                int num4 = (int) reader["DevCupID"];
-                int num = (int) reader["RegCount"];
-                int num2 = (int) reader["Capacity"];
-                num = (int) reader["RegCount"];
-                int num1 = (int) reader["UnionID"];
-                int num3 = (int) reader["WealthCost"];
-                bool flag = (bool) reader["IsSelfUnion"];
-                string str3 = reader["Name"].ToString().Trim();
-                string str4 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + reader["BigLogo"].ToString().Trim() + "' height='50' width='40' border='0'>";
-                if (flag)
+                foreach (DataRow row in reader.Rows)
                 {
-                    str5 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='9' width='10' border='0'>";
+                    string str5;
+                    int num4 = (int)row["DevCupID"];
+                    int num = (int)row["RegCount"];
+                    int num2 = (int)row["Capacity"];
+                    num = (int)row["RegCount"];
+                    int num1 = (int)row["UnionID"];
+                    int num3 = (int)row["WealthCost"];
+                    bool flag = (bool)row["IsSelfUnion"];
+                    string str3 = row["Name"].ToString().Trim();
+                    string str4 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "' height='50' width='40' border='0'>";
+                    if (flag)
+                    {
+                        str5 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='9' width='10' border='0'>";
+                    }
+                    else
+                    {
+                        str5 = "";
+                    }
+                    string str6 = row["UnionName"].ToString().Trim();
+                    string str7 = row["ShortName"].ToString().Trim();
+                    int num5 = (int)row["UserID"];
+                    if (num5 > 0)
+                    {
+                        //str6 = str6;
+                    }
+                    else
+                    {
+                        str6 = str6 + "[" + str7 + "]";
+                    }
+                    this.sbDevCupList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\">" + str4 + "</td>");
+                    this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"left\" style='padding-left:4px'><a href='DevCup.aspx?Type=", this.strType, "&Grade=3&DevCupID=", num4, "'><font color=#3333>", str3, "</font></a></td>" }));
+                    this.sbDevCupList.Append("<td>" + str5 + "</td>");
+                    this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
+                    this.sbDevCupList.Append("<td align=\"center\"><font color=#3333>" + str6 + "</font></td>");
+                    this.sbDevCupList.Append("<td align=\"center\"><font color=#3333>" + num3 + "</font></td>");
+                    if (str2.IndexOf(num4.ToString()) < 0)
+                    {
+                        this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"center\"><a href='DevCup.aspx?Type=DEVCUPREG&Grade=1&DevCupID=", num4, "'>报名</a>| <a href='DevCup.aspx?Type=DEVCUPREG&Grade=2&DevCupID=", num4, "'>查看</a></td></tr>" }));
+                    }
+                    else
+                    {
+                        this.sbDevCupList.Append("<td align=\"center\"><font color=#3333 >报名</font>| <a href='DevCup.aspx?Type=DEVCUPREG&Grade=2&DevCupID=" + num4 + "'>查看</a></td></tr>");
+                    }
+                    this.sbDevCupList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
-                else
-                {
-                    str5 = "";
-                }
-                string str6 = reader["UnionName"].ToString().Trim();
-                string str7 = reader["ShortName"].ToString().Trim();
-                int num5 = (int) reader["UserID"];
-                if (num5 > 0)
-                {
-                    str6 = str6;
-                }
-                else
-                {
-                    str6 = str6 + "[" + str7 + "]";
-                }
-                this.sbDevCupList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\">" + str4 + "</td>");
-                this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"left\" style='padding-left:4px'><a href='DevCup.aspx?Type=", this.strType, "&Grade=3&DevCupID=", num4, "'><font color=#3333>", str3, "</font></a></td>" }));
-                this.sbDevCupList.Append("<td>" + str5 + "</td>");
-                this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
-                this.sbDevCupList.Append("<td align=\"center\"><font color=#3333>" + str6 + "</font></td>");
-                this.sbDevCupList.Append("<td align=\"center\"><font color=#3333>" + num3 + "</font></td>");
-                if (str2.IndexOf(num4.ToString()) < 0)
-                {
-                    this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"center\"><a href='DevCup.aspx?Type=DEVCUPREG&Grade=1&DevCupID=", num4, "'>报名</a>| <a href='DevCup.aspx?Type=DEVCUPREG&Grade=2&DevCupID=", num4, "'>查看</a></td></tr>" }));
-                }
-                else
-                {
-                    this.sbDevCupList.Append("<td align=\"center\"><font color=#3333 >报名</font>| <a href='DevCup.aspx?Type=DEVCUPREG&Grade=2&DevCupID=" + num4 + "'>查看</a></td></tr>");
-                }
-                this.sbDevCupList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
             }
-            reader.Close();
+            //reader.Close();
             if (this.sbDevCupList.ToString().Trim() == "")
             {
                 this.sbDevCupList.Append("<tr><td colspan=7 align=\"center\" height=\"25\">没有自定义杯赛</td></tr>");
@@ -452,19 +461,22 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPSTATS&Grade=1&DevCupID=" + request + "&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbLookListPage.Append(this.GetViewPage(strCurrentURL));
-            SqlDataReader reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request);
-            while (reader.Read())
+            DataTable reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request);
+            if (reader != null)
             {
-                int intUserID = (int) reader["UserID"];
-                string strNickName = reader["NickName"].ToString().Trim();
-                string str3 = reader["ClubName"].ToString().Trim();
-                reader["ShortName"].ToString().Trim();
-                string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
-                this.sbLookList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td align=\"left\" width=\"120\" height=\"25\" style='padding-left:5px;'>" + AccountItem.GetNickNameInfo(intUserID, str3, "Right") + "</td>");
-                this.sbLookList.Append("<td align=\"left\" style='padding-left:5px;'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right") + "</td>");
-                this.sbLookList.Append("<td align=\"center\">" + dev + "</td></tr>");
+                foreach (DataRow row in reader.Rows)
+                {
+                    int intUserID = (int)row["UserID"];
+                    string strNickName = row["NickName"].ToString().Trim();
+                    string str3 = row["ClubName"].ToString().Trim();
+                    row["ShortName"].ToString().Trim();
+                    string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
+                    this.sbLookList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td align=\"left\" width=\"120\" height=\"25\" style='padding-left:5px;'>" + AccountItem.GetNickNameInfo(intUserID, str3, "Right") + "</td>");
+                    this.sbLookList.Append("<td align=\"left\" style='padding-left:5px;'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right") + "</td>");
+                    this.sbLookList.Append("<td align=\"center\">" + dev + "</td></tr>");
+                }
             }
-            reader.Close();
+            //reader.Close();
             if (this.sbLookList.ToString().Trim() == "")
             {
                 this.sbLookList.Append("<tr><td colspan=7 align=\"center\" height=\"25\">暂时没有经理报名</td></tr>");
@@ -482,86 +494,89 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPSTATS&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbDevCupStatshPage.Append(this.GetViewPage(strCurrentURL));
-            SqlDataReader reader = BTPDevCupManager.GetDevCupTableByUserID(0, this.intPage, this.intPrePage, this.intUserID);
-            while (reader.Read())
+            DataTable reader = BTPDevCupManager.GetDevCupTableByUserID(0, this.intPage, this.intPrePage, this.intUserID);
+            if (reader != null)
             {
-                string str4;
-                int intDevCupID = (int) reader["DevCupID"];
-                int num = (int) reader["RegCount"];
-                int num2 = (int) reader["Capacity"];
-                int num1 = (int) reader["UnionID"];
-                int num4 = Convert.ToInt32(reader["Round"]);
-                int num6 = Convert.ToInt32(reader["Status"]);
-                DateTime datIn = (DateTime) reader["MatchTime"];
-                bool flag = (bool) reader["IsSelfUnion"];
-                string str2 = reader["Name"].ToString().Trim();
-                string str3 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + reader["BigLogo"].ToString().Trim() + "'>";
-                if (flag)
+                foreach (DataRow row in reader.Rows)
                 {
-                    str4 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
-                }
-                else
-                {
-                    str4 = "";
-                }
-                string str5 = reader["LadderURL"].ToString().Trim();
-                int num5 = Convert.ToInt32(BTPDevCupRegManager.GetRegRowByDevCupIDUserID(intDevCupID, this.intUserID)["DeadRound"]);
-                this.sbDevCupStats.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\" width=\"50\">" + str3 + "</td>");
-                this.sbDevCupStats.Append("<td width=\"75\" align=\"left\" style='padding-left:4px'><font color=#3333>" + str2 + "</font></td>");
-                this.sbDevCupStats.Append("<td width=20>" + str4 + "</td>");
-                this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"90\" align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
-                if (num5 == 100)
-                {
-                    num5 = num4;
-                }
-                if (num5 < num4)
-                {
+                    string str4;
+                    int intDevCupID = (int)row["DevCupID"];
+                    int num = (int)row["RegCount"];
+                    int num2 = (int)row["Capacity"];
+                    int num1 = (int)row["UnionID"];
+                    int num4 = Convert.ToInt32(row["Round"]);
+                    int num6 = Convert.ToInt32(row["Status"]);
+                    DateTime datIn = (DateTime)row["MatchTime"];
+                    bool flag = (bool)row["IsSelfUnion"];
+                    string str2 = row["Name"].ToString().Trim();
+                    string str3 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "'>";
+                    if (flag)
+                    {
+                        str4 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
+                    }
+                    else
+                    {
+                        str4 = "";
+                    }
+                    string str5 = row["LadderURL"].ToString().Trim();
+                    int num5 = Convert.ToInt32(BTPDevCupRegManager.GetRegRowByDevCupIDUserID(intDevCupID, this.intUserID)["DeadRound"]);
+                    this.sbDevCupStats.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\" width=\"50\">" + str3 + "</td>");
+                    this.sbDevCupStats.Append("<td width=\"75\" align=\"left\" style='padding-left:4px'><font color=#3333>" + str2 + "</font></td>");
+                    this.sbDevCupStats.Append("<td width=20>" + str4 + "</td>");
+                    this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"90\" align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
+                    if (num5 == 100)
+                    {
+                        num5 = num4;
+                    }
+                    if (num5 < num4)
+                    {
+                        switch (num6)
+                        {
+                            case 2:
+                            case 3:
+                                this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='red'><a title='淘汰轮数' style='cursor:hand;'>", num5, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
+                                goto Label_03CD;
+                        }
+                        this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='red'><a title='淘汰轮数' style='cursor:hand;'>", num5, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
+                    }
+                    else
+                    {
+                        switch (num6)
+                        {
+                            case 2:
+                            case 3:
+                                this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='green'><a title='参赛轮数' style='cursor:hand;'>", num4, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
+                                goto Label_03CD;
+                        }
+                        this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='green'><a title='参赛轮数' style='cursor:hand;'>", num4, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
+                    }
+                Label_03CD:
                     switch (num6)
                     {
-                        case 2:
-                        case 3:
-                            this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='red'><a title='淘汰轮数' style='cursor:hand;'>", num5, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
-                            goto Label_03CD;
+                        case 0:
+                            this.sbDevCupStats.Append("<td width=\"80\" align=\"center\"><a title='报名截止时间' style='CURSOR: hand'><font color=#3333>" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</a></font></td>");
+                            break;
+
+                        case 1:
+                            this.sbDevCupStats.Append("<td width=\"80\" align=\"center\"><a title='下轮比赛时间' style='CURSOR: hand'><font color=#3333>" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</a></font></td>");
+                            break;
+
+                        default:
+                            this.sbDevCupStats.Append("<td width=\"80\" align=\"center\"><font color=#3333>已结束</font></td>");
+                            break;
                     }
-                    this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='red'><a title='淘汰轮数' style='cursor:hand;'>", num5, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
-                }
-                else
-                {
-                    switch (num6)
+                    if (num6 == 0)
                     {
-                        case 2:
-                        case 3:
-                            this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='green'><a title='参赛轮数' style='cursor:hand;'>", num4, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
-                            goto Label_03CD;
+                        this.sbDevCupStats.Append(string.Concat(new object[] { "<td align=\"center\"><a href='DevCup.aspx?Type=DEVCUPSTATS&Grade=1&DevCupID=", intDevCupID, "'>查看</a> | <a href='DevCup.aspx?Type=DEVCUPSTATS&Grade=2&DevCupID=", intDevCupID, "'>介绍</a></td></tr>" }));
                     }
-                    this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='green'><a title='参赛轮数' style='cursor:hand;'>", num4, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
+                    else
+                    {
+                        this.sbDevCupStats.Append(string.Concat(new object[] { "<td align=\"center\"><a href='", str5, "'>赛程</a> | <a href='DevCup.aspx?Type=DEVCUPSTATS&Grade=2&DevCupID=", intDevCupID, "'>介绍</a></td></tr>" }));
+                    }
+                    this.sbDevCupStats.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
-            Label_03CD:
-                switch (num6)
-                {
-                    case 0:
-                        this.sbDevCupStats.Append("<td width=\"80\" align=\"center\"><a title='报名截止时间' style='CURSOR: hand'><font color=#3333>" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</a></font></td>");
-                        break;
-
-                    case 1:
-                        this.sbDevCupStats.Append("<td width=\"80\" align=\"center\"><a title='下轮比赛时间' style='CURSOR: hand'><font color=#3333>" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</a></font></td>");
-                        break;
-
-                    default:
-                        this.sbDevCupStats.Append("<td width=\"80\" align=\"center\"><font color=#3333>已结束</font></td>");
-                        break;
-                }
-                if (num6 == 0)
-                {
-                    this.sbDevCupStats.Append(string.Concat(new object[] { "<td align=\"center\"><a href='DevCup.aspx?Type=DEVCUPSTATS&Grade=1&DevCupID=", intDevCupID, "'>查看</a> | <a href='DevCup.aspx?Type=DEVCUPSTATS&Grade=2&DevCupID=", intDevCupID, "'>介绍</a></td></tr>" }));
-                }
-                else
-                {
-                    this.sbDevCupStats.Append(string.Concat(new object[] { "<td align=\"center\"><a href='", str5, "'>赛程</a> | <a href='DevCup.aspx?Type=DEVCUPSTATS&Grade=2&DevCupID=", intDevCupID, "'>介绍</a></td></tr>" }));
-                }
-                this.sbDevCupStats.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
             }
-            reader.Close();
+            //reader.Close();
             if (this.sbDevCupStats.ToString().Trim() == "")
             {
                 this.sbDevCupStats.Append("<tr><td colspan=7 align=\"center\" height=\"25\">没有报名的自定义杯赛</td></tr>");
@@ -589,21 +604,21 @@
             this.sbDevCupManageList.Append("<td width=\"70\">状态</td>");
             this.sbDevCupManageList.Append("<td width=\"130\">操作</td>");
             this.sbDevCupManageList.Append("</tr>");
-            SqlDataReader reader = BTPDevCupManager.GetUserDevCupTable(this.intUserID, this.intPage, this.intPrePage, 0);
-            if (reader.HasRows)
+            DataTable reader = BTPDevCupManager.GetUserDevCupTable(this.intUserID, this.intPage, this.intPrePage, 0);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     string str4;
-                    string str = reader["Name"].ToString().Trim();
-                    bool flag = (bool) reader["IsSelfUnion"];
-                    int num = (int) reader["RegCount"];
-                    int num2 = (int) reader["Capacity"];
-                    int num3 = (byte) reader["Status"];
-                    int num4 = (int) reader["WealthCost"];
-                    int num5 = (int) reader["DevCupID"];
-                    string str2 = reader["BigLogo"].ToString().Trim();
-                    int num6 = (byte) reader["Round"];
+                    string str = row["Name"].ToString().Trim();
+                    bool flag = (bool) row["IsSelfUnion"];
+                    int num = (int) row["RegCount"];
+                    int num2 = (int) row["Capacity"];
+                    int num3 = (byte) row["Status"];
+                    int num4 = (int) row["WealthCost"];
+                    int num5 = (int) row["DevCupID"];
+                    string str2 = row["BigLogo"].ToString().Trim();
+                    int num6 = (byte) row["Round"];
                     if (flag)
                     {
                         string text1 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
@@ -652,7 +667,7 @@
                 this.sbDevCupManageList.Append("<td height=\"55\" colspan=\"7\">暂无自定义杯赛</td>");
                 this.sbDevCupManageList.Append("</tr>");
             }
-            reader.Close();
+            //reader.Close();
             this.sbDevCupManageList.Append("<tr>");
             this.sbDevCupManageList.Append("<td height=\"25\" colspan=\"7\" align=\"right\" style=\"padding-right:5px\">" + this.GetViewPage(strCurrentURL) + "</td>");
             this.sbDevCupManageList.Append("</tr>");
