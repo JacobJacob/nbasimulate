@@ -141,24 +141,24 @@
             this.sbList.Append("\t<td align=\"center\" bgColor=\"#fcc6a4\">操作</td>");
             this.sbList.Append("\t<td align=\"center\" bgColor=\"#fcc6a4\"></td>");
             this.sbList.Append("</tr>");
-            SqlDataReader reader = BTPUnionFieldManager.GetUnionFieldTable(this.intUnionIDH, request, this.intPage, this.intPerPage, false);
-            if (reader.HasRows)
+            DataTable reader = BTPUnionFieldManager.GetUnionFieldTable(this.intUnionIDH, request, this.intPage, this.intPerPage, false);
+            if (reader != null)
             {
                 string str9;
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    string strIn = reader["ClubNameA"].ToString().Trim();
-                    string str4 = reader["UnionNameA"].ToString().Trim();
-                    int num5 = (int) reader["FieldID"];
-                    int num6 = (int) reader["UnionIDH"];
-                    int num7 = (int) reader["UserIDA"];
-                    int num1 = (int) reader["UnionIDA"];
-                    int num8 = (byte) reader["Status"];
-                    int num9 = (int) reader["Reputation"];
-                    int intFMatchID = (int) reader["FMatchID"];
+                    string strIn = row["ClubNameA"].ToString().Trim();
+                    string str4 = row["UnionNameA"].ToString().Trim();
+                    int num5 = (int) row["FieldID"];
+                    int num6 = (int) row["UnionIDH"];
+                    int num7 = (int) row["UserIDA"];
+                    int num1 = (int) row["UnionIDA"];
+                    int num8 = (byte) row["Status"];
+                    int num9 = (int) row["Reputation"];
+                    int intFMatchID = (int) row["FMatchID"];
                     string str5 = "-- --";
-                    DateTime datIn = (DateTime) reader["CreateTime"];
-                    DateTime time3 = (DateTime) reader["MatchTime"];
+                    DateTime datIn = (DateTime) row["CreateTime"];
+                    DateTime time3 = (DateTime) row["MatchTime"];
                     string strNickName = "-- --";
                     string str7 = "";
                     string str8 = "<span style='width:75px;text-align:center'>正式比赛时间" + StringItem.FormatDate(time3.AddSeconds(298.0), "MM-dd hh:mm") + "</span>";
@@ -178,16 +178,16 @@
 
                         case 1:
                         {
-                            int intUserID = (int) reader["UserIDH"];
-                            strNickName = reader["ClubNameH"].ToString().Trim();
+                            int intUserID = (int) row["UserIDH"];
+                            strNickName = row["ClubNameH"].ToString().Trim();
                             strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 0x10);
                             str7 = "已经应战";
                             break;
                         }
                         case 2:
                         {
-                            int num12 = (int) reader["UserIDH"];
-                            strNickName = reader["ClubNameH"].ToString().Trim();
+                            int num12 = (int) row["UserIDH"];
+                            strNickName = row["ClubNameH"].ToString().Trim();
                             DataRow friMatchRowByFID = BTPFriMatchManager.GetFriMatchRowByFID(intFMatchID);
                             int num13 = (int) friMatchRowByFID["ScoreA"];
                             int num14 = (int) friMatchRowByFID["ScoreB"];
@@ -208,7 +208,7 @@
                             if (num8 > 2)
                             {
                                 str7 = "<font color=red>防守失败</font>";
-                                strNickName = reader["ClubNameH"].ToString().Trim();
+                                strNickName = row["ClubNameH"].ToString().Trim();
                                 DataRow row5 = BTPFriMatchManager.GetFriMatchRowByFID(intFMatchID);
                                 if (row5 != null)
                                 {
@@ -241,7 +241,7 @@
                                 }
                                 else
                                 {
-                                    int num21 = (int) reader["UserIDH"];
+                                    int num21 = (int) row["UserIDH"];
                                     strNickName = AccountItem.GetNickNameInfo(num21, strNickName, "Right", 0x10);
                                 }
                             }
@@ -257,7 +257,7 @@
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
-                reader.Close();
+                //reader.Close();
                 int num22 = (int) SessionItem.GetRequest("Back", 0);
                 if (num22 > 0)
                 {
@@ -284,27 +284,27 @@
                 this.intPage = 1;
             }
             this.intPerPage = 10;
-            SqlDataReader reader = BTPUnionFieldManager.GetUnionFieldHistoryTable(this.intUnionIDH, this.intPage, this.intPerPage, false);
-            if (reader.HasRows)
+            DataTable reader = BTPUnionFieldManager.GetUnionFieldHistoryTable(this.intUnionIDH, this.intPage, this.intPerPage, false);
+            if (reader != null)
             {
                 string str7;
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     string str5;
                     string str6;
-                    int num1 = (int) reader["FMatchID"];
-                    int num7 = (int) reader["Reputation"];
-                    int intUserID = (int) reader["UserIDH"];
-                    int num2 = (int) reader["UserIDA"];
-                    int intUnionID = (int) reader["UnionIDH"];
-                    int num4 = (int) reader["UnionIDA"];
-                    string strNickName = reader["ClubNameH"].ToString().Trim();
-                    string str2 = reader["ClubNameA"].ToString().Trim();
-                    string strIn = reader["UnionNameH"].ToString().Trim();
-                    string str4 = reader["UnionNameA"].ToString().Trim();
-                    DateTime datIn = (DateTime) reader["MatchTime"];
+                    int num1 = (int) row["FMatchID"];
+                    int num7 = (int) row["Reputation"];
+                    int intUserID = (int) row["UserIDH"];
+                    int num2 = (int) row["UserIDA"];
+                    int intUnionID = (int) row["UnionIDH"];
+                    int num4 = (int) row["UnionIDA"];
+                    string strNickName = row["ClubNameH"].ToString().Trim();
+                    string str2 = row["ClubNameA"].ToString().Trim();
+                    string strIn = row["UnionNameH"].ToString().Trim();
+                    string str4 = row["UnionNameA"].ToString().Trim();
+                    DateTime datIn = (DateTime) row["MatchTime"];
                     datIn = datIn.AddSeconds(298.0);
-                    int num5 = (byte) reader["Status"];
+                    int num5 = (byte) row["Status"];
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 12);
                     str2 = AccountItem.GetNickNameInfo(num2, str2, "Right", 12);
                     if (num5 == 6)
@@ -337,7 +337,7 @@
                     this.sbList.Append("</tr>\n");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='8'></td></tr>");
                 }
-                reader.Close();
+                //reader.Close();
                 int request = (int) SessionItem.GetRequest("Back", 0);
                 if (request > 0)
                 {
@@ -1012,25 +1012,25 @@
             }
             this.intPerPage = 10;
             this.intUnionIDH = this.intUnionIDMy;
-            SqlDataReader reader = BTPUnionFieldManager.GetUnionFieldMatchTable(this.intUserID, this.intPage, this.intPerPage, false);
-            if (reader.HasRows)
+            DataTable reader = BTPUnionFieldManager.GetUnionFieldMatchTable(this.intUserID, this.intPage, this.intPerPage, false);
+            if (reader != null)
             {
                 string str5;
-                while (reader.Read())
+                foreach(DataRow row in reader.Rows)
                 {
-                    int num = (int) reader["FMatchID"];
-                    int num2 = (int) reader["Reputation"];
-                    int intUserID = (int) reader["UserIDH"];
-                    int num4 = (int) reader["UserIDA"];
-                    int num5 = (int) reader["ClubIDA"];
-                    int num6 = (int) reader["ClubIDB"];
-                    int num7 = (int) reader["ScoreA"];
-                    int num8 = (int) reader["ScoreB"];
-                    string strNickName = reader["ClubNameH"].ToString().Trim();
-                    string str2 = reader["ClubNameA"].ToString().Trim();
-                    DateTime datIn = (DateTime) reader["MatchTime"];
+                    int num = (int) row["FMatchID"];
+                    int num2 = (int) row["Reputation"];
+                    int intUserID = (int) row["UserIDH"];
+                    int num4 = (int) row["UserIDA"];
+                    int num5 = (int) row["ClubIDA"];
+                    int num6 = (int) row["ClubIDB"];
+                    int num7 = (int) row["ScoreA"];
+                    int num8 = (int) row["ScoreB"];
+                    string strNickName = row["ClubNameH"].ToString().Trim();
+                    string str2 = row["ClubNameA"].ToString().Trim();
+                    DateTime datIn = (DateTime) row["MatchTime"];
                     datIn = datIn.AddSeconds(298.0);
-                    byte num1 = (byte) reader["Status"];
+                    byte num1 = (byte) row["Status"];
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 12);
                     str2 = AccountItem.GetNickNameInfo(num4, str2, "Right", 12);
                     string str3 = "";
@@ -1073,7 +1073,7 @@
                     this.sbList.Append("</tr>\n");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='8'></td></tr>");
                 }
-                reader.Close();
+                //reader.Close();
                 int request = (int) SessionItem.GetRequest("Back", 0);
                 if (request > 0)
                 {
