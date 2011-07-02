@@ -42,12 +42,12 @@
                         this.intUserID = Convert.ToInt32(str);
                         if (BTPAccountManager.GetAccountRowByUserID(this.intUserID) != null)
                         {
-                            SqlDataReader reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                            if (reader.Read())
+                            DataRow reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                            if (reader != null)
                             {
                                 this.strDeptTag = reader["DeptTag"].ToString().Trim();
                             }
-                            reader.Close();
+                            //reader.Close();
                             string str2 = Convert.ToString((int) (ServerParameter.intGameCategory + 0x7d0)).Trim();
                             if (this.strDeptTag.IndexOf(str2) == -1)
                             {
@@ -62,12 +62,12 @@
             }
             else if (BTPAccountManager.GetAccountRowByUserID(this.intUserID) != null)
             {
-                SqlDataReader reader2 = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                if (reader2.Read())
+                DataRow reader2 = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                if (reader2 != null)
                 {
                     this.strDeptTag = reader2["DeptTag"].ToString().Trim();
                 }
-                reader2.Close();
+                //reader2.Close();
                 string str4 = Convert.ToString((int) (ServerParameter.intGameCategory + 0x7d0)).Trim();
                 if (this.strDeptTag.IndexOf(str4) == -1)
                 {
