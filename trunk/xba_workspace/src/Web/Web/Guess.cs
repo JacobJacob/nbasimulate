@@ -297,22 +297,22 @@
             string str4 = "";
             string str5 = "";
             string str8 = "";
-            SqlDataReader reader = BTPGuessManager.GetUseGuessTableByHasResult(0, 0, this.intPage, 0x2710);
-            if (reader.HasRows)
+            DataTable reader = BTPGuessManager.GetUseGuessTableByHasResult(0, 0, this.intPage, 0x2710);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     string str6;
                     string str7;
-                    string str = reader["Type"].ToString().Trim();
-                    string str2 = reader["NameA"].ToString().Trim();
-                    string str3 = reader["NameB"].ToString().Trim();
-                    long num = (long) reader["NameAMoney"];
-                    long num2 = (long) reader["NameBMoney"];
-                    int num4 = Convert.ToInt32(reader["MoneyType"]);
-                    int num5 = (int) reader["GuessID"];
-                    bool flag = Convert.ToBoolean(reader["Hot"]);
-                    DateTime datIn = Convert.ToDateTime(reader["EndTime"]);
+                    string str = row["Type"].ToString().Trim();
+                    string str2 = row["NameA"].ToString().Trim();
+                    string str3 = row["NameB"].ToString().Trim();
+                    long num = (long) row["NameAMoney"];
+                    long num2 = (long) row["NameBMoney"];
+                    int num4 = Convert.ToInt32(row["MoneyType"]);
+                    int num5 = (int) row["GuessID"];
+                    bool flag = Convert.ToBoolean(row["Hot"]);
+                    DateTime datIn = Convert.ToDateTime(row["EndTime"]);
                     if (flag)
                     {
                         str = "<font color=red>荐</font>" + str;
@@ -381,7 +381,7 @@
                         this.sbGuess.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                     }
                 }
-                reader.Close();
+                //reader.Close();
             }
             else
             {
@@ -402,15 +402,15 @@
             string str7 = "";
             string str8 = "";
             string str9 = "";
-            SqlDataReader reader = BTPGuessManager.GetGuessRecordTableByUserID(this.intUserID, 0, this.intPage, this.intPrePage);
-            if (reader.HasRows)
+            DataTable reader = BTPGuessManager.GetGuessRecordTableByUserID(this.intUserID, 0, this.intPage, this.intPrePage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     string str;
-                    int intGuessID = (int) reader["GuessID"];
-                    long num = (long) reader["MyMoney"];
-                    bool flag = (bool) reader["ResultType"];
+                    int intGuessID = (int) row["GuessID"];
+                    long num = (long) row["MyMoney"];
+                    bool flag = (bool) row["ResultType"];
                     DataRow guessRowByGuessID = BTPGuessManager.GetGuessRowByGuessID(intGuessID);
                     string str2 = guessRowByGuessID["Type"].ToString().Trim();
                     string str3 = guessRowByGuessID["NameA"].ToString().Trim();
@@ -517,7 +517,7 @@
                     this.sbGuess.Append("<td align=center>" + StringItem.FormatDate(datIn, "MM-dd<br>hh:mm") + "</td><td align=center>" + str6 + "</td></tr>");
                     this.sbGuess.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='8'></td></tr>");
                 }
-                reader.Close();
+                //reader.Close();
             }
             else
             {
