@@ -854,15 +854,15 @@
                 this.intPage = 1;
             }
             this.intPerPage = 8;
-            SqlDataReader championCupKemp = BTPXGameManager.GetChampionCupKemp(this.intPage, this.intPerPage);
-            if (championCupKemp.HasRows)
+            DataTable championCupKemp = BTPXGameManager.GetChampionCupKemp(this.intPage, this.intPerPage);
+            if (championCupKemp != null)
             {
-                while (championCupKemp.Read())
+                foreach (DataRow row in championCupKemp.Rows)
                 {
                     string str2;
-                    string strNickName = championCupKemp["ChampionClubName"].ToString().Trim();
-                    int intUserID = (int) championCupKemp["ChampionUserID"];
-                    int intUnionID = (int) championCupKemp["UnionID"];
+                    string strNickName = row["ChampionClubName"].ToString().Trim();
+                    int intUserID = (int)row["ChampionUserID"];
+                    int intUnionID = (int)row["UnionID"];
                     DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(intUnionID);
                     if (unionRowByID != null)
                     {
@@ -872,8 +872,8 @@
                     {
                         str2 = "暂无联盟";
                     }
-                    string str3 = championCupKemp["NickName"].ToString().Trim();
-                    DateTime datIn = (DateTime) championCupKemp["MatchTime"];
+                    string str3 = row["NickName"].ToString().Trim();
+                    DateTime datIn = (DateTime)row["MatchTime"];
                     this.sbReturn.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbReturn.Append("\t<td align=\"left\">" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20) + "</td>");
                     this.sbReturn.Append("\t<td align=\"left\">" + AccountItem.GetNickNameInfo(intUserID, str3, "Right", 20) + "</td>");
@@ -882,7 +882,7 @@
                     this.sbReturn.Append("</tr>");
                     this.sbReturn.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>");
                 }
-                championCupKemp.Close();
+                //championCupKemp.Close();
                 string strCurrentURL = "ChampionCup.aspx?Tag=" + this.intUserID + "&Kind=KEMP&";
                 this.strScript = this.GetScript(strCurrentURL);
                 this.sbReturn.Append("<tr><td height='25' align='right' colspan='4'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
@@ -1247,23 +1247,23 @@
                 flag = true;
                 this.strMyMsg = "";
             }
-            SqlDataReader xCupMatchByClubID = BTPXCupMatchManager.GetXCupMatchByClubID(request);
-            if (xCupMatchByClubID.HasRows)
+            DataTable xCupMatchByClubID = BTPXCupMatchManager.GetXCupMatchByClubID(request);
+            if (xCupMatchByClubID != null)
             {
-                while (xCupMatchByClubID.Read())
+                foreach (DataRow dataRow in xCupMatchByClubID.Rows)
                 {
                     string str3;
                     string str4;
                     string str9;
-                    int num = (int) xCupMatchByClubID["XCupMatchID"];
-                    int num2 = (int) xCupMatchByClubID["ClubAID"];
-                    int num4 = (int) xCupMatchByClubID["ClubBID"];
-                    int num3 = (int) xCupMatchByClubID["ScoreA"];
-                    int num5 = (int) xCupMatchByClubID["ScoreB"];
-                    string str5 = xCupMatchByClubID["ClubInfoA"].ToString().Trim();
-                    string str6 = xCupMatchByClubID["ClubInfoB"].ToString().Trim();
-                    int num8 = (int) xCupMatchByClubID["ClubOA"];
-                    int num9 = (int) xCupMatchByClubID["ClubOB"];
+                    int num = (int) dataRow["XCupMatchID"];
+                    int num2 = (int) dataRow["ClubAID"];
+                    int num4 = (int) dataRow["ClubBID"];
+                    int num3 = (int) dataRow["ScoreA"];
+                    int num5 = (int) dataRow["ScoreB"];
+                    string str5 = dataRow["ClubInfoA"].ToString().Trim();
+                    string str6 = dataRow["ClubInfoB"].ToString().Trim();
+                    int num8 = (int) dataRow["ClubOA"];
+                    int num9 = (int) dataRow["ClubOB"];
                     if (str5.Length > 1)
                     {
                         string[] strArray = str5.Split(new char[] { '|' });
@@ -1299,8 +1299,8 @@
                     if ((num8 > 0) && (num9 > 0))
                     {
                         flag2 = true;
-                        int num12 = (int) xCupMatchByClubID["OScoreA"];
-                        int num1 = (int) xCupMatchByClubID["OScoreB"];
+                        int num12 = (int) dataRow["OScoreA"];
+                        int num1 = (int) dataRow["OScoreB"];
                         if ((num12 > 0) && (num12 > 0))
                         {
                             str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=5&Tag=", num, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo2.gif' border='0' width='13' height='13'></a>" });
@@ -1347,7 +1347,7 @@
                     this.strMatchList = this.strMatchList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
                     num6++;
                 }
-                xCupMatchByClubID.Close();
+                //xCupMatchByClubID.Close();
                 if (!flag2 && (this.intClubID5 == request))
                 {
                     DataRow xCupRegRowByClubID = BTPXCupRegManager.GetXCupRegRowByClubID(this.intClubID5);
