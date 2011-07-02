@@ -1,7 +1,7 @@
 ﻿namespace Web
 {
     using System;
-    using System.Data.SqlClient;
+    using System.Data;
     using System.Web.UI;
     using Web.DBData;
     using Web.Helper;
@@ -40,8 +40,8 @@
                 {
                     str = "FrameForum.aspx?";
                 }
-                SqlDataReader reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                if (reader.Read())
+                DataRow reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                if (reader != null)
                 {
                     str2 = reader["UserName"].ToString().Trim();
                     str3 = reader["Password"].ToString().Trim();
@@ -51,7 +51,7 @@
                     str2 = "";
                     str3 = "";
                 }
-                reader.Close();
+                //reader.Close();
                 this.strCenterURL = ServerItem.ToFrameTopicURL(0, str2, str3, this.intUserID, str);
                 this.InitializeComponent();
                 base.OnInit(e);
