@@ -64,8 +64,8 @@
                     num2 = 1;
                     num3 = 30;
                 }
-                SqlDataReader userRowByUserName = ROOTUserManager.GetUserRowByUserName(this.sUsername);
-                if (userRowByUserName.Read())
+                DataRow userRowByUserName = ROOTUserManager.GetUserRowByUserName(this.sUsername);
+                if (userRowByUserName != null)
                 {
                     this.intUserID = (int) userRowByUserName["UserID"];
                     this.strUserName = this.sUsername;
@@ -88,11 +88,11 @@
                             base.Response.End();
                         }
                     }
-                    userRowByUserName.Close();
+                    //userRowByUserName.Close();
                 }
                 else
                 {
-                    userRowByUserName.Close();
+                    //userRowByUserName.Close();
                     base.Response.Write("iReturn=0&iServerID=0&iAreaID=0&sUsername=" + this.strUserName + "&iCardType=" + this.iCardType + "&iJNetBillID=" + this.iJNetBillID + "&iBizBillID=" + this.iBizBillID + "&sSign=" + this.sSign + "&sMessage=未找到相关用户，充值失败！");
                     base.Response.End();
                 }
