@@ -3,28 +3,31 @@
 
 from subprocess import Popen, PIPE
 
+from xba.config import CLIENT_EXE_PATH
+
 from xba.business import dev_match_manager
 from xba.business import game_manager
 from xba.business import club_manager
+from xba.business import arrange_manager
+from xba.business import only_one_match_manager
 from base import BaseClient
+from xba.client import db_backup
 from xba.common.decorators import ensure_success
-
+from xba.common.constants.club import ClubCategory
+from xba.common import single_process
 
 class RoundUpdateHandler(BaseClient):
     
-
-    MATCH_ENGINE_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
+    CLIENT_NAME = "round_update_handler"
     
     def __init__(self):
+        super(RoundUpdateHandler, self).__init__(RoundUpdateHandler.CLIENT_NAME)
         self._days = -1
         self._turn = -1
         self._season = -1
     
     def work(self):
         self.log("start round update for season:%s, round:%s" % (self._season, self._turn))
-        
-        #before run
-        #self.before_run()
         
         if self._days == 14:
             self.log("season truce")
@@ -43,31 +46,54 @@ class RoundUpdateHandler(BaseClient):
             #normal update step two
             self.normal_update_step_two()
             
+        #update arrange level
+        self.log("start update arrange level")
+        self.update_arrange_lvl()
+        
+        #only one update
+        self.log("start only one update")
+        self.only_one_update()  
+        
         #after run
         self.after_run()
             
         return "exist"
     
+    def only_one_update(self):
+        """胜者为王更新"""
+        only_one_match_manager.send_money_by_only_day_point()
+        only_one_match_manager.night_update_only_one_game()
+    
+    def update_arrange_lvl(self):
+        """战术等级更新"""
+        arrange_manager.update_arrange_lvl(ClubCategory.STREET)
+        arrange_manager.update_arrange_lvl(ClubCategory.PROFESSION)
     
     def normal_update_step_one(self):
         """常规数据更新1(赛前)"""
-        command = "%s %s %s" % (RoundUpdateHandler.MATCH_ENGINE_EXE_PATH, "round_update_handler", 1)
+        command = "%s %s %s" % (CLIENT_EXE_PATH, "round_update_handler", 1)
         self.log("start to run command:%s" % command) 
         self.call_cmd(command)
         
     def normal_update_step_two(self):
         """常规数据更新2(赛后)"""
-        command = "%s %s %s" % (RoundUpdateHandler.MATCH_ENGINE_EXE_PATH, "round_update_handler", 2)
+        command = "%s %s %s" % (CLIENT_EXE_PATH, "round_update_handler", 2)
         self.log("start to run command:%s" % command) 
         self.call_cmd(command)
     
     def before_run(self):
         """运行前的初始化"""
+        self.log("start to backup database")
+        
         self.log("before run")
         game_info = self.get_game_info()
         self._days = game_info["Days"]
         self._turn = game_info["Turn"]
         self._season = game_info["Season"]
+        
+    def back_up(self):
+        """备份数据"""
+        return db_backup.backup(file_name="round_update_handler")
         
     def after_run(self):
         """结束前的收尾动作"""
@@ -104,7 +130,7 @@ class RoundUpdateHandler(BaseClient):
                 self.log("match had finished")
                 continue
             
-            command = "%s %s %s" % (RoundUpdateHandler.MATCH_ENGINE_EXE_PATH, "dev_match_handler", match_id)
+            command = "%s %s %s" % (CLIENT_EXE_PATH, "dev_match_handler", match_id)
             self.log("start to run command:%s" % command)
             
             self.call_cmd(command)
@@ -159,11 +185,13 @@ class RoundUpdateHandler(BaseClient):
             line = p.stdout.readline()
             if not line:
                 break
-            self.log(line)
+            self.log(line.replace("\n", ""))
             
         if p.wait() == 0:
             self.log("call %s success" % cmd)
  
 if __name__ == "__main__":
+    s = single_process.SingleProcess("RoundUpdateHandler")
+    s.check()
     handler = RoundUpdateHandler()
     handler.start()

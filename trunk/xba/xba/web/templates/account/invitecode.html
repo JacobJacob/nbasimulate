@@ -10,7 +10,7 @@
      
       
      
-  service = new rpc.ServiceProxy("/services/account/", {asynchronous:false, methods: ['add_invitec_code',]});
+  service = new rpc.ServiceProxy("/services/account/", {asynchronous:false, methods: ['add_invite_code', 'assign_invite_code',]});
   
   $(document).ready(function(){
    
@@ -29,13 +29,18 @@
 	     });
 	});
 	
+	$('a.assign').click(function(){
+	    var code = $(this).parent().parent().attr('code');
+	    service.assign_invite_code(code);
+	});
+	
     $('#add_form input.button').click(function(){
 		var count = $('#count').val();
         if(!count){
 		   alert("请输入数量");
 		}else{
 		    try{
-		       service.add_invitec_code(count);
+		       service.add_invite_code(count);
 	           window.location.reload() ;
 			}catch(e){
 			   alert(e.message);
@@ -72,16 +77,18 @@
     <th>状态</th>
     <th>创建时间</th>
     <th>更新时间</th>
+    <th>分配</th>
   </thead>
   <tbody>
     {% if infos %}
       {% for info in infos %}
-       <tr id="{{ info.id }}">
+       <tr code="{{ info.code }}">
          <td>{{ info.id }}</td>
          <td>{{ info.code }}</td>
          <td>{{ info.status|invite_code_status }}</td>
          <td>{{ info.created_time }}</td>
          <td>{{ info.updated_time }}</td>
+         <td><a href="#" class="assign">分配</a></td>
        </tr>
       {% endfor %}
     {% endif %}

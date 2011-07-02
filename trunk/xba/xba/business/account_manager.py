@@ -28,7 +28,7 @@ def get_invite_code_list(page, pagesize, status):
         infos = session.query(InviteCode).filter(InviteCode.status==status).order_by(InviteCode.id).offset(index).limit(pagesize).all()
     return total, infos
 
-def add_invitec_code(count):
+def add_invite_code(count):
     """增加邀请码"""
     session = Session()
     for _ in range(int(count)):
@@ -40,6 +40,13 @@ def add_invitec_code(count):
         session.add(invite_code)
     session.commit()
     
+def assign_invite_code(code):
+    """分配邀请码"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("update BTP_InviteCode set Status = 2, UpdatedTime = getdate() where code = '%s'" % code)
+    finally:
+        cursor.close()
     
 CODE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
         'a', 'b', 'c', 'd', 'e', 'f' ,'g', 'h', 'i', 'j', 'k',

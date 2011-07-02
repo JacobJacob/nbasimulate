@@ -23,3 +23,7 @@ class MainXMLTag(ConstantBase):
     NEXT_CLUB_SAY_HOME = "NClubSayH"
     NEXT_CLUB_SAY_AWAY = "NClubSayA"
     
+class ClubCategory(ConstantBase):
+    PROFESSION = 5
+    STREET = 3
+    

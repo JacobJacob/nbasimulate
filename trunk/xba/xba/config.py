@@ -18,6 +18,7 @@ class PathSettings:
     WEB_STATIC_FILE = WORKING_FOLDER + "/static_file"
     PLANTASKS_FILE = WORKING_FOLDER + "/plantasks.json"
     WEB_LOGS = WORKING_FOLDER + '/nginx/logs' # nginx日志
+    DB_BACKUP = WORKING_FOLDER + '/sqlserver/backup' # nginx日志
     if not os.path.exists(EXCEPTION):
         os.makedirs(EXCEPTION)
     if not os.path.exists(FILE_LOCKER):
@@ -30,6 +31,8 @@ class PathSettings:
         os.makedirs(WEB_LOGS)
     if not os.path.exists(LOG):
         os.makedirs(LOG)
+    if not os.path.exists(DB_BACKUP):
+        os.makedirs(DB_BACKUP)
     PROJECT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class DbSetting:

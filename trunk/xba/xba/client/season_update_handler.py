@@ -13,7 +13,10 @@ from xba.client.dev_match_handler import DevMatchHandler
 
 class SeasonUpdateHandler(BaseClient):
     
+    CLIENT_NAME = "season_update_handler"
+    
     def __init__(self):
+        super(self.__class__, self).__init__(self.__class__.CLIENT_NAME)
         self.__dev_level_sum = -1
         self.__season = -1
     
@@ -124,7 +127,7 @@ class SeasonUpdateHandler(BaseClient):
         """获取最后一支球队"""
         i = len(club_infos)
         while i > 0:
-            club_info = club_infos[i-1]
+            club_info = club_infos[i - 1]
             if club_info["ClubID"] > 0:
                 if club_info["DevCode"] != dev_code:
                     return club_info
@@ -206,7 +209,7 @@ class SeasonUpdateHandler(BaseClient):
         if level == 1:
             return ""
         
-        base  = ""
+        base = ""
         while sort > 0:
             m = sort % 2
             sort = sort / 2

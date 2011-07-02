@@ -45,7 +45,6 @@ class DevMatchHandler(object):
     def dev_assign(self):   
         info = self.get_full_dev()
         if not info:
-            print "return"
             return
             
         dev_code = info["devcode"]
