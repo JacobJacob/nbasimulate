@@ -186,7 +186,7 @@
             {
                 this.intPage = 1;
             }
-            DataTable reader = BTPUnionManager.GetMessageByUnionID(intUnionID, this.intPage, this.intPerPage, false);
+            DataTable reader = BTPUnionManager.GetMessageByUnionID(intUnionID, this.intPage, this.intPerPage, false, true);
             if (reader != null)
             {
                 foreach (DataRow row in reader.Rows)
