@@ -471,7 +471,7 @@
                         this.strMsg = strAnnounce + "<a href='" + DBLogin.URLString(40) + "MemberCenter.aspx'><img src='" + SessionItem.GetImageURL() + "passport.gif' width='51' height='24' border='0'></a>&nbsp;";
                     }
                     object strMsg = this.strMsg;
-                    this.strMsg = string.Concat(new object[] { strMsg, "<a href='Main_P.aspx?Tag=", this.intUserID, "&Type=SETAUTOTRAIN' target='Main'><img src='", SessionItem.GetImageURL(), "offlinetrain.gif' width='66' height='24' border='0'></a>&nbsp;" });
+                    this.strMsg = string.Concat(new object[] { strMsg, "<a href='http://weibo.com/wdjxba' target='_blank'><img src='", SessionItem.GetImageURL(), "offlinetrain.gif' width='66' height='24' border='0'></a>&nbsp;" });
                     strAnnounce = this.strMsg;
                     this.strMsg = strAnnounce + "<a href='" + StringItem.GetLogoutURL() + "'><img src='" + SessionItem.GetImageURL() + "quit.gif' width='40' height='24' border='0'></a></td></tr></table>";
                     strMsg = this.strSetting;
