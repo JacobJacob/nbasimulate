@@ -229,174 +229,438 @@
 
         private void FMatchHistory()
         {
-            string str2;
-            string str5;
-            string str7;
-            this.sbList = new StringBuilder();
-            string strCurrentURL = "FMatchCenter.aspx?Type=TRAINCENTER&";
-            this.intPerPage = 10;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
-            this.GetMsgTotal();
-            this.GetMsgScript(strCurrentURL);
-            SqlDataReader reader = BTPFriMatchManager.GetHistoryFriMatchTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            SqlDataReader reader = null;
+            try
             {
-                goto Label_0805;
-            }
-            this.sbList.Append("<tr><td height='25' colspan='7' align='center'>没有历史约战！</td></tr>");
-            goto Label_0810;
-        Label_077D:
-            this.sbList.Append("<td>" + str5 + "</td>");
-            this.sbList.Append("<td>" + str2 + "</td>");
-            this.sbList.Append("<td>" + str7 + "</td>");
-            this.sbList.Append("</tr>");
-            this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
-        Label_0805:
-            if (reader.Read())
-            {
-                string str6;
-                int num7 = (int) reader["FMatchID"];
-                int num = (int) reader["ClubIDA"];
-                int num2 = (int) reader["ClubIDB"];
-                int num8 = (int) reader["ScoreA"];
-                int num9 = (int) reader["ScoreB"];
-                byte num3 = (byte) reader["Category"];
-                int num10 = (byte) reader["Type"];
-                int num11 = (int) reader["WealthA"];
-                int num12 = (int) reader["WealthB"];
-                int num13 = (int) reader["ClubAPoint"];
-                int num14 = (int) reader["ClubBPoint"];
-                if (num10 == 3)
+                string str2;
+                string str5;
+                string str7;
+                this.sbList = new StringBuilder();
+                string strCurrentURL = "FMatchCenter.aspx?Type=TRAINCENTER&";
+                this.intPerPage = 10;
+                this.intPage = (int)SessionItem.GetRequest("Page", 0);
+                this.GetMsgTotal();
+                this.GetMsgScript(strCurrentURL);
+                reader = BTPFriMatchManager.GetHistoryFriMatchTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
+                if (reader.HasRows)
                 {
-                    str6 = "<font color='green'>街球<font>";
-                    if (num3 == 2)
+                    goto Label_0805;
+                }
+                this.sbList.Append("<tr><td height='25' colspan='7' align='center'>没有历史约战！</td></tr>");
+                goto Label_0810;
+            Label_077D:
+                this.sbList.Append("<td>" + str5 + "</td>");
+                this.sbList.Append("<td>" + str2 + "</td>");
+                this.sbList.Append("<td>" + str7 + "</td>");
+                this.sbList.Append("</tr>");
+                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
+            Label_0805:
+                if (reader.Read())
+                {
+                    string str6;
+                    int num7 = (int)reader["FMatchID"];
+                    int num = (int)reader["ClubIDA"];
+                    int num2 = (int)reader["ClubIDB"];
+                    int num8 = (int)reader["ScoreA"];
+                    int num9 = (int)reader["ScoreB"];
+                    byte num3 = (byte)reader["Category"];
+                    int num10 = (byte)reader["Type"];
+                    int num11 = (int)reader["WealthA"];
+                    int num12 = (int)reader["WealthB"];
+                    int num13 = (int)reader["ClubAPoint"];
+                    int num14 = (int)reader["ClubBPoint"];
+                    if (num10 == 3)
                     {
-                        str7 = "--";
-                    }
-                    else
-                    {
-                        str7 = string.Concat(new object[] { 
+                        str6 = "<font color='green'>街球<font>";
+                        if (num3 == 2)
+                        {
+                            str7 = "--";
+                        }
+                        else
+                        {
+                            str7 = string.Concat(new object[] { 
                             "<a href='", Config.GetDomain(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                             "' target='_blank'>统计</a>"
                          });
-                    }
-                }
-                else
-                {
-                    str6 = "<font color='red'>职业</font>";
-                    if (num3 == 2)
-                    {
-                        str7 = "--";
+                        }
                     }
                     else
                     {
-                        str7 = string.Concat(new object[] { 
+                        str6 = "<font color='red'>职业</font>";
+                        if (num3 == 2)
+                        {
+                            str7 = "--";
+                        }
+                        else
+                        {
+                            str7 = string.Concat(new object[] { 
                             "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                             "' target='_blank'>统计</a>"
                          });
+                        }
                     }
-                }
-                byte num4 = (byte) reader["Status"];
-                if (num4 == 3)
-                {
-                    str7 = "<font color='red'>比赛取消</font>";
-                }
-                reader["Intro"].ToString().Trim();
-                DateTime datIn = (DateTime) reader["CreateTime"];
-                str2 = StringItem.FormatDate(datIn, "MM-dd hh:mm");
-                string strNickName = reader["ClubInfoA"].ToString().Trim();
-                string str4 = reader["ClubInfoB"].ToString().Trim();
-                str5 = reader["ChsCategory"].ToString().Trim();
-                string[] strArray = strNickName.Split(new char[] { '|' });
-                int intUserID = Convert.ToInt32(strArray[0]);
-                strNickName = strArray[1].Trim();
-                string[] strArray2 = str4.Split(new char[] { '|' });
-                int num6 = Convert.ToInt32(strArray2[0]);
-                str4 = strArray2[1].Trim();
-                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                this.sbList.Append("<td height='32' align='center'>" + str6 + "</td>");
-                switch (num3)
-                {
-                    case 3:
-                        this.sbList.Append(string.Concat(new object[] { "<td height='32'><div>", MessageItem.GetNickNameInfo(intUserID, strNickName, 1), "</div><div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
-                        this.sbList.Append(string.Concat(new object[] { "<td>", num8, ":", num9, "</td>" }));
-                        this.sbList.Append(string.Concat(new object[] { "<td><div>", MessageItem.GetNickNameInfo(num6, str4, 1), "</div><div><a title='接受方支付游戏币'>", num12, "</a></div></td>" }));
-                        goto Label_077D;
+                    byte num4 = (byte)reader["Status"];
+                    if (num4 == 3)
+                    {
+                        str7 = "<font color='red'>比赛取消</font>";
+                    }
+                    reader["Intro"].ToString().Trim();
+                    DateTime datIn = (DateTime)reader["CreateTime"];
+                    str2 = StringItem.FormatDate(datIn, "MM-dd hh:mm");
+                    string strNickName = reader["ClubInfoA"].ToString().Trim();
+                    string str4 = reader["ClubInfoB"].ToString().Trim();
+                    str5 = reader["ChsCategory"].ToString().Trim();
+                    string[] strArray = strNickName.Split(new char[] { '|' });
+                    int intUserID = Convert.ToInt32(strArray[0]);
+                    strNickName = strArray[1].Trim();
+                    string[] strArray2 = str4.Split(new char[] { '|' });
+                    int num6 = Convert.ToInt32(strArray2[0]);
+                    str4 = strArray2[1].Trim();
+                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    this.sbList.Append("<td height='32' align='center'>" + str6 + "</td>");
+                    switch (num3)
+                    {
+                        case 3:
+                            this.sbList.Append(string.Concat(new object[] { "<td height='32'><div>", MessageItem.GetNickNameInfo(intUserID, strNickName, 1), "</div><div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
+                            this.sbList.Append(string.Concat(new object[] { "<td>", num8, ":", num9, "</td>" }));
+                            this.sbList.Append(string.Concat(new object[] { "<td><div>", MessageItem.GetNickNameInfo(num6, str4, 1), "</div><div><a title='接受方支付游戏币'>", num12, "</a></div></td>" }));
+                            goto Label_077D;
 
-                    case 4:
-                        if (num13 == 0)
-                        {
-                            this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(intUserID, strNickName, 1), "<div><a title='发起方支付游戏币'>", num11, "[+", num14, "]</a></div></td>" }));
-                        }
-                        else
-                        {
-                            this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(intUserID, strNickName, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
-                        }
-                        this.sbList.Append(string.Concat(new object[] { "<td>", num8, ":", num9, "</td>" }));
-                        if (num14 == 0)
-                        {
-                            this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str4, 1), "<div><a title='发起方支付游戏币'>", num12, "[+", num13, "]</a></div></td>" }));
-                        }
-                        else
-                        {
-                            this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str4, 1), "<div><a title='发起方支付游戏币'>", num12, "</a></div></td>" }));
-                        }
-                        goto Label_077D;
+                        case 4:
+                            if (num13 == 0)
+                            {
+                                this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(intUserID, strNickName, 1), "<div><a title='发起方支付游戏币'>", num11, "[+", num14, "]</a></div></td>" }));
+                            }
+                            else
+                            {
+                                this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(intUserID, strNickName, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
+                            }
+                            this.sbList.Append(string.Concat(new object[] { "<td>", num8, ":", num9, "</td>" }));
+                            if (num14 == 0)
+                            {
+                                this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str4, 1), "<div><a title='发起方支付游戏币'>", num12, "[+", num13, "]</a></div></td>" }));
+                            }
+                            else
+                            {
+                                this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str4, 1), "<div><a title='发起方支付游戏币'>", num12, "</a></div></td>" }));
+                            }
+                            goto Label_077D;
+                    }
+                    this.sbList.Append("<td>" + MessageItem.GetNickNameInfo(intUserID, strNickName, 1) + "</td>");
+                    this.sbList.Append(string.Concat(new object[] { "<td>", num8, ":", num9, "</td>" }));
+                    this.sbList.Append("<td>" + MessageItem.GetNickNameInfo(num6, str4, 1) + "</td>");
+                    goto Label_077D;
                 }
-                this.sbList.Append("<td>" + MessageItem.GetNickNameInfo(intUserID, strNickName, 1) + "</td>");
-                this.sbList.Append(string.Concat(new object[] { "<td>", num8, ":", num9, "</td>" }));
-                this.sbList.Append("<td>" + MessageItem.GetNickNameInfo(num6, str4, 1) + "</td>");
-                goto Label_077D;
+            Label_0810:
+                this.sbList.Append("<tr><td height='30' align='right' colspan='7'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>");
             }
-        Label_0810:
-            reader.Close();
-            this.sbList.Append("<tr><td height='30' align='right' colspan='7'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>");
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
         }
 
         private void FMatchList()
         {
-            int num;
-            int num2;
-            byte num3;
-            string str;
-            DateTime time;
-            string str2;
-            byte num4;
-            string str3;
-            string str4;
-            string str5;
-            string str6;
-            int num5;
-            int num6;
-            int num7;
-            int num8;
-            string str7;
-            int num9;
-            int num10;
-            int num11;
-            int num12;
-            int num13;
-            int num14;
-            this.sbList = new StringBuilder();
-            string strCurrentURL = "FMatchCenter.aspx?Type=TRAINCENTER&";
-            this.intPerPage = 10;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
-            this.GetMsgTotal();
-            this.GetMsgScript(strCurrentURL);
-            DataTable table = BTPFriMatchManager.GetFriMatchRow2ByUserID(this.intUserID);
-            if (table != null)
+            SqlDataReader reader = null;
+            try
             {
-                foreach (DataRow row in table.Rows)
+                int num;
+                int num2;
+                byte num3;
+                string str;
+                DateTime time;
+                string str2;
+                byte num4;
+                string str3;
+                string str4;
+                string str5;
+                string str6;
+                int num5;
+                int num6;
+                int num7;
+                int num8;
+                string str7;
+                int num9;
+                int num10;
+                int num11;
+                int num12;
+                int num13;
+                int num14;
+                this.sbList = new StringBuilder();
+                string strCurrentURL = "FMatchCenter.aspx?Type=TRAINCENTER&";
+                this.intPerPage = 10;
+                this.intPage = (int)SessionItem.GetRequest("Page", 0);
+                this.GetMsgTotal();
+                this.GetMsgScript(strCurrentURL);
+                DataTable table = BTPFriMatchManager.GetFriMatchRow2ByUserID(this.intUserID);
+                if (table != null)
                 {
-                    num7 = (int) row["FMatchID"];
-                    num = (int) row["ClubIDA"];
-                    num2 = (int) row["ClubIDB"];
-                    num11 = (int) row["WealthA"];
-                    num12 = (int) row["WealthB"];
-                    num13 = (int) row["ClubAPoint"];
-                    num14 = (int) row["ClubBPoint"];
-                    num3 = (byte) row["Category"];
-                    num8 = (byte) row["Type"];
+                    foreach (DataRow row in table.Rows)
+                    {
+                        num7 = (int)row["FMatchID"];
+                        num = (int)row["ClubIDA"];
+                        num2 = (int)row["ClubIDB"];
+                        num11 = (int)row["WealthA"];
+                        num12 = (int)row["WealthB"];
+                        num13 = (int)row["ClubAPoint"];
+                        num14 = (int)row["ClubBPoint"];
+                        num3 = (byte)row["Category"];
+                        num8 = (byte)row["Type"];
+                        if (num8 == 3)
+                        {
+                            str7 = "<font color='green'>街球<font>";
+                        }
+                        else
+                        {
+                            str7 = "<font color='red'>职业</font>";
+                        }
+                        num4 = (byte)row["Status"];
+                        str = row["Intro"].ToString().Trim();
+                        time = (DateTime)row["CreateTime"];
+                        str3 = StringItem.FormatDate(time, "hh:mm:ss");
+                        str4 = row["ClubInfoA"].ToString().Trim();
+                        str5 = row["ClubInfoB"].ToString().Trim();
+                        str6 = row["ChsCategory"].ToString().Trim();
+                        string[] strArray = str4.Split(new char[] { '|' });
+                        num5 = Convert.ToInt32(strArray[0]);
+                        str4 = strArray[1].Trim();
+                        string[] strArray2 = str5.Split(new char[] { '|' });
+                        num6 = Convert.ToInt32(strArray2[0]);
+                        str5 = strArray2[1].Trim();
+                        num9 = (int)row["ScoreA"];
+                        num10 = (int)row["ScoreB"];
+                        if (num8 == 3)
+                        {
+                            if ((num4 == 1) && (num == this.intClubID3))
+                            {
+                                str2 = "等待 | <a href='DelFriMatch.aspx?FMatchID=" + num7 + "&Type=3'>取消</a>";
+                                str3 = "<a  style='cursor:hand;' title='发出邀请时间'>" + str3 + "</a>";
+                            }
+                            else if ((num4 == 1) && (num2 == this.intClubID3))
+                            {
+                                str2 = string.Concat(new object[] { "<a href='ChangeFriMatch.aspx?FMatchID=", num7, "&Status=2&Type=3&UserIDA=", num5, "'>接受</a> | <a href='ChangeFriMatch.aspx?FMatchID=", num7, "&Status=3&Type=3&UserIDA=", num5, "'>拒绝</a>" });
+                                str3 = "<a  style='cursor:hand;' title='发出邀请时间'>" + str3 + "</a>";
+                            }
+                            else if (num4 == 2)
+                            {
+                                str2 = "<span style='cursor:pointer;' >比赛中</span>";
+                                str3 = "<a  style='cursor:hand;' title='比赛开始时间'>" + str3 + "</a>";
+                            }
+                            else if ((num4 == 3) && (num == this.intClubID3))
+                            {
+                                str2 = "被拒绝";
+                                str3 = "--";
+                            }
+                            else if ((num4 == 3) && (num2 == this.intClubID3))
+                            {
+                                str2 = "已拒绝请求";
+                                str3 = "--";
+                            }
+                            else
+                            {
+                                str2 = string.Concat(new object[] { 
+                                "<a href='", Config.GetDomain(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                                "' target='_blank'>统计</a>"
+                             });
+                            }
+                        }
+                        else if ((num4 == 1) && (num == this.intClubID5))
+                        {
+                            str2 = "等待 | <a href='DelFriMatch.aspx?FMatchID=" + num7 + "&Type=5'>取消</a>";
+                            str3 = "<a  style='cursor:pointer;' title='发出邀请时间'>" + str3 + "</a>";
+                        }
+                        else if ((num4 == 1) && (num2 == this.intClubID5))
+                        {
+                            str2 = string.Concat(new object[] { "<a href='ChangeFriMatch.aspx?FMatchID=", num7, "&Status=2&Type=5'>接受</a> | <a href='ChangeFriMatch.aspx?FMatchID=", num7, "&&Status=3&Type=5'>拒绝</a>" });
+                            str3 = "<a  style='cursor:pointer;' title='发出邀请时间'>" + str3 + "</a>";
+                        }
+                        else if (num4 == 2)
+                        {
+                            str2 = "<span style='cursor:pointer;' >比赛中</span>";
+                            str3 = StringItem.FormatDate(DateTime.Now.AddMinutes(5.0), "hh:mm:ss");
+                        }
+                        else if ((num4 == 3) && (num == this.intClubID5))
+                        {
+                            str2 = "被拒绝";
+                            str3 = "--";
+                        }
+                        else if ((num4 == 3) && (num2 == this.intClubID5))
+                        {
+                            str2 = "已拒绝请求";
+                            str3 = "--";
+                        }
+                        else
+                        {
+                            str3 = "已结束";
+                            str2 = string.Concat(new object[] { 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                            "' target='_blank'>统计</a>"
+                         });
+                        }
+                        TimeSpan span = (TimeSpan)(time.AddMinutes(5.0) - DateTime.Now);
+                        if (span.TotalSeconds > 0.0)
+                        {
+                            this.sbList.Append(string.Concat(new object[] { "<script type=\"text/javascript\" language=\"javascript\">var Counter", num7, " = new clsCounter(\"Counter", num7, "\", \"已结束\");\n" }));
+                            string str9 = "<a href=\"FMatchCenter.aspx?Type=TRAINCENTER&Page=1\">刷新列表</a>";
+                            this.sbList.Append(string.Concat(new object[] { "Counter", num7, ".init('FTime", num7, "','Opa", num7, "','", str9, "',", span.TotalSeconds, ",null);\n</script>" }));
+                        }
+                        else
+                        {
+                            str3 = "00:00:00";
+                            str2 = "<span style='cursor:pointer;' title='比赛延时请稍候。'>比赛延时</span>";
+                        }
+                        this.sbList.Append("<tr class='BarContent' style=\"background-color:#FBE2D4\" onmouseover=\"this.style.backgroundColor=''\" onmouseout=\"this.style.backgroundColor='#FBE2D4'\">");
+                        this.sbList.Append("<td align='center' height='32'>" + str7 + "</td>");
+                        switch (num3)
+                        {
+                            case 3:
+                                this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
+                                if ((num9 == 0) && (num10 == 0))
+                                {
+                                    this.sbList.Append("<td>--:--</td>");
+                                }
+                                else
+                                {
+                                    this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
+                                }
+                                this.sbList.Append(string.Concat(new object[] { "<td>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='接受方支付游戏币'>", num12, "</a></div></td>" }));
+                                break;
+
+                            case 4:
+                                if (num13 > 0)
+                                {
+                                    this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
+                                    if ((num9 == 0) && (num10 == 0))
+                                    {
+                                        this.sbList.Append("<td>--:--</td>");
+                                    }
+                                    else
+                                    {
+                                        this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
+                                    }
+                                    this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='发起方支付游戏币'>", num12, "[+", num13, "]</a></div></td>" }));
+                                }
+                                else
+                                {
+                                    this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "[+", num14, "]</a></div></td>" }));
+                                    if ((num9 == 0) && (num10 == 0))
+                                    {
+                                        this.sbList.Append("<td>--:--</td>");
+                                    }
+                                    else
+                                    {
+                                        this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
+                                    }
+                                    this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='发起方支付游戏币'>", num12, "</a></div></td>" }));
+                                }
+                                break;
+
+                            default:
+                                this.sbList.Append("<td height='32' align='right' style='padding-right:4px;'>" + MessageItem.GetNickNameInfoTitle(num5, str4, 1, str4 + "说：" + str) + "</td>");
+                                if ((num9 == 0) && (num10 == 0))
+                                {
+                                    this.sbList.Append("<td>-- : --</td>");
+                                }
+                                else
+                                {
+                                    this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
+                                }
+                                this.sbList.Append("<td align='left' style='padding-left:3px'>" + MessageItem.GetNickNameInfo(num6, str5, 1) + "</td>");
+                                break;
+                        }
+                        this.sbList.Append("<td>" + str6 + "</td>");
+                        this.sbList.Append(string.Concat(new object[] { "<td id=\"FTime", num7, "\">", str3, "</td>" }));
+                        this.sbList.Append(string.Concat(new object[] { "<td align='left' style='padding-left:3px' id=\"Opa", num7, "\">", str2, "</td>" }));
+                        this.sbList.Append("</tr>");
+                        this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
+                    }
+                }
+                int count = 0;
+                if (table != null)
+                {
+                    count = table.Rows.Count;
+                }
+                this.intPerPage = 9 - count;
+                reader = BTPFriMatchManager.GetFriMatchTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
+                if (reader.HasRows || (count >= 1))
+                {
+                    goto Label_1796;
+                }
+                this.sbList.Append("<tr><td height='25' colspan='7' align='center'>没有约战！</td></tr>");
+                goto Label_17A2;
+            Label_132D:
+                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                this.sbList.Append("<td align='center' height='32'>" + str7 + "</td>");
+                switch (num3)
+                {
+                    case 3:
+                        this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
+                        this.sbList.Append(string.Concat(new object[] { "<td>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='接受方支付游戏币'>", num12, "</a></div></td>" }));
+                        break;
+
+                    case 4:
+                        if (num13 > 0)
+                        {
+                            this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
+                            if ((num9 == 0) && (num10 == 0))
+                            {
+                                this.sbList.Append("<td>--:--</td>");
+                            }
+                            else
+                            {
+                                this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
+                            }
+                            this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='发起方支付游戏币'>", num12, "[+", num13, "]</a></div></td>" }));
+                        }
+                        else
+                        {
+                            this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "[+", num14, "]</a></div></td>" }));
+                            if ((num9 == 0) && (num10 == 0))
+                            {
+                                this.sbList.Append("<td>--:--</td>");
+                            }
+                            else
+                            {
+                                this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
+                            }
+                            this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='发起方支付游戏币'>", num12, "</a></div></td>" }));
+                        }
+                        break;
+
+                    default:
+                        this.sbList.Append("<td height='32' align='right' style='padding-right:4px;'>" + MessageItem.GetNickNameInfoTitle(num5, str4, 1, str4 + "说：" + str) + "</td>");
+                        if ((num9 == 0) && (num10 == 0))
+                        {
+                            this.sbList.Append("<td>-- : --</td>");
+                        }
+                        else
+                        {
+                            this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
+                        }
+                        this.sbList.Append("<td align='left' style='padding-left:3px'>" + MessageItem.GetNickNameInfo(num6, str5, 1) + "</td>");
+                        break;
+                }
+                this.sbList.Append("<td>" + str6 + "</td>");
+                this.sbList.Append("<td>" + str3 + "</td>");
+                this.sbList.Append("<td align='left' style='padding-left:3px'>" + str2 + "</td>");
+                this.sbList.Append("</tr>");
+                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
+            Label_1796:
+                if (reader.Read())
+                {
+                    num7 = (int)reader["FMatchID"];
+                    num = (int)reader["ClubIDA"];
+                    num2 = (int)reader["ClubIDB"];
+                    num11 = (int)reader["WealthA"];
+                    num12 = (int)reader["WealthB"];
+                    num13 = (int)reader["ClubAPoint"];
+                    num14 = (int)reader["ClubBPoint"];
+                    num3 = (byte)reader["Category"];
+                    num8 = (byte)reader["Type"];
                     if (num8 == 3)
                     {
                         str7 = "<font color='green'>街球<font>";
@@ -405,21 +669,22 @@
                     {
                         str7 = "<font color='red'>职业</font>";
                     }
-                    num4 = (byte) row["Status"];
-                    str = row["Intro"].ToString().Trim();
-                    time = (DateTime) row["CreateTime"];
+                    num4 = (byte)reader["Status"];
+                    str = reader["Intro"].ToString().Trim();
+                    time = (DateTime)reader["CreateTime"];
                     str3 = StringItem.FormatDate(time, "hh:mm:ss");
-                    str4 = row["ClubInfoA"].ToString().Trim();
-                    str5 = row["ClubInfoB"].ToString().Trim();
-                    str6 = row["ChsCategory"].ToString().Trim();
-                    string[] strArray = str4.Split(new char[] { '|' });
-                    num5 = Convert.ToInt32(strArray[0]);
-                    str4 = strArray[1].Trim();
-                    string[] strArray2 = str5.Split(new char[] { '|' });
-                    num6 = Convert.ToInt32(strArray2[0]);
-                    str5 = strArray2[1].Trim();
-                    num9 = (int) row["ScoreA"];
-                    num10 = (int) row["ScoreB"];
+                    str4 = reader["ClubInfoA"].ToString().Trim();
+                    str5 = reader["ClubInfoB"].ToString().Trim();
+                    str6 = reader["ChsCategory"].ToString().Trim();
+                    string[] strArray3 = str4.Split(new char[] { '|' });
+                    strArray3[0].Trim();
+                    num5 = Convert.ToInt32(strArray3[0]);
+                    str4 = strArray3[1].Trim();
+                    string[] strArray4 = str5.Split(new char[] { '|' });
+                    num6 = Convert.ToInt32(strArray4[0]);
+                    str5 = strArray4[1].Trim();
+                    num9 = (int)reader["ScoreA"];
+                    num10 = (int)reader["ScoreB"];
                     if (num8 == 3)
                     {
                         if ((num4 == 1) && (num == this.intClubID3))
@@ -435,11 +700,12 @@
                         else if (num4 == 2)
                         {
                             str2 = "<span style='cursor:pointer;' >比赛中</span>";
+                            str3 = StringItem.FormatDate(DateTime.Now.AddMinutes(5.0), "hh:mm:ss");
                             str3 = "<a  style='cursor:hand;' title='比赛开始时间'>" + str3 + "</a>";
                         }
                         else if ((num4 == 3) && (num == this.intClubID3))
                         {
-                            str2 = "被拒绝";
+                            str2 = "被拒绝 ";
                             str3 = "--";
                         }
                         else if ((num4 == 3) && (num2 == this.intClubID3))
@@ -449,10 +715,17 @@
                         }
                         else
                         {
+                            switch (num3)
+                            {
+                                case 2:
+                                case 5:
+                                    str2 = "-- --";
+                                    goto Label_132D;
+                            }
                             str2 = string.Concat(new object[] { 
-                                "<a href='", Config.GetDomain(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
-                                "' target='_blank'>统计</a>"
-                             });
+                            "<a href='", Config.GetDomain(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
+                            "' target='_blank'>统计</a>"
+                         });
                         }
                     }
                     else if ((num4 == 1) && (num == this.intClubID5))
@@ -467,8 +740,9 @@
                     }
                     else if (num4 == 2)
                     {
-                        str2 = "<span style='cursor:pointer;' >比赛中</span>";
+                        str2 = "<span style='cursor:pointer;'>比赛中</span>";
                         str3 = StringItem.FormatDate(DateTime.Now.AddMinutes(5.0), "hh:mm:ss");
+                        str3 = "<a style='cursor:pointer;' title='比赛开始时间'>" + str3 + "</a>";
                     }
                     else if ((num4 == 3) && (num == this.intClubID5))
                     {
@@ -482,284 +756,30 @@
                     }
                     else
                     {
-                        str3 = "已结束";
-                        str2 = string.Concat(new object[] { 
-                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
-                            "' target='_blank'>统计</a>"
-                         });
-                    }
-                    TimeSpan span = (TimeSpan) (time.AddMinutes(5.0) - DateTime.Now);
-                    if (span.TotalSeconds > 0.0)
-                    {
-                        this.sbList.Append(string.Concat(new object[] { "<script type=\"text/javascript\" language=\"javascript\">var Counter", num7, " = new clsCounter(\"Counter", num7, "\", \"已结束\");\n" }));
-                        string str9 = "<a href=\"FMatchCenter.aspx?Type=TRAINCENTER&Page=1\">刷新列表</a>";
-                        this.sbList.Append(string.Concat(new object[] { "Counter", num7, ".init('FTime", num7, "','Opa", num7, "','", str9, "',", span.TotalSeconds, ",null);\n</script>" }));
-                    }
-                    else
-                    {
-                        str3 = "00:00:00";
-                        str2 = "<span style='cursor:pointer;' title='比赛延时请稍候。'>比赛延时</span>";
-                    }
-                    this.sbList.Append("<tr class='BarContent' style=\"background-color:#FBE2D4\" onmouseover=\"this.style.backgroundColor=''\" onmouseout=\"this.style.backgroundColor='#FBE2D4'\">");
-                    this.sbList.Append("<td align='center' height='32'>" + str7 + "</td>");
-                    switch (num3)
-                    {
-                        case 3:
-                            this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
-                            if ((num9 == 0) && (num10 == 0))
-                            {
-                                this.sbList.Append("<td>--:--</td>");
-                            }
-                            else
-                            {
-                                this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
-                            }
-                            this.sbList.Append(string.Concat(new object[] { "<td>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='接受方支付游戏币'>", num12, "</a></div></td>" }));
-                            break;
-
-                        case 4:
-                            if (num13 > 0)
-                            {
-                                this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
-                                if ((num9 == 0) && (num10 == 0))
-                                {
-                                    this.sbList.Append("<td>--:--</td>");
-                                }
-                                else
-                                {
-                                    this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
-                                }
-                                this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='发起方支付游戏币'>", num12, "[+", num13, "]</a></div></td>" }));
-                            }
-                            else
-                            {
-                                this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "[+", num14, "]</a></div></td>" }));
-                                if ((num9 == 0) && (num10 == 0))
-                                {
-                                    this.sbList.Append("<td>--:--</td>");
-                                }
-                                else
-                                {
-                                    this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
-                                }
-                                this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='发起方支付游戏币'>", num12, "</a></div></td>" }));
-                            }
-                            break;
-
-                        default:
-                            this.sbList.Append("<td height='32' align='right' style='padding-right:4px;'>" + MessageItem.GetNickNameInfoTitle(num5, str4, 1, str4 + "说：" + str) + "</td>");
-                            if ((num9 == 0) && (num10 == 0))
-                            {
-                                this.sbList.Append("<td>-- : --</td>");
-                            }
-                            else
-                            {
-                                this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
-                            }
-                            this.sbList.Append("<td align='left' style='padding-left:3px'>" + MessageItem.GetNickNameInfo(num6, str5, 1) + "</td>");
-                            break;
-                    }
-                    this.sbList.Append("<td>" + str6 + "</td>");
-                    this.sbList.Append(string.Concat(new object[] { "<td id=\"FTime", num7, "\">", str3, "</td>" }));
-                    this.sbList.Append(string.Concat(new object[] { "<td align='left' style='padding-left:3px' id=\"Opa", num7, "\">", str2, "</td>" }));
-                    this.sbList.Append("</tr>");
-                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
-                }
-            }
-            int count = 0;
-            if (table != null)
-            {
-                count = table.Rows.Count;
-            }
-            this.intPerPage = 9 - count;
-            SqlDataReader reader = BTPFriMatchManager.GetFriMatchTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows || (count >= 1))
-            {
-                goto Label_1796;
-            }
-            this.sbList.Append("<tr><td height='25' colspan='7' align='center'>没有约战！</td></tr>");
-            goto Label_17A2;
-        Label_132D:
-            this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-            this.sbList.Append("<td align='center' height='32'>" + str7 + "</td>");
-            switch (num3)
-            {
-                case 3:
-                    this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
-                    this.sbList.Append(string.Concat(new object[] { "<td>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='接受方支付游戏币'>", num12, "</a></div></td>" }));
-                    break;
-
-                case 4:
-                    if (num13 > 0)
-                    {
-                        this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "</a></div></td>" }));
-                        if ((num9 == 0) && (num10 == 0))
-                        {
-                            this.sbList.Append("<td>--:--</td>");
-                        }
-                        else
-                        {
-                            this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
-                        }
-                        this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='发起方支付游戏币'>", num12, "[+", num13, "]</a></div></td>" }));
-                    }
-                    else
-                    {
-                        this.sbList.Append(string.Concat(new object[] { "<td height='32' align='right' style='padding-right:4px;'>", MessageItem.GetNickNameInfo(num5, str4, 1), "<div><a title='发起方支付游戏币'>", num11, "[+", num14, "]</a></div></td>" }));
-                        if ((num9 == 0) && (num10 == 0))
-                        {
-                            this.sbList.Append("<td>--:--</td>");
-                        }
-                        else
-                        {
-                            this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
-                        }
-                        this.sbList.Append(string.Concat(new object[] { "<td height='32'>", MessageItem.GetNickNameInfo(num6, str5, 1), "<div><a title='发起方支付游戏币'>", num12, "</a></div></td>" }));
-                    }
-                    break;
-
-                default:
-                    this.sbList.Append("<td height='32' align='right' style='padding-right:4px;'>" + MessageItem.GetNickNameInfoTitle(num5, str4, 1, str4 + "说：" + str) + "</td>");
-                    if ((num9 == 0) && (num10 == 0))
-                    {
-                        this.sbList.Append("<td>-- : --</td>");
-                    }
-                    else
-                    {
-                        this.sbList.Append(string.Concat(new object[] { "<td>", num9, ":", num10, "</td>" }));
-                    }
-                    this.sbList.Append("<td align='left' style='padding-left:3px'>" + MessageItem.GetNickNameInfo(num6, str5, 1) + "</td>");
-                    break;
-            }
-            this.sbList.Append("<td>" + str6 + "</td>");
-            this.sbList.Append("<td>" + str3 + "</td>");
-            this.sbList.Append("<td align='left' style='padding-left:3px'>" + str2 + "</td>");
-            this.sbList.Append("</tr>");
-            this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
-        Label_1796:
-            if (reader.Read())
-            {
-                num7 = (int) reader["FMatchID"];
-                num = (int) reader["ClubIDA"];
-                num2 = (int) reader["ClubIDB"];
-                num11 = (int) reader["WealthA"];
-                num12 = (int) reader["WealthB"];
-                num13 = (int) reader["ClubAPoint"];
-                num14 = (int) reader["ClubBPoint"];
-                num3 = (byte) reader["Category"];
-                num8 = (byte) reader["Type"];
-                if (num8 == 3)
-                {
-                    str7 = "<font color='green'>街球<font>";
-                }
-                else
-                {
-                    str7 = "<font color='red'>职业</font>";
-                }
-                num4 = (byte) reader["Status"];
-                str = reader["Intro"].ToString().Trim();
-                time = (DateTime) reader["CreateTime"];
-                str3 = StringItem.FormatDate(time, "hh:mm:ss");
-                str4 = reader["ClubInfoA"].ToString().Trim();
-                str5 = reader["ClubInfoB"].ToString().Trim();
-                str6 = reader["ChsCategory"].ToString().Trim();
-                string[] strArray3 = str4.Split(new char[] { '|' });
-                strArray3[0].Trim();
-                num5 = Convert.ToInt32(strArray3[0]);
-                str4 = strArray3[1].Trim();
-                string[] strArray4 = str5.Split(new char[] { '|' });
-                num6 = Convert.ToInt32(strArray4[0]);
-                str5 = strArray4[1].Trim();
-                num9 = (int) reader["ScoreA"];
-                num10 = (int) reader["ScoreB"];
-                if (num8 == 3)
-                {
-                    if ((num4 == 1) && (num == this.intClubID3))
-                    {
-                        str2 = "等待 | <a href='DelFriMatch.aspx?FMatchID=" + num7 + "&Type=3'>取消</a>";
-                        str3 = "<a  style='cursor:hand;' title='发出邀请时间'>" + str3 + "</a>";
-                    }
-                    else if ((num4 == 1) && (num2 == this.intClubID3))
-                    {
-                        str2 = string.Concat(new object[] { "<a href='ChangeFriMatch.aspx?FMatchID=", num7, "&Status=2&Type=3&UserIDA=", num5, "'>接受</a> | <a href='ChangeFriMatch.aspx?FMatchID=", num7, "&Status=3&Type=3&UserIDA=", num5, "'>拒绝</a>" });
-                        str3 = "<a  style='cursor:hand;' title='发出邀请时间'>" + str3 + "</a>";
-                    }
-                    else if (num4 == 2)
-                    {
-                        str2 = "<span style='cursor:pointer;' >比赛中</span>";
-                        str3 = StringItem.FormatDate(DateTime.Now.AddMinutes(5.0), "hh:mm:ss");
-                        str3 = "<a  style='cursor:hand;' title='比赛开始时间'>" + str3 + "</a>";
-                    }
-                    else if ((num4 == 3) && (num == this.intClubID3))
-                    {
-                        str2 = "被拒绝 ";
-                        str3 = "--";
-                    }
-                    else if ((num4 == 3) && (num2 == this.intClubID3))
-                    {
-                        str2 = "已拒绝请求";
-                        str3 = "--";
-                    }
-                    else
-                    {
                         switch (num3)
                         {
-                            case 2:
-                            case 5:
+                            case 10:
+                            case 11:
                                 str2 = "-- --";
                                 goto Label_132D;
                         }
                         str2 = string.Concat(new object[] { 
-                            "<a href='", Config.GetDomain(), "SRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "SStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
-                            "' target='_blank'>统计</a>"
-                         });
-                    }
-                }
-                else if ((num4 == 1) && (num == this.intClubID5))
-                {
-                    str2 = "等待 | <a href='DelFriMatch.aspx?FMatchID=" + num7 + "&Type=5'>取消</a>";
-                    str3 = "<a  style='cursor:pointer;' title='发出邀请时间'>" + str3 + "</a>";
-                }
-                else if ((num4 == 1) && (num2 == this.intClubID5))
-                {
-                    str2 = string.Concat(new object[] { "<a href='ChangeFriMatch.aspx?FMatchID=", num7, "&Status=2&Type=5'>接受</a> | <a href='ChangeFriMatch.aspx?FMatchID=", num7, "&&Status=3&Type=5'>拒绝</a>" });
-                    str3 = "<a  style='cursor:pointer;' title='发出邀请时间'>" + str3 + "</a>";
-                }
-                else if (num4 == 2)
-                {
-                    str2 = "<span style='cursor:pointer;'>比赛中</span>";
-                    str3 = StringItem.FormatDate(DateTime.Now.AddMinutes(5.0), "hh:mm:ss");
-                    str3 = "<a style='cursor:pointer;' title='比赛开始时间'>" + str3 + "</a>";
-                }
-                else if ((num4 == 3) && (num == this.intClubID5))
-                {
-                    str2 = "被拒绝";
-                    str3 = "--";
-                }
-                else if ((num4 == 3) && (num2 == this.intClubID5))
-                {
-                    str2 = "已拒绝请求";
-                    str3 = "--";
-                }
-                else
-                {
-                    switch (num3)
-                    {
-                        case 10:
-                        case 11:
-                            str2 = "-- --";
-                            goto Label_132D;
-                    }
-                    str2 = string.Concat(new object[] { 
                         "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, "' target='_blank'>战报</a> | <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num, "&B=", num2, 
                         "' target='_blank'>统计</a>"
                      });
+                    }
+                    goto Label_132D;
                 }
-                goto Label_132D;
+            Label_17A2:
+                this.sbList.Append("<tr><td height='30' align='right' colspan='7'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>");
             }
-        Label_17A2:
-            reader.Close();
-            this.sbList.Append("<tr><td height='30' align='right' colspan='7'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>");
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
         }
 
         private void FMatchListNew()
