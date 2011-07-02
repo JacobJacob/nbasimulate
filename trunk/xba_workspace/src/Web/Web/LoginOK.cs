@@ -1,7 +1,7 @@
 ﻿namespace Web
 {
     using System;
-    using System.Data.SqlClient;
+    using System.Data;
     using System.Web.UI;
     using Web.DBData;
     using Web.Helper;
@@ -20,7 +20,7 @@
         {
             this.strUserName = base.Request["tbUserName"].ToString().Trim();
             this.strPassword = base.Request["tbPassword"].ToString().Trim();
-            SqlDataReader userRowByUserNamePWD = ROOTUserManager.GetUserRowByUserNamePWD(this.strUserName, this.strPassword);
+            DataRow userRowByUserNamePWD = ROOTUserManager.GetUserRowByUserNamePWD(this.strUserName, this.strPassword);
             if (userRowByUserNamePWD != null)
             {
                 SessionItem.SetMainLogin(userRowByUserNamePWD, true);
@@ -28,7 +28,7 @@
             }
             else
             {
-                userRowByUserNamePWD.Close();
+                //userRowByUserNamePWD.Close();
                 base.Response.Redirect("Report.aspx?Parameter=10a");
             }
             this.InitializeComponent();
