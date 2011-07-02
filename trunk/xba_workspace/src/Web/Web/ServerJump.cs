@@ -2,7 +2,7 @@
 {
     using ServerManage;
     using System;
-    using System.Data.SqlClient;
+    using System.Data;
     using System.Web.UI;
     using Web.DBData;
     using Web.Helper;
@@ -55,15 +55,15 @@
                     {
                         url = "RegClub.aspx?Type=NEXT";
                     }
-                    SqlDataReader userRowByUserNamePWD = ROOTUserManager.GetUserRowByUserNamePWD(strUserName, strPassword);
-                    if (userRowByUserNamePWD.HasRows)
+                    DataRow userRowByUserNamePWD = ROOTUserManager.GetUserRowByUserNamePWD(strUserName, strPassword);
+                    if (userRowByUserNamePWD != null)
                     {
                         SessionItem.SetMainLogin(userRowByUserNamePWD, false);
                         base.Response.Redirect(url);
                     }
                     else
                     {
-                        userRowByUserNamePWD.Close();
+                        //userRowByUserNamePWD.Close();
                         base.Response.Redirect("Report.aspx?Parameter=12");
                     }
                 }
