@@ -253,18 +253,18 @@
             this.intPage = (int) SessionItem.GetRequest("Page", 0);
             this.GetMsgTotal();
             this.GetMsgScript(strCurrentURL);
-            SqlDataReader reader = BTPMessageManager.GetMessageTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            DataTable reader = BTPMessageManager.GetMessageTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    int intMessageID = (int) reader["MessageID"];
-                    int intUserID = (int) reader["SendID"];
-                    string strNickName = reader["Sender"].ToString().Trim();
-                    int intCategory = (byte) reader["Category"];
-                    DateTime datIn = (DateTime) reader["SendTime"];
+                    int intMessageID = (int) row["MessageID"];
+                    int intUserID = (int) row["SendID"];
+                    string strNickName = row["Sender"].ToString().Trim();
+                    int intCategory = (byte) row["Category"];
+                    DateTime datIn = (DateTime) row["SendTime"];
                     string str3 = StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss");
-                    string str4 = reader["Content"].ToString();
+                    string str4 = row["Content"].ToString();
                     this.sbList.Append("<tr class='BarHead'>");
                     if (intCategory == 3)
                     {
@@ -299,7 +299,7 @@
                 }
                 this.sbList.Append("<tr><td height='25' align='right' colspan='4'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>");
             }
-            reader.Close();
+            //reader.Close();
         }
 
         protected override void OnInit(EventArgs e)
@@ -387,20 +387,20 @@
             }
             this.GetMsgSendTotal();
             this.GetMsgScript(strCurrentURL);
-            SqlDataReader reader = BTPMessageManager.GetMessageTableBySendID(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            DataTable reader = BTPMessageManager.GetMessageTableBySendID(this.intUserID, this.intPage, this.intPerPage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     string str4;
-                    int num = (int) reader["MessageID"];
-                    int intUserID = (int) reader["UserID"];
-                    reader["Sender"].ToString().Trim();
-                    int intCategory = (byte) reader["Category"];
-                    DateTime datIn = (DateTime) reader["SendTime"];
+                    int num = (int) row["MessageID"];
+                    int intUserID = (int) row["UserID"];
+                    row["Sender"].ToString().Trim();
+                    int intCategory = (byte) row["Category"];
+                    DateTime datIn = (DateTime) row["SendTime"];
                     string str2 = StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss");
-                    string str3 = reader["Content"].ToString();
-                    string strNickName = reader["NameInfo"].ToString().Split(new char[] { '|' })[0].Trim();
+                    string str3 = row["Content"].ToString();
+                    string strNickName = row["NameInfo"].ToString().Split(new char[] { '|' })[0].Trim();
                     strNickName = MessageItem.GetNickNameInfo(intUserID, strNickName, intCategory);
                     switch (intCategory)
                     {
@@ -433,7 +433,7 @@
                 }
                 this.sbList.Append("<tr><td height='25' align='right' colspan='4'>" + this.GetMsgSendViewPage(strCurrentURL) + "</td></tr>");
             }
-            reader.Close();
+            //reader.Close();
         }
     }
 }
