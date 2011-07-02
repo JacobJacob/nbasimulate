@@ -241,17 +241,17 @@
             this.intTotal = this.GetMsgTotal();
             this.strScript = this.GetMsgScript(strCurrentURL);
             this.strList = "<table width='362' border='2' cellpadding='0' cellspacing='0' bordercolor='#FFFFFF'><tr><td width='180' height='26' align='center' bgcolor='#C11642'><strong>比赛竞猜</strong></td><td width='116' align='center' bgcolor='#C11642'><strong>姚明</strong></td><td width='58' align='center' bgcolor='#C11642'><strong>积分</strong></td></tr>";
-            SqlDataReader reader = RMRecordManager.GetRecordByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            DataTable reader = RMRecordManager.GetRecordByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    int num1 = (int) reader["UserID"];
-                    int intMatchID = (int) reader["MatchID"];
-                    int num2 = (byte) reader["HomeScore"];
-                    int num3 = (byte) reader["AwayScore"];
-                    int num4 = (byte) reader["YaoScore"];
-                    int num5 = (int) reader["GainPoint"];
+                    int num1 = (int) row["UserID"];
+                    int intMatchID = (int) row["MatchID"];
+                    int num2 = (byte) row["HomeScore"];
+                    int num3 = (byte) row["AwayScore"];
+                    int num4 = (byte) row["YaoScore"];
+                    int num5 = (int) row["GainPoint"];
                     DataRow matchRowByMatchID = RMMatchManager.GetMatchRowByMatchID(intMatchID);
                     int intTeamID = (int) matchRowByMatchID["HomeTeamID"];
                     int num7 = (int) matchRowByMatchID["AwayTeamID"];
@@ -266,7 +266,7 @@
             {
                 this.strList = this.strList + "<tr align='center'><td height='20' colspan='3'><font color='#9B052B'>暂时没有竞猜记录</font></td></tr></table>";
             }
-            reader.Close();
+            //reader.Close();
         }
 
         protected override void OnInit(EventArgs e)
