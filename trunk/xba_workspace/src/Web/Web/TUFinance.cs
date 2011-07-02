@@ -155,13 +155,13 @@
             }
             else
             {
-                SqlDataReader reader = BTPFinanceManager.GetDFinanceListNew(this.intUserID, this.intTFinanceID, this.intPage, this.intPerPage);
-                if (reader.HasRows)
+                DataTable reader = BTPFinanceManager.GetDFinanceListNew(this.intUserID, this.intTFinanceID, this.intPage, this.intPerPage);
+                if (reader != null)
                 {
-                    while (reader.Read())
+                    foreach (DataRow row in reader.Rows)
                     {
                         string str2;
-                        int num = (byte) reader["Category"];
+                        int num = (byte) row["Category"];
                         if (num == 3)
                         {
                             str2 = "<font color='#00cc00'>街球</font>";
@@ -170,10 +170,10 @@
                         {
                             str2 = "<font color='#FF0000'>职业</font>";
                         }
-                        long num2 = (long)reader["Income"];
-                        long num3 = (long)reader["Outcome"];
-                        string str3 = reader["Event"].ToString().Trim();
-                        DateTime datIn = (DateTime) reader["CreateTime"];
+                        long num2 = (long)row["Income"];
+                        long num3 = (long)row["Outcome"];
+                        string str3 = row["Event"].ToString().Trim();
+                        DateTime datIn = (DateTime) row["CreateTime"];
                         object strList = this.strList;
                         this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='30'>", str2, "</td><td align='left'>", str3, "</td><td><font color='green'>", num2, "</font></td><td><font color='red'>", num3, "</font></td><td>", StringItem.FormatDate(datIn, "yy-MM-dd"), "</td></tr>" });
                         this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>";
@@ -183,7 +183,7 @@
                 {
                     this.strList = "<tr class='BarContent'><td height='25' colspan='6'>没有找到详细记录。</td></tr>";
                 }
-                reader.Close();
+                //reader.Close();
                 this.strList = this.strList + "<tr><td height='25' align='right' colspan='5'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
             }
         }
