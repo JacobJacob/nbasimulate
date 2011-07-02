@@ -213,24 +213,24 @@
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td height='25' colspan='10' align='right' style='padding-right:15px'><a href='Honour.aspx?UserID=" + this.intUserID + "&Type=HONOR&Page=1'>添加球员</a></td></tr><tr class='BarHead'><td width='53' height='25'></td><td width='100' align='left' style='padding-left:3px'>姓名</td><td width='33'>号码</td><td width='50'>得分</td><td width='50'>篮板</td><td width='50'>助攻</td><td width='50'>抢断</td><td width='50'>盖帽</td><td width='50'>出场</td><td width='50'>查看</td></tr>";
-            SqlDataReader reader = BTPOldPlayerManager.GetHPlayerListNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            DataTable reader = BTPOldPlayerManager.GetHPlayerListNew(this.intUserID, this.intPage, this.intPerPage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     string str5;
-                    string strName = reader["Name"].ToString().Trim();
-                    int num = (byte) reader["Number"];
-                    int num2 = (int) reader["LifeScore"];
-                    int num3 = (int) reader["LifeRebound"];
-                    int num4 = (int) reader["LifeAssist"];
-                    int num5 = (int) reader["LifeSteal"];
-                    int num6 = (int) reader["LifeBlock"];
-                    int num7 = (int) reader["Played"];
-                    int num8 = (byte) reader["Category"];
-                    long longPlayerID = (long) reader["PlayerID"];
+                    string strName = row["Name"].ToString().Trim();
+                    int num = (byte) row["Number"];
+                    int num2 = (int) row["LifeScore"];
+                    int num3 = (int) row["LifeRebound"];
+                    int num4 = (int) row["LifeAssist"];
+                    int num5 = (int) row["LifeSteal"];
+                    int num6 = (int) row["LifeBlock"];
+                    int num7 = (int) row["Played"];
+                    int num8 = (byte) row["Category"];
+                    long longPlayerID = (long) row["PlayerID"];
                     string str3 = "<a href='ShowPlayer.aspx?Type=6&Kind=1&Check=0&PlayerID=" + longPlayerID + "' target='Right'>查看</a>";
-                    string str4 = reader["Remark"].ToString().Trim();
+                    string str4 = row["Remark"].ToString().Trim();
                     if (num8 == 2)
                     {
                         str5 = "<font color='#FF0000'>[ 职业 ]</font>";
@@ -250,7 +250,7 @@
             {
                 this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='10'>您暂时没有添加任何荣誉球员！</td></tr>";
             }
-            reader.Close();
+            //reader.Close();
             this.strList = this.strList + "<tr><td height='25' align='right' colspan='10'>" + this.GetViewPage(strCurrentURL) + "</td></tr></table>";
         }
 
@@ -262,15 +262,15 @@
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr class='BarHead'><td width='178' height='25'>奖杯</td><td width='179'>荣誉</td><td width='179'>获得时间</td></tr>";
-            SqlDataReader reader = BTPHonorManager.GetHonorListNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            DataTable reader = BTPHonorManager.GetHonorListNew(this.intUserID, this.intPage, this.intPerPage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    string str2 = reader["BigLogo"].ToString().Trim();
-                    string str3 = reader["Remark"].ToString().Trim();
-                    DateTime datIn = (DateTime) reader["CreateTime"];
-                    string str4 = reader["Devision"].ToString().Trim();
+                    string str2 = row["BigLogo"].ToString().Trim();
+                    string str3 = row["Remark"].ToString().Trim();
+                    DateTime datIn = (DateTime) row["CreateTime"];
+                    string str4 = row["Devision"].ToString().Trim();
                     if (str4 != "")
                     {
                         str3 = str3 + "<br/>" + str4;
@@ -288,7 +288,7 @@
             {
                 this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='3'>你暂时没有获得任何荣誉！</td></tr>";
             }
-            reader.Close();
+            //reader.Close();
             this.strList = this.strList + "<tr><td height='25' align='right' colspan='3'>" + this.GetViewPage(strCurrentURL) + "</td></tr></table>";
         }
     }
