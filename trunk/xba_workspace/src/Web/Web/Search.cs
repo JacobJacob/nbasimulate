@@ -208,7 +208,7 @@
             }
             else
             {
-                SqlDataReader reader = ROOTTopicManager.GetSearchTableNew(this.strKeyword, this.strCategory, this.intPage, this.intPerPage);
+                SqlDataReader reader = null;//ROOTTopicManager.GetSearchTableNew(this.strKeyword, this.strCategory, this.intPage, this.intPerPage);
                 if (reader.HasRows)
                 {
                     while (reader.Read())
