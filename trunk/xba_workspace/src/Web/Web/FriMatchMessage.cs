@@ -692,7 +692,7 @@
         {
             string str;
             this.sbList = new StringBuilder();
-            SqlDataReader tableWealthMatchMsg = this.GetTableWealthMatchMsg(0);
+            DataTable tableWealthMatchMsg = this.GetTableWealthMatchMsg(0);
             DataRow drParameter = Global.drParameter;
             bool flag = false;
             if (drParameter != null)
@@ -702,36 +702,39 @@
             if (flag)
             {
                 this.sbList.Append("<tr><td height='25' colspan='3'><marquee scrollamount=\"3\" scrolldelay=\"90\" loop=\"0\" >");
-                while (tableWealthMatchMsg.Read())
+                if (tableWealthMatchMsg != null)
                 {
-                    str = tableWealthMatchMsg["Content"].ToString().Trim();
-                    this.sbList.Append(str + "　　　　　　");
+                    foreach (DataRow row in tableWealthMatchMsg.Rows)
+                    {
+                        str = row["Content"].ToString().Trim();
+                        this.sbList.Append(str + "　　　　　　");
+                    }
                 }
                 this.sbList.Append("</marquee></td></tr>");
-                tableWealthMatchMsg.Close();
+                //tableWealthMatchMsg.Close();
             }
             string strCurrentURL = "FriMatchMessage.aspx?Type=FMATCHMSG&";
             this.intPerPage = 10;
             this.intPage = (int) SessionItem.GetRequest("Page", 0);
             this.GetMsgTotal();
             this.GetMsgScript(strCurrentURL);
-            SqlDataReader friMatchMsgTableNew = BTPFriMatchMsgManager.GetFriMatchMsgTableNew(this.intPage, this.intPerPage);
-            if (friMatchMsgTableNew.HasRows)
+            DataTable friMatchMsgTableNew = BTPFriMatchMsgManager.GetFriMatchMsgTableNew(this.intPage, this.intPerPage);
+            if (friMatchMsgTableNew!=null)
             {
-                while (friMatchMsgTableNew.Read())
+                foreach (DataRow row in friMatchMsgTableNew.Rows)
                 {
-                    string strNickName = friMatchMsgTableNew["NickName"].ToString().Trim();
-                    DateTime datIn = (DateTime) friMatchMsgTableNew["CreateTime"];
+                    string strNickName = row["NickName"].ToString().Trim();
+                    DateTime datIn = (DateTime)row["CreateTime"];
                     string str3 = StringItem.FormatDate(datIn, "hh:mm:ss");
-                    str = friMatchMsgTableNew["Content"].ToString().Trim();
-                    int intUserID = (int) friMatchMsgTableNew["UserID"];
-                    friMatchMsgTableNew["ClubName"].ToString().Trim();
+                    str = row["Content"].ToString().Trim();
+                    int intUserID = (int)row["UserID"];
+                    row["ClubName"].ToString().Trim();
                     this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td style='padding:4px' width='560'>[ " + str3 + " ] " + MessageItem.GetNickNameLink(intUserID, strNickName, 1) + "：" + str + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' ></td></tr>");
                 }
-                friMatchMsgTableNew.Close();
+                //friMatchMsgTableNew.Close();
                 this.sbList.Append("<tr><td height='25' align='right'>" + this.GetMsgViewPage2(strCurrentURL) + "</td></tr>");
             }
             else
@@ -899,10 +902,10 @@
             return string.Concat(new object[] { str2, " ", str3, " 共", msgTotal, "个记录 跳转", str4 });
         }
 
-        private SqlDataReader GetTableWealthMatchMsg(int intWMMID)
+        private DataTable GetTableWealthMatchMsg(int intWMMID)
         {
             string commandText = "Exec NewBTP.dbo.GetTableWealthMatchMsg " + intWMMID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         private void GetWealthList(int intCategor)
