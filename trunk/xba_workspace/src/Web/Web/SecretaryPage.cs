@@ -1340,7 +1340,7 @@
                         {
                             string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
                             string strCreateTime = DateTime.Now.ToString();
-                            DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID);
+                            DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID, true);
                             if (devTranTopUser != null)
                             {
                                 int num6 = (int) devTranTopUser["UserID"];
@@ -2113,7 +2113,7 @@
                         {
                             string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
                             string strCreateTime = DateTime.Now.ToString();
-                            DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID);
+                            DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID, true);
                             if (devTranTopUser != null)
                             {
                                 int num6 = (int) devTranTopUser["UserID"];
