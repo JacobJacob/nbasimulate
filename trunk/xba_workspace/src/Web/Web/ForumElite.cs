@@ -53,21 +53,21 @@
                 {
                     return "-1|0|0";
                 }
-                SqlDataReader reader = BTPFriMatchMsgManager.GetAddFriMatchMsg(intFMatchMsgID, strContent, intUserID);
+                DataTable reader = BTPFriMatchMsgManager.GetAddFriMatchMsg(intFMatchMsgID, strContent, intUserID);
                 StringBuilder builder = new StringBuilder("");
                 int num4 = 0;
                 int num5 = 0;
-                if (reader.HasRows)
+                if (reader != null)
                 {
-                    while (reader.Read())
+                    foreach (DataRow row in reader.Rows)
                     {
-                        DateTime datIn = (DateTime) reader["CreateTime"];
-                        num4 = (int) reader["FMatchMsgID"];
+                        DateTime datIn = (DateTime)row["CreateTime"];
+                        num4 = (int)row["FMatchMsgID"];
                         string text1 = "[" + StringItem.FormatDate(datIn, "hh:mm") + "]";
-                        string strIn = reader["Content"].ToString().Trim();
-                        string str2 = reader["NickName"].ToString().Trim();
-                        bool flag = (bool) reader["Sex"];
-                        int num6 = (int) reader["UserID"];
+                        string strIn = row["Content"].ToString().Trim();
+                        string str2 = row["NickName"].ToString().Trim();
+                        bool flag = (bool)row["Sex"];
+                        int num6 = (int)row["UserID"];
                         if (flag)
                         {
                             str2 = "<font color='#ff005a'>" + StringItem.GetShortString(str2, 10) + "</font>";
@@ -79,7 +79,7 @@
                         builder.Append(string.Concat(new object[] { "<a href='javascript:;' onclick=window.open('ShowClubIFrom.aspx?UserID=", num6, "','','height=452,width=224,status=no,toolbar=no,menubar=no,location=no');>", str2, "</a>:", StringItem.GetShortString(strIn, 100), "&" }));
                         num5++;
                     }
-                    reader.Close();
+                    //reader.Close();
                     return string.Concat(new object[] { num5, "|", builder.ToString().Trim(), "|", num4 });
                 }
                 return "0|null";
@@ -99,21 +99,21 @@
         {
             try
             {
-                SqlDataReader friMatchMsgNew = BTPFriMatchMsgManager.GetFriMatchMsgNew(intFMatchMsgID);
+                DataTable friMatchMsgNew = BTPFriMatchMsgManager.GetFriMatchMsgNew(intFMatchMsgID);
                 StringBuilder builder = new StringBuilder("");
                 int num = 0;
                 int num2 = 0;
-                if (friMatchMsgNew.HasRows)
+                if (friMatchMsgNew != null)
                 {
-                    while (friMatchMsgNew.Read())
+                    foreach (DataRow row in friMatchMsgNew.Rows)
                     {
-                        DateTime datIn = (DateTime) friMatchMsgNew["CreateTime"];
-                        num = (int) friMatchMsgNew["FMatchMsgID"];
+                        DateTime datIn = (DateTime) row["CreateTime"];
+                        num = (int) row["FMatchMsgID"];
                         string text1 = "[" + StringItem.FormatDate(datIn, "hh:mm") + "]";
-                        string strIn = friMatchMsgNew["Content"].ToString().Trim();
-                        int num3 = (int) friMatchMsgNew["UserID"];
-                        string str2 = friMatchMsgNew["NickName"].ToString().Trim();
-                        if ((bool) friMatchMsgNew["Sex"])
+                        string strIn = row["Content"].ToString().Trim();
+                        int num3 = (int) row["UserID"];
+                        string str2 = row["NickName"].ToString().Trim();
+                        if ((bool) row["Sex"])
                         {
                             str2 = "<font color='#ff005a'>" + StringItem.GetShortString(str2, 10) + "</font>";
                         }
@@ -124,7 +124,7 @@
                         builder.Append(string.Concat(new object[] { "<a href='javascript:;' onclick=window.open('ShowClubIFrom.aspx?UserID=", num3, "','','height=452,width=224,status=no,toolbar=no,menubar=no,location=no');>", str2, "</a>:", StringItem.GetShortString(strIn, 100), "&" }));
                         num2++;
                     }
-                    friMatchMsgNew.Close();
+                    //friMatchMsgNew.Close();
                     return string.Concat(new object[] { num2, "|", builder.ToString().Trim(), "|", num });
                 }
                 return "0|null";
@@ -202,20 +202,20 @@
 
         private void SetMsg()
         {
-            SqlDataReader friMatchMsgNew = BTPFriMatchMsgManager.GetFriMatchMsgNew(0);
+            DataTable friMatchMsgNew = BTPFriMatchMsgManager.GetFriMatchMsgNew(0);
             int num = 0;
             int num2 = 0;
-            if (friMatchMsgNew.HasRows)
+            if (friMatchMsgNew != null)
             {
-                while (friMatchMsgNew.Read())
+                foreach (DataRow row in friMatchMsgNew.Rows)
                 {
-                    DateTime datIn = (DateTime) friMatchMsgNew["CreateTime"];
-                    num = (int) friMatchMsgNew["FMatchMsgID"];
+                    DateTime datIn = (DateTime) row["CreateTime"];
+                    num = (int) row["FMatchMsgID"];
                     string text1 = "[" + StringItem.FormatDate(datIn, "hh:mm") + "]";
-                    string strIn = friMatchMsgNew["Content"].ToString().Trim();
-                    int num3 = (int) friMatchMsgNew["UserID"];
-                    string str2 = friMatchMsgNew["NickName"].ToString().Trim();
-                    if ((bool) friMatchMsgNew["Sex"])
+                    string strIn = row["Content"].ToString().Trim();
+                    int num3 = (int) row["UserID"];
+                    string str2 = row["NickName"].ToString().Trim();
+                    if ((bool) row["Sex"])
                     {
                         str2 = "<font color='#ff005a'>" + StringItem.GetShortString(str2, 10) + "</font>";
                     }
@@ -226,7 +226,7 @@
                     this.sbMsg.Append(string.Concat(new object[] { "<li onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><a href=\"javascript:;\" onclick=\"window.open('ShowClubIFrom.aspx?UserID=", num3, "','','height=452,width=224,status=no,toolbar=no,menubar=no,location=no');\">", str2, "</a>:", StringItem.GetShortString(strIn, 100), "</li>" }));
                     num2++;
                 }
-                friMatchMsgNew.Close();
+                //friMatchMsgNew.Close();
                 for (int i = 0x19 - num2; i > 0; i--)
                 {
                     this.strAddMsg = this.strAddMsg + "<li>&nbsp;</li>";
@@ -247,22 +247,22 @@
             this.strTitle1 = "<a style=\"cursor:pointer\" onclick=\"javascript:window.top.Main.location='Main_P.aspx?Tag=" + this.intUserID + "&Type=DevLog'\">【联赛日志】...</a>";
             this.strTitle2 = "<a style=\"cursor:pointer\" onclick=\"javascript:window.top.Main.location='Main_P.aspx?Tag=" + this.intUserID + "&Type=DevMsg'\">【联赛留言】...</a>";
             string strDevCode = BTPAccountManager.GetAccountRowByUserID(this.intUserID)["DevCode"].ToString().Trim();
-            SqlDataReader reader = BTPDevMatchManager.GetDevLogByDevCode(0, 1, 3, strDevCode);
+            DataTable reader = BTPDevMatchManager.GetDevLogByDevCode(0, 1, 3, strDevCode);
             int num = 0;
             this.sbTodayElite.Append("<div style=\"COLOR: red;margin-top:2px;color:red;margin-bottom: 3px\"><strong >" + this.strTitle1 + "</strong></div>");
             this.sbTodayElite.Append("<div style=\"Z-INDEX: 1; OVERFLOW: hidden; WIDTH: 195px; WORD-BREAK: break-all; LINE-HEIGHT: 20px; HEIGHT: 145px\">");
-            if (reader.HasRows)
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     if (num > 0)
                     {
                         this.sbTodayElite.Append("<div style=\"padding:0; margin-top:0px; margin-bottom:0px;OVERFLOW: hidden;margin-left:15px;WIDTH:165px;height:1px;background:url(Images/RM/Border_07.gif) repeat-x; \"></div>");
                     }
-                    this.sbTodayElite.Append("<div onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">" + (("<font color='#660066'>[" + StringItem.FormatDate((DateTime) reader["CreateTime"], "MM-dd").Trim() + "]</font> ") + reader["LogEvent"].ToString().Trim()) + "</div>");
+                    this.sbTodayElite.Append("<div onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">" + (("<font color='#660066'>[" + StringItem.FormatDate((DateTime)row["CreateTime"], "MM-dd").Trim() + "]</font> ") + row["LogEvent"].ToString().Trim()) + "</div>");
                     num = 1;
                 }
-                reader.Close();
+                //reader.Close();
             }
             else
             {
