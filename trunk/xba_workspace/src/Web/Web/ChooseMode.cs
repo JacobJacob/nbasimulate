@@ -64,20 +64,20 @@
                     string str6;
                     bool flag;
                     string str7;
-                    SqlDataReader userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
-                    if (userRowByUserID.Read())
+                    DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
+                    if (userRowByUserID != null)
                     {
                         str4 = userRowByUserID["City"].ToString().Trim();
                         str5 = userRowByUserID["Province"].ToString().Trim();
                         str6 = userRowByUserID["Birth"].ToString().Trim();
-                        userRowByUserID.Close();
+                        //userRowByUserID.Close();
                     }
                     else
                     {
                         str5 = "";
                         str4 = "";
                         str6 = "";
-                        userRowByUserID.Close();
+                       // userRowByUserID.Close();
                     }
                     DataRow gameRow = BTPGameManager.GetGameRow();
                     if (gameRow != null)
