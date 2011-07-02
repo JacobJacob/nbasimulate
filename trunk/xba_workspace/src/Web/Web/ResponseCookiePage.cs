@@ -30,10 +30,10 @@
                 DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(intUserID);
                 if (accountRowByUserID == null)
                 {
-                    SqlDataReader dr = ROOTUserManager.Get40UserRowByUserID(intUserID);
-                    if (!dr.HasRows)
+                    DataRow dr = ROOTUserManager.Get40UserRowByUserID(intUserID);
+                    if (dr != null)
                     {
-                        dr.Close();
+                        //dr.Close();
                         base.Response.Redirect("Report.aspx?Parameter=12");
                         return;
                     }
