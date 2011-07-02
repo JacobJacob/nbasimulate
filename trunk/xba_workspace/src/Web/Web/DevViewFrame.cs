@@ -105,26 +105,26 @@
                     else if (this.IsMatchH(intClubHID))
                     {
                         str = "";
-                        if (num7 > 0)
+                        /*if (num7 > 0)
                         {
                             str2 = string.Concat(new object[] { "<img onclick=\"javascript:window.parent.location='SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", intDevMatchID, "';\" style=\"cursor:pointer;\" alt='球队状态较平时提升", num7, "%' src='", SessionItem.GetImageURL(), "louder", num7, ".gif' border='0' width='14' height='16'>" });
                         }
                         else
                         {
                             str2 = string.Concat(new object[] { "<img onclick=\"javascript:window.parent.location='SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", intDevMatchID, "';\" style=\"cursor:pointer;\" alt='还未奖励球员' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'>" });
-                        }
+                        }*/
                     }
                     else
                     {
                         str = "";
-                        if (num8 > 0)
+                        /*if (num8 > 0)
                         {
                             str2 = string.Concat(new object[] { "<img onclick=\"javascript:window.parent.location='SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", intDevMatchID, "';\" style=\"cursor:pointer;\" alt='球队状态较平时提升", num8, "%' src='", SessionItem.GetImageURL(), "louder", num8, ".gif' border='0' width='14' height='16'>" });
                         }
                         else
                         {
                             str2 = string.Concat(new object[] { "<img onclick=\"javascript:window.parent.location='SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", intDevMatchID, "';\" style=\"cursor:pointer;\" alt='还未奖励球员' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'>" });
-                        }
+                        }*/
                     }
                     if (intClubHID != 0)
                     {
