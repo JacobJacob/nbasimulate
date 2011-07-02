@@ -2,6 +2,7 @@
 {
     using LoginParameter;
     using System;
+    using System.Data;
     using System.Data.SqlClient;
     using System.Web.UI;
     using Web.DBData;
@@ -27,8 +28,8 @@
             else
             {
                 this.intGameCategory = (int) SessionItem.GetRequest("GameCategory", 0);
-                SqlDataReader userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
-                if (userRowByUserID.Read())
+                DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
+                if (userRowByUserID != null)
                 {
                     string path = userRowByUserID["DiskURL"].ToString().Trim();
                     bool flag = (bool) userRowByUserID["Sex"];
@@ -41,12 +42,12 @@
                     string strFacePath = base.Server.MapPath("Images/Face/" + str3 + "/");
                     path = base.Server.MapPath(path);
                     FaceItem.CreateFace(strFacePath, path, strFace);
-                    userRowByUserID.Close();
+                    //userRowByUserID.Close();
                     base.Response.Redirect(DBLogin.URLString(this.intGameCategory) + "AlterOtherInfo.aspx?Type=SEXFACE&Kind=YES");
                 }
                 else
                 {
-                    userRowByUserID.Close();
+                    //userRowByUserID.Close();
                     base.Response.Redirect("Report.aspx?Parameter=3");
                 }
                 this.InitializeComponent();
