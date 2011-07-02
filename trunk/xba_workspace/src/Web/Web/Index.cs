@@ -59,8 +59,8 @@
                     string str;
                     int intUserID = (int) row["UserID"];
                     int num2 = (int) row["Wealth"];
-                    SqlDataReader userRowByUserID = ROOTUserManager.GetUserRowByUserID(intUserID);
-                    if (userRowByUserID.Read())
+                    DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(intUserID);
+                    if (userRowByUserID != null)
                     {
                         str = userRowByUserID["NickName"].ToString();
                     }
@@ -68,7 +68,7 @@
                     {
                         str = "";
                     }
-                    userRowByUserID.Read();
+                    //userRowByUserID.Read();
                     object strForumWealthList = this.strForumWealthList;
                     this.strForumWealthList = string.Concat(new object[] { strForumWealthList, "<tr><td height='24' width='40' style='COLOR:black' align='center'>", num, "</td><td width='100'  style='COLOR:black'>", str, "</td><td width='78'  style='COLOR:black' align='center'>", num2, "</td></tr>" });
                     if (num < topWealthTable.Rows.Count)
@@ -169,8 +169,8 @@
                     string str;
                     int intUserID = (int) row["UserID"];
                     int num2 = (int) row["MonthPoint"];
-                    SqlDataReader userRowByUserID = ROOTUserManager.GetUserRowByUserID(intUserID);
-                    if (userRowByUserID.Read())
+                    DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(intUserID);
+                    if (userRowByUserID != null)
                     {
                         str = userRowByUserID["NickName"].ToString();
                     }
@@ -178,7 +178,7 @@
                     {
                         str = "";
                     }
-                    userRowByUserID.Close();
+                    //userRowByUserID.Close();
                     object strRMScoreList = this.strRMScoreList;
                     this.strRMScoreList = string.Concat(new object[] { strRMScoreList, "<tr><td height='23' width='50' style='COLOR:black' align='center'>", num, "</td><td width='100'  style='COLOR:black'>", str, "</td><td width='68'  style='COLOR:black' align='center'>", num2, "</td></tr>" });
                     if (num < monthScoreList.Rows.Count)
