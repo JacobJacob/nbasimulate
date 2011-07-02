@@ -74,37 +74,35 @@
                         accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(intUserID);
                         if (accountRowByUserID == null)
                         {
-                            SqlDataReader reader = ROOTUserManager.Get40UserRowByUserID(intUserID);
-                            if (reader.HasRows)
+                            DataRow reader = ROOTUserManager.Get40UserRowByUserID(intUserID);
+                            if (reader != null)
                             {
-                                if (reader.Read())
+                                string str = reader["UserName"].ToString().Trim();
+                                switch (strCopartner)
                                 {
-                                    string str = reader["UserName"].ToString().Trim();
-                                    switch (strCopartner)
-                                    {
-                                        case "51WAN":
-                                            str = str.ToLower();
-                                            break;
+                                    case "51WAN":
+                                        str = str.ToLower();
+                                        break;
 
-                                        case "CGA":
-                                            str = HttpUtility.UrlEncode(str, Encoding.GetEncoding("GB2312"));
-                                            break;
-                                    }
-                                    if (StringItem.MD5Encrypt(request.ToString() + intUserID.ToString() + str, "a)@8Kh~7").ToString().Trim().Substring(0, 8) != str3)
-                                    {
-                                        base.Response.Redirect("Report.aspx?Parameter=12");
-                                        return;
-                                    }
-                                    this.intUserID = intUserID;
-                                    SessionItem.SetSomebodyGameLogin(this.intUserID);
+                                    case "CGA":
+                                        str = HttpUtility.UrlEncode(str, Encoding.GetEncoding("GB2312"));
+                                        break;
                                 }
+                                if (StringItem.MD5Encrypt(request.ToString() + intUserID.ToString() + str, "a)@8Kh~7").ToString().Trim().Substring(0, 8) != str3)
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=12");
+                                    return;
+                                }
+                                this.intUserID = intUserID;
+                                SessionItem.SetSomebodyGameLogin(this.intUserID);
+                              
                             }
                             else
                             {
                                 base.Response.Redirect("Report.aspx?Parameter=12");
                                 return;
                             }
-                            reader.Close();
+                            //reader.Close();
                         }
                         else
                         {
