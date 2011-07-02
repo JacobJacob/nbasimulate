@@ -1,7 +1,7 @@
 ﻿namespace Web.MyControls
 {
     using System;
-    using System.Data.SqlClient;
+    using System.Data;
     using System.Text;
     using System.Web.UI;
     using Web.DBData;
@@ -14,7 +14,7 @@
         private StringBuilder sb = new StringBuilder();
         public string strBoardID;
 
-        public SqlDataReader GetListTable()
+        public DataTable GetListTable()
         {
             this.GetTotal();
             return ROOTBoardManager.GetBoardTableByBoardIDNew(this.strBoardID, this.intPage, this.intPerPage, 0);
@@ -125,24 +125,24 @@
 
         private void SetList()
         {
-            SqlDataReader listTable = this.GetListTable();
-            if (listTable.HasRows)
+            DataTable listTable = this.GetListTable();
+            if (listTable != null)
             {
-                while (listTable.Read())
+                foreach (DataRow row in listTable.Rows)
                 {
                     string str;
-                    string str2 = listTable["Logo"].ToString().Trim();
-                    int num = (int) listTable["Hits"];
-                    string str3 = listTable["Title"].ToString().Trim();
-                    string str4 = listTable["NickName"].ToString().Trim();
-                    int num2 = (int) listTable["ReplyCount"];
-                    DateTime datIn = (DateTime) listTable["ReplyTime"];
-                    string str5 = listTable["ReplyUser"].ToString().Trim();
-                    int num3 = (int) listTable["TopicID"];
-                    bool flag = (bool) listTable["OnTop"];
-                    bool flag2 = (bool) listTable["Hot"];
-                    bool flag3 = (bool) listTable["Elite"];
-                    bool flag4 = (bool) listTable["OnLock"];
+                    string str2 = row["Logo"].ToString().Trim();
+                    int num = (int) row["Hits"];
+                    string str3 = row["Title"].ToString().Trim();
+                    string str4 = row["NickName"].ToString().Trim();
+                    int num2 = (int) row["ReplyCount"];
+                    DateTime datIn = (DateTime) row["ReplyTime"];
+                    string str5 = row["ReplyUser"].ToString().Trim();
+                    int num3 = (int) row["TopicID"];
+                    bool flag = (bool) row["OnTop"];
+                    bool flag2 = (bool) row["Hot"];
+                    bool flag3 = (bool) row["Elite"];
+                    bool flag4 = (bool) row["OnLock"];
                     if (flag)
                     {
                         str = "OnTop.gif";
@@ -198,7 +198,7 @@
                     this.sb.Append(" </td>");
                     this.sb.Append("</tr>");
                 }
-                listTable.Close();
+                //listTable.Close();
                 this.sb.Append("<tr><td height='30' colspan='6' align='right' style='padding-right:15px'>" + this.GetViewPage() + "</td></tr>");
             }
             else

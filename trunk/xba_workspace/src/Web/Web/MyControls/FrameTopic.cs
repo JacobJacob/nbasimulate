@@ -24,7 +24,7 @@
         public string strMaster;
         public HtmlTable tbReply;
 
-        public SqlDataReader GetListTable()
+        public DataTable GetListTable()
         {
             int intCount = this.intPerPage * this.intPage;
             int total = this.GetTotal();
@@ -141,9 +141,10 @@
         private void SetList()
         {
             int num = RandomItem.rnd.Next(0, 10);
-            SqlDataReader listTable = this.GetListTable();
-            if (!listTable.HasRows)
+            DataTable listTable = this.GetListTable();
+            if (listTable == null)
             {
+ 
                 this.sb.Append("<table width='760' border='1' bgcolor='#fcf1eb' bordercolor='#fcc6a4' cellspacing='0' cellpadding='0'>");
                 this.sb.Append("<tr><td height='25' align='center' colspan='6'><font color='red'>暂时没有任何信息。</font></td></tr>");
                 this.sb.Append("<table>");
@@ -152,10 +153,11 @@
             else
             {
                 string str8 = "";
-                for (int i = 0; listTable.Read(); i++)
+                int i = 0;
+                foreach (DataRow row in listTable.Rows)
                 {
-                    int num6 = (int) listTable["ReplyID"];
-                    bool flag5 = (bool) listTable["IsVote"];
+                    int num6 = (int)row["ReplyID"];
+                    bool flag5 = (bool)row["IsVote"];
                     if (!flag5 || (num6 <= 0))
                     {
                         string str;
@@ -180,7 +182,7 @@
                             string mainTitle;
                             if (num6 == 0)
                             {
-                                mainTitle = listTable["Title"].ToString().Trim();
+                                mainTitle = row["Title"].ToString().Trim();
                                 this.sb.Append("<tr bgcolor='#fcc6a4'>");
                                 this.sb.Append("<td colspan='2' height='25' class='Forum001'>主题：" + mainTitle + "</td>");
                                 this.sb.Append("</tr>");
@@ -194,12 +196,12 @@
                             }
                             this.sbTitle.Append(mainTitle);
                         }
-                        this.sbLock.Append(listTable["OnLock"].ToString());
-                        listTable["Logo"].ToString().Trim();
-                        DateTime datIn = (DateTime) listTable["CreateTime"];
-                        int num2 = (int) listTable["TopicID"];
-                        string strContent = listTable["Content"].ToString().Trim();
-                        int intUserID = (int) listTable["UserID"];
+                        this.sbLock.Append(row["OnLock"].ToString());
+                        row["Logo"].ToString().Trim();
+                        DateTime datIn = (DateTime) row["CreateTime"];
+                        int num2 = (int) row["TopicID"];
+                        string strContent = row["Content"].ToString().Trim();
+                        int intUserID = (int) row["UserID"];
                         if (intUserID == -1)
                         {
                             str4 = "XBA篮球经理";
@@ -259,10 +261,10 @@
                                 str13 = "--";
                             }
                         }
-                        bool flag = (bool) listTable["Elite"];
-                        bool flag2 = (bool) listTable["OnTop"];
-                        bool flag3 = (bool) listTable["OnLock"];
-                        bool flag4 = (bool) listTable["IsResolve"];
+                        bool flag = (bool) row["Elite"];
+                        bool flag2 = (bool) row["OnTop"];
+                        bool flag3 = (bool) row["OnLock"];
+                        bool flag4 = (bool) row["IsResolve"];
                         if (flag3)
                         {
                             this.tbReply.Visible = false;
@@ -429,8 +431,9 @@
                         this.sb.Append("</tr>");
                         this.sb.Append("</table>");
                     }
+                    i++;
                 }
-                listTable.Close();
+                //listTable.Close();
                 this.sb.Append("<table width=\"760\" border=\"0\" bgcolor=\"#fcf1eb\" cellspacing=\"0\" cellpadding=\"0\"><tr><td height='30' colspan='6' align='right' style='padding-right:15px'>");
                 this.sb.Append(this.GetViewPage());
                 this.sb.Append("</td></tr></table>");

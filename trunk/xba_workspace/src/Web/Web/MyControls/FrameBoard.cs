@@ -1,7 +1,7 @@
 ﻿namespace Web.MyControls
 {
     using System;
-    using System.Data.SqlClient;
+    using System.Data;
     using System.Text;
     using System.Web.UI;
     using Web.DBData;
@@ -15,7 +15,7 @@
         private StringBuilder sb = new StringBuilder();
         public string strBoardID;
 
-        public SqlDataReader GetListTable()
+        public DataTable GetListTable()
         {
             this.GetTotal();
             return ROOTBoardManager.GetBoardTableByBoardIDNew(this.strBoardID, this.intPage, this.intPerPage, 0);
@@ -127,26 +127,26 @@
         private void SetList()
         {
             this.GetTotal();
-            SqlDataReader reader = ROOTBoardManager.GetBoardTableByBoardIDNew(this.strBoardID, this.intPage, this.intPerPage, 0);
+            DataTable reader = ROOTBoardManager.GetBoardTableByBoardIDNew(this.strBoardID, this.intPage, this.intPerPage, 0);
             this.sb.Append("<table width=\"" + this.intTableWidth + "\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\" bordercolor=\"#fcc6a4\" bgcolor=\"#fcf1eb\">");
             this.sb.Append("<tr bgcolor=\"#fcc6a4\"><td height=\"25\" width='30'></td><td width='100' class=\"Forum002\">回复/点击</td><td width='40%' class=\"Forum002\">主 题</td><td width='120' class=\"Forum002\">作者</td><td width='30%' class=\"Forum002\">最后更新</td></tr>");
-            if (reader.HasRows)
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     string str;
-                    string str2 = reader["Logo"].ToString().Trim();
-                    int num = (int) reader["Hits"];
-                    string strIn = reader["Title"].ToString().Trim();
-                    string str4 = reader["NickName"].ToString().Trim();
-                    int num2 = (int) reader["ReplyCount"];
-                    DateTime datIn = (DateTime) reader["ReplyTime"];
-                    string str5 = reader["ReplyUser"].ToString().Trim();
-                    int num3 = (int) reader["TopicID"];
-                    bool flag = (bool) reader["OnTop"];
-                    bool flag2 = (bool) reader["Hot"];
-                    bool flag3 = (bool) reader["Elite"];
-                    bool flag4 = (bool) reader["OnLock"];
+                    string str2 = row["Logo"].ToString().Trim();
+                    int num = (int) row["Hits"];
+                    string strIn = row["Title"].ToString().Trim();
+                    string str4 = row["NickName"].ToString().Trim();
+                    int num2 = (int) row["ReplyCount"];
+                    DateTime datIn = (DateTime) row["ReplyTime"];
+                    string str5 = row["ReplyUser"].ToString().Trim();
+                    int num3 = (int) row["TopicID"];
+                    bool flag = (bool) row["OnTop"];
+                    bool flag2 = (bool) row["Hot"];
+                    bool flag3 = (bool) row["Elite"];
+                    bool flag4 = (bool) row["OnLock"];
                     if (flag)
                     {
                         str = "OnTop.gif";
@@ -201,7 +201,7 @@
                     this.sb.Append(" </td>");
                     this.sb.Append("</tr>");
                 }
-                reader.Close();
+                //reader.Close();
                 this.sb.Append("<tr><td height='30' colspan='6' align='right' style='padding-right:15px'>" + this.GetViewPage() + "</td></tr>");
                 this.sb.Append("</table>");
             }
