@@ -207,17 +207,17 @@
             this.sbList.Append("<td height=24 width=128 align=center>交易资金</td><td height=24 width=128  align=center>交易时间</td></tr>");
             string str = "";
             string str2 = "";
-            SqlDataReader reader = BTPOrderManager.GetOrderBusinessByUserID(this.intUserID, 0, this.intPage, this.intPrePage);
-            if (reader.HasRows)
+            DataTable reader = BTPOrderManager.GetOrderBusinessByUserID(this.intUserID, 0, this.intPage, this.intPrePage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    int num = (int) reader["SaleUserID"];
-                    int num2 = (int) reader["BuyUserID"];
-                    int num3 = (int) reader["Price"];
-                    int num4 = (int) reader["Wealth"];
-                    int num5 = (int) reader["Money"];
-                    DateTime datIn = Convert.ToDateTime(reader["DateTime"]);
+                    int num = (int) row["SaleUserID"];
+                    int num2 = (int) row["BuyUserID"];
+                    int num3 = (int) row["Price"];
+                    int num4 = (int) row["Wealth"];
+                    int num5 = (int) row["Money"];
+                    DateTime datIn = Convert.ToDateTime(row["DateTime"]);
                     if (num == this.intUserID)
                     {
                         str = "<font color=red>卖出游戏币</font>";
@@ -238,7 +238,7 @@
             {
                 this.sbList.Append("<tr class='BarContent'><td height=24 colspan=6 align=center>暂无交易记录</td></tr>");
             }
-            reader.Close();
+            //reader.Close();
             this.strGetViewPage = this.GetViewPage("WealthMarket.aspx?Type=BUSINESS&");
             this.strGetScript = this.GetScript("WealthMarket.aspx?Type=BUSINESS&");
         }
@@ -272,19 +272,19 @@
                 this.sbList.Append("<tr class=\"BarHead\"><td height=24 width=78 align=center>交易类别</td>");
                 this.sbList.Append("<td height=24 width=120 align=center>价格</td><td height=24 width=48 align=center>数量</td>");
                 this.sbList.Append("<td height=24 width=142 align=center>交易总资金</td><td height=24 width=108  align=center>提交时间</td><td width=50  align=center>操作</td></tr>");
-                SqlDataReader orderRowByUserID = BTPOrderManager.GetOrderRowByUserID(this.intUserID);
-                if (orderRowByUserID.HasRows)
+                DataTable orderRowByUserID = BTPOrderManager.GetOrderRowByUserID(this.intUserID);
+                if (orderRowByUserID != null)
                 {
-                    while (orderRowByUserID.Read())
+                    foreach (DataRow row in orderRowByUserID.Rows)
                     {
                         string str;
                         string str2 = "";
-                        int num3 = (int) orderRowByUserID["OrderID"];
-                        int num = Convert.ToInt32(orderRowByUserID["Category"]);
-                        int num2 = (int) orderRowByUserID["Price"];
-                        long num4 = Convert.ToInt64(orderRowByUserID["Wealth"]);
-                        long num5 = Convert.ToInt64(orderRowByUserID["Money"]);
-                        DateTime datIn = Convert.ToDateTime(orderRowByUserID["DateTime"]);
+                        int num3 = (int) row["OrderID"];
+                        int num = Convert.ToInt32(row["Category"]);
+                        int num2 = (int) row["Price"];
+                        long num4 = Convert.ToInt64(row["Wealth"]);
+                        long num5 = Convert.ToInt64(row["Money"]);
+                        DateTime datIn = Convert.ToDateTime(row["DateTime"]);
                         if (num == 1)
                         {
                             str = "买入游戏币";
@@ -307,7 +307,7 @@
                     this.sbList.Append("<tr class='BarContent'><td height=24 colspan=7 align=center>暂无订单提交</td></tr>");
                     this.sbList.Append("</table>");
                 }
-                orderRowByUserID.Close();
+                //orderRowByUserID.Close();
             }
         }
     }
