@@ -13,7 +13,7 @@
     public class ShowPlayer : Page
     {
         public bool blnShowSkill;
-        //protected ImageButton btnModifyBody;
+        protected ImageButton btnModifyBody;
         protected ImageButton btnOK;
         protected DropDownList ddlNumber;
         protected DropDownList ddlPlayerBody;
@@ -59,7 +59,7 @@
         public string strAttack;
         public string strBlock;
         public string strCategory;
-        public string strChangeMsg;
+        public string strChangeMsg = "";
         public string strDefense;
         public string strDetail;
         public string strDribble;
@@ -186,6 +186,32 @@
                     BTPPlayer5Manager.UpdateNumPosByPlayerID5(this.longPlayerID, intNumber, intPosition);
                 }
             }
+
+            string strPlayerBody = this.Face.Value.ToString().Trim();
+            if (this.intType == 3)
+            {
+                num = BTPPlayer3Manager.UpdatePlayer3Body(this.longPlayerID, this.intClubID3, strPlayerBody, this.intUserID, this.strNickName);
+            }
+            else
+            {
+                num = BTPPlayer5Manager.UpdatePlayer5Body(this.longPlayerID, this.intClubID5, strPlayerBody, this.intUserID, this.strNickName);
+            }
+            switch (num)
+            {
+                case 0:
+                    this.strChangeMsg = "修改成功。";
+                    //base.Response.Redirect(string.Concat(new object[] { "ShowPlayer.aspx?PlayerID=", this.longPlayerID, "&Show=MODIFYBODY&Kind=", this.intKind, "&Type=", this.intType, "&Check=", this.intCheck }));
+                    return;
+
+                case 1:
+                    this.strChangeMsg = "改球员不在您的球队中效力，您无法为其整容。";
+                    return;
+
+                case 2:
+                    this.strChangeMsg = "您的游戏币不足，无法为其整容。";
+                    return;
+            }
+            base.Response.Redirect("Report.aspx?Parameter=3");
         }
 
         private int CanUseShowSkill()
@@ -655,24 +681,27 @@
             }
             else
             {
-                SqlDataReader reader = BTPToolLinkManager.CheckPlayer5PLink(this.intUserID, this.longPlayerID, this.intType);
+                DataTable reader = BTPToolLinkManager.CheckPlayer5PLink(this.intUserID, this.longPlayerID, this.intType);
                 bool flag = false;
                 bool flag2 = false;
-                while (reader.Read())
+                if (reader != null)
                 {
-                    switch (((byte) reader["Category"]))
+                    foreach (DataRow row in reader.Rows)
                     {
-                        case 1:
+                        switch (((byte)row["Category"]))
                         {
-                            flag = true;
-                            continue;
+                            case 1:
+                                {
+                                    flag = true;
+                                    continue;
+                                }
+                            case 2:
+                                flag2 = true;
+                                break;
                         }
-                        case 2:
-                            flag2 = true;
-                            break;
                     }
                 }
-                reader.Close();
+                //reader.Close();
                 if (this.intCheck == 0)
                 {
                     if ((intClubID != this.intClubID3) && (intClubID != this.intClubID5))
