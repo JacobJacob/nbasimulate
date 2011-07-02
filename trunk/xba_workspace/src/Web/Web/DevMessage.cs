@@ -186,16 +186,16 @@
             {
                 this.intPage = 1;
             }
-            SqlDataReader reader = BTPUnionManager.GetMessageByUnionID(intUnionID, this.intPage, this.intPerPage, false);
-            if (reader.HasRows)
+            DataTable reader = BTPUnionManager.GetMessageByUnionID(intUnionID, this.intPage, this.intPerPage, false);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    int intUserID = (int) reader["UserID"];
-                    string str = reader["Message"].ToString().Trim();
-                    string strNickName = reader["NickName"].ToString().Trim();
-                    DateTime datIn = (DateTime) reader["CreateTime"];
-                    int num4 = (int) reader["UnionMessageID"];
+                    int intUserID = (int) row["UserID"];
+                    string str = row["Message"].ToString().Trim();
+                    string strNickName = row["NickName"].ToString().Trim();
+                    DateTime datIn = (DateTime) row["CreateTime"];
+                    int num4 = (int) row["UnionMessageID"];
                     string str3 = "";
                     if (num2 == 1)
                     {
@@ -204,7 +204,7 @@
                     string strList = this.strList;
                     this.strList = strList + "<tr class='BarHead'><td height='25' width='100'><font color='#660066'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20) + "</font></td><td width='260' align='left' style='padding-left:5px'>" + StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss") + "</td><td width='170'>" + str3 + "</td></tr><tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\" style='padding:4px;table-layout:fixed;word-break:break-all;'><td height='40' colspan='3' align='left' valign='middle'>" + str + "</td></tr>";
                 }
-                reader.Close();
+                //reader.Close();
                 string strCurrentURL = "DevMessage.aspx?Type=UNIONMSG&";
                 this.strScript = this.GetMsgScript(strCurrentURL);
                 this.strList = this.strList + "<tr><td height='25' align='right' colspan='3'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>";
