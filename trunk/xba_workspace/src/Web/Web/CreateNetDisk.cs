@@ -1,7 +1,7 @@
 ﻿namespace Web
 {
     using System;
-    using System.Data.SqlClient;
+    using System.Data;
     using System.IO;
     using System.Web.UI;
     using Web.DBData;
@@ -23,7 +23,7 @@
             this.strPassword = (string) SessionItem.GetRequest("stey86yi2jfdace", 1);
             this.strUserName = StringItem.MD5Decrypt(this.strUserName, Global.strMD5Key);
             this.strPassword = StringItem.MD5Decrypt(this.strPassword, Global.strMD5Key);
-            SqlDataReader userRowByUserNamePWD = ROOTUserManager.GetUserRowByUserNamePWD(this.strUserName, this.strPassword);
+            DataRow userRowByUserNamePWD = ROOTUserManager.GetUserRowByUserNamePWD(this.strUserName, this.strPassword);
             int num1 = (int) userRowByUserNamePWD["UserID"];
             string path = userRowByUserNamePWD["DiskURL"].ToString();
             byte num2 = (byte) userRowByUserNamePWD["Category"];
