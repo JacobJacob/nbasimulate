@@ -166,17 +166,17 @@
             string str3;
             bool blnSex = this.rbFemale.Checked;
             string strFace = this.Face.Value;
-            SqlDataReader userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
-            if (userRowByUserID.Read())
+            DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
+            if (userRowByUserID != null)
             {
                 str2 = userRowByUserID["UserName"].ToString().Trim();
                 str3 = userRowByUserID["Password"].ToString().Trim();
                 byte num1 = (byte) userRowByUserID["Category"];
-                userRowByUserID.Close();
+                //userRowByUserID.Close();
             }
             else
             {
-                userRowByUserID.Close();
+                //userRowByUserID.Close();
                 base.Response.Redirect("Report.aspx?Parameter=3");
                 return;
             }
