@@ -21,6 +21,7 @@
         public string strErrPassword;
         public string strErrSay;
         public string strErrUserName;
+        public string strErrInviteCode;
         public string strMsg;
         public string strPageIntro;
         protected TextBox tbCity;
@@ -31,6 +32,7 @@
         protected TextBox tbRePassword;
         protected TextBox tbSay;
         protected TextBox tbUserName;
+        protected TextBox tbInviteCode;
 
         private void btnNext_Click(object sender, ImageClickEventArgs e)
         {
@@ -47,6 +49,7 @@
             string strMonth = this.ddlMonth.SelectedValue;
             string strProvince = this.ddlProvince.SelectedValue;
             string str12 = StringItem.SetValidWord(this.tbSay.Text);
+            string strInviteCode = this.tbInviteCode.Text;
             bool flag2 = false;
             if (!StringItem.IsValidLogin(text))
             {
@@ -83,11 +86,26 @@
                 this.strErrSay = "<font color='#FF0000'>*宣言填写错误！</font>";
                 flag2 = true;
             }
+            else if (!StringItem.IsValidInviteCode(strInviteCode))
+            {
+                this.strErrInviteCode = "<font color='#FF0000'>*邀请码填写错误！</font>";
+                flag2 = true;
+            }
             text = StringItem.GetHtmlEncode(text);
             htmlEncode = StringItem.GetHtmlEncode(htmlEncode);
             str5 = StringItem.GetHtmlEncode(str5);
             str7 = StringItem.GetHtmlEncode(str7);
             str12 = StringItem.GetHtmlEncode(str12);
+
+            if (!flag2)
+            {
+                if(!BTPAccountManager.CheckInviteCode(strInviteCode)){
+                     this.strErrInviteCode = "<font color='#FF0000'>*邀请码无效，请联系客服！</font>";
+                    flag2 = true;
+                }
+            }
+
+
             if (!flag2)
             {
                 switch (BTPAccountManager.CheckRegisterInfo(text, htmlEncode, str6))
@@ -158,6 +176,7 @@
                     {
                         int userId = BTPAccountManager.GetMaxUserID();
                         BTPAccountManager.AddFullAccount(userId, text, htmlEncode, strIn, blnSex, 0, strDiskURL, "", strProvince, str5, "");
+                        BTPAccountManager.UpdateInviteCodeUsed(strInviteCode);
                         flag3 = true;
                     }
                     catch (Exception exception)
