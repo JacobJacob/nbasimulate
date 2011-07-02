@@ -467,6 +467,11 @@
             return Regex.IsMatch(strIn, "^[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_]{4,16}$");
         }
 
+        public static bool IsValidInviteCode(string strInviteCode)
+        {
+            return Regex.IsMatch(strInviteCode, "^[0123456789abcdefghijklmnopqrstuvwxyz]{15}$");
+        }
+
         public static bool IsValidMsg(string strIn)
         {
             return (((strIn.IndexOf("<") == -1) && (strIn.IndexOf(">") == -1)) && ((strIn.IndexOf("'") == -1) && (strIn.IndexOf("|") == -1)));
