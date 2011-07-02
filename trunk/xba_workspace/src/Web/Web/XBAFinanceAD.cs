@@ -207,15 +207,15 @@
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<table width='432' border='2' cellpadding='0' cellspacing='0' bordercolor='#FFFFFF'><tr><td width='65' height='26' align='center' valign='middle' bgcolor='#AE1100'><strong>收入</strong></td><td width='65' align='center' valign='middle' bgcolor='#AE1100'><strong>支出</strong></td><td width='112' align='center' valign='middle' bgcolor='#AE1100'><strong>时间</strong></td><td width='179' align='center' bgcolor='#AE1100'><strong>事件</strong></td><td width='68' align='center' bgcolor='#AE1100'><strong>备注</strong></td></tr>";
-            SqlDataReader reader = ROOTWealthManager.GetWealthTableNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            DataTable reader = ROOTWealthManager.GetWealthTableNew(this.intUserID, this.intPage, this.intPerPage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    string str2 = reader["Event"].ToString();
-                    int num = (int) reader["Income"];
-                    int num2 = (int) reader["Outcome"];
-                    DateTime datIn = (DateTime) reader["CreateTime"];
+                    string str2 = row["Event"].ToString();
+                    int num = (int) row["Income"];
+                    int num2 = (int) row["Outcome"];
+                    DateTime datIn = (DateTime) row["CreateTime"];
                     object strList = this.strList;
                     this.strList = string.Concat(new object[] { strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='20' align='center' style='color:#9E0F00'>", num, "</td><td align='center' style='color:#9E0F00'>", num2, "</td><td align='center' style='color:#9E0F00'>", StringItem.FormatDate(datIn, "yy-MM-dd hh:mm:ss"), "</td><td style='color:#9E0F00' style='padding:2px;'>", str2, "</td><td style='color:#9E0F00' style='padding:2px;'>无</td></tr>" });
                 }
@@ -226,7 +226,7 @@
             {
                 this.strList = this.strList + "<tr><td height='25' align='center' colspan='5' style='color:#9E0F00'>暂无消费记录。</td></tr>";
             }
-            reader.Close();
+            //reader.Close();
             this.strList = this.strList + "</table>";
         }
 
