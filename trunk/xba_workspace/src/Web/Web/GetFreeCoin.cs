@@ -1,7 +1,7 @@
 ﻿namespace Web
 {
     using System;
-    using System.Data.SqlClient;
+    using System.Data;
     using System.Web;
     using System.Web.UI;
     using Web.DBData;
@@ -28,13 +28,13 @@
                 int index = -1;
                 int num2 = 20;
                 int num3 = 100;
-                SqlDataReader userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
-                if (userRowByUserID.Read())
+                DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
+                if (userRowByUserID != null)
                 {
                     num2 = (int) userRowByUserID["Coin"];
                     num3 = (int) userRowByUserID["FreeCoin"];
                 }
-                userRowByUserID.Close();
+                //userRowByUserID.Close();
                 index = base.Request.ServerVariables["HTTP_USER_AGENT"].IndexOf("Alexa Toolbar");
                 if ((num2 < 10) && (index > 0))
                 {
