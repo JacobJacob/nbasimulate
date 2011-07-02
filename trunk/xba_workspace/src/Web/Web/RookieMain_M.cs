@@ -114,8 +114,8 @@
                 string str7;
                 string str8;
                 string str9;
-                SqlDataReader reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                if (reader.Read())
+                DataRow reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                if (reader != null)
                 {
                     str5 = reader["City"].ToString().Trim();
                     str6 = reader["Province"].ToString().Trim();
@@ -123,7 +123,7 @@
                     str7 = StringItem.FormatDate(datIn, "yyyy-MM-dd");
                     str8 = reader["DeptTag"].ToString().Trim();
                     str9 = reader["Email"].ToString().Trim();
-                    reader.Close();
+                    //reader.Close();
                 }
                 else
                 {
@@ -132,7 +132,7 @@
                     str7 = "";
                     str8 = "";
                     str9 = "";
-                    reader.Close();
+                    //reader.Close();
                 }
                 if (flag)
                 {
