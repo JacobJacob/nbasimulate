@@ -482,18 +482,18 @@
                 this.intPage = 1;
             }
             this.intPerPage = 10;
-            SqlDataReader reader = BTPDevMatchManager.GetDevLogByDevCode(0, this.intPage, this.intPerPage, strDevCode);
+            DataTable reader = BTPDevMatchManager.GetDevLogByDevCode(0, this.intPage, this.intPerPage, strDevCode);
             int num2 = 1;
             string str3 = "";
-            if (reader.HasRows)
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    reader["NickName"].ToString().Trim();
-                    reader["ClubName"].ToString().Trim();
-                    string str2 = reader["LogEvent"].ToString().Trim();
-                    int intClubID = (int) reader["ClubID"];
-                    DateTime datIn = (DateTime) reader["CreateTime"];
+                    row["NickName"].ToString().Trim();
+                    row["ClubName"].ToString().Trim();
+                    string str2 = row["LogEvent"].ToString().Trim();
+                    int intClubID = (int) row["ClubID"];
+                    DateTime datIn = (DateTime) row["CreateTime"];
                     if ((num2++ % 2) == 1)
                     {
                         str3 = "#FBE2D4";
@@ -508,7 +508,7 @@
                     this.sbList.Append("<td align=\"left\" style=\"padding:2px;\">" + str2 + "</td></tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='3'></td></tr>");
                 }
-                reader.Close();
+                //reader.Close();
                 this.sbList.Append("<tr><td align=right colspan=3>" + this.GetViewPage(string.Concat(new object[] { "Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Devision=", strDevCode, "&" })) + "</td></tr>");
                 this.strScript = this.GetScript(string.Concat(new object[] { "Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Devision=", strDevCode, "&" }));
             }
