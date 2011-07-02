@@ -1,7 +1,7 @@
 ﻿namespace Web
 {
     using System;
-    using System.Data.SqlClient;
+    using System.Data;
     using System.Web;
     using System.Web.UI;
     using Web.DBData;
@@ -36,8 +36,8 @@
             }
             if (this.intFromID > 0)
             {
-                SqlDataReader userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intFromID);
-                if (userRowByUserID.Read())
+                DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intFromID);
+                if (userRowByUserID != null)
                 {
                     this.strFromName = userRowByUserID["NickName"].ToString().Trim();
                 }
@@ -45,7 +45,7 @@
                 {
                     this.strFromName = "";
                 }
-                userRowByUserID.Close();
+                //userRowByUserID.Close();
                 HttpCookie cookie2 = new HttpCookie("FromName");
                 cookie2.Value = this.strFromName;
                 base.Response.Cookies.Add(cookie2);
