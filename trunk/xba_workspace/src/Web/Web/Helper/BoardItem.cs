@@ -35,28 +35,31 @@
         public static string GetBoardJump(string strBoardIDIn)
         {
             string str = "";
-            SqlDataReader boardByTopID = ROOTBoardManager.GetBoardByTopID("");
+            DataTable boardByTopID = ROOTBoardManager.GetBoardByTopID("");
             str = str + "<select id='sltBoardJump' name='sltBoardJump' onchange='ForumJump(this)'>";
-            while (boardByTopID.Read())
+            if (boardByTopID != null)
             {
-                string str2 = boardByTopID["BoardID"].ToString().Trim();
-                string str3 = boardByTopID["Name"].ToString().Trim();
-                if (str2.Length <= 3)
+                foreach (DataRow row in boardByTopID.Rows)
                 {
-                    str3 = "--" + str3 + "--";
+                    string str2 = row["BoardID"].ToString().Trim();
+                    string str3 = row["Name"].ToString().Trim();
+                    if (str2.Length <= 3)
+                    {
+                        str3 = "--" + str3 + "--";
+                    }
+                    else
+                    {
+                        str3 = "　" + str3;
+                    }
+                    str = str + "<option value='" + str2 + "'";
+                    if (strBoardIDIn == str2)
+                    {
+                        str = str + " selected";
+                    }
+                    str = str + ">" + str3 + "</option>";
                 }
-                else
-                {
-                    str3 = "　" + str3;
-                }
-                str = str + "<option value='" + str2 + "'";
-                if (strBoardIDIn == str2)
-                {
-                    str = str + " selected";
-                }
-                str = str + ">" + str3 + "</option>";
             }
-            boardByTopID.Close();
+            //boardByTopID.Close();
             return (str + "</select>");
         }
 
