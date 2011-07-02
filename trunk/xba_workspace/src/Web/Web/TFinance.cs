@@ -148,15 +148,15 @@
             long num4 = (long) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Money"];
             this.strlongMoney = "<strong>球队资金</strong>：" + Convert.ToString(num4);
             this.strList = "<table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr class='BarHead'><td width='60' height='25'>赛季</td><td width='96'>收入</td><td width='95'>支出</td><td width='110'>时间</td></tr>";
-            SqlDataReader reader = BTPFinanceManager.GetAllTFinanceListNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            DataTable reader = BTPFinanceManager.GetAllTFinanceListNew(this.intUserID, this.intPage, this.intPerPage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    int num = (int) reader["Season"];
-                    long num2 = (long)reader["Income"];
-                    long num3 = (long)reader["Outcome"];
-                    DateTime datIn = (DateTime) reader["CreateTime"];
+                    int num = (int) row["Season"];
+                    long num2 = (long)row["Income"];
+                    long num3 = (long)row["Outcome"];
+                    DateTime datIn = (DateTime) row["CreateTime"];
                     object strList = this.strList;
                     this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='30'><font color='#7B1F76'>", num, "</font></td><td><font color='green'>", num2, "</font></td><td><font color='red'>", num3, "</font></td><td>", StringItem.FormatDate(datIn, "yy-MM-dd"), "</td></tr>" });
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>";
@@ -166,7 +166,7 @@
             {
                 this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='4'>您暂时还没有财政记录！</td></tr>";
             }
-            reader.Close();
+            //reader.Close();
             this.strList = this.strList + "<tr><td height='25' align='right' colspan='5'>" + this.GetViewPage(strCurrentURL) + "</td></tr></table>";
         }
 
@@ -179,17 +179,17 @@
             long num6 = (long) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Money"];
             this.strlongMoney = "<strong>球队资金</strong>：" + Convert.ToString(num6);
             this.strList = "<table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr class='BarHead'><td width='50'  height='25'>赛季</td><td width='50'>轮数</td><td width='56'>收入</td><td width='55'>支出</td><td width='100'>时间</td><td width='50'>操作</td></tr>";
-            SqlDataReader reader = BTPFinanceManager.GetTurnTFinanceListNew(this.intUserID, this.intSeason, this.intPage, this.intPerPage);
-            if (reader.HasRows)
+            DataTable reader = BTPFinanceManager.GetTurnTFinanceListNew(this.intUserID, this.intSeason, this.intPage, this.intPerPage);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    int num = (int) reader["Season"];
-                    int num2 = (byte) reader["Turn"];
-                    long num3 = (long)reader["Income"];
-                    long num4 = (long)reader["Outcome"];
-                    DateTime datIn = (DateTime) reader["CreateTime"];
-                    int num5 = (int) reader["TFinanceID"];
+                    int num = (int) row["Season"];
+                    int num2 = (byte) row["Turn"];
+                    long num3 = (long)row["Income"];
+                    long num4 = (long)row["Outcome"];
+                    DateTime datIn = (DateTime) row["CreateTime"];
+                    int num5 = (int) row["TFinanceID"];
                     object strList = this.strList;
                     this.strList = string.Concat(new object[] { 
                         strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='30'><font color='#7B1F76'>", num, "</font></td><td><font color='#7B1F76'>", num2, "</font></td><td><font color='green'>", num3, "</font></td><td><font color='red'>", num4, "</font></td><td>", StringItem.FormatDate(datIn, "yy-MM-dd"), "</td><td><a href='TUFinance.aspx?Status=1&TFinanceID=", num5, "&Season=", num, "&Turn=", 
@@ -202,7 +202,7 @@
             {
                 this.strList = this.strList + "<tr class='BarContent'><td height='20' colspan='6'>您暂时还没有财政记录！</td></tr>";
             }
-            reader.Close();
+            //reader.Close();
             this.strList = this.strList + "<tr><td height='25' align='right' colspan='6'>" + this.GetViewPage(strCurrentURL) + "</td></tr></table>";
         }
     }
