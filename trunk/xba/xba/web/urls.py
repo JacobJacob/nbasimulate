@@ -16,4 +16,5 @@ urlpatterns = patterns('',
 jsonrpc_urlpatterns = patterns('',
     (r'^services/player/$', 'web.services.player_service'),
     (r'^services/account/$', 'web.services.account_service'),
+    (r'^services/game/$', 'web.services.game_service'),
 )

@@ -93,3 +93,10 @@ class InviteCode(Base):
     created_time = Column("CreatedTime", DateTime)
     updated_time = Column("UpdatedTime", TIMESTAMP, )
 
+class Announce(Base):
+    
+    __tablename__ = 'btp_announce'
+    id = Column("announceid", Integer, primary_key=True)
+    title = Column(String)
+    type = Column(Integer)
+    created_time = Column("CreateTime", DateTime)

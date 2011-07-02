@@ -1,0 +1,91 @@
+{% extends "master.html" %}
+{% load common_extras %}
+{% block head_ext %}
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<meta http-equiv="content-type" content="text/html; charset=utf8" />
+<script type="text/javascript">
+     
+      
+     
+  service = new rpc.ServiceProxy("/services/game/", {asynchronous:false, methods: ['add_announce', 'disable_announce',]});
+  
+  $(document).ready(function(){
+   
+   
+	genPageLinks({{total}}, {{pagesize}});
+	       
+	
+    $('input.add').click(function(){
+         $('#title').val("");
+	     $("#add_dialog").show().dialog({
+		     height: 230, width: 330, modal: true,
+	         title: '添加公告',
+		     overlay: {
+                opacity: 0.5, 
+                background: "black" 
+             }
+	     });
+	});
+	
+	
+	
+    $('#add_form input.button').click(function(){
+		var title = $('#title').val();
+        if(!title){
+		   alert("请输入内容");
+		}else{
+		    try{
+		       service.add_announce(title);
+	           window.location.reload() ;
+			}catch(e){
+			   alert(e.message);
+			}
+	    }
+	});
+	 
+  });
+  
+</script>
+{% endblock %}
+{% block title %}游戏公告管理{% endblock %}
+{% block content %}
+<input type="button" class="add" value="添加公告"/><br/>
+<table cellspacing="1" class="tablesorter">
+  <thead>
+    <th>ID</th>
+    <th>公告内容</th>
+    <th>创建时间</th>
+    <th>类型</th>
+    <th>删除</th>
+  </thead>
+  <tbody>
+    {% if infos %}
+      {% for info in infos %}
+       <tr code="{{ info.code }}">
+         <td>{{ info.id }}</td>
+         <td>{{ info.title }}</td>
+         <td>{{ info.created_time }}</td>
+         <td>{{ info.type }}</td>
+         <td><a href="#" class="delete">删除</a></td>
+       </tr>
+      {% endfor %}
+    {% endif %}
+     <tr style="display:none"><td id="pageLink" colspan="12"></td></tr>
+  </tbody>
+</table>
+<div id="add_dialog" class="flora" style="display: none;">
+    <form id="add_form">
+    	<p>
+    		<label>标题:</label>
+			<span>
+			   <textarea id="title" rows="5" cols="18"></textarea>
+			</span>
+	    </p>
+	    <br> 
+		<input class="button" type="button" value="提交" />
+    </form>
+</div>
+{% endblock %}
