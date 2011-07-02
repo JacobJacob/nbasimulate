@@ -327,17 +327,17 @@
                     {
                         request = 1;
                     }
-                    SqlDataReader reader = BTPOnlyOneCenterReg.GetOnlyOneRegOnePay(request, 10, intUserID);
-                    if (reader.HasRows)
+                    DataTable reader = BTPOnlyOneCenterReg.GetOnlyOneRegOnePay(request, 10, intUserID);
+                    if (reader != null)
                     {
-                        while (reader.Read())
+                        foreach (DataRow row in reader.Rows)
                         {
                             string str7;
-                            string strNickName = this.RepBadWord(reader["ClubName"].ToString().Trim());
-                            int num11 = (byte) reader["Status"];
-                            int num12 = (int) reader["TopWealth"];
-                            int num13 = (int) reader["Win"];
-                            int num14 = (int) reader["UserID"];
+                            string strNickName = this.RepBadWord(row["ClubName"].ToString().Trim());
+                            int num11 = (byte) row["Status"];
+                            int num12 = (int) row["TopWealth"];
+                            int num13 = (int) row["Win"];
+                            int num14 = (int) row["UserID"];
                             if (num11 == 0)
                             {
                                 str7 = "<a href='SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=ONLYPAYMATCH&UserID=" + num14 + "'>开始比赛</a>";
@@ -355,7 +355,7 @@
                             builder.Append("</tr>\n");
                             builder.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>");
                         }
-                        reader.Close();
+                        //reader.Close();
                         string strCurrentURL = "OnlyOneCenter.aspx?Type=MATCHREG&";
                         this.sbList.Append("<tr><td height='30' align='right' colspan='5'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>");
                         this.GetMsgScript(strCurrentURL);
@@ -385,7 +385,7 @@
 
         private void GetOnlyMatchTop()
         {
-            SqlDataReader reader;
+            DataTable reader;
             string str;
             int request = (int) SessionItem.GetRequest("Status", 0);
             this.intPage = (int) SessionItem.GetRequest("Page", 0);
@@ -423,18 +423,19 @@
                 this.sbList.Append("  </tr>\n");
                 str = "OnlyOneCenter.aspx?Type=TOPHISTORY&Status=" + request + "&";
             }
-            if (reader.HasRows)
+            if (reader != null)
             {
-                for (int i = 1 + (this.intPerPage * (this.intPage - 1)); reader.Read(); i++)
+                int i = 1 + (this.intPerPage * (this.intPage - 1));
+                foreach(DataRow row in reader.Rows)
                 {
-                    int intUserID = (int) reader["UserID"];
-                    string strClubName = reader["ClubName"].ToString().Trim();
-                    string strNickName = reader["NickName"].ToString().Trim();
-                    string shortName = reader["ShortName"].ToString().Trim();
-                    long num4 = Convert.ToInt64(reader["WinTop"]);
-                    long num5 = Convert.ToInt64(reader["PointTop"]);
-                    long num6 = Convert.ToInt64(reader["WealthTop"]);
-                    bool blnSex = (bool) reader["Sex"];
+                    int intUserID = (int) row["UserID"];
+                    string strClubName = row["ClubName"].ToString().Trim();
+                    string strNickName = row["NickName"].ToString().Trim();
+                    string shortName = row["ShortName"].ToString().Trim();
+                    long num4 = Convert.ToInt64(row["WinTop"]);
+                    long num5 = Convert.ToInt64(row["PointTop"]);
+                    long num6 = Convert.ToInt64(row["WealthTop"]);
+                    bool blnSex = (bool) row["Sex"];
                     this.sbList.Append("  <tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">\n");
                     this.sbList.Append("    <td height='25' align='center' >" + i + "</td>\n");
                     this.sbList.Append("    <td align='left' style='padding-left:3px' >" + ClubItem.GetClubNameInfo(intUserID, strClubName, shortName, "Right", 0x12) + "</td>\n");
@@ -444,8 +445,9 @@
                     this.sbList.Append("    <td align=\"center\" >" + num4 + "</td>\n");
                     this.sbList.Append("  </tr>\n");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>");
+                    i++;
                 }
-                reader.Close();
+                //reader.Close();
                 this.GetMsgScript(str);
                 this.sbList.Append("<tr><td height='30' align='right' colspan='6'>" + this.GetMsgViewPage(str) + "</td></tr>");
             }
@@ -572,20 +574,20 @@
             }
             this.intPerPage = 12;
             int intClubID = (int) SessionItem.GetRequest("ClubID", 0);
-            SqlDataReader reader = BTPOnlyOneCenterReg.GetOnlyOneMatchMy(intClubID, 1, 13, 0);
-            if (reader.HasRows)
+            DataTable reader = BTPOnlyOneCenterReg.GetOnlyOneMatchMy(intClubID, 1, 13, 0);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
-                    int num6 = (int) reader["FMatchID"];
-                    int num2 = (int) reader["ClubIDA"];
-                    int num3 = (int) reader["ClubIDB"];
-                    int num10 = (int) reader["WealthA"];
-                    int num13 = (int) reader["WealthB"];
-                    int num11 = (int) reader["ClubAPoint"];
-                    int num14 = (int) reader["ClubBPoint"];
-                    byte num15 = (byte) reader["Category"];
-                    int num7 = (byte) reader["Type"];
+                    int num6 = (int) row["FMatchID"];
+                    int num2 = (int) row["ClubIDA"];
+                    int num3 = (int) row["ClubIDB"];
+                    int num10 = (int) row["WealthA"];
+                    int num13 = (int) row["WealthB"];
+                    int num11 = (int) row["ClubAPoint"];
+                    int num14 = (int) row["ClubBPoint"];
+                    byte num15 = (byte) row["Category"];
+                    int num7 = (byte) row["Type"];
                     if (num7 == 3)
                     {
                         this.strType = "<font color='green'>街球<font>";
@@ -594,21 +596,21 @@
                     {
                         this.strType = "<font color='red'>职业</font>";
                     }
-                    byte num16 = (byte) reader["Status"];
-                    reader["Intro"].ToString().Trim();
-                    DateTime datIn = (DateTime) reader["CreateTime"];
+                    byte num16 = (byte) row["Status"];
+                    row["Intro"].ToString().Trim();
+                    DateTime datIn = (DateTime) row["CreateTime"];
                     string str2 = StringItem.FormatDate(datIn, "MM-dd hh:mm");
-                    string strNickName = reader["ClubInfoA"].ToString().Trim();
-                    string str4 = reader["ClubInfoB"].ToString().Trim();
-                    reader["ChsCategory"].ToString().Trim();
+                    string strNickName = row["ClubInfoA"].ToString().Trim();
+                    string str4 = row["ClubInfoB"].ToString().Trim();
+                    row["ChsCategory"].ToString().Trim();
                     string[] strArray = strNickName.Split(new char[] { '|' });
                     int intUserID = Convert.ToInt32(strArray[0]);
                     strNickName = strArray[1].Trim();
                     string[] strArray2 = str4.Split(new char[] { '|' });
                     int num5 = Convert.ToInt32(strArray2[0]);
                     str4 = strArray2[1].Trim();
-                    int num8 = (int) reader["ScoreA"];
-                    int num9 = (int) reader["ScoreB"];
+                    int num8 = (int) row["ScoreA"];
+                    int num9 = (int) row["ScoreB"];
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 12);
                     str4 = AccountItem.GetNickNameInfo(num5, str4, "Right", 12);
                     string str = string.Concat(new object[] { 
@@ -647,7 +649,7 @@
                     this.sbList.Append("</tr>\n");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>");
                 }
-                reader.Close();
+                //reader.Close();
             }
             else
             {
@@ -665,21 +667,21 @@
                 this.intPage = 1;
             }
             this.intPerPage = 13;
-            SqlDataReader reader = BTPOnlyOneCenterReg.GetOnlyOneMatchMy(this.intClubID5, this.intPage, this.intPerPage, request);
-            if (reader.HasRows)
+            DataTable reader = BTPOnlyOneCenterReg.GetOnlyOneMatchMy(this.intClubID5, this.intPage, this.intPerPage, request);
+            if (reader != null)
             {
-                while (reader.Read())
+                foreach (DataRow row in reader.Rows)
                 {
                     string str;
-                    int num7 = (int) reader["FMatchID"];
-                    int num3 = (int) reader["ClubIDA"];
-                    int num4 = (int) reader["ClubIDB"];
-                    int num11 = (int) reader["WealthA"];
-                    int num1 = (int) reader["WealthB"];
-                    int num12 = (int) reader["ClubAPoint"];
-                    int num14 = (int) reader["ClubBPoint"];
-                    byte num15 = (byte) reader["Category"];
-                    int num8 = (byte) reader["Type"];
+                    int num7 = (int) row["FMatchID"];
+                    int num3 = (int) row["ClubIDA"];
+                    int num4 = (int) row["ClubIDB"];
+                    int num11 = (int) row["WealthA"];
+                    int num1 = (int) row["WealthB"];
+                    int num12 = (int) row["ClubAPoint"];
+                    int num14 = (int) row["ClubBPoint"];
+                    byte num15 = (byte) row["Category"];
+                    int num8 = (byte) row["Type"];
                     if (num8 == 3)
                     {
                         this.strType = "<font color='green'>街球<font>";
@@ -688,21 +690,21 @@
                     {
                         this.strType = "<font color='red'>职业</font>";
                     }
-                    byte num16 = (byte) reader["Status"];
-                    reader["Intro"].ToString().Trim();
-                    DateTime datIn = (DateTime) reader["CreateTime"];
+                    byte num16 = (byte) row["Status"];
+                    row["Intro"].ToString().Trim();
+                    DateTime datIn = (DateTime) row["CreateTime"];
                     string str2 = StringItem.FormatDate(datIn, "yy-MM-dd");
-                    string strNickName = reader["ClubInfoA"].ToString().Trim();
-                    string str4 = reader["ClubInfoB"].ToString().Trim();
-                    reader["ChsCategory"].ToString().Trim();
+                    string strNickName = row["ClubInfoA"].ToString().Trim();
+                    string str4 = row["ClubInfoB"].ToString().Trim();
+                    row["ChsCategory"].ToString().Trim();
                     string[] strArray = strNickName.Split(new char[] { '|' });
                     int intUserID = Convert.ToInt32(strArray[0]);
                     strNickName = strArray[1].Trim();
                     string[] strArray2 = str4.Split(new char[] { '|' });
                     int num6 = Convert.ToInt32(strArray2[0]);
                     str4 = strArray2[1].Trim();
-                    int num9 = (int) reader["ScoreA"];
-                    int num10 = (int) reader["ScoreB"];
+                    int num9 = (int) row["ScoreA"];
+                    int num10 = (int) row["ScoreB"];
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 12);
                     str4 = AccountItem.GetNickNameInfo(num6, str4, "Right", 12);
                     if ((((num9 == 20) || (num9 == 2)) && (num10 == 0)) || (((num10 == 20) || (num10 == 2)) && (num9 == 0)))
@@ -748,7 +750,7 @@
                     this.sbList.Append("</tr>\n");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>");
                 }
-                reader.Close();
+                //reader.Close();
                 string strCurrentURL = "OnlyOneCenter.aspx?Type=MATCHMY&";
                 this.GetMsgScript(strCurrentURL);
             }
