@@ -4,7 +4,7 @@
 
 import os
 
-DEBUG = True
+DEBUG = False
 
 class PathSettings:
     if os.name == 'nt':
@@ -65,7 +65,7 @@ class DjangoSettings:
 if DEBUG:
     CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
 else:
-    CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
+    CLIENT_EXE_PATH = "E:\\xba_app\\xba\\doc\\bin\\Client.exe"
      
 
 CUP_LADDER = 'http://localhost:34591/xbaweb/'
