@@ -37,8 +37,8 @@
             }
             else
             {
-                SqlDataReader userRowByUserName = ROOTUserManager.GetUserRowByUserName(this.tbUserName.Text.Trim());
-                if (userRowByUserName.Read())
+                DataRow userRowByUserName = ROOTUserManager.GetUserRowByUserName(this.tbUserName.Text.Trim());
+                if (userRowByUserName != null)
                 {
                     if (this.tbPassword.Text.Trim() == userRowByUserName["Password"].ToString().Trim())
                     {
@@ -56,7 +56,7 @@
                 }
                 else
                 {
-                    userRowByUserName.Close();
+                    //userRowByUserName.Close();
                     base.Response.Redirect("Report.aspx?Parameter=10");
                 }
             }
