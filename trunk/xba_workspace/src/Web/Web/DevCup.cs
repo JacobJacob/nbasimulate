@@ -302,7 +302,7 @@
             string strCurrentURL = "DevCup.aspx?Type=CREATEDEVCUP&Status=CUPREGMANAGE&DevCupID=" + request + "&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbCupRegManagePage.Append(this.GetViewPage(strCurrentURL));
-            DataTable reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request);
+            DataTable reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request, true);
             if (reader != null)
             {
                 foreach (DataRow row in reader.Rows)
@@ -461,7 +461,7 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPSTATS&Grade=1&DevCupID=" + request + "&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbLookListPage.Append(this.GetViewPage(strCurrentURL));
-            DataTable reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request);
+            DataTable reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request, true);
             if (reader != null)
             {
                 foreach (DataRow row in reader.Rows)
