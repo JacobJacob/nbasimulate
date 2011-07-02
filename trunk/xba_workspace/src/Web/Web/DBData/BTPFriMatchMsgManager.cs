@@ -37,13 +37,13 @@
             }
         }
 
-        public static SqlDataReader GetAddFriMatchMsg(int intFMatchMsgID, string strContent, int intUserID)
+        public static DataTable GetAddFriMatchMsg(int intFMatchMsgID, string strContent, int intUserID)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@FMatchMsgID", SqlDbType.Int, 4), new SqlParameter("@Content", SqlDbType.NVarChar, 100), new SqlParameter("@UserID", SqlDbType.Int, 4) };
             commandParameters[0].Value = intFMatchMsgID;
             commandParameters[1].Value = strContent;
             commandParameters[2].Value = intUserID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetAddFriMatchMsg", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetAddFriMatchMsg", commandParameters);
         }
 
         public static int GetFriMatchMsgCount()
@@ -58,11 +58,11 @@
             return SqlHelper.ExecuteIntReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetFriMatchMsgNew(int intFMatchMsgID)
+        public static DataTable GetFriMatchMsgNew(int intFMatchMsgID)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@FMatchMsgID", SqlDbType.Int, 4) };
             commandParameters[0].Value = intFMatchMsgID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetFriMatchMsgNew", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetFriMatchMsgNew", commandParameters);
         }
 
         public static DataRow GetFriMatchMsgRowTop1ByUserID(int intUserID)
@@ -71,16 +71,16 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetFriMatchMsgTable(int intPage, int intPerPage, int intCount, int intTotal)
+        public static DataTable GetFriMatchMsgTable(int intPage, int intPerPage, int intCount, int intTotal)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetFriMatchMsgTable ", intPage, ",", intPerPage, ",", intCount, ",", intTotal });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetFriMatchMsgTableNew(int intPage, int intPerPage)
+        public static DataTable GetFriMatchMsgTableNew(int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetFriMatchMsgTableNew ", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
     }
 }

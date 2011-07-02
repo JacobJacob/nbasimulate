@@ -27,11 +27,11 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetTodayElite(int intCount)
+        /*public static SqlDataReader GetTodayElite(int intCount)
         {
             string commandText = "Exec ROOT_Data.dbo.GetTodayElite " + intCount;
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
-        }
+        }*/
     }
 }
 

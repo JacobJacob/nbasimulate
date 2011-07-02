@@ -67,14 +67,14 @@
             return (int) SqlHelper.ExecuteScalar(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldHistoryTable", commandParameters);
         }
 
-        public static SqlDataReader GetUnionFieldHistoryTable(int intUnionID, int intPageIndex, int intPageSize, bool blDoCount)
+        public static DataTable GetUnionFieldHistoryTable(int intUnionID, int intPageIndex, int intPageSize, bool blDoCount)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UnionID", SqlDbType.Int, 4), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4), new SqlParameter("@DoCount", SqlDbType.Bit, 1) };
             commandParameters[0].Value = intUnionID;
             commandParameters[1].Value = intPageIndex;
             commandParameters[2].Value = intPageSize;
             commandParameters[3].Value = blDoCount;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldHistoryTable", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldHistoryTable", commandParameters);
         }
 
         public static int GetUnionFieldMatchCount(int intUnionID)
@@ -87,14 +87,14 @@
             return (int) SqlHelper.ExecuteScalar(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldMatchTable", commandParameters);
         }
 
-        public static SqlDataReader GetUnionFieldMatchTable(int intUnionID, int intPageIndex, int intPageSize, bool blDoCount)
+        public static DataTable GetUnionFieldMatchTable(int intUnionID, int intPageIndex, int intPageSize, bool blDoCount)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UnionID", SqlDbType.Int, 4), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4), new SqlParameter("@DoCount", SqlDbType.Bit, 1) };
             commandParameters[0].Value = intUnionID;
             commandParameters[1].Value = intPageIndex;
             commandParameters[2].Value = intPageSize;
             commandParameters[3].Value = blDoCount;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldMatchTable", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldMatchTable", commandParameters);
         }
 
         public static int GetUnionFieldRowByUnionID(int intUnionID)
@@ -104,7 +104,7 @@
             return (int) SqlHelper.ExecuteScalar(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldRowByUnionID", commandParameters);
         }
 
-        public static SqlDataReader GetUnionFieldTable(int intUnionID, int intCategory, int intPageIndex, int intPageSize, bool blDoCount)
+        public static DataTable GetUnionFieldTable(int intUnionID, int intCategory, int intPageIndex, int intPageSize, bool blDoCount)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UnionID", SqlDbType.Int, 4), new SqlParameter("@Category", SqlDbType.TinyInt, 1), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4), new SqlParameter("@DoCount", SqlDbType.Bit, 1) };
             commandParameters[0].Value = intUnionID;
@@ -112,7 +112,7 @@
             commandParameters[2].Value = intPageIndex;
             commandParameters[3].Value = intPageSize;
             commandParameters[4].Value = blDoCount;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldTable", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetUnionFieldTable", commandParameters);
         }
 
         public static void NightUpdateDeleteUnion()

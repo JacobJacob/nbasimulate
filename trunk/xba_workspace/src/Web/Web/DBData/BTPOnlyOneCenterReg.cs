@@ -19,10 +19,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetOnlyOneMatchMy(int intClubID, int intPageIndex, int intPageSize, int intStatus)
+        public static DataTable GetOnlyOneMatchMy(int intClubID, int intPageIndex, int intPageSize, int intStatus)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetOnlyOneMatchMy ", intClubID, ",0,", intPageIndex, ",", intPageSize, ",", intStatus });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataRow GetOnlyOneMatchRow(int intUserID)
@@ -31,14 +31,14 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetOnlyOneRegOnePay(int intPageIndex, int intPageSize, int intUserID)
+        public static DataTable GetOnlyOneRegOnePay(int intPageIndex, int intPageSize, int intUserID)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@DoCount", SqlDbType.Bit, 1), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4), new SqlParameter("@UserID", SqlDbType.Int, 4) };
             commandParameters[0].Value = 0;
             commandParameters[1].Value = intPageIndex;
             commandParameters[2].Value = intPageSize;
             commandParameters[3].Value = intUserID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetOnlyOneRegOnePay", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetOnlyOneRegOnePay", commandParameters);
         }
 
         public static int GetOnlyOneRegOnePayCount(int intUserID)
@@ -57,16 +57,16 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetOnlyOneTodayTop(int intStatus, int intPageIndex, int intPageSize)
+        public static DataTable GetOnlyOneTodayTop(int intStatus, int intPageIndex, int intPageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetOnlyOneTodayTop 0,", intPageIndex, ",", intPageSize, ",", intStatus });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetOnlyOneTop(int intStatus, int intPageIndex, int intPageSize)
+        public static DataTable GetOnlyOneTop(int intStatus, int intPageIndex, int intPageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetOnlyOneTop 0,", intPageIndex, ",", intPageSize, ",", intStatus });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int GetOnlyOneTopCount()

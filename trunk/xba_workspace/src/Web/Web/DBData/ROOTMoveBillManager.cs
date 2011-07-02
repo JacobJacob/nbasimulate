@@ -21,22 +21,22 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetMoveBillByNumber(string strNumber, int intCategory)
+        public static DataTable GetMoveBillByNumber(string strNumber, int intCategory)
         {
             string commandText = "Exec ROOT_Data.dbo.GetMoveBillByNumber @strNumber,@intCategory";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strNumber", SqlDbType.NChar, 20), new SqlParameter("@intCategory", SqlDbType.Int, 4) };
             commandParameters[0].Value = strNumber;
             commandParameters[1].Value = intCategory;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetMoveBillByUserName(string strUserName, int intCategory)
+        public static DataTable GetMoveBillByUserName(string strUserName, int intCategory)
         {
             string commandText = "Exec ROOT_Data.dbo.GetMoveBillByUserName @strUserName,@intCategory";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strUserName", SqlDbType.NChar, 20), new SqlParameter("@intCategory", SqlDbType.Int, 4) };
             commandParameters[0].Value = strUserName;
             commandParameters[1].Value = intCategory;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
         public static int GetMoveBillCount()
@@ -51,16 +51,16 @@
             return SqlHelper.ExecuteIntReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetMoveBillTable(int intDoCount, int intPageIndex, int intintPageSize)
+        public static DataTable GetMoveBillTable(int intDoCount, int intPageIndex, int intintPageSize)
         {
             string commandText = string.Concat(new object[] { "Exec ROOT_Data.dbo.GetMoveBillTable ", intDoCount, ",", intPageIndex, ",", intintPageSize });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetMoveBillTableByType(int intDoCount, int intPageIndex, int intPageSize, int intType, int intCategory)
+        public static DataTable GetMoveBillTableByType(int intDoCount, int intPageIndex, int intPageSize, int intType, int intCategory)
         {
             string commandText = string.Concat(new object[] { "Exec ROOT_Data.dbo.GetMoveBillTableByType ", intDoCount, ",", intPageIndex, ",", intPageSize, ",", intType, ",", intCategory });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
     }
 }

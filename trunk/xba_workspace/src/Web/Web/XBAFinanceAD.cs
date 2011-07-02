@@ -207,7 +207,7 @@
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<table width='432' border='2' cellpadding='0' cellspacing='0' bordercolor='#FFFFFF'><tr><td width='65' height='26' align='center' valign='middle' bgcolor='#AE1100'><strong>收入</strong></td><td width='65' align='center' valign='middle' bgcolor='#AE1100'><strong>支出</strong></td><td width='112' align='center' valign='middle' bgcolor='#AE1100'><strong>时间</strong></td><td width='179' align='center' bgcolor='#AE1100'><strong>事件</strong></td><td width='68' align='center' bgcolor='#AE1100'><strong>备注</strong></td></tr>";
-            DataTable reader = ROOTWealthManager.GetWealthTableNew(this.intUserID, this.intPage, this.intPerPage);
+            DataTable reader = ROOTWealthManager.GetWealthTableNew(this.intUserID, this.intPage, this.intPerPage, true);
             if (reader != null)
             {
                 foreach (DataRow row in reader.Rows)

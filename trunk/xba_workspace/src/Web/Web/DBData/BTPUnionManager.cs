@@ -100,6 +100,16 @@
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetMessageByUnionID", commandParameters);
         }
 
+        public static DataTable GetMessageByUnionID(int intUnionID, int intPage, int intPageSize, bool DoCount, bool blnGetTable)
+        {
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UnionID", SqlDbType.Int, 4), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4), new SqlParameter("@DoCount", SqlDbType.Bit, 1) };
+            commandParameters[0].Value = intUnionID;
+            commandParameters[1].Value = intPage;
+            commandParameters[2].Value = intPageSize;
+            commandParameters[3].Value = DoCount;
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetMessageByUnionID", commandParameters);
+        }
+
         public static int GetMessageCount(int intUnionID)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UnionID", SqlDbType.Int, 4), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4), new SqlParameter("@DoCount", SqlDbType.Bit, 1) };
@@ -174,10 +184,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetReputationListNew(int intUnionID, int intPage, int intPerPage, int intCount, int intTotal)
+        public static DataTable GetReputationListNew(int intUnionID, int intPage, int intPerPage, int intCount, int intTotal)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetUnionReputationListNew ", intUnionID, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int GetSocietyCount()

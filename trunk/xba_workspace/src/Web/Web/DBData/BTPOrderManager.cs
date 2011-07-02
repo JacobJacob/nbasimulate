@@ -31,10 +31,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetOrderBusinessByUserID(int intUserID, int DoCountint, int PageIndex, int PageSize)
+        public static DataTable GetOrderBusinessByUserID(int intUserID, int DoCountint, int PageIndex, int PageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetOrderBusinessByUserID ", intUserID, ",", DoCountint, ",", PageIndex, ",", PageSize });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int GetOrderBusinessCountByUserID(int intUserID)
@@ -49,10 +49,10 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetOrderRowByUserID(int intUserID)
+        public static DataTable GetOrderRowByUserID(int intUserID)
         {
             string commandText = "Exec NewBTP.dbo.GetOrderRowByUserID " + intUserID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int OurToolUseCount()
@@ -61,10 +61,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader OurToolUseCountList(int DoCountint, int PageIndex, int PageSize)
+        public static DataTable OurToolUseCountList(int DoCountint, int PageIndex, int PageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.OurToolUseCount ", DoCountint, ",", PageIndex, ",", PageSize });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
     }
 }

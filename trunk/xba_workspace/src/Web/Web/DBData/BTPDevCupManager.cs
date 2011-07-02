@@ -117,10 +117,10 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetDevCupTableByPage(int DoCountint, int PageIndex, int PageSize, int intStatic)
+        public static DataTable GetDevCupTableByPage(int DoCountint, int PageIndex, int PageSize, int intStatic)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetDevCupTableByPage ", DoCountint, ",", PageIndex, ",", PageSize, ",", intStatic });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataTable GetDevCupTableByStatus(int intStatus)
@@ -135,10 +135,10 @@
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetDevCupTableByUserID(int DoCountint, int PageIndex, int PageSize, int UserID)
+        public static DataTable GetDevCupTableByUserID(int DoCountint, int PageIndex, int PageSize, int UserID)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetDevCupTableByUserID ", DoCountint, ",", PageIndex, ",", PageSize, ",", UserID });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataTable GetDevCupTableToArrage()
@@ -161,10 +161,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetUserDevCupTable(int intUserID, int intPageIndex, int intPageSize, int intDoCount)
+        public static DataTable GetUserDevCupTable(int intUserID, int intPageIndex, int intPageSize, int intDoCount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetUserDevCupTable ", intUserID, ",", intPageIndex, ",", intPageSize, ",", intDoCount });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int ModifyDevCup(int intUserID, int intDevCupID, int intIsSelfUnion, string strPassword, string strDevCupIntro, string strRequirement)

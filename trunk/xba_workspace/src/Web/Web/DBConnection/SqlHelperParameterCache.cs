@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Data;
     using System.Data.SqlClient;
+    using Web.Util;
 
     public sealed class SqlHelperParameterCache
     {
@@ -52,9 +53,20 @@
             }
             SqlCommand command = new SqlCommand(spName, connection);
             command.CommandType = CommandType.StoredProcedure;
-            connection.Open();
-            SqlCommandBuilder.DeriveParameters(command);
-            connection.Close();
+            try
+            {
+                connection.Open();
+                SqlCommandBuilder.DeriveParameters(command);
+            }
+            catch (Exception e)
+            {
+                LogManager.WriteLog("error", e.Message);
+                throw e;
+            }
+            finally
+            {
+                connection.Close();
+            }
             if (!includeReturnValueParameter)
             {
                 command.Parameters.RemoveAt(0);

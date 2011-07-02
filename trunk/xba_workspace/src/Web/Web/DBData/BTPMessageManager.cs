@@ -107,10 +107,10 @@
             return SqlHelper.ExecuteIntReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetMessageTableBySendID(int intUserID, int intPage, int intPerPage)
+        public static DataTable GetMessageTableBySendID(int intUserID, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetMessageTableBySendID ", intUserID, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataTable GetMessageTableByUserID(int intUserID, int intPage, int intPerPage, int intCount, int intTotal)
@@ -119,17 +119,17 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetMessageTableByUserIDNew(int intUserID, int intPage, int intPerPage)
+        public static DataTable GetMessageTableByUserIDNew(int intUserID, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetMessageTableByUserIDNew ", intUserID, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetTableWealthMatchMsg(int intWMMID)
+        public static DataTable GetTableWealthMatchMsg(int intWMMID)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@WMMID", SqlDbType.Int, 4) };
             commandParameters[0].Value = intWMMID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetTableWealthMatchMsg", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetTableWealthMatchMsg", commandParameters);
         }
 
         public static void SendMessageForNewUser()

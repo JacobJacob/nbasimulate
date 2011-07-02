@@ -31,10 +31,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetRecordByUserIDNew(int intUserID, int intPage, int intPerPage)
+        public static DataTable GetRecordByUserIDNew(int intUserID, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec ROOT_Data.dbo.GetRecordByUserIDNew ", intUserID, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
         public static int GetRecordCountByUserID(int intUserID)

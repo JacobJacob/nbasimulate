@@ -67,6 +67,12 @@
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        public static DataTable GetDevCupTableByDevCupID(int DoCountint, int PageIndex, int PageSize, int intDevCupID, bool blnGetTable)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetDevCupTableByDevCupID ", DoCountint, ",", PageIndex, ",", PageSize, ",", intDevCupID });
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
         public static int GetDevCupUserCount(int intDevCupID)
         {
             string commandText = "Exec NewBTP.dbo.GetDevCupTableByDevCupID 1,1,1," + intDevCupID;

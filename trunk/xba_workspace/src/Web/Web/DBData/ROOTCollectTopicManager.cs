@@ -25,10 +25,10 @@
             return SqlHelper.ExecuteIntReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetCollectTopicTable(int intUserID, int intPage, int intPerPage)
+        public static DataTable GetCollectTopicTable(int intUserID, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "EXEC ROOT_Data.dbo.GetCollectTopicTable ", intUserID, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
     }
 }

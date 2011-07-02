@@ -34,11 +34,11 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetXCupMatchByClubID(int intClubID)
+        public static DataTable GetXCupMatchByClubID(int intClubID)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@ClubID", SqlDbType.Int, 4) };
             commandParameters[0].Value = intClubID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetXCupMatchByClubID", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetXCupMatchByClubID", commandParameters);
         }
 
         public static DataRow GetXResultRow(int intXGameID, string strGainCode)

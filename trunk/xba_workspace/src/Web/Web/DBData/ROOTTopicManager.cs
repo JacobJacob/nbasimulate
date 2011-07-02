@@ -130,10 +130,10 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetEliteTopic(int intTop)
+        public static DataTable GetEliteTopic(int intTop)
         {
             string commandText = "Exec ROOT_Data.dbo.GetEliteTopic " + intTop;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
         public static DateTime GetLatestByUserID(int intUserID)
@@ -172,7 +172,7 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetSearchTable(string strKeyword, string strCategory, int intPage, int intPerPage, int intCount, int intTotal)
+        public static DataTable GetSearchTable(string strKeyword, string strCategory, int intPage, int intPerPage, int intCount, int intTotal)
         {
             string commandText = "Exec ROOT_Data.dbo.GetSearchTable @strKeyword,@strCategory,@intPage,@intPerPage,@intCount,@intTotal";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strKeyword", SqlDbType.NVarChar, 50), new SqlParameter("@strCategory", SqlDbType.NChar, 10), new SqlParameter("@intPage", SqlDbType.Int, 4), new SqlParameter("@intPerPage", SqlDbType.Int, 4), new SqlParameter("@intCount", SqlDbType.Int, 4), new SqlParameter("@intTotal", SqlDbType.Int, 4) };
@@ -182,10 +182,10 @@
             commandParameters[3].Value = intPerPage;
             commandParameters[4].Value = intCount;
             commandParameters[5].Value = intTotal;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetSearchTableNew(string strKeyword, string strCategory, int intPage, int intPerPage)
+        public static DataTable GetSearchTableNew(string strKeyword, string strCategory, int intPage, int intPerPage)
         {
             string commandText = "Exec ROOT_Data.dbo.GetSearchTableNew @strKeyword,@strCategory,@intPage,@intPerPage,0";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strKeyword", SqlDbType.NVarChar, 50), new SqlParameter("@strCategory", SqlDbType.NChar, 10), new SqlParameter("@intPage", SqlDbType.Int, 4), new SqlParameter("@intPerPage", SqlDbType.Int, 4) };
@@ -193,7 +193,7 @@
             commandParameters[1].Value = strCategory;
             commandParameters[2].Value = intPage;
             commandParameters[3].Value = intPerPage;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
         public static DataTable GetTableByBoardID(string strBoardID, int intTop)
@@ -254,7 +254,7 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetTopicReplyTableByID(string strBoardID, int intTopicID, int intPage, int intPerPage, int intCount, int intTotal)
+        public static DataTable GetTopicReplyTableByID(string strBoardID, int intTopicID, int intPage, int intPerPage, int intCount, int intTotal)
         {
             string commandText = "Exec ROOT_Data.dbo.GetTopicReplyTableByID @strBoardID,@intTopicID,@intPage,@intPerPage,@intCount,@intTotal";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strBoardID", SqlDbType.NVarChar, 50), new SqlParameter("@intTopicID", SqlDbType.Int, 4), new SqlParameter("@intPage", SqlDbType.Int, 4), new SqlParameter("@intPerPage", SqlDbType.Int, 4), new SqlParameter("@intCount", SqlDbType.Int, 4), new SqlParameter("@intTotal", SqlDbType.Int, 4) };
@@ -264,10 +264,10 @@
             commandParameters[3].Value = intPerPage;
             commandParameters[4].Value = intCount;
             commandParameters[5].Value = intTotal;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetTopicReplyTableByIDNew(string strBoardID, int intTopicID, int intPage, int intPerPage)
+        public static DataRow GetTopicReplyTableByIDNew(string strBoardID, int intTopicID, int intPage, int intPerPage)
         {
             string commandText = "Exec ROOT_Data.dbo.GetTopicReplyTableByIDNew @strBoardID,@intTopicID,@intPage,@intPerPage,0";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strBoardID", SqlDbType.NVarChar, 50), new SqlParameter("@intTopicID", SqlDbType.Int, 4), new SqlParameter("@intPage", SqlDbType.Int, 4), new SqlParameter("@intPerPage", SqlDbType.Int, 4) };
@@ -275,7 +275,7 @@
             commandParameters[1].Value = intTopicID;
             commandParameters[2].Value = intPage;
             commandParameters[3].Value = intPerPage;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
         public static DataRow GetTopicRowByID(int intTopicID)
@@ -284,10 +284,10 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetTopicTableByUserID(int intPageIndex, int intPageSize, int intUserID)
+        public static DataRow GetTopicTableByUserID(int intPageIndex, int intPageSize, int intUserID)
         {
             string commandText = string.Concat(new object[] { "Exec ROOT_Data.dbo.GetTopicTableByUserID  0,", intPageIndex, ",", intPageSize, ",", intUserID });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
         public static bool HasVote(int intUserID, int intTopicID)

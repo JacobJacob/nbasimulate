@@ -39,7 +39,7 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetDevChooseList(int intUserID, int intPos, int intOrder, string strMarketCode, int intPage, int intPerPage, int intTotal, int intCount)
+        public static DataTable GetDevChooseList(int intUserID, int intPos, int intOrder, string strMarketCode, int intPage, int intPerPage, int intTotal, int intCount)
         {
             string commandText = "Exec NewBTP.dbo.GetDevChooseList @intUserID,@intPos,@intOrder,@strMarketCode,@intPage,@intPerPage,@intTotal,@intCount";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@intPos", SqlDbType.TinyInt, 1), new SqlParameter("@intOrder", SqlDbType.Int, 4), new SqlParameter("@strMarketCode", SqlDbType.Char, 20), new SqlParameter("@intPage", SqlDbType.Int, 4), new SqlParameter("@intPerPage", SqlDbType.Int, 4), new SqlParameter("@intTotal", SqlDbType.Int, 4), new SqlParameter("@intCount", SqlDbType.Int, 4) };
@@ -51,7 +51,7 @@
             commandParameters[5].Value = intPerPage;
             commandParameters[6].Value = intTotal;
             commandParameters[7].Value = intCount;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
         public static SqlDataReader GetDevChooseListNew(int intUserID, int intPos, int intOrder, string strMarketCode, int intPage, int intPerPage)
@@ -67,10 +67,10 @@
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetDevStreet(int intPos, int intOrder, int intPage, int intPerPage, int intTotal, int intCount)
+        public static DataTable GetDevStreet(int intPos, int intOrder, int intPage, int intPerPage, int intTotal, int intCount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetDevStreet ", intPos, ",", intOrder, ",", intPage, ",", intPerPage, ",", intTotal, ",", intCount });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int GetDevStreetCount(int intPos)
@@ -95,6 +95,12 @@
         {
             string commandText = "Exec NewBTP.dbo.GetDevTranTopUser " + longPlayerID;
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static DataRow GetDevTranTopUser(long longPlayerID, bool blnGetRow)
+        {
+            string commandText = "Exec NewBTP.dbo.GetDevTranTopUser " + longPlayerID;
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataRow GetFreeBidderByPlayerID(long longPlayerID)
@@ -133,7 +139,7 @@
             return SqlHelper.ExecuteIntReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetTransfer(int intPos, int intOrder, string strMarketCode, int intPage, int intPerPage, int intTotal, int intCount)
+        public static DataTable GetTransfer(int intPos, int intOrder, string strMarketCode, int intPage, int intPerPage, int intTotal, int intCount)
         {
             string commandText = "Exec NewBTP.dbo.GetTransfer @intPos,@intOrder,@strMarketCode,@intPage,@intPerPage,@intTotal,@intCount";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intPos", SqlDbType.TinyInt, 1), new SqlParameter("@intOrder", SqlDbType.Int, 4), new SqlParameter("@strMarketCode", SqlDbType.Char, 20), new SqlParameter("@intPage", SqlDbType.Int, 4), new SqlParameter("@intPerPage", SqlDbType.Int, 4), new SqlParameter("@intTotal", SqlDbType.Int, 4), new SqlParameter("@intCount", SqlDbType.Int, 4) };
@@ -144,7 +150,7 @@
             commandParameters[4].Value = intPerPage;
             commandParameters[5].Value = intTotal;
             commandParameters[6].Value = intCount;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
         public static int GetTransferCount(int intPos, string strMarketCode)
@@ -177,10 +183,10 @@
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetTranStreetChoose(int intPos, int intOrder, int intPage, int intPerPage, int intTotal, int intCount)
+        public static DataTable GetTranStreetChoose(int intPos, int intOrder, int intPage, int intPerPage, int intTotal, int intCount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetTranStreetChoose ", intPos, ",", intOrder, ",", intPage, ",", intPerPage, ",", intTotal, ",", intCount });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static SqlDataReader GetTranStreetChooseNew(int intPos, int intOrder, int intPage, int intPerPage)
@@ -189,10 +195,10 @@
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetTranStreetFree(int intPos, int intOrder, int intPage, int intPerPage, int intTotal, int intCount)
+        public static DataTable GetTranStreetFree(int intPos, int intOrder, int intPage, int intPerPage, int intTotal, int intCount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetTranStreetFree ", intPos, ",", intOrder, ",", intPage, ",", intPerPage, ",", intTotal, ",", intCount });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static SqlDataReader GetTranStreetFreeNew(int intPos, int intOrder, int intPage, int intPerPage)
@@ -213,10 +219,10 @@
             return SqlHelper.ExecuteIntReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetUtmostList(int intPos, int intOrder, int intPage, int intPerPage, int intTotal, int intCount)
+        public static DataTable GetUtmostList(int intPos, int intOrder, int intPage, int intPerPage, int intTotal, int intCount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetUtmostList ", intPos, ",", intOrder, ",", intPage, ",", intPerPage, ",", intTotal, ",", intCount });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static SqlDataReader GetUtmostListNew(int intPos, int intOrder, int intPage, int intPerPage)

@@ -112,10 +112,10 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader CheckClubLink(int intUserID, int intClubID, int intType)
+        public static DataTable CheckClubLink(int intUserID, int intClubID, int intType)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.CheckClubLink ", intUserID, ",", intClubID, ",", intType });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int CheckHide(int intUserID, long longPlayerID, int intType)
@@ -136,10 +136,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader CheckPlayer5PLink(int intUserID, long longPlayerID, int intType)
+        public static DataTable CheckPlayer5PLink(int intUserID, long longPlayerID, int intType)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.CheckPlayer5PLink ", intUserID, ",", longPlayerID, ",", intType });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int CheckPrivateSkill(int intUserID, long longPlayerID, int intType)
@@ -202,16 +202,16 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetAllUserToolByUserID(int intUserID)
+        public static DataTable GetAllUserToolByUserID(int intUserID)
         {
             string commandText = "Exec NewBTP.dbo.GetAllUserToolByUserID " + intUserID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetAllWealthToolByUserID(int intUserID)
+        public static DataTable GetAllWealthToolByUserID(int intUserID)
         {
             string commandText = "Exec NewBTP.dbo.GetAllWealthToolByUserID " + intUserID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataRow GetToolByUserIDTCategory(int intUserID, int intCategory, int intTicketCategory)

@@ -131,10 +131,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetStaffListByLevelNew(int intLevel, int intPage, int intPerPage)
+        public static DataTable GetStaffListByLevelNew(int intLevel, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetStaffListByLevelNew ", intLevel, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataTable GetStaffListByTL(int intType, int intLevel, int intPage, int intPerPage, int intCount, int intTotal)
@@ -143,10 +143,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetStaffListByTLNew(int intType, int intLevel, int intPage, int intPerPage)
+        public static DataTable GetStaffListByTLNew(int intType, int intLevel, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetStaffListByTLNew ", intType, ",", intLevel, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataTable GetStaffListByType(int intType, int intPage, int intPerPage, int intCount, int intTotal)

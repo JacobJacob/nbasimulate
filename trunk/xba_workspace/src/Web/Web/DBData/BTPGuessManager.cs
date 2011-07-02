@@ -82,22 +82,22 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetGuessRecordTableByGuessID(int intGuessID)
+        public static DataTable GetGuessRecordTableByGuessID(int intGuessID)
         {
             string commandText = "Exec NewBTP.dbo.GetGuessRecordTableByGuessID " + intGuessID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetGuessRecordTableByUserID(int intUserID, int intDoCount, int intPageIndex, int intPageSize)
+        public static DataTable GetGuessRecordTableByUserID(int intUserID, int intDoCount, int intPageIndex, int intPageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetGuessRecordTableByUserID ", intUserID, ",", intDoCount, ",", intPageIndex, ",", intPageSize });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetGuessRowByDel(int intDel)
+        public static DataTable GetGuessRowByDel(int intDel)
         {
             string commandText = "Exec NewBTP.dbo.GetGuessRowByDel " + intDel;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataRow GetGuessRowByGuessID(int intGuessID)
@@ -106,16 +106,16 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetGuessRowByResult()
+        public static DataTable GetGuessRowByResult()
         {
             string commandText = "Exec NewBTP.dbo.GetGuessRowHasResult ";
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetGuessTableByHasResult(int intHasResult, int intDoCount, int intPageIndex, int intPageSize)
+        public static DataTable GetGuessTableByHasResult(int intHasResult, int intDoCount, int intPageIndex, int intPageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetGuessTableByHasResult ", intHasResult, ",", intDoCount, ",", intPageIndex, ",", intPageSize });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int GetUseGuessCountByHasResult(int intHasResult)
@@ -130,10 +130,10 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetUseGuessTableByHasResult(int intHasResult, int intDoCount, int intPageIndex, int intPageSize)
+        public static DataTable GetUseGuessTableByHasResult(int intHasResult, int intDoCount, int intPageIndex, int intPageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetUseGuessTableByHasResult ", intHasResult, ",", intDoCount, ",", intPageIndex, ",", intPageSize });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int GuessBegin(int intGuessID)
@@ -187,58 +187,70 @@
 
         public static void SetDelGuess()
         {
-            SqlDataReader guessRowByDel = GetGuessRowByDel(1);
-            while (guessRowByDel.Read())
+            DataTable guessRowByDel = GetGuessRowByDel(1);
+            if (guessRowByDel != null)
             {
-                int intGuessID = (int) guessRowByDel["GuessID"];
-                if (OurDelGuess(intGuessID) != 1)
+                foreach (DataRow row in guessRowByDel.Rows)
                 {
-                    Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
+                    int intGuessID = (int)row["GuessID"];
+                    if (OurDelGuess(intGuessID) != 1)
+                    {
+                        Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
+                    }
                 }
             }
-            guessRowByDel.Close();
+            //guessRowByDel.Close();
         }
 
         public static void SetGuessBegin()
         {
-            SqlDataReader reader = GetGuessTableByHasResult(1, 0, 1, 100);
-            while (reader.Read())
+            DataTable reader = GetGuessTableByHasResult(1, 0, 1, 100);
+            if (reader != null)
             {
-                int intGuessID = (int) reader["GuessID"];
-                if (GuessBegin(intGuessID) != 1)
+                foreach (DataRow row in reader.Rows)
                 {
-                    Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
+                    int intGuessID = (int)row["GuessID"];
+                    if (GuessBegin(intGuessID) != 1)
+                    {
+                        Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
+                    }
                 }
             }
-            reader.Close();
+            //reader.Close();
         }
 
         public static void SetGuessBegin2()
         {
-            SqlDataReader reader = GetGuessTableByHasResult(1, 0, 1, 100);
-            while (reader.Read())
+            DataTable reader = GetGuessTableByHasResult(1, 0, 1, 100);
+            if (reader != null)
             {
-                int intGuessID = (int) reader["GuessID"];
-                if (GuessBegin(intGuessID) != 1)
+                foreach (DataRow row in reader.Rows)
                 {
-                    Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
+                    int intGuessID = (int)row["GuessID"];
+                    if (GuessBegin(intGuessID) != 1)
+                    {
+                        Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
+                    }
                 }
             }
-            reader.Close();
+            //reader.Close();
         }
 
         public static void SetOurBackGuess()
         {
-            SqlDataReader guessRowByDel = GetGuessRowByDel(2);
-            while (guessRowByDel.Read())
+            DataTable guessRowByDel = GetGuessRowByDel(2);
+            if (guessRowByDel != null)
             {
-                int intGuessID = (int) guessRowByDel["GuessID"];
-                if (OurBackGuess(intGuessID) != 1)
+                foreach (DataRow row in guessRowByDel.Rows)
                 {
-                    Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
+                    int intGuessID = (int)row["GuessID"];
+                    if (OurBackGuess(intGuessID) != 1)
+                    {
+                        Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
+                    }
                 }
             }
-            guessRowByDel.Close();
+            //guessRowByDel.Close();
         }
     }
 }

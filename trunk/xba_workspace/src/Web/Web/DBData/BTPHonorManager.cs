@@ -25,10 +25,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetHonorListNew(int intUserID, int intPage, int intPerPage)
+        public static DataTable GetHonorListNew(int intUserID, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetHonorListNew ", intUserID, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataTable GetHonorTableByUserID(int intUserID)

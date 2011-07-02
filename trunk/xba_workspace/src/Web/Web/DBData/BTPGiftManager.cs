@@ -7,10 +7,10 @@
 
     public class BTPGiftManager
     {
-        public static SqlDataReader GetGiftTable()
+        public static DataTable GetGiftTable()
         {
             string commandText = "SELECT * FROM BTP_Gift";
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
     }
 }

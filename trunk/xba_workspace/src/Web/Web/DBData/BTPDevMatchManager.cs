@@ -41,7 +41,7 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetDevLogByDevCode(int DoCountint, int PageIndex, int PageSize, string strDevCode)
+        public static DataTable GetDevLogByDevCode(int DoCountint, int PageIndex, int PageSize, string strDevCode)
         {
             string commandText = "Exec NewBTP.dbo.GetDevLogByDevCode @DoCountint,@PageIndex,@PageSize,@strDevCode";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@DoCountint", SqlDbType.Int, 4), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4), new SqlParameter("@strDevCode", SqlDbType.NVarChar, 20) };
@@ -49,7 +49,7 @@
             commandParameters[1].Value = PageIndex;
             commandParameters[2].Value = PageSize;
             commandParameters[3].Value = strDevCode;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
         public static int GetDevLogCount(int DoCountint, string strDevCode)

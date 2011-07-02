@@ -13,10 +13,10 @@
             return SqlHelper.ExecuteIntReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetWealthFinanceTableByUserID(int DoCountint, int PageIndex, int PageSize, int intUserID)
+        public static DataTable GetWealthFinanceTableByUserID(int DoCountint, int PageIndex, int PageSize, int intUserID)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetWealthFinanceTableByUserID ", DoCountint, ",", PageIndex, ",", PageSize, ",", intUserID });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int SetWealthFinance(int intUserID, string strNickName, int intCategory, int intWealth, string strEvent, string strRemark)

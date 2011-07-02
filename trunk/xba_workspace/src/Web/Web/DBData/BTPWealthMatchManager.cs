@@ -22,10 +22,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetWealthMatchTable(int DoCountint, int PageIndex, int PageSize, int intCategory, int intMaxWealth, int intMinWealth)
+        public static DataTable GetWealthMatchTable(int DoCountint, int PageIndex, int PageSize, int intCategory, int intMaxWealth, int intMinWealth)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.WealthMatch_Pagination ", DoCountint, ",", PageIndex, ",", PageSize, ",", intCategory, ",", intMaxWealth, ",", intMinWealth });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
     }
 }

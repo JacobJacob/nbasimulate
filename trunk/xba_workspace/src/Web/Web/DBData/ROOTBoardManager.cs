@@ -15,12 +15,12 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetBoardByTopID(string strBoardID)
+        public static DataTable GetBoardByTopID(string strBoardID)
         {
             string commandText = "Exec ROOT_Data.dbo.GetBoardByTopID @strBoardID";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strBoardID", SqlDbType.NVarChar, 50) };
             commandParameters[0].Value = strBoardID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
         public static int GetBoardCountByBoardID(string strBoardID)
@@ -64,7 +64,7 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetBoardTableByBoardID(string strBoardID, int intPage, int intPerPage, int intCount, int intTotal)
+        public static DataTable GetBoardTableByBoardID(string strBoardID, int intPage, int intPerPage, int intCount, int intTotal)
         {
             string commandText = "Exec ROOT_Data.dbo.GetBoardTableByBoardID @strBoardID,@intPage,@intPerPage,@intCount,@intTotal";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strBoardID", SqlDbType.NVarChar, 50), new SqlParameter("@intPage", SqlDbType.Int, 4), new SqlParameter("@intPerPage", SqlDbType.Int, 4), new SqlParameter("@intCount", SqlDbType.Int, 4), new SqlParameter("@intTotal", SqlDbType.Int, 4) };
@@ -73,10 +73,10 @@
             commandParameters[2].Value = intPerPage;
             commandParameters[3].Value = intCount;
             commandParameters[4].Value = intTotal;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetBoardTableByBoardIDNew(string strBoardID, int intPage, int intPerPage, int intElite)
+        public static DataTable GetBoardTableByBoardIDNew(string strBoardID, int intPage, int intPerPage, int intElite)
         {
             string commandText = "Exec ROOT_Data.dbo.GetBoardTableByBoardIDNew @strBoardID,@intPage,@intPerPage,0,@intElite";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strBoardID", SqlDbType.NVarChar, 50), new SqlParameter("@intPage", SqlDbType.Int, 4), new SqlParameter("@intPerPage", SqlDbType.Int, 4), new SqlParameter("@intElite", SqlDbType.Bit, 1) };
@@ -84,7 +84,7 @@
             commandParameters[1].Value = intPage;
             commandParameters[2].Value = intPerPage;
             commandParameters[3].Value = intElite;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
         public static DataTable GetMasterNickName(string strMaster)

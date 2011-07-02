@@ -275,12 +275,12 @@
             return SqlHelper.ExecuteBoolDataField(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader Get40UserRowByUserID(int intUserID)
+        public static DataRow Get40UserRowByUserID(int intUserID)
         {
             string commandText = "Exec dbo.GetUserRowByUserID @UserID";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4) };
             commandParameters[0].Value = intUserID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("main40"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("main40"), CommandType.Text, commandText, commandParameters);
         }
 
         public static int GetActiveCount(DateTime datDateNow)
@@ -295,10 +295,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetAllUserReader()
+        public static DataTable GetAllUserReader()
         {
             string commandText = "SELECT * FROM ROOT_User ORDER BY UserID ASC";
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
         public static DataTable GetAllUserTable()
@@ -359,14 +359,14 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("main40"), CommandType.StoredProcedure, "GetCoinInFinanceList", commandParameters);
         }
 
-        public static SqlDataReader GetCoinInFinanceList(int intUserID, int intPage, int intPageSize)
+        public static DataTable GetCoinInFinanceList(int intUserID, int intPage, int intPageSize)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4), new SqlParameter("@DoCount", SqlDbType.Bit, 1) };
             commandParameters[0].Value = intUserID;
             commandParameters[1].Value = intPage;
             commandParameters[2].Value = intPageSize;
             commandParameters[3].Value = 0;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("main40"), CommandType.StoredProcedure, "GetCoinInFinanceList", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("main40"), CommandType.StoredProcedure, "GetCoinInFinanceList", commandParameters);
         }
 
         public static string GetContentByMobileMsgID(int intMsgID)
@@ -387,10 +387,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetFinanceTableByUserID(int intDoCount, int intPageIndex, int intPageSize, int intUserID)
+        public static DataTable GetFinanceTableByUserID(int intDoCount, int intPageIndex, int intPageSize, int intUserID)
         {
             string commandText = string.Concat(new object[] { "Exec ROOT_Data.dbo.GetFinanceTableByUserID ", intDoCount, ",", intPageIndex, ",", intPageSize, ",", intUserID });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
         public static int GetFlackCount(int intUserID)
@@ -630,29 +630,29 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("main40"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetUserRowByUserID(int intUserID)
+        public static DataRow GetUserRowByUserID(int intUserID)
         {
             string commandText = "Exec ROOT_Data.dbo.GetUserRowByUserID @UserID";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4) };
             commandParameters[0].Value = intUserID;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetUserRowByUserName(string strUserName)
+        public static DataRow GetUserRowByUserName(string strUserName)
         {
             string commandText = "Exec ROOT_Data.dbo.GetUserRowByUserName @UserName";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserName", SqlDbType.NChar, 20) };
             commandParameters[0].Value = strUserName;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader GetUserRowByUserNamePWD(string strUserName, string strPassword)
+        public static DataRow GetUserRowByUserNamePWD(string strUserName, string strPassword)
         {
             string commandText = "Exec ROOT_Data.dbo.GetUserRowByUserNamePWD @UserName,@Password";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@Password", SqlDbType.NChar, 20) };
             commandParameters[0].Value = strUserName;
             commandParameters[1].Value = strPassword;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
         public static DataTable GetUserTableByPayType(int intPayType)
@@ -762,10 +762,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("root"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static SqlDataReader ListMobileMsg()
+        public static DataTable ListMobileMsg()
         {
             string commandText = "Exec ROOT_Data.dbo.ListMobileMsg ";
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
 
         public static bool ReduceCoinAdmin(string strUserName, int intCoin, string strEvent, string strRemark)

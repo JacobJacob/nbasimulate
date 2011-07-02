@@ -49,21 +49,24 @@
             try
             {
                 string commandText = "SELECT * FROM BTP_FriMatch WHERE (Category=3 OR Category=4) AND CreateTime<'" + datTime.ToString().Trim() + "' AND Status=1";
-                SqlDataReader reader = SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-                while (reader.Read())
+                DataTable reader = SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+                if (reader != null)
                 {
-                    int intClubID = (int) reader["ClubIDA"];
-                    int intWealth = (int) reader["WealthA"];
-                    DataRow row = BTPAccountManager.GetAccountRowByClubID5(intClubID);
-                    if (row != null)
+                    foreach (DataRow dataRow in reader.Rows)
                     {
-                        int intUserID = (int) row["UserID"];
-                        row["NickName"].ToString().Trim();
-                        string strContent = "约占被取消，返还游戏币" + intWealth;
-                        BTPAccountManager.AddWealthByFinance(intUserID, intWealth, 1, strContent);
+                        int intClubID = (int)dataRow["ClubIDA"];
+                        int intWealth = (int)dataRow["WealthA"];
+                        DataRow row = BTPAccountManager.GetAccountRowByClubID5(intClubID);
+                        if (row != null)
+                        {
+                            int intUserID = (int)row["UserID"];
+                            row["NickName"].ToString().Trim();
+                            string strContent = "约占被取消，返还游戏币" + intWealth;
+                            BTPAccountManager.AddWealthByFinance(intUserID, intWealth, 1, strContent);
+                        }
                     }
                 }
-                reader.Close();
+                //reader.Close();
                 string str3 = "DELETE FROM BTP_FriMatch WHERE (Category=3 OR Category=4) AND CreateTime<'" + datTime + "' AND Status=1";
                 SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, str3);
             }

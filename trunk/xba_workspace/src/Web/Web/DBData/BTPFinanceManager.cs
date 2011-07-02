@@ -102,10 +102,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetAllTFinanceListNew(int intUserID, int intPage, int intPerPage)
+        public static DataTable GetAllTFinanceListNew(int intUserID, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetTFinanceListNew ", intUserID, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int GetDFinanceCount(int intUserID, int intTFinanceID)
@@ -126,10 +126,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetDFinanceListNew(int intUserID, int intTFinanceID, int intPage, int intPerPage)
+        public static DataTable GetDFinanceListNew(int intUserID, int intTFinanceID, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetDFinanceListNew ", intUserID, ",", intTFinanceID, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataRow GetFinanceIDRow(int intUserID, int intSeason, int intTurn)
@@ -162,10 +162,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetTurnTFinanceListNew(int intUserID, int intSeason, int intPage, int intPerPage)
+        public static DataTable GetTurnTFinanceListNew(int intUserID, int intSeason, int intPage, int intPerPage)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetTurnTFinanceListNew ", intUserID, ",", intSeason, ",", intPage, ",", intPerPage, ",0" });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static void ManagerAddFinance(int intUserID, int intTCategory, int intDCategory, int intMoney, int intFinanceType, string strEvent)

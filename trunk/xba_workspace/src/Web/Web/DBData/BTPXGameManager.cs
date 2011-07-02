@@ -30,13 +30,13 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetChampionCupKemp(int intPage, int intPageSize)
+        public static DataTable GetChampionCupKemp(int intPage, int intPageSize)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@DoCount", SqlDbType.Bit, 1), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4) };
             commandParameters[0].Value = false;
             commandParameters[1].Value = intPage;
             commandParameters[2].Value = intPageSize;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetChampionCupKemp", commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetChampionCupKemp", commandParameters);
         }
 
         public static int GetChampionCupKempCount()

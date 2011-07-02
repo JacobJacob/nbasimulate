@@ -36,6 +36,12 @@
             string commandText = string.Concat(new object[] { "Exec ROOT_Data.dbo.GetWealthTableNew ", intUserID, ",", intPage, ",", intPerPage, ",0" });
             return SqlHelper.ExecuteReader(DBSelector.GetConnection("root"), CommandType.Text, commandText);
         }
+
+        public static DataTable GetWealthTableNew(int intUserID, int intPage, int intPerPage, bool blnGetTable)
+        {
+            string commandText = string.Concat(new object[] { "Exec ROOT_Data.dbo.GetWealthTableNew ", intUserID, ",", intPage, ",", intPerPage, ",0" });
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("root"), CommandType.Text, commandText);
+        }
     }
 }
 

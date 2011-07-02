@@ -369,13 +369,13 @@
             return SqlHelper.ExecuteDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetInfoByUserNamePassword(string strUserName, string strPassword)
+        public static DataTable GetInfoByUserNamePassword(string strUserName, string strPassword)
         {
             string commandText = "Exec NewBTP.dbo.GetInfoByUserNamePassword @strUserName,@strPassword";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@strUserName", SqlDbType.NChar, 20), new SqlParameter("@strPassword", SqlDbType.NChar, 20) };
             commandParameters[0].Value = strUserName;
             commandParameters[1].Value = strPassword;
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
         public static DataRow GetLadderCount(int intUserID)
@@ -543,12 +543,12 @@
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetSTLadder()
+        public static DataTable GetSTLadder()
         {
             try
             {
                 string commandText = "Exec NewBTP.dbo.GetSTLadder";
-                return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+                return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             }
             catch (Exception exception)
             {
@@ -583,12 +583,12 @@
             return SqlHelper.ExecuteDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader GetVTLadder()
+        public static DataTable GetVTLadder()
         {
             try
             {
                 string commandText = "Exec NewBTP.dbo.GetVTLadder";
-                return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+                return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             }
             catch (Exception exception)
             {
@@ -702,16 +702,16 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "OldUserLogin", commandParameters);
         }
 
-        public static SqlDataReader RefashionPlayerSkill(int intUserID, long longPlayerID, int intPlayerType)
+        public static DataRow RefashionPlayerSkill(int intUserID, long longPlayerID, int intPlayerType)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.RefashionPlayerSkill ", intUserID, ",", longPlayerID, ",", intPlayerType });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader RefashionSafePlayerSkill(int intUserID, long longPlayerID, int intPlayerType)
+        public static DataRow RefashionSafePlayerSkill(int intUserID, long longPlayerID, int intPlayerType)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.RefashionSafePlayerSkill ", intUserID, ",", longPlayerID, ",", intPlayerType });
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static bool RegAssociator(int intUserID, DateTime datMemberExpireTime, string strConn)
@@ -763,10 +763,10 @@
             SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static SqlDataReader SendMsgToLast3()
+        public static DataTable SendMsgToLast3()
         {
             string commandText = "Exec NewBTP.dbo.SendMsgToLast3";
-            return SqlHelper.ExecuteReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static void SetAccountCategory(int intUserID, int intCategory)
@@ -905,36 +905,40 @@
                                 SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                                 commandText = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", str3, "' WHERE UserID=", intUserID });
                                 SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("main40"), CommandType.Text, commandText);
-                                SqlDataReader giftTable = BTPGiftManager.GetGiftTable();
-                                string str4 = "会员自动续费成功！";
-                                while (giftTable.Read())
+                                DataTable giftTable = BTPGiftManager.GetGiftTable();
+                                if (giftTable != null)
                                 {
-                                    int intToolID = (int) giftTable["ToolID"];
-                                    int intWealth = (int) giftTable["Amount"];
-                                    int intType = (byte) giftTable["Type"];
-                                    if (intType == 3)
+                                    string str4 = "会员自动续费成功！";
+                                    foreach (DataRow row in giftTable.Rows)
                                     {
-                                        AddWealthByFinance(intUserID, intWealth, 1, "购买会员卡赠送！");
-                                        object obj2 = str4;
-                                        str4 = string.Concat(new object[] { obj2, "获赠", intWealth, "枚游戏币！" });
-                                    }
-                                    else
-                                    {
-                                        if ((intToolID == 0x21) && (intType == 1))
+                                        int intToolID = (int)row["ToolID"];
+                                        int intWealth = (int)row["Amount"];
+                                        int intType = (byte)row["Type"];
+                                        if (intType == 3)
                                         {
-                                            BTPToolLinkManager.BuyDoubleExperience(intToolID, intUserID, intWealth);
-                                            continue;
+                                            AddWealthByFinance(intUserID, intWealth, 1, "购买会员卡赠送！");
+                                            object obj2 = str4;
+                                            str4 = string.Concat(new object[] { obj2, "获赠", intWealth, "枚游戏币！" });
                                         }
-                                        BTPToolLinkManager.GiftTool(intUserID, intToolID, intWealth, intType);
-                                        if (str4.IndexOf("游戏币道具") == -1)
+                                        else
                                         {
-                                            str4 = str4 + "并获赠超值游戏币道具！";
+                                            if ((intToolID == 0x21) && (intType == 1))
+                                            {
+                                                BTPToolLinkManager.BuyDoubleExperience(intToolID, intUserID, intWealth);
+                                                continue;
+                                            }
+                                            BTPToolLinkManager.GiftTool(intUserID, intToolID, intWealth, intType);
+                                            if (str4.IndexOf("游戏币道具") == -1)
+                                            {
+                                                str4 = str4 + "并获赠超值游戏币道具！";
+                                            }
                                         }
                                     }
+                                    BTPMessageManager.AddMessage(intUserID, 2, 0, "秘书报告", str4);
+                                    //giftTable.Close();
+                                    continue;
                                 }
-                                BTPMessageManager.AddMessage(intUserID, 2, 0, "秘书报告", str4);
-                                giftTable.Close();
-                                continue;
+                               
                             }
                             if ((time > DateTime.Now.AddDays(-3.0)) || (num3 == 1))
                             {
@@ -992,6 +996,27 @@
         {
             string commandText = "Exec NewBTP.dbo.[GetMaxUserID] ";
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static bool CheckInviteCode(string strInviteCode)
+        {
+            string commandText = string.Concat(new Object[] {"SELECT TOP 1 Code FROM BTP_InviteCode WHERE Code = '", strInviteCode, "' AND Status = 2 " });
+            string code = SqlHelper.ExecuteStringReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            if (code != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void UpdateInviteCodeUsed(string strInviteCode)
+        {
+            string commandText = string.Concat(new Object[] { "UPDATE BTP_InviteCode SET Status = 3 WHERE Code = '", strInviteCode, "'" });
+            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+           
         }
 
     }
