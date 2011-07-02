@@ -112,15 +112,15 @@
                     string str8;
                     bool flag;
                     string str9;
-                    SqlDataReader reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                    if (reader.Read())
+                    DataRow reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                    if (reader != null)
                     {
                         str4 = reader["City"].ToString().Trim();
                         str5 = reader["Province"].ToString().Trim();
                         str6 = reader["BirthDay"].ToString().Trim();
                         str7 = reader["DeptTag"].ToString().Trim();
                         str8 = reader["Email"].ToString().Trim();
-                        reader.Close();
+                        //reader.Close();
                     }
                     else
                     {
@@ -129,7 +129,7 @@
                         str6 = "";
                         str7 = "";
                         str8 = "";
-                        reader.Close();
+                        //reader.Close();
                     }
                     DataRow gameRow = BTPGameManager.GetGameRow();
                     if (gameRow != null)
