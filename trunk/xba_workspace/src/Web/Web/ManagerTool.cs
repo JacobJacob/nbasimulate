@@ -219,15 +219,15 @@
                     {
                         this.strCoin = "<a href=\"ManagerTool.aspx?Type=COIN&Status=3\">金币转赠</a>";
                     }
-                    SqlDataReader reader = ROOTUserManager.GetCoinInFinanceList(this.intUserID, this.intPage, 12);
-                    if (reader.HasRows)
+                    DataTable reader = ROOTUserManager.GetCoinInFinanceList(this.intUserID, this.intPage, 12);
+                    if (reader != null)
                     {
-                        while (reader.Read())
+                        foreach (DataRow row in reader.Rows)
                         {
-                            byte num1 = (byte) reader["Category"];
-                            long num2 = (long) reader["Income"];
-                            string str3 = reader["Event"].ToString().Trim();
-                            datIn = (DateTime) reader["CreateTime"];
+                            byte num1 = (byte) row["Category"];
+                            long num2 = (long) row["Income"];
+                            string str3 = row["Event"].ToString().Trim();
+                            datIn = (DateTime) row["CreateTime"];
                             this.sbCoin.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">\n");
                             this.sbCoin.Append("    <td align=\"center\">收入</td>\n");
                             this.sbCoin.Append("    <td align=\"center\">" + num2 + "</td>\n");
@@ -235,7 +235,7 @@
                             this.sbCoin.Append("    <td align=\"left\" style=\"padding-left:6px\">" + str3 + "</td>\n");
                             this.sbCoin.Append("</tr>\n");
                         }
-                        reader.Close();
+                        //reader.Close();
                         string strCurrentURL = "ManagerTool.aspx?Type=COIN&Status=2&";
                         this.strScript = this.GetScript(strCurrentURL);
                         this.strPage = "<div style=\"padding:6px 0 0 0;text-align:right;\">" + this.GetViewPage(strCurrentURL) + "</div>";
@@ -584,23 +584,26 @@
             {
                 this.intPage = 1;
             }
-            SqlDataReader reader = BTPWealthFinanceManager.GetWealthFinanceTableByUserID(0, this.intPage, 10, this.intUserID);
-            while (reader.Read())
+            DataTable reader = BTPWealthFinanceManager.GetWealthFinanceTableByUserID(0, this.intPage, 10, this.intUserID);
+            if (reader != null)
             {
-                int num = (int) reader["Income"];
-                int num2 = (int) reader["Outcome"];
-                DateTime datIn = (DateTime) reader["CreateTime"];
-                string str = reader["Event"].ToString().Trim();
-                reader["Remark"].ToString().Trim();
-                this.sbWealthFinance.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                this.sbWealthFinance.Append("<td height=\"25\" align=\"center\"><font color='green'>" + num + "</font></td>");
-                this.sbWealthFinance.Append("<td align=\"center\"><font color='red'>" + num2 + "</font></td>");
-                this.sbWealthFinance.Append("<td align=\"center\"><font color='#333333'>" + StringItem.FormatDate(datIn, "MM-dd hh:mm") + "</font></td>");
-                this.sbWealthFinance.Append("<td style=\"padding:2px;\"><font color='#333333'>" + str + "</font></td>");
-                this.sbWealthFinance.Append("</tr>");
-                this.sbWealthFinance.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>");
+                foreach (DataRow row in reader.Rows)
+                {
+                    int num = (int)row["Income"];
+                    int num2 = (int)row["Outcome"];
+                    DateTime datIn = (DateTime)row["CreateTime"];
+                    string str = row["Event"].ToString().Trim();
+                    row["Remark"].ToString().Trim();
+                    this.sbWealthFinance.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    this.sbWealthFinance.Append("<td height=\"25\" align=\"center\"><font color='green'>" + num + "</font></td>");
+                    this.sbWealthFinance.Append("<td align=\"center\"><font color='red'>" + num2 + "</font></td>");
+                    this.sbWealthFinance.Append("<td align=\"center\"><font color='#333333'>" + StringItem.FormatDate(datIn, "MM-dd hh:mm") + "</font></td>");
+                    this.sbWealthFinance.Append("<td style=\"padding:2px;\"><font color='#333333'>" + str + "</font></td>");
+                    this.sbWealthFinance.Append("</tr>");
+                    this.sbWealthFinance.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>");
+                }
             }
-            reader.Close();
+            //reader.Close();
             string strCurrentURL = "ManagerTool.aspx?Type=WEALTHMANAGE&";
             this.strScript = this.GetScript(strCurrentURL);
             this.intPerPage = 10;
@@ -612,8 +615,8 @@
             string strCurrentURL = "ManagerTool.aspx?Type=WEALTHSTORE&";
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
-            SqlDataReader wealthToolList = BTPWealthToolManager.GetWealthToolList(this.intPage, this.intPerPage);
-            if (!wealthToolList.HasRows)
+            DataTable wealthToolList = BTPWealthToolManager.GetWealthToolList(this.intPage, this.intPerPage);
+            if (wealthToolList == null)
             {
                 this.strList = "<tr class='BarContent'><td height='25' colspan='5'>暂时没有道具。</td></tr>";
             }
@@ -621,23 +624,23 @@
             {
                 this.strList = "<tr ><td colspan=5 height='25' align=right><font color=red>注：标红色为会员价格</font></td></tr>";
                 this.strList = this.strList + "<tr><td colspan='5' height='5'></td></tr>";
-                while (wealthToolList.Read())
+                foreach (DataRow row in wealthToolList.Rows)
                 {
-                    int num = (int) wealthToolList["ToolID"];
-                    byte num1 = (byte) wealthToolList["Category"];
-                    int num2 = (int) wealthToolList["WealthCost"];
-                    int num3 = (int) wealthToolList["AmountInStock"];
-                    byte num5 = (byte) wealthToolList["TicketCategory"];
-                    string str3 = wealthToolList["ToolImage"].ToString().Trim();
-                    wealthToolList["ToolIntroduction"].ToString().Trim();
-                    string str2 = wealthToolList["ToolName"].ToString().Trim();
-                    int num4 = (int) wealthToolList["PayCost"];
+                    int num = (int) row["ToolID"];
+                    byte num1 = (byte) row["Category"];
+                    int num2 = (int) row["WealthCost"];
+                    int num3 = (int) row["AmountInStock"];
+                    byte num5 = (byte) row["TicketCategory"];
+                    string str3 = row["ToolImage"].ToString().Trim();
+                    row["ToolIntroduction"].ToString().Trim();
+                    string str2 = row["ToolName"].ToString().Trim();
+                    int num4 = (int) row["PayCost"];
                     object strList = this.strList;
                     this.strList = string.Concat(new object[] { strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='40' width='40' align='center'><img src='", SessionItem.GetImageURL(), "Tools/", str3, "' height='30' width='30' border='0'></td><td width='100' style='padding-left:4px'><font color='blue'>", str2, "</font></td><td width='100' align='center'><strong>数量</strong>：<font color='blue'>", num3, "</font></td><td width='206'><strong>价格</strong>：<font color='blue'>", num2, "</font>枚 / <font color='red'>", num4, "</font>枚</td><td width='100' align='center'><a href='SecretaryPage.aspx?Type=INTROWEALTHTOOL&ToolID=", num, "'>说明</a> | 购买</td></tr>" });
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>";
                 }
             }
-            wealthToolList.Close();
+            //wealthToolList.Close();
             this.strList = this.strList + "<tr><td height='25' align='right' colspan='6'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
         }
     }
