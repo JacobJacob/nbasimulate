@@ -34,7 +34,7 @@
             this.sbScript.Append("</script>");
         }
 
-        private SqlDataReader GetStaffTable(int intCount, int intTotal)
+        private DataTable GetStaffTable(int intCount, int intTotal)
         {
             if (this.intType == 0)
             {
@@ -297,17 +297,17 @@
             int intCount = this.intPerPage * this.intPage;
             int total = this.GetTotal();
             this.GetScript(strCurrentURL);
-            SqlDataReader staffTable = this.GetStaffTable(intCount, total);
-            if (staffTable.HasRows)
+            DataTable staffTable = this.GetStaffTable(intCount, total);
+            if (staffTable != null)
             {
-                while (staffTable.Read())
+                foreach (DataRow row in staffTable.Rows)
                 {
-                    string str2 = staffTable["Name"].ToString().Trim();
-                    byte num3 = (byte) staffTable["Age"];
-                    byte intPosition = (byte) staffTable["Type"];
-                    byte num5 = (byte) staffTable["Contract"];
-                    int num6 = (int) staffTable["Salary"];
-                    int num7 = (int) staffTable["StaffID"];
+                    string str2 = row["Name"].ToString().Trim();
+                    byte num3 = (byte) row["Age"];
+                    byte intPosition = (byte) row["Type"];
+                    byte num5 = (byte) row["Contract"];
+                    int num6 = (int) row["Salary"];
+                    int num7 = (int) row["StaffID"];
                     string str3 = "<a href='SecretaryPage.aspx?StaffID=" + num7 + "&Type=GETSTAFF'>雇佣</a>";
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><font color='#660066'>" + str2 + "</font></td>");
@@ -324,7 +324,7 @@
             {
                 this.sbList.Append("<tr class='BarContent'><td height='20' colspan='6'>暂时没有职员！</td></tr>");
             }
-            staffTable.Close();
+            //staffTable.Close();
             this.sbList.Append("<tr><td height='25' align='right' colspan='6'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
         }
     }
