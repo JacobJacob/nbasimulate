@@ -1153,7 +1153,7 @@
                     {
                         BTPToolLinkManager.BuyVIPCard(this.intUserID, datMemberExpireTime);
                     }
-                    SqlDataReader giftTable = BTPGiftManager.GetGiftTable();
+                    DataTable giftTable = BTPGiftManager.GetGiftTable();
                     string strContent = "购买会员卡";
                     int intUserID = 0;
                     if (strNickName != "")
@@ -1161,32 +1161,35 @@
                         intUserID = this.intUserID;
                         this.intUserID = this.intLookUserID;
                     }
-                    while (giftTable.Read())
+                    if (giftTable != null)
                     {
-                        int intToolID = (int) giftTable["ToolID"];
-                        int intWealth = (int) giftTable["Amount"];
-                        int intType = (byte) giftTable["Type"];
-                        if (intType == 3)
+                        foreach (DataRow row in giftTable.Rows)
                         {
-                            BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth, 1, "购买会员卡赠送！");
-                            object obj2 = strContent;
-                            strContent = string.Concat(new object[] { obj2, "获赠", intWealth, "枚游戏币！" });
-                        }
-                        else
-                        {
-                            if ((intToolID == 0x21) && (intType == 1))
+                            int intToolID = (int)row["ToolID"];
+                            int intWealth = (int)row["Amount"];
+                            int intType = (byte)row["Type"];
+                            if (intType == 3)
                             {
-                                this.intType = BTPToolLinkManager.BuyDoubleExperience(intToolID, this.intUserID, intWealth);
-                                continue;
+                                BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth, 1, "购买会员卡赠送！");
+                                object obj2 = strContent;
+                                strContent = string.Concat(new object[] { obj2, "获赠", intWealth, "枚游戏币！" });
                             }
-                            BTPToolLinkManager.GiftTool(this.intUserID, intToolID, intWealth, intType);
-                            if (strContent.IndexOf("游戏币道具") == -1)
+                            else
                             {
-                                strContent = strContent + "获赠超值游戏币道具！";
+                                if ((intToolID == 0x21) && (intType == 1))
+                                {
+                                    this.intType = BTPToolLinkManager.BuyDoubleExperience(intToolID, this.intUserID, intWealth);
+                                    continue;
+                                }
+                                BTPToolLinkManager.GiftTool(this.intUserID, intToolID, intWealth, intType);
+                                if (strContent.IndexOf("游戏币道具") == -1)
+                                {
+                                    strContent = strContent + "获赠超值游戏币道具！";
+                                }
                             }
                         }
                     }
-                    giftTable.Close();
+                    //giftTable.Close();
                     if (strNickName != "")
                     {
                         str4 = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", datMemberExpireTime.ToString(), "' WHERE UserID=", this.intLookUserID });
@@ -1337,8 +1340,8 @@
                         {
                             string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
                             string strCreateTime = DateTime.Now.ToString();
-                            SqlDataReader devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID);
-                            if (devTranTopUser.Read())
+                            DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID);
+                            if (devTranTopUser != null)
                             {
                                 int num6 = (int) devTranTopUser["UserID"];
                                 int num7 = (int) devTranTopUser["Price"];
@@ -1346,12 +1349,12 @@
                                 int num9 = (num7 * 13) / 10;
                                 if (num6 == this.intUserID)
                                 {
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=692!Type.TRANSFER^Pos.1^Order.0^Page.1");
                                 }
                                 else if ((num8 > num4) || (num9 < num4))
                                 {
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=693");
                                 }
                                 else
@@ -1362,7 +1365,7 @@
                                         BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
                                     }
                                     BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, num4, strCreateTime, strIP, num2);
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
                                 }
                             }
@@ -1373,7 +1376,7 @@
                                 int num11 = (num10 * 13) / 10;
                                 if ((num10 > num4) || (num11 < num4))
                                 {
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=693");
                                 }
                                 else
@@ -1384,7 +1387,7 @@
                                         BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
                                     }
                                     BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, num4, strCreateTime, strIP, num2);
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
                                 }
                             }
@@ -2110,20 +2113,20 @@
                         {
                             string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
                             string strCreateTime = DateTime.Now.ToString();
-                            SqlDataReader devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID);
-                            if (devTranTopUser.Read())
+                            DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID);
+                            if (devTranTopUser != null)
                             {
                                 int num6 = (int) devTranTopUser["UserID"];
                                 int num7 = (int) devTranTopUser["Price"];
                                 int num8 = (num7 / 100) * 0x66;
                                 if (num6 == this.intUserID)
                                 {
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=692!Type.TRANSFER^Pos.1^Order.0^Page.1");
                                 }
                                 else if (num8 > num4)
                                 {
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=693");
                                 }
                                 else
@@ -2134,7 +2137,7 @@
                                         BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(2.0));
                                     }
                                     BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, num4, strCreateTime, strIP, num2);
-                                    devTranTopUser.Close();
+                                   // devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
                                 }
                             }
@@ -2144,7 +2147,7 @@
                                 int num9 = Convert.ToInt32(row4["BidPrice"]);
                                 if (num9 > num4)
                                 {
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=693");
                                 }
                                 else
@@ -2155,7 +2158,7 @@
                                         BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(2.0));
                                     }
                                     BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, num4, strCreateTime, strIP, num2);
-                                    devTranTopUser.Close();
+                                    //devTranTopUser.Close();
                                     base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
                                 }
                             }
@@ -3063,7 +3066,7 @@
             string str9;
             string str10;
             string str11;
-            SqlDataReader reader;
+            DataRow reader;
             int num23 = -1;
             this.blnRefashionSafe = this.cbRefashionSafe.Checked;
             if (!this.blnRefashionSafe)
@@ -3074,7 +3077,7 @@
             {
                 reader = BTPAccountManager.RefashionSafePlayerSkill(this.intUserID, this.longPlayerID, this.intType);
             }
-            if (reader.Read())
+            if (reader!=null)
             {
                 int num12;
                 int num13;
@@ -3242,7 +3245,7 @@
                 str10 = "0";
                 str11 = "0";
             }
-            reader.Close();
+            //reader.Close();
             switch (num23)
             {
                 case 0:
