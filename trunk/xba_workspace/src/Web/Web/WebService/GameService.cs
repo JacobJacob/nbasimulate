@@ -36,18 +36,18 @@
             string str6;
             int num2;
             bool flag = ROOTUserGameManager.HasUserGame(intUserID, intCategory);
-            SqlDataReader userRowByUserID = ROOTUserManager.GetUserRowByUserID(intUserID);
-            if (userRowByUserID.Read())
+            DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(intUserID);
+            if (userRowByUserID != null)
             {
                 str = userRowByUserID["UserName"].ToString().Trim();
                 str2 = userRowByUserID["Password"].ToString().Trim();
-                userRowByUserID.Close();
+                //userRowByUserID.Close();
             }
             else
             {
                 str = "";
                 str2 = "";
-                userRowByUserID.Close();
+                //userRowByUserID.Close();
             }
             DBLogin.GameNameChinese(intCategory);
             string str3 = ServerItem.GameImgName(intCategory);
