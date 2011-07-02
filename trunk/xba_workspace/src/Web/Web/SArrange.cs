@@ -316,17 +316,20 @@
             this.strList = "";
             intUserIDA = (int) SessionItem.GetRequest("UserID", 0);
             intClubIDA = (int) SessionItem.GetRequest("ClubID", 0);
-            SqlDataReader reader = BTPToolLinkManager.CheckClubLink(this.intUserID, intClubIDA, 3);
+            DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, intClubIDA, 3);
             bool flag = false;
-            while (reader.Read())
+            if (reader != null)
             {
-                int num = (byte) reader["Category"];
-                if (num == 1)
+                foreach (DataRow dataRow in reader.Rows)
                 {
-                    flag = true;
+                    int num = (byte)dataRow["Category"];
+                    if (num == 1)
+                    {
+                        flag = true;
+                    }
                 }
             }
-            reader.Close();
+            //reader.Close();
             if (flag)
             {
                 this.intUserID = intUserIDA;
