@@ -33,7 +33,7 @@ class BaseClient(object):
                 break
                 
     def log(self, msg):
-        s= "[%s]%s" % (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg)
+        s= "[%s]%s" % (datetime.now().strftime("%Y-%m-%d %H:%M:%S.log"), msg)
         f = open(os.path.join(PathSettings.LOG, self._log_file), "ab")
         try:
             f.write("%s\n" % s)
