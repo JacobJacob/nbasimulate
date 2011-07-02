@@ -788,17 +788,20 @@
             DataTable playerTableByClubID = BTPPlayer5Manager.GetPlayerTableByClubID(this.intClub5ID);
             string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(this.intClub5ID);
             //this.strToolsImg = string.Concat(new object[] { "<a href='DevisionView.aspx?UserID=", this.intUserIDA, "&Type=MATCHLOOK&Devision=", devCodeByClubID, "&Status=1&Page=1' target='Center'><img src='", SessionItem.GetImageURL(), "MinMatchLook.gif' width='12' height='12' border='0' alt='查看比赛录像'><a>" });
-            SqlDataReader reader = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub5ID, 5);
+            DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub5ID, 5);
             bool flag = false;
-            while (reader.Read())
+            if (reader != null)
             {
-                this.intCategory = (byte) reader["Category"];
-                if (this.intCategory == 1)
+                foreach (DataRow row in reader.Rows)
                 {
-                    flag = true;
+                    this.intCategory = (byte)row["Category"];
+                    if (this.intCategory == 1)
+                    {
+                        flag = true;
+                    }
                 }
             }
-            reader.Close();
+            //reader.Close();
             /*if (flag)
             {
                 this.strToolsImg = string.Concat(new object[] { this.strToolsImg, "&nbsp;&nbsp;<a href='VArrange.aspx?ClubID=", this.intClub5ID, "&UserID=", this.intUserIDA, "&Type=6' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
@@ -850,17 +853,20 @@
 
         private void StreetPlayerList()
         {
-            SqlDataReader reader = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub3ID, 3);
+            DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub3ID, 3);
             bool flag = false;
-            while (reader.Read())
+            if (reader != null)
             {
-                this.intCategory = (byte) reader["Category"];
-                if (this.intCategory == 1)
+                foreach (DataRow row in reader.Rows)
                 {
-                    flag = true;
+                    this.intCategory = (byte)row["Category"];
+                    if (this.intCategory == 1)
+                    {
+                        flag = true;
+                    }
                 }
             }
-            reader.Close();
+            //reader.Close();
             /*if (flag)
             {
                 this.strToolsImg = string.Concat(new object[] { "<a href='SArrange.aspx?ClubID=", this.intClub3ID, "&UserID=", this.intUserIDA, "&Type=5' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
