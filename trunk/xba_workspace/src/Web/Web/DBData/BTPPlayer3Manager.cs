@@ -645,10 +645,10 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static int GetPlayer3Cost(long longPlayerID)
+        public static long GetPlayer3Cost(long longPlayerID)
         {
             string commandText = "Exec NewBTP.dbo.GetPlayerCost3 " + longPlayerID;
-            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteLongDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static int GetPlayer3CountByCID(int intClubID)

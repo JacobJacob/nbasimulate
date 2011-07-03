@@ -57,7 +57,12 @@ namespace Client.XBA.Client
               Console.WriteLine(matchId);
               Console.WriteLine(clubIDA);
               Console.WriteLine(clubIDB);
-              Match match = new Match(clubIDA, clubIDB, true, category, matchId);
+              bool blnPower = true;
+              if (category == 1)
+              {
+                  blnPower = false;
+              }
+              Match match = new Match(clubIDA, clubIDB, blnPower, category, matchId);
               match.Run();
               String reportUrl = match.sbRepURL.ToString();
               String statUrl = match.sbStasURL.ToString();

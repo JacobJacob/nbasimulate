@@ -608,7 +608,7 @@
 
         public static string GetMainUrl()
         {
-            return "http://localhost:34591/xbaweb/";
+            return Config.GetDomain();
 
         }
     }

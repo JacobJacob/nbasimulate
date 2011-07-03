@@ -21,10 +21,13 @@ namespace Client.XBA.Client
                 foreach(DataRow row in matchs.Rows)
                 {
                     int category = Convert.ToInt32(row["Category"]);
-                    if (category != Constant.MATCH_CATEGORY_FRIEND && category != Constant.MATCH_CATEGORY_ONLY_ONE)
+                    if (category != Constant.MATCH_CATEGORY_FRIEND && category != Constant.MATCH_CATEGORY_ONLY_ONE && category != Constant.MATCH_CATEGORY_TRAIN)
                     {
-                        Console.WriteLine(String.Format("not need handle category:{0}", category));
-                        continue;
+                        if (category != Constant.MATCH_CATEGORY_TRAIN_A)
+                        {
+                            Console.WriteLine(String.Format("not need handle category:{0}", category));
+                            continue;
+                        }
                     }
                     this.HandleMatch(row);
                 }
@@ -62,7 +65,12 @@ namespace Client.XBA.Client
               Console.WriteLine(matchId);
               Console.WriteLine(clubIDA);
               Console.WriteLine(clubIDB);
-              Match match = new Match(clubIDA, clubIDB, false, category, matchId, false, false, 0, 0);
+              bool blnPower = false;
+              if (category == Constant.MATCH_CATEGORY_TRAIN || category == Constant.MATCH_CATEGORY_TRAIN_A)
+              {
+                  blnPower = true;
+              }
+              Match match = new Match(clubIDA, clubIDB, blnPower, category, matchId, false, false, 0, 0);
               match.Run();
               String reportUrl = match.sbRepURL.ToString();
               String statUrl = match.sbStasURL.ToString();

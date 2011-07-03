@@ -42,6 +42,12 @@ namespace Client.XBA.Common
 
         /*职业联赛*/
         public static int MATCH_CATEGORY_DEV_MATCH = 2;
+
+        /*职业训练*/
+        public static int MATCH_CATEGORY_TRAIN_A = 10;
+
+        /*职业训练*/
+        public static int MATCH_CATEGORY_TRAIN = 11;
         
         
         /* 这是街球的, > 2的为经典赛事*/

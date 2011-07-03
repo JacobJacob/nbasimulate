@@ -4501,7 +4501,7 @@
             }
             if (intCheckType < 4)
             {
-                num10 = BTPPlayer3Manager.GetPlayer3Cost(this.longPlayerID);
+                num10 = Convert.ToInt32(BTPPlayer3Manager.GetPlayer3Cost(this.longPlayerID));
             }
             return num10;
         }
