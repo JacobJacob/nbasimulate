@@ -4,8 +4,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from xba.business import only_one_match_manager, game_manager
+from xba.business import only_one_match_manager, game_manager, arrange_manager
 from xba.common.decorators import ensure_success
+from xba.common.constants.club import ClubCategory
 from base import BaseClient
 from xba.client.dev_match_handler import DevMatchHandler
 
@@ -31,6 +32,10 @@ class GameWorker(BaseClient):
         self.log("start to assign dev for new registe club")
         self.dev_assign()
         
+        #战术等级更新
+        self.log("start to update arrange level")
+        self.update_arrange_lvl()
+        
         self.log("start sleep")
         self.sleep()
         
@@ -38,6 +43,11 @@ class GameWorker(BaseClient):
     def set_only_one_match(self):
         """胜者为王挫合"""
         return only_one_match_manager.set_only_one_match()
+    
+    def update_arrange_lvl(self):
+        """战术等级更新"""
+        arrange_manager.update_arrange_lvl(ClubCategory.STREET)
+        arrange_manager.update_arrange_lvl(ClubCategory.PROFESSION)
     
     @ensure_success()
     def add_power_by_online(self):
