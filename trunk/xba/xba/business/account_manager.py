@@ -28,17 +28,21 @@ def get_invite_code_list(page, pagesize, status):
         infos = session.query(InviteCode).filter(InviteCode.status==status).order_by(InviteCode.id).offset(index).limit(pagesize).all()
     return total, infos
 
-def add_invite_code(count):
+def add_invite_code(count=20, status=InviteCodeStatus.NEW):
     """增加邀请码"""
     session = Session()
+    codes = []
     for _ in range(int(count)):
         invite_code = InviteCode()
-        invite_code.code = create_code()
-        invite_code.status = InviteCodeStatus.NEW
+        code = create_code()
+        codes.append(code)
+        invite_code.code = code
+        invite_code.status = status
         invite_code.created_time = datetime.now()
         invite_code.updated_time = datetime.now()
         session.add(invite_code)
     session.commit()
+    return codes
     
 def assign_invite_code(code):
     """分配邀请码"""

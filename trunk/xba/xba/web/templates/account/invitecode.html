@@ -34,19 +34,6 @@
 	    service.assign_invite_code(code);
 	});
 	
-    $('#add_form input.button').click(function(){
-		var count = $('#count').val();
-        if(!count){
-		   alert("请输入数量");
-		}else{
-		    try{
-		       service.add_invite_code(count);
-	           window.location.reload() ;
-			}catch(e){
-			   alert(e.message);
-			}
-	    }
-	});
 	 
 	$('.status').click(function(){
 		 var category = $(this).attr('status');
@@ -59,6 +46,26 @@
 		   $(this).attr("disabled", "disabled");
 		}
 	});
+	
+	 $('input.export').click(function(){
+	     $("#export_dialog").show().dialog({
+		     height: 230, width: 330, modal: true,
+	         title: '导出邀请码',
+		     overlay: {
+                opacity: 0.5, 
+                background: "black" 
+             }
+	     });
+	});
+	
+	$('#export_form input.button').click(function(){
+		var count = $('#export_count').val();
+        if(!count){
+		   alert("请输入数量");
+		}else{
+		     window.location = "{% url download-invite-code %}?count=" + count;
+	    }
+	});
 	 
   });
   
@@ -66,7 +73,8 @@
 {% endblock %}
 {% block title %}邀请码管理{% endblock %}
 {% block content %}
-<input type="button" class="add" value="添加邀请码"/><br/>
+<input type="button" class="add" value="添加邀请码"/>&nbsp;
+<input type="button" class="export" value="导出邀请码"/><br/>
 <input type="button" class="status" status="1" value="未使用" />
 <input type="button" class="status" status="2" value="已分配" />
 <input type="button" class="status" status="3" value="已使用" />
@@ -100,6 +108,16 @@
     	<p>
     		<label>数量:</label>
 			<span><input id="count" type="text" value="12"/></span>
+	    </p>
+	    <br> 
+		<input class="button" type="button" value="提交" />
+    </form>
+</div>
+<div id="export_dialog" class="flora" style="display: none;">
+    <form id="export_form">
+    	<p>
+    		<label>数量:</label>
+			<span><input id="export_count" type="text" value="12"/></span>
 	    </p>
 	    <br> 
 		<input class="button" type="button" value="提交" />

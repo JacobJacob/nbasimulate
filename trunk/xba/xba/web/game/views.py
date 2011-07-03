@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 from xba.web.render import render_to_response
 from xba.business import game_manager
 
@@ -18,4 +19,6 @@ def announce_list(request):
         for info in infos:
             info.title = info.title.decode("gbk")
     return render_to_response(request, "game/announce.html", locals())
+
+
 
