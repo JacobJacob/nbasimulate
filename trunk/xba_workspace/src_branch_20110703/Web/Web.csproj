@@ -1,0 +1,1518 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>local</ProjectType>
+    <ProjectVersion>7.10.3077</ProjectVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B2ACDF01-AA6B-4AF7-A031-21F9EF1DE3E3}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyName>Web</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <NoStdLib>false</NoStdLib>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugSymbols>false</DebugSymbols>
+    <NoStdLib>false</NoStdLib>
+    <Optimize>true</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxPro, Version=6.6.14.2, Culture=neutral, PublicKeyToken=4735ae9824c7d3ec">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\AjaxPro.dll</HintPath>
+    </Reference>
+    <Reference Include="CBMD5, Version=1.0.1934.17073, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\CBMD5.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.jmail, Version=4.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\Interop.jmail.dll</HintPath>
+    </Reference>
+    <Reference Include="LoginParameter, Version=1.0.2861.31937, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\LoginParameter\bin\Debug\LoginParameter.dll</HintPath>
+    </Reference>
+    <Reference Include="ServerManage, Version=1.0.2847.26731, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ServerManage\bin\Debug\ServerManage.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.Xml</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Global.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test\WebHttp\Request.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Test\WebHttp\Response.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AccountManage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AfreshArrange.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AlterFace.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AlterInfo.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AlterOtherInfo.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Announce.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AssignClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AssMain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AutoCode\ArrangeSet.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AutoPlayerTrain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\AutoReceive.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\BidDetail.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ChampionCup.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ChangeFriMatch.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ChangeLogin.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\CheckJNet.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ChooseClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ChooseMode.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ClubBuild.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ClubSetting.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\Config.cs" />
+    <Compile Include="Web\Helper\IniUtil.cs" />
+    <Compile Include="Web\Helper\MainXmlHelper.cs" />
+    <Compile Include="Web\Helper\PlayerHelper.cs" />
+    <Compile Include="Web\Util\LogManager.cs" />
+    <Compile Include="Web\zh\com\cga\xba\match1\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\zh\com\cga\xba\match2\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\zh\com\xba\match_1\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\zh\com\xba\match_2\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\zh\com\xba\match_3\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\zh\com\xba\match_4\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\com\china\game\xbam1\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\CreateNetDisk.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\CupList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\DBConnection\DBSelector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBConnection\SqlHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBConnection\SqlHelperParameterCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\AdminRecordManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\AdminUserManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPAccountManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPADLinkManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPADManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPAnnounceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPArrange3Manager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPArrange5Manager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPArrangeLvlManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPBidAutoManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPBidderManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPBidFocusManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPBoxManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPCheatManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPClubManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPCupManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPCupMatchManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPCupRegManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPDevCupManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPDevCupMatchManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPDevCupRegManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPDevManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPDevMatchManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPDevMessageManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPErrorManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPFinanceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPFriendManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPFriMatchManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPFriMatchMsgManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPGameADManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPGameManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPGameScheduleManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPGiftManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPGuessManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPHonorManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPLoginIPManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPLogManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPMessageManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPOldPlayerManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPOnlyOneCenterReg.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPOrderManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPParameterManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPPlayer3Manager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPPlayer5Manager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPPlayerManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPStadiumManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPStaffManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPToolLinkManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPToolManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPTrainCenterRegManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPTransferManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPUnionBBSManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPUnionFieldManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPUnionManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPUnionMsgSendManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPUnionPolity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPUWealthFinanceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPWealthFinanceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPWealthMatchManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPWealthToolManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPWebADManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPXCupManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPXCupMatchManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPXCupRegManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPXGameManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPXGroupMatchManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\BTPXGroupTeamManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\DTOnlineManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\RMMatchManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\RMMonthScoreManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\RMRecordManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\RMTeamManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\RMYearScoreManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTBoardManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTCollectTopicManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTEmailContentManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTLockedIPManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTMoveBillManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTPayRecordManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTPhotoManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTRecManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTTablePaging.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTTodayElite.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTTopicManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTUserGameManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTUserManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DBData\ROOTWealthManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\DelFriMatch.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\DelPayOrder.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\DevCup.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Devision.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\DevisionList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\DevisionView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\DevMessage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\DevViewFrame.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Dialogue.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\EditTopic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Extend.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\FMatchCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ForumElite.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ForumOnline.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\FriendDel.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\FriMatchMessage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\FromURL.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\GetFreeCoin.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\GetOnlineCount.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Global.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Guess.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\AccountItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\Binary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\BoardItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\ClubItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\Cuter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\DDLItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\DevCalculator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\DevCupData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\EmailItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\EmailSender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\Error.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\FaceItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\HttpRequestItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\MarketZone.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\MatchItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\MessageItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\NameGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\ObjectItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\PlayerBidSession.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\PlayerData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\PlayerItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\RandomItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\SalaryData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\SecretaryItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\ServerItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\SessionData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\SessionItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\StringItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\TagReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\ToolItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\UpdateTimer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\UserData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\UserGuide.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\VOnlineReportData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Helper\XmlHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\Honour.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Index.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Index2.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\IndexTest.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\Box.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\Cup.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\DevCup.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\Devision.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\Honour.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\MatchMy.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\MessageCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\OnlineList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\OnlyOneMatch.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\PlayerCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\Tools.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\TrainPlayer.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Intro\TransferMarket.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\JCardCheck.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\localhost\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\Login.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\LoginOK.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Logout.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Main.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Main_I.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Main_M.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Main_P.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Main_S.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ManagerTool.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MemberCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MemoryManager.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MessageAndFriend.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MessageCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MessageDel.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MissionCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MissionLeft.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Modify51Announce.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ModifyClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ModifyPlayerBody.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MoveBill\Receive.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\MoveBill\Send.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBS.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSAD.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSAD01.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSBoard.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSBoardList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSFoot.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSHead.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSJumpBoardInfo.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSJumpBoardListInfo.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BBSTopic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\Board.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\BoardList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\EditBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\Forum.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\ForumAD.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\ForumElite.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\ForumHead.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\FrameBoard.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\FrameBoardList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\FrameForum.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\FrameTopic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\GameAD.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\JumpBoardInfo.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\JumpBoardListInfo.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\JumpBoardListInfoNew.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\MemberCenterAD.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\MemberCenterAD01.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyControls\Topic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyFocus.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\MyMoveBill.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\NewManagerHelp.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\NewReg1.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\OneByOneEngine\Language.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\OneByOneEngine\Match.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\OneByOneEngine\Player.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\OneByOneEngine\Quarter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\OnlineCount.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\OnlineList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\OnlyOneCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Pay.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\PayType.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Player5AutoTrain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\PlayerCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Receive.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ReceiveADUnionsky.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ReceiveJNet.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ReceiveMobile.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RegClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Register.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Register2.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RegOK.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Rep.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ReplyPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Report.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ResponseCookiePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RM.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RMCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieAssignClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieAssignDevClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieDare.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieDetail.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieEnd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieEndDevCreate.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieMain_I.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieMain_M.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieMain_P.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieMatch.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieRegClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieSArrange.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieShowClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieTrainPlayerCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\RookieWelcome.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SArrange.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SArrangeSim.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Search.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SearchUserName.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SecretaryPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SelectGame.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SelectGameJump.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SendDevMsg.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SendFMatchMsg.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SendGift.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ServerJump.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ServerSelect.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SetAutoTrain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SetCookieExpire.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SetForumOnline.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SetLogout.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SetQuery.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ShowBox.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ShowClub.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ShowClubIFrom.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ShowImage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ShowPlayer.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SimOnlineLogin.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SmartMain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\Arrange.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\InjuryGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\Language.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\Match.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\Player.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\Quarter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\ScriptGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\Team.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SMatchEngine\Timer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\SRep.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\SStas.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Staff.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\StaffList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\StaffManage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Stas.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Statistiken.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Temp.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TempForum.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Temp_Center.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Temp_Main.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Temp_Right.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TestMatch.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TestOneByOne.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TestSession.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TFinance.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TicketSold.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TopCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TopLeft.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TopMain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TrainPlayer3.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TrainPlayer5.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TrainPlayerCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TransferMarket.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TUFinance.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\tw\com\xba\match_1\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\Union.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionBBS.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionBoard.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionField.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionPolity.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionTopic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionTopicAdd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionTopicEdit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionTopicOprate.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VArrageChampion.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VArrange.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VArrangeDev.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VArrangeSim.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\Arrange.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\InjuryGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\Language.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\Match.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\Player.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\Quarter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\ScriptGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\Team.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VMatchEngine\Timer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\VOnlineRepDetail.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VOnlineReport.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Vote.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VRep.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VStas.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\VTList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\WealthList.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\WealthMarket.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\WebAD.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\WebReference\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\WebService\GameService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\WebService\OnlineService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\WebService\VOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\XBACup.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\XBAFinance.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\XBAFinanceAD.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\_51Admin.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\_51AdminMain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\_51AnnounceDel.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\_51Login.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\_51LoginOK.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\_51Reg.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\_51RegOK.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <EmbeddedResource Include="Test.WebHttp.Request.resources" />
+    <EmbeddedResource Include="Test.WebHttp.Response.resources" />
+    <EmbeddedResource Include="Web.AccountManage.resources" />
+    <EmbeddedResource Include="Web.AfreshArrange.resources" />
+    <EmbeddedResource Include="Web.AlterFace.resources" />
+    <EmbeddedResource Include="Web.AlterInfo.resources" />
+    <EmbeddedResource Include="Web.AlterOtherInfo.resources" />
+    <EmbeddedResource Include="Web.Announce.resources" />
+    <EmbeddedResource Include="Web.AssignClub.resources" />
+    <EmbeddedResource Include="Web.AssMain.resources" />
+    <EmbeddedResource Include="Web.AutoCode.ArrangeSet.resources" />
+    <EmbeddedResource Include="Web.AutoPlayerTrain.resources" />
+    <EmbeddedResource Include="Web.AutoReceive.resources" />
+    <EmbeddedResource Include="Web.BidDetail.resources" />
+    <EmbeddedResource Include="Web.ChampionCup.resources" />
+    <EmbeddedResource Include="Web.ChangeFriMatch.resources" />
+    <EmbeddedResource Include="Web.ChangeLogin.resources" />
+    <EmbeddedResource Include="Web.CheckJNet.resources" />
+    <EmbeddedResource Include="Web.ChooseClub.resources" />
+    <EmbeddedResource Include="Web.ChooseMode.resources" />
+    <EmbeddedResource Include="Web.ClubBuild.resources" />
+    <EmbeddedResource Include="Web.ClubSetting.resources" />
+    <EmbeddedResource Include="Web.CreateNetDisk.resources" />
+    <EmbeddedResource Include="Web.CupList.resources" />
+    <EmbeddedResource Include="Web.DelFriMatch.resources" />
+    <EmbeddedResource Include="Web.DelPayOrder.resources" />
+    <EmbeddedResource Include="Web.DevCup.resources" />
+    <EmbeddedResource Include="Web.Devision.resources" />
+    <EmbeddedResource Include="Web.DevisionList.resources" />
+    <EmbeddedResource Include="Web.DevisionView.resources" />
+    <EmbeddedResource Include="Web.DevMessage.resources" />
+    <EmbeddedResource Include="Web.DevViewFrame.resources" />
+    <EmbeddedResource Include="Web.Dialogue.resources" />
+    <EmbeddedResource Include="Web.EditTopic.resources" />
+    <EmbeddedResource Include="Web.Extend.resources" />
+    <EmbeddedResource Include="Web.FMatchCenter.resources" />
+    <EmbeddedResource Include="Web.ForumElite.resources" />
+    <EmbeddedResource Include="Web.ForumOnline.resources" />
+    <EmbeddedResource Include="Web.FriendDel.resources" />
+    <EmbeddedResource Include="Web.FriMatchMessage.resources" />
+    <EmbeddedResource Include="Web.FromURL.resources" />
+    <EmbeddedResource Include="Web.GetFreeCoin.resources" />
+    <EmbeddedResource Include="Web.GetOnlineCount.resources" />
+    <EmbeddedResource Include="Web.Global.resources" />
+    <EmbeddedResource Include="Web.Guess.resources" />
+    <EmbeddedResource Include="Web.Honour.resources" />
+    <EmbeddedResource Include="Web.Index.resources" />
+    <EmbeddedResource Include="Web.Index2.resources" />
+    <EmbeddedResource Include="Web.IndexTest.resources" />
+    <EmbeddedResource Include="Web.Intro.Box.resources" />
+    <EmbeddedResource Include="Web.Intro.Cup.resources" />
+    <EmbeddedResource Include="Web.Intro.DevCup.resources" />
+    <EmbeddedResource Include="Web.Intro.Devision.resources" />
+    <EmbeddedResource Include="Web.Intro.Honour.resources" />
+    <EmbeddedResource Include="Web.Intro.MatchMy.resources" />
+    <EmbeddedResource Include="Web.Intro.MessageCenter.resources" />
+    <EmbeddedResource Include="Web.Intro.OnlineList.resources" />
+    <EmbeddedResource Include="Web.Intro.OnlyOneMatch.resources" />
+    <EmbeddedResource Include="Web.Intro.PlayerCenter.resources" />
+    <EmbeddedResource Include="Web.Intro.Tools.resources" />
+    <EmbeddedResource Include="Web.Intro.TrainPlayer.resources" />
+    <EmbeddedResource Include="Web.Intro.TransferMarket.resources" />
+    <EmbeddedResource Include="Web.JCardCheck.resources" />
+    <EmbeddedResource Include="Web.Login.resources" />
+    <EmbeddedResource Include="Web.LoginOK.resources" />
+    <EmbeddedResource Include="Web.Logout.resources" />
+    <EmbeddedResource Include="Web.Main.resources" />
+    <EmbeddedResource Include="Web.Main_I.resources" />
+    <EmbeddedResource Include="Web.Main_M.resources" />
+    <EmbeddedResource Include="Web.Main_P.resources" />
+    <EmbeddedResource Include="Web.Main_S.resources" />
+    <EmbeddedResource Include="Web.ManagerTool.resources" />
+    <EmbeddedResource Include="Web.MemberCenter.resources" />
+    <EmbeddedResource Include="Web.MemoryManager.resources" />
+    <EmbeddedResource Include="Web.MessageAndFriend.resources" />
+    <EmbeddedResource Include="Web.MessageCenter.resources" />
+    <EmbeddedResource Include="Web.MessageDel.resources" />
+    <EmbeddedResource Include="Web.MissionCenter.resources" />
+    <EmbeddedResource Include="Web.MissionLeft.resources" />
+    <EmbeddedResource Include="Web.Modify51Announce.resources" />
+    <EmbeddedResource Include="Web.ModifyClub.resources" />
+    <EmbeddedResource Include="Web.ModifyPlayerBody.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBS.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSAD.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSAD01.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSBoard.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSBoardList.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSFoot.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSHead.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSJumpBoardInfo.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSJumpBoardListInfo.resources" />
+    <EmbeddedResource Include="Web.MyControls.BBSTopic.resources" />
+    <EmbeddedResource Include="Web.MyControls.Board.resources" />
+    <EmbeddedResource Include="Web.MyControls.BoardList.resources" />
+    <EmbeddedResource Include="Web.MyControls.Forum.resources" />
+    <EmbeddedResource Include="Web.MyControls.ForumAD.resources" />
+    <EmbeddedResource Include="Web.MyControls.ForumElite.resources" />
+    <EmbeddedResource Include="Web.MyControls.ForumHead.resources" />
+    <EmbeddedResource Include="Web.MyControls.FrameBoard.resources" />
+    <EmbeddedResource Include="Web.MyControls.FrameBoardList.resources" />
+    <EmbeddedResource Include="Web.MyControls.FrameForum.resources" />
+    <EmbeddedResource Include="Web.MyControls.FrameTopic.resources" />
+    <EmbeddedResource Include="Web.MyControls.GameAD.resources" />
+    <EmbeddedResource Include="Web.MyControls.JumpBoardInfo.resources" />
+    <EmbeddedResource Include="Web.MyControls.JumpBoardListInfo.resources" />
+    <EmbeddedResource Include="Web.MyControls.JumpBoardListInfoNew.resources" />
+    <EmbeddedResource Include="Web.MyControls.MemberCenterAD.resources" />
+    <EmbeddedResource Include="Web.MyControls.MemberCenterAD01.resources" />
+    <EmbeddedResource Include="Web.MyControls.Topic.resources" />
+    <EmbeddedResource Include="Web.MyFocus.resources" />
+    <EmbeddedResource Include="Web.MyMoveBill.resources" />
+    <EmbeddedResource Include="Web.NewManagerHelp.resources" />
+    <EmbeddedResource Include="Web.NewReg1.resources" />
+    <EmbeddedResource Include="Web.OnlineCount.resources" />
+    <EmbeddedResource Include="Web.OnlineList.resources" />
+    <EmbeddedResource Include="Web.OnlyOneCenter.resources" />
+    <EmbeddedResource Include="Web.Pay.resources" />
+    <EmbeddedResource Include="Web.PayType.resources" />
+    <EmbeddedResource Include="Web.Player5AutoTrain.resources" />
+    <EmbeddedResource Include="Web.PlayerCenter.resources" />
+    <EmbeddedResource Include="Web.Receive.resources" />
+    <EmbeddedResource Include="Web.ReceiveADUnionsky.resources" />
+    <EmbeddedResource Include="Web.ReceiveJNet.resources" />
+    <EmbeddedResource Include="Web.ReceiveMobile.resources" />
+    <EmbeddedResource Include="Web.RegClub.resources" />
+    <EmbeddedResource Include="Web.Register.resources" />
+    <EmbeddedResource Include="Web.Register2.resources" />
+    <EmbeddedResource Include="Web.RegOK.resources" />
+    <EmbeddedResource Include="Web.Rep.resources" />
+    <EmbeddedResource Include="Web.ReplyPage.resources" />
+    <EmbeddedResource Include="Web.Report.resources" />
+    <EmbeddedResource Include="Web.ResponseCookiePage.resources" />
+    <EmbeddedResource Include="Web.RM.resources" />
+    <EmbeddedResource Include="Web.RMCenter.resources" />
+    <EmbeddedResource Include="Web.RookieAssignClub.resources" />
+    <EmbeddedResource Include="Web.RookieAssignDevClub.resources" />
+    <EmbeddedResource Include="Web.RookieDare.resources" />
+    <EmbeddedResource Include="Web.RookieDetail.resources" />
+    <EmbeddedResource Include="Web.RookieEnd.resources" />
+    <EmbeddedResource Include="Web.RookieEndDevCreate.resources" />
+    <EmbeddedResource Include="Web.RookieMain_I.resources" />
+    <EmbeddedResource Include="Web.RookieMain_M.resources" />
+    <EmbeddedResource Include="Web.RookieMain_P.resources" />
+    <EmbeddedResource Include="Web.RookieMatch.resources" />
+    <EmbeddedResource Include="Web.RookieRegClub.resources" />
+    <EmbeddedResource Include="Web.RookieSArrange.resources" />
+    <EmbeddedResource Include="Web.RookieShowClub.resources" />
+    <EmbeddedResource Include="Web.RookieTrainPlayerCenter.resources" />
+    <EmbeddedResource Include="Web.RookieWelcome.resources" />
+    <EmbeddedResource Include="Web.SArrange.resources" />
+    <EmbeddedResource Include="Web.SArrangeSim.resources" />
+    <EmbeddedResource Include="Web.Search.resources" />
+    <EmbeddedResource Include="Web.SearchUserName.resources" />
+    <EmbeddedResource Include="Web.SecretaryPage.resources" />
+    <EmbeddedResource Include="Web.SelectGame.resources" />
+    <EmbeddedResource Include="Web.SelectGameJump.resources" />
+    <EmbeddedResource Include="Web.SendDevMsg.resources" />
+    <EmbeddedResource Include="Web.SendFMatchMsg.resources" />
+    <EmbeddedResource Include="Web.SendGift.resources" />
+    <EmbeddedResource Include="Web.ServerJump.resources" />
+    <EmbeddedResource Include="Web.ServerSelect.resources" />
+    <EmbeddedResource Include="Web.SetAutoTrain.resources" />
+    <EmbeddedResource Include="Web.SetCookieExpire.resources" />
+    <EmbeddedResource Include="Web.SetForumOnline.resources" />
+    <EmbeddedResource Include="Web.SetLogout.resources" />
+    <EmbeddedResource Include="Web.SetQuery.resources" />
+    <EmbeddedResource Include="Web.ShowBox.resources" />
+    <EmbeddedResource Include="Web.ShowClub.resources" />
+    <EmbeddedResource Include="Web.ShowClubIFrom.resources" />
+    <EmbeddedResource Include="Web.ShowImage.resources" />
+    <EmbeddedResource Include="Web.ShowPlayer.resources" />
+    <EmbeddedResource Include="Web.SimOnlineLogin.resources" />
+    <EmbeddedResource Include="Web.SmartMain.resources" />
+    <EmbeddedResource Include="Web.SRep.resources" />
+    <EmbeddedResource Include="Web.SStas.resources" />
+    <EmbeddedResource Include="Web.Staff.resources" />
+    <EmbeddedResource Include="Web.StaffList.resources" />
+    <EmbeddedResource Include="Web.StaffManage.resources" />
+    <EmbeddedResource Include="Web.Stas.resources" />
+    <EmbeddedResource Include="Web.Statistiken.resources" />
+    <EmbeddedResource Include="Web.Temp.resources" />
+    <EmbeddedResource Include="Web.TempForum.resources" />
+    <EmbeddedResource Include="Web.Temp_Center.resources" />
+    <EmbeddedResource Include="Web.Temp_Main.resources" />
+    <EmbeddedResource Include="Web.Temp_Right.resources" />
+    <EmbeddedResource Include="Web.TestMatch.resources" />
+    <EmbeddedResource Include="Web.TestOneByOne.resources" />
+    <EmbeddedResource Include="Web.TestSession.resources" />
+    <EmbeddedResource Include="Web.TFinance.resources" />
+    <EmbeddedResource Include="Web.TicketSold.resources" />
+    <EmbeddedResource Include="Web.TopCenter.resources" />
+    <EmbeddedResource Include="Web.TopLeft.resources" />
+    <EmbeddedResource Include="Web.TopMain.resources" />
+    <EmbeddedResource Include="Web.TrainPlayer3.resources" />
+    <EmbeddedResource Include="Web.TrainPlayer5.resources" />
+    <EmbeddedResource Include="Web.TrainPlayerCenter.resources" />
+    <EmbeddedResource Include="Web.TransferMarket.resources" />
+    <EmbeddedResource Include="Web.TUFinance.resources" />
+    <EmbeddedResource Include="Web.Union.resources" />
+    <EmbeddedResource Include="Web.UnionBBS.resources" />
+    <EmbeddedResource Include="Web.UnionBoard.resources" />
+    <EmbeddedResource Include="Web.UnionField.resources" />
+    <EmbeddedResource Include="Web.UnionList.resources" />
+    <EmbeddedResource Include="Web.UnionPolity.resources" />
+    <EmbeddedResource Include="Web.UnionTopic.resources" />
+    <EmbeddedResource Include="Web.UnionTopicAdd.resources" />
+    <EmbeddedResource Include="Web.UnionTopicEdit.resources" />
+    <EmbeddedResource Include="Web.UnionTopicOprate.resources" />
+    <EmbeddedResource Include="Web.VArrageChampion.resources" />
+    <EmbeddedResource Include="Web.VArrange.resources" />
+    <EmbeddedResource Include="Web.VArrangeDev.resources" />
+    <EmbeddedResource Include="Web.VArrangeSim.resources" />
+    <EmbeddedResource Include="Web.VOnlineRepDetail.resources" />
+    <EmbeddedResource Include="Web.VOnlineReport.resources" />
+    <EmbeddedResource Include="Web.Vote.resources" />
+    <EmbeddedResource Include="Web.VRep.resources" />
+    <EmbeddedResource Include="Web.VStas.resources" />
+    <EmbeddedResource Include="Web.VTList.resources" />
+    <EmbeddedResource Include="Web.WealthList.resources" />
+    <EmbeddedResource Include="Web.WealthMarket.resources" />
+    <EmbeddedResource Include="Web.WebAD.resources" />
+    <EmbeddedResource Include="Web.WebService.GameService.asmx.resources" />
+    <EmbeddedResource Include="Web.WebService.OnlineService.resources" />
+    <EmbeddedResource Include="Web.WebService.VOnlineReport.asmx.resources" />
+    <EmbeddedResource Include="Web.XBACup.resources" />
+    <EmbeddedResource Include="Web.XBAFinance.resources" />
+    <EmbeddedResource Include="Web.XBAFinanceAD.resources" />
+    <EmbeddedResource Include="Web._51Admin.resources" />
+    <EmbeddedResource Include="Web._51AdminMain.resources" />
+    <EmbeddedResource Include="Web._51AnnounceDel.resources" />
+    <EmbeddedResource Include="Web._51Login.resources" />
+    <EmbeddedResource Include="Web._51LoginOK.resources" />
+    <EmbeddedResource Include="Web._51Reg.resources" />
+    <EmbeddedResource Include="Web._51RegOK.resources" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,320 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>local</ProjectType>
+    <ProjectVersion>7.10.3077</ProjectVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0FF8029B-DE61-403F-BDC1-4EA31B9F686A}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyName>AjaxPro</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <NoStdLib>false</NoStdLib>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugSymbols>false</DebugSymbols>
+    <NoStdLib>false</NoStdLib>
+    <Optimize>true</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.Xml</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AjaxPro\AjaxAsyncHttpHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxAsyncHttpHandlerSession.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxAsyncHttpHandlerSessionReadOnly.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxBitmap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxBitmapHttpHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxClassAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxEncryption.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxEnumAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxHandlerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxMethodAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxNamespaceAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxNonSerializableAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxNoTypeUsageAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxProcHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxPropertyAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxRequestModule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxServerCacheAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxSettingsSectionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxSyncHttpHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxSyncHttpHandlerSession.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AjaxSyncHttpHandlerSessionReadOnly.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\AsyncAjaxProcDelegate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\BitmapConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\CacheInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\ClientMethod.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Constant.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\ConverterJavaScriptHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Cryptography\Decryptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Cryptography\DecryptTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Cryptography\EncryptionAlgorithm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Cryptography\Encryptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Cryptography\EncryptTransformer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Cryptography\WebDecrypter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Cryptography\WebEncrypter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\DataRowConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\DataRowViewConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\DataSetConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\DataTableConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\DataViewConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\DateTimeConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\DecimalConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\EmbeddedJavaScriptHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\EnumConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\ExceptionConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\GetDataHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\GuidConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\HashtableConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\HtmlControlConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\HtmlControlConverterHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\HttpSessionStateRequirement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IAjaxCryptProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IAjaxKeyProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IAjaxProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IContextInitializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IDictionaryConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IEnumerableConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IFrameProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IJavaScriptConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IJavaScriptObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IJavaScriptObjectConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\IListConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptArray.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptBoolean.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptConverterAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptNumber.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptString.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JavaScriptUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\JSONParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\MD5Helper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\NameValueCollectionConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\PrimitiveConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Services\AuthenticationService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\StringConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\TokenProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\TypeJavaScriptHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\Utility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AjaxPro\XmlHttpRequestProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Global.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="AjaxPro.core.js" />
+    <EmbeddedResource Include="AjaxPro.ms.js" />
+    <EmbeddedResource Include="AjaxPro.prototype.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
