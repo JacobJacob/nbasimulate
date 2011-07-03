@@ -36,6 +36,8 @@ class GameWorker(BaseClient):
         self.log("start to update arrange level")
         self.update_arrange_lvl()
         
+        self.update_next_match_info_to_mainxml()
+        
         self.log("start sleep")
         self.sleep()
         

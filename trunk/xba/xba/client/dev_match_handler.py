@@ -4,6 +4,7 @@
 import pymssql
 import traceback
 from xba.business import dev_manager
+from xba.client.club_mainxml_setter import ClubMainXMLSetter
 
 VIS_MAP = [
     [[1, 8], [2, 9], [3, 10], [4, 11], [5, 12], [6, 13], [7, 14]],
@@ -41,7 +42,7 @@ class DevMatchHandler(object):
     
     def run(self):
         self.dev_assign()
-  
+
     def dev_assign(self):   
         info = self.get_full_dev()
         if not info:
@@ -49,6 +50,11 @@ class DevMatchHandler(object):
             
         dev_code = info["devcode"]
         self.do_dev_assign(dev_code)
+        self.update_club_main_xml()
+        
+    def update_club_main_xml(self):
+        setter = ClubMainXMLSetter()
+        setter.start()
         
     def do_dev_assign(self, dev_code):
         """联赛分配"""
@@ -91,7 +97,7 @@ class DevMatchHandler(object):
                 return infos
             finally:
                 conn.close()
-        
+                
 if __name__ == '__main__':
     manager = DevMatchHandler()
     manager.run()
