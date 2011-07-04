@@ -61,9 +61,8 @@ def update_season_mvp_value():
     try:
         sql = "exec UpdateSeasonMVPValue"
         cursor.execute(sql)
-    except Exception, e:
-        a = e.message.decode("gbk")
-        print a
+    except:
+        log_execption()
     finally:
         connection.close()
         
@@ -140,7 +139,7 @@ def clear_player5_season():
         
     
 if __name__ == "__main__":
-    #update_season_mvp_value()
-    reset_all_player_pop()
-    reset_all_player_shirt()
+    update_season_mvp_value()
+    #reset_all_player_pop()
+    #reset_all_player_shirt()
 

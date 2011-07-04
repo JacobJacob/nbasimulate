@@ -10,6 +10,7 @@ from xba.business import game_manager
 from xba.business import club_manager
 from xba.business import arrange_manager
 from xba.business import only_one_match_manager
+from xba.business import player5_manager
 from base import BaseClient
 from xba.client import db_backup
 from xba.common.decorators import ensure_success
@@ -54,10 +55,17 @@ class RoundUpdateHandler(BaseClient):
         self.log("start only one update")
         self.only_one_update()  
         
+        self.log("start update_season_mvp_value")
+        self.update_season_mvp_value()
+        
         #after run
         self.after_run()
             
         return "exist"
+    
+    def update_season_mvp_value(self):
+        """更新MVP值"""
+        return player5_manager.update_season_mvp_value()
     
     def only_one_update(self):
         """胜者为王更新"""
