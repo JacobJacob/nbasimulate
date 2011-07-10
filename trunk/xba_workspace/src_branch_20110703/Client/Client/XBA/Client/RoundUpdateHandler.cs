@@ -40,7 +40,7 @@ namespace Client.XBA.Client
             {
                 Console.WriteLine("run step 1");
                 this.Player3UpdateStepOne();
-                //this.Player5UpdateStepOne();
+                this.Player5UpdateStepOne();
             }
             else
             {
@@ -159,7 +159,6 @@ namespace Client.XBA.Client
 
             /*支付球员工资*/
             BTPPlayer5Manager.SendSalary();
-
 
             Console.WriteLine("player 5 update finish");
 

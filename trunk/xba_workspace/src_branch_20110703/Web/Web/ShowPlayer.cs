@@ -96,6 +96,7 @@
         protected HtmlTableRow trName;
         //protected HtmlTableRow trNoName;
 
+
         private void btnModifyBody_Click(object sender, ImageClickEventArgs e)
         {
             int num;
@@ -129,6 +130,7 @@
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
             int num = (int) this.drPlayer["ClubID"];
+            bool success = false;
             if ((num != this.intClubID3) && (num != this.intClubID5))
             {
                 base.Response.Redirect("Report.aspx?Parameter=4113");
@@ -149,10 +151,12 @@
                         if (BTPPlayer3Manager.GetPlayer3IDByPlayerName(strPlayerName) > 0L)
                         {
                             this.strChangeMsg = "有重名的球员";
+                            success = false;
                         }
                         else if (!StringItem.IsValidNameIn(strPlayerName, 1, 10))
                         {
                             this.strChangeMsg = "请勿使用非法球员名称！";
+                            success = false;
                         }
                         else
                         {
@@ -170,10 +174,12 @@
                     if (BTPPlayer5Manager.GetPlayer5IDByPlayerName(strPlayerName) > 0L)
                     {
                         this.strChangeMsg = "有重名的球员";
+                        success = false;
                     }
                     else if (!StringItem.IsValidName(strPlayerName, 1, 10))
                     {
                         this.strChangeMsg = "球员名称不合法，请重新输入。";
+                        success = false;
                     }
                     else
                     {
@@ -187,7 +193,16 @@
                 }
             }
 
+            if (!success)
+            {
+                return;
+            }
+
             string strPlayerBody = this.Face.Value.ToString().Trim();
+            if (strPlayerBody == null || strPlayerBody.Length == 0)
+            {
+                return;
+            }
             if (this.intType == 3)
             {
                 num = BTPPlayer3Manager.UpdatePlayer3Body(this.longPlayerID, this.intClubID3, strPlayerBody, this.intUserID, this.strNickName);

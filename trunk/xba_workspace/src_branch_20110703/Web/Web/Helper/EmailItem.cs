@@ -45,7 +45,7 @@
                 message.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate", "1");
                 message.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendusername", "messager");
                 message.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendpassword", "111111");
-                SmtpMail.SmtpServer = "mail.xba.com.cn";
+                SmtpMail.SmtpServer = "1mail.xba.com.cn";
                 SmtpMail.Send(message);
                 return "SENDOK";
             }

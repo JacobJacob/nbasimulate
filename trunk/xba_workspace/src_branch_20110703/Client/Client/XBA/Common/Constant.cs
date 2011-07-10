@@ -33,6 +33,9 @@ namespace Client.XBA.Common
         /*轮次更新客户端*/
         public static String CLIENT_TYPE_ROUND_UPDATE_HANDLER = "round_update_handler";
 
+        /*自定义杯赛比赛客户端*/
+        public static String CLIENT_TYPE_DEVCUP_MATCH_HANDLER = "devcup_match_handler";
+
 
         /*友谊赛*/
         public static int MATCH_CATEGORY_FRIEND = 1;
@@ -48,6 +51,9 @@ namespace Client.XBA.Common
 
         /*职业训练*/
         public static int MATCH_CATEGORY_TRAIN = 11;
+
+        /*自定义杯赛比赛*/
+        public static int MATCH_CATEGORY_DEVCUP_MATCH = 6;
         
         
         /* 这是街球的, > 2的为经典赛事*/

@@ -2117,7 +2117,7 @@
                             if (devTranTopUser != null)
                             {
                                 int num6 = (int) devTranTopUser["UserID"];
-                                int num7 = (int) devTranTopUser["Price"];
+                                int num7 = Convert.ToInt32(devTranTopUser["Price"]);
                                 int num8 = (num7 / 100) * 0x66;
                                 if (num6 == this.intUserID)
                                 {
@@ -4365,10 +4365,10 @@
             if ((intCheckType == 4) || (intCheckType == 6))
             {
                 strToolMsg = this.strToolMsg;
-                this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=DEVBIDHELPER&PlayerID=", this.longPlayerID, "&Market=", this.intMarket, "'><img alt='拍卖委托' src='", SessionItem.GetImageURL(), "BidAuto.gif' height='16' width='16' border='0'></a>&nbsp;&nbsp;" });
+                //this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=DEVBIDHELPER&PlayerID=", this.longPlayerID, "&Market=", this.intMarket, "'><img alt='拍卖委托' src='", SessionItem.GetImageURL(), "BidAuto.gif' height='16' width='16' border='0'></a>&nbsp;&nbsp;" });
             }
             strToolMsg = this.strToolMsg;
-            this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=SHOWSKILL&PlayerID=", this.longPlayerID, "&CheckType=", intCheckType, "'><img alt='潜力公告' src='", SessionItem.GetImageURL(), "ShowSkill.gif' height='16' width='16' border='0'></a>" });
+            //this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=SHOWSKILL&PlayerID=", this.longPlayerID, "&CheckType=", intCheckType, "'><img alt='潜力公告' src='", SessionItem.GetImageURL(), "ShowSkill.gif' height='16' width='16' border='0'></a>" });
         }
 
         private int CheckCanBid(int intClubType, int intCheckType)

@@ -52,6 +52,23 @@ namespace Client.XBA.Client
                         new RoundUpdateHandler().start();
                     }
                 }
+                else if (args[0] == Constant.CLIENT_TYPE_DEVCUP_MATCH_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 6)
+                    {
+                        int devCupID = Convert.ToInt32(args[1]);
+                        string gainCode = args[2];
+                        int clubA = Convert.ToInt32(args[3]);
+                        int clubB = Convert.ToInt32(args[4]);
+                        int round = Convert.ToInt32(args[5]);
+                        new DevCupMatchHandler(devCupID, gainCode, clubA, clubB, round).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while handle devcup match!!!!");
+                    }
+                }
             }
             else
             {

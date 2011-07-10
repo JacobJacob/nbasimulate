@@ -75,7 +75,7 @@
             else
             {
                 str = "轮空";
-                str2 = SessionItem.GetImageURL() + "Club/Logo/0.gif";
+                str2 = Config.GetDomain() + "Images/Club/Logo/0.gif";
             }
             if (row2 != null)
             {
@@ -85,9 +85,9 @@
             else
             {
                 str3 = "轮空";
-                str4 = SessionItem.GetImageURL() + "Club/Logo/0.gif";
+                str4 = Config.GetDomain() + "Images/Club/Logo/0.gif";
             }
-            string str5 = DBLogin.URLString(ServerParameter.intGameCategory);
+            string str5 = Config.GetDomain();
             this.strInfo = "<table width='100%'  border='0' cellspacing='0' cellpadding='0' style=\"background:url(images/teambg.gif) repeat-x; margin:1px 0;\"><tr align='center'><td width='25%' height=\"60\"><strong><font color='#660066'>" + str + "</font></strong></td><td width='10%'><img src='" + str5 + str2 + "' width='46' height='46'></td><td width='30%'><div id='divScore'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/Bar.gif' width='19' height='28'><img src='Images/Score/00.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/Bar.gif' width='19' height='28'></div></td><td width='10%'><img src='" + str5 + str4 + "' width='46' height='46'></td><td width='25%'><strong><font color='#660066'>" + str3 + "</font></strong></td></tr></table>";
         }
     }

@@ -24,10 +24,10 @@
         public static string strMD5Key = "sth31118";
         public static string strRoot = "D:";
         public static string strSessionName = "BestXBA";
-        public static string strWebFoot = "<table width=\"100%\" height=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td align=\"center\"><font color='#FFFFFF'>XBA篮球经理2008 <a style='cursor:hand;' onclick=\"javascript:NewEditionWin();\">v0403</a></font>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#FFFFFF'>增值电信业务经营许可证 </font> <a href=\"http://www.miibeian.gov.cn\" target=\"_blank\"><font color='#FFFFFF'>鲁B2-20071037号</font></a></td></tr></table>";
+        public static string strWebFoot = "<table width=\"100%\" height=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td align=\"center\"><font color='#FFFFFF'>XBA无道具篮球经理2011 <a style='cursor:hand;' onclick=\"javascript:NewEditionWin();\">v0403</a></font>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#FFFFFF'>增值电信业务经营许可证 </font> <a href=\"http://www.miibeian.gov.cn\" target=\"_blank\"><font color='#FFFFFF'>粤ICP备09072237号-1</font></a><script src=\"http://s22.cnzz.com/stat.php?id=3254719&web_id=3254719\" language=\"JavaScript\"></script></td></tr></table>";
         public static string strWebKey = "<meta name=\"keywords\" content=\"街头篮球游戏，NBA，姚明，CBA，篮球论坛，赛事在线直播，校园篮球，basketball，online game，NBA live\">\n<meta name=\"description\" content=\"XBA篮球经理游戏是全球首款在线篮球经理游戏，仿真实NBA体育职业球队管理，含NBA、姚明新闻，街头篮球、篮球论坛、CBA、NBA live、球员转会选秀、火箭竞猜、赛事在线直播、灌篮高手、小游戏等游戏内容。\">";
-        public static string strWebName = "XBA篮球经理游戏 - 最火爆的在线篮球经理游戏.街头篮球.NBA.篮球论坛.";
-        public static string strWebURL = "xba.com.cn";
+        public static string strWebName = "无道具XBA篮球经理--让你体会无道具带来的乐趣";
+        public static string strWebURL = "113388.net";
 
         public Global()
         {

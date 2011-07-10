@@ -846,6 +846,10 @@
             this.IBtnBreak.Click += new ImageClickEventHandler(this.IBtnBreak_Click);
             this.btnCreate.Click += new ImageClickEventHandler(this.btnCreate_Click);
             this.btnModify.Click += new ImageClickEventHandler(this.btnModify_Click);
+
+            this.IBtnAddUMatch.ImageUrl = SessionItem.GetImageURL() + "button_47.gif";
+            this.IBtnBreak.ImageUrl = SessionItem.GetImageURL() + "button_48.gif";
+
             base.Load += new EventHandler(this.Page_Load);
         }
 
