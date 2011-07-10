@@ -19,7 +19,7 @@ class OnlyOneMatchHandler(BaseClient):
         self.set_only_one_match()        
         self.sleep()
         
-    @ensure_success()
+    @ensure_success
     def set_only_one_match(self):
         """胜者为王挫合"""
         return only_one_match_manager.set_only_one_match()

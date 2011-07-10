@@ -1,7 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
+
 from xba.common import tenjin
+from xba.common import file_utility
+from xba.config import DOMAIN
 
 _result_tpl = None
 
@@ -25,92 +29,199 @@ class RenderApple(object):
         xml_data = _result_tpl.render(data)
         xml_data = xml_data.replace('\n', '').replace("\r", "")
         return xml_data
+    
+LADDER_ROUND_HEAD_MATCH_LAST_MATCH  = """<div id="${div_id}" class="CamClub" style="top:${css_top}px;left:${css_left}px;">
+            <ul>
+                <li style="width:100%;">
+                    ${home_name}
+                </li>
+            </ul>
+        </div>"""
+    
+LADDER_ROUND_HEAD_MATCH_NOT_MATCH = """
+               <div id="${div_id}" class="RoundClub" style="top:${css_top}px;left:${css_left}px;">
+                        <ul>
+                            <li style="width:200px;">
+                                ${home_name}
+                            </li>
+                            <br>
+                                <li style="width:200px;">${away_name}</li>
+                        </ul>
+            </div>"""
 
 LADDER_ROUND_HEAD_MATCH = """
-          <div id="%s" class="RoundClub" style="top:97px;left:214px;">
+          <div id="${div_id}" class="RoundClub" style="top:${css_top}px;left:${css_left}px;">
                 <ul>
                     <li style="width:120px;">
-                        <a href="http://xbam1.xba.dishun.net/ShowClub.aspx?UserID=22854&Type=3" target="Right">木-麒麟大帝</a>
+                        ${home_name}
                     </li>
-                    <li style="width:40px;">43</li>
+                    <li style="width:40px;">${home_point}</li>
                     <li style="width:40px;">
-                        <a href="../../SRep.aspx?Type=2&Tag=77672&A=63789&B=189565" target="_blank">战报</a>
+                        ${report}
                     </li>
                     <br>
                     <li style="width:120px;">
-                        <a href="http://xbam1.xba.dishun.net/ShowClub.aspx?UserID=36009&Type=3" target="Right">QT-超越灵魂</a>
+                        ${away_name}
                     </li>
-                    <li style="width:40px;">32</li>
+                    <li style="width:40px;">${away_point}</li>
                     <li style="width:40px;">
-                        <a href="../../SStas.aspx?Type=2&Tag=77672&A=63789&B=189565" target="_blank">统计</a>
+                        ${stat}
                     </li>
                 </ul>
            </div>"""
 
-class CupLadderRoundMatch(object):
+class CupLadderRoundMatch(RenderApple):
     
-    def __init__(self, club_home, club_away, match_id):
-        self.__club_home = club_home
-        self.__club_away = club_away
-        self.__match_id = match_id
+    CLUB_LINK_TEMPLATE = """<a href="%sShowClub.aspx?UserID=%s&Type=%s" target="Right">%s</a>"""
+    REPORT_TEMPLAGE = """<a href="../../%sRep.aspx?Type=%s&Tag=%s&A=%s&B=%s" target="_blank">战报</a>"""
+    STAT_TEMPLAGE = """<a href="../../%sStas.aspx?Type=%s&Tag=%s&A=%s&B=%s" target="_blank">统计</a>"""
+    
+    def __init__(self, category, user_id_home, club_name_home, user_id_away=None, club_name_away=None, match=None, is_last_round=False):
+        self.category = category
+        self.user_id_home = user_id_home
+        self.club_name_home = club_name_home
+        self.user_id_away = user_id_away
+        self.club_name_away = club_name_away
+        self.match = match
+        self.index = -1
+        self.round = -1
+        self.is_last_round = is_last_round
+   
+    @property
+    def report(self):
+        if self.match:
+            devcup_id = 0
+            asp_prefix = "S"
+            if self.category == 6:
+                devcup_id = self.match["DevCupID"]
+                asp_prefix = "V"
+            return CupLadderRoundMatch.REPORT_TEMPLAGE %  (asp_prefix, self.category, devcup_id, self.match["ClubAID"], self.match["ClubBID"])
+    
+    @property
+    def stat(self):
+        if self.match:
+            asp_prefix = "S"
+            devcup_id = 0
+            if self.category == 6:
+                devcup_id = self.match["DevCupID"]
+                asp_prefix = "V"
+            return CupLadderRoundMatch.STAT_TEMPLAGE % (asp_prefix, self.category, devcup_id, self.match["ClubAID"], self.match["ClubBID"])
+     
+    @property   
+    def home_point(self):
+        if self.match:
+            return self.match["ScoreA"]
+        
+    @property
+    def away_point(self):
+        if self.match:
+            return self.match["ScoreB"]
+    
+    @property
+    def club_type(self):
+        club_type = 3
+        if self.category == 6:
+            club_type = 5
+        return club_type
+    
+    @property
+    def home_name(self):
+        return CupLadderRoundMatch.CLUB_LINK_TEMPLATE % (DOMAIN, self.user_id_home, self.club_type, self.club_name_home)
+    
+    @property
+    def away_name(self):
+        if not self.user_id_away:
+            return "轮空"
+        return CupLadderRoundMatch.CLUB_LINK_TEMPLATE % (DOMAIN, self.user_id_away, self.club_type, self.club_name_away)
         
     @property
     def div_id(self):
-        return "divRound1_63789_189565" % self.div_id
+        return "divRound%s_%s_%s" % (self.round, self.user_id_away, self.user_id_home)
         
+    @property
+    def css_top(self):
+        return 97 + (self.index) * 54
+    
+    @property
+    def css_left(self):
+        return 8 + (self.round - 1) * 206
+    
     def __str__(self):
-        return LADDER_ROUND_HEAD_MATCH
+        data = {"css_top": self.css_top, "css_left": self.css_left, "home_name": self.home_name, "away_name": self.away_name, \
+                "div_id": self.div_id, "home_point": self.home_point, "away_point": self.away_point, "report": self.report, \
+                "stat": self.stat}
+        if self.user_id_away and self.match:
+            return self._render(data, LADDER_ROUND_HEAD_MATCH)
+        elif self.is_last_round:
+            return self._render(data, LADDER_ROUND_HEAD_MATCH_LAST_MATCH)
+        else:
+            return self._render(data, LADDER_ROUND_HEAD_MATCH_NOT_MATCH)
         
 LADDER_ROUND_HEAD = """
-<div id="${div_id}" class="Round" style="left:${css_leff}px;">
+<div id="${div_id}" class="Round" style="left:${css_left}px;">
     <ul>
-        <li style="width:100%;">第%s轮比赛</li>
+        <li style="width:100%;">${title}</li>
     </ul>
 </div>
 <?py
-   for match in matchs: 
+for match in matchs: 
 ?>
 ${match}
 <?py #endfor ?>
-        """
+"""
 
-class CupLadderRound(object):
+class CupLadderRound(RenderApple):
     
     def __init__(self, round):
         self.__round = round
+        self.__is_last_round = False
         self.__matchs = []
+        self.__index = 0
     
     def add_match(self, match):
+        match.index = self.__index
+        match.round = self.__round
+        if hasattr(match, "is_last_round"):
+            self.__is_last_round = getattr(match, "is_last_round")
+        self.__index += 1
         self.__matchs.append(match)
     
     @property    
-    def get_css_left(self):
-        return 9
+    def css_left(self):
+        return 8 + (self.__round - 1) * 206
+    
+    @property
+    def title(self):
+        if self.__is_last_round:
+            return "总冠军"
+        else:
+            return "第%s轮比赛" % self.__round
         
     def __str__(self):
-        return LADDER_ROUND_HEAD % (self.__round, self.get_css_left, self.__round)
+        data = {"div_id": 1, "css_left": self.css_left, "matchs": self.__matchs, "title": self.title}
+        return self._render(data, LADDER_ROUND_HEAD)
     
 CUP_LADDER_TEMPLATE = """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
-      <title>大杯赛赛程安排</title>
-      <style type="text/css">ul{ margin:0; list-style:none;}li{ float:left;
-          padding:4px 0 0 0;/*上、右、下、左*/ text-align:center; overflow:hidden;
-          text-overflow:clip; height:20px;}.CupName{ position:absolute;
-          font-weight:bold; font-size:14px; left:0px; padding:0 0 0
-          20px;}.Round{ width:200px; height:25px; background-color:#fcc6a4;
-          position:absolute; font-weight:bold; top:68px;}.RoundClub{
-          width:200px; height:50px; background-color:#fbe2d4;
-          position:absolute;}.CamClub{ width:200px; height:25px;
-          background-color:#fbe2d4; position:absolute;}</style>
+      <title>赛程安排</title>
       <LINK href="../../Css/Base.css" type="text/css" rel="stylesheet">
+      <style type="text/css">body{background-color:#fcf6df;}ul{ margin:0;
+                list-style:none;}li{ float:left; padding:4px 0 0 0;/*上、右、下、左*/
+                text-align:center; overflow:hidden; text-overflow:clip;
+                height:20px;}.CupName{ position:absolute; font-weight:bold;
+                font-size:14px; left:0px; padding:0 0 0 20px;}.Round{ width:200px;
+                height:25px; background-color:#fcdb7c; position:absolute;
+                font-weight:bold; top:68px;}.RoundClub{ width:200px; height:50px;
+                background-color:#faedbc; position:absolute;}.CamClub{ width:200px;
+                height:25px; background-color:#faedbc; position:absolute;}</style>
   </head>
   <body><!--fcc6a4,fbe2d4,fcf1eb -->
       <div id="divCupName" class="CupName">
           <ul>
               <li style="height:60px;width:50px;padding:5px 0 0 0;">
-                  <img src="http://xbam1.xba.dishun.net//Images/Cup/BigBig.gif"
+                  <img src="${logo}"
                       width="40" height="50" border="0">
               </li>
               <li style="height:60px;width:100px;padding:28px 0 0 0;">${name}</li>
@@ -124,10 +235,12 @@ ${round}
   </body>
 </html>"""
 
+
 class CupLadder(RenderApple):
     
-    def __init__(self, name):
+    def __init__(self, name, logo):
         self.__name = name
+        self.__logo = logo
         self.__rounds = []
         
     def add_match(self, round, match):
@@ -136,28 +249,26 @@ class CupLadder(RenderApple):
             self.__rounds.append(CupLadderRound(len(self.__rounds) + 1))
         self.__rounds[round].add_match(match)
     
+    @property
+    def logo(self):
+        return "%sImages/Cup/%s" % (DOMAIN, self.__logo)
+    
     def render(self):
-        data = {"name": self.__name, "rounds": self.__rounds}    
+        data = {"name": self.__name, "rounds": self.__rounds, "logo": self.logo}    
         return self._render(data, CUP_LADDER_TEMPLATE)
 
     
     def write(self, path):
+        file_utility.ensure_dir_exists(os.path.dirname(path))
         s = self.render()
         s = s.decode("utf8").encode("gb2312")
-        print s
         f = open(path, "wb")
         try:
             f.write(s)
         finally:
             f.close()
-        
-    
+            
 if __name__ == "__main__":
     ladder = CupLadder("大师杯")
-    
-    from xba.common import cup_util
-    
-    club_ids = [i for i in range(17)]
-    cup_util.create_cupLadder(32, club_ids)
     
     ladder.write("D:\\i.html")

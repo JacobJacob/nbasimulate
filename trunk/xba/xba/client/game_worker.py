@@ -36,12 +36,10 @@ class GameWorker(BaseClient):
         self.log("start to update arrange level")
         self.update_arrange_lvl()
         
-        self.update_next_match_info_to_mainxml()
-        
         self.log("start sleep")
         self.sleep()
         
-    @ensure_success()
+    @ensure_success
     def set_only_one_match(self):
         """胜者为王挫合"""
         return only_one_match_manager.set_only_one_match()
@@ -51,7 +49,7 @@ class GameWorker(BaseClient):
         arrange_manager.update_arrange_lvl(ClubCategory.STREET)
         arrange_manager.update_arrange_lvl(ClubCategory.PROFESSION)
     
-    @ensure_success()
+    @ensure_success
     def add_power_by_online(self):
         """在线体力恢复"""
         return game_manager.add_power_by_online()

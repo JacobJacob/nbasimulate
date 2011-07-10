@@ -26,22 +26,22 @@ class ClubMainXMLSetter(BaseClient):
         game_info = self.get_game_info()
         self._turn = game_info["Turn"]
           
-    @ensure_success()
+    @ensure_success
     def get_game_info(self):
         return game_manager.get_game_info()
  
-    @ensure_success()
+    @ensure_success
     def set_club_main_xml(self, club_id, info):
         """设置俱乐部的main xml"""
         self.log("start update club %s's main xml" % club_id)
         return club_manager.set_club_main_xml(club_id, info)
     
-    @ensure_success()
+    @ensure_success
     def get_club_info(self, club_id):
         """获取俱乐部info"""
         return club_manager.get_club_by_id(club_id)
 
-    @ensure_success()
+    @ensure_success
     def get_dev_match(self, next=False):
         """获取某轮的比赛列表"""
         turn = self._turn + 1 if next else self._turn

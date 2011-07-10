@@ -223,7 +223,7 @@ class SeasonUpdateHandler(BaseClient):
         """根据联赛等级获取联赛数"""
         return 2 ** (level - 1)
     
-    @ensure_success()
+    @ensure_success
     def get_game_info(self):
         return game_manager.get_game_info()
             

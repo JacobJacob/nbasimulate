@@ -4,7 +4,7 @@
 
 import os
 
-DEBUG = False
+DEBUG = True
 
 class PathSettings:
     if os.name == 'nt':
@@ -64,12 +64,14 @@ class DjangoSettings:
 
 if DEBUG:
     CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
+    DOMAIN = 'http://localhost:34591/xbaweb/'
+    WEB_ROOT = "D:\\develop\\xba_workspace\\xbaweb"
 else:
     CLIENT_EXE_PATH = "E:\\xba_app\\xba\\doc\\bin\\Client.exe"
+    DOMAIN = 'http://www.113388.net/'
+    WEB_ROOT = ""
      
 NGINX_ACCESS_LOG = "E:\\nginx-0.8.33\\logs\\access.log"
-
-CUP_LADDER = 'http://localhost:34591/xbaweb/'
 
 COMMON_CACHE = ["192.168.1.158:11211"]
 SYSLOG_HOST = '127.0.0.1'

@@ -8,8 +8,9 @@ logging = get_logging()
 def get_round(club_count):
     """根据参赛球队数量获取比赛轮数"""
     round = 0
-    while club_count > 1:
-        club_count = club_count >> 1
+    start = 1
+    while start < club_count:
+        start = start << 1
         round += 1
     return round
 
@@ -33,42 +34,46 @@ def create_cupLadder(capacity, club_ids):
     
     round = get_round(club_count)
     print "round:%s" % round
-    first_empty_club = club_count - 2 ** round
-    need_append_zero = capacity - len(club_ids)
+    first_empty_club =  2 ** round - club_count
     print "first empty club:%s" % first_empty_club
 
     all_teams = []
     j = 0
-    for i in range(capacity):
+    total_team = first_empty_club + club_count
+    for i in range(total_team):
         if i % 2 == 0:
             all_teams.append(club_ids[j])
             j += 1
         else:
-            if need_append_zero > 0:
+            if first_empty_club > 0:
                 all_teams.append(-1)
-                need_append_zero -= 1
+                first_empty_club -= 1
             else:
                 all_teams.append(club_ids[j])
                 j += 1
                 
-    
+    result_map = {}
                 
     for i, team in enumerate(all_teams):
         if team != -1:
-            print "team", i, get_base_code(round, i) 
+            code = get_base_code(round, i) 
         else:
-            print "pass", i, get_base_code(round, i)    
-            pass
+            code = get_base_code(round, i)    
         
-    return 
+        #print code, team
+        result_map[code]  = team
+        
+    return round, result_map
     
     
     
 if __name__ == "__main__":
     club_ids = [i for i in range(128)]
-    create_cupLadder(32, club_ids)
+    create_cupLadder(128, club_ids)
     club_ids = [i for i in range(32)]
     create_cupLadder(32, club_ids)
-    club_ids = [i for i in range(17)]
+    club_ids = [i for i in range(15)]
     create_cupLadder(32, club_ids)
-    
+#    print get_round(15)
+#    print get_round(16)
+#    print get_round(17)    
