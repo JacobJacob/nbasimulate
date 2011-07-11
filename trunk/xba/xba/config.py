@@ -4,7 +4,7 @@
 
 import os
 
-DEBUG = True
+DEBUG = False
 
 class PathSettings:
     if os.name == 'nt':
