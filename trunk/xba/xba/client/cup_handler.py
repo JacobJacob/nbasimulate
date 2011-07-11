@@ -23,14 +23,14 @@ class CupHandler(BaseClient):
         
     def work(self):
         
-        devcup_infos = handler.get_devcup_table_toarrage()
+        devcup_infos = self.get_devcup_table_toarrage()
         if devcup_infos:
             for devcup_info in devcup_infos:
                 self.handle_devcup(devcup_info)
         else:
             self.log("not dev cup need set arrage")
             
-        devcup_infos = handler.get_run_devcuptable()
+        devcup_infos = self.get_run_devcuptable()
         if devcup_infos:
             for devcup_info in devcup_infos:
                 self.handle_devcup(devcup_info)

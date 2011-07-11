@@ -69,7 +69,7 @@ if DEBUG:
 else:
     CLIENT_EXE_PATH = "E:\\xba_app\\xba\\doc\\bin\\Client.exe"
     DOMAIN = 'http://www.113388.net/'
-    WEB_ROOT = ""
+    WEB_ROOT = "D:\\xba_root\\xbaweb"
      
 NGINX_ACCESS_LOG = "E:\\nginx-0.8.33\\logs\\access.log"
 

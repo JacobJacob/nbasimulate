@@ -9,6 +9,7 @@ from xba.common.decorators import ensure_success
 from xba.common.constants.club import ClubCategory
 from base import BaseClient
 from xba.client.dev_match_handler import DevMatchHandler
+from xba.client.cup_handler import CupHandler
 
 class GameWorker(BaseClient):
     
@@ -36,6 +37,10 @@ class GameWorker(BaseClient):
         self.log("start to update arrange level")
         self.update_arrange_lvl()
         
+        #自定义杯赛更新
+        self.log("stat to handle devcup")
+        self.devcup_handle()
+        
         self.log("start sleep")
         self.sleep()
         
@@ -53,6 +58,11 @@ class GameWorker(BaseClient):
     def add_power_by_online(self):
         """在线体力恢复"""
         return game_manager.add_power_by_online()
+    
+    def devcup_handle(self):
+        """自定义杯赛处理"""
+        handle = CupHandler()
+        handle.start()
     
     def dev_assign(self):
         """联赛分配"""
