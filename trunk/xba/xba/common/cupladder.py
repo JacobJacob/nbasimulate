@@ -4,8 +4,11 @@
 import os
 
 from xba.common import tenjin
+from xba.common import stringutil
 from xba.common import file_utility
 from xba.config import DOMAIN
+
+
 
 _result_tpl = None
 
@@ -20,15 +23,17 @@ class RenderApple(object):
         @param template: 模板
         @return: html
         """
+        for k, v in data.items():
+            data[k] = stringutil.ensure_utf8(v)
+
         global _result_tpl, escape, to_str
         _result_tpl = tenjin.Template(tostrfunc='to_str', smarttrim=True)
         _result_tpl.convert(template)
         escape = escape
         to_str = tenjin.helpers.to_str
-        
         xml_data = _result_tpl.render(data)
         xml_data = xml_data.replace('\n', '').replace("\r", "")
-        return xml_data
+        return stringutil.ensure_utf8(xml_data)
     
 LADDER_ROUND_HEAD_MATCH_LAST_MATCH  = """<div id="${div_id}" class="CamClub" style="top:${css_top}px;left:${css_left}px;">
             <ul>
@@ -131,7 +136,7 @@ class CupLadderRoundMatch(RenderApple):
     @property
     def away_name(self):
         if not self.user_id_away:
-            return "轮空"
+            return u"轮空"
         return CupLadderRoundMatch.CLUB_LINK_TEMPLATE % (DOMAIN, self.user_id_away, self.club_type, self.club_name_away)
         
     @property
@@ -254,7 +259,7 @@ class CupLadder(RenderApple):
         return "%sImages/Cup/%s" % (DOMAIN, self.__logo)
     
     def render(self):
-        data = {"name": self.__name, "rounds": self.__rounds, "logo": self.logo}    
+        data = {"name": stringutil.ensure_utf8(self.__name), "rounds": self.__rounds, "logo": self.logo}    
         return self._render(data, CUP_LADDER_TEMPLATE)
 
     

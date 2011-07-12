@@ -56,7 +56,7 @@ class CupHandler(BaseClient):
         self.log("now round is:%s" % round) 
         ladder_url = devcup_info["LadderURL"]
         save_path = os.path.join(WEB_ROOT, ladder_url.replace(DOMAIN, ""))
-            
+        print save_path
         #第一轮，安排赛程
         if round == 0:
             alive_reg_infos = self.get_alive_reg_table_by_devcupid(devcup_id)
