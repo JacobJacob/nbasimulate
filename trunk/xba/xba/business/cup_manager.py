@@ -3,7 +3,6 @@
 
 from datetime import datetime, timedelta
 
-from xba.config import CUP_LADDER
 from xba.model import Cup
 from xba.common.orm import Session
 from xba.common.sqlserver import connection
@@ -61,7 +60,7 @@ def add_cup(category, end_reg_time):
     info['reward_xml'] = CupCategoryRewardMap[category]
     info['end_reg_time'] = end_reg_time
     info['match_time'] = datetime.strptime(end_reg_time, '%Y-%m-%d %H:%M') + timedelta(days=1)
-    info['cup_ladder'] = CUP_LADDER
+    info['cup_ladder'] = ""
     info['ticket_category'] = CupCategoryTicketCategoryMap.get(category, 0)
     info['capacity'] = CupCategoryCapacityMap.get(category, 0)
     info['coin'] = 0

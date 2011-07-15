@@ -1,4 +1,4 @@
-#Sat Jul 02 16:36:57 CST 2011
+#Tue Jul 12 20:19:37 CST 2011
 eclipse.preferences.version=1
 encoding//xba/business/account_manager.py=utf-8
 encoding//xba/business/arrange_manager.py=utf-8
@@ -7,6 +7,7 @@ encoding//xba/business/club_manager.py=utf-8
 encoding//xba/business/cup_manager.py=utf-8
 encoding//xba/business/dev_manager.py=utf-8
 encoding//xba/business/dev_match_manager.py=utf-8
+encoding//xba/business/devcup_manager.py=utf-8
 encoding//xba/business/finance_manager.py=utf-8
 encoding//xba/business/game_manager.py=utf-8
 encoding//xba/business/only_one_match_manager.py=utf-8
@@ -17,6 +18,9 @@ encoding//xba/client/base.py=utf-8
 encoding//xba/client/basic_ftpd.py=utf-8
 encoding//xba/client/bid_handler.py=utf-8
 encoding//xba/client/clear_dev.py=utf-8
+encoding//xba/client/club_mainxml_setter.py=utf-8
+encoding//xba/client/cup_handler.py=utf-8
+encoding//xba/client/cut_nginx_log.py=utf-8
 encoding//xba/client/db_backup.py=utf-8
 encoding//xba/client/dev_match_handler.py=utf-8
 encoding//xba/client/game_worker.py=utf-8
@@ -50,6 +54,7 @@ encoding//xba/common/single_process.py=utf-8
 encoding//xba/common/sqlserver/__init__.py=utf-8
 encoding//xba/common/sqlserver/connection_wrapper.py=utf-8
 encoding//xba/common/sqlserver/cursor_wrapper.py=utf-8
+encoding//xba/common/stringutil.py=utf-8
 encoding//xba/config.py=utf-8
 encoding//xba/model/__init__.py=utf-8
 encoding//xba/read.py=utf-8

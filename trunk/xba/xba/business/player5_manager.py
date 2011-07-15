@@ -13,7 +13,31 @@ def create_player(count, category, hours, now_point, max_point):
     cursor = connection.cursor()
     try:
         sql = "exec CreatePlayer5 %s, %s, '%s', %s, %s" % (count, category, end_bid_time.strftime("%Y-%m-%d %H:%M:%S"), now_point, max_point)
-        print sql
+        cursor.execute(sql)
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+        
+def get_trialing_player():
+    """获取正在试训的球员"""
+    cursor = connection.cursor()
+    try:
+        sql = "select * from btp_player5 where category=3 and clubid > 0"
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+        
+def un_set_trial_player(club_id, player_id):
+    """试训球员离队"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec UnSetTrialPlayer %s, %s" % (club_id, player_id)
         cursor.execute(sql)
     except Exception, e:
         a = e.message.decode("gbk")
@@ -139,7 +163,9 @@ def clear_player5_season():
         
     
 if __name__ == "__main__":
-    update_season_mvp_value()
+    infos = get_trialing_player()
+    for info in infos:
+        print info
     #reset_all_player_pop()
     #reset_all_player_shirt()
 

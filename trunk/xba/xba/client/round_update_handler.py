@@ -58,6 +58,9 @@ class RoundUpdateHandler(BaseClient):
         self.log("start update_season_mvp_value")
         self.update_season_mvp_value()
         
+        self.log("start trian player finish")
+        self.trian_player_finish()
+        
         #after run
         self.after_run()
             
@@ -76,6 +79,15 @@ class RoundUpdateHandler(BaseClient):
         """战术等级更新"""
         arrange_manager.update_arrange_lvl(ClubCategory.STREET)
         arrange_manager.update_arrange_lvl(ClubCategory.PROFESSION)
+        
+    def trian_player_finish(self):
+        """试训的球员离队"""
+        trian_players = player5_manager.get_trialing_player()
+        if trian_players:
+            for trian_player in trian_players:
+                command = "%s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", trian_player["PlayerID"], trian_player["ClubID"])
+                self.call_cmd(command)
+                player5_manager.un_set_trial_player(trian_player["ClubID"], trian_player["PlayerID"])
     
     def normal_update_step_one(self):
         """常规数据更新1(赛前)"""
