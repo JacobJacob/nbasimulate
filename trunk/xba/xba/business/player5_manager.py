@@ -160,12 +160,34 @@ def clear_player5_season():
         log_execption()
     finally:
         connection.close() 
+    
+SQL = "UPDATE BTP_Player5 SET Ability=(Speed+Jump+Strength+Stamina+Shot+Point3+Dribble+Pass+Rebound+Steal+Block+Attack+Defense+Team)/14 WHERE PlayerID=%s"    
+        
+ABILITYS = ["Speed","Jump","Strength","Stamina","Shot","Point3","Dribble","Pass","Rebound","Steal","Block","Attack","Defense","Team"]
+        
+def update_player5_category3():
+    import random
+    cursor = connection.cursor()
+    try:
+        sql = "select * from btp_player5 where category=3"
+        cursor.execute(sql)
+        infos = cursor.fetchall()
+        for info in infos:
+            for ABILITY in ABILITYS:
+                ability = info["%sMax" % ABILITY]
+                ability = ability * random.randint(5, 9) / 10
+                sql = "UPDATE BTP_Player5 SET %s=%s" % (ABILITY, ability)
+                cursor.execute(sql)
+            sql = SQL % info["PlayerID"] 
+            cursor.execute(sql)
+            
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
         
     
 if __name__ == "__main__":
-    infos = get_trialing_player()
-    for info in infos:
-        print info
-    #reset_all_player_pop()
-    #reset_all_player_shirt()
+    update_player5_category3()
 
