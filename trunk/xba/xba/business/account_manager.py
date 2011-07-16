@@ -63,6 +63,18 @@ def create_code():
     for _ in range(15):
         code = '%s%s' % (CODE[random.randint(0, 35)], code)
     return code
+
+def assign_devchoose_card():
+    """发放选秀卡"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select UserID from btp_account")
+        infos = cursor.fetchall()
+        for info in infos:
+            print info
+            cursor.execute("ProvideChooseCard %s, %s, %s" % (info["UserID"], 5, 20))
+    finally:
+        cursor.close()
         
 if __name__ == "__main__":
-    print create_code()
+    assign_devchoose_card()
