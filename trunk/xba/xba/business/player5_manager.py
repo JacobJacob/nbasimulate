@@ -176,7 +176,8 @@ def update_player5_category3():
             for ABILITY in ABILITYS:
                 ability = info["%sMax" % ABILITY]
                 ability = ability * random.randint(5, 9) / 10
-                sql = "UPDATE BTP_Player5 SET %s=%s" % (ABILITY, ability)
+                sql = "UPDATE BTP_Player5 SET %s=%s WHERE PlayerID=%s" % (ABILITY, ability, info["PlayerID"])
+                print sql
                 cursor.execute(sql)
             sql = SQL % info["PlayerID"] 
             cursor.execute(sql)
