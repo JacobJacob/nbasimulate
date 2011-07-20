@@ -76,5 +76,20 @@ def assign_devchoose_card():
     finally:
         cursor.close()
         
+def update_account():
+    cursor = connection.cursor()
+    try:
+        sql = "select userid, sum(income)-sum(outcome) as money, 0 as test from BTP_DFinance d " \
+                  "where category = 5 and (event = '球衣销售收入。' or  event = '主场球馆维护费用。' or event = '主场球馆维护费用。' or event = '主场饮料和食品销售收入。' ) group by userid"
+        sql = sql.encode("gb2312")
+        cursor.execute(sql)
+        infos = cursor.fetchall()
+        for info in infos:
+            userid, money = info["userid"], info["money"]
+            print userid, money
+            cursor.execute("update btp_account set money=money+%s where userid=%s" % (money, userid))
+    finally:
+        cursor.close()
+        
 if __name__ == "__main__":
-    assign_devchoose_card()
+    update_account()
