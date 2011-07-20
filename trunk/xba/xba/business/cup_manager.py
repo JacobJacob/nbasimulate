@@ -37,10 +37,11 @@ def insert_cup(info):
     cursor = connection.cursor()
     try:
         sql = "exec AddCup %s" % ",".join(["'%s'" % param for param in params])
-        sql = sql.encode("gbk")
+        sql = sql.decode("utf8").encode("gb2312")
         cursor.execute(sql)
     except:
         log_execption()
+        raise
     finally:
         connection.close()
 
