@@ -9,7 +9,7 @@ from xba.common.decorators import ensure_success
 from xba.common.constants.club import ClubCategory
 from base import BaseClient
 from xba.client.dev_match_handler import DevMatchHandler
-from xba.client.cup_handler import CupHandler
+from xba.client.devcup_handler import DevCupHandler
 
 class GameWorker(BaseClient):
     
@@ -61,7 +61,7 @@ class GameWorker(BaseClient):
     
     def devcup_handle(self):
         """自定义杯赛处理"""
-        handle = CupHandler()
+        handle = DevCupHandler()
         handle.start()
     
     def dev_assign(self):

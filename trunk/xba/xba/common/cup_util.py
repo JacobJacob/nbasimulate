@@ -7,6 +7,8 @@ logging = get_logging()
 
 def get_round(club_count):
     """根据参赛球队数量获取比赛轮数"""
+    if club_count == 1:
+        return 1
     round = 0
     start = 1
     while start < club_count:

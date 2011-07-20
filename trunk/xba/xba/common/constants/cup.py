@@ -32,28 +32,31 @@ CupCategoryBigLogoMap = {
 
 """街球杯赛大Requirement"""
 CupCategoryRequirementMap = {
-    CupCategory.CUP_NEW: '',
-    CupCategory.CUP_SMALL: '',
-    CupCategory.CUP_BIG: '',
+    CupCategory.CUP_NEW: '<Table>BTP_Account</Table><Condition>Levels = %s</Condition>',
+    CupCategory.CUP_SMALL: '<Table>BTP_Account</Table><Condition>Levels = %s</Condition>',
+    CupCategory.CUP_BIG: '<Table>BTP_Account</Table><Condition>Levels = %s</Condition>',
 }
 
 """街球杯赛Cost Money"""
 CupCategoryMoneyCostMap = {
     CupCategory.CUP_NEW: 0,
-    CupCategory.CUP_SMALL: 0,
+    CupCategory.CUP_SMALL: 400,
     CupCategory.CUP_BIG: 0,
 }
 
 """街球杯赛创建数量"""
 CupCategoryLevelCountMap = {
     CupCategory.CUP_NEW: {
-      1: 14,                   
+      1: 2,
+      2: 2,                   
     },
     CupCategory.CUP_SMALL: {
-      1: 14,
+      1: 2,
+      2: 2,
     },
     CupCategory.CUP_BIG: {
-      1: 14,
+      1: 2,
+      2: 2,
     },
 }
 

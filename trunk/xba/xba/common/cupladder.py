@@ -95,12 +95,14 @@ class CupLadderRoundMatch(RenderApple):
     @property
     def report(self):
         if self.match:
-            devcup_id = 0
+            cup_id = 0
             asp_prefix = "S"
             if self.category == 6:
-                devcup_id = self.match["DevCupID"]
+                cup_id = self.match["DevCupID"]
                 asp_prefix = "V"
-            return CupLadderRoundMatch.REPORT_TEMPLAGE %  (asp_prefix, self.category, devcup_id, self.match["ClubAID"], self.match["ClubBID"])
+            else:
+                cup_id = self.match["CupID"]
+            return CupLadderRoundMatch.REPORT_TEMPLAGE %  (asp_prefix, self.category, cup_id, self.match["ClubAID"], self.match["ClubBID"])
     
     @property
     def stat(self):
@@ -212,15 +214,7 @@ CUP_LADDER_TEMPLATE = """
   <head>
       <title>赛程安排</title>
       <LINK href="../../Css/Base.css" type="text/css" rel="stylesheet">
-      <style type="text/css">body{background-color:#fcf6df;}ul{ margin:0;
-                list-style:none;}li{ float:left; padding:4px 0 0 0;/*上、右、下、左*/
-                text-align:center; overflow:hidden; text-overflow:clip;
-                height:20px;}.CupName{ position:absolute; font-weight:bold;
-                font-size:14px; left:0px; padding:0 0 0 20px;}.Round{ width:200px;
-                height:25px; background-color:#fcdb7c; position:absolute;
-                font-weight:bold; top:68px;}.RoundClub{ width:200px; height:50px;
-                background-color:#faedbc; position:absolute;}.CamClub{ width:200px;
-                height:25px; background-color:#faedbc; position:absolute;}</style>
+      ${css}
   </head>
   <body><!--fcc6a4,fbe2d4,fcf1eb -->
       <div id="divCupName" class="CupName">
@@ -240,13 +234,35 @@ ${round}
   </body>
 </html>"""
 
+CATEGORY_3_CSS = """<style type="text/css">ul{ margin:0; list-style:none;}li{ float:left;
+    padding:4px 0 0 0;/*上、右、下、左*/ text-align:center; overflow:hidden;
+    text-overflow:clip; height:20px;}.CupName{ position:absolute;
+    font-weight:bold; font-size:14px; left:0px; padding:0 0 0 20px;}.Round{
+    width:200px; height:25px; background-color:#fcc6a4; position:absolute;
+    font-weight:bold; top:68px;}.RoundClub{ width:200px; height:50px;
+    background-color:#fbe2d4; position:absolute;}.CamClub{ width:200px;
+    height:25px; background-color:#fbe2d4; position:absolute;}
+    </style>"""
+    
+CATEGORY_5_CSS = """<style type="text/css">body{background-color:#fcf6df;}ul{ margin:0;
+                list-style:none;}li{ float:left; padding:4px 0 0 0;/*上、右、下、左*/
+                text-align:center; overflow:hidden; text-overflow:clip;
+                height:20px;}.CupName{ position:absolute; font-weight:bold;
+                font-size:14px; left:0px; padding:0 0 0 20px;}.Round{ width:200px;
+                height:25px; background-color:#fcdb7c; position:absolute;
+                font-weight:bold; top:68px;}.RoundClub{ width:200px; height:50px;
+                background-color:#faedbc; position:absolute;}.CamClub{ width:200px;
+                height:25px; background-color:#faedbc; position:absolute;}
+      </style>"""
+
 
 class CupLadder(RenderApple):
     
-    def __init__(self, name, logo):
+    def __init__(self, name, logo, category=5):
         self.__name = name
         self.__logo = logo
         self.__rounds = []
+        self.__category = category
         
     def add_match(self, round, match):
         """添加某一轮某场比赛"""
@@ -259,7 +275,12 @@ class CupLadder(RenderApple):
         return "%sImages/Cup/%s" % (DOMAIN, self.__logo)
     
     def render(self):
-        data = {"name": stringutil.ensure_utf8(self.__name), "rounds": self.__rounds, "logo": self.logo}    
+        data = {"name": stringutil.ensure_utf8(self.__name), "rounds": self.__rounds, "logo": self.logo}
+        if self.__category == 5:
+            data['css'] = CATEGORY_5_CSS
+        else:
+            data['css'] = CATEGORY_3_CSS
+            
         return self._render(data, CUP_LADDER_TEMPLATE)
 
     

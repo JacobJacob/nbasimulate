@@ -3,6 +3,7 @@
 
 from datetime import datetime, timedelta
 
+from xba.config import DOMAIN
 from xba.model import Cup
 from xba.common.orm import Session
 from xba.common.sqlserver import connection
@@ -52,15 +53,14 @@ def add_cup(category, end_reg_time):
         info['category'] = 1
         
     info['name'] = CupCategoryMap[category]
-    info['introduction'] = CupCategoryDescMap[category]
+    info['introduction'] = CupCategoryDescMap[category] % (end_reg_time, end_reg_time)
     info['money_cost'] = CupCategoryMoneyCostMap[category]
     info['small_logo'] = CupCategorySmallLogoMap[category]
     info['big_logo'] = CupCategoryBigLogoMap[category]
-    info['requirement_xml'] = CupCategoryRequirementMap[category]
     info['reward_xml'] = CupCategoryRewardMap[category]
     info['end_reg_time'] = end_reg_time
     info['match_time'] = datetime.strptime(end_reg_time, '%Y-%m-%d %H:%M') + timedelta(days=1)
-    info['cup_ladder'] = ""
+    info['cup_ladder'] = "%sCupLadder/%s/" % (DOMAIN, datetime.now().strftime("%Y%m"))
     info['ticket_category'] = CupCategoryTicketCategoryMap.get(category, 0)
     info['capacity'] = CupCategoryCapacityMap.get(category, 0)
     info['coin'] = 0
@@ -68,6 +68,7 @@ def add_cup(category, end_reg_time):
     for level, count in CupCategoryLevelCountMap[category].iteritems():
         for _ in range(count):
             info['levels'] = level
+            info['requirement_xml'] = CupCategoryRequirementMap[category] % level
             insert_cup(info)
 
 def get_cup_list(page, pagesize, category):
@@ -79,7 +80,121 @@ def get_cup_list(page, pagesize, category):
     if total > 0:
         infos = session.query(Cup).filter(Cup.category==category).order_by(Cup.cupid).offset(index).limit(pagesize).all()
     return total, infos
+
+def get_cup_table_toarrage():
+    """得到可以安排赛程的杯赛"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec GetCupTableToArrage"
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def get_alive_reg_table_by_cupid(cupid):
+    """得到某个杯赛存活球队列表"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec GetAliveRegTableByCupID %s" % cupid
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def set_code_by_regid(regid, code):
+    """设置杯赛报名code"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec SetCodeByRegID %s, '%s'" % (regid, code)
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def set_round_by_cupid(cupid, round):
+    """设置杯赛轮数"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec SetRoundByCupID %s, %s" % (cupid, round)
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def set_status_by_cupid(cupid, status):
+    """设置杯赛状态"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec SetStatusByCupID %s, %s" % (cupid, status)
+        print sql
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def get_reg_by_cupid_end_round(cupid, round):
+    """得到某轮存活球队"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec GetRegByCupIDEndRound %s, %s" % (cupid, round)
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def set_cup_champion(cupid, user_id, club_name):
+    """设置自定义杯赛冠军"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec SetChampion %s, %s, '%s'" % (cupid, user_id, club_name.encode("gb2312"))
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close() 
+        
+def get_cup_match_by_gaincode_cupid(cupid, gain_code):
+    """根据GainCode和杯赛ID获取比赛"""
+    cursor = connection.cursor()
+    try:
+        sql = "SELECT * FROM BTP_CupMatch WHERE GainCode = '%s' AND CupID = %s" % (gain_code, cupid)
+        cursor.execute(sql)
+        return cursor.fetchone()
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close() 
+        
+def get_run_cuptable():
+    """得到可以可以打下一轮的杯赛"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec GetRunCupTable '%s'" % datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
         
 if __name__ == "__main__":
-    add_cup(21, datetime.strftime(datetime.now() + timedelta(days=1), '%Y-%m-%d %H:%M'))
+    add_cup(22, datetime.strftime(datetime.now() + timedelta(days=1), '%Y-%m-%d %H:%M'))
     
