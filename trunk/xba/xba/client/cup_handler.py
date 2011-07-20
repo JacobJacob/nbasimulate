@@ -6,9 +6,10 @@ import os
 from xba.config import CLIENT_EXE_PATH
 from subprocess import Popen, PIPE
 
-from xba.business import cup_manager
+from xba.business import cup_manager, tool_manager
 from xba.common.decorators import ensure_success
 from xba.common import cup_util
+from xba.common.reward import Reward
 from xba.common.cupladder import CupLadder, CupLadderRoundMatch
 from base import BaseClient
 from xba.config import WEB_ROOT, DOMAIN
@@ -36,7 +37,7 @@ class CupHandler(BaseClient):
                 self.handle_cup(cup_info)
         else:
             self.log("not cup need run")
-          
+
         return "exist"
      
     @ensure_success
@@ -64,9 +65,6 @@ class CupHandler(BaseClient):
             if not alive_reg_infos:
                 self.set_status_by_cupid(cup_id, 3)
                 return 
-#            if len(alive_reg_infos) == 1:
-#                #如果只有一个人报名，直接就打完了
-#                self.set_status_by_cupid(cup_id, 3)
             
             self.log("cup id is:%s" % cup_id) 
             club_ids = []
@@ -198,14 +196,48 @@ class CupHandler(BaseClient):
             if is_last_round: 
                 self.finish_devcup(cup_info, champion_user_id, champion_club_id, champion_club_name)
             
-            
     def finish_devcup(self, cup_info, user_id, club_id, club_name):
         """杯赛完成"""
         cupid = cup_info["CupID"]
+        round = cup_info["Round"]
+        reward_xml = cup_info["RewardXML"]
         cup_manager.set_cup_champion(cupid, user_id, club_name)
         cup_manager.set_status_by_cupid(cupid, 3)
-        #cup_manager.reward_cup_by_clubid(cupid, club_id)
         
+        #杯赛奖励
+        reward = Reward(reward_xml)
+        rounds = [i for i in range(round)]
+        rounds.append(100)
+        for round in rounds:
+            alive_clubs = self.get_reg_table_by_cupid_deadround(cupid, round)
+            if not alive_clubs:
+                continue
+            
+            reward_info = reward.get_reward(round)
+            for alive_club in alive_clubs:
+                self.reware(cupid, round, alive_club, reward_info)
+                
+    def reware(self, cupid, round, alive_club, reward_info):
+        """杯赛奖厉"""
+        money = reward_info.get('money')
+        score = reward_info.get('score')
+        tool = reward_info.get('tool')
+        if not money and not score and not tool:
+            return
+        
+        money_total = money.money if money else 0
+        score_total = score.score if score else 0
+        self.reward_cup_by_clubid(alive_club["ClubID"], cupid, round, money_total, score_total)
+        
+        if tool:
+            self.log("start to assign tool")
+            self.assign_tool_id_by_category_ticket(alive_club["UserID"], tool.category, tool.ticket_category)
+            
+    @ensure_success        
+    def assign_tool_id_by_category_ticket(self, userid, category, ticket_category):
+        """发放邀请函"""
+        return tool_manager.assign_tool_id_by_category_ticket(userid, category, ticket_category)
+
     def execute_match(self, cluba, clubb, cupid, gain_code, round, category):
         cmd = "%s %s %s %s %s %s %s %s" % (CLIENT_EXE_PATH, 'cup_match_handler', cupid, gain_code, cluba, clubb, round, category)
         return self.call_cmd(cmd)
@@ -236,6 +268,16 @@ class CupHandler(BaseClient):
     def get_reg_by_cupid_end_round(self, cupid, round):
         """获取存活球队"""
         return cup_manager.get_reg_by_cupid_end_round(cupid, round)
+    
+    @ensure_success 
+    def get_reg_table_by_cupid_deadround(self, cupid, round):
+        """获得第几轮挂的球队"""
+        return cup_manager.get_reg_table_by_cupid_deadround(cupid, round)
+    
+    @ensure_success 
+    def reward_cup_by_clubid(self, clubid, cupid, round, money, score):
+        """杯赛奖励"""
+        return cup_manager.reward_cup_by_clubid(clubid, cupid, round, money, score)
             
     @ensure_success
     def set_round_by_cupid(self, cupid, round):

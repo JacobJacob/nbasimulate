@@ -157,6 +157,31 @@ def get_reg_by_cupid_end_round(cupid, round):
     finally:
         connection.close()
         
+def get_reg_table_by_cupid_deadround(cupid, round):
+    """得到某轮挂的球队"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec GetRegTableByCupIDDeadRound %s, %s" % (cupid, round)
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
+def reward_cup_by_clubid(clubid, cupid, round, money, score):
+    """杯赛奖励"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec RewardCupByClubID %s, %s, %s, %s, %s" % (clubid, cupid, round, money, score)
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
 def set_cup_champion(cupid, user_id, club_name):
     """设置自定义杯赛冠军"""
     cursor = connection.cursor()
@@ -186,7 +211,7 @@ def get_run_cuptable():
     """得到可以可以打下一轮的杯赛"""
     cursor = connection.cursor()
     try:
-        sql = "exec GetRunCupTable '%s'" % datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        sql = "SELECT *,  convert(text,RewardXML) as RewardXML FROM BTP_Cup WHERE Status=1 AND MatchTime<'%s' ORDER BY MatchTime ASC " % datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cursor.execute(sql)
         return cursor.fetchall()
     except:
