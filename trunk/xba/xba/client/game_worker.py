@@ -10,6 +10,7 @@ from xba.common.constants.club import ClubCategory
 from base import BaseClient
 from xba.client.dev_match_handler import DevMatchHandler
 from xba.client.devcup_handler import DevCupHandler
+from xba.client.cup_handler import CupHandler
 
 class GameWorker(BaseClient):
     
@@ -41,6 +42,10 @@ class GameWorker(BaseClient):
         self.log("stat to handle devcup")
         self.devcup_handle()
         
+        #街球杯赛更新
+        self.log("stat to handle cup")
+        self.cup_handle()
+        
         self.log("start sleep")
         self.sleep()
         
@@ -62,6 +67,11 @@ class GameWorker(BaseClient):
     def devcup_handle(self):
         """自定义杯赛处理"""
         handle = DevCupHandler()
+        handle.start()
+        
+    def cup_handle(self):
+        """街球杯赛处理"""
+        handle = CupHandler()
         handle.start()
     
     def dev_assign(self):

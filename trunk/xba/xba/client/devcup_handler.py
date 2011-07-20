@@ -156,6 +156,8 @@ class DevCupHandler(BaseClient):
                 gain_code_maps = {}
                 for alive_reg_info in alive_reg_infos:
                     base_code = alive_reg_info["BaseCode"]
+                    if len(base_code) == 1:
+                        continue
                     index = (each_round + 1) * -1
                     base_code_prefix = base_code[:index]
                     base_code_subfix = base_code[index]
