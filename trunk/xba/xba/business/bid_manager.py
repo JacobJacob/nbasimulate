@@ -28,7 +28,10 @@ def finish_bid(player_id, number, category):
     """转会完成"""
     cursor = connection.cursor()
     try:
-        sql = "exec Bid_End%s %s, %s" % (get_postfix(category), player_id, number)
+        if category == MarketCategory.STREET_SELECTION:
+            sql = "exec Bid_End%s %s, %s, ''" % (get_postfix(category), player_id, number)
+        else:
+            sql = "exec Bid_End%s %s, %s" % (get_postfix(category), player_id, number)
         cursor.execute(sql)
     except Exception, e:
         logging.error(e.message.decode("gbk"))
