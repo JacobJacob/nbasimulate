@@ -30,6 +30,10 @@ class RoundUpdateHandler(BaseClient):
     def work(self):
         self.log("start round update for season:%s, round:%s" % (self._season, self._turn))
         
+                
+        self.log("start trian player finish")
+        self.trian_player_finish()
+        
         if self._days == 14:
             self.log("season truce")
         elif self._days == 28:
@@ -57,10 +61,7 @@ class RoundUpdateHandler(BaseClient):
         
         self.log("start update_season_mvp_value")
         self.update_season_mvp_value()
-        
-        self.log("start trian player finish")
-        self.trian_player_finish()
-        
+
         #after run
         self.after_run()
             
