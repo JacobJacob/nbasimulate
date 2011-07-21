@@ -5,6 +5,7 @@ from xba.common.sqlserver import connection
 from xba.common.orm import Session
 from xba.model import Player3
 from datetime import datetime, timedelta
+from xba.common import log_execption
 
 def create_player(count, category, hours):
     """创建球员"""
@@ -12,11 +13,9 @@ def create_player(count, category, hours):
     cursor = connection.cursor()
     try:
         sql = "exec CreatePlayer3 %s, %s, '%s'" % (count, category, end_bid_time.strftime("%Y-%m-%d %H:%M:%S"))
-        print sql
         cursor.execute(sql)
-    except Exception, e:
-        a = e.message.decode("gbk")
-        print a
+    except:
+        log_execption()
     finally:
         connection.close()
         
@@ -36,9 +35,8 @@ def recover_healthy3():
     try:
         sql = "exec RecoverHealthy3"
         cursor.execute(sql)
-    except Exception, e:
-        a = e.message.decode("gbk")
-        print a
+    except:
+        log_execption()
     finally:
         connection.close()
         
@@ -48,9 +46,8 @@ def player_grow3():
     try:
         sql = "exec PlayerGrow3"
         cursor.execute(sql)
-    except Exception, e:
-        a = e.message.decode("gbk")
-        print a
+    except:
+        log_execption()
     finally:
         connection.close()
         
@@ -60,9 +57,8 @@ def player_skill_max_up3():
     try:
         sql = "exec PlayerSkillMaxUP3"
         cursor.execute(sql)
-    except Exception, e:
-        a = e.message.decode("gbk")
-        print a
+    except:
+        log_execption()
     finally:
         connection.close()
         
@@ -72,9 +68,8 @@ def recover_power3():
     try:
         sql = "exec RecoverPower3"
         cursor.execute(sql)
-    except Exception, e:
-        a = e.message.decode("gbk")
-        print a
+    except:
+        log_execption()
     finally:
         connection.close()
 

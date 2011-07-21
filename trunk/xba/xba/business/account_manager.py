@@ -76,6 +76,22 @@ def assign_devchoose_card():
     finally:
         cursor.close()
         
+def delete_online_table():
+    """清空在线表"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("exec DeleteOnlineTable")
+    finally:
+        cursor.close()
+        
+def delete_fri_match_msg():
+    """清空在线聊天表"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("delete from BTP_FriMatchMsg")
+    finally:
+        cursor.close()
+        
 def update_account():
     cursor = connection.cursor()
     try:

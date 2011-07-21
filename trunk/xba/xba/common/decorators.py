@@ -3,7 +3,7 @@
 
 import time
 
-from xba.common import exception_mgr
+from xba.common import exception_mgr, log_execption
 
 def ensure_success(input_function):
     """确保程序一成功执行装饰器
@@ -15,6 +15,7 @@ def ensure_success(input_function):
             try:
                 return input_function(*args, **kwargs)
             except:
+                log_execption()
                 exception_mgr.on_except()
                 time.sleep(10)
                 

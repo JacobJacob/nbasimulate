@@ -4,7 +4,7 @@
 
 import os
 
-DEBUG = False
+DEBUG = True
 
 class PathSettings:
     if os.name == 'nt':
@@ -19,6 +19,7 @@ class PathSettings:
     PLANTASKS_FILE = WORKING_FOLDER + "/plantasks.json"
     WEB_LOGS = WORKING_FOLDER + '/nginx/logs' # nginx日志
     DB_BACKUP = WORKING_FOLDER + '/sqlserver/backup' # nginx日志
+    ROUND_UPDATE_LOCK = WORKING_FOLDER + '/roundupdatelock' # nginx日志
     if not os.path.exists(EXCEPTION):
         os.makedirs(EXCEPTION)
     if not os.path.exists(FILE_LOCKER):
@@ -33,6 +34,8 @@ class PathSettings:
         os.makedirs(LOG)
     if not os.path.exists(DB_BACKUP):
         os.makedirs(DB_BACKUP)
+    if not os.path.exists(ROUND_UPDATE_LOCK):
+        os.makedirs(ROUND_UPDATE_LOCK)
     PROJECT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class DbSetting:
