@@ -1,16 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
+
 from subprocess import Popen, PIPE
+from datetime import datetime
 
-from xba.config import CLIENT_EXE_PATH
-
+from xba.config import CLIENT_EXE_PATH, PathSettings
 from xba.business import dev_match_manager
 from xba.business import game_manager
 from xba.business import club_manager
 from xba.business import arrange_manager
+from xba.business import account_manager
+from xba.business import union_field_manager
 from xba.business import only_one_match_manager
 from xba.business import player5_manager
+from xba.business import player3_manager
 from base import BaseClient
 from xba.client import db_backup
 from xba.common.decorators import ensure_success
@@ -62,6 +67,18 @@ class RoundUpdateHandler(BaseClient):
         self.log("start update_season_mvp_value")
         self.update_season_mvp_value()
 
+        self.log("start night delete union")
+        self.night_update_delete_union()
+        
+        self.log("start to create player3")
+        self.create_player3()
+        
+        self.log("start to delete online table")
+        self.delete_online_table()
+        
+        self.log("start to delete friend match msg")
+        self.delete_fri_match_msg()
+        
         #after run
         self.after_run()
             
@@ -200,6 +217,26 @@ class RoundUpdateHandler(BaseClient):
         turn = self._turn + 1 if next else self._turn
         return dev_match_manager.get_round_dev_matchs(0, turn)
     
+    @ensure_success
+    def night_update_delete_union(self):
+        """删除威望小于1的联盟"""
+        return union_field_manager.night_update_delete_union()
+    
+    @ensure_success
+    def create_player3(self):
+        """刷街头球员"""
+        return player3_manager.create_player(600, 6, 12)
+    
+    @ensure_success
+    def delete_online_table(self):
+        """清空在线表"""
+        return account_manager.delete_online_table()
+    
+    @ensure_success
+    def delete_fri_match_msg(self):
+        """清空在线聊天刻录"""
+        return account_manager.delete_fri_match_msg()
+    
     def call_cmd(self, cmd):
         """调用命令"""
         p = Popen(cmd, stdout=PIPE)
@@ -215,5 +252,11 @@ class RoundUpdateHandler(BaseClient):
 if __name__ == "__main__":
     s = single_process.SingleProcess("RoundUpdateHandler")
     s.check()
-    handler = RoundUpdateHandler()
-    handler.start()
+    lock_file = os.path.join(PathSettings.ROUND_UPDATE_LOCK, datetime.now().strftime("%Y_%m_%d.lock"))
+    if os.path.exists(lock_file):
+        print "update had finish"
+    else:
+        f = open(lock_file, "wb")
+        f.close()
+        handler = RoundUpdateHandler()
+        handler.start()
