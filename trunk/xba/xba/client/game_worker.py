@@ -4,7 +4,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from xba.business import only_one_match_manager, game_manager, arrange_manager
+from xba.business import only_one_match_manager, game_manager, arrange_manager, union_field_manager
 from xba.common.decorators import ensure_success
 from xba.common.constants.club import ClubCategory
 from base import BaseClient
@@ -46,9 +46,19 @@ class GameWorker(BaseClient):
         self.log("stat to handle cup")
         self.cup_handle()
         
+        #处理过期盟战
+        self.log("start to update union filed game")
+        self.day_update_union_field_game()
+        
         self.log("start sleep")
         self.sleep()
         
+        
+    @ensure_success
+    def day_update_union_field_game(self):
+        """处理过期盟战"""
+        return union_field_manager.day_update_union_field_game()
+    
     @ensure_success
     def set_only_one_match(self):
         """胜者为王挫合"""
