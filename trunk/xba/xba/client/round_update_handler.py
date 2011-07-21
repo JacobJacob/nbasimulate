@@ -13,6 +13,7 @@ from xba.business import club_manager
 from xba.business import arrange_manager
 from xba.business import account_manager
 from xba.business import union_field_manager
+from xba.business import cup_manager
 from xba.business import only_one_match_manager
 from xba.business import player5_manager
 from xba.business import player3_manager
@@ -78,6 +79,9 @@ class RoundUpdateHandler(BaseClient):
         
         self.log("start to delete friend match msg")
         self.delete_fri_match_msg()
+        
+        self.log("start day add cup")
+        self.day_add_cup()
         
         #after run
         self.after_run()
@@ -237,6 +241,11 @@ class RoundUpdateHandler(BaseClient):
         """清空在线聊天刻录"""
         return account_manager.delete_fri_match_msg()
     
+    @ensure_success
+    def day_add_cup(self):
+        """每天刷出杯子"""
+        return cup_manager.day_add_cup()
+        
     def call_cmd(self, cmd):
         """调用命令"""
         p = Popen(cmd, stdout=PIPE)

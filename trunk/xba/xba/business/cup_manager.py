@@ -221,6 +221,13 @@ def get_run_cuptable():
     finally:
         connection.close()
         
+def day_add_cup():
+    """每日刷新创建杯赛"""
+    for _ in range(2):
+        for category in (21, 22):
+            add_cup(category, datetime.strftime(datetime.now() + timedelta(days=1), '%Y-%m-%d %H:%M'))
+
 if __name__ == "__main__":
-    add_cup(22, datetime.strftime(datetime.now() + timedelta(days=1), '%Y-%m-%d %H:%M'))
+    #add_cup(22, datetime.strftime(datetime.now() + timedelta(days=1), '%Y-%m-%d %H:%M'))
+    day_add_cup()
     
