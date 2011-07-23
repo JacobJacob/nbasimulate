@@ -287,7 +287,12 @@ class CupLadder(RenderApple):
     def write(self, path):
         file_utility.ensure_dir_exists(os.path.dirname(path))
         s = self.render()
-        s = s.decode("utf8").encode("gb2312")
+        print type(s)
+        try:
+            s = s.decode("utf8").encode("gb2312")
+        except:
+            s = s.decode("utf8").encode("gb2312", "replace")
+            
         f = open(path, "wb")
         try:
             f.write(s)
