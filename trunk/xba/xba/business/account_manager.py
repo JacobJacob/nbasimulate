@@ -73,7 +73,9 @@ def assign_devchoose_card():
         for info in infos:
             user_id = info["UserID"]
             nickname = info["NickName"]
+            print type(nickname)
             nickname = nickname.decode("gbk")
+            print type(nickname)
             cursor.execute("select 1 from btp_toollink where userid = %s and ToolID = 23" % user_id)
             info = cursor.fetchone()
             if info:
@@ -81,8 +83,7 @@ def assign_devchoose_card():
                 continue
             print "assign"
             cursor.execute("EXEC ProvideChooseCard %s, %s, %s" % (user_id, 5, 20))
-            sql = "EXEC AddMessage '','秘书报告', '%s', '恭喜您 获得20轮选秀权,您可以在转会市场的职业选秀中选取你中意的一名球员 '" % nickname
-            print sql
+            sql = u"EXEC AddMessage '','秘书报告', '%s', '恭喜您 获得20轮选秀权,您可以在转会市场的职业选秀中选取你中意的一名球员 '" % nickname
             sql = sql.encode("gbk")
             cursor.execute(sql)
     finally:

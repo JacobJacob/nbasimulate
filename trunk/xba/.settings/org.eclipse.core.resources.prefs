@@ -1,4 +1,4 @@
-#Tue Jul 12 20:19:37 CST 2011
+#Sat Jul 23 20:00:52 CST 2011
 eclipse.preferences.version=1
 encoding//xba/business/account_manager.py=utf-8
 encoding//xba/business/arrange_manager.py=utf-8
@@ -13,6 +13,8 @@ encoding//xba/business/game_manager.py=utf-8
 encoding//xba/business/only_one_match_manager.py=utf-8
 encoding//xba/business/player3_manager.py=utf-8
 encoding//xba/business/player5_manager.py=utf-8
+encoding//xba/business/tool_manager.py=utf-8
+encoding//xba/business/union_field_manager.py=utf-8
 encoding//xba/business/user_roles.py=utf-8
 encoding//xba/client/base.py=utf-8
 encoding//xba/client/basic_ftpd.py=utf-8
@@ -23,10 +25,13 @@ encoding//xba/client/cup_handler.py=utf-8
 encoding//xba/client/cut_nginx_log.py=utf-8
 encoding//xba/client/db_backup.py=utf-8
 encoding//xba/client/dev_match_handler.py=utf-8
+encoding//xba/client/devcup_handler.py=utf-8
+encoding//xba/client/email4.txt=GBK
 encoding//xba/client/game_worker.py=utf-8
 encoding//xba/client/only_one_match_handler.py=utf-8
 encoding//xba/client/round_update_handler.py=utf-8
 encoding//xba/client/season_update_handler.py=utf-8
+encoding//xba/client/xbaad_sender.py=utf-8
 encoding//xba/common/__init__.py=utf-8
 encoding//xba/common/constants/__init__.py=utf-8
 encoding//xba/common/constants/account.py=utf-8
@@ -49,6 +54,7 @@ encoding//xba/common/main_xml_util.py=utf-8
 encoding//xba/common/md5mgr.py=utf-8
 encoding//xba/common/memcache.py=utf-8
 encoding//xba/common/net/post.py=utf-8
+encoding//xba/common/reward.py=utf-8
 encoding//xba/common/serverinfo.py=utf-8
 encoding//xba/common/single_process.py=utf-8
 encoding//xba/common/sqlserver/__init__.py=utf-8
