@@ -10,7 +10,7 @@
      
       
      
-  service = new rpc.ServiceProxy("/services/game/", {asynchronous:false, methods: ['add_announce', 'disable_announce',]});
+  service = new rpc.ServiceProxy("/services/game/", {asynchronous:false, methods: ['add_announce', 'delete_announce', 'add_system_message']});
   
   $(document).ready(function(){
    
@@ -45,6 +45,43 @@
 			}
 	    }
 	});
+	
+	$('input.add_sys_msg').click(function(){
+         $('#mark').val("");
+	     $("#add_sys_msg_dialog").show().dialog({
+		     height: 230, width: 330, modal: true,
+	         title: '发送系统系统',
+		     overlay: {
+                opacity: 0.5, 
+                background: "black" 
+             }
+	     });
+	});
+	
+   $('a.delete').click(function(){
+	    var id = $(this).parent().parent().attr('id');
+	    if(confirm("确认要删除吗?")){
+	        service.delete_announce(id);
+	        window.location.reload() ;
+	    }
+	});
+	
+	
+	
+    $('#add_sys_msg_form input.button').click(function(){
+		var content = $('#mark').val();
+        if(!content){
+		   alert("请输入内容");
+		}else{
+		    try{
+		       service.add_system_message(content);
+	           window.location.reload() ;
+			}catch(e){
+			   alert(e.message);
+			}
+	    }
+	});
+	 
 	 
   });
   
@@ -52,7 +89,8 @@
 {% endblock %}
 {% block title %}游戏公告管理{% endblock %}
 {% block content %}
-<input type="button" class="add" value="添加公告"/><br/>
+<input type="button" class="add" value="添加公告"/>
+<input type="button" class="add_sys_msg" value="添加系统消息"/><br/>
 <table cellspacing="1" class="tablesorter">
   <thead>
     <th>ID</th>
@@ -64,7 +102,7 @@
   <tbody>
     {% if infos %}
       {% for info in infos %}
-       <tr code="{{ info.code }}">
+       <tr id="{{ info.id }}">
          <td>{{ info.id }}</td>
          <td>{{ info.title }}</td>
          <td>{{ info.created_time }}</td>
@@ -82,6 +120,18 @@
     		<label>标题:</label>
 			<span>
 			   <textarea id="title" rows="5" cols="18"></textarea>
+			</span>
+	    </p>
+	    <br> 
+		<input class="button" type="button" value="提交" />
+    </form>
+</div>
+<div id="add_sys_msg_dialog" class="flora" style="display: none;">
+    <form id="add_sys_msg_form">
+    	<p>
+    		<label>内容:</label>
+			<span>
+			   <textarea id="mark" rows="5" cols="18"></textarea>
 			</span>
 	    </p>
 	    <br> 

@@ -45,6 +45,29 @@ def add_announce(title, type=0):
     announce.type = type
     session.add(announce)
     session.commit()
+    
+def delete_announce(id):
+    """删除公告"""
+    cursor = connection.cursor()
+    try:
+        sql = "delete from btp_announce where announceid = %s " % id
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+    
+def add_system_message(content):
+    """添加系统消息"""
+    cursor = connection.cursor()
+    try:
+        sql = "EXEC SendSystemMsg '%s'" % content.encode("gbk")
+        print sql
+        print cursor.execute(sql)
+        cursor.commit()
+    finally:
+        connection.close()
         
 def set_to_next_turn():
     """联赛前进一轮"""
@@ -95,6 +118,5 @@ def add_power_by_online():
         connection.close()       
         
 if __name__ == "__main__":
-    total, infos = get_announce(1, 10)
-    for info in infos:
-        print info.title.decode("gbk")
+    print get_game_info();
+    add_system_message("testsssssssssssssssss")
