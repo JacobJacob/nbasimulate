@@ -68,11 +68,23 @@ def assign_devchoose_card():
     """发放选秀卡"""
     cursor = connection.cursor()
     try:
-        cursor.execute("select UserID from btp_account")
+        cursor.execute("select UserID, NickName from btp_account")
         infos = cursor.fetchall()
         for info in infos:
-            print info
-            cursor.execute("ProvideChooseCard %s, %s, %s" % (info["UserID"], 5, 20))
+            user_id = info["UserID"]
+            nickname = info["NickName"]
+            nickname = nickname.decode("gbk")
+            cursor.execute("select 1 from btp_toollink where userid = %s and ToolID = 23" % user_id)
+            info = cursor.fetchone()
+            if info:
+                print "has"
+                continue
+            print "assign"
+            cursor.execute("EXEC ProvideChooseCard %s, %s, %s" % (user_id, 5, 20))
+            sql = "EXEC AddMessage '','秘书报告', '%s', '恭喜您 获得20轮选秀权,您可以在转会市场的职业选秀中选取你中意的一名球员 '" % nickname
+            print sql
+            sql = sql.encode("gbk")
+            cursor.execute(sql)
     finally:
         cursor.close()
         
@@ -108,4 +120,4 @@ def update_account():
         cursor.close()
         
 if __name__ == "__main__":
-    update_account()
+    assign_devchoose_card()
