@@ -1,4 +1,4 @@
-#Sat Jul 23 20:00:52 CST 2011
+#Tue Jul 26 23:15:25 CST 2011
 eclipse.preferences.version=1
 encoding//xba/business/account_manager.py=utf-8
 encoding//xba/business/arrange_manager.py=utf-8
@@ -32,6 +32,7 @@ encoding//xba/client/only_one_match_handler.py=utf-8
 encoding//xba/client/round_update_handler.py=utf-8
 encoding//xba/client/season_update_handler.py=utf-8
 encoding//xba/client/xbaad_sender.py=utf-8
+encoding//xba/client/xbaad_sender2.py=utf-8
 encoding//xba/common/__init__.py=utf-8
 encoding//xba/common/constants/__init__.py=utf-8
 encoding//xba/common/constants/account.py=utf-8

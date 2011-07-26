@@ -214,12 +214,11 @@ class Receiver:
         if self.pop:
             self.pop.quit()
                         
-def send_to(subject, msg, to=['shixiangwen03@gmail.com'], 
-            cc=[], attachments=[], subtype='html', bcc=[]):
+def send_to(subject, msg, to=['shixiangwen03@gmail.com'], cc=[], attachments=[], subtype='html', bcc=[], user="shixiangwen03@163.com"):
     """发邮件给指定的开发员"""
     if isinstance(to, basestring):
         to = [to]
-    m = Mail()
+    m = Mail(user=user)
     sender = m.user
     return m.send(subject, msg, sender, to, cc, attachments, subtype, bcc)
 
