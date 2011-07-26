@@ -8,7 +8,11 @@ from xba.common.constants.club import MainXMLTag
 from xba.common import main_xml_util
 from xba.model import Club
 from xba.common.orm import Session
-from xba.common import log_execption
+
+def ensure_gbk(s):
+    if isinstance(s, unicode):
+        return s.encode("gbk")
+    return 
 
 def set_club_main_xml(club_id, map):
     """设置俱乐部的MainXML"""
@@ -18,11 +22,7 @@ def set_club_main_xml(club_id, map):
         main_xml = club_info["MainXML"]
         new_main_xml = main_xml_util.build_main_xml(main_xml, map)
         sql = "exec SetMainXMLByClubID %s, '%s'" % (club_id, new_main_xml)
-        sql = sql.encode("gbk")
         cursor.execute(sql)
-    except:
-        log_execption()
-        raise "sql error"
     finally:
         connection.close()
         
@@ -35,9 +35,6 @@ def get_club_by_user_id(user_id):
         info = cursor.fetchone()
         if info:
             return info["ClubID"]
-    except Exception, e:
-        print e.message.decode("gbk")
-        raise
     finally:
         connection.close()
         
@@ -48,9 +45,6 @@ def get_club_by_id(club_id):
         sql = "select *,  convert(text,MainXML) as MainXML from btp_club where clubid = %s " % club_id
         cursor.execute(sql)
         return cursor.fetchone()
-    except Exception, e:
-        print e.message.decode("gbk")
-        raise
     finally:
         cursor.close()
         
@@ -61,9 +55,6 @@ def get_all_club(category):
         sql = "select * from btp_club where category = %s" % category
         cursor.execute(sql)
         return cursor.fetchall()
-    except Exception, e:
-        a = e.message.decode("gbk")
-        print a
     finally:
         connection.close()
     
