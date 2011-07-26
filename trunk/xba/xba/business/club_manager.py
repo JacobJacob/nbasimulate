@@ -22,7 +22,7 @@ def set_club_main_xml(club_id, map):
         main_xml = club_info["MainXML"]
         new_main_xml = main_xml_util.build_main_xml(main_xml, map)
         sql = "exec SetMainXMLByClubID %s, '%s'" % (club_id, new_main_xml)
-        cursor.execute(sql)
+        cursor.execute(ensure_gbk(sql))
     finally:
         connection.close()
         

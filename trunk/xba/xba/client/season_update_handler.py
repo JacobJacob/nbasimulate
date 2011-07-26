@@ -226,6 +226,15 @@ class SeasonUpdateHandler(BaseClient):
     @ensure_success
     def get_game_info(self):
         return game_manager.get_game_info()
+    
+    
+    def assign_choose_car(self):
+        """发放选秀卡"""
+        pass
+    
+    def assign_select_car(self):
+        """发放选拔卡"""
+        pass
             
 if __name__ == "__main__":
     handler = SeasonUpdateHandler()
