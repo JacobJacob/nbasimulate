@@ -188,7 +188,47 @@ def update_player5_category3():
     finally:
         connection.close()
         
+def update_player5_hight_yishi():
+    import random
+    cursor = connection.cursor()
+    try:
+        sql = "select PlayerID, ClubID, team, defense, attack from btp_player5 where team + defense + attack > 1500 and endbidtime > '2011-07-25'"
+        cursor.execute(sql)
+        infos = cursor.fetchall()
+        for info in infos:
+            print "-" * 20
+            team, defense, attack, playerid, clubid = info["team"], info["defense"], info["attack"], info["PlayerID"], info["ClubID"] 
+            now_team = 200 + random.randint(0, 100)
+            now_defense = 200 + random.randint(0, 100)
+            now_attack = 200 + random.randint(0, 100)
+            if now_team > team:
+                now_team = team
+            if now_defense > defense:
+                now_defense = defense
+            if now_attack > attack:
+                now_attack = attack
+            sql = "UPDATE BTP_Player5 SET team=%s, defense=%s, attack=%s WHERE PlayerID=%s" % (now_team, now_defense, now_attack, playerid)
+            print sql
+            cursor.execute(sql)
+            sql = SQL % info["PlayerID"] 
+            print sql
+            cursor.execute(sql)
+            money = ((team + defense + attack) - (now_team + now_defense + now_attack)) / 3 * 10000
+            sql = "select userid from btp_club where clubid=%s" % clubid
+            print sql
+            cursor.execute(sql)
+            userid = cursor.fetchone()["userid"]
+            sql = "update btp_account set money=money+%s where userid=%s" % (money, userid)
+            print sql
+            cursor.execute(sql)
+            
+    except Exception, e:
+        raise
+        print "error"
+    finally:
+        connection.close()
+        
     
 if __name__ == "__main__":
-    update_player5_category3()
+    update_player5_hight_yishi()
 
