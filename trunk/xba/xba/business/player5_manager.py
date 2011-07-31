@@ -174,8 +174,20 @@ def update_player5_category3():
         infos = cursor.fetchall()
         for info in infos:
             for ABILITY in ABILITYS:
+                if ABILITY in ("Attack","Defense","Team"):
+                    continue
                 ability = info["%sMax" % ABILITY]
-                ability = ability * random.randint(5, 9) / 10
+                if ability > 900:
+                    ability = ability * random.randint(40, 99) / 100
+                elif ability > 800:
+                    ability = ability * random.randint(50, 99) / 100    
+                elif ability > 700:
+                    ability = ability * random.randint(60, 99) / 100    
+                elif ability > 600:
+                    ability = ability * random.randint(70, 99) / 100    
+                else:
+                    ability = ability * random.randint(80, 99) / 100
+                
                 sql = "UPDATE BTP_Player5 SET %s=%s WHERE PlayerID=%s" % (ABILITY, ability, info["PlayerID"])
                 print sql
                 cursor.execute(sql)
@@ -228,7 +240,27 @@ def update_player5_hight_yishi():
     finally:
         connection.close()
         
-    
+def view_player5_category3():
+    cursor = connection.cursor()
+    try:
+        sql = "select * from btp_player5 where category=3"
+        cursor.execute(sql)
+        infos = cursor.fetchall()
+        for info in infos:
+            total1, total2 = 0, 0
+            for ABILITY in ABILITYS:    
+                ability = info["%sMax" % ABILITY]
+                if ABILITY not in ("Attack","Defense","Team"):
+                    total2 += ability
+                total1 += ability
+            print info["Age"], info["Ability"], (total2 + 600) / 14, total1 / 14, total2 / 11
+                
+    except Exception, e:
+        a = e.message.decode("gbk")
+        print a
+    finally:
+        connection.close()
+           
 if __name__ == "__main__":
-    update_player5_hight_yishi()
+    update_player5_category3()
 
