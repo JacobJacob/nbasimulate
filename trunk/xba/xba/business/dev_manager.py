@@ -3,7 +3,7 @@
 
 from xba.common import log_execption
 from xba.common.sqlserver import connection
-from xba.business import club_manager, club_manager
+from xba.business import club_manager
 
 def get_dev_clubs(devcode):
     """根据devcode获取所有俱乐部id"""
@@ -14,6 +14,17 @@ def get_dev_clubs(devcode):
     finally:
         cursor.close()
         
+def get_dev_info_by_userid(userid):
+    """根据用户ID获取联赛行"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT ClubID FROM btp_club WHERE UserID=%s and Category=5" % userid)
+        info = cursor.fetchone()
+        if info:
+            cursor.execute("SELECT * FROM btp_dev WHERE ClubID=%s" % info["ClubID"])
+            return cursor.fetchone()
+    finally:
+        cursor.close()
         
 def upgrade_dev(dev_info):
     """联赛升级"""
@@ -73,7 +84,7 @@ def reward_dev(dev_code, level, sort):
     cursor = connection.cursor()
     try:
         sql = "EXEC RewardDev '%s', '%s'" % (dev_code, '%s.%s联赛' % (level, sort + 1))
-        sql = sql.encode("gbk")
+        sql = sql.decode("utf8").encode("gbk")
         cursor.execute(sql)
     except:
         log_execption()
@@ -94,6 +105,20 @@ def get_dev_table_by_level(level):
     finally:
         connection.close()
         
+def get_dev_table_by_total(level):
+    """获取联赛统计"""
+    cursor = connection.cursor()
+    try:
+        sql = "select devcode, sum(1) as total from btp_dev where levels = %s and clubid > 0 group by devcode " % level
+        cursor.execute(sql)
+        return cursor.fetchall()
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+   
+         
 def exchange_two_dev(club_info_one, club_info_two):
     """交换两支球队"""
     cursor = connection.cursor()
@@ -103,10 +128,23 @@ def exchange_two_dev(club_info_one, club_info_two):
         club_id_two = club_info_two["ClubID"] 
         dev_id_one = club_info_one["DevID"]
         dev_id_two = club_info_two["DevID"]
+        dev_code_one = club_info_one["DevCode"]
+        dev_code_two = club_info_two["DevCode"]
         club_info_two["ClubID"] = club_id_one
         club_info_one["ClubID"] = club_id_two
         sql_one = "UPDATE btp_dev SET ClubID = %s WHERE DevID = %s " % (club_id_two, dev_id_one)
         sql_two = "UPDATE btp_dev SET ClubID = %s WHERE DevID = %s " % (club_id_one, dev_id_two)
+        print sql_one
+        print sql_two
+        if club_id_one > 0:
+            cursor.execute("select UserID from btp_club where ClubID=%s" % club_id_one)
+            userid = cursor.fetchone()["UserID"]
+            cursor.execute("update btp_account set devcode='%s' where userid=%s" % (dev_code_two, userid))
+        if club_id_two > 0:
+            cursor.execute("select UserID from btp_club where ClubID=%s" % club_id_two)
+            userid = cursor.fetchone()["UserID"]
+            cursor.execute("update btp_account set devcode='%s' where userid=%s" % (dev_code_one, userid))
+        
         cursor.execute(sql_one)
         cursor.execute(sql_two)
         cursor.commit()
@@ -122,6 +160,18 @@ def assign_dev():
     cursor = connection.cursor()
     try:
         sql = "EXEC AssignDev"
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+
+def delete_devmessage():
+    """删除联赛留言"""
+    cursor = connection.cursor()
+    try:
+        sql = "delete from btp_devmessage"
         cursor.execute(sql)
     except:
         log_execption()

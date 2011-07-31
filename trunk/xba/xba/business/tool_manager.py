@@ -25,3 +25,20 @@ def assign_tool_id_by_category_ticket(userid, category, ticket_category):
         log_execption()
     finally:
         connection.close()
+        
+        
+def assign_tool(user_id, tool_id, amount, type=1):
+    """发放道具"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("EXEC GiftTool %s, %s, %s, %s" % user_id, tool_id, amount, type)
+    finally:
+        cursor.close()
+        
+def delete_expired_tool():
+    """删除过期道具"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("EXEC DeleteExpiredTool")
+    finally:
+        cursor.close()

@@ -70,8 +70,8 @@ class DevMatchHandler(object):
             round = 1
             for items in VIS_MAP:
                 for item in items:
-                    home = club_map.get(item[0])
-                    away = club_map.get(item[1])
+                    home = club_map.get(item[0], 0)
+                    away = club_map.get(item[1], 0)
                     if home == 0 and away == 0:
                         continue
                     print "round:%s home:%s away:%s dev:%s" % (round, home, away, dev_code)

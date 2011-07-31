@@ -68,7 +68,7 @@ def assign_devchoose_card():
     """发放选秀卡"""
     cursor = connection.cursor()
     try:
-        cursor.execute("select UserID, NickName from btp_account")
+        cursor.execute("select devcode from btp_dev where clubid > 0 group by devcode")
         infos = cursor.fetchall()
         for info in infos:
             user_id = info["UserID"]
@@ -89,11 +89,69 @@ def assign_devchoose_card():
     finally:
         cursor.close()
         
+def get_round(sort):
+    """get round"""
+    rand = random.randint(1, 30)
+    value = 200 - sort * 15 + rand
+    i = 1
+    while i < 20:
+        if value > 210:
+            return i
+        i += 1
+        value += 10
+    
+    return i
+            
+def assign_devchoose_card_with_devsort():
+    """发放选秀卡"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select devcode from btp_dev where clubid > 0 group by devcode")
+        infos = cursor.fetchall()
+        for info in infos:
+            devcode = info["devcode"]
+            sql = "select clubid from btp_dev where devcode = '%s' order by win asc, score asc" % devcode
+            cursor.execute(sql)
+            clubinfos = cursor.fetchall()
+            for i, clubinfo in enumerate(clubinfos):
+                club_id = clubinfo["clubid"]
+                if club_id <= 0:
+                    continue
+                sql = "select userid from btp_club where clubid = %s" % club_id
+                print sql
+                cursor.execute(sql)
+                user_id = cursor.fetchone()["userid"]
+                cursor.execute("EXEC ProvideChooseCard %s, %s, %s" % (user_id, 5, get_round(i)))
+    finally:
+        cursor.close()
+        
+def assign_promotion_card():
+    """发放提拔卡"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select UserID, NickName from btp_account")
+        infos = cursor.fetchall()
+        for info in infos:
+            user_id = info["UserID"]
+            cursor.execute("EXEC GiftTool %s, 27, 2, 1" % user_id)
+    finally:
+        cursor.close()
+        
 def delete_online_table():
     """清空在线表"""
     cursor = connection.cursor()
     try:
         cursor.execute("exec DeleteOnlineTable")
+    finally:
+        cursor.close()
+        
+def get_one_level_max_team(level):
+    """获取某一等级最大综合的球员"""
+    cursor = connection.cursor()
+    try:
+        sql = "select top 10 UserID from btp_account where len(DevCode)=%s order by TeamAbility Desc" % (level - 1)
+        cursor.execute(sql)
+        return cursor.fetchall()
     finally:
         cursor.close()
         
@@ -115,10 +173,21 @@ def update_account():
         infos = cursor.fetchall()
         for info in infos:
             userid, money = info["userid"], info["money"]
-            print userid, money
             cursor.execute("update btp_account set money=money+%s where userid=%s" % (money, userid))
     finally:
         cursor.close()
         
+def update_team_ability():
+    """发放提拔卡"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select UserID, NickName from btp_account")
+        infos = cursor.fetchall()
+        for info in infos:
+            user_id = info["UserID"]
+            cursor.execute("EXEC GiftTool %s, 27, 2, 1" % user_id)
+    finally:
+        cursor.close()
+        
 if __name__ == "__main__":
-    assign_devchoose_card()
+    assign_devchoose_card_with_devsort()

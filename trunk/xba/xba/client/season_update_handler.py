@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from xba.business import player5_manager
+from xba.business import player5_manager, account_manager
 from xba.business import dev_match_manager
 from xba.business import game_manager
 from xba.business import finance_manager
@@ -23,6 +23,8 @@ class SeasonUpdateHandler(BaseClient):
     def work(self):
         self.log("season update start")
         
+        self.assign_choose_car()
+        
         #删除每天财政
         self.delete_turn_finance()
         
@@ -34,24 +36,33 @@ class SeasonUpdateHandler(BaseClient):
         
         #冠军奖励
         self.reward_dev()
-        
-        #删除所有比赛
-        self.delete_all_matches()
-        
+         
         #联赛更新
-        #self.dev_update()
+        self.dev_update()
+        
+        #删除联赛留言
+        self.delete_devmessage()
         
         #将球队往前面挤一挤
         self.reset_dev()
         
+        #将高综合点的球队往前面补
+        self.fill_not_full_dev()
+        
         #初始化联赛
         self.assign_dev()
         
+        #将球队往前面挤一挤
+        self.reset_dev()
+        
         #比赛安排
         self.dev_match_assign()
+                
+        #发放提拔卡
+        self.assign_promotion_card()
         
         #更新结束,设置赛季开始
-        #self.season_update_finish()
+        self.season_update_finish()
 
         return "exist"
     
@@ -78,18 +89,20 @@ class SeasonUpdateHandler(BaseClient):
         """将各级联赛的球队尽量集中在一起"""
         self.log("start reset dev")
         for level in range(1, self.__dev_level_sum + 1):
+            self.log("start to reset level:%s" % level)
             self.reset_level_dev(level)
         
     def reset_level_dev(self, level):
         """将某一等级的俱乐部往前排"""
         club_infos = self.get_dev_table_by_level(level)
-        for club_info in club_infos:
+        
+        for i, club_info in enumerate(club_infos):
             club_id = club_info["ClubID"]
             dev_code = club_info["DevCode"]
             if club_id == 0:
                 #如果该俱乐部是空，则从最后面补一个上来
-                new_club_info = self.get_last_club_info(dev_code, club_infos)
-                if new_club_info:
+                index, new_club_info = self.get_last_club_info(dev_code, club_infos)
+                if new_club_info and i < index:
                     #交换两支球队
                     self.exchange_two_dev(club_info, new_club_info)
                 else:
@@ -107,6 +120,9 @@ class SeasonUpdateHandler(BaseClient):
     
     def dev_match_assign(self):
         """安排所有比赛"""
+        #删除所有比赛
+        self.delete_all_matches()
+        self.log("start to dev match assign")
         for level in range(1, self.__dev_level_sum + 1):
             dev_count = self.get_dev_count(level)
             for sort in range(dev_count):
@@ -130,10 +146,12 @@ class SeasonUpdateHandler(BaseClient):
             club_info = club_infos[i - 1]
             if club_info["ClubID"] > 0:
                 if club_info["DevCode"] != dev_code:
-                    return club_info
+                    return i, club_info
                 else:
-                    return None
+                    return 0, None
             i -= 1
+        
+        return 0, None
         
     def get_dev_table_by_level(self, level):
         """获取某一等级所有俱乐部"""
@@ -227,16 +245,61 @@ class SeasonUpdateHandler(BaseClient):
     def get_game_info(self):
         return game_manager.get_game_info()
     
+    @ensure_success
+    def delete_devmessage(self):
+        return dev_manager.delete_devmessage()
     
+    @ensure_success
     def assign_choose_car(self):
         """发放选秀卡"""
-        pass
+        return account_manager.assign_devchoose_card_with_devsort()
     
-    def assign_select_car(self):
+    @ensure_success
+    def assign_promotion_card(self):
         """发放选拔卡"""
-        pass
-            
-if __name__ == "__main__":
+        return account_manager.assign_promotion_card()
+    
+    def fill_not_full_dev(self):
+        """把高级的缺人的联赛填满"""
+        for level in range(1, self.__dev_level_sum):
+            self.log("start to fill level:%s" % level)
+            self.do_fill_one_not_full_dev(level)
+  
+    def do_fill_one_not_full_dev(self, level):
+        """把高级的缺人的联赛填满"""
+        dev_infos = dev_manager.get_dev_table_by_total(level)
+        if not dev_infos:
+            self.log("not dev infos, return")
+            return
+        for dev_info in dev_infos:
+            devcode, total = dev_info["devcode"], dev_info["total"]
+            if total != 14:
+                infos = dev_manager.get_dev_clubs(devcode)
+                for info in infos:
+                    clubid = info["ClubID"]
+                    if clubid <= 0:
+                        self.log("has club id less 0")
+                        #从下一级拿一级最高综合的球队
+                        user_infos = account_manager.get_one_level_max_team(level+1)
+                        self.log("get %s user infos" % len(user_infos))
+                        for user_info in user_infos:
+                            if user_info and user_info["UserID"]:
+                                new_dev_info = dev_manager.get_dev_info_by_userid(user_info["UserID"])
+                                self.log("start to change %s(%s), %s(%s)" % (info["DevCode"], info["DevID"], new_dev_info["DevCode"], new_dev_info["DevID"]))
+                                self.exchange_two_dev(info, new_dev_info)
+                                break
+                                
+def main():
+    handler = SeasonUpdateHandler()
+    handler.before_run()
+    handler.fill_not_full_dev()
+    #handler.reset_dev()
+    handler.dev_match_assign()    
+
+def run():
     handler = SeasonUpdateHandler()
     handler.start()
-
+                      
+if __name__ == "__main__":
+    run()
+    #main()

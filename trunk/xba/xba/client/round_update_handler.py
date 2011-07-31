@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE
 from datetime import datetime
 
 from xba.config import CLIENT_EXE_PATH, PathSettings
-from xba.business import dev_match_manager
+from xba.business import dev_match_manager, tool_manager
 from xba.business import game_manager
 from xba.business import club_manager
 from xba.business import arrange_manager
@@ -82,6 +82,9 @@ class RoundUpdateHandler(BaseClient):
         
         self.log("start day add cup")
         self.day_add_cup()
+        
+        self.log("start to delete expired tool")
+        self.delete_expired_tool()
         
         #after run
         self.after_run()
@@ -245,6 +248,11 @@ class RoundUpdateHandler(BaseClient):
     def day_add_cup(self):
         """每天刷出杯子"""
         return cup_manager.day_add_cup()
+    
+    @ensure_success
+    def delete_expired_tool(self):
+        """删除过期道具"""
+        return tool_manager.delete_expired_tool()
         
     def call_cmd(self, cmd):
         """调用命令"""
