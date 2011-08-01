@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import random
+
 from datetime import datetime, timedelta
 
 from xba.config import DOMAIN
@@ -52,6 +54,8 @@ def add_cup(category, end_reg_time):
         info['category'] = 2
     elif category in (23,):
         info['category'] = 1
+    elif category in (24,):
+        info['category'] = 8
         
     info['name'] = CupCategoryMap[category]
     info['introduction'] = CupCategoryDescMap[category] % (end_reg_time, end_reg_time)
@@ -224,10 +228,11 @@ def get_run_cuptable():
 def day_add_cup():
     """每日刷新创建杯赛"""
     for _ in range(2):
-        for category in (21, 22, 23):
-            add_cup(category, datetime.strftime(datetime.now() + timedelta(hours=32), '%Y-%m-%d %H:%M'))
+        for category in (21, 22, 23, 24):
+            hours = random.randint(30, 33)
+            add_cup(category, datetime.strftime(datetime.now() + timedelta(hours=hours), '%Y-%m-%d %H:%M'))
 
 if __name__ == "__main__":
-    add_cup(23, datetime.strftime(datetime.now() + timedelta(hours=32), '%Y-%m-%d %H:%M'))
-    #day_add_cup()
+    #add_cup(23, datetime.strftime(datetime.now() + timedelta(hours=32), '%Y-%m-%d %H:%M'))
+    day_add_cup()
     

@@ -73,7 +73,10 @@ class RoundUpdateHandler(BaseClient):
         
         self.log("start to create player3")
         self.create_player3()
-        
+       
+        self.log("start to create player5")
+        self.create_player5()
+         
         self.log("start to delete online table")
         self.delete_online_table()
         
@@ -233,6 +236,11 @@ class RoundUpdateHandler(BaseClient):
     def create_player3(self):
         """刷街头球员"""
         return player3_manager.create_player(600, 6, 20)
+    
+    @ensure_success
+    def create_player5(self):
+        """刷职业球员"""
+        return player5_manager.create_player(120, 2, 20, 70, 70)
     
     @ensure_success
     def delete_online_table(self):
