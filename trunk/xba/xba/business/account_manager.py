@@ -74,7 +74,7 @@ def assign_devchoose_card():
             user_id = info["UserID"]
             nickname = info["NickName"]
             print type(nickname)
-            nickname = nickname.decode("gbk")
+            #nickname = nickname.decode("gbk")
             print type(nickname)
             cursor.execute("select 1 from btp_toollink where userid = %s and ToolID = 23" % user_id)
             info = cursor.fetchone()
