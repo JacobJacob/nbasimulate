@@ -89,6 +89,8 @@ class GameWorker(BaseClient):
         
     def set_not_login_user_to_match(self):
         """胜者打比赛"""
+        if datetime.now().hour < 10:
+            return
         if not self.__not_login_users or self.__expire_time < datetime.now():
             self.__not_login_users = self.get_not_active_users()
             self.__expire_time = datetime.now() + timedelta(hours=1)
