@@ -189,5 +189,19 @@ def update_team_ability():
     finally:
         cursor.close()
         
+def get_not_active_users(interval_days=7):
+    user_ids = []
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select UserID, ActiveTime from btp_account where ActiveTime < DATEADD(DAY,-%s,GETDATE()) order by UserID asc" % interval_days)
+        infos = cursor.fetchall()
+        if infos:
+            for info in infos:
+                user_id = info["UserID"]
+                user_ids.append(user_id)
+    finally:
+        cursor.close()
+    return user_ids
+     
 if __name__ == "__main__":
     assign_devchoose_card_with_devsort()

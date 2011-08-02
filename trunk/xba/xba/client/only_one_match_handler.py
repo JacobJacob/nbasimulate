@@ -23,6 +23,11 @@ class OnlyOneMatchHandler(BaseClient):
     def set_only_one_match(self):
         """胜者为王挫合"""
         return only_one_match_manager.set_only_one_match()
+    
+    def set_not_login_user_to_match(self):
+        pass
+    
+    
 
 if __name__ == "__main__":
     handler = OnlyOneMatchHandler()

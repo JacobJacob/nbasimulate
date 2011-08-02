@@ -37,3 +37,48 @@ def send_money_by_only_day_point():
         log_execption()
     finally:
         connection.close()
+        
+def get_onlyone_match_row(user_id):
+    """得到胜者报名行"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec GetOnlyOneMatchRow %s" % user_id
+        cursor.execute(sql)
+        return cursor.fetchone()
+    except:
+        log_execption()
+    finally:
+        connection.close()
+        
+def only_one_match_out(user_id):
+    """胜者退出"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec OnlyOneMatchOut %s" % user_id
+        cursor.execute(sql)
+    except:
+        log_execption()
+    finally:
+        connection.close()
+        
+def only_one_match_goon(user_id):
+    """胜者继续"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec OnlyOneMatchGoOn %s" % user_id
+        cursor.execute(sql)
+    except:
+        log_execption()
+    finally:
+        connection.close()
+        
+def only_one_center_reg(user_id):
+    """胜者报名"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec OnlyOneCenterReg %s, 0, 0"  % user_id
+        cursor.execute(sql)
+    except:
+        log_execption()
+    finally:
+        connection.close()

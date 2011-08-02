@@ -1,10 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+from datetime import datetime, timedelta
 
-from xba.business import only_one_match_manager, game_manager, arrange_manager, union_field_manager
+from xba.business import only_one_match_manager, game_manager, arrange_manager, union_field_manager, account_manager
 from xba.common.decorators import ensure_success
 from xba.common.constants.club import ClubCategory
 from base import BaseClient
@@ -19,12 +18,17 @@ class GameWorker(BaseClient):
     
     def __init__(self):
         super(self.__class__, self).__init__(self.__class__.CLIENT_NAME)
+        self.__not_login_users = None
+        self.__expire_time = datetime.now()
         
     def work(self):
         
         #胜者配对
         self.log("start set only one match")
         self.set_only_one_match()     
+        
+        self.log("start to set not login user to match")
+        self.set_not_login_user_to_match()
         
         #在线体力恢复
         self.log("start add power by online")
@@ -52,7 +56,6 @@ class GameWorker(BaseClient):
         
         self.log("start sleep")
         self.sleep()
-        
         
     @ensure_success
     def day_update_union_field_game(self):
@@ -83,7 +86,54 @@ class GameWorker(BaseClient):
         """街球杯赛处理"""
         handle = CupHandler()
         handle.start()
+        
+    def set_not_login_user_to_match(self):
+        """胜者打比赛"""
+        if not self.__not_login_users or self.__expire_time < datetime.now():
+            self.__not_login_users = self.get_not_active_users()
+            self.__expire_time = datetime.now() + timedelta(hours=1)
+        self.__not_login_users.extend([15, 20, 46, 47, 75, 165, 158])
+        for user_id in self.__not_login_users:
+            only_one_reg_info = self.get_onlyone_match_row(user_id)
+            if not only_one_reg_info:
+                self.log("set user:%s to reg" % user_id)
+                self.only_one_center_reg(user_id)
+            else:
+                status = only_one_reg_info["Status"]
+                if status == 5:
+                    self.log("set user:%s to out for lose" % user_id)
+                    self.only_one_match_out(user_id)
+                    self.log("set user:%s to reg" % user_id)
+                    self.only_one_center_reg(user_id)
+                elif status == 6:
+                    win = only_one_reg_info["Win"]
+                    if win in (3, 6, 9):
+                        self.log("set user:%s to out for win" % user_id)
+                        self.only_one_match_out(user_id)
+                    else:
+                        self.log("set user:%s to go on" % user_id)
+                        self.only_one_match_goon(user_id)
+                        
+    @ensure_success      
+    def get_not_active_users(self):
+        return account_manager.get_not_active_users()
     
+    @ensure_success      
+    def get_onlyone_match_row(self, user_id):
+        return only_one_match_manager.get_onlyone_match_row(user_id)
+    
+    @ensure_success      
+    def only_one_center_reg(self, user_id):
+        return only_one_match_manager.only_one_center_reg(user_id)
+    
+    @ensure_success      
+    def only_one_match_goon(self, user_id):
+        return only_one_match_manager.only_one_match_goon(user_id)
+    
+    @ensure_success      
+    def only_one_match_out(self, user_id):
+        return only_one_match_manager.only_one_match_out(user_id)
+        
     def dev_assign(self):
         """联赛分配"""
         handler = DevMatchHandler()
