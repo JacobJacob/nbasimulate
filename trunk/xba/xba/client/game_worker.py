@@ -109,7 +109,7 @@ class GameWorker(BaseClient):
                     self.only_one_center_reg(user_id)
                 elif status == 5:
                     win = only_one_reg_info["Win"]
-                    if win in (3, 6, 9):
+                    if win in (9):
                         self.log("set user:%s to out for win" % user_id)
                         self.only_one_match_out(user_id)
                     else:

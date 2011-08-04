@@ -193,7 +193,7 @@ def get_not_active_users(interval_days=7):
     user_ids = []
     cursor = connection.cursor()
     try:
-        cursor.execute("select UserID, ActiveTime from btp_account where ActiveTime < DATEADD(DAY,-%s,GETDATE()) order by UserID asc" % interval_days)
+        cursor.execute("select top 15 UserID, ActiveTime from btp_account where ActiveTime < DATEADD(DAY,-%s,GETDATE()) order by TeamAbility desc" % interval_days)
         infos = cursor.fetchall()
         if infos:
             for info in infos:
