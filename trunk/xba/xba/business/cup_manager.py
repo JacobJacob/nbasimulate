@@ -230,7 +230,9 @@ def day_add_cup():
     for _ in range(2):
         for category in (21, 22, 23, 24):
             hours = random.randint(30, 33)
-            add_cup(category, datetime.strftime(datetime.now() + timedelta(hours=hours), '%Y-%m-%d %H:%M'))
+            r = random.randint(1, 2)
+            if r == 1:
+                add_cup(category, datetime.strftime(datetime.now() + timedelta(hours=hours), '%Y-%m-%d %H:%M'))
 
 if __name__ == "__main__":
     #add_cup(23, datetime.strftime(datetime.now() + timedelta(hours=32), '%Y-%m-%d %H:%M'))

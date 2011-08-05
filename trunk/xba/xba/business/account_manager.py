@@ -189,6 +189,30 @@ def update_team_ability():
     finally:
         cursor.close()
         
+def remove_cupids_from_account(remove_cupid):
+    """从用户的报名杯赛中去掉"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select UserID, CupIDS from btp_account")
+        infos = cursor.fetchall()
+        for info in infos:
+            user_id = info["UserID"]
+            cup_ids_str = info["CupIDS"]
+            if not cup_ids_str:
+                continue
+            cup_ids = cup_ids_str.split("|")
+            for cup_id in cup_ids:
+                if remove_cupid == int(cup_id):
+                    cup_ids.remove(cup_id)
+            if not cup_ids:
+                cup_ids = ["0"]
+            sql = "UPDATE BTP_Account SET CupIDs=%s WHERE UserID=%s" % ("|".join(cup_ids), user_id)
+            print sql
+            cursor.execute(sql)
+    finally:
+        cursor.close()
+     
+        
 def get_not_active_users(interval_days=7):
     user_ids = []
     cursor = connection.cursor()
@@ -202,6 +226,19 @@ def get_not_active_users(interval_days=7):
     finally:
         cursor.close()
     return user_ids
+
+def remove_finish_cup():
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select cupid from btp_cup where status=3")
+        infos = cursor.fetchall()
+        if infos:
+            for info in infos:
+                cupid = info["cupid"]
+                print "remove", cupid
+                remove_cupids_from_account(cupid)
+    finally:
+        cursor.close()
      
 if __name__ == "__main__":
-    assign_devchoose_card_with_devsort()
+    remove_finish_cup()

@@ -6,7 +6,7 @@ import os
 from xba.config import CLIENT_EXE_PATH
 from subprocess import Popen, PIPE
 
-from xba.business import cup_manager, tool_manager
+from xba.business import cup_manager, tool_manager, account_manager
 from xba.common.decorators import ensure_success
 from xba.common import cup_util
 from xba.common.reward import Reward
@@ -203,7 +203,7 @@ class CupHandler(BaseClient):
         reward_xml = cup_info["RewardXML"]
         cup_manager.set_cup_champion(cupid, user_id, club_name)
         cup_manager.set_status_by_cupid(cupid, 3)
-        
+        account_manager.remove_cupids_from_account(cupid)
         #杯赛奖励
         reward = Reward(reward_xml)
         rounds = [i for i in range(round)]
