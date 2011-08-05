@@ -24,7 +24,7 @@ class ClubMainXMLSetter(BaseClient):
     def before_run(self):
         """运行前的初始化"""
         game_info = self.get_game_info()
-        self._turn = game_info["Turn"]
+        self._turn = game_info["Turn"] - 1
           
     @ensure_success
     def get_game_info(self):

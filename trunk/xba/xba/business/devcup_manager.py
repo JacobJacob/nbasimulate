@@ -50,7 +50,13 @@ def set_devcup_champion(devcupid, user_id, club_name):
     """设置自定义杯赛冠军"""
     cursor = connection.cursor()
     try:
-        sql = "exec SetDevCupChampion %s, %s, '%s'" % (devcupid, user_id, club_name.encode("gb2312"))
+        print type(club_name), club_name
+        sql = u"exec SetDevCupChampion %s, %s, '%s'" % (devcupid, user_id, club_name)
+        try:
+            sql = sql.encode("gbk")
+        except:
+            sql = sql.encode("big5")
+            
         cursor.execute(sql)
     except:
         log_execption()
@@ -152,4 +158,5 @@ def set_code_by_devregid(regid, code):
         connection.close()
 
 if __name__ == "__main__":
-    reward_devcup_by_clubid()
+    a = u"榮光の團 "
+    print a.encode("gbk")
