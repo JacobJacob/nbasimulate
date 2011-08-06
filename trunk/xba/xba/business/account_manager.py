@@ -208,7 +208,7 @@ def remove_cupids_from_account(remove_cupid):
                 cup_ids = ["0"]
             new_club_id_str = "|".join(cup_ids)
             print cup_ids_str, new_club_id_str
-            sql = "UPDATE BTP_Account SET CupIDs=%s WHERE UserID=%s" % ("|".join(cup_ids), user_id)
+            sql = "UPDATE BTP_Account SET CupIDs='%s' WHERE UserID=%s" % ("|".join(cup_ids), user_id)
             print sql
             #cursor.execute(sql)
     finally:
