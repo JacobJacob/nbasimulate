@@ -50,13 +50,7 @@ def set_devcup_champion(devcupid, user_id, club_name):
     """设置自定义杯赛冠军"""
     cursor = connection.cursor()
     try:
-        print type(club_name), club_name
-        sql = u"exec SetDevCupChampion %s, %s, '%s'" % (devcupid, user_id, club_name)
-        try:
-            sql = sql.encode("gbk")
-        except:
-            sql = sql.encode("big5")
-            
+        sql = "exec SetDevCupChampion %s, %s, '%s'" % (devcupid, user_id, club_name.encode("gbk"))
         cursor.execute(sql)
     except:
         log_execption()
