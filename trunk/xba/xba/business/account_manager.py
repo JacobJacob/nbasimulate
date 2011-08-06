@@ -206,9 +206,11 @@ def remove_cupids_from_account(remove_cupid):
                     cup_ids.remove(cup_id)
             if not cup_ids:
                 cup_ids = ["0"]
+            new_club_id_str = "|".join(cup_ids)
+            print cup_ids_str, new_club_id_str
             sql = "UPDATE BTP_Account SET CupIDs=%s WHERE UserID=%s" % ("|".join(cup_ids), user_id)
             print sql
-            cursor.execute(sql)
+            #cursor.execute(sql)
     finally:
         cursor.close()
      
@@ -239,6 +241,47 @@ def remove_finish_cup():
                 remove_cupids_from_account(cupid)
     finally:
         cursor.close()
+
+def append_not_finish_cup():
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select cupid from btp_cup where status <>3")
+        infos = cursor.fetchall()
+        if infos:
+            for info in infos:
+                cupid = info["cupid"]
+                #print "append", cupid
+                cursor.execute("select clubid from btp_cupreg where cupid=%s" % cupid)
+                regs = cursor.fetchall()
+                if not regs:
+                    continue
+                print len(regs)
+                for reg in regs:
+                    clubid = reg["clubid"]
+                    print clubid
+                    cursor.execute("select userid from btp_club where clubid=%s" % clubid)
+                    club = cursor.fetchone()
+                    userid = club["userid"]
+                    print userid
+                    cursor.execute("select cupids from btp_account where userid=%s" % userid)
+                    account = cursor.fetchone()
+                    cupids = account["cupids"]
+                    print cupids
+                    cup_ids = cupids.split("|")
+                    cupid = str(cupid)
+                    if cupid not in cup_ids:
+                        print "not in"
+                        cup_ids.append(cupid)
+                        sql = "UPDATE BTP_Account SET CupIDs='%s' WHERE UserID=%s" % ("|".join(cup_ids), userid)
+                        print sql
+                        cursor.execute(sql)
+                    else:
+                        print "in"
+                        
+    finally:
+        cursor.close()
+
      
 if __name__ == "__main__":
-    remove_finish_cup()
+    append_not_finish_cup()
+    #remove_finish_cup()
