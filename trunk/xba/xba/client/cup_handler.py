@@ -207,6 +207,8 @@ class CupHandler(BaseClient):
         #杯赛奖励
         reward = Reward(reward_xml)
         rounds = [i for i in range(round)]
+        if round == 1:
+            only_money = True
         rounds.append(100)
         for round in rounds:
             alive_clubs = self.get_reg_table_by_cupid_deadround(cupid, round)
@@ -215,15 +217,21 @@ class CupHandler(BaseClient):
             
             reward_info = reward.get_reward(round)
             for alive_club in alive_clubs:
-                self.reware(cupid, round, alive_club, reward_info)
+                self.reware(cupid, round, alive_club, reward_info, only_money)
                 
-    def reware(self, cupid, round, alive_club, reward_info):
+    def reware(self, cupid, round, alive_club, reward_info, only_money=False):
         """杯赛奖厉"""
         money = reward_info.get('money')
         score = reward_info.get('score')
         tool = reward_info.get('tool')
         if not money and not score and not tool:
             return
+        
+        if only_money:
+            score = None
+            tool = None
+            if round == 100:
+                round = 1
         
         money_total = money.money if money else 0
         score_total = score.score if score else 0
