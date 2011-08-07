@@ -154,6 +154,7 @@ def get_reg_by_cupid_end_round(cupid, round):
     cursor = connection.cursor()
     try:
         sql = "exec GetRegByCupIDEndRound %s, %s" % (cupid, round)
+        print sql
         cursor.execute(sql)
         return cursor.fetchall()
     except:
@@ -191,7 +192,7 @@ def set_cup_champion(cupid, user_id, club_name):
     """设置自定义杯赛冠军"""
     cursor = connection.cursor()
     try:
-        sql = "exec SetChampion %s, %s, '%s'" % (cupid, user_id, club_name.encode("gb2312"))
+        sql = "exec SetChampion %s, %s, '%s'" % (cupid, user_id, club_name.encode("gbk"))
         cursor.execute(sql)
     except:
         log_execption()

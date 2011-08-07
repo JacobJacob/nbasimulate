@@ -136,65 +136,69 @@ class DevCupHandler(BaseClient):
                 away_club_id = away_alive_reg_info["ClubID"]
                 self.log("start to execute match:home:%s, away:%s" % (home_club_id, away_club_id))
                 self.execute_match(home_club_id, away_club_id, devcup_id, gain_code, round)
-                
-            cupladder = CupLadder(name, logo)
-            champion_user_id, champion_club_name, champion_club_id = None, None, None
-            #将每一轮的赛况输出到html
-            is_last_round = False
-            for each_round in range(round + 1):
-                self.log("start to handle round:%s" % each_round)
-                alive_reg_infos = self.get_reg_by_devcupid_end_round(devcup_id, each_round)
-                if len(alive_reg_infos) == 1:
-                    is_last_round = True
-                    champion_user_id = alive_reg_infos[0]["UserID"]
-                    champion_club_name = alive_reg_infos[0]["ClubName"]
-                    champion_club_id = alive_reg_infos[0]["ClubID"]
-                    
-                self.log("alive _reg team is:%s" % len(alive_reg_infos))
-                if is_last_round:
-                    self.log("is last round")
-                gain_code_maps = {}
-                for alive_reg_info in alive_reg_infos:
-                    base_code = alive_reg_info["BaseCode"]
-                    if len(base_code) == 1:
-                        continue
-                    index = (each_round + 1) * -1
-                    base_code_prefix = base_code[:index]
-                    base_code_subfix = base_code[index]
-                    self.log("base_code:%s, base_code_prefix:%s,  base_code_subfix:%s" % (base_code, base_code_prefix, base_code_subfix))
-                    info = gain_code_maps.get(base_code_prefix, {})
-                    if int(base_code_subfix) == 0:
-                        info["home"] = alive_reg_info
-                    else:
-                        info["away"] = alive_reg_info
-                    
-                    gain_code_maps[base_code_prefix] = info
-                        
-                gain_codes = gain_code_maps.keys()
-                gain_codes.sort()
-                
-                for gain_code in gain_codes:
-                    info = gain_code_maps[gain_code]
-                    home = info.get("home")
-                    away = info.get("away")
-                    home_user_id = home["UserID"]
-                    home_club_name = home["ClubName"]    
-                    if home and away:
-                        away_user_id = away["UserID"]
-                        away_club_name = away["ClubName"]
-                        devcup_match = self.get_devcup_match_by_gaincode_devcupid(devcup_id, gain_code)
-                        match = CupLadderRoundMatch(6, home_user_id, home_club_name, away_user_id, away_club_name, devcup_match, is_last_round)
-                    else:
-                        match = CupLadderRoundMatch(6, home_user_id, home_club_name, is_last_round=is_last_round)
-                        
-                    cupladder.add_match(each_round, match)
-                    
-            cupladder.write(save_path)
+            
+            is_last_round = self.write_html(devcup_id, name, logo, save_path, round)            
                 
             self.set_round_by_devcupid(devcup_id, round + 1)
             if is_last_round: 
                 self.finish_devcup(devcup_info, champion_user_id, champion_club_id, champion_club_name)
+                
+    def write_html(self, devcup_id, name, logo, save_path, round):
+        """write html"""
+        cupladder = CupLadder(name, logo)
+        champion_user_id, champion_club_name, champion_club_id = None, None, None
+        #将每一轮的赛况输出到html
+        is_last_round = False
+        for each_round in range(round + 1):
+            self.log("start to handle round:%s" % each_round)
+            alive_reg_infos = self.get_reg_by_devcupid_end_round(devcup_id, each_round)
+            if len(alive_reg_infos) == 1:
+                is_last_round = True
+                champion_user_id = alive_reg_infos[0]["UserID"]
+                champion_club_name = alive_reg_infos[0]["ClubName"]
+                champion_club_id = alive_reg_infos[0]["ClubID"]
+                
+            self.log("alive _reg team is:%s" % len(alive_reg_infos))
+            if is_last_round:
+                self.log("is last round")
+            gain_code_maps = {}
+            for alive_reg_info in alive_reg_infos:
+                base_code = alive_reg_info["BaseCode"]
+                if len(base_code) == 1:
+                    continue
+                index = (each_round + 1) * -1
+                base_code_prefix = base_code[:index]
+                base_code_subfix = base_code[index]
+                self.log("base_code:%s, base_code_prefix:%s,  base_code_subfix:%s" % (base_code, base_code_prefix, base_code_subfix))
+                info = gain_code_maps.get(base_code_prefix, {})
+                if int(base_code_subfix) == 0:
+                    info["home"] = alive_reg_info
+                else:
+                    info["away"] = alive_reg_info
+                
+                gain_code_maps[base_code_prefix] = info
+                    
+            gain_codes = gain_code_maps.keys()
+            gain_codes.sort()
             
+            for gain_code in gain_codes:
+                info = gain_code_maps[gain_code]
+                home = info.get("home")
+                away = info.get("away")
+                home_user_id = home["UserID"]
+                home_club_name = home["ClubName"]    
+                if home and away:
+                    away_user_id = away["UserID"]
+                    away_club_name = away["ClubName"]
+                    devcup_match = self.get_devcup_match_by_gaincode_devcupid(devcup_id, gain_code)
+                    match = CupLadderRoundMatch(6, home_user_id, home_club_name, away_user_id, away_club_name, devcup_match, is_last_round)
+                else:
+                    match = CupLadderRoundMatch(6, home_user_id, home_club_name, is_last_round=is_last_round)
+                    
+                cupladder.add_match(each_round, match)
+                
+        cupladder.write(save_path)
+        return is_last_round
             
     def finish_devcup(self, devcup_info, user_id, club_id, club_name):
         """杯赛完成"""
@@ -250,4 +254,6 @@ class DevCupHandler(BaseClient):
 
 if __name__ == "__main__":
     handler = DevCupHandler()
-    handler.start()
+    ladder_url = 'http://www.113388.net/DevCupLadder/201108/29.htm'
+    save_path = os.path.join(WEB_ROOT, ladder_url.replace(DOMAIN, ""))
+    handler.write_html(29, '哈利与火焰杯',  '16.gif', save_path, 2)

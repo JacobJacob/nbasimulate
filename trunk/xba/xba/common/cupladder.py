@@ -289,9 +289,9 @@ class CupLadder(RenderApple):
         s = self.render()
         print type(s)
         try:
-            s = s.decode("utf8").encode("gb2312")
+            s = s.decode("utf8").encode("gbk")
         except:
-            s = s.decode("utf8").encode("gb2312", "replace")
+            s = s.decode("utf8").encode("gbk", "replace")
             
         f = open(path, "wb")
         try:
