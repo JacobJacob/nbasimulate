@@ -209,6 +209,8 @@ class CupHandler(BaseClient):
         rounds = [i for i in range(round)]
         if round == 1:
             only_money = True
+        else:
+            only_money = False
         rounds.append(100)
         for round in rounds:
             alive_clubs = self.get_reg_table_by_cupid_deadround(cupid, round)
