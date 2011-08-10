@@ -45,6 +45,16 @@ def un_set_trial_player(club_id, player_id):
     finally:
         connection.close()
         
+def get_player5_pre_retire():
+    """获取要退役的球员"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec Player5PreRetire"
+        cursor.execute(sql)
+        return cursor.fetchall()
+    finally:
+        connection.close()
+        
 def player_list(page, pagesize, category):
     """获取职业球员"""
     session = Session()
@@ -158,6 +168,33 @@ def clear_player5_season():
         cursor.execute(sql)
     except:
         log_execption()
+    finally:
+        connection.close() 
+        
+def delete_player5(player_id):
+    """删除年轻球员 """
+    cursor = connection.cursor()
+    try:
+        sql = "exec DeletePlayer5 %s" % player_id
+        cursor.execute(sql)
+    finally:
+        connection.close()
+        
+def player_pre_retire():
+    """球员退役 """
+    cursor = connection.cursor()
+    try:
+        sql = "exec PlayerPreRetire"
+        cursor.execute(sql)
+    finally:
+        connection.close()
+        
+def add_played_year():
+    """增加球员球龄"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec AddPlayedYear"
+        cursor.execute(sql)
     finally:
         connection.close() 
     

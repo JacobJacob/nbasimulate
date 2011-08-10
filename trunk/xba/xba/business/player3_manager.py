@@ -62,6 +62,34 @@ def player_skill_max_up3():
     finally:
         connection.close()
         
+def clear_player3_season():
+    """年轻球员赛季统计清除 """
+    cursor = connection.cursor()
+    try:
+        sql = "exec ClearPlayer3Season"
+        cursor.execute(sql)
+    finally:
+        connection.close()
+        
+def delete_player3(player_id):
+    """删除年轻球员 """
+    cursor = connection.cursor()
+    try:
+        sql = "exec DeletePlayer3 %s" % player_id
+        cursor.execute(sql)
+    finally:
+        connection.close()
+
+def get_player3_pre_retire():
+    """获取要退役的球员"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec Player3PreRetire"
+        cursor.execute(sql)
+        return cursor.fetchall()
+    finally:
+        connection.close()
+        
 def recover_power3():
     """年轻球员体力恢复"""
     cursor = connection.cursor()
