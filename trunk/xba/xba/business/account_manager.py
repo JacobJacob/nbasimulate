@@ -68,16 +68,15 @@ def assign_devchoose_card():
     """发放选秀卡"""
     cursor = connection.cursor()
     try:
-        cursor.execute("select devcode from btp_dev where clubid > 0 group by devcode")
+        cursor.execute("select * from btp_account where createTime > dateadd(dd, -8, getdate()) order by userid asc")
         infos = cursor.fetchall()
         for info in infos:
             user_id = info["UserID"]
             nickname = info["NickName"]
-            print type(nickname)
-            #nickname = nickname.decode("gbk")
-            print type(nickname)
-            cursor.execute("select 1 from btp_toollink where userid = %s and ToolID = 23" % user_id)
+            print info["CreateTime"]
+            cursor.execute("select 1 from btp_toollink where userid = %s and ToolID <= 23 and ToolID >= 4 " % user_id)
             info = cursor.fetchone()
+            print info
             if info:
                 print "has"
                 continue
@@ -283,5 +282,5 @@ def append_not_finish_cup():
 
      
 if __name__ == "__main__":
-    append_not_finish_cup()
+    assign_devchoose_card()
     #remove_finish_cup()
