@@ -50,6 +50,7 @@ class CupHandler(BaseClient):
     
     def handle_cup(self, cup_info):
         cup_id = cup_info["CupID"]
+        self.log("cup id:%s" % cup_id)
         capacity = cup_info["Capacity"]
         category = cup_info["Category"]
         logo = cup_info["BigLogo"]
@@ -110,33 +111,34 @@ class CupHandler(BaseClient):
             
             #取出存活的球队
             alive_reg_infos = self.get_reg_by_cupid_end_round(cup_id, round)
-            base_code_map = {}
-            for alive_reg_info in alive_reg_infos:
-                index = round * -1
-                base_code = alive_reg_info["BaseCode"]
-                if len(base_code) == 1:
-                    continue
-                gain_code = base_code[:index]
-                self.log("gain code is:%s" % gain_code)
-                match_code = base_code[index]
-                match_info = base_code_map.get(gain_code, {})
-                if int(match_code) == 0:
-                    match_info["home"] = alive_reg_info
-                else:
-                    match_info["away"] = alive_reg_info
-                base_code_map[gain_code] = match_info
+            if len(alive_reg_infos) > 1:
+                base_code_map = {}
+                for alive_reg_info in alive_reg_infos:
+                    index = round * -1
+                    base_code = alive_reg_info["BaseCode"]
+                    if len(base_code) == 1:
+                        continue
+                    gain_code = base_code[:index]
+                    self.log("gain code is:%s" % gain_code)
+                    match_code = base_code[index]
+                    match_info = base_code_map.get(gain_code, {})
+                    if int(match_code) == 0:
+                        match_info["home"] = alive_reg_info
+                    else:
+                        match_info["away"] = alive_reg_info
+                    base_code_map[gain_code] = match_info
+                        
+                for gain_code, match_info in base_code_map.iteritems():
+                    home_alive_reg_info = match_info.get("home")
+                    away_alive_reg_info = match_info.get("away")
+                    if not away_alive_reg_info or not home_alive_reg_info:
+                        self.log("empty match")
+                        continue
                     
-            for gain_code, match_info in base_code_map.iteritems():
-                home_alive_reg_info = match_info.get("home")
-                away_alive_reg_info = match_info.get("away")
-                if not away_alive_reg_info or not home_alive_reg_info:
-                    self.log("empty match")
-                    continue
-                
-                home_club_id = home_alive_reg_info["ClubID"]
-                away_club_id = away_alive_reg_info["ClubID"]
-                self.log("start to execute match:home:%s, away:%s" % (home_club_id, away_club_id))
-                self.execute_match(home_club_id, away_club_id, cup_id, gain_code, round, category)
+                    home_club_id = home_alive_reg_info["ClubID"]
+                    away_club_id = away_alive_reg_info["ClubID"]
+                    self.log("start to execute match:home:%s, away:%s" % (home_club_id, away_club_id))
+                    self.execute_match(home_club_id, away_club_id, cup_id, gain_code, round, category)
                 
             cupladder = CupLadder(name, logo, category=3)
             champion_user_id, champion_club_name, champion_club_id = None, None, None
@@ -195,7 +197,7 @@ class CupHandler(BaseClient):
             self.set_round_by_cupid(cup_id, round + 1)
             if is_last_round: 
                 self.finish_devcup(cup_info, champion_user_id, champion_club_id, champion_club_name)
-            
+          
     def finish_devcup(self, cup_info, user_id, club_id, club_name):
         """杯赛完成"""
         cupid = cup_info["CupID"]
@@ -220,7 +222,8 @@ class CupHandler(BaseClient):
             reward_info = reward.get_reward(round)
             for alive_club in alive_clubs:
                 self.reware(cupid, round, alive_club, reward_info, only_money)
-                
+    
+    @ensure_success            
     def reware(self, cupid, round, alive_club, reward_info, only_money=False):
         """杯赛奖厉"""
         money = reward_info.get('money')
