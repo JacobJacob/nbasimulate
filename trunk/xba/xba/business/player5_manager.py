@@ -309,4 +309,6 @@ def view_player5_category3():
            
 if __name__ == "__main__":
     update_player5_ability()
+    from xba.business import xbatop_manager
+    xbatop_manager.set_user_ability_top200()
 
