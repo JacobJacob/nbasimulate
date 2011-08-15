@@ -197,6 +197,15 @@ def add_played_year():
         cursor.execute(sql)
     finally:
         connection.close() 
+        
+def update_player5_ability():
+    """更新球员能力"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec UpdatePlayer5Ability"
+        cursor.execute(sql)
+    finally:
+        connection.close() 
     
 SQL = "UPDATE BTP_Player5 SET Ability=(Speed+Jump+Strength+Stamina+Shot+Point3+Dribble+Pass+Rebound+Steal+Block+Attack+Defense+Team)/14 WHERE PlayerID=%s"    
         
@@ -299,5 +308,5 @@ def view_player5_category3():
         connection.close()
            
 if __name__ == "__main__":
-    update_player5_category3()
+    update_player5_ability()
 
