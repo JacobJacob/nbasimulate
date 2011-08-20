@@ -162,8 +162,12 @@ class CupHandler(BaseClient):
                     if len(base_code) == 1:
                         continue
                     index = (each_round + 1) * -1
-                    base_code_prefix = base_code[:index]
-                    base_code_subfix = base_code[index]
+                    try:
+                        base_code_prefix = base_code[:index]
+                        base_code_subfix = base_code[index]
+                    except:
+                        self.log("index out of arrange")
+                        continue
                     self.log("base_code:%s, base_code_prefix:%s,  base_code_subfix:%s" % (base_code, base_code_prefix, base_code_subfix))
                     info = gain_code_maps.get(base_code_prefix, {})
                     if int(base_code_subfix) == 0:
@@ -201,6 +205,7 @@ class CupHandler(BaseClient):
     def finish_devcup(self, cup_info, user_id, club_id, club_name):
         """杯赛完成"""
         cupid = cup_info["CupID"]
+        self.log("cup:%s finish" % cupid)
         round = cup_info["Round"]
         reward_xml = cup_info["RewardXML"]
         cup_manager.set_cup_champion(cupid, user_id, club_name)
