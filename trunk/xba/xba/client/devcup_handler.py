@@ -109,35 +109,36 @@ class DevCupHandler(BaseClient):
             
             #取出存活的球队
             alive_reg_infos = self.get_reg_by_devcupid_end_round(devcup_id, round)
-            base_code_map = {}
-            for alive_reg_info in alive_reg_infos:
-                index = round * -1
-                base_code = alive_reg_info["BaseCode"]
-                if len(base_code) == 1:
-                    continue
-                gain_code = base_code[:index]
-                self.log("gain code is:%s" % gain_code)
-                match_code = base_code[index]
-                match_info = base_code_map.get(gain_code, {})
-                if int(match_code) == 0:
-                    match_info["home"] = alive_reg_info
-                else:
-                    match_info["away"] = alive_reg_info
-                base_code_map[gain_code] = match_info
+            if len(alive_reg_infos) > 1:
+                base_code_map = {}
+                for alive_reg_info in alive_reg_infos:
+                    index = round * -1
+                    base_code = alive_reg_info["BaseCode"]
+                    if len(base_code) == 1:
+                        continue
+                    gain_code = base_code[:index]
+                    self.log("gain code is:%s" % gain_code)
+                    match_code = base_code[index]
+                    match_info = base_code_map.get(gain_code, {})
+                    if int(match_code) == 0:
+                        match_info["home"] = alive_reg_info
+                    else:
+                        match_info["away"] = alive_reg_info
+                    base_code_map[gain_code] = match_info
+                        
+                for gain_code, match_info in base_code_map.iteritems():
+                    home_alive_reg_info = match_info.get("home")
+                    away_alive_reg_info = match_info.get("away")
+                    if not away_alive_reg_info or not home_alive_reg_info:
+                        self.log("empty match")
+                        continue
                     
-            for gain_code, match_info in base_code_map.iteritems():
-                home_alive_reg_info = match_info.get("home")
-                away_alive_reg_info = match_info.get("away")
-                if not away_alive_reg_info or not home_alive_reg_info:
-                    self.log("empty match")
-                    continue
-                
-                home_club_id = home_alive_reg_info["ClubID"]
-                away_club_id = away_alive_reg_info["ClubID"]
-                self.log("start to execute match:home:%s, away:%s" % (home_club_id, away_club_id))
-                self.execute_match(home_club_id, away_club_id, devcup_id, gain_code, round)
+                    home_club_id = home_alive_reg_info["ClubID"]
+                    away_club_id = away_alive_reg_info["ClubID"]
+                    self.log("start to execute match:home:%s, away:%s" % (home_club_id, away_club_id))
+                    self.execute_match(home_club_id, away_club_id, devcup_id, gain_code, round)
             
-            is_last_round = self.write_html(devcup_id, name, logo, save_path, round)            
+            is_last_round, champion_user_id, champion_club_id, champion_club_name = self.write_html(devcup_id, name, logo, save_path, round)            
                 
             self.set_round_by_devcupid(devcup_id, round + 1)
             if is_last_round: 
@@ -146,7 +147,7 @@ class DevCupHandler(BaseClient):
     def write_html(self, devcup_id, name, logo, save_path, round):
         """write html"""
         cupladder = CupLadder(name, logo)
-        champion_user_id, champion_club_name, champion_club_id = None, None, None
+        champion_user_id, champion_club_id, champion_club_name = None, None, None
         #将每一轮的赛况输出到html
         is_last_round = False
         for each_round in range(round + 1):
@@ -167,8 +168,12 @@ class DevCupHandler(BaseClient):
                 if len(base_code) == 1:
                     continue
                 index = (each_round + 1) * -1
-                base_code_prefix = base_code[:index]
-                base_code_subfix = base_code[index]
+                try:
+                    base_code_prefix = base_code[:index]
+                    base_code_subfix = base_code[index]
+                except:
+                    print "error"
+                    continue
                 self.log("base_code:%s, base_code_prefix:%s,  base_code_subfix:%s" % (base_code, base_code_prefix, base_code_subfix))
                 info = gain_code_maps.get(base_code_prefix, {})
                 if int(base_code_subfix) == 0:
@@ -198,7 +203,7 @@ class DevCupHandler(BaseClient):
                 cupladder.add_match(each_round, match)
                 
         cupladder.write(save_path)
-        return is_last_round
+        return is_last_round, champion_user_id, champion_club_id, champion_club_name 
             
     def finish_devcup(self, devcup_info, user_id, club_id, club_name):
         """杯赛完成"""
