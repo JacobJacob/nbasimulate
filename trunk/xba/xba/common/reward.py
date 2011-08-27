@@ -20,6 +20,11 @@ class Tool(object):
         self.category = category
         self.ticket_category = ticket_category
         
+class Reputation(object):
+    
+    def __init__(self, reputation):
+        self.reputation = reputation
+        
 class Reward(object):
     
     def __init__(self, reward_xml):
@@ -30,6 +35,7 @@ class Reward(object):
         if self.__reward_dict:
             return
         self.__reward_dict = {}
+        print self.__reward_xml
         config_dom = parseString(self.__reward_xml)
         root = config_dom._get_firstChild()
         for node in root.childNodes:
@@ -50,6 +56,9 @@ class Reward(object):
             
             if map.get("score"):
                 info['score'] = Score(map.get("score"))
+                
+            if map.get("reputation"):
+                info['reputation'] = Reputation(map.get("reputation"))
                 
             if map.get("tool") and map.get("ticketcategory"):
                 info['tool'] = Tool(map.get("tool"), map.get("ticketcategory"))

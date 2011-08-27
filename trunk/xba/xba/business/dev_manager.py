@@ -4,6 +4,7 @@
 from xba.common import log_execption
 from xba.common.sqlserver import connection
 from xba.business import club_manager
+from xba.common.constants.dev import DEV_SORT_MONEY_MAP
 
 def get_dev_clubs(devcode):
     """根据devcode获取所有俱乐部id"""
@@ -26,6 +27,38 @@ def get_dev_info_by_userid(userid):
     finally:
         cursor.close()
         
+def dev_sort_send_money(level, club_id, sort):
+    """联赛奖励"""
+    money = DEV_SORT_MONEY_MAP.get(level, {}).get(sort + 1, 0)
+    if money <= 0:
+        return
+    money *= 10000
+    club_info = club_manager.get_club_by_id(club_id)
+    if not club_info:
+        return
+    user_id = club_info["UserID"]
+    event = "%s级联赛第%s名奖励" % (level, sort + 1)
+    content = "恭喜您获得%s级联赛第%s名，奖金%s" % (level, sort + 1, money)
+    event = event.decode("utf8").encode("gbk")
+    content = content.decode("utf8").encode("gbk")
+    cursor = connection.cursor()
+    try:
+        cursor.start_transaction()
+        sql = "UPDATE BTP_Account SET Money=Money+%s WHERE UserID=%s" % (money, user_id)
+        cursor.execute(sql)
+        sql = "Exec AddFinance %s,1,5,%s,1,'%s'" % (user_id, money, event)
+        print sql
+        cursor.execute(sql)
+        sql = "Exec AddNewMessage %s,2,0,'秘书报告','%s'" % (user_id, content)
+        print sql
+        cursor.execute(sql)
+        cursor.commit()
+    except:
+        cursor.rollback()
+        raise
+    finally:
+        cursor.close()
+    
 def upgrade_dev(dev_info):
     """联赛升级"""
     cursor = connection.cursor()

@@ -27,6 +27,7 @@ class Cursor(object):
         self._conn().start_transaction()
          
     def rollback(self):
+        
         self._conn().rollback()
         
     def commit(self):

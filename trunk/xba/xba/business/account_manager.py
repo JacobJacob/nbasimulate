@@ -105,6 +105,7 @@ def assign_devchoose_card_with_devsort():
     """发放选秀卡"""
     cursor = connection.cursor()
     try:
+        cursor.execute("delete from btp_toollink where toolid >= 4 and toolid <= 23")
         cursor.execute("select devcode from btp_dev where clubid > 0 group by devcode")
         infos = cursor.fetchall()
         for info in infos:
@@ -124,10 +125,37 @@ def assign_devchoose_card_with_devsort():
     finally:
         cursor.close()
         
+def assign_xgame_card_with_devsort():
+    """发放冠军杯邀请函"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("delete from btp_toollink where toolid = 24 ")
+        cursor.execute("select devcode from btp_dev where clubid > 0 group by devcode")
+        infos = cursor.fetchall()
+        for info in infos:
+            devcode = info["devcode"]
+            sql = "select clubid from btp_dev where devcode = '%s' order by win asc, score asc" % devcode
+            cursor.execute(sql)
+            clubinfos = cursor.fetchall()
+            for i, clubinfo in enumerate(clubinfos):
+                if i > 5:
+                    break
+                club_id = clubinfo["clubid"]
+                if club_id <= 0:
+                    continue
+                sql = "select userid from btp_club where clubid = %s" % club_id
+                print sql
+                cursor.execute(sql)
+                user_id = cursor.fetchone()["userid"]
+                cursor.execute("EXEC GiftTool %s, 24, 1, 1" % user_id)
+    finally:
+        cursor.close()
+        
 def assign_promotion_card():
     """发放提拔卡"""
     cursor = connection.cursor()
     try:
+        cursor.execute("delete from btp_toollink where toolid = 27")
         cursor.execute("select UserID, NickName from btp_account")
         infos = cursor.fetchall()
         for info in infos:

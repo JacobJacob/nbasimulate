@@ -1,7 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from xba.business import player5_manager, account_manager
+from subprocess import Popen, PIPE
+
+from xba.config import CLIENT_EXE_PATH
+
+from xba.business import player5_manager, player3_manager, account_manager
 from xba.business import dev_match_manager
 from xba.business import game_manager
 from xba.business import finance_manager
@@ -28,17 +32,30 @@ class SeasonUpdateHandler(BaseClient):
         #删除每天财政
         self.delete_turn_finance()
         
+        #球员球员龄增加
+        self.add_played_year()
+        
         #球员伤病恢复
         self.player5_holiday()
         
         #球员赛季数据清空
         self.clear_player5_season()
+        self.clear_player3_season()
         
         #冠军奖励
         self.reward_dev()
-         
+        
+        #联赛排名奖励
+        self.reward_dev_two()
+        
+        #发放冠军杯邀请函
+        self.assign_xgame_card_with_devsort()
+
         #联赛更新
         self.dev_update()
+        
+        #刷选秀球员
+        self.betch_create_player()
         
         #删除联赛留言
         self.delete_devmessage()
@@ -63,9 +80,32 @@ class SeasonUpdateHandler(BaseClient):
         
         #更新结束,设置赛季开始
         self.season_update_finish()
+        
+        #发放冠军杯邀请函
+        self.assign_xgame_card_with_devsort()
 
         return "exist"
     
+    def player_retire(self):
+        """球员退役处理"""
+        player3_infos = player3_manager.get_player3_pre_retire()
+        if player3_infos:
+            for player3_info in player3_infos:
+                player_id, club_id = player3_info["PlayerID"], player3_info["ClubID"]
+                self.change_player_from_arrange5(player_id, club_id, 3)
+                player3_manager.delete_player3(player_id)
+                
+        player5_infos = player5_manager.get_player5_pre_retire()
+        if player5_infos:
+            for player5_info in player5_infos:
+                player_id, club_id = player5_info["PlayerID"], player5_info["ClubID"]
+                self.change_player_from_arrange5(player_id, club_id, 5)
+                player5_manager.delete_player5(player_id)
+                
+        player5_manager.player_pre_retire()
+        """球员退役发消息"""
+        self.call_cmd("%s %s %s " % CLIENT_EXE_PATH, 'season_update_handler', 1)
+            
     def before_run(self):
         self.__dev_level_sum = self.get_total_level()
         game_info = self.get_game_info()
@@ -91,7 +131,11 @@ class SeasonUpdateHandler(BaseClient):
         for level in range(1, self.__dev_level_sum + 1):
             self.log("start to reset level:%s" % level)
             self.reset_level_dev(level)
-        
+            
+    def change_player_from_arrange(self, playerid, clubid, category):
+        command = "%s %s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", playerid, clubid, category)
+        self.call_cmd(command)
+                
     def reset_level_dev(self, level):
         """将某一等级的俱乐部往前排"""
         club_infos = self.get_dev_table_by_level(level)
@@ -108,6 +152,10 @@ class SeasonUpdateHandler(BaseClient):
                 else:
                     #从后面拿不到一支有俱乐部的dev，则退出
                     return
+                
+    @ensure_success
+    def betch_create_player(self):
+        return player5_manager.betch_create_player()
                 
     def delete_turn_finance(self):
         """删除每天财政"""
@@ -138,7 +186,6 @@ class SeasonUpdateHandler(BaseClient):
         """交换两支球队"""
         return dev_manager.exchange_two_dev(club_info_one, club_info_two)
         
-    
     def get_last_club_info(self, dev_code, club_infos):
         """获取最后一支球队"""
         i = len(club_infos)
@@ -152,20 +199,33 @@ class SeasonUpdateHandler(BaseClient):
             i -= 1
         
         return 0, None
-        
+    
+    @ensure_success    
     def get_dev_table_by_level(self, level):
         """获取某一等级所有俱乐部"""
         return dev_manager.get_dev_table_by_level(level)
         
-
+    @ensure_success
+    def add_played_year(self):
+        """增加球员球龄"""
+        return player5_manager.add_played_year()
+    
+    @ensure_success    
     def player5_holiday(self):
         """所有球员伤病恢复，体力恢复，心情恢复"""
         return player5_manager.player5_holiday()
     
+    @ensure_success
     def clear_player5_season(self):
         """清理球员赛季数据"""
         return player5_manager.clear_player5_season()
     
+    @ensure_success
+    def clear_player3_season(self):
+        """清理球员赛季数据"""
+        return player3_manager.clear_player3_season()
+    
+    @ensure_success
     def reward_dev(self):
         """联赛冠军奖励"""
         for level in range(1, self.__dev_level_sum + 1):
@@ -173,6 +233,29 @@ class SeasonUpdateHandler(BaseClient):
             for sort in range(dev_count):
                 dev_code = self.get_dev_code_by(level, sort)
                 dev_manager.reward_dev(dev_code, level, sort)
+                
+    @ensure_success
+    def reward_dev_two(self):
+        """联赛奖励"""
+        for level in range(1, self.__dev_level_sum + 1):
+            dev_count = self.get_dev_count(level)
+            for sort in range(dev_count):
+                dev_code = self.get_dev_code_by(level, sort)
+                club_infos = dev_manager.get_dev_clubs(dev_code)
+                if not club_infos:
+                    continue
+                for i, club_info in enumerate(club_infos):
+                    club_id = club_info["ClubID"]
+                    if club_id <= 0 or i >= 10:
+                        continue
+                    else:
+                        self.log("start to dev sort send money for level:%s, club id:%s" % (level, club_id))
+                        self.dev_sort_send_money(level, club_id, i)
+                        
+    @ensure_success                    
+    def dev_sort_send_money(self, level, club_id, sort):
+        """联赛排名奖励"""
+        return dev_manager.dev_sort_send_money(level, club_id, sort)                
     
     def dev_update(self):
         """联赛更新"""
@@ -213,11 +296,12 @@ class SeasonUpdateHandler(BaseClient):
                     self.log("club [%s] start to up grade" % club_info["ClubID"])
                     self.upgrade_dev(club_info)
 
-
+    @ensure_success
     def upgrade_dev(self, dev_info):
         """联赛升级"""
         return dev_manager.upgrade_dev(dev_info)
     
+    @ensure_success
     def degrade_dev(self, dev_info, sort):
         """联赛降级"""
         return dev_manager.degrade_dev(dev_info, sort)
@@ -259,11 +343,28 @@ class SeasonUpdateHandler(BaseClient):
         """发放选拔卡"""
         return account_manager.assign_promotion_card()
     
+    @ensure_success
+    def assign_xgame_card_with_devsort(self):
+        """发放冠军杯邀请"""
+        return account_manager.assign_xgame_card_with_devsort()
+    
     def fill_not_full_dev(self):
         """把高级的缺人的联赛填满"""
         for level in range(1, self.__dev_level_sum):
             self.log("start to fill level:%s" % level)
             self.do_fill_one_not_full_dev(level)
+            
+    def call_cmd(self, cmd):
+        """调用命令"""
+        p = Popen(cmd, stdout=PIPE)
+        while True:
+            line = p.stdout.readline()
+            if not line:
+                break
+            self.log(line.replace("\n", ""))
+            
+        if p.wait() == 0:
+            self.log("call %s success" % cmd)
   
     def do_fill_one_not_full_dev(self, level):
         """把高级的缺人的联赛填满"""

@@ -31,7 +31,7 @@ def assign_tool(user_id, tool_id, amount, type=1):
     """发放道具"""
     cursor = connection.cursor()
     try:
-        cursor.execute("EXEC GiftTool %s, %s, %s, %s" % user_id, tool_id, amount, type)
+        cursor.execute("EXEC GiftTool %s, %s, %s, %s" % (user_id, tool_id, amount, type))
     finally:
         cursor.close()
         
@@ -42,3 +42,13 @@ def delete_expired_tool():
         cursor.execute("EXEC DeleteExpiredTool")
     finally:
         cursor.close()
+        
+if __name__ == "__main__":
+    for i in range(2, 30):
+        assign_tool(i, 24, 1)
+    for i in range(4, 30):
+        cursor = connection.cursor()
+        try:
+            cursor.execute("RegXBACup %s, ''" % (i * 2))
+        finally:
+            cursor.close()

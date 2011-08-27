@@ -100,6 +100,9 @@ class CupLadderRoundMatch(RenderApple):
             if self.category == 6:
                 cup_id = self.match["DevCupID"]
                 asp_prefix = "V"
+            if self.category == 5:
+                cup_id = self.match["XGameID"]
+                asp_prefix = "V"
             else:
                 cup_id = self.match["CupID"]
             return CupLadderRoundMatch.REPORT_TEMPLAGE %  (asp_prefix, self.category, cup_id, self.match["ClubAID"], self.match["ClubBID"])
@@ -213,7 +216,7 @@ CUP_LADDER_TEMPLATE = """
 <html>
   <head>
       <title>赛程安排</title>
-      <LINK href="../../Css/Base.css" type="text/css" rel="stylesheet">
+      <LINK href="${css_path}" type="text/css" rel="stylesheet">
       ${css}
   </head>
   <body><!--fcc6a4,fbe2d4,fcf1eb -->
@@ -255,13 +258,13 @@ CATEGORY_5_CSS = """<style type="text/css">body{background-color:#fcf6df;}ul{ ma
                 height:25px; background-color:#faedbc; position:absolute;}
       </style>"""
 
-
 class CupLadder(RenderApple):
     
-    def __init__(self, name, logo, category=5):
+    def __init__(self, name, logo, category=5, css_path="../../Css/Base.css"):
         self.__name = name
         self.__logo = logo
         self.__rounds = []
+        self.__css_path = css_path
         self.__category = category
         
     def add_match(self, round, match):
@@ -275,7 +278,7 @@ class CupLadder(RenderApple):
         return "%sImages/Cup/%s" % (DOMAIN, self.__logo)
     
     def render(self):
-        data = {"name": stringutil.ensure_utf8(self.__name), "rounds": self.__rounds, "logo": self.logo}
+        data = {"name": stringutil.ensure_utf8(self.__name), "rounds": self.__rounds, "logo": self.logo, "css_path": self.__css_path}
         if self.__category == 5:
             data['css'] = CATEGORY_5_CSS
         else:
@@ -287,7 +290,6 @@ class CupLadder(RenderApple):
     def write(self, path):
         file_utility.ensure_dir_exists(os.path.dirname(path))
         s = self.render()
-        print type(s)
         try:
             s = s.decode("utf8").encode("gbk")
         except:

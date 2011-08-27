@@ -25,8 +25,8 @@ class BaseClient(object):
         self.before_run()
         while True:
             try:
-                if self.work() == "exist":
-                    self.log("start to exist")
+                if self.work() in ("exit", "exist"):
+                    self.log("start to exit")
                     break
             except:
                 self.log(traceback.format_exc())

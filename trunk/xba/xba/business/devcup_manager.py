@@ -71,8 +71,6 @@ def set_devclub_dead_round(devcupid, club_id, round):
     finally:
         connection.close()        
         
-        
-        
 def get_run_devcuptable():
     """得到可以可以打下一轮的杯赛"""
     cursor = connection.cursor()
@@ -92,6 +90,7 @@ def get_alive_reg_table_by_devcupid(devcupid):
     cursor = connection.cursor()
     try:
         sql = "exec GetAliveRegTableByDevCupID %s" % devcupid
+        print sql
         cursor.execute(sql)
         return cursor.fetchall()
     except:

@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import os
+import traceback
 
 from subprocess import Popen, PIPE
 from datetime import datetime
 
-from xba.config import CLIENT_EXE_PATH, PathSettings
+from xba.config import CLIENT_EXE_PATH, PathSettings, DEBUG
 from xba.business import dev_match_manager, tool_manager
 from xba.business import game_manager
 from xba.business import club_manager
@@ -17,11 +18,14 @@ from xba.business import cup_manager
 from xba.business import only_one_match_manager
 from xba.business import player5_manager
 from xba.business import player3_manager
+from xba.business import xbatop_manager
 from base import BaseClient
 from xba.client import db_backup
 from xba.common.decorators import ensure_success
 from xba.common.constants.club import ClubCategory
 from xba.common import single_process
+from xba.common import extract7z
+from xba.common.ftp_lib import FtpEx
 
 class RoundUpdateHandler(BaseClient):
     
@@ -36,14 +40,17 @@ class RoundUpdateHandler(BaseClient):
     def work(self):
         self.log("start round update for season:%s, round:%s" % (self._season, self._turn))
         
-                
         self.log("start trian player finish")
         self.trian_player_finish()
         
         if self._days == 14:
             self.log("season truce")
+            #normal update step three
+            self.normal_update_step_three()
         elif self._days == 28:
             self.log("season finish")
+            #normal update step three
+            self.normal_update_step_three()
         else:
             #normal update step one
             self.normal_update_step_one()
@@ -89,6 +96,9 @@ class RoundUpdateHandler(BaseClient):
         self.log("start to delete expired tool")
         self.delete_expired_tool()
         
+        self.log("start to set user ability top 200")
+        self.set_user_ability_top200()
+        
         #after run
         self.after_run()
             
@@ -113,7 +123,7 @@ class RoundUpdateHandler(BaseClient):
         trian_players = player5_manager.get_trialing_player()
         if trian_players:
             for trian_player in trian_players:
-                command = "%s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", trian_player["PlayerID"], trian_player["ClubID"])
+                command = "%s %s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", trian_player["PlayerID"], trian_player["ClubID"], 5)
                 self.call_cmd(command)
                 player5_manager.un_set_trial_player(trian_player["ClubID"], trian_player["PlayerID"])
     
@@ -126,6 +136,12 @@ class RoundUpdateHandler(BaseClient):
     def normal_update_step_two(self):
         """常规数据更新2(赛后)"""
         command = "%s %s %s" % (CLIENT_EXE_PATH, "round_update_handler", 2)
+        self.log("start to run command:%s" % command) 
+        self.call_cmd(command)
+        
+    def normal_update_step_three(self):
+        """常规数据更新3(休赛期)"""
+        command = "%s %s %s" % (CLIENT_EXE_PATH, "round_update_handler", 3)
         self.log("start to run command:%s" % command) 
         self.call_cmd(command)
     
@@ -142,8 +158,22 @@ class RoundUpdateHandler(BaseClient):
         
     def back_up(self):
         """备份数据"""
-        return db_backup.backup(file_name="round_update_handler")
-        
+        path = db_backup.backup(file_name="round_update_handler")
+        target_path = extract7z.zip(path)
+        i = 0
+        while i < 10 and not DEBUG:
+            try:
+                ftp = self.ftp()
+                self.log("start to upload:%s" % target_path)
+                ftp.upload(target_path)
+                self.log("upload finish")
+                break
+            except:
+                self.log(traceback.format_exc())
+                self.log("upload error")
+                self.sleep(60)
+            i += 1
+            
     def after_run(self):
         """结束前的收尾动作"""
         self.set_to_next_days()
@@ -245,7 +275,8 @@ class RoundUpdateHandler(BaseClient):
     @ensure_success
     def delete_online_table(self):
         """清空在线表"""
-        return account_manager.delete_online_table()
+        if not DEBUG:
+            return account_manager.delete_online_table()
     
     @ensure_success
     def delete_fri_match_msg(self):
@@ -261,6 +292,11 @@ class RoundUpdateHandler(BaseClient):
     def delete_expired_tool(self):
         """删除过期道具"""
         return tool_manager.delete_expired_tool()
+    
+    @ensure_success
+    def set_user_ability_top200(self):
+        """设置职业排行榜"""
+        return xbatop_manager.set_user_ability_top200()
         
     def call_cmd(self, cmd):
         """调用命令"""
@@ -273,15 +309,30 @@ class RoundUpdateHandler(BaseClient):
             
         if p.wait() == 0:
             self.log("call %s success" % cmd)
+            
+    def ftp(self):
+        ftp = FtpEx()
+        ftp.host = "174.128.236.188"
+        ftp.user = "28036"
+        ftp.password = "821015"
+        ftp.set_pasv(False)
+        ftp.ensure_login()
+        return ftp
  
-if __name__ == "__main__":
+def main():
     s = single_process.SingleProcess("RoundUpdateHandler")
     s.check()
     lock_file = os.path.join(PathSettings.ROUND_UPDATE_LOCK, datetime.now().strftime("%Y_%m_%d.lock"))
-    if os.path.exists(lock_file):
+    if os.path.exists(lock_file) and not DEBUG:
         print "update had finish"
+        #handler = RoundUpdateHandler()
+        #handler.back_up()
     else:
         f = open(lock_file, "wb")
         f.close()
         handler = RoundUpdateHandler()
         handler.start()
+        
+if __name__ == "__main__":
+    #for i in range(7):
+    main()

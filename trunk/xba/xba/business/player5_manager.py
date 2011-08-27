@@ -7,6 +7,21 @@ from xba.model import Player5
 from datetime import datetime, timedelta
 from xba.common import log_execption
 
+REG = [
+[145, 55, 10],
+[140, 55, 20],       
+[135, 55, 40],
+[130, 55, 80],
+[125, 55, 100],
+[120, 55, 120],       
+]
+
+def betch_create_player():
+    """刷选透球员"""
+    for reg in REG:
+        create_player(reg[2], 3, 48, reg[1], reg[0])  
+    update_player5_category3()
+
 def create_player(count, category, hours, now_point, max_point):
     """创建球员"""
     end_bid_time = datetime.now() + timedelta(hours=hours)
@@ -308,7 +323,5 @@ def view_player5_category3():
         connection.close()
            
 if __name__ == "__main__":
-    update_player5_ability()
-    from xba.business import xbatop_manager
-    xbatop_manager.set_user_ability_top200()
+    view_player5_category3()
 

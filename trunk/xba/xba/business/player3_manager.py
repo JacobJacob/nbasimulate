@@ -7,8 +7,10 @@ from xba.model import Player3
 from datetime import datetime, timedelta
 from xba.common import log_execption
 
+
 def create_player(count, category, hours):
     """创建球员"""
+    
     end_bid_time = datetime.now() + timedelta(hours=hours)
     cursor = connection.cursor()
     try:
