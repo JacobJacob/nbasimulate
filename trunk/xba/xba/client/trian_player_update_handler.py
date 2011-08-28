@@ -21,7 +21,6 @@ class TrianPlayerUpdateHandler(BaseClient):
 
     
     def work(self):
-        self.log("start round update for season:%s, round:%s" % (self._season, self._turn))
         self.log("start trian player finish")
         self.trian_player_finish()
         return "exit"
