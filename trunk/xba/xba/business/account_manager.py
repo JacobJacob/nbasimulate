@@ -134,7 +134,7 @@ def assign_xgame_card_with_devsort():
         infos = cursor.fetchall()
         for info in infos:
             devcode = info["devcode"]
-            sql = "select clubid from btp_dev where devcode = '%s' order by win asc, score asc" % devcode
+            sql = "select clubid from btp_dev where devcode = '%s' order by win desc, score desc" % devcode
             cursor.execute(sql)
             clubinfos = cursor.fetchall()
             for i, clubinfo in enumerate(clubinfos):
@@ -307,8 +307,32 @@ def append_not_finish_cup():
                         
     finally:
         cursor.close()
+        
+def assign_xcup_car():
+    """补发冠军杯邀请函"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select UserID, NickName from btp_account")
+        infos = cursor.fetchall()
+        for info in infos:
+            user_id = info["UserID"]
+            cursor.execute("select * from btp_toollink where toolid = 24 and userid = %s" % user_id)
+            if cursor.fetchone():
+                print "has"
+                continue
+            cursor.execute("select * from btp_club where userid = %s and category = 5" % user_id)
+            club_info = cursor.fetchone()
+            if not club_info:
+                continue
+            club_id = club_info["ClubID"]
+            cursor.execute("select * from btp_xgroupteam where clubid = %s" % club_id)
+            if cursor.fetchone():
+                print "int team"
+                continue
+            print "assign"
+            cursor.execute("EXEC GiftTool %s, 24, 1, 1" % user_id)
+    finally:
+        cursor.close()
 
-     
 if __name__ == "__main__":
-    assign_devchoose_card()
-    #remove_finish_cup()
+    assign_xcup_car()
