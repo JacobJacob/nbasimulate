@@ -83,6 +83,8 @@ class SeasonUpdateHandler(BaseClient):
         
         #发放冠军杯邀请函
         self.assign_xgame_card_with_devsort()
+        
+        self.player_retire()
 
         return "exist"
     
@@ -92,19 +94,27 @@ class SeasonUpdateHandler(BaseClient):
         if player3_infos:
             for player3_info in player3_infos:
                 player_id, club_id = player3_info["PlayerID"], player3_info["ClubID"]
-                self.change_player_from_arrange5(player_id, club_id, 3)
+                if club_id > 0:
+                    self.change_player_from_arrange5(player_id, club_id, 3)
                 player3_manager.delete_player3(player_id)
                 
         player5_infos = player5_manager.get_player5_pre_retire()
         if player5_infos:
             for player5_info in player5_infos:
                 player_id, club_id = player5_info["PlayerID"], player5_info["ClubID"]
-                self.change_player_from_arrange5(player_id, club_id, 5)
+                if club_id > 0:
+                    self.change_player_from_arrange5(player_id, club_id, 5)
                 player5_manager.delete_player5(player_id)
                 
         player5_manager.player_pre_retire()
         """球员退役发消息"""
-        self.call_cmd("%s %s %s " % CLIENT_EXE_PATH, 'season_update_handler', 1)
+        self.call_cmd("%s %s %s " % (CLIENT_EXE_PATH, 'season_update_handler', 1))
+        
+    
+    def change_player_from_arrange5(self, player_id, club_id, category):
+        command = "%s %s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", player_id, club_id, category)
+        print command
+        self.call_cmd(command)
             
     def before_run(self):
         self.__dev_level_sum = self.get_total_level()
