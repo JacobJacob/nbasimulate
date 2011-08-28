@@ -123,7 +123,7 @@ def reward_dev(dev_code, level, sort):
         log_execption()
         raise
     finally:
-        connection.close() 
+        cursor.close() 
         
 def get_dev_table_by_level(level):
     """得到某一等级的所有俱乐部"""
@@ -199,6 +199,18 @@ def assign_dev():
         raise
     finally:
         connection.close()
+        
+def reword_mvp_by_devcode(dev_code):
+    """联赛MVP奖励"""
+    cursor = connection.cursor()
+    try:
+        sql = "EXEC RewordMVPByDevCode '%s'" % dev_code
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        cursor.close()
 
 def delete_devmessage():
     """删除联赛留言"""
@@ -210,7 +222,7 @@ def delete_devmessage():
         log_execption()
         raise
     finally:
-        connection.close()
+        cursor.close()
        
 if __name__ == "__main__":
     infos = get_dev_clubs("0000000")

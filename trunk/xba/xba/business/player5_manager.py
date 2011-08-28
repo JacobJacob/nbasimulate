@@ -321,7 +321,8 @@ def view_player5_category3():
         print a
     finally:
         connection.close()
-           
+
+
 if __name__ == "__main__":
     view_player5_category3()
 

@@ -99,6 +99,9 @@ class RoundUpdateHandler(BaseClient):
         self.log("start to set user ability top 200")
         self.set_user_ability_top200()
         
+        self.log("start to set team ability")
+        self.set_team_ability()
+        
         #after run
         self.after_run()
             
@@ -297,6 +300,11 @@ class RoundUpdateHandler(BaseClient):
     def set_user_ability_top200(self):
         """设置职业排行榜"""
         return xbatop_manager.set_user_ability_top200()
+        
+    @ensure_success
+    def set_team_ability(self):
+        """设置球队排行榜"""
+        return xbatop_manager.set_team_ability()   
         
     def call_cmd(self, cmd):
         """调用命令"""

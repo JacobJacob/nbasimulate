@@ -334,5 +334,20 @@ def assign_xcup_car():
     finally:
         cursor.close()
 
+        
+def add_vip_card():
+    cursor = connection.cursor()
+    try:
+        sql = "update  btp_account set paytype = 1, MemberExpireTime = dateadd(dd, 75, createtime)"
+        cursor.execute(sql)
+        cursor.execute("select userid, createtime, MemberExpireTime from btp_account")
+        infos = cursor.fetchall()
+        for info in infos:
+            sql = "EXEC BuyVIPCard %s, '%s'" % (info["userid"], info['MemberExpireTime'].strftime("%Y-%m-%d"))
+            print sql
+            cursor.execute(sql)
+    finally:
+        cursor.close()
+
 if __name__ == "__main__":
-    assign_xcup_car()
+    add_vip_card()
