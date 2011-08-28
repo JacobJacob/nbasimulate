@@ -100,7 +100,7 @@ class CupLadderRoundMatch(RenderApple):
             if self.category == 6:
                 cup_id = self.match["DevCupID"]
                 asp_prefix = "V"
-            if self.category == 5:
+            elif self.category == 5:
                 cup_id = self.match["XGameID"]
                 asp_prefix = "V"
             else:
@@ -115,7 +115,7 @@ class CupLadderRoundMatch(RenderApple):
             if self.category == 6:
                 cup_id = self.match["DevCupID"]
                 asp_prefix = "V"
-            if self.category == 5:
+            elif self.category == 5:
                 cup_id = self.match["XGameID"]
                 asp_prefix = "V"
             else:
