@@ -6,6 +6,8 @@
 
     public class Player
     {
+
+        public int intCategory;
         public bool blnInjured;
         public bool blnOnArrange;
         public bool blnOut;
@@ -121,6 +123,7 @@
             this.intORebAbility = 0;
             this.intDRebAbility = 0;
             this.intAstAbility = 0;
+            this.intCategory = Convert.ToInt32(drPlayer["Category"]);
         }
 
         public void SetAbility(int intPos)

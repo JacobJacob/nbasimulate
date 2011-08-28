@@ -121,22 +121,22 @@
             }
             if (intWealth < 1)
             {
-                this.strMsg = "最少兑换1枚游戏币。";
+                this.strMsg = "最少兑换1分王者积分。";
             }
             else if (intWealth >= 0x186a0)
             {
-                this.strMsg = "您输入的游戏币数量过大，请重新输入。";
+                this.strMsg = "您输入的王者积分数量过大，请重新输入。";
             }
             else
             {
-                switch (BTPAccountManager.ExchangeWealth(this.intUserID, intWealth))
+                switch (BTPAccountManager.ExchangeOnlyPoint(this.intUserID, intWealth))
                 {
                     case 1:
-                        this.strMsg = "成功兑换到" + (intWealth * 0x2710) + "球队资金，请查收。";
+                        this.strMsg = "成功兑换到" + intWealth + "游戏币，请查收。";
                         return;
 
                     case -1:
-                        this.strMsg = "您的游戏币不足，无法进行游戏币兑换。";
+                        this.strMsg = "您的王者积分不足，无法进行游戏币兑换。";
                         return;
                 }
                 this.strMsg = "不能输入负数，请重新输入。";

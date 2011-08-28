@@ -367,6 +367,11 @@
                             int num5 = (int) row["SeasonSteal"];
                             int num7 = (int) row["SeasonAssist"];
                             int num8 = (int) row["SeasonRebound"];
+                            int intCategory = Convert.ToInt32(row["Category"]);
+                            if (intCategory == 3)
+                            {
+                                intAbility = 999;
+                            }
                             if (num3 != 0)
                             {
                                 num10 = ((float) ((num2 * 100) / num3)) / 100f;

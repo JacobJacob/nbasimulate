@@ -77,7 +77,7 @@
 
         private void InitializeComponent()
         {
-            this.btnNext.Click += new ImageClickEventHandler(this.btnNext_Click);
+            //this.btnNext.Click += new ImageClickEventHandler(this.btnNext_Click);
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
@@ -106,7 +106,7 @@
             else
             {
                 this.btnOK.ImageUrl = SessionItem.GetImageURL() + "Box/getit.gif";
-                this.btnNext.ImageUrl = SessionItem.GetImageURL() + "Box/getanother.gif";
+                //this.btnNext.ImageUrl = SessionItem.GetImageURL() + "Box/getanother.gif";
                 string str = SessionItem.GetRequest("Type", 1).ToString();
                 int request = (int) SessionItem.GetRequest("Index", 0);
                 string str2 = SessionItem.GetRequest("Name", 1).ToString();

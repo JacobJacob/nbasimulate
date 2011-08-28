@@ -152,11 +152,18 @@
     <Compile Include="Web\ClubSetting.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\DBData\BTPXBATopManager.cs" />
     <Compile Include="Web\Helper\Config.cs" />
     <Compile Include="Web\Helper\IniUtil.cs" />
     <Compile Include="Web\Helper\MainXmlHelper.cs" />
     <Compile Include="Web\Helper\PlayerHelper.cs" />
+    <Compile Include="Web\Intro\XBATop.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\Util\LogManager.cs" />
+    <Compile Include="Web\XBATop.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\zh\com\cga\xba\match1\VOnlineReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1271,6 +1278,12 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\_51RegOK.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\NPCMatchCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\副本 Login.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <EmbeddedResource Include="Test.WebHttp.Request.resources" />

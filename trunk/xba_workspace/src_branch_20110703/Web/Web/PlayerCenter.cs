@@ -154,6 +154,10 @@
                     int num9 = (byte) row["Category"];
                     string strEvent = row["Event"].ToString();
                     int intAbility = (int) row["Ability"];
+                    if (num9 == 3)
+                    {
+                        intAbility = 999;
+                    }
                     int intSuspend = (byte) row["Suspend"];
                     int num14 = (byte) row["Happy"];
                     bool flag2 = (bool) row["IsRetire"];
@@ -191,6 +195,17 @@
                     else if ((this.intType == 5) && (num9 == 2))
                     {
                         str2 = "<font color='#660066'>拍卖中</font>";
+                    }
+                    else if ((this.intType == 5) && (num9 == 3))
+                    {
+                        if (row2 == null)
+                        {
+                            str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=UNSETTRIAL&PlayerID=", longPlayerID, "'>结束试训</a>" });
+                        }
+                        else
+                        {
+                            str2 = "试训中";
+                        }
                     }
                     else
                     {

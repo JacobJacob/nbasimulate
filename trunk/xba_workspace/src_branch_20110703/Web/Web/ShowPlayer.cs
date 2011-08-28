@@ -130,7 +130,7 @@
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
             int num = (int) this.drPlayer["ClubID"];
-            bool success = false;
+            bool success = true;
             if ((num != this.intClubID3) && (num != this.intClubID5))
             {
                 base.Response.Redirect("Report.aspx?Parameter=4113");
@@ -247,7 +247,12 @@
             {
                 num2 = 0;
             }
-            if (((this.intKind == 0) || (this.intTeamDay < 5)) && !this.blnShowSkill)
+            int showSkillDay = 5;
+            if (this.intPayType == 1)
+            {
+                showSkillDay = 1;
+            }
+            if (((this.intKind == 0) || (this.intTeamDay < showSkillDay)) && !this.blnShowSkill)
             {
                 str = "0";
             }
@@ -268,6 +273,10 @@
                 else if (this.blnShowSkill || (((int) this.drPlayer["ClubID"]) == this.intClubID5))
                 {
                     flag = true;
+                    if (this.intCategory == 3)
+                    {
+                        flag = false;
+                    }
                 }
                 if (flag)
                 {
@@ -595,6 +604,7 @@
             int num26 = (int) this.drPlayer["AttackMax"];
             int num27 = (int) this.drPlayer["DefenseMax"];
             int num28 = (int) this.drPlayer["TeamMax"];
+            DateTime time = (DateTime)this.drPlayer["EndBidTime"];
             if (((this.intKind == 1) && (this.intCategory > 1)) && (BTPToolLinkManager.CheckPrivateSkill(this.intUserID, this.longPlayerID, this.intType) == 1))
             {
                 this.blnShowSkill = true;
@@ -603,20 +613,41 @@
             {
                 this.blnShowSkill = false;
             }
-            this.strSpeed = this.GetHtmlTable(intAbility, intAbilityMax);
-            this.strJump = this.GetHtmlTable(num2, num16);
-            this.strStrength = this.GetHtmlTable(num3, num17);
-            this.strStamina = this.GetHtmlTable(num4, num18);
-            this.strShot = this.GetHtmlTable(num5, num19);
-            this.strPoint3 = this.GetHtmlTable(num6, num20);
-            this.strDribble = this.GetHtmlTable(num7, num21);
-            this.strPass = this.GetHtmlTable(num8, num22);
-            this.strRebound = this.GetHtmlTable(num9, num23);
-            this.strSteal = this.GetHtmlTable(num10, num24);
-            this.strBlock = this.GetHtmlTable(num11, num25);
-            this.strAttack = this.GetHtmlTable(num12, num26);
-            this.strDefense = this.GetHtmlTable(num13, num27);
-            this.strTeam = this.GetHtmlTable(num14, num28);
+
+            if (this.intType == 5 && this.intCategory == 3 && DateTime.Now < time)
+            {
+                this.strSpeed = this.GetHtmlTable(999, 999);
+                this.strJump = this.GetHtmlTable(999, 999);
+                this.strStrength = this.GetHtmlTable(999, 999);
+                this.strStamina = this.GetHtmlTable(999, 999);
+                this.strShot = this.GetHtmlTable(999, 999);
+                this.strPoint3 = this.GetHtmlTable(999, 999);
+                this.strDribble = this.GetHtmlTable(999, 999);
+                this.strPass = this.GetHtmlTable(999, 999);
+                this.strRebound = this.GetHtmlTable(999, 999);
+                this.strSteal = this.GetHtmlTable(999, 999);
+                this.strBlock = this.GetHtmlTable(999, 999);
+                this.strAttack = this.GetHtmlTable(999, 999);
+                this.strDefense = this.GetHtmlTable(999, 999);
+                this.strTeam = this.GetHtmlTable(999, 999);
+            }
+            else
+            {
+                this.strSpeed = this.GetHtmlTable(intAbility, intAbilityMax);
+                this.strJump = this.GetHtmlTable(num2, num16);
+                this.strStrength = this.GetHtmlTable(num3, num17);
+                this.strStamina = this.GetHtmlTable(num4, num18);
+                this.strShot = this.GetHtmlTable(num5, num19);
+                this.strPoint3 = this.GetHtmlTable(num6, num20);
+                this.strDribble = this.GetHtmlTable(num7, num21);
+                this.strPass = this.GetHtmlTable(num8, num22);
+                this.strRebound = this.GetHtmlTable(num9, num23);
+                this.strSteal = this.GetHtmlTable(num10, num24);
+                this.strBlock = this.GetHtmlTable(num11, num25);
+                this.strAttack = this.GetHtmlTable(num12, num26);
+                this.strDefense = this.GetHtmlTable(num13, num27);
+                this.strTeam = this.GetHtmlTable(num14, num28);
+            }
         }
 
         private void SetHide()
@@ -744,14 +775,14 @@
                 }
                 else
                 {
-                    //str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=HIDE&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
-                    str2 = "";
+                    str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=HIDE&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
+                    //str2 = "";
                 }
                 if (((this.intCheck == 1) && ((intClubID == this.intClubID3) || (intClubID == this.intClubID5))) && (this.intCategory == 1))
                 {
                     obj2 = str2;
                     //str2 = string.Concat(new object[] { obj2, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=REFASHION&PlayerID=", this.longPlayerID, "' target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinRefashion.gif' width='12' height='12' border='0' alt='球员洗点'><a>" });
-                    str2 = "";
+                    //str2 = "";
                 }
             }
             if (this.intType == 10)
@@ -764,6 +795,7 @@
             }
             this.strName = this.drPlayer["Name"].ToString().Trim();
             this.strFace = this.drPlayer["Face"].ToString().Trim();
+            this.Face.Value = this.strFace;
             DataRow accountRowByClubID = BTPAccountManager.GetAccountRowByClubID(intClubID);
             if (accountRowByClubID == null)
             {
@@ -810,11 +842,19 @@
             this.intTeamDay = (int) this.drPlayer["TeamDay"];
             int num17 = (byte) this.drPlayer["Category"];
             string str5 = this.drPlayer["Name"].ToString().Trim();
+            DateTime time = (DateTime)this.drPlayer["EndBidTime"];
             bool flag3 = false;
             if (this.intType != 6)
             {
                 flag3 = (bool) this.drPlayer["IsRetire"];
             }
+
+            if (this.intType == 5 && this.intCategory == 3 && DateTime.Now < time)
+            {
+                num14 = 99.9f;
+            }
+
+
             string str6 = "";
             if (((num17 == 1) && (intClubID == this.intClubID3)) || ((num17 == 1) && (intClubID == this.intClubID5)))
             {

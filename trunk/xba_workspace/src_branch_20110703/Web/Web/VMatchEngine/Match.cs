@@ -1978,6 +1978,9 @@
                     flag3 = true;
                 }
             }
+
+            int trainPointMultiple = Config.GetTrainPointMultiple();
+
             IDictionaryEnumerator enumerator = this.tHome.players.GetEnumerator();
             while (enumerator.MoveNext())
             {
@@ -2124,6 +2127,7 @@
                         {
                             intTrainPoint *= 2;
                         }
+                        intTrainPoint *= trainPointMultiple;
                         if (this.intType == 2)
                         {
                             BTPPlayer5Manager.UpdatePlayerStas(player.longPlayerID, player.intScore, player.intOReb + player.intDReb, player.intAst, player.intBlk, player.intStl, player.blnPlayed, player.intHappy, player.intPower, intTrainPoint, intStatus, strEvent, intSuspend);
@@ -2305,6 +2309,9 @@
                         {
                             num8 *= 2;
                         }
+
+                        num8 *= trainPointMultiple;
+
                         if (this.intType == 2)
                         {
                             BTPPlayer5Manager.UpdatePlayerStas(player.longPlayerID, player.intScore, player.intOReb + player.intDReb, player.intAst, player.intBlk, player.intStl, player.blnPlayed, player.intHappy, player.intPower, num8, num6, str4, num7);

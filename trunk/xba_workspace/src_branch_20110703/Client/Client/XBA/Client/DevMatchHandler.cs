@@ -127,6 +127,8 @@ namespace Client.XBA.Client
               BTPDevManager.UpdateResult(clubIDA, homeWin, homeLose, diff);
               /*¿Í¶Ó*/
               BTPDevManager.UpdateResult(clubIDB, awayWin, awayLose, diff);
+
+              BTPClubManager.ChangeReputation(clubIDA, clubIDB, homeScore, awayScore);
         }
 
     }

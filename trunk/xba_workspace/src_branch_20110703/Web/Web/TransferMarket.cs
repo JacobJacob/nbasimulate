@@ -121,7 +121,7 @@
                 Convert.ToInt32(reader["Pos"]);
                 num2 = Convert.ToInt32(reader["Height"]);
                 num3 = Convert.ToInt32(reader["Weight"]);
-                num4 = (int) reader["Ability"];
+                num4 = 999;//(int) reader["Ability"];
                 time = (DateTime) reader["EndBidTime"];
                 num10 = (long) reader["PlayerID"];
                 float single1 = ((float) num4) / 10f;
@@ -129,6 +129,8 @@
                 num6 = (int) reader["BidCount"];
                 int num9 = (byte) reader["BidStatus"];
                 flag = (bool) reader["IsRetire"];
+                int clubID = Convert.ToInt32(reader["ClubID"]);
+                int bidderID = Convert.ToInt32(reader["BidderID"]);
                 if (DateTime.Now >= time)
                 {
                     switch (num9)
@@ -145,7 +147,22 @@
                 }
                 else
                 {
-                    str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    if (clubID > 0)
+                    {
+                        str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    }
+                    else
+                    {
+                        //if (bidderID > 0)
+                        //{
+                        //    str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                        //}
+                        //else
+                        //{
+                            str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=SETTRIAL&PlayerID=", num10, "&Market=5'>试训</a><a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                        //}
+                    }
+                   
                 }
                 goto Label_03F7;
             }

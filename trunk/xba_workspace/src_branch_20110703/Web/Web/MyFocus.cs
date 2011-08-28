@@ -117,6 +117,11 @@
             int num7 = (byte) playerRowByPlayerID["Height"];
             int num8 = (byte) playerRowByPlayerID["Weight"];
             int intAbility = (int) playerRowByPlayerID["Ability"];
+            if (num2 == 5)
+            {
+                intAbility = 999;
+            }
+            
             DateTime datIn = (DateTime) playerRowByPlayerID["EndBidTime"];
             num10 = (long) playerRowByPlayerID["PlayerID"];
             float single1 = ((float) intAbility) / 10f;

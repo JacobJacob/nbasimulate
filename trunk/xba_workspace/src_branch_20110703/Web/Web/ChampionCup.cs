@@ -260,7 +260,7 @@
         {
             this.btnReg.Click += new ImageClickEventHandler(this.btnReg_Click);
             this.btnReg.Attributes["onclick"] = base.GetPostBackEventReference(this.btnReg) + ";this.disabled=true;";
-            this.btnFindMatch.Click += new ImageClickEventHandler(this.btnFindMatch_Click);
+            //this.btnFindMatch.Click += new ImageClickEventHandler(this.btnFindMatch_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -502,6 +502,11 @@
                 this.btnReg.Visible = false;
                 groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(1);
                 int num21 = (byte) groupTeamRowByCID["Status"];
+                /*
+                 status = 1 小组赛
+                 status = 3 安排赛程
+                 
+                 */
                 int num22 = (byte) groupTeamRowByCID["Round"];
                 DateTime time2 = (DateTime) groupTeamRowByCID["MatchTime"];
                 bool flag = false;

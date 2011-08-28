@@ -181,6 +181,11 @@
                     string strName = row["Name"].ToString().Trim();
                     int num2 = (byte) row["Age"];
                     int intAbility = (int) row["Ability"];
+                    int intCategory = Convert.ToInt32(row["Category"]);
+                    if (intCategory == 3)
+                    {
+                        intAbility = 999;
+                    }
                     float single1 = ((float) intAbility) / 10f;
                     int num5 = (int) row["Shirt"];
                     int num6 = (int) row["SeasonShirt"];

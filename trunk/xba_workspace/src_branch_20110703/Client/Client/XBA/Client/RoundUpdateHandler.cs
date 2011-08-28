@@ -42,7 +42,7 @@ namespace Client.XBA.Client
                 this.Player3UpdateStepOne();
                 this.Player5UpdateStepOne();
             }
-            else
+            else if(this.step == 2)
             {
                 Console.WriteLine("run step 2");
                 this.TurnFinanceUpdate();
@@ -51,6 +51,11 @@ namespace Client.XBA.Client
                 this.BuildStadiumUpdate();
                 this.Player3UpdateStepTwo();
                 this.Player5UpdateStepTwo();
+            }
+            else if (this.step == 3)
+            {
+                Console.WriteLine("run step 3");
+                this.Player3UpdateStepOne();
             }
 
             this.go = false;
@@ -61,6 +66,7 @@ namespace Client.XBA.Client
         {
             /*职员合同处理*/
             BTPStaffManager.StaffContract();
+            BTPAccountManager.UpdatePayType();
 
         }
 
@@ -68,6 +74,9 @@ namespace Client.XBA.Client
         private void Player3UpdateStepOne()
         {
             Console.WriteLine("start player 3 update one");
+
+            /*在队天数增加*/
+            BTPPlayer3Manager.AddTeamDay();
 
             /*年轻球员潜力增长*/
             BTPPlayer3Manager.PlayerSkillMaxUP3();
@@ -108,7 +117,7 @@ namespace Client.XBA.Client
             BTPPlayer5Manager.ClearPlayer5Stas();
 
             /*球员退役提醒*/
-            BTPPlayer5Manager.Player5RetireMsg();
+            //BTPPlayer5Manager.Player5RetireMsg();
 
             /*增加球员在队天数*/
             BTPPlayer5Manager.AddTeamDay();
@@ -148,6 +157,9 @@ namespace Client.XBA.Client
             /*更新球员意识*/
             BTPPlayer5Manager.UpdateAwarenessTrain();
 
+            /*更新球员能力*/
+            BTPPlayer5Manager.UpdatePlayer5Ability();
+
             /*更新球员受欢迎度*/
             BTPPlayer5Manager.ResetAllPlayerPop();
 
@@ -160,6 +172,11 @@ namespace Client.XBA.Client
             /*支付球员工资*/
             BTPPlayer5Manager.SendSalary();
 
+            /*球员PV值更新*/
+            BTPPlayer5Manager.UpdatePlayer5PV();
+
+            //BTPPlayer5Manager.UPDATEPlayer5AbilityPV();
+
             Console.WriteLine("player 5 update finish");
 
         }
@@ -169,6 +186,7 @@ namespace Client.XBA.Client
         {
             Console.WriteLine("start build stadum update");
             BTPStadiumManager.BuildStadium();
+            BTPClubManager.UpdateFanRNumber();
             Console.WriteLine("finish build stadum update");
         }
 
@@ -229,10 +247,14 @@ namespace Client.XBA.Client
                             int ticketSold = this.GetTicketSoldCount(ticketPrice, capacity, fansR + fansT, win);
                             int ticketPriceMoney = ticketSold * ticketPrice;
                             BTPDevMatchManager.UpdateTicketsPrice(matchId, ticketSold, ticketPrice);
-                            BTPFinanceManager.AddFinance(userID, 1, 5, ticketPriceMoney, 1, "主场球票收入。");
+                            //BTPFinanceManager.AddFinance(userID, 1, 5, ticketPriceMoney, 1, "主场球票收入。");
 
-                            BTPFinanceManager.AddFinance(userID, 1, 5, 1000, 2, "主场球馆维护费用。");
-                            BTPFinanceManager.AddFinance(userID, 1, 5, 3600, 1, "主场饮料和食品销售收入。");
+                            //BTPFinanceManager.AddFinance(userID, 1, 5, 1000, 2, "主场球馆维护费用。");
+                            //BTPFinanceManager.AddFinance(userID, 1, 5, 3600, 1, "主场饮料和食品销售收入。");
+
+                            BTPAccountManager.SpendMoneyWithFinance(1000, userID, 5, "主场球馆维护费用。");
+                            BTPAccountManager.AddMoneyWithFinance(3600, userID, 5, "主场饮料和食品销售收入。");
+                            BTPAccountManager.AddMoneyWithFinance(ticketPriceMoney, userID, 5, "主场球票收入。");
 
                             this.SetTicketSoldInfoToMainXML(matchId, ticketSold, ticketPriceMoney);
 
@@ -242,7 +264,8 @@ namespace Client.XBA.Client
                         /*球衣收入*/
                         int shirtSumMoney = shirtSum * 20;
 
-                        BTPFinanceManager.AddFinance(userID, 1, 5, shirtSumMoney, 1, "球衣销售收入。");
+                        //BTPFinanceManager.AddFinance(userID, 1, 5, shirtSumMoney, 1, "球衣销售收入。");
+                        BTPAccountManager.AddMoneyWithFinance(shirtSumMoney, userID, 5, "球衣销售收入。");
                         
                         
                     }

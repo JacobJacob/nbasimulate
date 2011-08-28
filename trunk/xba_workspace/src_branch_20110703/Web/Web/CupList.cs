@@ -746,12 +746,12 @@
                     string str4 = championListNew["LadderURL"].ToString().Trim();
                     if ((ServerParameter.strCopartner == "XBA") || (ServerParameter.strCopartner == "CGA"))
                     {
-                        if (str4.ToLower().IndexOf("http://match") == -1)
+                        if (str4.ToLower().IndexOf("http://") == -1)
                         {
                             str4 = Config.GetDomain() + str4;
                         }
                     }
-                    else if (str4.ToLower().IndexOf("http://xbam") == -1)
+                    else if (str4.ToLower().IndexOf("http://") == -1)
                     {
                         str4 = Config.GetDomain() + str4;
                     }
@@ -982,12 +982,12 @@
                 str6 = cupRowByCupID["LadderURL"].ToString().Trim();
                 if ((ServerParameter.strCopartner == "XBA") || (ServerParameter.strCopartner == "CGA"))
                 {
-                    if (str6.ToLower().IndexOf("http://match") == -1)
+                    if (str6.ToLower().IndexOf("http://") == -1)
                     {
                         str6 = Config.GetDomain() + str6;
                     }
                 }
-                else if (str6.ToLower().IndexOf("http://xbam") == -1)
+                else if (str6.ToLower().IndexOf("http://") == -1)
                 {
                     str6 = Config.GetDomain() + str6;
                 }

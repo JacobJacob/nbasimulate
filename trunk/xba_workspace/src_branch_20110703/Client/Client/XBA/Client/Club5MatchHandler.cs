@@ -23,7 +23,7 @@ namespace Client.XBA.Client
                     int category = Convert.ToInt32(row["Category"]);
                     if (category != Constant.MATCH_CATEGORY_FRIEND && category != Constant.MATCH_CATEGORY_ONLY_ONE && category != Constant.MATCH_CATEGORY_TRAIN)
                     {
-                        if (category != Constant.MATCH_CATEGORY_TRAIN_A)
+                        if (category != Constant.MATCH_CATEGORY_TRAIN_A && category != Constant.MATCH_CATEGORY_UNION_FIELD)
                         {
                             Console.WriteLine(String.Format("not need handle category:{0}", category));
                             continue;
@@ -81,6 +81,10 @@ namespace Client.XBA.Client
               if (category == Constant.MATCH_CATEGORY_ONLY_ONE)
               {
                   BTPOnlyOneCenterReg.OnlyOneMatchEnd(matchId);
+              }
+              else if (category == Constant.MATCH_CATEGORY_UNION_FIELD)
+              {
+                  BTPUnionFieldManager.UpdateUnionFieldGame(matchId, homeScore, awayScore);
               }
              
         }

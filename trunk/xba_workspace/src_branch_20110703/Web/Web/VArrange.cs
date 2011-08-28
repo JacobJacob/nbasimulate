@@ -226,6 +226,7 @@
             foreach (DataRow row2 in BTPPlayer5Manager.GetArrPlayerTable(this.intClubID).Rows)
             {
                 long num5 = (long) row2["PlayerID"];
+                int intCategory = Convert.ToInt32(row2["Category"]);
                 int num11 = (byte) row2["Age"];
                 string str2 = row2["Name"].ToString().Trim();
                 int intPosition = (byte) row2["Pos"];
@@ -249,6 +250,25 @@
                 float single1 = ((float) ((int) row2["Attack"])) / 10f;
                 float single2 = ((float) ((int) row2["Defense"])) / 10f;
                 float single3 = ((float) ((int) row2["Team"])) / 10f;
+                if (intCategory == 3)
+                {
+                    num12 = 99.9f;
+                    num13 = 99.9f;
+                    num14 = 99.9f;
+                    num15 = 99.9f;
+                    num16 = 99.9f;
+                    num17 = 99.9f;
+                    num18 = 99.9f;
+                    num19 = 99.9f;
+                    num20 = 99.9f;
+                    num21 = 99.9f;
+                    num22 = 99.9f;
+                    num23 = 99.9f;
+                    single1 = 99.9f;
+                    single2 = 99.9f;
+                    single3 = 99.9f;
+
+                }
                 object strPlayerList = this.strPlayerList;
                 this.strPlayerList = string.Concat(new object[] { 
                     strPlayerList, "<DIV onmouseup=putdown(this);down=false; onmousedown=logpos(this); id='", num5, "' style='Z-INDEX:100;LEFT:", num25, "px;CURSOR:hand;POSITION:absolute;TOP:", num24, "px;HEIGHT:30px;WEIGHT:28px' ><DIV title='姓名：", str2, "[", num11, "]<br>位置：", playerChsPosition, "<br>身高：", num9, "CM<br>体重：", 

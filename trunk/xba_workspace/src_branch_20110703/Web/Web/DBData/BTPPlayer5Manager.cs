@@ -266,6 +266,10 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        /*
+            填充职业球员
+         */
+
         public static void CreateFillPlayer5(int intClubID)
         {
             string commandText = "Exec NewBTP.dbo.CreateFillPlayer5 " + intClubID;
@@ -567,10 +571,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static int GetSellMoneyPlayer5(int intUserID, long longPlayerID)
+        public static long GetSellMoneyPlayer5(int intUserID, long longPlayerID)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetSellMoneyPlayer5 ", intUserID, ",", longPlayerID });
-            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteLongDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataTable GetSellPlayer5Table(int intClubID)
@@ -625,7 +629,7 @@
             return SqlHelper.ExecuteBoolDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static int NewSellPlayer5(int intUserID, long longPlayerID, string strMarketCode, int intBidPrice, DateTime datEndBidTime, string strEvent)
+        public static int NewSellPlayer5(int intUserID, long longPlayerID, string strMarketCode, long intBidPrice, DateTime datEndBidTime, string strEvent)
         {
             string commandText = "Exec NewBTP.dbo.NewSellPlayer5 @intUserID,@longPlayerID,@strMarketCode,@intBidPrice,@datEndBidTime,@strEvent";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@longPlayerID", SqlDbType.BigInt, 8), new SqlParameter("@strMarketCode", SqlDbType.Char, 20), new SqlParameter("@intBidPrice", SqlDbType.Int, 4), new SqlParameter("@datEndBidTime", SqlDbType.DateTime, 8), new SqlParameter("@strEvent", SqlDbType.NVarChar, 100) };
@@ -696,7 +700,7 @@
                     long num1 = (long) row["PlayerID"];
                     string str2 = row["Name"].ToString().Trim();
                     int num2 = (byte) row["Age"];
-                    string strContent = str2 + "宣布将于本赛季结束后退役。您可以使用“理疗中心”的“返老还童”延长球员的篮球生涯！";
+                    string strContent = str2 + "宣布将于本赛季结束后退役。";
                     BTPMessageManager.AddMessageByClubID5(intClubID, strContent);
                     string clubNameByClubID = BTPClubManager.GetClubNameByClubID(intClubID);
                     string strLogEvent = string.Concat(new object[] { clubNameByClubID, "中的", str2, "（", num2, "岁）宣布将于本赛季结束后退役。" });
@@ -1057,6 +1061,20 @@
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UpdateNumPosByPlayerID5 ", longPlayerID, ",", intNumber, ",", intPosition });
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
+
+        public static int SetTrialPlayer(int intUserID, long longPlayerID)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.SetTrialPlayer ", intUserID, ",", longPlayerID});
+            return SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static int UnSetTrialPlayer(int clubID, long longPlayerID)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UnSetTrialPlayer ", clubID, ',', longPlayerID });
+            return SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        
 
         public static void UpdateNumPosNameByPlayerID5(long longPlayerID, int intNumber, int intPosition, string strPlayerName)
         {

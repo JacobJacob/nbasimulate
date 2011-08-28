@@ -232,6 +232,11 @@
                         this.strRightURL = "Intro/OnlineList.aspx?Type=ONLINELIST";
                         goto Label_08CA;
 
+                    case "XBATOP":
+                        this.strCenterURL = "XBATop.aspx?Type=USERABILITYTOP";
+                        this.strRightURL = "Intro/XBATop.aspx";
+                        goto Label_08CA;
+
                     default:
                         this.strCenterURL = "Temp_Center.aspx";
                         this.strRightURL = "Temp_Right.aspx";

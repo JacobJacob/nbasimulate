@@ -999,9 +999,10 @@
                 DataRow accountRowByNickName = BTPAccountManager.GetAccountRowByNickName(strNickName);
                 this.intLookUserID = (int) accountRowByNickName["UserID"];
             }
-            DataRow row3 = ROOTUserManager.GetUserInfoByID40(this.intUserID);
-            int num7 = Convert.ToInt32(row3["Coin"]);
-            this.blnSex = (bool) row3["Gender"];
+            //DataRow row3 = ROOTUserManager.GetUserInfoByID40(this.intUserID);
+            //int num7 = Convert.ToInt32(row3["Coin"]);
+            int num7 = this.intWealth;
+            //this.blnSex = (bool) row3["Gender"];
             if (num7 < (intCoin * intCount))
             {
                 base.Response.Redirect("Report.aspx?Parameter=203!Type.TOOLS^Page.1");
@@ -1104,7 +1105,7 @@
             else
             {
                 bool flag;
-                int num8 = Convert.ToInt32(row3["IsMember"]);
+                /*int num8 = Convert.ToInt32(row3["IsMember"]);
                 DateTime time = (DateTime) row3["MemberExpireTime"];
                 if (time < DateTime.Now)
                 {
@@ -1113,7 +1114,7 @@
                 else
                 {
                     time = time.AddMonths(1);
-                }
+                }*/
                 if (num7 < intCoin)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=203!Type.TOOLS^Page.1");
@@ -1127,7 +1128,7 @@
                 {
                     toolRowByID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
                 }
-                num8 = (byte) toolRowByID["PayType"];
+                int num8 = (byte) toolRowByID["PayType"];
                 DateTime datMemberExpireTime = (DateTime) toolRowByID["MemberExpireTime"];
                 if ((num8 == 0) && (datMemberExpireTime < DateTime.Now))
                 {
@@ -1144,7 +1145,8 @@
                 else
                 {
                     string str4;
-                    ROOTUserManager.SpendCoin40(this.intUserID, intCoin, "购买1个" + str3, "");
+                    //ROOTUserManager.SpendCoin40(this.intUserID, intCoin, "购买1个" + str3, "");
+                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, "购买1个" + str3);
                     if (strNickName != "")
                     {
                         BTPToolLinkManager.BuyVIPCard(this.intLookUserID, datMemberExpireTime);
@@ -1205,7 +1207,7 @@
                         BTPMessageManager.SetHasMsg(this.strNickName);
                         str4 = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", datMemberExpireTime.ToString(), "' WHERE UserID=", this.intUserID });
                     }
-                    SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("main40"), CommandType.Text, str4);
+                    //SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("main40"), CommandType.Text, str4);
                     flag = true;
                 }
                 if (flag)
@@ -2830,7 +2832,7 @@
             Convert.ToInt16(this.ddlEndBidTime5.SelectedValue);
             this.datEndBidTime = DateTime.Today.AddDays(2.0);
             this.datEndBidTime = this.datEndBidTime.AddHours((double) RandomItem.rnd.Next(8, 0x18));
-            int intBidPrice = BTPPlayer5Manager.GetSellMoneyPlayer5(this.intUserID, this.longPlayerID);
+            long intBidPrice = BTPPlayer5Manager.GetSellMoneyPlayer5(this.intUserID, this.longPlayerID);
             string strEvent = string.Concat(new object[] { "您将", this.intPlayer5Number, "号球员", this.strPlayer5Name, "卖出得到", intBidPrice });
             int num2 = 2;
             if (intBidPrice > 0)
@@ -3493,6 +3495,11 @@
             base.Response.Redirect("MyFocus.aspx");
         }
 
+        private void btnOK_Click_SETTRIAL(object sender, ImageClickEventArgs e)
+        {
+            base.Response.Redirect("PlayerCenter.aspx?UserID=" + this.intUserID + "&Type=5");
+        }
+
         private void btnOK_Click_SETHONOR(object sender, ImageClickEventArgs e)
         {
             int request = (int) SessionItem.GetRequest("Category", 0);
@@ -4112,9 +4119,13 @@
             int num3 = (int) toolRowByID["AmountInStock"];
             int num4 = (byte) toolRowByID["Category"];
             this.tbPresent.Visible = true;
-            if (Convert.ToInt32(ROOTUserManager.GetUserInfoByID40(this.intUserID)["Coin"]) < num2)
+            //if (Convert.ToInt32(ROOTUserManager.GetUserInfoByID40(this.intUserID)["Coin"]) < num2)
+            this.intWealth = (int)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
+            if(this.intWealth < num2)
             {
-                this.strSay = this.strNickName + "经理，你的金币不足，无法购买该道具。";
+                //this.strSay = this.strNickName + "经理，你的金币不足，无法购买该道具。";
+                this.strSay = this.strNickName + "经理，你的游戏币不足，无法购买该道具。";
+
                 this.tbPresent.Visible = false;
                 return;
             }
@@ -4125,7 +4136,7 @@
             }
             if (num4 == 7)
             {
-                this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>枚金币。</strong><br>持有会员卡，您将会获得会员相应的功能。" });
+                this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong><br>持有会员卡，您将会获得会员相应的功能。" });
                 this.tbCount.Enabled = false;
                 goto Label_02BA;
             }
@@ -4141,7 +4152,7 @@
                             this.cbPresent.Visible = false;
                             break;
                     }
-                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>枚金币。</strong>" });
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong>" });
                     goto Label_02BA;
                 }
                 this.tbPosistion.Visible = false;
@@ -4786,6 +4797,12 @@
             else
             {
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
+                int clubID = Convert.ToInt32(playerRowByPlayerID["ClubID"]);
+                if (clubID > 0)
+                {
+                    this.strSay = this.strNickName + "目前在其它队中试训，你无法对其进行选秀";
+                    return;
+                }
                 string str = playerRowByPlayerID["Name"].ToString().Trim();
                 DateTime time = (DateTime) playerRowByPlayerID["EndBidTime"];
                 if (time > DateTime.Now)
@@ -5092,7 +5109,7 @@
             string str = SessionItem.GetRequest("Name", 1).ToString().Trim();
             if (num > 0)
             {
-                this.strSay = "您确定要领取您的奖品 " + str + " 吗？如果对奖品不满意，可以选择再咬一口 领取奖格里的其他奖品！";
+                this.strSay = "您确定要领取您的奖品 " + str + " 吗？";
                 this.btnOK.Visible = true;
                 this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_FREEBOX);
             }
@@ -5541,6 +5558,14 @@
 
                         case "SETFOCUS":
                             this.SetFocus();
+                            break;
+
+                        case "SETTRIAL":
+                            this.SetTrial();
+                            break;
+
+                        case "UNSETTRIAL":
+                            this.UnSetTrial();
                             break;
 
                         case "CANCELFOCUS":
@@ -6629,7 +6654,7 @@
                 else
                 {
                     DataRow row3 = BTPArrange5Manager.GetCheckArrange5(intClubID, this.longPlayerID);
-                    int num6 = BTPPlayer5Manager.GetSellMoneyPlayer5(this.intUserID, this.longPlayerID);
+                    long num6 = BTPPlayer5Manager.GetSellMoneyPlayer5(this.intUserID, this.longPlayerID);
                     if (num6 < 1)
                     {
                         this.strSay = this.strNickName + "经理您好，球员" + str + "不在您队中效力，您无法将其买出。";
@@ -7311,9 +7336,9 @@
 
         private void SetFocus()
         {
-            long request = (long) SessionItem.GetRequest("PlayerID", 3);
-            int intStatus = (int) SessionItem.GetRequest("Status", 0);
-            int intCategory = (int) SessionItem.GetRequest("Category", 0);
+            long request = (long)SessionItem.GetRequest("PlayerID", 3);
+            int intStatus = (int)SessionItem.GetRequest("Status", 0);
+            int intCategory = (int)SessionItem.GetRequest("Category", 0);
             switch (BTPBidFocusManager.AddFocusValues(this.intUserID, request, intCategory, intStatus))
             {
                 case 0:
@@ -7331,6 +7356,55 @@
             this.btnOK.Visible = true;
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETFOCUS);
         }
+
+        private void SetTrial()
+        {
+            long request = (long) SessionItem.GetRequest("PlayerID", 3);
+            switch (BTPPlayer5Manager.SetTrialPlayer(this.intUserID, request))
+            {
+                case 0:
+                    this.strSay = "该球员目前在其它队中试训";
+                    break;
+
+                case 1:
+                    this.strSay = "同时试训的球员不能超过两个";
+                    break;
+                case 3:
+                    this.strSay = "该球员目前已经有人对其选秀，不能再进行试训";
+                    break;
+
+                case 2:
+                    this.strSay = "邀请试训成功，该球员已经到您队中报到";
+                    break;
+                default:
+                    this.strSay = "邀请试训成功失败";
+                    break;
+            }
+            this.btnOK.Visible = true;
+            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETTRIAL);
+        }
+
+        private void UnSetTrial()
+        {
+            long request = (long)SessionItem.GetRequest("PlayerID", 3);
+            DataRow row = BTPArrange5Manager.GetCheckArrange5(this.intClubID5, request);
+            if (row != null)
+            {
+                this.strSay = "请将该试训球员从阵容中移出";
+                return;
+            }
+            if (BTPPlayer5Manager.UnSetTrialPlayer(this.intClubID5, request) == 1)
+            {
+                this.strSay = "该球员不在你试训";
+            }
+            else
+            {
+                this.strSay = "该球员已经离队";
+            }
+            this.btnOK.Visible = true;
+            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETTRIAL);
+        }
+
 
         private void SetHonor()
         {

@@ -98,9 +98,9 @@
                 if (intUserID == -1)
                 {
                     this.tblLogin_01.Visible = true;
-                    this.tblLogin_02.Visible = false;
-                    this.btnLogin.ImageUrl = SessionItem.GetImageURL() + "button_logingame.gif";
-                    this.btnReg.ImageUrl = SessionItem.GetImageURL() + "button_membercenter.gif";
+                    //this.tblLogin_02.Visible = false;
+                    this.btnLogin.ImageUrl = SessionItem.GetImageURL() + "usa_5.gif";
+                    this.btnReg.ImageUrl = SessionItem.GetImageURL() + "usa_2.gif";
                 }
                 else
                 {
@@ -118,7 +118,7 @@
                         return;
                     }
                     this.tblLogin_01.Visible = false;
-                    this.tblLogin_02.Visible = true;
+                    //this.tblLogin_02.Visible = true;
                     this.strMsg = string.Concat(new object[] { "<table width='170' border='0' cellpadding='0' cellspacing='0'><tr><td height='40' align='center' width='40%'><div style='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=", str5, "?RndID=", num2, ");width:37px;height:40px'></div></td><td width='60%'>　<a href='Main_P.aspx?Tag=", intUserID, "&Type=MODIFYCLUB' target='Main'><img src='", SessionItem.GetImageURL(), "Setting.gif' width='16' height='16' border='0'></a></td></tr><tr><td height='20' align='center' colspan=2><font class='ForumTime'>", str3, "</font></td></tr><tr><td height='27' align='center' colspan='2'>" });
                     if ((((int) onlineRowByUserID["Category"]) == 0) || (((int) onlineRowByUserID["Category"]) == 4))
                     {

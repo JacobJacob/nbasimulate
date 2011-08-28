@@ -823,6 +823,11 @@
                     int intPosition = (byte) row["Pos"];
                     int num2 = (byte) row["Number"];
                     int intAbility = (int) row["Ability"];
+                    int intCategory = Convert.ToInt32(row["Category"]);
+                    if (intCategory == 3)
+                    {
+                        intAbility = 999;
+                    }
                     string playerEngPosition = PlayerItem.GetPlayerEngPosition(intPosition);
                     int num4 = (byte) row["Height"];
                     int num5 = (byte) row["Weight"];

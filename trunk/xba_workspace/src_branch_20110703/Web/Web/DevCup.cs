@@ -793,7 +793,8 @@
                 }
                 else if (request > 0)
                 {
-                    switch (BTPDevCupRegManager.AddDevCupReg(request, this.intUserID, this.intClubID, this.strClubName, this.strShortName, this.strDevCode, this.strClubLogo, intRank, level, strPassWord))
+                    int result = BTPDevCupRegManager.AddDevCupReg(request, this.intUserID, this.intClubID, this.strClubName, this.strShortName, this.strDevCode, this.strClubLogo, intRank, level, strPassWord);
+                    switch (result)
                     {
                         case 1:
                             base.Response.Redirect("Report.aspx?Parameter=522!Type.DEVCUPREG");
@@ -825,6 +826,9 @@
 
                         case 8:
                             base.Response.Redirect("Report.aspx?Parameter=535");
+                            return;
+                        case 9:
+                            base.Response.Redirect("Report.aspx?Parameter=535b");
                             return;
                     }
                 }

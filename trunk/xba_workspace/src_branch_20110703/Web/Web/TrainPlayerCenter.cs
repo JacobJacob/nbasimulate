@@ -165,6 +165,7 @@
                 int num33 = (int) row["ReboundMax"];
                 int num34 = (int) row["StealMax"];
                 int num35 = (int) row["BlockMax"];
+                int intCategory = Convert.ToInt32(row["Category"]);
                 int num36 = (((((((((num14 + num15) + num16) + num17) + num18) + num19) + num20) + num21) + num22) + num23) + num24;
                 int num37 = (((((((((num25 + num26) + num27) + num28) + num29) + num30) + num31) + num32) + num33) + num34) + num35;
                 if (this.intType == 3)
@@ -172,6 +173,7 @@
                     str3 = "<td>" + num10 + "</td>";
                     if (((intStatus == 1) && (intPower > 30)) && ((num10 > this.MinPoint(row)) && (num36 < num37)))
                     {
+                       
                         str4 = "<td><a href='#' onclick='ChangeTrain(" + longPlayerID + ")'>训练</a></td>";
                     }
                     else
@@ -185,15 +187,33 @@
                     str4 = "<td>";
                     if (((intPower > 30) && (num10 > 50)) && ((intStatus == 1) && (num36 < num37)))
                     {
-                        obj2 = str4;
-                        str4 = string.Concat(new object[] { obj2, "<a href='#' onclick='ChangeTrain(", longPlayerID, ")'>训练</a> | " });
+                       
+                        if (intCategory == 3)
+                        {
+                            obj2 = str4;
+                            str4 = string.Concat(new object[] { obj2, "训练 | " });
+                        }
+                        else
+                        {
+                            obj2 = str4;
+                            str4 = string.Concat(new object[] { obj2, "<a href='#' onclick='ChangeTrain(", longPlayerID, ")'>训练</a> | " });
+                        }
                     }
                     else
                     {
                         str4 = str4 + "<font color='#666666'>训练</font> | ";
                     }
-                    obj2 = str4;
-                    str4 = string.Concat(new object[] { obj2, "<a href='Dialogue.aspx?PlayerID=", longPlayerID, "'>谈话</a></td>" });
+                    if (intCategory != 3)
+                    {
+                        obj2 = str4;
+                        str4 = string.Concat(new object[] { obj2, "<a href='Dialogue.aspx?PlayerID=", longPlayerID, "'>谈话</a></td>" });
+                    }
+                    else
+                    {
+                        obj2 = str4;
+                        str4 = string.Concat(new object[] { obj2, "谈话</td>" });
+                        intAbility = 999;
+                    }
                 }
                 string str6 = "";
                 string str7 = "";
@@ -338,7 +358,7 @@
                     this.strTools = "";
                     return;
             }
-            playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
+            //playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
         }
 
         private void SetPageIntro()

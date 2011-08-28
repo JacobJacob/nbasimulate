@@ -248,6 +248,12 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        public static int ExchangeOnlyPoint(int intUserID, int intAmount)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangeOnlyPoint ", intUserID, ",", intAmount });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
         public static int GetAccountCount()
         {
             string commandText = "Exec NewBTP.dbo.GetAccountCount";
@@ -895,7 +901,7 @@
                         bool flag = (bool) row2["ContinuePay"];
                         DateTime time = (DateTime) row2["MemberExpireTime"];
                         int num3 = Convert.ToInt32(row2["PayType"]);
-                        if (flag)
+                        /*if (flag)
                         {
                             if (ROOTUserManager.SpendCoin40Return(intUserID, intCoin, "购买1个" + str2, "") == 1)
                             {
@@ -948,7 +954,7 @@
                                 BTPMessageManager.AddMessage(intUserID, 2, 0, "秘书报告", str5);
                             }
                             continue;
-                        }
+                        }*/
                         commandText = "UPDATE BTP_Account SET PayType=0 WHERE UserID=" + intUserID;
                         SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                         string strContent = "您已失去会员资格，请手动购买会员卡，继续享受超值会员特权。";

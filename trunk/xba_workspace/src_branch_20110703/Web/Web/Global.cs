@@ -556,6 +556,7 @@
             htError.Add("533", new Error("杯赛已经开始您不能再踢出参赛玩家！", "Union.aspx", "THIS"));
             htError.Add("534", new Error("您不是举办杯赛的盟主！", "Union.aspx", "THIS"));
             htError.Add("535", new Error("您的杯赛报名密码不正确！", "NULL", "NULL"));
+            htError.Add("535b", new Error("您只可以同时报名参加两场自定义杯赛！", "NULL", "NULL"));
             htError.Add("536", new Error("您没有足够的游戏币可供捐献！", "NULL", "NULL"));
             htError.Add("537", new Error("您没有足够的游戏币来进行比赛！", "NULL", "NULL"));
             htError.Add("538", new Error("您填写的经理名称有错误！", "NULL", "NULL"));

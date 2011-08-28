@@ -1024,7 +1024,17 @@
                     this.sbPlayer.Append(this.aHome.pC.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aHome.pC.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aHome.pC.intAbility) / 10f));
+
+                    if (this.aHome.pC.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aHome.pC.intAbility) / 10f));
+                    }
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aHome.pC.intPower);
@@ -1055,7 +1065,19 @@
                     this.sbPlayer.Append(this.aHome.pPF.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aHome.pPF.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aHome.pPF.intAbility) / 10f));
+
+
+                    if (this.aHome.pPF.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aHome.pPF.intAbility) / 10f));
+                    }
+
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aHome.pPF.intPower);
@@ -1086,7 +1108,18 @@
                     this.sbPlayer.Append(this.aHome.pSF.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aHome.pSF.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aHome.pSF.intAbility) / 10f));
+
+                    if (this.aHome.pSF.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aHome.pSF.intAbility) / 10f));
+                    }
+
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aHome.pSF.intPower);
@@ -1117,7 +1150,17 @@
                     this.sbPlayer.Append(this.aHome.pSG.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aHome.pSG.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aHome.pSG.intAbility) / 10f));
+
+                    if (this.aHome.pSG.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aHome.pSG.intAbility) / 10f));
+                    }
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aHome.pSG.intPower);
@@ -1148,7 +1191,18 @@
                     this.sbPlayer.Append(this.aHome.pPG.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aHome.pPG.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aHome.pPG.intAbility) / 10f));
+                    Console.WriteLine(this.aHome.pPG.intCategory);
+                    if (this.aHome.pPG.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aHome.pPG.intAbility) / 10f));
+                    }
+
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aHome.pPG.intPower);
@@ -1202,7 +1256,17 @@
                     this.sbPlayer.Append(this.aAway.pC.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aAway.pC.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aAway.pC.intAbility) / 10f));
+
+                    if (this.aAway.pC.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aAway.pC.intAbility) / 10f));
+                    }
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aAway.pC.intPower);
@@ -1232,7 +1296,17 @@
                     this.sbPlayer.Append(this.aAway.pPF.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aAway.pPF.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aAway.pPF.intAbility) / 10f));
+                    Console.WriteLine(this.aAway.pPF.intCategory);
+                    if (this.aAway.pPF.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aAway.pPF.intAbility) / 10f));
+                    }
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aAway.pPF.intPower);
@@ -1263,7 +1337,17 @@
                     this.sbPlayer.Append(this.aAway.pSF.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aAway.pSF.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aAway.pSF.intAbility) / 10f));
+
+                    if (this.aAway.pSF.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aAway.pSF.intAbility) / 10f));
+                    }
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aAway.pSF.intPower);
@@ -1294,7 +1378,18 @@
                     this.sbPlayer.Append(this.aAway.pSG.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aAway.pSG.intAbility) / 10f));
+                    //this.sbPlayer.Append((float) (((float) this.aAway.pSG.intAbility) / 10f));
+
+                    if (this.aAway.pSG.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aAway.pSG.intAbility) / 10f));
+                    }
+
+
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aAway.pSG.intPower);
@@ -1325,7 +1420,15 @@
                     this.sbPlayer.Append(this.aAway.pPG.intWeight);
                     this.sbPlayer.Append("</Weight>");
                     this.sbPlayer.Append("\t\t<Ability>");
-                    this.sbPlayer.Append((float) (((float) this.aAway.pPG.intAbility) / 10f));
+                    Console.WriteLine(this.aAway.pPG.intCategory);
+                    if (this.aAway.pPG.intCategory == 3)
+                    {
+                        this.sbPlayer.Append(99.9f);
+                    }
+                    else
+                    {
+                        this.sbPlayer.Append((float)(((float)this.aAway.pPG.intAbility) / 10f));
+                    }
                     this.sbPlayer.Append("</Ability>");
                     this.sbPlayer.Append("\t\t<Power>");
                     this.sbPlayer.Append((float) this.aAway.pPG.intPower);
