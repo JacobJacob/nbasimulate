@@ -254,6 +254,8 @@ class SeasonUpdateHandler(BaseClient):
                 club_infos = dev_manager.get_dev_clubs(dev_code)
                 if not club_infos:
                     continue
+                #联赛MVP奖励
+                self.reword_mvp_by_devcode(dev_code)
                 for i, club_info in enumerate(club_infos):
                     club_id = club_info["ClubID"]
                     if club_id <= 0 or i >= 10:
@@ -261,6 +263,10 @@ class SeasonUpdateHandler(BaseClient):
                     else:
                         self.log("start to dev sort send money for level:%s, club id:%s" % (level, club_id))
                         self.dev_sort_send_money(level, club_id, i)
+                        
+    @ensure_success
+    def reword_mvp_by_devcode(self, dev_code):
+        return dev_manager.reword_mvp_by_devcode(dev_code)
                         
     @ensure_success                    
     def dev_sort_send_money(self, level, club_id, sort):
