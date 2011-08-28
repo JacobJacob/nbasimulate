@@ -111,11 +111,16 @@ class CupLadderRoundMatch(RenderApple):
     def stat(self):
         if self.match:
             asp_prefix = "S"
-            devcup_id = 0
+            cup_id = 0
             if self.category == 6:
-                devcup_id = self.match["DevCupID"]
+                cup_id = self.match["DevCupID"]
                 asp_prefix = "V"
-            return CupLadderRoundMatch.STAT_TEMPLAGE % (asp_prefix, self.category, devcup_id, self.match["ClubAID"], self.match["ClubBID"])
+            if self.category == 5:
+                cup_id = self.match["XGameID"]
+                asp_prefix = "V"
+            else:
+                cup_id = self.match["CupID"]
+            return CupLadderRoundMatch.STAT_TEMPLAGE % (asp_prefix, self.category, cup_id, self.match["ClubAID"], self.match["ClubBID"])
      
     @property   
     def home_point(self):
