@@ -26,26 +26,31 @@ class GroupCupHandler(BaseClient):
         
     def work(self):
         
-        if self._turn < 3:
-            return
+        self.log("turn:%s" % self._turn)
+        if self._turn < 4:
+            return "exit"
         
         small_group_finish = False
-        if self._turn == 3:
+        if self._turn == 4:
             #安排赛程,第三轮安排赛程
             xcup_info = self.get_xgroup_game_by_status(STATUS_NEW)
             if not xcup_info:
                 self.log("cup had arrange!!!")
                 return "exit"
             cup_id = xcup_info["XGameID"]
+            self.log("start to arrange group!!!")
             self.arrange_group(cup_id)
         else:
             xcup_info = self.get_xgroup_game_by_status(STATUS_RUN)
             if not xcup_info:
+                self.log("not cup running!!!")
                 small_group_finish = True
             else:
                 round = xcup_info["Round"]
                 xcupid = xcup_info["XGameID"]
                 match_infos = self.get_group_match_to_play()
+                if not match_infos:
+                    self.log("not match!!!!")
                 if match_infos:
                     has_execute_match = False
                     for match_info in match_infos:
@@ -74,6 +79,8 @@ class GroupCupHandler(BaseClient):
                                 #球队出线，排定赛程
                                 #状态更新为1,轮次更新为2
                                 self.arrange_xcup(xcup_id, True)
+                    else:
+                        self.log("not match exeucte!!!")
         #小杯赛已经打完
         if small_group_finish:
             #决赛比赛

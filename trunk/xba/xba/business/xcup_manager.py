@@ -24,7 +24,7 @@ match_maps = [
 from xba.common.sqlserver import connection
 from xba.common import cup_util
 
-def arrange_group(cup_id):
+def arrange_group(xcup_id):
     """小组赛安排"""
     cursor = connection.cursor()
     club_info_map = {}
@@ -56,7 +56,8 @@ def arrange_group(cup_id):
                     match_time = (start_time + timedelta(days=round)).strftime("%Y-%m-%d %H:%M:%S")
                     add_group_match(cursor, 1, group_index, round, club_a_info['team_index'], club_b_info['team_index'], \
                                     club_a_info["club_id"], club_b_info["club_id"], match_time)
-        set_status_by_xcupid(cup_id, 1, cursor)
+        set_status_by_xcupid(xcup_id, 1, cursor)
+        set_round_by_xcupid(xcup_id, round, cursor)
         cursor.commit()
     except:
         cursor.rollback()
@@ -126,13 +127,17 @@ def get_xcup_match_by_gaincode_xcupid(xcupid, gain_code):
     finally:
         cursor.close() 
         
-def set_round_by_xcupid(xcup_id, round):
+def set_round_by_xcupid(xcup_id, round, cursor=None):
     """设置轮数"""
-    cursor = connection.cursor()
+    need_close = False
+    if not cursor:
+        need_close = True
+        cursor = connection.cursor()
     try:
         cursor.execute("EXEC SetRoundByXCupID %s, %s" % (xcup_id, round))
     finally:
-        cursor.close()
+        if need_close:
+            cursor.close()
     
 def set_xba_champion(xcup_id, champion_id, champion_name):
     """设置冠军球队"""
