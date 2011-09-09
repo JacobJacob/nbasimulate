@@ -49,7 +49,7 @@ class TrianPlayerUpdateHandler(BaseClient):
 def main():
     s = single_process.SingleProcess("TrianPlayerUpdateHandler")
     s.check()
-    lock_file = os.path.join(PathSettings.TRIAN_PLAYER_UPDATE_LOCK, datetime.now().strftime("%Y_%m_%d_H.lock"))
+    lock_file = os.path.join(PathSettings.TRIAN_PLAYER_UPDATE_LOCK, datetime.now().strftime("%Y_%m_%d_%H.lock"))
     if os.path.exists(lock_file) and not DEBUG:
         print "update had finish"
     else:
@@ -57,8 +57,13 @@ def main():
         f.close()
         handler = TrianPlayerUpdateHandler()
         handler.start()
+      
+def main2():
+    handler = TrianPlayerUpdateHandler()
+    handler.start()
         
 if __name__ == "__main__":
+    main2()
     while True:
         if datetime.now().hour % 2 == 0:
             main()

@@ -313,4 +313,5 @@ class CupHandler(BaseClient):
 
 if __name__ == "__main__":
     handler = CupHandler()
-    handler.start()
+    #handler.start()
+    handler.execute_match(cluba, clubb, cupid, gain_code, 2, 1)

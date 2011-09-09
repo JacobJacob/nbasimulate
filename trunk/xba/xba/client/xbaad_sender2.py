@@ -7,11 +7,11 @@ import os
 from xba.common.mailutil import send_to
 
 def send(nickname, email):
-    subject = "一款公平无道具的篮球经理期待您的加入"
+    subject = "一款公平无道具的<<篮球经理期>>待您的加入^-^"
     content = "尊敬的玩家，你好!曾经官方的会员区让我们体验了一把公平竞赛的乐趣," \
               "但随着官方的跳票，让所有期待公平游戏的玩家伤透了心，所以，在当初 一些会员区老玩家的" \
                "支持下，完全无道具的xba篮球经理开服了, 在这邀请所有喜欢公平竞赛的玩家们加入: http://www.113388.net"
-    send_to(subject, content, email, user="sxwailyc@163.com")
+    send_to(subject, content, email, user="sxwdlplyc@163.com")
     
 if __name__ == "__main__":
     historys = set()

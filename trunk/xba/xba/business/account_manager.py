@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from xba.common.sqlserver import connection
 from xba.common.orm import Session
@@ -229,6 +229,8 @@ def remove_cupids_from_account(remove_cupid):
                 continue
             cup_ids = cup_ids_str.split("|")
             for cup_id in cup_ids:
+                if not cup_id:
+                    continue
                 if remove_cupid == int(cup_id):
                     cup_ids.remove(cup_id)
             if not cup_ids:
@@ -237,7 +239,7 @@ def remove_cupids_from_account(remove_cupid):
             print cup_ids_str, new_club_id_str
             sql = "UPDATE BTP_Account SET CupIDs='%s' WHERE UserID=%s" % ("|".join(cup_ids), user_id)
             print sql
-            #cursor.execute(sql)
+            cursor.execute(sql)
     finally:
         cursor.close()
      
@@ -338,16 +340,20 @@ def assign_xcup_car():
 def add_vip_card():
     cursor = connection.cursor()
     try:
-        sql = "update  btp_account set paytype = 1, MemberExpireTime = dateadd(dd, 75, createtime)"
-        cursor.execute(sql)
-        cursor.execute("select userid, createtime, MemberExpireTime from btp_account")
+        cursor.execute("select userid, createtime, MemberExpireTime from btp_account where paytype <> 1")
         infos = cursor.fetchall()
         for info in infos:
-            sql = "EXEC BuyVIPCard %s, '%s'" % (info["userid"], info['MemberExpireTime'].strftime("%Y-%m-%d"))
+            expire_time = info["createtime"] + timedelta(days=30)
+            sql = "EXEC BuyVIPCard %s, '%s'" % (info["userid"], expire_time.strftime("%Y-%m-%d"))
             print sql
             cursor.execute(sql)
+            sql = "update btp_account set MemberExpireTime = '%s', paytype = 1 where userid = %s" % (expire_time.strftime("%Y-%m-%d"), info["userid"])
+            print sql
+            cursor.execute(sql)
+            cursor.execute("update btp_online set paytype = 1 where paytype <> 1")
     finally:
         cursor.close()
 
 if __name__ == "__main__":
     add_vip_card()
+    #assign_devchoose_card()

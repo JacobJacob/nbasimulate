@@ -27,8 +27,11 @@ def backup(db="NewBTP", file_name=None):
         
 def restore(db="NewBTP", file_name=None):
     """还原数据库"""
-    #path = os.path.join(PathSettings.DB_BACKUP, file_name)
-    path = file_name
+    print PathSettings.DB_BACKUP
+    print file_name
+    path = os.path.join(PathSettings.DB_BACKUP, file_name)
+    #path = file_name
+    print path
     cmd = "sqlcmd -Q \"restore database [%s] from disk='%s' with replace\"" % (db, path)
     try:
         os.system(cmd)
@@ -36,5 +39,5 @@ def restore(db="NewBTP", file_name=None):
         log_execption()
     
 if __name__ == "__main__":
-    restore(file_name="D:\\NewBTP_2011_07_31_00_03_05.bak")
-    #backup()
+    backup()
+    

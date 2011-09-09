@@ -262,6 +262,7 @@ def update_player5_category3():
         connection.close()
         
 def update_player5_hight_yishi():
+    return
     import random
     cursor = connection.cursor()
     try:
@@ -324,5 +325,5 @@ def view_player5_category3():
 
 
 if __name__ == "__main__":
-    view_player5_category3()
+    update_player5_category3()
 

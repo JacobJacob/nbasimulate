@@ -164,6 +164,7 @@ class RoundUpdateHandler(BaseClient):
         path = db_backup.backup(file_name="round_update_handler")
         target_path = extract7z.zip(path)
         i = 0
+        return
         while i < 10 and not DEBUG:
             try:
                 ftp = self.ftp()

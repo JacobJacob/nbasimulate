@@ -52,6 +52,7 @@ class GroupCupHandler(BaseClient):
                 if not match_infos:
                     self.log("not match!!!!")
                 if match_infos:
+                    self.log("has:%s matchs" % len(match_infos))
                     has_execute_match = False
                     for match_info in match_infos:
                         #比赛差错效验
@@ -253,8 +254,14 @@ class GroupCupHandler(BaseClient):
     @ensure_success     
     def execute_match(self, cluba, clubb, xcupid, gain_code, round, category, match_id):
         cmd = "%s %s %s %s %s %s %s %s %s" % (CLIENT_EXE_PATH, 'xcup_match_handler', xcupid, gain_code, cluba, clubb, round, category, match_id)
-        return self.call_cmd(cmd)
-    
+        i = 0
+        while i < 10:
+            i += 1
+            if self.call_cmd(cmd):
+                return True
+            else:
+                self.sleep(10)
+          
     @ensure_success
     def call_cmd(self, cmd):
         """调用命令"""
@@ -267,6 +274,26 @@ class GroupCupHandler(BaseClient):
             
         if p.wait() == 0:
             self.log("call %s success" % cmd)
+            return True
+        else:
+            self.log("call %s failure" % cmd)
+            return False
+            
+    @ensure_success
+    def run_match(self):
+        round = 7
+        match_infos = self.get_group_match_to_play()
+        if not match_infos:
+            self.log("not match!!!!")
+        if match_infos:
+            has_execute_match = False
+            for match_info in match_infos:
+                #比赛差错效验
+                if round != match_info["Round"] and False:
+                    self.log("the round not match:%s-->%s" % (round, match_info["Round"]))
+                    continue
+                has_execute_match = True
+                self.execute_match(match_info["ClubAID"], match_info["ClubBID"], 1, 0, round, 1, match_info["XGroupMatchID"])
     
     @ensure_success
     def get_xcup_match_by_gaincode_xcupid(self, xcup_id, gain_code):
@@ -292,3 +319,4 @@ class GroupCupHandler(BaseClient):
 if __name__ == "__main__":
     handler = GroupCupHandler()
     handler.start()
+    #handler.run_match()
