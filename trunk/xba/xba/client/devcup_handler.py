@@ -216,18 +216,6 @@ class DevCupHandler(BaseClient):
         cmd = "%s %s %s %s %s %s %s" % (CLIENT_EXE_PATH, 'devcup_match_handler', devcupid, gain_code, cluba, clubb, round)
         return self.call_cmd(cmd)
     
-    def call_cmd(self, cmd):
-        """调用命令"""
-        p = Popen(cmd, stdout=PIPE)
-        while True:
-            line = p.stdout.readline()
-            if not line:
-                break
-            self.log(line.replace("\n", ""))
-            
-        if p.wait() == 0:
-            self.log("call %s success" % cmd)
-    
     @ensure_success
     def get_devcup_match_by_gaincode_devcupid(self, devcupid, gain_code):
         """根据GainCode和杯赛ID获取比赛"""

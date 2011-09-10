@@ -21,7 +21,7 @@ class BidHandler(BaseClient):
             self.log("start do bid handle for category:%s" % category)
             self.__work(category)   
         
-        self.sleep() 
+        self.sleep(30) 
         
     def __work(self, category):
         

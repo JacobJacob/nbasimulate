@@ -369,19 +369,7 @@ class SeasonUpdateHandler(BaseClient):
         for level in range(1, self.__dev_level_sum):
             self.log("start to fill level:%s" % level)
             self.do_fill_one_not_full_dev(level)
-            
-    def call_cmd(self, cmd):
-        """调用命令"""
-        p = Popen(cmd, stdout=PIPE)
-        while True:
-            line = p.stdout.readline()
-            if not line:
-                break
-            self.log(line.replace("\n", ""))
-            
-        if p.wait() == 0:
-            self.log("call %s success" % cmd)
-  
+          
     def do_fill_one_not_full_dev(self, level):
         """把高级的缺人的联赛填满"""
         dev_infos = dev_manager.get_dev_table_by_total(level)

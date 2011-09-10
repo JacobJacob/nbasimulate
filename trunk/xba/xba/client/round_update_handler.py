@@ -306,19 +306,7 @@ class RoundUpdateHandler(BaseClient):
     def set_team_ability(self):
         """设置球队排行榜"""
         return xbatop_manager.set_team_ability()   
-        
-    def call_cmd(self, cmd):
-        """调用命令"""
-        p = Popen(cmd, stdout=PIPE)
-        while True:
-            line = p.stdout.readline()
-            if not line:
-                break
-            self.log(line.replace("\n", ""))
-            
-        if p.wait() == 0:
-            self.log("call %s success" % cmd)
-            
+          
     def ftp(self):
         ftp = FtpEx()
         ftp.host = "174.128.236.188"
@@ -343,5 +331,4 @@ def main():
         handler.start()
         
 if __name__ == "__main__":
-    #for i in range(7):
     main()

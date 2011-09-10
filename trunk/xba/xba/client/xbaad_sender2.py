@@ -3,11 +3,12 @@
 
 import time
 import os
+import random
 
 from xba.common.mailutil import send_to
 
 def send(nickname, email):
-    subject = "一款公平无道具的<<篮球经理期>>待您的加入^-^"
+    subject = "专为非人人币玩家定制的无道服开服啦^-^"
     content = "尊敬的玩家，你好!曾经官方的会员区让我们体验了一把公平竞赛的乐趣," \
               "但随着官方的跳票，让所有期待公平游戏的玩家伤透了心，所以，在当初 一些会员区老玩家的" \
                "支持下，完全无道具的xba篮球经理开服了, 在这邀请所有喜欢公平竞赛的玩家们加入: http://www.113388.net"
@@ -51,7 +52,7 @@ if __name__ == "__main__":
                 except:
                     raise
                     print "error"
-                time.sleep(30)
+                time.sleep(random.randint(30, 60))
             
     finally:
         f.close()

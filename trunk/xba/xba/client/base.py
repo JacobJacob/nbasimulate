@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from subprocess import Popen, PIPE
+
 import os
 import time
 import traceback
@@ -20,6 +22,32 @@ class BaseClient(object):
     
     def before_run(self):
         pass
+        
+    def call_cmd(self, cmd):
+        """call cmd """
+        while True:
+            success = self.__call_cmd(cmd)
+            if success:
+                return True
+            else:
+                self.log("call cmd failure, sleep and try 10s later")
+                self.sleep()
+            
+    def __call_cmd(self, cmd):
+        """µ˜”√√¸¡Ó"""
+        p = Popen(cmd, stdout=PIPE)
+        while True:
+            line = p.stdout.readline()
+            if not line:
+                break
+            self.log(line.replace("\n", ""))
+            
+        if p.wait() == 0:
+            self.log("call %s success" % cmd)
+            return True
+        else:
+            self.log("call %s failure" % cmd)
+            return False
     
     def start(self):
         self.before_run()

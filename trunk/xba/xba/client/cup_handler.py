@@ -260,18 +260,6 @@ class CupHandler(BaseClient):
         cmd = "%s %s %s %s %s %s %s %s" % (CLIENT_EXE_PATH, 'cup_match_handler', cupid, gain_code, cluba, clubb, round, category)
         return self.call_cmd(cmd)
     
-    def call_cmd(self, cmd):
-        """调用命令"""
-        p = Popen(cmd, stdout=PIPE)
-        while True:
-            line = p.stdout.readline()
-            if not line:
-                break
-            self.log(line.replace("\n", ""))
-            
-        if p.wait() == 0:
-            self.log("call %s success" % cmd)
-    
     @ensure_success
     def get_cup_match_by_gaincode_cupid(self, cupid, gain_code):
         """根据GainCode和杯赛ID获取比赛"""

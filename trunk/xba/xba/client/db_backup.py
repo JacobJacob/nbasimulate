@@ -40,4 +40,5 @@ def restore(db="NewBTP", file_name=None):
     
 if __name__ == "__main__":
     backup()
+    #restore(file_name="2011_09_10/round_update_handler_2011_09_10_10_35_03.bak")
     
