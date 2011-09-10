@@ -43,12 +43,21 @@ def delete_expired_tool():
     finally:
         cursor.close()
         
+def get_back_card():
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select * from btp_toollink were toolid = 27")
+        infos = cursor.fetchall()
+        for info in infos:
+            userid = info["UserID"]
+            amount = info["Amount"]
+            toollinkid = info["ToolLinkID"]
+            if amount > 2:
+                assign_tool(userid, 36, amount - 2)
+            sql = "update btp_toollink set amount = 2 where toollinkid = %s" % toollinkid
+            cursor.execute(sql)
+    finally:
+        cursor.close()
+        
 if __name__ == "__main__":
-    for i in range(2, 30):
-        assign_tool(i, 24, 1)
-    for i in range(4, 30):
-        cursor = connection.cursor()
-        try:
-            cursor.execute("RegXBACup %s, ''" % (i * 2))
-        finally:
-            cursor.close()
+    get_back_card()
