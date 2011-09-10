@@ -204,7 +204,7 @@ def arrange_xcup(xcup_id, fource=False):
             add_club_count = 256 - club_count
         
         #如果球队不足2, 4, 8...的话，安成绩补足
-        cursor.execute("select * from btp_xgroupteam order by win, score desc")
+        cursor.execute("select * from btp_xgroupteam order by win desc, score desc")
         all_club_infos = cursor.fetchall()
         for club_info in all_club_infos:
             club_id = club_info["ClubID"]
