@@ -60,5 +60,20 @@ def get_back_card():
     finally:
         cursor.close()
         
+def assign_df():
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select * from btp_account where activetime > '2011-09-10'")
+        infos = cursor.fetchall()
+        for info in infos:
+            userid = info["UserID"]
+            nickname = info["NickName"]
+            assign_tool(userid, 36, 50)
+            sql = u"EXEC AddMessage '','秘书报告', '%s', '恭喜您 获得50个臭豆腐 '" % nickname
+            sql = sql.encode("gbk")
+            cursor.execute(sql)
+    finally:
+        cursor.close()
+        
 if __name__ == "__main__":
-    get_back_card()
+    assign_df()
