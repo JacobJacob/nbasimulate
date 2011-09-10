@@ -46,7 +46,7 @@ def delete_expired_tool():
 def get_back_card():
     cursor = connection.cursor()
     try:
-        cursor.execute("select * from btp_toollink were toolid = 27")
+        cursor.execute("select * from btp_toollink where toolid = 27")
         infos = cursor.fetchall()
         for info in infos:
             userid = info["UserID"]
@@ -54,8 +54,9 @@ def get_back_card():
             toollinkid = info["ToolLinkID"]
             if amount > 2:
                 assign_tool(userid, 36, amount - 2)
-            sql = "update btp_toollink set amount = 2 where toollinkid = %s" % toollinkid
-            cursor.execute(sql)
+                sql = "update btp_toollink set amount = 2 where toollinkid = %s" % toollinkid
+                print sql
+                cursor.execute(sql)
     finally:
         cursor.close()
         

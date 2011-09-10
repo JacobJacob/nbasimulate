@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import random
 from xba.config import WEB_ROOT, DOMAIN
 
 from datetime import datetime, timedelta
@@ -163,9 +164,11 @@ def arrange_xcup(xcup_id, fource=False):
     """安排决赛赛程"""
     cursor = connection.cursor()
     try:
+        print "start xcup arrange"
         cursor.execute("select * from btp_xcupreg")
         if cursor.fetchall():
             if fource:
+                print "start to delete btp_xcupreg"
                 cursor.execute("delete from btp_xcupreg")
             else:
                 return
@@ -225,8 +228,10 @@ def arrange_xcup(xcup_id, fource=False):
         print sql
         cursor.execute(sql)
         alive_reg_infos = cursor.fetchall()
+        random.shuffle(alive_reg_infos)
         for alive_reg_info in alive_reg_infos:
             club_id = alive_reg_info["ClubID"]
+            print club_id
             club_ids.append(club_id)
             club_ids_map[club_id] = alive_reg_info
         
