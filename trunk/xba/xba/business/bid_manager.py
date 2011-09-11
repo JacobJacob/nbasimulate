@@ -37,7 +37,7 @@ def finish_bid(player_id, number, category):
         logging.error(e.message.decode("gbk"))
         raise "error"
     finally:
-        connection.close()
+        cursor.close()
 
 def prepare_bid(player_id, category):
     """转会准备完成"""
@@ -49,7 +49,7 @@ def prepare_bid(player_id, category):
         log_execption()
         raise "error"
     finally:
-        connection.close()
+        cursor.close()
         
 def get_end_bid_for_end(category):
     """得到已经截止转会(超过20分钟的)"""
@@ -62,7 +62,7 @@ def get_end_bid_for_end(category):
         log_execption()
         raise "error"
     finally:
-        connection.close()
+        cursor.close()
 
 def get_end_bid(category):
     """差不多了的"""
@@ -75,7 +75,52 @@ def get_end_bid(category):
         log_execption()
         raise "error"
     finally:
-        connection.close()
+        cursor.close()
+        
+def set_auto_bid():
+    """设定自动出价"""
+    cursor = connection.cursor()
+    try:
+        sql = "select * from BTP_BidAuto"
+        cursor.execute(sql)
+        infos = cursor.fetchall()
+        for info in infos:
+            max_money = info["MaxMoney"]
+            user_id = info["UserID"]
+            player_id = info["PlayerID"]
+            bid_auto_id = info["BidAutoID"]
+            cursor.execute("select Category, BidPrice from btp_player5 where PlayerID = %s" % player_id)
+            player_info = cursor.fetchone()
+            if not player_info:
+                continue
+            category = player_info["Category"]
+            bid_price = player_info["BidPrice"]
+            if category != 2 and category != 4:
+                print "warn:category error!!!:%s" % category
+                #cursor.execute("delete from BTP_BidAuto where BidAutoID = %s" % bid_auto_id)
+                continue
+            bid_price = (bid_price / 100) * 102;
+            if bid_price > max_money:
+                cursor.execute("delete from BTP_BidAuto where BidAutoID = %s" % bid_auto_id)
+            else:
+                status = 0
+                if category == 4:
+                    status = 4
+                elif category == 3:
+                    status = 5
+                elif category == 2:
+                    status = 3
+                else:
+                    continue
+                now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                bid_sql = "EXEC SetDevisionTran %s, %s, %s, '%s', '127.0.0.1', %s" % (player_id, user_id, bid_price, now, status)
+                cursor.execute(bid_sql) 
+    except:
+        log_execption()
+        raise "error"
+    finally:
+        cursor.close()
+        
 
 def get_club_player_number(club_id, type):
     """get club player number"""
@@ -98,8 +143,8 @@ def get_club_player_number(club_id, type):
         log_execption()
         raise "error"
     finally:
-        connection.close()
+        cursor.close()
     
 if __name__ == "__main__":
-    pass
+    set_auto_bid()
         

@@ -26,6 +26,9 @@ class BidHandler(BaseClient):
     def __work(self, category):
         
         #设定竞拍结果
+        if category == MarketCategory.PROFESSION_TRANSFER:
+            self.log("start to set auto bid!!")
+            self.set_auto_bid()
         infos = self.get_end_bid(category)
         if not infos:
             self.log("not record time over for category:%s" % category)
@@ -50,6 +53,11 @@ class BidHandler(BaseClient):
                 
                 number = self.get_club_player_number(club_id, category)
             self.finish_bid(player_id, number, category)
+            
+    @ensure_success
+    def set_auto_bid(self):
+        """自动出价"""
+        return bid_manager.set_auto_bid()
         
     @ensure_success
     def get_end_bid(self, category):

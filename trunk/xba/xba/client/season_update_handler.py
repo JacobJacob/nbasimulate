@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE
-
 from xba.config import CLIENT_EXE_PATH
 
 from xba.business import player5_manager, player3_manager, account_manager
@@ -29,6 +27,9 @@ class SeasonUpdateHandler(BaseClient):
         
         self.assign_choose_car()
         
+        #统计赛季财政
+        self.total_season_finance()
+        
         #删除每天财政
         self.delete_turn_finance()
         
@@ -42,7 +43,7 @@ class SeasonUpdateHandler(BaseClient):
         self.clear_player5_season()
         self.clear_player3_season()
         
-        #冠军奖励
+        #联赛奖励， 已经包括了MVP的奖励
         self.reward_dev()
         
         #联赛排名奖励
@@ -81,9 +82,10 @@ class SeasonUpdateHandler(BaseClient):
         #更新结束,设置赛季开始
         self.season_update_finish()
         
-        #发放冠军杯邀请函
-        self.assign_xgame_card_with_devsort()
+        #赛季收税
+        self.payment_all()
         
+        #球退役处理
         self.player_retire()
 
         return "exist"
@@ -113,7 +115,6 @@ class SeasonUpdateHandler(BaseClient):
     
     def change_player_from_arrange5(self, player_id, club_id, category):
         command = "%s %s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", player_id, club_id, category)
-        print command
         self.call_cmd(command)
             
     def before_run(self):
@@ -166,10 +167,20 @@ class SeasonUpdateHandler(BaseClient):
     @ensure_success
     def betch_create_player(self):
         return player5_manager.betch_create_player()
-                
+         
+    @ensure_success
+    def payment_all(self):
+        """赛季收税"""
+        return finance_manager.payment_all()
+    
+    @ensure_success
+    def total_season_finance(self):
+        """赛季财政统计"""
+        return finance_manager.total_season_finance(self.__season)
+           
     def delete_turn_finance(self):
         """删除每天财政"""
-        finance_manager.delete_turn_finance(self.__season)
+        return finance_manager.delete_turn_finance(self.__season)
             
     def assign_dev(self):
         """初始化联赛"""
@@ -246,7 +257,7 @@ class SeasonUpdateHandler(BaseClient):
                 
     @ensure_success
     def reward_dev_two(self):
-        """联赛奖励"""
+        """联赛奖励， 已经包括了MVP的奖励"""
         for level in range(1, self.__dev_level_sum + 1):
             dev_count = self.get_dev_count(level)
             for sort in range(dev_count):
