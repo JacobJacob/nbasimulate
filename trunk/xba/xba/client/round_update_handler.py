@@ -102,6 +102,12 @@ class RoundUpdateHandler(BaseClient):
         self.log("start to set team ability")
         self.set_team_ability()
         
+        self.log("set_player5_hardness_leadship")
+        self.set_player5_hardness_leadship()
+        
+        self.log("start to clean_player5_pLink")
+        self.clean_player5_pLink()
+        
         #after run
         self.after_run()
             
@@ -182,8 +188,8 @@ class RoundUpdateHandler(BaseClient):
         """结束前的收尾动作"""
         self.set_to_next_days()
         if self._days not in (14, 28):
-            self.set_to_next_turn()
-        
+            self.set_to_next_turn()        
+
     @ensure_success
     def set_to_next_days(self):
         """将赛季天数前进一天 """
@@ -265,6 +271,16 @@ class RoundUpdateHandler(BaseClient):
     def night_update_delete_union(self):
         """删除威望小于1的联盟"""
         return union_field_manager.night_update_delete_union()
+    
+    @ensure_success
+    def set_player5_hardness_leadship(self):
+        """球员毅力，领导力更新"""
+        return player5_manager.set_player5_hardness_leadship()
+    
+    @ensure_success
+    def clean_player5_pLink(self):
+        """清除查看潜力那些东西(查看潜力到期)"""
+        return player5_manager.clean_player5_pLink()
     
     @ensure_success
     def create_player3(self):

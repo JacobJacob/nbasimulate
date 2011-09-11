@@ -19,7 +19,7 @@ def create_player(count, category, hours):
     except:
         log_execption()
     finally:
-        connection.close()
+        cursor.close()
         
 def player_list(page, pagesize, category):
     """获取街球球员"""
@@ -40,7 +40,7 @@ def recover_healthy3():
     except:
         log_execption()
     finally:
-        connection.close()
+        cursor.close()
         
 def player_grow3():
     """年轻球员身高体重增长"""
@@ -51,7 +51,17 @@ def player_grow3():
     except:
         log_execption()
     finally:
-        connection.close()
+        cursor.close()
+  
+def player3_aging():
+    """街头球员老化"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec Player3Aging"
+        cursor.execute(sql)
+    finally:
+        cursor.close()      
+        
         
 def player_skill_max_up3():
     """年轻球员能力增长"""
@@ -62,7 +72,7 @@ def player_skill_max_up3():
     except:
         log_execption()
     finally:
-        connection.close()
+        cursor.close()
         
 def clear_player3_season():
     """年轻球员赛季统计清除 """
@@ -71,7 +81,7 @@ def clear_player3_season():
         sql = "exec ClearPlayer3Season"
         cursor.execute(sql)
     finally:
-        connection.close()
+        cursor.close()
         
 def delete_player3(player_id):
     """删除年轻球员 """
@@ -80,7 +90,7 @@ def delete_player3(player_id):
         sql = "exec DeletePlayer3 %s" % player_id
         cursor.execute(sql)
     finally:
-        connection.close()
+        cursor.close()
 
 def get_player3_pre_retire():
     """获取要退役的球员"""
@@ -90,7 +100,7 @@ def get_player3_pre_retire():
         cursor.execute(sql)
         return cursor.fetchall()
     finally:
-        connection.close()
+        cursor.close()
         
 def recover_power3():
     """年轻球员体力恢复"""
@@ -101,7 +111,7 @@ def recover_power3():
     except:
         log_execption()
     finally:
-        connection.close()
+        cursor.close()
 
 if __name__ == "__main__":
     

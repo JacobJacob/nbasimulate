@@ -195,11 +195,38 @@ def delete_player5(player_id):
     finally:
         connection.close()
         
+def clean_player5_pLink():
+    """清除旧的查看潜力那些东西"""
+    cursor = connection.cursor()
+    try:
+        sql = "delete from BTP_Player5PLink where category = 2 and CreateTime < dateadd(dd, -3, getdate())"
+        cursor.execute(sql)
+    finally:
+        connection.close()
+        
+def player5_aging():
+    """球员老化 """
+    cursor = connection.cursor()
+    try:
+        sql = "exec Player5Aging"
+        cursor.execute(sql)
+    finally:
+        connection.close()
+        
 def player_pre_retire():
     """球员退役 """
     cursor = connection.cursor()
     try:
         sql = "exec PlayerPreRetire"
+        cursor.execute(sql)
+    finally:
+        connection.close()
+        
+def set_player5_hardness_leadship():
+    """球员毅力，领导力更新"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec SetPlayer5HardnessLeadship"
         cursor.execute(sql)
     finally:
         connection.close()
@@ -325,5 +352,5 @@ def view_player5_category3():
 
 
 if __name__ == "__main__":
-    update_player5_category3()
+    clean_player5_pLink()
 

@@ -39,6 +39,9 @@ class SeasonUpdateHandler(BaseClient):
         #球员伤病恢复
         self.player5_holiday()
         
+        #球员老化
+        self.player5_aging()
+        
         #球员赛季数据清空
         self.clear_player5_season()
         self.clear_player3_season()
@@ -355,6 +358,11 @@ class SeasonUpdateHandler(BaseClient):
     @ensure_success
     def get_game_info(self):
         return game_manager.get_game_info()
+    
+    @ensure_success
+    def player5_aging(self):
+        player5_manager.player5_aging()
+        player3_manager.player3_aging()
     
     @ensure_success
     def delete_devmessage(self):
