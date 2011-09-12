@@ -101,6 +101,12 @@ def set_auto_bid():
             if bid_price > max_money:
                 cursor.execute("delete from BTP_BidAuto where BidAutoID = %s" % bid_auto_id)
             else:
+                cursor.execute("SELECT TOP 1 UserID FROM BTP_Bidder WHERE PlayerID=%s AND Category=5 ORDER BY Price DESC" % player_id)
+                bid_info = cursor.fetchone()
+                #不能自己顶自己
+                if bid_info and bid_info["UserID"] == user_id:
+                    continue
+                
                 status = 0
                 if category == 4:
                     status = 4
