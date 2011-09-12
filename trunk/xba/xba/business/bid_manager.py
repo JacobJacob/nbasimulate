@@ -4,7 +4,7 @@
 """转会"""
 
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from xba.common.sqlserver import connection
 from xba.common import logging
@@ -71,9 +71,6 @@ def get_end_bid(category):
         sql = "exec Bid_Get%s '%s'" % (get_postfix(category), datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         cursor.execute(sql)
         return cursor.fetchall()
-    except:
-        log_execption()
-        raise "error"
     finally:
         cursor.close()
         
@@ -89,12 +86,13 @@ def set_auto_bid():
             user_id = info["UserID"]
             player_id = info["PlayerID"]
             bid_auto_id = info["BidAutoID"]
-            cursor.execute("select Category, BidPrice from btp_player5 where PlayerID = %s" % player_id)
+            cursor.execute("select Category, BidPrice, EndBidTime from btp_player5 where PlayerID = %s" % player_id)
             player_info = cursor.fetchone()
             if not player_info:
                 continue
             category = player_info["Category"]
             bid_price = player_info["BidPrice"]
+            end_bid_time = player_info["EndBidTime"]
             if category != 2 and category != 4:
                 print "warn:category error!!!:%s" % category
                 #cursor.execute("delete from BTP_BidAuto where BidAutoID = %s" % bid_auto_id)
@@ -113,6 +111,8 @@ def set_auto_bid():
                 else:
                     continue
                 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                if end_bid_time < datetime.now() - timedelta(minutes=2):
+                    cursor.execute("update btp_player5 set EndBidTime = dateadd(mm, 2, EndBidTime) where PlayerID = %s" % player_id)
                 bid_sql = "EXEC SetDevisionTran %s, %s, %s, '%s', '127.0.0.1', %s" % (player_id, user_id, bid_price, now, status)
                 cursor.execute(bid_sql) 
     except:
