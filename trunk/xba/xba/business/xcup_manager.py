@@ -290,7 +290,7 @@ def finish_xcup(xcup_info, user_id, club_id, club_name):
         cursor.execute("EXEC SetXBAStatus %s, %s" % (xcup_id, 3))
         #杯赛奖励
         reward = Reward(reward_xml)
-        rounds = [i for i in range(round)]
+        rounds = [i for i in range(round+1)]
         rounds.append(100)
         for round in rounds:
             sql = "EXEC GetXRegTableByCupIDDeadRound %s, %s" % (xcup_id, round)
@@ -300,6 +300,7 @@ def finish_xcup(xcup_info, user_id, club_id, club_name):
                 continue
         
             reward_info = reward.get_reward(round)
+            print "reward info for round:%s[%s]" % (round, reward_info)
             for alive_club in alive_clubs:
                 club_id = alive_club["ClubID"]
                 user_id = alive_club["UserID"]
@@ -329,7 +330,56 @@ def finish_xcup(xcup_info, user_id, club_id, club_name):
         raise
     finally:
         cursor.close()
+        
+def reward_xcup(xcup_id, round):
+    """杯赛完成"""
+    cursor = connection.cursor()
+    try:
+        cursor.start_transaction()
+        cursor.execute("select *, convert(text,RewardXML) as RewardXML from btp_xgame where XGameID = %s " % xcup_id )
+        xcup_info = cursor.fetchone()
+        #杯赛奖励
+        round = xcup_info["Round"]
+        reward_xml = xcup_info["RewardXML"]
+        reward = Reward(reward_xml)
+
+        sql = "EXEC GetXRegTableByCupIDDeadRound %s, %s" % (xcup_id, round)
+        cursor.execute(sql)
+        alive_clubs = cursor.fetchall()
+        if not alive_clubs:
+            return
+    
+        reward_info = reward.get_reward(round)
+        for alive_club in alive_clubs:
+            club_id = alive_club["ClubID"]
+            user_id = alive_club["UserID"]
+            money = reward_info.get("money")
+            if money:
+                sql = "EXEC RewardXCupByClubID %s, %s, %s, %s" % (club_id, xcup_id, round, money.money)
+                cursor.execute(sql)
+            
+            reputation = reward_info.get("reputation")
+            if reputation:
+                cursor.execute("select UnionID, NickName from btp_account where UserID = %s" % user_id)
+                info = cursor.fetchone()
+                if round == 100:
+                    note = u"冠军杯冠军"
+                else:
+                    note = u"冠军杯第%s轮" % round
+                if info and info["UnionID"]:
+                    sql = "EXEC AddUnionReputation %s, '%s', %s, %s, '%s'" % \
+                                    (user_id, info["NickName"].encode("gbk"), info["UnionID"], reputation.reputation, note.encode("gbk"))
+                    print sql
+                    cursor.execute(sql)
+                      
+        cursor.commit()
+    except:
+        print "rollback"
+        cursor.rollback()
+        raise
+    finally:
+        cursor.close()
             
 if __name__ == "__main__":
-    arrange_xcup(27, True)
+    reward_xcup(27, 6)
     
