@@ -349,8 +349,23 @@ def view_player5_category3():
         print a
     finally:
         connection.close()
+        
+def view_all_player():
+    cursor = connection.cursor()
+    try:
+        sql = "select * from btp_player5 where playerid in (5557, 6089 ,9886,14978,14979,14980,14981,14982)"
+        cursor.execute(sql)
+        infos = cursor.fetchall()
+        print len(infos)
+        for info in infos:
+            print info["PlayerID"]
+            print info["Name"]
+
+    finally:
+        connection.close()
+
 
 
 if __name__ == "__main__":
-    clean_player5_pLink()
+    view_all_player()
 
