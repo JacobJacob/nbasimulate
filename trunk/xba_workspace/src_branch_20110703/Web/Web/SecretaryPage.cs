@@ -490,7 +490,8 @@
                 }
                 else
                 {
-                    this.strSay = "<p align='left'>您的游戏币不足 " + num4 + " 无法恢复！</p><p align='center' style=\"color:red;\">购买“<a href=\"ManagerTool.aspx?Type=STORE&Page=1\">纪念章</a>”可获赠游戏币！</p>";
+                    //this.strSay = "<p align='left'>您的游戏币不足 " + num4 + " 无法恢复！</p><p align='center' style=\"color:red;\">购买“<a href=\"ManagerTool.aspx?Type=STORE&Page=1\">纪念章</a>”可获赠游戏币！</p>";
+                    this.strSay = "<p align='left'>您的游戏币不足 " + num4 + " 无法恢复！</p>";
                     this.btnOK.Visible = false;
                 }
             }
@@ -1015,11 +1016,11 @@
             }
             if (intCategory != 7)
             {
-                if (!DBLogin.CanConn(40))
+                /*if (!DBLogin.CanConn(40))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=205!Type.TOOLS^Page.1");
                     goto Label_0A68;
-                }
+                }*/
                 if (intCategory != 8)
                 {
                     if (intCategory != 11)
@@ -1035,12 +1036,14 @@
                                 }
                                 if (strNickName == "")
                                 {
-                                    ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, string.Concat(new object[] { "购买", intCount, "个", str3 }), "");
+                                    //ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, string.Concat(new object[] { "购买", intCount, "个", str3 }), "");
+                                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, string.Concat(new object[] { "购买", intCount, "个", str3 }));
                                     num15 = BTPToolLinkManager.BuyDoubleExperience(request, this.intUserID, intCount);
                                 }
                                 else
                                 {
-                                    ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }), "");
+                                    //ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }), "");
+                                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }));
                                     num15 = BTPToolLinkManager.BuyDoubleExperience(request, this.intLookUserID, intCount);
                                     BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", string.Concat(new object[] { AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex), "赠送给您", str3, " ", intCount, "个。" }));
                                     BTPMessageManager.SetHasMsg(strNickName);
@@ -1057,7 +1060,8 @@
                             {
                                 intCount = 1;
                             }
-                            ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, "购买1个" + str3, "");
+                            //ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, "购买1个" + str3, "");
+                            BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, "购买1个" + str3);
                             if (BTPToolLinkManager.BuyTool(request, this.intUserID, DateTime.Now.AddDays(20.0), intCount) == -1)
                             {
                                 base.Response.Redirect("Report.aspx?Parameter=208!Type.TOOLS^Page.1");
@@ -1947,8 +1951,9 @@
 
         private void btnOK_Click_DEVBIDHELPER(object sender, ImageClickEventArgs e)
         {
-            int num = this.CanUseBidAuto(false);
-            if (num > 0)
+            //int num = this.CanUseBidAuto(false);
+            int num = this.CheckCanBid(5, 10);
+            if (this.intPayType == 1 && num > 0)
             {
                 int num2;
                 try
@@ -2430,9 +2435,22 @@
                     }
                     case 2:
                     {
-                        int num3 = (int) freeBoxByUserID["AddDate"];
-                        string commandText = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", DateTime.Now.AddDays((double) num3).ToString(), "' WHERE UserID=", this.intUserID });
-                        SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("main40"), CommandType.Text, commandText);
+                        /*int addDate = (int) freeBoxByUserID["AddDate"];
+                        //string commandText = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", DateTime.Now.AddDays((double) num3).ToString(), "' WHERE UserID=", this.intUserID });
+                        //SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("main40"), CommandType.Text, commandText);
+                        /*DataRow toolRowByID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                        int num8 = (byte) toolRowByID["PayType"];
+                        DateTime datMemberExpireTime = (DateTime) toolRowByID["MemberExpireTime"];
+                        if ((num8 == 0) && (datMemberExpireTime < DateTime.Now))
+                        {
+                            datMemberExpireTime = DateTime.Now.AddDays((double)addDate);
+                        }
+                        else
+                        {
+                            datMemberExpireTime = datMemberExpireTime.AddDays((double)addDate);
+                        }
+                        BTPToolLinkManager.BuyVIPCard(this.intUserID, datMemberExpireTime);*/
+                        
                         DTOnlineManager.ChangePayTypeByUserID(this.intUserID, 1);
                         base.Response.Redirect("Report.aspx?Parameter=402");
                         return;
@@ -4376,7 +4394,7 @@
             if ((intCheckType == 4) || (intCheckType == 6))
             {
                 strToolMsg = this.strToolMsg;
-                //this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=DEVBIDHELPER&PlayerID=", this.longPlayerID, "&Market=", this.intMarket, "'><img alt='拍卖委托' src='", SessionItem.GetImageURL(), "BidAuto.gif' height='16' width='16' border='0'></a>&nbsp;&nbsp;" });
+                this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=DEVBIDHELPER&PlayerID=", this.longPlayerID, "&Market=", this.intMarket, "'><img alt='拍卖委托' src='", SessionItem.GetImageURL(), "BidAuto.gif' height='16' width='16' border='0'></a>&nbsp;&nbsp;" });
             }
             strToolMsg = this.strToolMsg;
             //this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=SHOWSKILL&PlayerID=", this.longPlayerID, "&CheckType=", intCheckType, "'><img alt='潜力公告' src='", SessionItem.GetImageURL(), "ShowSkill.gif' height='16' width='16' border='0'></a>" });
@@ -4732,8 +4750,16 @@
         {
             this.longPlayerID = (long) SessionItem.GetRequest("PlayerID", 3);
             this.intMarket = (int) SessionItem.GetRequest("Market", 0);
-            int num = this.CanUseBidAuto(false);
-            if (num > 0)
+
+            if (this.intPayType != 1)
+            {
+                this.strSay = "您该功能只对会员开放。";
+                return;
+            }
+
+            int num =  this.CheckCanBid(5, 10);
+        
+            if (num > 0 )
             {
                 this.tblDevBidHelper.Visible = true;
                 this.strSay = "只要告诉我您能接受的最高价，我就可以使用拍卖委托帮助您出价，此球员我建议您最好出价高于" + ((num / 10) * 15) + "，我会尽全力帮您拍到球员，但有时也会流拍。";
@@ -6632,17 +6658,25 @@
         {
             this.longPlayerID = (long) SessionItem.GetRequest("PlayerID", 3);
             int num = BTPPlayer5Manager.GetPlayer5CountByClubID(this.intClubID5);
-            if (((int) BTPClubManager.GetClubRowByID(this.intClubID5)["Devision"]) == 0)
+            DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
+            if (playerRowByPlayerID == null)
+            {
+                this.strSay = this.strNickName + "经理，拍卖的球员不存在。";
+                return;
+            }
+
+            int suspend = Convert.ToInt32(playerRowByPlayerID["Suspend"]);
+
+            if (((int)BTPClubManager.GetClubRowByID(this.intClubID5)["Devision"]) == 0)
             {
                 this.strSay = this.strNickName + "经理，您还未进入职业联赛，无法拍卖职业球员。";
             }
-            else if (num < 9)
+            else if (num < 9 && suspend == 0)
             {
                 this.strSay = string.Concat(new object[] { this.strNickName, "经理，现在", this.strClubName5, "中可上场比赛的球员只有", num, "个，您不能再将其挂牌出售！" });
             }
             else
             {
-                DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
                 int intClubID = (int) playerRowByPlayerID["ClubID"];
                 string str = playerRowByPlayerID["Name"].ToString();
                 this.intPlayerCategory = (byte) playerRowByPlayerID["Category"];

@@ -12,6 +12,7 @@
 
     public class ShowPlayer : Page
     {
+        public bool hasTool = true;
         public bool blnShowSkill;
         protected ImageButton btnModifyBody;
         protected ImageButton btnOK;
@@ -754,13 +755,13 @@
                     {
                         if (flag)
                         {
-                            //str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=0&PlayerID=", this.longPlayerID, "><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
-                            str2 = "";
+                            str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=0&PlayerID=", this.longPlayerID, "><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
+                            //str2 = "";
                         }
                         else
                         {
-                            //str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=PRIVATESKILL&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
-                            str2 = "";
+                            str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=PRIVATESKILL&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
+                            //str2 = "";
                         }
                     }
                     else
@@ -770,8 +771,8 @@
                 }
                 if (flag2)
                 {
-                    //str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Show=HIDE&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "><img  align='absmiddle'src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
-                    str2 = "";
+                    str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Show=HIDE&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "><img  align='absmiddle'src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
+                    //str2 = "";
                 }
                 else
                 {
@@ -781,8 +782,11 @@
                 if (((this.intCheck == 1) && ((intClubID == this.intClubID3) || (intClubID == this.intClubID5))) && (this.intCategory == 1))
                 {
                     obj2 = str2;
-                    //str2 = string.Concat(new object[] { obj2, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=REFASHION&PlayerID=", this.longPlayerID, "' target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinRefashion.gif' width='12' height='12' border='0' alt='球员洗点'><a>" });
-                    //str2 = "";
+                    if (Config.GetXiDianEnable() == 1)
+                    {
+                        str2 = string.Concat(new object[] { obj2, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=REFASHION&PlayerID=", this.longPlayerID, "' target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinRefashion.gif' width='12' height='12' border='0' alt='球员洗点'><a>" });
+                    }
+                        //str2 = "";
                 }
             }
             if (this.intType == 10)
@@ -858,8 +862,21 @@
             string str6 = "";
             if (((num17 == 1) && (intClubID == this.intClubID3)) || ((num17 == 1) && (intClubID == this.intClubID5)))
             {
-                //str6 = string.Concat(new object[] { "<span style='padding-left:15px' width='90' ><img align='absmiddle' src='", SessionItem.GetImageURL(), "llzc.gif' width='12' height='12' border='0' alt='理疗中心'>&nbsp;<a href='PlayerCenter.aspx?PlayerType=", this.intType, "&Type=9&PlayerID=", this.longPlayerID, "' target='Center'>理疗中心</a></span>" });
-                str6 = "";
+                if (this.hasTool)
+                {
+                    if (Config.GetToolEnable() == 1)
+                    {
+                        str6 = string.Concat(new object[] { "<span style='padding-left:15px' width='90' ><img align='absmiddle' src='", SessionItem.GetImageURL(), "llzc.gif' width='12' height='12' border='0' alt='理疗中心'>&nbsp;<a href='PlayerCenter.aspx?PlayerType=", this.intType, "&Type=9&PlayerID=", this.longPlayerID, "' target='Center'>理疗中心</a></span>" });
+                    }
+                    else
+                    {
+                        str6 = "";
+                    }
+                }
+                else
+                {
+                    str6 = "";
+                }
                 str2 = str2 + "&nbsp;&nbsp;";
             }
             string strInfo = this.strInfo;

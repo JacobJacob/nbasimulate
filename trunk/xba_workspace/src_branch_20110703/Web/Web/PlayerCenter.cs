@@ -624,23 +624,23 @@
             }
             if (num9 > 0x1a)
             {
-                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                /*this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                 this.sbList.Append("<td height='25'><strong>返老还童</strong></td>");
                 this.sbList.Append("<td align='left' >使用之后，球员的年龄将会降低1岁，小于27岁的球员无效。</td>");
                 this.sbList.Append("<td><font color='red'>" + num13 + "</font></td>");
                 this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=3' target='Center'>使用<a></td>" }));
                 this.sbList.Append("</tr>");
-                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");*/
             }
             else
             {
-                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                /*this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                 this.sbList.Append("<td height='25'><strong>返老还童</strong></td>");
                 this.sbList.Append("<td align='left' >使用之后，球员的年龄将会降低1岁，小于27岁的球员无效。</td>");
                 this.sbList.Append("<td><font color='red'>" + num13 + "</font></td>");
                 this.sbList.Append("<td style='color:#666666'>使用</td>");
                 this.sbList.Append("</tr>");
-                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");*/
             }
             if (num != 1)
             {
@@ -664,35 +664,35 @@
             }
             if (intPlayerType == 5)
             {
-                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                /*this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                 this.sbList.Append("<td height='25'><strong>魔鬼训练</strong></td>");
                 this.sbList.Append("<td align='left'>训练成功则现有能力值降低2点，扣除10点体力，并增加球员某一项能力的最大值2点。训练失败则仅扣除10点体力</td>");
                 this.sbList.Append("<td><font color='red'>" + num15 + "</font></td>");
                 this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=5' target='Center'>使用<a></td>" }));
                 this.sbList.Append("</tr>");
-                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");*/
             }
             if (intPlayerType == 3)
             {
                 if (num9 < 0x16)
                 {
-                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    /*this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
                     this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
                     this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
                     this.sbList.Append("<td><a href='SecretaryPage.aspx?Type=TIMEHOUSE&PlayerID=" + lngPlayerID + "' target='Center'>使用<a></td>");
                     this.sbList.Append("</tr>");
-                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");*/
                 }
                 else
                 {
-                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    /*this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
                     this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
                     this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
                     this.sbList.Append("<td style='color:#666666'>使用</td>");
                     this.sbList.Append("</tr>");
-                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");*/
                 }
             }
             if (intPlayerType == 5)
@@ -708,23 +708,23 @@
                 }
                 if (!flag)
                 {
-                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    /*this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><strong>极速特训</strong></td>");
                     this.sbList.Append("<td align='left'>送球员参加极速特训，可以瞬间获得1个赛季的现有能力的成长，同时年龄增加1岁。</td>");
                     this.sbList.Append("<td>" + str + "</td>");
                     this.sbList.Append("<td><a href='Player5AutoTrain.aspx?PlayerID=" + lngPlayerID + "' target='Center'>使用<a></td>");
                     this.sbList.Append("</tr>");
-                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");*/
                 }
                 else
                 {
-                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    /*this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><strong>极速特训</strong></td>");
                     this.sbList.Append("<td align='left'>送球员参加极速特训，可以瞬间获得1个赛季的现有能力的成长，同时年龄增加1岁。</td>");
                     this.sbList.Append("<td>" + str + "</td>");
                     this.sbList.Append("<td style='color:#666666'>使用</td>");
                     this.sbList.Append("</tr>");
-                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");*/
                 }
             }
         }
@@ -755,6 +755,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
+            this.tbMedicineCenter.Visible = false;
             this.SetPageIntro();
             this.SetList();
         }

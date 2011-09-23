@@ -18,7 +18,7 @@
         public string strIndexHead;
         public string strNickName;
         public string strSmartPath;
-        private string strType;
+        //private string strType;
         protected HtmlTable tblGameServer;
         protected HtmlTableCell tdFreeCoinButton;
 
@@ -41,11 +41,13 @@
             {
                 this.strNickName = "--";
                 this.strCoin = "--";
-                base.Response.Redirect("Register2.aspx");
+                base.Response.Redirect("Register.aspx");
             }
             else
             {
-                string str3;
+                DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
+                this.strNickName = onlineRowByUserID["NickName"].ToString();
+                /*string str3;
                 this.strIndexHead = BoardItem.GetIndexHead(-1, "", "");
                 this.tdFreeCoinButton.Visible = false;
                 DataRow userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
@@ -106,6 +108,7 @@
                 {
                     this.tblGameServer.Visible = true;
                 }
+                */
                 this.InitializeComponent();
                 base.OnInit(e);
             }

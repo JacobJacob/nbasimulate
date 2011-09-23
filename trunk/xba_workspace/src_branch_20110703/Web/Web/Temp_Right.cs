@@ -324,6 +324,10 @@
             this.btnSendB.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSendB) + ";this.disabled=true;";
             this.btnSetReputation.Click += new ImageClickEventHandler(this.btnSetReputation_Click);
             this.btnDelMaster.Click += new ImageClickEventHandler(this.btnDelMaster_Click);
+
+
+            this.btnDelMaster.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+
             base.Load += new EventHandler(this.Page_Load);
         }
 

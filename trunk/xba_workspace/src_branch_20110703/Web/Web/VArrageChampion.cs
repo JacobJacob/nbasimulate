@@ -117,6 +117,9 @@
         private void InitializeComponent()
         {
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
+
+            this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+
             base.Load += new EventHandler(this.Page_Load);
         }
 

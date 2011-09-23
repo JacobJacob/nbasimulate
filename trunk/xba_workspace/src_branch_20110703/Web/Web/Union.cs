@@ -2334,6 +2334,14 @@
             string str6 = allInfoByUnionID["UQQ"].ToString().Trim();
             string str7 = "论坛";
             string str8 = allInfoByUnionID["UBBS"].ToString().Trim();
+            if (this.intUnionID == request && this.intUserID != intUserID)
+            {
+                //str4 = str4 + "<a href='Temp_Right.aspx?Type=DELATEMASTER' target=\"Right\"><font color=red>[弹劾]</font></a>";
+            }
+            else
+            {
+                //str4 = str4 + "<a href='Temp_Right.aspx?Type=DELATEMASTER' target=\"Right\"><font color=red>[弹劾]</font></a>";
+            }
             if (str8.IndexOf("UnionBoard.aspx?Type=UNIONBBS") != -1)
             {
                 str7 = "<a href=\"UnionBoard.aspx?Type=UNIONBBS&UnionID=" + request + "&Page=1\">论坛</a>";

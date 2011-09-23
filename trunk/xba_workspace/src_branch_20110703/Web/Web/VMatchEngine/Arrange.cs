@@ -107,8 +107,8 @@
             }
             else
             {
-                this.intOffHard = 100;
-                this.intDefHard = 100;
+                this.intOffHard = 110;
+                this.intDefHard = 110;
             }
             this.intOffense = (byte) row["Offense"];
             this.intDefense = (byte) row["Defense"];

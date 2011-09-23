@@ -489,7 +489,7 @@
                     else
                     {
                         strAnnounce = this.strMsg;
-                        this.strMsg = strAnnounce + "<a href='" + DBLogin.URLString(40) + "MemberCenter.aspx'><img src='" + SessionItem.GetImageURL() + "passport.gif' width='51' height='24' border='0'></a>&nbsp;";
+                        this.strMsg = strAnnounce + "<a href='" + Config.GetDomain() + "MemberCenter.aspx'><img src='" + SessionItem.GetImageURL() + "passport.gif' width='51' height='24' border='0'></a>&nbsp;";
                     }
                     object strMsg = this.strMsg;
                     this.strMsg = string.Concat(new object[] { strMsg, "<a href='http://bbs.113388.net' target='_blank'><img src='", SessionItem.GetImageURL(), "offlinetrain.gif' width='66' height='24' border='0'></a>&nbsp;" });

@@ -2122,6 +2122,13 @@
                                     intTrainPoint = (intTrainPoint * (15 - (player.intAge - 30))) / 15;
                                 }
                             }
+
+                            if (this.intType == 10 || this.intType == 11)
+                            {
+                                double intPlayer5TrainPointMultiple = Config.GetPlayer5TrainPointMultiple();
+                                intTrainPoint = (int)(intTrainPoint * intPlayer5TrainPointMultiple);
+                            }
+
                         }
                         if (flag2)
                         {

@@ -77,7 +77,7 @@
                 }
                 return null;
             }*/
-            return "老玩家永无道具服";
+            return "无道服";
         }
 
         public static string GameNameEnglish(int intCategory)
@@ -234,7 +234,7 @@
 
         public static string URLString(int intCategory)
         {
-            if (!ServerParameter.blnUseServer)
+            /*if (!ServerParameter.blnUseServer)
             {
                 switch (intCategory)
                 {
@@ -293,7 +293,7 @@
                         return "http://d1.xba.com.cn/";
 
                     case 40:
-                        return "http://www.xba.com.cn/";
+                        return "http://www.113388.net/";
                 }
                 return null;
             }
@@ -315,7 +315,8 @@
                 }
                 return null;
             }
-            return null;
+            return null;*/
+            return "http://www.113388.net/";
         }
     }
 }
