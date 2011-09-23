@@ -48,7 +48,7 @@ if __name__ == "__main__":
                     continue
                 print "start to send to %s" % email
                 try:
-                    #send(nickname, email)
+                    send(nickname, email)
                     ff.write("%s\t1\n" % email)
                 except Exception, e:
                     print e
