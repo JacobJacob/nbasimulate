@@ -305,25 +305,25 @@
                     num19 = (int) devMRowByClubIDRound["ClubAScore"];
                     if (((this.intPayType == 1) || ((num18 > num19) && (num16 == this.intClubID5))) || ((num18 < num19) && (num17 == this.intClubID5)))
                     {
-                        this.strList = this.strList + "<strong>销售价格</strong>：60 元";
+                        this.strList = this.strList + "<strong>销售价格</strong>：150 元";
                     }
                     else
                     {
-                        this.strList = this.strList + "<strong>销售价格</strong>：45 元";
+                        this.strList = this.strList + "<strong>销售价格</strong>：100 元";
                     }
                 }
                 else
                 {
-                    this.strList = this.strList + "<strong>销售价格</strong>：60 元";
+                    this.strList = this.strList + "<strong>销售价格</strong>：150 元";
                 }
                 this.strList = string.Concat(new object[] { this.strList, "</td></tr><tr><td style='PADDING-RIGHT:4px;PADDING-LEFT:15px;PADDING-BOTTOM:4px;PADDING-TOP:4px'><font style='LINE-HEIGHT:150%'><strong>上轮球衣销售</strong><br><br><strong>数量</strong>：", num8, "件<br><br>" });
                 if (((this.intPayType == 1) || ((num18 > num19) && (num16 == this.intClubID5))) || ((num18 < num19) && (num17 == this.intClubID5)))
                 {
-                    this.strList = string.Concat(new object[] { this.strList, "<strong>利润</strong>：", num8 * 20, "元" });
+                    this.strList = string.Concat(new object[] { this.strList, "<strong>利润</strong>：", num8 * 110, "元" });
                 }
                 else
                 {
-                    this.strList = string.Concat(new object[] { this.strList, "<strong>利润</strong>：", num8 * 5, "元" });
+                    this.strList = string.Concat(new object[] { this.strList, "<strong>利润</strong>：", num8 * 60, "元" });
                 }
                 this.strList = this.strList + "</td></tr>";
             }
