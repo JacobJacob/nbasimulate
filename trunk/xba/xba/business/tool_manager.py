@@ -63,17 +63,25 @@ def get_back_card():
 def assign_df():
     cursor = connection.cursor()
     try:
-        cursor.execute("select * from btp_account where activetime > '2011-09-10'")
+        cursor.execute("select * from btp_account where activetime > dateadd(hh, -24, getdate())")
         infos = cursor.fetchall()
         for info in infos:
             userid = info["UserID"]
             nickname = info["NickName"]
-            assign_tool(userid, 36, 50)
-            sql = u"EXEC AddMessage '','秘书报告', '%s', '恭喜您 获得50个臭豆腐 '" % nickname
+            assign_tool(userid, 36, 10)
+            sql = u"EXEC AddMessage '','秘书报告', '%s', '恭喜您 获得10个臭豆腐 '" % nickname
             sql = sql.encode("gbk")
             cursor.execute(sql)
     finally:
         cursor.close()
         
+def clear_xba_box():
+    """清除臭豆腐"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("DELETE FROM BTP_ToolLink WHERE ToolID = 36")
+    finally:
+        cursor.close()
+        
 if __name__ == "__main__":
-    assign_df()
+    clear_xba_box()

@@ -9,8 +9,8 @@ from xba.common import log_execption
 
 REG = [
 [145, 55, 10],
-[140, 55, 20],       
-[135, 55, 40],
+[140, 55, 10],       
+[135, 55, 10],
 [130, 55, 80],
 [125, 55, 100],
 [120, 55, 120],       
@@ -69,6 +69,15 @@ def get_player5_pre_retire():
         return cursor.fetchall()
     finally:
         connection.close()
+        
+def clear_train_point():
+    """清空职业训练员"""
+    cursor = connection.cursor()
+    try:
+        sql = "Update BTP_Player5 Set TrainPoint = 0"
+        cursor.execute(sql)
+    finally:
+        cursor.close()
         
 def player_list(page, pagesize, category):
     """获取职业球员"""
@@ -353,7 +362,7 @@ def view_player5_category3():
 def view_all_player():
     cursor = connection.cursor()
     try:
-        sql = "select * from btp_player5 where playerid in (5557, 6089 ,9886,14978,14979,14980,14981,14982)"
+        sql = "select * from btp_player5"
         cursor.execute(sql)
         infos = cursor.fetchall()
         print len(infos)

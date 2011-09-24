@@ -114,6 +114,9 @@ def get_club_list(page, pagesize, category):
     return total, infos
         
 if __name__ == "__main__":
-    info = get_club_by_id(44)
-    print info["MainXML"]
+    club_infos = get_all_club(5)
+    for club_info in club_infos: 
+        print club_info["ClubID"]
+        s = get_club_by_id(club_info["ClubID"])  
+        print s["MainXML"]
     

@@ -161,6 +161,8 @@ def assign_promotion_card():
         for info in infos:
             user_id = info["UserID"]
             cursor.execute("EXEC GiftTool %s, 27, 2, 1" % user_id)
+        #到期日期，30天后
+        cursor.execute("update btp_toollink set expiretime = dateadd(dd, 30, getdate())")
     finally:
         cursor.close()
         

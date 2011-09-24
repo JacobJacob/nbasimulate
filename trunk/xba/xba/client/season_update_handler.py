@@ -3,7 +3,8 @@
 
 from xba.config import CLIENT_EXE_PATH
 
-from xba.business import player5_manager, player3_manager, account_manager
+from xba.business import player5_manager, player3_manager, account_manager,\
+    tool_manager
 from xba.business import dev_match_manager
 from xba.business import game_manager
 from xba.business import finance_manager
@@ -57,6 +58,12 @@ class SeasonUpdateHandler(BaseClient):
 
         #联赛更新
         self.dev_update()
+        
+        #清训练点
+        self.clear_train_point()
+        
+        #清豆腐
+        self.clear_xba_box()
         
         #刷选秀球员
         self.betch_create_player()
@@ -175,6 +182,15 @@ class SeasonUpdateHandler(BaseClient):
     def payment_all(self):
         """赛季收税"""
         return finance_manager.payment_all()
+    
+    @ensure_success
+    def clear_train_point(self):
+        """清空训练点"""
+        return player5_manager.clear_train_point()
+      
+    @ensure_success  
+    def clear_xba_box(self):
+        return tool_manager.clear_xba_box()
     
     @ensure_success
     def total_season_finance(self):
