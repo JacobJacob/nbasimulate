@@ -342,10 +342,16 @@ def assign_xcup_car():
 def add_vip_card():
     cursor = connection.cursor()
     try:
-        cursor.execute("select userid, createtime, MemberExpireTime from btp_account where paytype <> 1")
+        cursor.execute("select userid, createtime, MemberExpireTime, NickName from btp_account where paytype <> 1 and createtime > dateadd(dd, -15, getdate())")
         infos = cursor.fetchall()
         for info in infos:
-            expire_time = info["createtime"] + timedelta(days=30)
+            user_id = info["userid"]
+            if user_id == 654:
+                msg_sql = u"EXEC AddMessage '','秘书报告', '%s', '恭喜您获得赠送的三个月会员服务'" % info["NickName"]
+                expire_time = info["createtime"] + timedelta(days=90)
+            else:
+                msg_sql = u"EXEC AddMessage '','秘书报告', '%s', '恭喜您获得赠送的一个月会员服务'" % info["NickName"]
+                expire_time = info["createtime"] + timedelta(days=30)
             sql = "EXEC BuyVIPCard %s, '%s'" % (info["userid"], expire_time.strftime("%Y-%m-%d"))
             print sql
             cursor.execute(sql)
@@ -353,6 +359,10 @@ def add_vip_card():
             print sql
             cursor.execute(sql)
             cursor.execute("update btp_online set paytype = 1 where paytype <> 1")
+            
+            msg_sql = msg_sql.encode("gbk")
+            cursor.execute(msg_sql)
+        print "add %s users" % len(infos)
     finally:
         cursor.close()
 
