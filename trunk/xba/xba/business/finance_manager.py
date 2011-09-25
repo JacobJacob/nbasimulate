@@ -74,4 +74,5 @@ def back_payment():
         cursor.close()
        
 if __name__ == "__main__":
-    back_payment()
+    #back_payment()
+    pass
