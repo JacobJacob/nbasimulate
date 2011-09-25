@@ -50,7 +50,7 @@ def dev_sort_send_money(level, club_id, sort):
         print sql
         cursor.execute(sql)
         sql = "Exec AddNewMessage %s,2,0,'秘书报告','%s'" % (user_id, content)
-        print sql
+        sql = sql.encode("gbk")
         cursor.execute(sql)
         cursor.commit()
     except:

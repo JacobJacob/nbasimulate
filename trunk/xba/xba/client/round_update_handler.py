@@ -157,7 +157,7 @@ class RoundUpdateHandler(BaseClient):
     def before_run(self):
         """运行前的初始化"""
         self.log("start to backup database")
-        self.back_up()
+        #self.back_up()
         
         self.log("before run")
         game_info = self.get_game_info()

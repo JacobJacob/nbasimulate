@@ -43,15 +43,15 @@ class SeasonUpdateHandler(BaseClient):
         #球员老化
         self.player5_aging()
         
+        #联赛奖励
+        self.reward_dev()
+        
+        #联赛排名奖励,已经包括了MVP的奖励
+        self.reward_dev_two()
+        
         #球员赛季数据清空
         self.clear_player5_season()
         self.clear_player3_season()
-        
-        #联赛奖励， 已经包括了MVP的奖励
-        self.reward_dev()
-        
-        #联赛排名奖励
-        self.reward_dev_two()
         
         #发放冠军杯邀请函
         self.assign_xgame_card_with_devsort()

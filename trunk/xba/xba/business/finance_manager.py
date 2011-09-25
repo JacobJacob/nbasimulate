@@ -52,6 +52,26 @@ def payment(user_id):
         cursor.execute(sql)
     finally:
         cursor.close()
+        
+def back_payment():
+    cursor = connection.cursor()
+    try:
+        sql = "SELECT userid, Income - Outcome as payment FROM BTP_TFinance WHERE Season=3 AND Category=2 and Income - Outcome < 5000000 and Income - Outcome > 0"
+        cursor.execute(sql)
+        infos = cursor.fetchall()
+        for info in infos:
+            userid = info["userid"]
+            payment = info["payment"]
+            cursor.execute("select * from btp_account where userid=%s" % userid)
+            account = cursor.fetchone()
+            if account["PayType"] != 1:
+                print "not huiyan continue"
+                continue
+            sql = "update btp_account set money = money + %s where userid = %s" % (payment, userid)
+            cursor.execute(sql)
+            print userid, payment
+    finally:
+        cursor.close()
        
 if __name__ == "__main__":
-    total_season_finance(3)
+    back_payment()
