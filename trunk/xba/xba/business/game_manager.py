@@ -21,6 +21,18 @@ def get_game_info():
     finally:
         connection.close()
         
+def reset_game_capital():
+    """每轮重置市场资金"""
+    cursor = connection.cursor()
+    try:
+        sql = "update btp_game set capital = 200000000"
+        cursor.execute(sql)
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
 def game_info():
     """获取游戏信息"""
     session = Session()

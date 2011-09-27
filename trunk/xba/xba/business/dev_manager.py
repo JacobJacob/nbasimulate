@@ -41,6 +41,7 @@ def dev_sort_send_money(level, club_id, sort):
     content = "恭喜您获得%s级联赛第%s名，奖金%s" % (level, sort + 1, money)
     event = event.decode("utf8").encode("gbk")
     content = content.decode("utf8").encode("gbk")
+    sender = "秘书报告".decode("utf8").encode("gbk")
     cursor = connection.cursor()
     try:
         cursor.start_transaction()
@@ -49,8 +50,7 @@ def dev_sort_send_money(level, club_id, sort):
         sql = "Exec AddFinance %s,1,5,%s,1,'%s'" % (user_id, money, event)
         print sql
         cursor.execute(sql)
-        sql = "Exec AddNewMessage %s,2,0,'秘书报告','%s'" % (user_id, content)
-        sql = sql.encode("gbk")
+        sql = "Exec AddNewMessage %s,2,0,'%s','%s'" % (user_id, sender, content)
         cursor.execute(sql)
         cursor.commit()
     except:
@@ -225,6 +225,4 @@ def delete_devmessage():
         cursor.close()
        
 if __name__ == "__main__":
-    infos = get_dev_clubs("0000000")
-    for info in infos:
-        print info
+    sender = "秘书报告".decode("utf8").encode("gbk")

@@ -4,7 +4,6 @@
 import os
 import traceback
 
-from subprocess import Popen, PIPE
 from datetime import datetime
 
 from xba.config import CLIENT_EXE_PATH, PathSettings, DEBUG
@@ -157,7 +156,7 @@ class RoundUpdateHandler(BaseClient):
     def before_run(self):
         """运行前的初始化"""
         self.log("start to backup database")
-        #self.back_up()
+        self.back_up()
         
         self.log("before run")
         game_info = self.get_game_info()
@@ -188,7 +187,12 @@ class RoundUpdateHandler(BaseClient):
         """结束前的收尾动作"""
         self.set_to_next_days()
         if self._days not in (14, 28):
-            self.set_to_next_turn()        
+            self.set_to_next_turn()   
+            
+    @ensure_success
+    def reset_game_capital(self):
+        """重置市场资金"""
+        return game_manager.reset_game_capital()     
 
     @ensure_success
     def set_to_next_days(self):

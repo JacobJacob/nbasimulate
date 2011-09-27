@@ -162,7 +162,7 @@ def assign_promotion_card():
             user_id = info["UserID"]
             cursor.execute("EXEC GiftTool %s, 27, 2, 1" % user_id)
         #到期日期，30天后
-        cursor.execute("update btp_toollink set expiretime = dateadd(dd, 30, getdate())")
+        cursor.execute("update btp_toollink set expiretime = dateadd(dd, 30, getdate()) where toolid = 27 ")
     finally:
         cursor.close()
         
@@ -365,7 +365,20 @@ def add_vip_card():
         print "add %s users" % len(infos)
     finally:
         cursor.close()
+        
+def fuck_back():
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select * from btp_toollink where toolid = 28 or toolid = 33")
+        infos = cursor.fetchall()
+        for info in infos:
+            expire_time = info["ExpireTime"]
+            toollinkid = info["ToolLinkID"]
+            print "update btp_toolink set expiretime = '%s' where toollinkid = %s" % (expire_time, toollinkid)
+
+    finally:
+        cursor.close()
 
 if __name__ == "__main__":
-    add_vip_card()
+    fuck_back()
     #assign_devchoose_card()
