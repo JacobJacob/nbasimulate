@@ -289,7 +289,7 @@ class RoundUpdateHandler(BaseClient):
     @ensure_success
     def create_player3(self):
         """刷街头球员"""
-        return player3_manager.create_player(600, 6, 20)
+        return player3_manager.create_player(1200, 6, 20)
     
     @ensure_success
     def create_player5(self):
