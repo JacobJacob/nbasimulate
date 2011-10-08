@@ -64,4 +64,5 @@ def add_xgame_team_to_xguess():
         
         
 if __name__ == "__main__":
-    add_xgame_team_to_xguess()
+    #add_xgame_team_to_xguess()
+    pass
