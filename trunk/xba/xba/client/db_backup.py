@@ -29,8 +29,8 @@ def restore(db="NewBTP", file_name=None):
     """还原数据库"""
     print PathSettings.DB_BACKUP
     print file_name
-    path = os.path.join(PathSettings.DB_BACKUP, file_name)
-    #path = file_name
+    #path = os.path.join(PathSettings.DB_BACKUP, file_name)
+    path = file_name
     print path
     cmd = "sqlcmd -Q \"restore database [%s] from disk='%s' with replace\"" % (db, path)
     try:
@@ -39,6 +39,6 @@ def restore(db="NewBTP", file_name=None):
         log_execption()
     
 if __name__ == "__main__":
-    backup()
+    restore(file_name="D:\\NewBTP_2011_09_25_02_59_41.bak")
     #restore(file_name="2011_09_10/round_update_handler_2011_09_10_10_35_03.bak")
     
