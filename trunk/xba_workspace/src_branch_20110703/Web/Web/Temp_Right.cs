@@ -377,6 +377,7 @@
             this.btnSend.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSendMsg.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSetReputation.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnSendB.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
 
             switch (SessionItem.GetRequest("Type", 1).ToString().Trim())
             {

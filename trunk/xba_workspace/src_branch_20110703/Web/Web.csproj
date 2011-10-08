@@ -153,6 +153,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\DBData\BTPXBATopManager.cs" />
+    <Compile Include="Web\DBData\BTPStockManager.cs" />
+    <Compile Include="Web\DBData\BTPXGuessManager.cs" />
     <Compile Include="Web\Helper\Config.cs" />
     <Compile Include="Web\Helper\IniUtil.cs" />
     <Compile Include="Web\Helper\MainXmlHelper.cs" />
@@ -1283,7 +1285,10 @@
     <Compile Include="Web\NPCMatchCenter.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\副本 Login.cs">
+    <Compile Include="Web\Stock.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\XGuess.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <EmbeddedResource Include="Test.WebHttp.Request.resources" />

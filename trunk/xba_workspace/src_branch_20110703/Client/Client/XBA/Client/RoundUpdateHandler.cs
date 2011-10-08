@@ -230,6 +230,8 @@ namespace Client.XBA.Client
                             continue;
                         }
 
+                        int shirtProfit = 0;
+
                         if (clubIDA == clubID)
                         {
                             /*主队*/
@@ -238,6 +240,11 @@ namespace Client.XBA.Client
                             if (homeClubHScore > homeClubAScore)
                             {
                                 win = true;
+                                shirtProfit = 110;
+                            }
+                            else
+                            {
+                                shirtProfit = 60;
                             }
                             DataRow stadium = BTPStadiumManager.GetStadiumRowByClubID(clubID);
                             int ticketPrice = Convert.ToInt32(stadium["TicketPrice"]);
@@ -259,10 +266,31 @@ namespace Client.XBA.Client
                             this.SetTicketSoldInfoToMainXML(matchId, ticketSold, ticketPriceMoney);
 
                         }
+                        else
+                        {
+                            /*不是主队,并且是客队赢*/
+                            if (homeClubAScore > homeClubHScore)
+                            {
+                                shirtProfit = 110;
+                            }
+                            else
+                            {
+                                shirtProfit = 60;
+                            }
 
+                        }
+
+                        DataRow account = BTPAccountManager.GetAccountRowByUserID(userID); 
+                        int intPayType = Convert.ToInt32(account["PayType"]);
+
+                        /*会员总是110*/
+                        if(intPayType == 1)
+                        {
+                            shirtProfit = 110;
+                        }
 
                         /*球衣收入*/
-                        int shirtSumMoney = shirtSum * 20;
+                        int shirtSumMoney = shirtSum * shirtProfit;
 
                         //BTPFinanceManager.AddFinance(userID, 1, 5, shirtSumMoney, 1, "球衣销售收入。");
                         BTPAccountManager.AddMoneyWithFinance(shirtSumMoney, userID, 5, "球衣销售收入。");

@@ -18,6 +18,7 @@
         protected HtmlInputHidden hidClothes;
         protected HtmlInputHidden hidLogo;
         private int intUserID;
+        private int intRecomuserID;
         public StringBuilder sbList = new StringBuilder("");
         public string strErrClubName;
         public string strMsg;
@@ -99,7 +100,7 @@
                         this.strNickName = onlineRowByUserID["NickName"].ToString().Trim();
                         bool blnSex = (bool) onlineRowByUserID["Sex"];
                         str7 = onlineRowByUserID["DiskURL"].ToString().Trim();
-                        BTPAccountManager.AddFullAccount(this.intUserID, pToEncrypt, this.strNickName, str2, blnSex, 0, str7 + "/", str6, str5, str4, strQQ);
+                        BTPAccountManager.AddFullAccount(this.intUserID, pToEncrypt, this.strNickName, str2, blnSex, 0, str7 + "/", str6, str5, str4, strQQ, this.intRecomuserID);
                         if (ROOTUserGameManager.AddUserGame(this.intUserID, ServerParameter.intGameCategory, DBLogin.GameNameEnglish(ServerParameter.intGameCategory)) == 2)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=10116");

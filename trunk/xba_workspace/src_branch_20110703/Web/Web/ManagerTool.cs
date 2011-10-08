@@ -426,7 +426,8 @@
                         //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>";
                         this.strPageIntro = "<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=TOOLS\"' href='ManagerTool.aspx?Type=TOOLS&Page=1'>我的道具</a></li><li class='qian2'>会员商店</li>" + str + "</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span width=\"89\">&nbsp;</span>";
                         this.tblContainer.Visible = true;
-                        this.strWealthToMoney = "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a>";
+                        //this.strWealthToMoney = "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a>";
+                        this.strWealthToMoney = "<br/><a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a><br/><br/>我的推广链接:<a href=\"http://www.113388.net/Register.aspx?u=" + this.intUserID + "\" target=\"_blank\">http://www.113388.net/Register.aspx?u=" + this.intUserID + "</a>";
                         this.SetStoreList();
                         break;
 
@@ -436,7 +437,8 @@
                         this.tblContainer.Visible = true;
                         this.tblWealth.Visible = true;
                         this.SetWealthManage();
-                        this.strWealthToMoney = "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a>";
+                        //this.strWealthToMoney = "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a><br/>我的推广链接:<a href=\"http://www.113388.net/Register.aspx?u=" + this.intUserID + "\" target=\"_blank\">http://www.113388.net/Register.aspx?u=" + this.intUserID + "</a>";
+                        this.strWealthToMoney = "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a><br/>我的推广链接:<a href=\"http://www.113388.net/Register.aspx?u=" + this.intUserID + "\" target=\"_blank\">http://www.113388.net/Register.aspx?u=" + this.intUserID + "</a>";
                         break;
 
                     case "USEBOX":

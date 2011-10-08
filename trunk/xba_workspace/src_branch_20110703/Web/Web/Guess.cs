@@ -214,6 +214,10 @@
         {
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
             this.Imagebutton1.Click += new ImageClickEventHandler(this.Imagebutton1_Click);
+
+            this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.GIF";
+            this.Imagebutton1.ImageUrl = SessionItem.GetImageURL() + "button_13.GIF";
+
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -376,11 +380,13 @@
                     {
                         this.sbGuess.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                         this.sbGuess.Append("<td align=center>" + str + "</td><td width=143 align=center>" + str2 + "<br><font color='#ff6600'>[" + str6 + "]</font></td><td width=50 align=center>VS<br>" + str8 + "</td>");
-                        this.sbGuess.Append("<td width=143 align=center>" + str3 + "<br><font color='#ff6600'>[" + str7 + "]</font></td><td align=center>" + str4 + "</td>");
+                        //str4this.sbGuess.Append("<td width=143 align=center>" + str3 + "<br><font color='#ff6600'>[" + str7 + "]</font></td><td align=center>" + str4 + "</td>");
+                        this.sbGuess.Append("<td width=143 align=center>" + str3 + "<br><font color='#ff6600'>[" + str7 + "]</font></td>");
                         this.sbGuess.Append("<td align=center>" + StringItem.FormatDate(datIn, "MM-dd<br>hh:mm") + "</td><td align=center>" + str5 + "</td></tr>");
                         this.sbGuess.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                     }
                 }
+               
                 //reader.Close();
             }
             else
@@ -513,7 +519,8 @@
                     }
                     this.sbGuess.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbGuess.Append("<td align=center>" + str2 + "</td><td width=103 align=center>" + str3 + "<br><font color='#ff6600'>[" + str8 + "]</font></td><td width=50 align=center>VS<br>" + str + "</td>");
-                    this.sbGuess.Append("<td width=103 align=center>" + str4 + "<br><font color='#ff6600'>[" + str9 + "]</font></td><td align=center width=80 >" + str7 + "</td><td align=center>" + str5 + "</td>");
+                    //this.sbGuess.Append("<td width=103 align=center>" + str4 + "<br><font color='#ff6600'>[" + str9 + "]</font></td><td align=center width=80 >" + str7 + "</td><td align=center>" + str5 + "</td>");
+                    this.sbGuess.Append("<td width=103 align=center>" + str4 + "<br><font color='#ff6600'>[" + str9 + "]</font></td><td align=center width=80 >" + str7 + "</td>");
                     this.sbGuess.Append("<td align=center>" + StringItem.FormatDate(datIn, "MM-dd<br>hh:mm") + "</td><td align=center>" + str6 + "</td></tr>");
                     this.sbGuess.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='8'></td></tr>");
                 }

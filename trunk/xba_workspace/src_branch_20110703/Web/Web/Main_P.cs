@@ -46,6 +46,11 @@
                         this.strRightURL = "Intro/Union.htm";
                         goto Label_08CA;
 
+                    case "STOCK":
+                        this.strCenterURL = "Stock.aspx?Page=1&Type=COMPANY";
+                        this.strRightURL = "Intro/Stock.htm";
+                        goto Label_08CA;
+
                     case "UNIONFIELD":
                         this.strCenterURL = "UnionField.aspx?Type=FIELDLIST";
                         this.strRightURL = "Intro/UnionField.htm";
@@ -74,6 +79,11 @@
                     case "GUESS":
                         this.strCenterURL = "Guess.aspx?Type=CHAMPIONREG";
                         this.strRightURL = "Intro/GuessCenter.htm";
+                        goto Label_08CA;
+
+                    case "XGUESS":
+                        this.strCenterURL = "XGuess.aspx?Type=CLUBLIST";
+                        this.strRightURL = "Intro/XGuessCenter.htm";
                         goto Label_08CA;
 
                     case "WEALTHMARKET":

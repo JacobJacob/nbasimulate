@@ -1,6 +1,7 @@
 ﻿namespace Web
 {
     using System;
+    using System.Data;
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using Web.DBData;
@@ -24,6 +25,7 @@
         public string strErrInviteCode;
         public string strMsg;
         public string strPageIntro;
+        public int intRecomUserID;
         protected TextBox tbCity;
         protected TextBox tbEmail;
         protected TextBox tbIntroNickName;
@@ -50,6 +52,10 @@
             string strProvince = this.ddlProvince.SelectedValue;
             string str12 = StringItem.SetValidWord(this.tbSay.Text);
             //string strInviteCode = this.tbInviteCode.Text;
+            if(str7 != null)
+            {
+                str7 = str7.Trim();
+            }
             bool flag2 = false;
             if (!StringItem.IsValidLogin(text))
             {
@@ -150,11 +156,19 @@
                         flag2 = true;
                         break;
                 }
-                //if ((str7 != "") && !ROOTUserManager.HasNickName(str7))
-                //{
-                //    this.strErrIntroNickName = "<font color='#FF0000'>*您输入的介绍人并不存在，请重新输入或留空！</font>";
-                //    flag2 = true;
-                //}
+                if ((str7 != ""))
+                {
+                    DataRow recomUserRow = BTPAccountManager.GetAccountRowByNickName(str7.Trim());
+                    if (recomUserRow == null)
+                    {
+                        this.strErrIntroNickName = "<font color='#FF0000'>*您输入的介绍人并不存在，请重新输入或留空！</font>";
+                        flag2 = true;
+                    }
+                    else
+                    {
+                        this.intRecomUserID = Convert.ToInt32(recomUserRow["UserID"]);
+                    }
+                }
                 //if (DateTime.Now.AddMinutes(-60.0) < ROOTUserManager.GetLatestRegTimeByIP(base.Request.ServerVariables["REMOTE_ADDR"]))
                 //{
                 //    this.strMsg = "<font color='#FF0000'>使用同一IP注册间隔时间必须在60分钟以上。</font>";
@@ -175,7 +189,7 @@
                     try
                     {
                         int userId = BTPAccountManager.GetMaxUserID();
-                        BTPAccountManager.AddFullAccount(userId, text, htmlEncode, strIn, blnSex, 0, strDiskURL, "", strProvince, str5, "");
+                        BTPAccountManager.AddFullAccount(userId, text, htmlEncode, strIn, blnSex, 0, strDiskURL, "", strProvince, str5, "", this.intRecomUserID);
                         //BTPAccountManager.UpdateInviteCodeUsed(strInviteCode);
                         flag3 = true;
                     }
@@ -226,6 +240,18 @@
                 this.strMsg = "请严格按照注释填写下列各项。";
             }
             this.btnNext.ImageUrl = SessionItem.GetImageURL() + "button_11.GIF";
+
+            int recomUserID = (int)SessionItem.GetRequest("u", 0);
+            if (recomUserID > 0)
+            {
+                DataRow recomUser = BTPAccountManager.GetAccountRowByUserID(recomUserID);
+                if (recomUser != null)
+                {
+                    this.tbIntroNickName.Text = Convert.ToString(recomUser["NickName"]);
+                }
+
+            }
+
         }
 
         private void Page_Load(object sender, EventArgs e)

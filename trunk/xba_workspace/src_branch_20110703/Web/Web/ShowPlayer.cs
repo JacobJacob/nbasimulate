@@ -905,7 +905,25 @@
             this.strInfo = this.strInfo + "<table style='padding:0px;margin:0px' width='201' border='0' cellspacing='0' cellpadding='0'><tr>";
             if (str == "")
             {
-                if (this.intCategory == 1)
+                if (this.intCategory == 6)
+                {
+                    if (this.intCheck == 0)
+                    {
+                        strInfo = this.strInfo;
+                        this.strInfo = strInfo + "<td align='left'>" + str2 + "</td><td align='right' style='padding-right:5px'>" + this.strLinkURL + "</td>";
+                    }
+                    else if ((this.intClubID3 != intClubID) && (this.intClubID5 != intClubID))
+                    {
+                        obj2 = this.strInfo;
+                        this.strInfo = string.Concat(new object[] { obj2, "<td height='18' style='padding:4px;'><a href='ShowClub.aspx?UserID=", num7, "&Type=", this.intType, "'>返回</a></td><td style='padding:4px;' align='right'>", this.strLinkURL, "</td>" });
+                    }
+                    else
+                    {
+                        obj2 = this.strInfo;
+                        this.strInfo = string.Concat(new object[] { obj2, "<td height='18' style='padding:4px;' colspan='2'><a href='ShowClub.aspx?UserID=", num7, "&Type=", this.intType, "'>返回</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", this.strLinkURL, "</td>" });
+                    }
+                }
+                else if (this.intCategory == 1)
                 {
                     if (this.intCheck == 1)
                     {

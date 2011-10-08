@@ -48,12 +48,12 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "AddDevInCome", commandParameters);
         }
 
-        public static void AddFullAccount(int intUserID, string strUserName, string strNickName, string strPassword, bool blnSex, int intPayType, string strDiskURL, string strBirth, string strProvince, string strCity, string strQQ)
+        public static void AddFullAccount(int intUserID, string strUserName, string strNickName, string strPassword, bool blnSex, int intPayType, string strDiskURL, string strBirth, string strProvince, string strCity, string strQQ, int intRecomUserID)
         {
             string name = new NameGenerator().GetName();
             string str2 = RandomItem.rnd.Next(1, 9).ToString();
-            string commandText = "Exec NewBTP.dbo.AddFullAccount @UserID,@UserName,@NickName,@SecName,@SecFace,@Password,@Sex,@PayType,@DiskURL,@Birth,@Province,@City,@QQ";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@SecName", SqlDbType.NVarChar, 20), new SqlParameter("@SecFace", SqlDbType.NVarChar, 20), new SqlParameter("@Password", SqlDbType.NChar, 20), new SqlParameter("@Sex", SqlDbType.Bit, 1), new SqlParameter("@PayType", SqlDbType.TinyInt, 1), new SqlParameter("@DiskURL", SqlDbType.NVarChar, 50), new SqlParameter("@Birth", SqlDbType.NChar, 10), new SqlParameter("@Province", SqlDbType.NChar, 20), new SqlParameter("@City", SqlDbType.NChar, 20), new SqlParameter("@QQ", SqlDbType.NChar, 20) };
+            string commandText = "Exec NewBTP.dbo.AddFullAccount @UserID,@UserName,@NickName,@SecName,@SecFace,@Password,@Sex,@PayType,@DiskURL,@Birth,@Province,@City,@QQ,@RecomUserID";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@SecName", SqlDbType.NVarChar, 20), new SqlParameter("@SecFace", SqlDbType.NVarChar, 20), new SqlParameter("@Password", SqlDbType.NChar, 20), new SqlParameter("@Sex", SqlDbType.Bit, 1), new SqlParameter("@PayType", SqlDbType.TinyInt, 1), new SqlParameter("@DiskURL", SqlDbType.NVarChar, 50), new SqlParameter("@Birth", SqlDbType.NChar, 10), new SqlParameter("@Province", SqlDbType.NChar, 20), new SqlParameter("@City", SqlDbType.NChar, 20), new SqlParameter("@QQ", SqlDbType.NChar, 20), new SqlParameter("@RecomUserID", SqlDbType.Int, 4) };
             commandParameters[0].Value = intUserID;
             commandParameters[1].Value = strUserName;
             commandParameters[2].Value = strNickName;
@@ -67,6 +67,7 @@
             commandParameters[10].Value = strProvince;
             commandParameters[11].Value = strCity;
             commandParameters[12].Value = strQQ;
+            commandParameters[13].Value = intRecomUserID;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 

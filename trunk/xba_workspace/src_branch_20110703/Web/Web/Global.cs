@@ -671,6 +671,23 @@
             htError.Add("915", new Error("您好，您已经领取过奖品，将不能重复领取！", "NULL", "NULL"));
             htError.Add("916", new Error("对不起，您的游戏币不足，不能签VIP短合同！", "NULL", "NULL"));
             htError.Add("917", new Error("本次续约成功！3轮之内该球员的工资要求为正常工资的80%！", "PlayerCenter.aspx?Type=5", "THIS"));
+
+            /*-1 对方不是会员 -2 价钱不够, -3 已经持有股票, -4经理不存在, -5市值低于200W -6自己不是会员*/
+            htError.Add("SE01", new Error("该经理不是会员，无法购买其股票。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE02", new Error("你的资金不足。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE03", new Error("你已经持有该经理的股票，无法再购买。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE04", new Error("该经理尚未上市。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE05", new Error("该经理市值低于200万，无法购买。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE06", new Error("你不是会员，无法购买股票。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SS01", new Error("已成功购入该股票，您可以在我的股票列表中查看。", "Stock.aspx?Type=COMPANY", "THIS"));
+
+            htError.Add("XGE01", new Error("您的资金不足，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
+            htError.Add("XGE02", new Error("该竞猜已经超时，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
+            htError.Add("XGE03", new Error("该竞猜不存在，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
+            htError.Add("XGS01", new Error("已经成功下注，您可以在我的竞猜中查看所有竞猜历史。", "XGuess.aspx?Type=MYGUESS", "THIS"));
+
+
+           
         }
 
         private void InitializeComponent()

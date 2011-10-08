@@ -54,6 +54,7 @@
         private int intMarket;
         private int intMarketLevel = 8;
         private int intPayType;
+        private int intXGuessID;
         public int intPayWealth = 0;
         private int intPlayer5Number;
         private int intPlayerCategory;
@@ -68,6 +69,7 @@
         private int intType;
         private int intUnionID;
         private int intUserID;
+        private int intStockUserID;
         private int intWealth;
         private long lgMoney;
         public long longPlayerID;
@@ -95,6 +97,7 @@
         protected TextBox tbBidPrice;
         protected TextBox tbBidPrice5;
         protected TextBox tbBuyCount;
+        protected TextBox tbXGuessAmount;
         protected HtmlTable tbBuyOrder;
         protected TextBox tbBuyPrice;
         protected HtmlTable tbChooseClub;
@@ -130,6 +133,7 @@
         protected HtmlTableRow trPresent;
         protected HtmlTableRow trRefashion;
         protected HtmlTableRow trSafe;
+        protected HtmlTable tblXGuess;
 
         private void AddADLink()
         {
@@ -5689,6 +5693,15 @@
                         case "ADDFRIEND":
                             this.AddFriend();
                             break;
+
+                        case "BUYSTOCK":
+                            this.BuyStock();
+                            break;
+
+                        case "XGUESS":
+                            this.BetXGuess();
+                            break;
+
                     }
                 }
                 base.Load += new EventHandler(this.Page_Load);
@@ -8171,6 +8184,155 @@
                 }
             }
         }
+
+        /*买入股票*/
+
+        private void BuyStock()
+        {
+            this.intStockUserID = (int)SessionItem.GetRequest("StockUserID", 0);
+            DataRow stockUserRow = BTPAccountManager.GetAccountRowByUserID(this.intStockUserID);
+
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            if (accountRowByUserID == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else
+            {
+                this.lgMoney = (long)accountRowByUserID["Money"];
+            }
+
+            if (intStockUserID <= 0 || stockUserRow == null)
+            {
+                this.strSay = this.strNickName + "经理，您好！请确认要购入的股票！";
+            }
+            else
+            {
+                string stockUserName = (string)stockUserRow["NickName"];
+                int intPayType = Convert.ToInt32(stockUserRow["PayType"]);
+                int intTeamDay = BTPStockManager.GetStockTeamDay(this.intUserID, intStockUserID);
+                int price = BTPStockManager.GetUserStockPrice(intStockUserID);
+                int perPrice = price / 20;
+                if (intTeamDay > 0)
+                {
+                    this.strSay = this.strNickName + "经理您好，您已经拥有" + stockUserName + "经理的股份，不可以再购入";
+
+                }
+                else if (intPayType == 0)
+                {
+                    this.strSay = this.strNickName + "经理您好，" + stockUserName + "经理不是会员，你不可以购入他的股票";
+                }
+                else if (price < 2000000)
+                {
+                    this.strSay = this.strNickName + "经理您好，" + stockUserName + "经理市值小于200万，你不可以购入他的股票";
+                }
+                else if (this.lgMoney < perPrice)
+                {
+                    this.strSay = this.strNickName + "经理您好，您的资金不足以购买该股票" + this.lgMoney;
+                }
+                else
+                {
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，购入", stockUserName, "经理的股票将花费你资金:", perPrice, "，您确定要购入吗？" });
+                    this.btnOK.Visible = true;
+                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BUYSTOCK);
+                    
+                }
+            }
+        }
+
+        private void btnOK_Click_BUYSTOCK(object sender, ImageClickEventArgs e)
+        {
+            int intRetValue = BTPStockManager.BuyStock(this.intUserID, this.intStockUserID);
+            switch(intRetValue)
+            { 
+                case -1:
+                    base.Response.Redirect("Report.aspx?Parameter=SE01");
+                    break;
+                case -2:
+                    base.Response.Redirect("Report.aspx?Parameter=SE02");
+                    break;
+                case -3:
+                    base.Response.Redirect("Report.aspx?Parameter=SE03");
+                    break;
+                case -4:
+                    base.Response.Redirect("Report.aspx?Parameter=SE04");
+                    break;
+                case -5:
+                    base.Response.Redirect("Report.aspx?Parameter=SE05");
+                    break;
+                case -6:
+                    base.Response.Redirect("Report.aspx?Parameter=SE06");
+                    break;
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=SS01");
+                    break;
+            }
+            //base.Response.Redirect("Report.aspx?Parameter=P102!Type.3");
+        }
+
+        private void BetXGuess()
+        {
+            this.intXGuessID = (int)SessionItem.GetRequest("GuessID", 0);
+
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            if (accountRowByUserID == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+                return;
+            }
+
+            this.tblXGuess.Visible = true;
+            this.strSay = "请输入下注金额";
+            this.btnOK.Visible = true;
+            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BETXGUESS);
+
+          
+         
+        }
+
+        private void btnOK_Click_BETXGUESS(object sender, ImageClickEventArgs e)
+        {
+            int intAmount = 0;
+            try
+            {
+                intAmount = Convert.ToInt32(this.tbXGuessAmount.Text);
+            }
+            catch (Exception exception)
+            {
+                intAmount = 0;
+                exception.ToString();
+                this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
+                return;
+            }
+
+            if (intAmount < 100000)
+            {
+                this.strSay = this.strNickName + "经理，您最少要下注100000资金。";
+                return;
+
+            }
+
+            int intRetValue = BTPXGuessManager.BetXGuess(this.intUserID, this.intXGuessID, intAmount);
+            switch (intRetValue)
+            {
+                case -1:
+                    this.strSay = this.strNickName + "经理，咱们俱乐部可没这么多资金啊。";
+                    break;
+                case -2:
+                    base.Response.Redirect("Report.aspx?Parameter=XGE02");
+                    break;
+                case -3:
+                    base.Response.Redirect("Report.aspx?Parameter=XGE03");
+                    break;
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=XGS01");
+                    break;
+            }
+            //base.Response.Redirect("Report.aspx?Parameter=P102!Type.3");
+        }
+
+
+
     }
 }
 
