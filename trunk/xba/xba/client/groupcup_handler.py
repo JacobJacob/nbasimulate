@@ -6,7 +6,7 @@ import os
 from xba.config import CLIENT_EXE_PATH
 from subprocess import Popen, PIPE
 
-from xba.business import game_manager, xcup_manager
+from xba.business import game_manager, xcup_manager, xguess_manager
 from xba.common.decorators import ensure_success
 from xba.common.cupladder import CupLadder, CupLadderRoundMatch
 from base import BaseClient
@@ -171,6 +171,7 @@ class GroupCupHandler(BaseClient):
                 
             if is_last_round: 
                 self.finish_xcup(xcup_info, champion_user_id, champion_club_id, champion_club_name)
+                self.xguess_settled(champion_club_id)
             else:
                 self.set_round_by_xcupid(xcup_id, round + 1)
      
@@ -178,6 +179,11 @@ class GroupCupHandler(BaseClient):
     def finish_xcup(self, xcup_info, champion_user_id, champion_club_id, champion_club_name):
         """冠军杯完成"""
         return xcup_manager.finish_xcup(xcup_info, champion_user_id, champion_club_id, champion_club_name)
+    
+    @ensure_success 
+    def xguess_settled(self, champion_club_id):
+        """冠军杯冠军平盘"""
+        return xguess_manager.xguess_settled(champion_club_id)
                 
     def write_html(self, xcup_id, name, logo, save_path, round):
         """write html"""
