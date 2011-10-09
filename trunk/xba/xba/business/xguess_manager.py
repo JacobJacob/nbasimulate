@@ -5,6 +5,43 @@ import random
 
 from xba.common.sqlserver import connection
 from xba.common.stringutil import ensure_gbk
+
+def xguess_settled(win_club_id):
+    """冠军杯竟猜结算"""
+    cursor = connection.cursor()
+    try:
+        cursor.start_transaction()
+        sql = "SELECT * FROM BTP_XGuessRecord WHERE Status=1"
+        cursor.execute(sql)
+        infos = cursor.fetchall()
+        if infos:
+            for info in infos:
+                guess_record_id = info["GuessRecordID"]
+                club_id = info["ClubID"]
+                user_id = info["UserID"]
+                odds = info["Odds"]
+                money = info["Money"]
+                if club_id == win_club_id:
+                    win_money = int(money * odds)
+                    content = u"恭喜你冠军杯竟猜获胜，获得资金%s" % win_money
+                    add_message_sql = u"Exec AddNewMessage %s,2,0,'秘书报告', '%s'" % (user_id, content)
+                    add_message_sql = ensure_gbk(add_message_sql)
+                    cursor.execute(add_message_sql)
+                    add_finance_sql = u" Exec AddFinance %s,1,5,%s,1, '冠军杯竟猜获胜'" % (user_id, win_money)
+                    add_finance_sql = ensure_gbk(add_finance_sql)
+                    cursor.execute(add_finance_sql)
+                    add_money_sql = "UPDATE BTP_Account SET Money=Money+%s WHERE UserID=%s" % (win_money, user_id)
+                    cursor.execute(add_money_sql)
+                    cursor.execute("UPDATE BTP_XGuessRecord SET Status=2 WHERE GuessRecordID=%s" % guess_record_id)
+                else:
+                    cursor.execute("UPDATE BTP_XGuessRecord SET Status=3 WHERE GuessRecordID=%s" % guess_record_id)
+        cursor.commit()
+    except:
+        cursor.rollback()
+        raise
+    finally:
+        cursor.close()
+   
         
 def add_xguess(user_id, club_id, club_name, odds, cursor=None):
     """添加竞猜球队"""
@@ -64,5 +101,4 @@ def add_xgame_team_to_xguess():
         
         
 if __name__ == "__main__":
-    #add_xgame_team_to_xguess()
     pass
