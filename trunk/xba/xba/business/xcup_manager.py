@@ -8,18 +8,19 @@ from xba.config import WEB_ROOT, DOMAIN
 from datetime import datetime, timedelta
 from xba.common.reward import Reward
 from xba.common.cupladder import CupLadder, CupLadderRoundMatch
+from xba.common.stringutil import ensure_gbk
 
 match_maps = [
-[[1, 6], [2, 5], [3, 4]],               
-[[1, 5], [6, 4], [2, 3]], 
-[[1, 4], [5, 3], [6, 2]], 
-[[1, 3], [4, 2], [5, 6]], 
-[[1, 2], [3, 6], [4, 5]], 
-[[4, 3], [5, 2], [6, 1]], 
-[[5, 1], [3, 2], [6, 4]], 
-[[4, 1], [3, 5], [2, 6]], 
-[[3, 1], [4, 2], [6, 5]], 
-[[2, 1], [6, 3], [5, 4]],             
+[[1, 6], [2, 5], [3, 4]],
+[[1, 5], [6, 4], [2, 3]],
+[[1, 4], [5, 3], [6, 2]],
+[[1, 3], [4, 2], [5, 6]],
+[[1, 2], [3, 6], [4, 5]],
+[[4, 3], [5, 2], [6, 1]],
+[[5, 1], [3, 2], [6, 4]],
+[[4, 1], [3, 5], [2, 6]],
+[[3, 1], [4, 2], [6, 5]],
+[[2, 1], [6, 3], [5, 4]],
 ]
 
 from xba.common.sqlserver import connection
@@ -36,8 +37,8 @@ def arrange_group(xcup_id):
         for i, info in enumerate(infos):
             xgroup_team_id = info["XGroupTeamID"]
             club_id = info["ClubID"]
-            group_index = (i / 6 ) + 1
-            team_index = (i % 6 ) + 1
+            group_index = (i / 6) + 1
+            team_index = (i % 6) + 1
             club_infos = club_info_map.get(group_index, [])
             club_infos.append({"team_index": team_index, "club_id": club_id})
             club_info_map[group_index] = club_infos
@@ -72,6 +73,37 @@ def add_group_match(cursor, category, group_index, round, teama_index, teamb_ind
                (category, group_index, round, teama_index, teamb_index, cluba_id, clubb_id, match_time)
     return cursor.execute(sql)
 
+def init_xgame():
+    """初始化冠军杯"""
+    category = 5
+    capacity = 512
+    reward_xml = '<Reward><Round>1</Round><Money>200000</Money><Reputation>10</Reputation></Reward>' \
+                  '<Reward><Round>2</Round><Money>400000</Money><Reputation>20</Reputation></Reward><Reward>' \
+                  '<Round>3</Round><Money>700000</Money><Reputation>30</Reputation></Reward><Reward><Round>4</Round>' \
+                  '<Money>800000</Money><Reputation>50</Reputation></Reward><Reward><Round>5</Round><Money>900000</Money>' \
+                  '<Reputation>70</Reputation></Reward><Reward><Round>6</Round><Money>1000000</Money><Reputation>90</Reputation>' \
+                  '</Reward><Reward><Round>7</Round><Money>1250000</Money><Reputation>110</Reputation></Reward><Reward><Round>8</Round>' \
+                  '<Money>2500000</Money><Reputation>150</Reputation></Reward><Reward><Round>9</Round><Money>5000000</Money>' \
+                  '<Reputation>200</Reputation></Reward><Reward><Round>100</Round><Money>10000000</Money><Reputation>500</Reputation></Reward>'
+    
+    intro = u'第一轮：奖金200000，联盟威望10。<br>第二轮：奖金400000，联盟威望20。<br>第三轮：奖金700000，联盟威望30。<br>第四轮：奖金800000，联盟威望50。' \
+             '<br>第五轮：奖金900000，联盟威望70。<br>第六轮：奖金1000000，联盟威望90。<br>第七轮：奖金1250000，联盟威望110。<br>第八轮：奖金2500000，联盟威望150。' \
+             '<br>第九轮：奖金5000000，联盟威望200。<br>总冠军：奖金10000000，联盟威望500。<br>'
+                  
+    sql = "EXEC AddGame %s, %s, '%s', '%s'" % (category, capacity, intro, reward_xml)
+    sql = ensure_gbk(sql)
+    cursor = connection.cursor()
+    try:
+        cursor.execute(sql)
+        cursor.execute("UPDATE BTP_XGAME SET LadderURL='XCupLadder/XResult.htm' WHERE Category=5 AND Status=0")
+        cursor.execute("UPDATE BTP_XGAME SET Round=0, Status=0 WHERE XGameID=1")
+        cursor.execute("Truncate Table btp_XGroupMatch")
+        cursor.execute("Truncate Table btp_XGroupTeam")
+        cursor.execute("Truncate Table btp_XCupReg")
+        cursor.execute("Truncate Table btp_XCupMatch")
+    finally:
+        cursor.close()
+
 def get_xgroup_game_by_status(status):
     """根据状态获取xcup,小组赛"""
     cursor = connection.cursor()
@@ -85,7 +117,7 @@ def get_xgroup_big_game_by_status(status):
     """根据状态获取xcup,决赛赛"""
     cursor = connection.cursor()
     try:
-        cursor.execute("select *, convert(text,RewardXML) as RewardXML from btp_xgame where status = %s and category = 5 " % status )
+        cursor.execute("select *, convert(text,RewardXML) as RewardXML from btp_xgame where status = %s and category = 5 " % status)
         return cursor.fetchone()
     finally:
         cursor.close()
@@ -290,7 +322,7 @@ def finish_xcup(xcup_info, user_id, club_id, club_name):
         cursor.execute("EXEC SetXBAStatus %s, %s" % (xcup_id, 3))
         #杯赛奖励
         reward = Reward(reward_xml)
-        rounds = [i for i in range(round+1)]
+        rounds = [i for i in range(round + 1)]
         rounds.append(100)
         for round in rounds:
             sql = "EXEC GetXRegTableByCupIDDeadRound %s, %s" % (xcup_id, round)
@@ -336,7 +368,7 @@ def reward_xcup(xcup_id, round):
     cursor = connection.cursor()
     try:
         cursor.start_transaction()
-        cursor.execute("select *, convert(text,RewardXML) as RewardXML from btp_xgame where XGameID = %s " % xcup_id )
+        cursor.execute("select *, convert(text,RewardXML) as RewardXML from btp_xgame where XGameID = %s " % xcup_id)
         xcup_info = cursor.fetchone()
         #杯赛奖励
         round = xcup_info["Round"]
@@ -381,5 +413,5 @@ def reward_xcup(xcup_id, round):
         cursor.close()
             
 if __name__ == "__main__":
-    reward_xcup(27, 6)
+    init_xgame()
     

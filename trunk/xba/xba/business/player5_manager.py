@@ -8,12 +8,12 @@ from datetime import datetime, timedelta
 from xba.common import log_execption
 
 REG = [
-[145, 55, 10],
-[140, 55, 10],       
-[135, 55, 10],
-[130, 55, 80],
-[125, 55, 100],
-[120, 55, 120],       
+[135, 55, 5],
+[130, 55, 10],       
+[125, 55, 10],
+[120, 55, 80],
+[115, 55, 100],
+[110, 55, 120],       
 ]
 
 def betch_create_player():

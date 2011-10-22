@@ -2,6 +2,7 @@
 
 from pymssql import OperationalError
 from weakref import ref
+from xba.common import log_execption
 
 class Cursor(object):
     def __init__(self, db_cursor, conn):
@@ -25,8 +26,10 @@ class Cursor(object):
         try:
             return self._cursor.execute(operation, *args)
         except OperationalError:
+            print operation
+            log_execption()
             self._need_close_conn = True
-            raise    
+            raise
     
     def fetchone(self):
         try:

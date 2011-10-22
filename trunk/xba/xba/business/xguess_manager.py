@@ -101,4 +101,4 @@ def add_xgame_team_to_xguess():
         
         
 if __name__ == "__main__":
-    pass
+    xguess_settled(46)

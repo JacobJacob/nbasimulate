@@ -25,6 +25,8 @@ def backup(db="NewBTP", file_name=None):
     except:
         log_execption()
         
+    return path
+        
 def restore(db="NewBTP", file_name=None):
     """还原数据库"""
     print PathSettings.DB_BACKUP
@@ -39,6 +41,6 @@ def restore(db="NewBTP", file_name=None):
         log_execption()
     
 if __name__ == "__main__":
-    restore(file_name="D:\\NewBTP_2011_09_25_02_59_41.bak")
+    restore(file_name="D:\\NewBTP_2011_10_22_23_06_42.bak")
     #restore(file_name="2011_09_10/round_update_handler_2011_09_10_10_35_03.bak")
-    
+    #backup()

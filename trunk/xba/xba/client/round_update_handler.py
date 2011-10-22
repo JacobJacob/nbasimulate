@@ -23,8 +23,7 @@ from xba.client import db_backup
 from xba.common.decorators import ensure_success
 from xba.common.constants.club import ClubCategory
 from xba.common import single_process
-from xba.common import extract7z
-from xba.common.ftp_lib import FtpEx
+
 
 class RoundUpdateHandler(BaseClient):
     
@@ -166,23 +165,8 @@ class RoundUpdateHandler(BaseClient):
         
     def back_up(self):
         """备份数据"""
-        path = db_backup.backup(file_name="round_update_handler")
-        target_path = extract7z.zip(path)
-        i = 0
-        return
-        while i < 10 and not DEBUG:
-            try:
-                ftp = self.ftp()
-                self.log("start to upload:%s" % target_path)
-                ftp.upload(target_path)
-                self.log("upload finish")
-                break
-            except:
-                self.log(traceback.format_exc())
-                self.log("upload error")
-                self.sleep(60)
-            i += 1
-            
+        return db_backup.backup(file_name="round_update_handler")
+
     def after_run(self):
         """结束前的收尾动作"""
         self.set_to_next_days()
@@ -327,15 +311,6 @@ class RoundUpdateHandler(BaseClient):
         """设置球队排行榜"""
         return xbatop_manager.set_team_ability()   
           
-    def ftp(self):
-        ftp = FtpEx()
-        ftp.host = "174.128.236.188"
-        ftp.user = "28036"
-        ftp.password = "821015"
-        ftp.set_pasv(False)
-        ftp.ensure_login()
-        return ftp
- 
 def main():
     s = single_process.SingleProcess("RoundUpdateHandler")
     s.check()

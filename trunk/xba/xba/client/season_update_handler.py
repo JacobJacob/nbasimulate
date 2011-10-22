@@ -4,7 +4,7 @@
 from xba.config import CLIENT_EXE_PATH
 
 from xba.business import player5_manager, player3_manager, account_manager,\
-    tool_manager
+    tool_manager, xcup_manager, xbatop_manager
 from xba.business import dev_match_manager
 from xba.business import game_manager
 from xba.business import finance_manager
@@ -26,6 +26,10 @@ class SeasonUpdateHandler(BaseClient):
     def work(self):
         self.log("season update start")
         
+        #更新球队综合
+        self.set_team_ability()
+        
+        #分配选秀卡
         self.assign_choose_car()
         
         #统计赛季财政
@@ -92,6 +96,9 @@ class SeasonUpdateHandler(BaseClient):
         #更新结束,设置赛季开始
         self.season_update_finish()
         
+        #冠军杯初始化 
+        self.init_xgame()
+        
         #赛季收税
         self.payment_all()
         
@@ -100,6 +107,7 @@ class SeasonUpdateHandler(BaseClient):
 
         return "exist"
     
+    @ensure_success
     def player_retire(self):
         """球员退役处理"""
         player3_infos = player3_manager.get_player3_pre_retire()
@@ -122,30 +130,40 @@ class SeasonUpdateHandler(BaseClient):
         """球员退役发消息"""
         self.call_cmd("%s %s %s " % (CLIENT_EXE_PATH, 'season_update_handler', 1))
         
-    
+    @ensure_success
     def change_player_from_arrange5(self, player_id, club_id, category):
         command = "%s %s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", player_id, club_id, category)
         self.call_cmd(command)
             
+    @ensure_success
     def before_run(self):
         self.__dev_level_sum = self.get_total_level()
         game_info = self.get_game_info()
         self.__season = game_info["Season"]
         self.log("total dev level sum is %s" % self.__dev_level_sum)
         
+    @ensure_success
     def season_update_finish(self):
         """赛季更新结束"""
         game_manager.set_to_next_days()
         game_manager.set_season()
     
+    @ensure_success
     def get_total_level(self):
         """获取联赛等级数"""
         return game_manager.get_game_info()["DevLevelSum"]
     
+    @ensure_success
     def delete_all_matches(self):
         """删除所有联赛比赛"""
         return dev_match_manager.delete_all_matches()
     
+    @ensure_success
+    def set_team_ability(self):
+        """更新球队综合"""
+        return xbatop_manager.set_team_ability()
+    
+    @ensure_success
     def reset_dev(self):
         """将各级联赛的球队尽量集中在一起"""
         self.log("start reset dev")
@@ -153,10 +171,12 @@ class SeasonUpdateHandler(BaseClient):
             self.log("start to reset level:%s" % level)
             self.reset_level_dev(level)
             
+    @ensure_success
     def change_player_from_arrange(self, playerid, clubid, category):
         command = "%s %s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", playerid, clubid, category)
         self.call_cmd(command)
                 
+    @ensure_success
     def reset_level_dev(self, level):
         """将某一等级的俱乐部往前排"""
         club_infos = self.get_dev_table_by_level(level)
@@ -173,6 +193,11 @@ class SeasonUpdateHandler(BaseClient):
                 else:
                     #从后面拿不到一支有俱乐部的dev，则退出
                     return
+    
+    @ensure_success            
+    def init_xgame(self):
+        """冠军杯初始化"""
+        return xcup_manager.init_xgame()
                 
     @ensure_success
     def betch_create_player(self):
@@ -197,15 +222,18 @@ class SeasonUpdateHandler(BaseClient):
         """赛季财政统计"""
         return finance_manager.total_season_finance(self.__season)
            
+    @ensure_success
     def delete_turn_finance(self):
         """删除每天财政"""
         return finance_manager.delete_turn_finance(self.__season)
             
+    @ensure_success
     def assign_dev(self):
         """初始化联赛"""
         self.log("start assign dev")
         return dev_manager.assign_dev()
     
+    @ensure_success
     def dev_match_assign(self):
         """安排所有比赛"""
         #删除所有比赛
@@ -217,15 +245,18 @@ class SeasonUpdateHandler(BaseClient):
                 dev_code = self.get_dev_code_by(level, sort)
                 self.do_dev_match_assign(dev_code)
                 
+    @ensure_success
     def do_dev_match_assign(self, dev_code):
         """为某个联赛安排比赛"""
         handler = DevMatchHandler()
         handler.do_dev_assign(dev_code)
     
+    @ensure_success
     def exchange_two_dev(self, club_info_one, club_info_two):
         """交换两支球队"""
         return dev_manager.exchange_two_dev(club_info_one, club_info_two)
         
+    @ensure_success
     def get_last_club_info(self, dev_code, club_infos):
         """获取最后一支球队"""
         i = len(club_infos)
@@ -315,6 +346,7 @@ class SeasonUpdateHandler(BaseClient):
                 #self.log("start to handle dev[%s]" % dev_code)
                 self.handle_dev(dev_code)
                 
+    @ensure_success
     def handle_dev(self, dev_code):
         """处理联赛"""
         club_infos = dev_manager.get_dev_clubs(dev_code)
@@ -352,6 +384,7 @@ class SeasonUpdateHandler(BaseClient):
         """联赛降级"""
         return dev_manager.degrade_dev(dev_info, sort)
             
+    @ensure_success
     def get_dev_code_by(self, level, sort):
         """根据联赛等 级和序号获取dev code"""
         if level == 1:
@@ -399,12 +432,14 @@ class SeasonUpdateHandler(BaseClient):
         """发放冠军杯邀请"""
         return account_manager.assign_xgame_card_with_devsort()
     
+    @ensure_success
     def fill_not_full_dev(self):
         """把高级的缺人的联赛填满"""
         for level in range(1, self.__dev_level_sum):
             self.log("start to fill level:%s" % level)
             self.do_fill_one_not_full_dev(level)
           
+    @ensure_success
     def do_fill_one_not_full_dev(self, level):
         """把高级的缺人的联赛填满"""
         dev_infos = dev_manager.get_dev_table_by_total(level)
