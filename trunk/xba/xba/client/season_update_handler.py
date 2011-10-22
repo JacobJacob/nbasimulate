@@ -348,7 +348,7 @@ class SeasonUpdateHandler(BaseClient):
     @ensure_success
     def handle_dev(self, dev_code):
         """处理联赛"""
-        club_infos = dev_manager.get_dev_clubs(dev_code)
+        club_infos = dev_manager.get_dev_clubs(dev_code, True)
         club_count = 0
         for club_info in club_infos:
             if club_info["ClubID"] > 0:
@@ -443,33 +443,60 @@ class SeasonUpdateHandler(BaseClient):
         """把高级的缺人的联赛填满"""
         dev_infos = dev_manager.get_dev_table_by_total(level)
         if not dev_infos:
-            self.log("not dev infos, return")
+            self.log("not dev infos, cehck has up level?")
+            #如果有上一级联,则下一级最少有一个联赛
+            dev_infos = dev_manager.get_dev_table_by_total(level-1)
+            if dev_infos:
+                self.file_one_dev(level, "0" * (level - 1))
             return
         for dev_info in dev_infos:
             devcode, total = dev_info["devcode"], dev_info["total"]
             if total != 14:
-                infos = dev_manager.get_dev_clubs(devcode)
-                for info in infos:
-                    clubid = info["ClubID"]
-                    if clubid <= 0:
-                        self.log("has club id less 0")
-                        #从下一级拿一级最高综合的球队
-                        user_infos = account_manager.get_one_level_max_team(level+1)
-                        self.log("get %s user infos" % len(user_infos))
-                        for user_info in user_infos:
-                            if user_info and user_info["UserID"]:
-                                new_dev_info = dev_manager.get_dev_info_by_userid(user_info["UserID"])
-                                self.log("start to change %s(%s), %s(%s)" % (info["DevCode"], info["DevID"], new_dev_info["DevCode"], new_dev_info["DevID"]))
-                                self.exchange_two_dev(info, new_dev_info)
-                                break
-                                
+                self.file_one_dev(level, devcode)
+     
+    def file_one_dev(self, level, devcode):
+        """填充一个联赛"""
+        infos = dev_manager.get_dev_clubs(devcode)
+        for info in infos:
+            clubid = info["ClubID"]
+            if clubid <= 0:
+                self.log("has club id less 0")
+                #从下一级拿一级最高综合的球队
+                user_infos = account_manager.get_one_level_max_team(level+1)
+                self.log("get %s user infos" % len(user_infos))
+                for user_info in user_infos:
+                    if user_info and user_info["UserID"]:
+                        new_dev_info = dev_manager.get_dev_info_by_userid(user_info["UserID"])
+                        self.log("start to change %s(%s), %s(%s)" % (info["DevCode"], info["DevID"], new_dev_info["DevCode"], new_dev_info["DevID"]))
+                        self.exchange_two_dev(info, new_dev_info)
+                        break
+                    
+    def up_all9_level(self):
+        """升级所有的9级球队"""
+        dev_count = self.get_dev_count(9)
+        for sort in range(dev_count):
+            dev_code = self.get_dev_code_by(9, sort)
+            club_infos = dev_manager.get_dev_clubs(dev_code)
+            if not club_infos:
+                continue
+           
+            for club_info in club_infos:
+                club_id = club_info["ClubID"]
+                if club_id > 0:
+                    #从级拿一支空的球队
+                    up_dev_info = dev_manager.get_one_empty_dev(8)
+                    self.exchange_two_dev(club_info, up_dev_info)
+                              
 def main():
     handler = SeasonUpdateHandler()
     handler.before_run()
+    handler.dev_update()
+    handler.reset_dev()
     handler.fill_not_full_dev()
-    #handler.reset_dev()
-    handler.dev_match_assign()    
-
+    handler.assign_dev()
+    handler.reset_dev()
+    handler.up_all9_level()
+  
 def run():
     handler = SeasonUpdateHandler()
     handler.start()
