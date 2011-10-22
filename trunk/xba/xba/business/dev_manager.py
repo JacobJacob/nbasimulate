@@ -168,11 +168,58 @@ def get_dev_table_by_total(level):
     finally:
         connection.close()
    
+    
+def get_last_club_info_by_status(dev_code, club_infos, cursor, active=True):
+    """获取最后活的球队"""
+    i = len(club_infos)
+    while i > 0:
+        club_info = club_infos[i - 1]
+        club_id = club_info["ClubID"]
+        if club_id > 0:
+            if club_info["DevCode"] != dev_code:
+                if active and is_active(club_id, cursor):
+                    return i, club_info
+                elif not active and not is_active(club_id, cursor):
+                    return i, club_info
+            else:
+                return 0, None
+        i -= 1
+        
+    return 0, None
+
 def dev_active_club_to_one_place(level):
     """把某一等级的活号放在一起"""
-    pass
+    club_infos = get_dev_table_by_level(level)
+    cursor = connection.cursor()
+    try:
+        for i, club_info in enumerate(club_infos):
+            club_id = club_info["ClubID"]
+            dev_code = club_info["DevCode"]
+            if club_id > 0:
+                if is_active(club_id, cursor):
+                    continue
+                    #print "active %s" % club_id
+                    #index, need_club_info = get_last_club_info_by_status(dev_code, club_infos, cursor, False)
+                else:
+                    print "not active %s" % club_id
+                    index, need_club_info = get_last_club_info_by_status(dev_code, club_infos, cursor, True)
+                if index < i or not need_club_info:
+                    return
+                else:
+                    print "get need , exchange"
+                    exchange_two_dev(club_info, need_club_info)
+                    
+    finally:
+        cursor.close()
    
-         
+def is_active(club_id, cursor):
+    cursor.execute("SELECT UserID From BTP_Club WHERE ClubID=%s" % club_id)
+    info = cursor.fetchone()
+    user_id = info["UserID"]
+    cursor.execute("SELECT * From BTP_Account WHERE UserID=%s AND ActiveTime > dateadd(dd, -3, getdate()) " % user_id)
+    info = cursor.fetchone()
+    return info is not None
+    
 def exchange_two_dev(club_info_one, club_info_two):
     """交换两支球队"""
     cursor = connection.cursor()
@@ -246,4 +293,4 @@ def delete_devmessage():
         cursor.close()
        
 if __name__ == "__main__":
-    print get_one_empty_dev(8)
+    dev_active_club_to_one_place(8)
