@@ -3,8 +3,7 @@
 
 from xba.config import CLIENT_EXE_PATH
 
-from xba.business import player5_manager, player3_manager, account_manager,\
-    tool_manager, xcup_manager, xbatop_manager
+from xba.business import player5_manager, player3_manager, account_manager, tool_manager, xcup_manager, xbatop_manager
 from xba.business import dev_match_manager
 from xba.business import game_manager
 from xba.business import finance_manager
