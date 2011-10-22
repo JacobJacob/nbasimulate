@@ -87,8 +87,8 @@ def init_xgame():
                   '<Reputation>200</Reputation></Reward><Reward><Round>100</Round><Money>10000000</Money><Reputation>500</Reputation></Reward>'
     
     intro = u'第一轮：奖金200000，联盟威望10。<br>第二轮：奖金400000，联盟威望20。<br>第三轮：奖金700000，联盟威望30。<br>第四轮：奖金800000，联盟威望50。' \
-             '<br>第五轮：奖金900000，联盟威望70。<br>第六轮：奖金1000000，联盟威望90。<br>第七轮：奖金1250000，联盟威望110。<br>第八轮：奖金2500000，联盟威望150。' \
-             '<br>第九轮：奖金5000000，联盟威望200。<br>总冠军：奖金10000000，联盟威望500。<br>'
+             u'<br>第五轮：奖金900000，联盟威望70。<br>第六轮：奖金1000000，联盟威望90。<br>第七轮：奖金1250000，联盟威望110。<br>第八轮：奖金2500000，联盟威望150。' \
+             u'<br>第九轮：奖金5000000，联盟威望200。<br>总冠军：奖金10000000，联盟威望500。<br>'
                   
     sql = "EXEC AddGame %s, %s, '%s', '%s'" % (category, capacity, intro, reward_xml)
     sql = ensure_gbk(sql)
@@ -413,5 +413,5 @@ def reward_xcup(xcup_id, round):
         cursor.close()
             
 if __name__ == "__main__":
-    init_xgame()
+    pass
     
