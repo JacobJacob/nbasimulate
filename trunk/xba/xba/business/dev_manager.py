@@ -6,11 +6,15 @@ from xba.common.sqlserver import connection
 from xba.business import club_manager
 from xba.common.constants.dev import DEV_SORT_MONEY_MAP
 
-def get_dev_clubs(devcode):
+def get_dev_clubs(devcode, only_base=False):
     """根据devcode获取所有俱乐部id"""
     cursor = connection.cursor()
     try:
-        cursor.execute("SELECT * FROM BTP_Dev WHERE DevCode=%s ORDER BY Win DESC,Lose DESC,Score DESC,ClubID DESC,DevID ASC", devcode)
+        condition = ""
+        if only_base:
+            condition = " AND Score <> -9999 "
+        sql = "SELECT * FROM BTP_Dev WHERE DevCode='%s' %s ORDER BY Win DESC,Lose DESC,Score DESC,ClubID DESC,DevID ASC" % (devcode, condition)
+        cursor.execute(sql)
         return cursor.fetchall()
     finally:
         cursor.close()
@@ -138,6 +142,19 @@ def get_dev_table_by_level(level):
     finally:
         connection.close()
         
+def get_one_empty_dev(level):
+    """得到某一等级一支空的联赛球队"""
+    cursor = connection.cursor()
+    try:
+        sql = "SELECT TOP 1 DevID,ClubID,DevCode FROM BTP_Dev WHERE Levels=%s AND ClubID <= 0 ORDER BY DevCode " % level
+        cursor.execute(sql)
+        return cursor.fetchone()
+    except:
+        log_execption()
+        raise
+    finally:
+        connection.close()
+        
 def get_dev_table_by_total(level):
     """获取联赛统计"""
     cursor = connection.cursor()
@@ -150,6 +167,10 @@ def get_dev_table_by_total(level):
         raise
     finally:
         connection.close()
+   
+def dev_active_club_to_one_place(level):
+    """把某一等级的活号放在一起"""
+    pass
    
          
 def exchange_two_dev(club_info_one, club_info_two):
@@ -225,4 +246,4 @@ def delete_devmessage():
         cursor.close()
        
 if __name__ == "__main__":
-    sender = "秘书报告".decode("utf8").encode("gbk")
+    print get_one_empty_dev(8)
