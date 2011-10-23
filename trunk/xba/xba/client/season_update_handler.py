@@ -244,6 +244,9 @@ class SeasonUpdateHandler(BaseClient):
                 dev_code = self.get_dev_code_by(level, sort)
                 self.do_dev_match_assign(dev_code)
                 
+        handler = DevMatchHandler()
+        handler.update_club_main_xml()
+                
     @ensure_success
     def do_dev_match_assign(self, dev_code):
         """为某个联赛安排比赛"""
