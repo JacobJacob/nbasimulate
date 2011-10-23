@@ -51,4 +51,4 @@ def main():
     upload(path)
     
 if __name__ == "__main__":
-    upload("D:/data/appdatas/xba_working/sqlserver/backup/2011_10_22\NewBTP_2011_10_22_23_33_03.bak.7z")
+    main()
