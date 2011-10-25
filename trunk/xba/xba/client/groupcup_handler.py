@@ -27,11 +27,11 @@ class GroupCupHandler(BaseClient):
     def work(self):
         
         self.log("turn:%s" % self._turn)
-        if self._turn < 4:
+        if self._turn < 3:
             return "exit"
         
         small_group_finish = False
-        if self._turn == 4:
+        if self._turn == 3:
             #安排赛程,第三轮安排赛程
             xcup_info = self.get_xgroup_game_by_status(STATUS_NEW)
             if not xcup_info:
