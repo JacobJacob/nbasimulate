@@ -1,53 +1,223 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="MSSmartTagsPreventParsing" content="true" />
-    <meta name="Copyright" content="This site's design and contents Copyright &copy; Kingsoft." />
-    <meta name="keywords" content="Kingsoft, Webauth" />
-    <meta name="description" content="Kingsoft Cloud Security is a excellent information security tool for all of you." />    
-    
-    <link href="/site_media/css/base.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/site_media/js/jquery/jquery.utils.min.js"></script>
-    <script type="text/javascript" src="/site_media/js/base.js"></script>
-    <script type="text/javascript" src="/site_media/js/menu.js"></script>
-    <script type="text/javascript" src="/site_media/js/page.js"></script>
-    <script type="text/javascript" src="/site_media/js/WebCalendar.js"></script>
-    {% block head_ext %}{% endblock %}
-    <title>{% block title %}{{title}}{% endblock %} - XBA后台  </title>
-	
-</head>
-<body>
-<div id="container">
-    
-    <div id="logo"><img src="/site_media/images/logo.gif"/></div>
-    <br style="clear:both;" />
-    {% block message %}
-    <div align="center">
-        <span class="literal-block">{{message}}</span>
-    </div>
-    {% endblock %}
+<!--[6,388,979] published at 2011-10-23 14:09:03 from #235 by system-->
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<title>无道NBA篮球经理首页</title>
+<meta name="keywords" content="篮球经理,篮球经理webgame,NBA篮球经理,XBA篮球经理,好玩的经营游戏">
+<meta name="description" content="无道服是一款基于老版的无道具篮球经理游戏. 基于IE浏览器无需客户端的网页游戏，内容丰富，玩法多样，是目前国内最受广大篮球爱好者喜爱的篮球网络游戏。">
+<link href="/site_media/css/default.css" type="text/css" media="all" rel="stylesheet">
+<style>
+<!-- 
 
-    {% block navigation %}
-    <div id="nav">
-    	{% include "links.html" %}
-    </div>
-    {% endblock %}
-    
-    <div id="rightmain">
-	    <div id="content">
-	    {% block content%}{% endblock %}
-		</div>
-    </div>
-    
-    <div id="footer">
-	    <p>
-	    Copyright &copy; 2009 - {% now "Y" %}
-	    <a target="_blank" href="http://www.gba.com/">GBA</a> Corp All Rights Reserved <a target="_blank" href="http://www.pc120.com/">金山云安全</a>
-	    </p>
-    </div>
-</div>
-<div id="debug"></div>
+.c3ul4 { width:259px; height:180px; border:1px solid #c9c9c9; border-top:none; padding-left:5px;}
+.c3ul4 li { width:256px; height:60px; line-height:20px;background: url(http://i2.sinaimg.cn/gm/sport/lq/Images/dot.png) bottom repeat-x; text-align:left; clear:both;}
+.c3ul4 li span { display:block; width:50px; height:50px; text-align:left; float:left;}
+.tt1 { background:url(http://portrait8.sinaimg.cn/1156966391/blog/50) left center no-repeat}.tt2 { background:url(http://portrait7.sinaimg.cn/1666330110/blog/50) left center no-repeat}.tt3 { background:url(http://i2.sinaimg.cn/gm/sport/lq/Images/t3.png) left center no-repeat}
+
+.c3ul5 { width:259px; height:180px; border:1px solid #c9c9c9; border-top:none; padding-left:5px;}
+.c3ul5 li { width:256px; height:56px; line-height:10px;background: url(http://i2.sinaimg.cn/gm/sport/lq/Images/dot.png) bottom repeat-x; text-align:left; clear:both;}
+.c3ul5 li span { display:block; width:60px; height:56px; text-align:left; float:left;}
+.c3ul5 li a { display:block; width:180px;line-height:18px; text-align:left; float:left;}
+
+-->
+</style>
+
+<style type="text/css">
+<!--
+.Banner{text-align:center;}
+#cont_m_0{padding:5px 5px 5px 5px;}
+#cont_m_9 .c_pic{width:60px;}
+#cont_m_9 .c_txt{margin-left:60px;}
+#cont_m_9 .c_picTxt{width:24.9%;}
+.Pixviewer{position:relative;margin:0 auto;}
+.Pixviewer .PvBigPic{padding:0px;text-align:center;overflow:hidden;background:#000;}
+.Pixviewer .PvTitleBox{background-color:#cccccc;font-size:12px;font-weight:bold;color:#000;text-align:center;}
+.Pixviewer a:link,.Pixviewer a:visited{color:#000;text-decoration:none;}
+.Pixviewer a:hover{color:red;text-decoration:none;}
+.Pixviewer .PvNumber{font-size:11px;color:#fff;overflow:hidden;position:absolute;right:1px;z-index:50;text-align:right;}
+.Pixviewer .NumberHover{background-color:#ce0609;}
+.Pixviewer .NumberLeave{background-color:none;}
+.Pixviewer .PvNumberBg{position:absolute;right:1px;z-index:49;height:13px;width:250px;background:url(http://i3.sinaimg.cn/IT/deco/2010/0428/top/images/numberbg.png) no-repeat 0 0;_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop, src='http://i3.sinaimg.cn/IT/deco/2010/0428/top/images/numberbg.png');_background:none;}
+.Pixviewer .Triangle{width:21px;height:17px;position:absolute;z-index:49;background:url(http://i3.sinaimg.cn/IT/deco/2010/0428/top/images/triangle.png) no-repeat 0 0;_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop, src='http://i3.sinaimg.cn/IT/deco/2010/0428/top/images/triangle.png');_background:none;}
+.Pixviewer .BorderHack1{background-color:#707070;position:absolute;z-index:51;height:1px;top:0px;left:0px;font-size:0px;overflow:hidden;}
+.Pixviewer .BorderHack2{background-color:#707070;position:absolute;z-index:51;width:1px;top:0px;right:0px;font-size:0px;overflow:hidden;}
+.Pixviewer .BorderHack3{background-color:#707070;position:absolute;z-index:51;height:1px;left:0px;font-size:0px;overflow:hidden;}
+.Pixviewer .BorderHack4{background-color:#707070;position:absolute;z-index:51;width:1px;left:0px;top:0px;font-size:0px;overflow:hidden;}
+.Pixviewer .Title{background-color:#cccccc;}
+
+-->
+</style>
+
+<style>
+<!--
+.favorate {position:absolute;top:187px; left:722px; width:200px; height:25px;}
+
+.yellow {color:#FFFF33;font-size:14px;}
+.yellow a:link,.yellow a:visited {color:#FFFF33;text-decoration:none;font-size:14px;}
+.yellow a:hover,.yellow a:active {color:#ea0000;text-decoration:underline;font-size:14px;}
+-->
+</style>
+
+{% block head_ext %}{% endblock %}
+<div class="favorate yellow"></div>
+<table style="margin: 0pt auto;" border="0" cellpadding="0" cellspacing="0" width="991">
+  <tbody>
+    <tr>
+      <td><img src="/site_media/image/toplogo.jpg" alt="NBA篮球经理logo" height="205" width="991"></td>
+    </tr>
+  <tr>
+    <td style="height: 77px; background: url(&quot;http://i1.sinaimg.cn/gm/sport/lq/Images/navbg.jpg&quot;) no-repeat scroll 0% 0% transparent;">
+    <ul class="nav">
+       <li><a href="/" target="_blank">网站首页</a></li>      
+       <li><a href="{% url notice-list %}" target="_blank">游戏公告</a></li>      
+       <li><a href="{% url guide-list %}" target="_blank">新手指南</a></li>      
+       <li><a href="{% url strategy-list %}" target="_blank">游戏攻略</a></li>      
+       <li><a href="{% url experience-list %}" target="_blank">玩家心得</a></li>      
+       <li><a href="http://cz.hmpay.com/PayMent.aspx?sid=11365" target="_blank">游戏币充值</a></li>
+       <li><a href="http://bbs.113388.net" target="_blank">玩家论坛</a></li>
+    </ul>
+	</td>
+  </tr>
+  <tr>
+    <td style="background: none repeat scroll 0% 0% rgb(255, 255, 255);">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+       <tbody>
+        <tr>
+          <td align="left" valign="top" width="220">
+        	<table style="margin: 10px 0pt 0pt 16px;" border="0" cellpadding="0" cellspacing="0" width="204">
+             <tbody>
+              <tr>
+                <td>
+                  <a href="http://n1.113388.net/Register.aspx" target="_blank">
+                   <img src="/site_media/image/register.png" height="59" width="204">
+                  </a>
+               </td>
+             </tr>
+             <tr>
+               <td align="center">
+                 <div id="loginbtu_Ww">
+                  <a href="http://n1.113388.net/">
+                    <img src="/site_media/image/entergame.png" height="57" width="204">
+                  </a>
+                 </div>
+			     <!-- 登陆后 -->
+		         <div id="welcomeMessage_Ww" style="display:none;"></div>
+		         <!-- 登陆后 -->
+		       </td>
+            </tr>
+            <tr>
+               <td style="line-height: 22px;" align="center">网页游戏 无需客户端</td>
+            </tr>
+            <tr>
+              <td>
+            	<ul class="flist">
+                	<li><a href="http://n1.113388.net">无道双线服</a></li>
+                	<li>无道电信服(待开放)</li>
+                	<li>无道网通服(待开放)</li>
+                </ul>
+              </td>
+           </tr>
+		   <tr>
+		     <td height="56" valign="bottom"><a href="http://ka.sina.com.cn/info/1486.html" target="_blank">
+		      <img src="/site_media/image/203x46.gif" alt="领取新手卡" height="46" width="203"></a>
+		     </td>
+		   </tr> 
+           <tr>
+             <td align="center" height="50" valign="bottom"><br>
+               <a href="http://cz.hmpay.com/PayMent.aspx?sid=11365" target="_blank">
+                 <img src="/site_media/image/chongzhi.png" alt="充值" height="46" width="203">
+               </a>
+             </td>
+          </tr>
+          <tr>
+            <td style="width: 203px; height: 139px; background: url(&quot;http://i1.sinaimg.cn/gm/sport/lq/Images/new.png&quot;) no-repeat scroll center bottom transparent;" valign="bottom">
+            <table style="margin:40px 0pt 0pt 17px; line-height: 24px; text-align: center;" border="0" cellpadding="0" cellspacing="0" width="170">
+              <tbody><tr>
+                <td><a href="http://sports.sina.com.cn/388/20100209/976.html" target="_blank">基本操作</a><br></td>
+                <td><a href="http://sports.sina.com.cn/388/20100209/970.html" target="_blank">理疗中心</a></td>
+              </tr>
+              <tr>
+                <td><a href="http://sports.sina.com.cn/388/20100209/974.html" target="_blank">新手十问</a></td>
+                <td><a href="http://sports.sina.com.cn/388/20100209/975.html" target="_blank">新手进阶</a></td>
+              </tr>
+              <tr>
+                <td><a href="http://sports.sina.com.cn/388/20100209/971.html" target="_blank">金币功能</a></td>
+                <td><a href="http://sports.sina.com.cn/388/20100209/965.html" target="_blank">会员详解</a></td>
+              </tr>
+              <tr>
+                <td>　</td>
+                <td>　</td>
+              </tr>
+             </tbody>
+            </table>
+           </td>
+          </tr>
+          <tr>
+            <td height="56" valign="bottom">
+             <img src="/site_media/image/shouce.png" height="46" width="203">
+            </td>
+          </tr>
+          <tr>
+            <td height="56" valign="bottom"><a href="http://sports.sina.com.cn/388/20100209/965.html"><img src="/site_media/image/huiyuan.png" height="46" width="203"></a></td>
+          </tr>
+          <tr>
+            <td style="height: 126px; background: url(&quot;http://i2.sinaimg.cn/gm/sport/lq/Images/kefu.png&quot;) no-repeat scroll center bottom transparent;"><table style="margin: 0px 0pt 0pt 20px;" border="0" cellpadding="0" cellspacing="0" width="170">
+              <tbody>
+               <tr>
+                <td style="padding-top: 46px;" height="43">
+                 客服QQ:<br>1249802822
+                </td>
+               </tr>
+               <tr>
+                <td height="43">
+                 客服邮箱:<br>1249802822@qq.com
+                </td>
+               </tr>
+            </tbody>
+            </table>
+            </td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+        </tbody>
+       </table>
+       </td>
+       {% block content %}{% endblock %}
+    </tr>
+   </tbody>
+</table>
+<!-- 底部 begin -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%"> 
+   <tbody>
+     <tr>
+       <td colspan="2" style="background: url(&quot;http://i2.sinaimg.cn/gm/sport/nb/Images/dot.png&quot;) repeat-x scroll center top transparent;">
+       </td>
+     </tr>
+     <tr>
+       <td align="right" height="90" valign="bottom" width="239"><img src="/site_media/image/logoh.png" height="86" width="226"></td>
+       <td style="padding-left: 12px; line-height: 25px;" align="left"> <!-- 推荐游戏 begin-->
+       <style>
+          .meiti{display:block;color:#cc9900;font-size: 12px;height:35px;width:700px;line-height:35px;text-align:left;}
+       </style>
+	<div class="meiti">推荐游戏:
+	  <a href="http://www.113388.net" target="_blank">范特西篮球经理</a>┊
+	  <a href="http://www.113388.net" target="_blank">热血球球</a>┊
+	  <a href="http://www.113388.net" target="_blank">英超OL</a>┊
+	  <a href="http://www.113388.net" target="_blank">中超ol</a>┊
+	  <a href="http://www.113388.net" target="_blank">新浪篮球经理</a>┊
+	  <a href="http://www.113388.net" target="_blank">职业篮球经理</a>┊
+	  <a href="http://www.113388.net" target="_blank">NB篮球明星</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;　&nbsp;　　
+	</div> 
+抵制不良游戏, 拒绝盗版游戏,注意自我保护, 谨防受骗上当, 适度游戏益脑, 沉迷游戏伤身, 合理安排时间, 享受健康生活。
+<br>备案编号：粤ICP备09072237号-1       
+     </td>
+    </tr> 
+  </tbody>
+</table>
+ </td>
+</tr>
+</tbody>
+</table>
 </body>
 </html>
