@@ -20,4 +20,13 @@ def set_team_ability():
     finally:
         cursor.close()
         
+def get_top10_account():
+    """获取球队综合排名前十的球员"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT TOP 8 nickname, teamability FROM BTP_Account ORDER BY teamability DESC")
+        return cursor.fetchall()
+    finally:
+        cursor.close()
+        
         

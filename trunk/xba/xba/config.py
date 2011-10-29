@@ -20,6 +20,7 @@ class PathSettings:
     WEB_LOGS = WORKING_FOLDER + '/nginx/logs' # nginx日志
     DB_BACKUP = WORKING_FOLDER + '/sqlserver/backup' # nginx日志
     ROUND_UPDATE_LOCK = WORKING_FOLDER + '/roundupdatelock' # nginx日志
+    TRIAN_PLAYER_UPDATE_LOCK = WORKING_FOLDER + '/trianplayerupdatelock' # nginx日志
     if not os.path.exists(EXCEPTION):
         os.makedirs(EXCEPTION)
     if not os.path.exists(FILE_LOCKER):
@@ -36,6 +37,8 @@ class PathSettings:
         os.makedirs(DB_BACKUP)
     if not os.path.exists(ROUND_UPDATE_LOCK):
         os.makedirs(ROUND_UPDATE_LOCK)
+    if not os.path.exists(TRIAN_PLAYER_UPDATE_LOCK):
+        os.makedirs(TRIAN_PLAYER_UPDATE_LOCK)
     PROJECT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class DbSetting:
@@ -46,13 +49,13 @@ class DbSetting:
     
 class DjangoSettings:
     DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-    DATABASE_NAME = 'gba'
+    DATABASE_NAME = 'xba'
     #DATABASE_USER = 'from gba'             # Not used with sqlite3.
     #DATABASE_PASSWORD = 'from gba.123'
     #DATABASE_HOST = '10.20.238.169'
-    DATABASE_USER = 'gba'
-    DATABASE_PASSWORD = 'gba123'
-    DATABASE_HOST = '192.168.1.152'
+    DATABASE_USER = 'root'
+    DATABASE_PASSWORD = '123456'
+    DATABASE_HOST = 'localhost'
     DATABASE_PORT = 3306
         
     URL_PREFIX = ''
@@ -67,7 +70,8 @@ class DjangoSettings:
 
 if DEBUG:
     CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
-    DOMAIN = 'http://localhost:34591/xbaweb/'
+    #DOMAIN = 'http://localhost:34591/xbaweb/'
+    DOMAIN = 'http://www.113388.net/'
     WEB_ROOT = "D:\\develop\\xba_workspace\\xbaweb"
 else:
     CLIENT_EXE_PATH = "E:\\xba_app\\xba\\doc\\bin\\Client.exe"

@@ -42,5 +42,27 @@ def invite_code_status(status):
     """邀请码状态"""
     return InviteCodeStatusMap.get(status, "未知")
 
+@register.filter
+def article_status(status):
+    """文章状态"""
+    if status == 0:
+        return '<font color="red">待发布</font>'
+    return '<font color="green">已发布</font>'
 
+@register.filter
+def article_link(article):
+    """文章链接"""
+    return "/article/%s/detail/%s.html" % (article.category, article.id)
+
+@register.filter
+def category_name(category):
+    """类型名"""
+    map = {"notice": "游戏公告", "strategy": "游戏攻略", "guide": "新手指南", "experience": "玩家经验"}
+    return map.get(category, "新手指南")
+
+@register.filter
+def team_ability(ability):
+    """文章链接"""
+    a = float(ability) / 50
+    return "%0.1f" % a
 

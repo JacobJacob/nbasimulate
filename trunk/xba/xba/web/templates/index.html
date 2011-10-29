@@ -1,5 +1,7 @@
 {% extends "master.html" %}
+{% load common_extras %}
 {% block head_ext %}
+<link href="/site_media/css/default.css" type="text/css" media="all" rel="stylesheet">
 <link href="/site_media/css/index.css" rel="stylesheet" type="text/css"/>
 {% endblock %}
 {% block title %}GBA后台管理{% endblock %}
@@ -11,77 +13,68 @@
             <tr>
             <td style=""><!-- 焦点图 begin -->
 				<div style="width: 442px; height: 192px;" class="Pixviewer" id="Pixviewer_cont_m_0">
-					<div style="position: relative; overflow: hidden; height: 192px;" class="PvBigPic" id="BigPic_cont_m_0">
 					<a href="http://blog.sina.com.cn/s/blog_64e1a1e00100p8yj.html?tj=1" target="_blank">
-					<img src="/site_media/image/U90P6T388D979F8341DT20110212150246.gif" id="F0BF0" style="display: block; position: absolute; top: 0px; left: 0px; width: 442px; height: 192px; opacity: 1; z-index: 0;" galleryimg="no" alt="" height="192" width="442"><img src="/site_media/image/U90P6T388D979F8341DT20110126184316.gif" id="F0BF1" style="display: none; position: absolute; top: 0px; left: 0px; width: 442px; height: 192px; opacity: 1; z-index: 0;" galleryimg="no" alt="" height="192" width="442"></a></div>
-				
-					<div style="bottom: 1px;" class="PvNumber" id="Number_cont_m_0"><span class="selected" style="cursor:pointer; margin:0px; padding:1px 7px 1px 8px; border-left:solid 1px #cccccc; [$rightborder]" src="[$pic]" onclick="Pixviewer.childs[0].select(0)">1</span><span class="NumberLeave" style="cursor:pointer; margin:0px; padding:1px 7px 1px 8px; border-left:solid 1px #cccccc; border-right:solid 1px #cccccc;" src="[$pic]" onclick="Pixviewer.childs[0].select(1)">2</span></div>
-					<div style="bottom: 1px;" class="PvNumberBg" id="NumberBG_cont_m_0"></div>
-					<div class="PvTitleBox" id="Title_cont_m_0" style="background: none repeat scroll 0% 0% rgb(255, 255, 255); width: 442px; height: 0px; line-height: 0px; display: none;"><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100p8yj.html?tj=1" target="_blank"></a></div>
-				<div style="width: 442px;" class="BorderHack1"></div><div style="height: 192px;" class="BorderHack2"></div><div style="width: 442px; bottom: 0px;" class="BorderHack3"></div><div style="height: 192px;" class="BorderHack4"></div><div style="bottom: 0px; right: 24px;" class="Triangle"></div></div>
-				<div id="focusData_cont_m_0" style="display:none">
-				<dl>
-					<dt><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100p8yj.html?tj=1" target="_blank"></a></dt>
-					<dd>http://i2.sinaimg.cn/ty/NBstar/U90P6T388D979F8341DT20110212150246.gif</dd>
-				</dl>
-				<dl>
-					<dt><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100oxqm.html?tj=1" target="_blank"></a></dt>
-					<dd>http://i3.sinaimg.cn/ty/NBstar/U90P6T388D979F8341DT20110126184316.gif</dd>
-				</dl>
-             </div>
+					  <img src="/site_media/image/U90P6T388D979F8341DT20110212150246.gif" id="F0BF0" height="192" width="442">
+				    </a>
+	            </div>
            </td>
           </tr>
           <tr>
             <td style="padding-top: 10px;">
             	<ul class="c2ul">
-    	<li><a href="http://blog.sina.com.cn/nbstargame">游戏公告</a></li>
-    </ul>
-    <ul class="c2ul2">
-	<li><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100u34v.html?tj=1" target="_blank">《NB篮球明星》合服公告 </a><span>06-17</span></li>
-	<li><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100thbz.html?tj=1" target="_blank">NB篮球明星6月7日服务器维护通知 </a><span>06-03</span></li>
-	<li><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100pi7l.html?tj=1" target="_blank">《NB篮球明星》停服维护公告 </a><span>02-22</span></li>
-	<li><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100pcsz.html?tj=1" target="_blank">元宵领奖去，团圆喜相聚 </a><span>02-16</span></li>
-	<li><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100p8yj.html?tj=1" target="_blank">甜蜜多一些，浪漫情人节 </a><span>02-12</span></li>
-	<li><a href="http://blog.sina.com.cn/s/blog_64e1a1e00100oxqm.html?tj=1" target="_blank">好礼来敲门，瑞兔喜迎春 </a><span>01-26</span></li>
-</ul>
+    	          <li><a href="/article/notice/list/1.html">游戏公告</a></li>
+                </ul>
+			    <ul class="c2ul2">
+			    {% for notice in notices %}
+				<li><a href="{{notice|article_link}}" target="_blank">{{notice.title}}</a><span>{{ notice.created_time|date:"m-d" }}</span></li>
+			    {% endfor %}
+			    </ul>
             </td>
           </tr>
           <tr>
-            <td><table border="0" cellpadding="0" cellspacing="0" width="100%">
-              <tbody><tr>
-                <td height="92" valign="bottom"><a href="http://sports.sina.com.cn/388/20100209/975.html"><img src="/site_media/image/lanqiu1.jpg" height="82" width="216"></a></td>
-                <td align="right" valign="bottom"><a href="http://sports.sina.com.cn/388/20100209/965.html"><img src="/site_media/image/lanqiu2.jpg" height="82" width="216"></a></td>
-              </tr>
-            </tbody></table></td>
+            <td>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                 <tr>
+                   <td height="92" valign="bottom">
+                     <a href="/article/guide/detail/24.html">
+                      <img src="/site_media/image/lanqiu1.jpg" height="82" width="216">
+                     </a>
+                   </td>
+                   <td align="right" valign="bottom">
+                     <a href="/article/guide/detail/27.html">
+                      <img src="/site_media/image/lanqiu2.jpg" height="82" width="216">
+                     </a>
+                   </td>
+                 </tr>
+               </tbody>
+              </table>
+             </td>
           </tr>
           <tr>
             <td style="padding-top: 10px;">
             	<ul class="c2ul">
     	         <li>
-    	            <a href="http://sports.sina.com.cn/388/20100211/1014.html">游戏攻略</a>
+    	            <a href="/article/strategy/list/1.html">游戏攻略</a>
                  </li>
                 </ul>
 			    <ul class="c2ul2">
-			    	<li><a href="http://sports.sina.com.cn/388/20100209/964.html">NB篮球明星街球养成篇</a><span>02-10</span></li>
-			        <li><a href="http://sports.sina.com.cn/388/20100209/968.html">NB篮球明星新人随笔</a><span>02-10</span></li>
-			        <li><a href="http://sports.sina.com.cn/388/20100209/967.html">攻防强度专家级解读</a><span>02-10</span></li>
-			        <li><a href="http://sports.sina.com.cn/388/20100209/966.html">街头球员培养之我见</a><span>02-10</span></li>
-			        <li><a href="http://sports.sina.com.cn/388/20100209/969.html">论职业选拔和职业球员潜藏意识</a><span>02-10</span></li>
+			    	{% for strategy in strategys %}
+				       <li><a href="{{strategy|article_link}}" target="_blank">{{strategy.title}}</a><span>{{ strategy.created_time|date:"m-d" }}</span></li>
+			        {% endfor %}
 			    </ul>
 			   </td>
 			   </tr>
 	           <tr>
 	            <td style="padding-top: 10px;">
 	            	<ul class="c2ul">
-	    	          <li><a href="#">玩家心得</a></li>
+	    	          <li><a href="/article/experience/list/1.html">玩家经验</a></li>
 	                </ul>
 	                <ul class="c2ul2">
-			    	<li><a href="http://sports.sina.com.cn/388/20100209/964.html">NB篮球明星街球养成篇</a><span>02-10</span></li>
-			        <li><a href="http://sports.sina.com.cn/388/20100209/968.html">NB篮球明星新人随笔</a><span>02-10</span></li>
-			        <li><a href="http://sports.sina.com.cn/388/20100209/967.html">攻防强度专家级解读</a><span>02-10</span></li>
-			        <li><a href="http://sports.sina.com.cn/388/20100209/966.html">街头球员培养之我见</a><span>02-10</span></li>
-			        <li><a href="http://sports.sina.com.cn/388/20100209/969.html">论职业选拔和职业球员潜藏意识</a><span>02-10</span></li>
-			    </ul>
+			    	  {% for experience in experiences %}
+				        <li><a href="{{experience|article_link}}" target="_blank">{{experience.title}}</a><span>{{ experience.created_time|date:"m-d" }}</span></li>
+			          {% endfor %}
+			        </ul>
 	            </td>
 	           </tr>
 	          <tr>
@@ -100,26 +93,43 @@
              </ul>
              <ul class="c3ul5">
     	       <li><span class="t1"></span>
-    	         <a href="http://sports.sina.com.cn/388/20100209/978.html">战术系统：丰富的战术系统，针对您的球员进行合理配置，组成您的超强阵容。</a>
+    	         <a href="/article/guide/detail/23.html">战术系统：丰富的战术系统，针对您的球员进行合理配置，组成您的超强阵容。</a>
     	       </li>
                <li>
                  <span class="t2"></span>
-                 <a href="http://sports.sina.com.cn/388/20100209/972.html"><b>街球队</b>；模拟真实NBA俱乐部球员管理，球员养成是游戏重要玩法之一，带领球队称霸球坛。
+                 <a href="/article/guide/detail/24.html"><b>街球队</b>；模拟真实NBA俱乐部球员管理，球员养成是游戏重要玩法之一，带领球队称霸球坛。
                  </a>
                </li>
                <li><span class="t3"></span>
-                <a href="http://sports.sina.com.cn/388/20100209/973.html">转会市场；竞争激烈的球员转会市场，全新开放自由转会系统，俱乐部经理的必争之地。</a>
+                <a href="/article/guide/detail/26.html">转会市场；竞争激烈的球员转会市场，全新开放自由转会系统，俱乐部经理的必争之地。</a>
                </li>
              </ul>
            </td>
           </tr>
           <tr>
             <td style="padding-top: 10px;">
-            <div style="position:relative; width:266px; height:283px; background:url(http://i0.sinaimg.cn/gm/sport/lq/Images/paiming.png) no-repeat;">
+            <div style="position:relative; width:266px; height:283px; background:url(/site_media/image/paiming.png) no-repeat;">
              <div class="rankingtitle">
                <span><a href="#" target="_blank">玩家排名</a></span>
              </div>
-    	     <div class="ranking" id="divRank"></div>   
+    	     <div class="ranking" id="divRank">
+    	       <table style="margin:0px 0pt 0pt 35px; line-height: 24px; text-align: center;" border="0" cellpadding="0" cellspacing="0" width="170">
+                  <tbody>
+	    	         {% for top_account in top_accounts %}
+	    	           <tr>
+	    	             <td>
+	    	               {% ifequal forloop.counter 1%}
+	    	                 <font color="red"> {{top_account.nickname}}</font>
+	    	               {% else %}
+	    	                 {{top_account.nickname}}
+	    	               {% endifequal %}  
+	    	             </td>
+	    	             <td>{{top_account.teamability|team_ability}}</td>
+	    	           <tr>
+	    	         {% endfor %}
+	    	      </tbody>
+    	      </table>
+    	     </div>   
             </td>
           </tr>
           <tr>
@@ -128,8 +138,14 @@
     	       <li><a href="#">篮球名博</a></li>
               </ul>
               <ul class="c3ul4">
-		    	<li><span class="tt1"><a href="http://blog.sina.com.cn/suqun" target="_blank"><img src="/site_media/image/50_003.jpg"></a></span> <a href="http://blog.sina.com.cn/suqun" target="_blank"><br>&nbsp;苏群</a></li>
-		        <li><span class="tt2"><a href="http://blog.sina.com.cn/twiverson" target="_blank"><img src="/site_media/image/50.jpg"></a></span> <a href="http://blog.sina.com.cn/twiverson" target="_blank"><br>&nbsp;朱彦硕</a></li>
+		    	<li><span class="tt1">
+		    	  <a href="http://blog.sina.com.cn/suqun" target="_blank">
+		    	    <img src="/site_media/image/50_003.jpg"></a></span>
+		    	  <a href="http://blog.sina.com.cn/suqun" target="_blank"><br>&nbsp;苏群</a>
+		    	</li>
+		        <li><span class="tt2">
+		          <a href="http://blog.sina.com.cn/twiverson" target="_blank"><img src="/site_media/image/51.jpg"></a></span>
+		          <a href="http://blog.sina.com.cn/twiverson" target="_blank"><br>&nbsp;朱彦硕</a></li>
 		        <li>
 		          <span class="tt3">
 		           <a href="http://blog.sina.com.cn/titanguanweijia" target="_blank"><img src="/site_media/image/50_002.jpg"></a>

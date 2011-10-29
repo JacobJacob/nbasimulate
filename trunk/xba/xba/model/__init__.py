@@ -4,6 +4,8 @@ from sqlalchemy.orm import sessionmaker, mapper
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, TIMESTAMP
 
+from xba.common.bottle.persistable import Persistable
+
 Base = declarative_base()
 
 class Player5(Base):
@@ -100,3 +102,6 @@ class Announce(Base):
     title = Column(String)
     type = Column(Integer)
     created_time = Column("CreateTime", DateTime)
+    
+class Article(Persistable):
+    pass
