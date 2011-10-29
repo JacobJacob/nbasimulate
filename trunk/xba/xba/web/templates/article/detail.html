@@ -1,6 +1,8 @@
 {% extends "master.html" %}
 {% load common_extras %}
 {% block head_ext %}
+<meta name="keywords" content="{{article.keyword}}">
+<meta name="description" content="{{article.title}}">
 <link href="/site_media/css/list.css" type="text/css" media="all" rel="stylesheet">
 {% endblock %}
 {% block title %}--{{article.title}}{% endblock %}
