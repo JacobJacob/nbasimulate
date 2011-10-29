@@ -7,6 +7,9 @@ from xba.common.constants.account import InviteCodeStatus
 from xba.web.render import render_to_response
 from xba.business import account_manager
 
+from xba.common.decorators import login_required
+
+@login_required
 def invitecode(request):
     """邀请码"""
     page = int(request.REQUEST.get("page", 1))
@@ -15,6 +18,7 @@ def invitecode(request):
     total, infos = account_manager.get_invite_code_list(page, pagesize, status)
     return render_to_response(request, "account/invitecode.html", locals())
 
+@login_required
 def download_invite_code(request):
     count = int(request.REQUEST.get("count", 20))
     codes = account_manager.add_invite_code(count, status=InviteCodeStatus.ASSIGNED)

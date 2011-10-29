@@ -4,6 +4,9 @@
 from xba.web.render import render_to_response
 from xba.business import club_manager
 
+from xba.common.decorators import login_required
+
+@login_required
 def club(request):
     """职业球员"""
     page = int(request.REQUEST.get("page", 1))

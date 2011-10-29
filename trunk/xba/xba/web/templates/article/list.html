@@ -9,9 +9,41 @@
         <div class="content">
 			<h1>{{category|category_name}}</h1>
             <div class="Gray4 f14">
+              <table width="100%">
+              {% if infos %}
               {% for info in infos %}
-               <p>{{ info.title }}</p>
+               <tr>
+                 <td><a href="{{info|article_link}}" target="_blank">{{info.title}}</a></td>
+                 <td><span>{{ info.created_time|date:"Y-m-d" }}</span></td>
+               </tr>
               {% endfor %}
+               <tr>
+			        <td colspan="2" class="right">
+			          共{{page}}/{{totalpage}}页
+			          {% ifequal page 1 %}
+			            首页
+			            上一页
+			          {% else %}
+			             <a href="/article/{{category}}/list/1.html">首页</a>
+			             <a href="/article/{{category}}/list/{{prevpage}}.html">上一页</a>
+			          {% endifequal %}
+			          {% ifequal page totalpage %}
+			            末页
+			            下一页
+			          {% else %}
+			             <a href="/article/{{category}}/list/{{totalpage}}.html">末页</a>
+			             <a href="/article/{{category}}/list/{{nextpage}}.html">下一页</a>
+			          {% endifequal %}
+			        </td>
+			      </tr>
+			   {% else %}
+			      <tr>
+			         <td colspan="2" class="right">
+			           暂无数据
+			         </td>
+			      </tr>
+			   {% endif %}
+              </table>
             </div>
         </div>
     </td>

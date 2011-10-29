@@ -4,6 +4,9 @@
 from xba.web.render import render_to_response
 from xba.business import cup_manager
 
+from xba.common.decorators import login_required
+
+@login_required
 def cuplist(request):
     """街球 杯赛"""
     page = int(request.REQUEST.get("page", 1))

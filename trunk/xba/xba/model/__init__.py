@@ -105,3 +105,6 @@ class Announce(Base):
     
 class Article(Persistable):
     pass
+
+class User(Persistable):
+    pass

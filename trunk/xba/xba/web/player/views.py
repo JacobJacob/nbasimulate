@@ -5,6 +5,9 @@ from xba.web.render import render_to_response
 from xba.business import player5_manager
 from xba.business import player3_manager
 
+from xba.common.decorators import login_required
+
+@login_required
 def player5(request):
     """职业球员"""
     page = int(request.REQUEST.get("page", 1))
@@ -13,6 +16,7 @@ def player5(request):
     total, infos = player5_manager.player_list(page, pagesize, category)
     return render_to_response(request, "player/player5.html", locals())
 
+@login_required
 def player3(request):
     """街球球员"""
     page = int(request.REQUEST.get("page", 1))
