@@ -1,0 +1,65 @@
+{% extends "admin/master.html" %}
+{% load common_extras %}
+{% block head_ext %}
+<script type="text/javascript" src="/site_media/js/xheditor-1.1.10-zh-cn.min.js"></script>
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<meta http-equiv="content-type" content="text/html; charset=utf8" />
+<script type="text/javascript">
+     
+  $(document).ready(function(){
+
+	 $(".return").click(function(){
+	    window.location = "{% url article-list %}";
+	 });
+	 
+  });
+  
+</script>
+{% endblock %}
+{% block title %}文章管理{% endblock %}
+{% block content %}
+<div>
+    <form id="create_form" method="post" action="{% url create-article %}">
+        <input type="hidden" value="{{article.id|default_if_none:"0"}}" name="id"/>
+    	<p>
+    		<label>类&nbsp;&nbsp;型:</label>
+			<span>
+			  <select name="category">
+			    <option value="notice" {%ifequal article.category "notice"%}selected{%endifequal%}>游戏公告</option>
+			    <option value="guide"  {%ifequal article.category "guide"%}selected{%endifequal%}>新手指南</option>
+			    <option value="experience" {%ifequal article.category "experience"%}selected{%endifequal%}>玩家经验</option>
+			    <option value="strategy" {%ifequal article.category "strategy"%}selected{%endifequal%}>游戏攻略</option>
+			  </select>
+			</span>
+	    </p><br/>
+    	<p>
+    		<label>标&nbsp;&nbsp;题:</label>
+			<span>
+			  <input name="title" type="text" size="80" value="{{article.title|default_if_none:""}}"/>
+			</span>
+	    </p><br/>
+	    <p>
+    		<label>关键字:</label>
+			<span>
+			  <input name="keyword" type="text" size="80" value="{{article.keyword|default_if_none:""}}"/>
+			</span>
+	    </p><br/>
+	    <p>
+    		<label>概要:</label>
+			<span width="600px">
+			  <textarea cols="80" rows="3" name="summary">{{article.summary|default_if_none:""}}</textarea>
+			</span>
+	    </p>
+	    <br> 
+	    <p>
+    		<label>内容:</label>
+			<span width="600px">
+			  <textarea class="xheditor" cols="140" rows="30" name="content">{{article.content|default_if_none:""|safe}}</textarea>
+			</span>
+	    </p>
+	    <br> 
+		<input class="button" type="submit" value="提交" />
+		<input class="return" type="button" value="返回" />
+    </form>
+</div>
+{% endblock %}

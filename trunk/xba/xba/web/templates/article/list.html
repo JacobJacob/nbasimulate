@@ -1,0 +1,21 @@
+{% extends "master.html" %}
+{% load common_extras %}
+{% block head_ext %}
+<link href="/site_media/css/list.css" type="text/css" media="all" rel="stylesheet">
+{% endblock %}
+{% block title %}--{{category|category_name}}{% endblock %}
+{% block content %}
+    <td valign="top" align="left">
+        <div class="content">
+			<h1>{{category|category_name}}</h1>
+            <div class="Gray4 f14">
+              {% for info in infos %}
+               <p>{{ info.title }}</p>
+              {% endfor %}
+            </div>
+        </div>
+    </td>
+{% endblock %}
+
+
+

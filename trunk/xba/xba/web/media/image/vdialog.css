@@ -1,0 +1,19 @@
+#sina_game_dialog_ww_login { z-index:202; position:absolute; color:#333; overflow:hidden; display: none; background-color:#ffffff; text-align:left; border:1px #999999 solid; }
+#sina_game_dialog_ww_login .clear { clear:both; }
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_top {cursor:move; background-color: #F0F0F0;background-image:url('http://event.games.sina.com.cn/common/image/vdialog_horizontal_bg.gif');background-repeat:repeat-x;  height:13px; overflow:hidden; font-size:12px; padding:3px 6px;}
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_top_title { float:left; overflow:hidden;height:15px; line-height:16px; }
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_top_close { float:right;}
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_top_close a { float:left; background-image:url('http://event.games.sina.com.cn/common/image/vdialog_ico_close.gif'); background-repeat:no-repeat; width:12px; height:12px;}
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_top_close a:hover { background-position:0 -18px;}
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_text {font-size:12px; line-height:150%; color:#333;background:#EDEFE0; }
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_text td { font-size:12px;}
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_text h2 { padding:3px 0; margin:0; font-size:14px;}
+.sina_game_dialog_ww_login_button { border:0;color:#FFFFFF;background-color:#81B506;cursor: pointer; font-size:12px; padding:0 4px; padding-top:2px; margin:0 4px;text-align:center;}
+.sina_game_dialog_ww_login_input {border:1px solid #A9A8AE; }
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_button { clear:both; display:none; text-align:center; padding:5px 3px 20px 3px; }
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_text_in { float:left; margin:0 6px; padding:0 3px; }
+#sina_game_dialog_ww_login #sina_game_dialog_ww_login_ico { float:left; width:38px; padding:2px 3px 0 3px; }
+#sina_game_dialog_ww_login form { margin:0; padding:0;}
+#sina_game_dialog_ww_login_box {  position:relative; left:0; top:0; z-index:199;  display:none;  }
+#sina_game_dialog_ww_login_box_in { position:absolute; left:0; right:0; top:0; bottom:0; background-color:#333; background-color:#000\9; width:100%; height:100%; z-index:201; filter:alpha(opacity=50);-moz-opacity:0.3;opacity:0.3; }
+#sina_game_dialog_ww_login_iframe { position:absolute; left:0; right:0; top:0; bottom:0; width:100%; height:100%; background-color:#333; background-color:#000\9; z-index:200; filter:alpha(opacity=50);-moz-opacity:0.3;opacity:0.3; }

@@ -1,0 +1,114 @@
+<!--[115,103,2233] published at 2010-02-10 16:21:55 from #194 by 90-->
+<html><head>
+<title>Sina爱问－新侠义道</title>
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+<meta http-equiv="Content-Language" content="zh-CN">
+<style type="text/css">
+<!--
+*{padding:0;margin:0;list-style:none;}img {border:0;}
+input{border:none;font-size:12px;}
+table{border-collapse:collapse;border-spacing:0;font-size:12px;}
+td{color:#722e01;}
+.title{color:#722e01;background:url(http://i3.sinaimg.cn/gm/ol/sg/xxyd1026/tittle.gif) 0 0 no-repeat;height:47px;line-height:47px;margin:0; display:none;}
+a{color:#fff;text-decoration:none;}a:hover{color:#c15b00;text-decoration:none;}
+.menuOn,.menuOff {display:inline-block;width:76px;height:24px;line-height:24px;float:left;text-align:center;margin-right:9px;color:#025277; }
+.menuOn{color:#c15b00;background:url(http://i2.sinaimg.cn/gm/ol/sg/xxyd1026/on.gif) 0 0 no-repeat;}
+.menuOff{background:url(http://i1.sinaimg.cn/gm/ol/sg/xxyd1026/out.gif) 0 0 no-repeat;}
+-->
+</style>
+<script type="text/javascript">
+function checkForm()
+{
+	if (searchform1.title.value == '')
+    {
+                alert("问题标题不能为空, 请重新输入！");
+                searchform1.title.focus();
+                return false;
+    }
+	if (searchform1.title.value.length<=4)
+	{
+		alert("问题标题不详细，请重新输入!");
+		return false;
+	}
+
+    if (searchform1.title.value.length > 200)
+    {
+                alert("问题标题内容100汉字以内, 请重新输入！");
+                searchform1.title.focus();
+                return false;
+    }
+
+	return true;
+}
+function checkForm_search(this_form)
+{
+	if (searchform1.title.value == '')
+	{
+		alert("搜索关键词不能为空, 请重新输入！");
+		searchform1.title.focus();
+		return false;
+	}
+
+	return true;
+}
+
+function ask_submit()
+{
+	document.searchform1.action="http://iask.games.sina.com.cn/question/ask.php?classid=&url=/browse/catalog.php?clstype=0&from=3867";
+	document.searchform1.submit();
+	return true;
+}
+function search_submit()
+{
+		document.searchform1.key.value=document.searchform1.title.value;
+		var keyname=document.searchform1.key.value;
+		document.searchform1.action="http://iask.games.sina.com.cn/search_engine/search_knowledge_engine.php?key="+keyname+"&classid=3867&from=3867";
+
+}
+</script>
+<script type="text/javascript">
+	function setClassTab(tab,sta,tabid,url)
+	{
+    document.getElementById(tabid).blur();
+	document.getElementById('tab1').className="menuOff"
+	document.getElementById('tab2').className="menuOff"
+	document.getElementById('tab3').className="menuOff"
+	document.getElementById('tab4').className="menuOff"
+	document.getElementById('tab5').className="menuOff"
+	document.getElementById('tab'+tab).className="menuOn"
+	//alert(page_num);
+	ifram.location="http://iask.games.sina.com.cn/iframe/browse_question_state_iframe.php?status="+sta+"&"+url;
+	}
+</script>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+</head>
+<body style="background: none repeat scroll 0% 0% transparent;">
+<table style="margin: 0pt auto; background: none repeat scroll 0% 0% rgb(255, 255, 255);" align="center" border="0" cellpadding="0" cellspacing="0" height="170" width="380">
+<tbody>
+	<tr>
+	  <td class="body" valign="top">
+      <table style="margin: 5px auto 0pt;" align="center" border="0" cellpadding="0" cellspacing="0" width="340">
+		  <form name="searchform1" method="post" action="" target="_blank" onsubmit="if(checkForm_search(this.form)){return search_submit();}else return false;"></form>
+				<tbody><tr>
+				  <td align="right" valign="top" width="118"><input name="key" type="hidden"><input name="classid" value="3867" type="hidden"><input name="example" type="hidden"> <input name="title" maxlength="100" onclick="javascript:this.value=''" style="float: left; margin-top: 0px; width: 180px; height: 20px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border: 1px solid rgb(150, 150, 150); padding: 3px 0pt 0pt 2px;" type="text"></td>
+				  <td align="left" width="51"><input value="" name="submit_answer" style="width: 68px; height: 20px; cursor: pointer; background: url(&quot;http://i3.sinaimg.cn/gm/ol/sg/xxyd1026/search.gif&quot;) no-repeat scroll 0% 0% transparent;" type="submit"></td>
+				  <td align="left" width="51"><input value="" name="submit2" onclick="if(checkForm()){ask_submit()}else{return false}" style="width: 68px; height: 20px; cursor: pointer; background: url(&quot;http://i0.sinaimg.cn/gm/ol/sg/xxyd1026/ask.gif&quot;) no-repeat scroll 0% 0% transparent;" type="button"></td>
+				</tr>
+			  
+		  </tbody></table>
+			<table style="margin: 10px auto 0pt; overflow: hidden; position: relative; z-index: 99;" align="center" border="0" cellpadding="0" cellspacing="0" width="340">
+<tbody><tr>					
+					<td align="center"><a id="tab1" class="menuOn" href="javascript:setClassTab(1,'A','tab1','fatherid=3867&amp;pagenum=4&amp;style=1&amp;toprowshow=1&amp;fsize=30&amp;scoreshow=1&amp;nicksize=8&amp;statusshow=1&amp;dateshow=0&amp;askshow=0&amp;template=games_xxyd_gf.html&amp;appname=games_xxyd_gf&amp;pageshow=1')">全部</a><a id="tab2" class="menuOff" href="javascript:setClassTab(2,'H','tab1','fatherid=3867&amp;pagenum=4&amp;style=1&amp;toprowshow=1&amp;fsize=30&amp;scoreshow=1&amp;nicksize=8&amp;statusshow=1&amp;dateshow=0&amp;askshow=0&amp;template=games_xxyd_gf.html&amp;appname=games_xxyd_gf&amp;pageshow=1')">高分</a><a id="tab3" class="menuOff" href="javascript:setClassTab(3,'N','tab1','fatherid=3867&amp;pagenum=4&amp;style=1&amp;toprowshow=1&amp;fsize=30&amp;scoreshow=1&amp;nicksize=8&amp;statusshow=1&amp;dateshow=0&amp;askshow=0&amp;template=games_xxyd_gf.html&amp;appname=games_xxyd_gf&amp;pageshow=1')" style="display: none;">推荐</a><a id="tab4" class="menuOff" href="javascript:setClassTab(4,'N','tab1','fatherid=3867&amp;pagenum=4&amp;style=1&amp;toprowshow=1&amp;fsize=30&amp;scoreshow=1&amp;nicksize=8&amp;statusshow=1&amp;dateshow=0&amp;askshow=0&amp;template=games_xxyd_gf.html&amp;appname=games_xxyd_gf&amp;pageshow=1')">疑难</a><a id="tab5" class="menuOff" href="javascript:setClassTab(5,'K','tab1','fatherid=3867&amp;pagenum=4&amp;style=1&amp;toprowshow=1&amp;fsize=30&amp;scoreshow=1&amp;nicksize=8&amp;dateshow=0&amp;askshow=0&amp;template=games_xxyd_gf.html&amp;appname=games_xxyd_gf&amp;pageshow=1')">已解决</a></td>
+			  </tr>
+	    </tbody></table>
+		<table style="margin: 0pt auto;" align="center" border="0" cellpadding="0" cellspacing="0" width="340">
+<tbody><tr>
+		      <td style="padding: 5px 0pt 0pt;" align="center"><iframe name="ifram" src="2233_data/browse_question_state_iframe.htm" allowtransparency="" border="0" marginwidth="0" marginheight="0" frameborder="no" height="170" scrolling="no" width="340"></iframe></td>
+		  </tr>
+	    </tbody></table>
+	  </td>
+    </tr>
+  </tbody>
+</table>
+
+</body></html>
