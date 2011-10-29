@@ -36,8 +36,7 @@ def login_required(input_function):
     def replace_function(*args, **kwargs):
         request = args[0]
         user = user_roles.get_userinfo(request)
-        if user or True:
-            print user
+        if user:
             request.user = user
             try:
                 return input_function(*args, **kwargs)
