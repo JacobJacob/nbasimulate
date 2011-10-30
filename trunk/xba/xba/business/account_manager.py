@@ -379,6 +379,26 @@ def fuck_back():
     finally:
         cursor.close()
 
+last_settime_time = None
+
+def set_online():
+    """设置在线"""
+    global last_settime_time
+    if last_settime_time is None:
+        last_settime_time = datetime.now()
+    else:
+        if last_settime_time + timedelta(minutes=10) > datetime.now():
+            print "return"
+            return
+    
+    ids = [15, 20, 46, 47, 75, 165, 158]
+    cursor = connection.cursor()
+    try:
+        cursor.execute("UPDATE BTP_Online SET LatestActiveTime=GETDATE() WHERE UserID IN (%s)" % ','.join(["%s" % id for id in ids]))
+    finally:
+        cursor.close()
+
 if __name__ == "__main__":
-    fuck_back()
+    set_online()
+    set_online()
     #assign_devchoose_card()
