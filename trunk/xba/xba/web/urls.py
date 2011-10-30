@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url, include
 
 urlpatterns = patterns('',
     # Example:
-     url(r'^$', 'xba.web.views.index', name='index'),
+     url(r'^index.html?$', 'xba.web.views.index', name='index'),
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_PATH}), 
     (r'^admin/', include('web.admin.urls')),
     (r'^player/', include('web.player.urls')),

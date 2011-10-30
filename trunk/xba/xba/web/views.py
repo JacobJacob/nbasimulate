@@ -4,6 +4,8 @@ from xba.web.render import render_to_response
 from xba.business import xbatop_manager
 from xba.model import Article
 
+from xba.common import staticutil
+
 def index(request):
     '''首页'''
     
@@ -13,11 +15,13 @@ def index(request):
     
     experiences = Article.query(condition="status=1 and category='experience'", limit=6, order="created_time desc")
     
-    notices = Article.query(condition="status=1", limit=6, order="created_time desc")
-    
-    
     top_accounts = xbatop_manager.get_top10_account()
 
     datas = {"notices": notices, "top_accounts": top_accounts, "strategys": strategys, "experiences": experiences}
-    return render_to_response(request, "index.html", datas)
+    
+    response = render_to_response(request, "index.html", datas)
 
+    #静态化    
+    staticutil.dump(response, "index.html")
+    
+    return response

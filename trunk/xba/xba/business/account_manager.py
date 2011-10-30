@@ -170,7 +170,10 @@ def delete_online_table():
     """清空在线表"""
     cursor = connection.cursor()
     try:
-        cursor.execute("exec DeleteOnlineTable")
+        ids = [15, 20, 46, 47, 75, 165, 158]
+        sql = "DELETE FROM BTP_Online WHERE UserID NOT IN (%s)" % ','.join(["%s" % id for id in ids])
+        print sql
+        cursor.execute(sql)
     finally:
         cursor.close()
         
@@ -394,11 +397,14 @@ def set_online():
     ids = [15, 20, 46, 47, 75, 165, 158]
     cursor = connection.cursor()
     try:
-        cursor.execute("UPDATE BTP_Online SET LatestActiveTime=GETDATE() WHERE UserID IN (%s)" % ','.join(["%s" % id for id in ids]))
+        sql = "UPDATE BTP_Online SET LatestActiveTime=GETDATE() WHERE UserID IN (%s)" % ','.join(["%s" % id for id in ids])
+        print sql
+        cursor.execute(sql)
     finally:
         cursor.close()
 
 if __name__ == "__main__":
     set_online()
     set_online()
+    delete_online_table()
     #assign_devchoose_card()
