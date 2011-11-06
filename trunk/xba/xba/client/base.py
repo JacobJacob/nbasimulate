@@ -8,6 +8,7 @@ import time
 import traceback
 from datetime import datetime
 
+from xba.config import CLIENT_EXE_PATH
 from xba.config import PathSettings
 
 class BaseClient(object):
@@ -35,19 +36,24 @@ class BaseClient(object):
             
     def __call_cmd(self, cmd):
         """调用命令"""
+        last_line, line = None, None
         p = Popen(cmd, stdout=PIPE)
         while True:
+            last_line =  line
             line = p.stdout.readline()
             if not line:
                 break
             self.log(line.replace("\n", ""))
             
         if p.wait() == 0:
-            self.log("call %s success" % cmd)
-            return True
-        else:
-            self.log("call %s failure" % cmd)
-            return False
+            if last_line:
+                last_line = last_line.replace("\n", "").replace("\r", "")
+            if last_line == "SUCCESS":
+                self.log("call %s success" % cmd)
+                return True
+                   
+        self.log("call %s failure" % cmd)
+        return False
     
     def start(self):
         self.before_run()
@@ -73,4 +79,13 @@ class BaseClient(object):
         self.log("start to sleep:%s seconds" % seconds)
         time.sleep(seconds)
                 
+                
+if __name__ == "__main__":
+    client = BaseClient("test")
+    cmd = "%s %s" % (CLIENT_EXE_PATH, "test_success")
+    client.call_cmd(cmd)
+    
+    cmd = "%s %s" % (CLIENT_EXE_PATH, "test_error")
+    client.call_cmd(cmd)
+    
     
