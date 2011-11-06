@@ -291,6 +291,28 @@ def delete_devmessage():
         raise
     finally:
         cursor.close()
+        
+def cretae_sql():
+    ABILITYS = ["Attack","Defense","Team"]
+    cursor = connection.cursor()
+    try:
+        sql = "select * from btp_player5 where playerid = 15614"
+        cursor.execute(sql)
+        info = cursor.fetchone()
+        sql = "update btp_player set "
+        for ability in ABILITYS:
+            sql += "%s=%s  " % (ability, info[ability])
+            
+        sql += " WHERE PlayerID = 15614" 
+        print sql
+        print "update btp_account set money = money + 10500000 where userid=287"
+        msg_sql = u"EXEC AddMessage '','秘书报告', '尊敬的小白经理您好，由于我们程序上的错误，导致出了一名bug球员并被您买到，为了游戏的公平性，我们特将球员综合更改为正常值，并退还您购买此名球员的所有资金，对您造成的不便深感抱歉.', '小白'"
+        print msg_sql
+    except:
+        log_execption()
+        raise
+    finally:
+        cursor.close()
        
 if __name__ == "__main__":
-    dev_active_club_to_one_place(8)
+    cretae_sql()

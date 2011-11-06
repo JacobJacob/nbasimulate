@@ -204,7 +204,55 @@ def add_match(cluba_name, clubb_name, season):
         return cursor.execute(sql)
     finally:
         cursor.close()
+      
+   
+def finish_star_match(season):
+    """添加比赛"""
+    cursor = connection.cursor()
+    try:
+        cursor.start_transaction()
+        
+        sql = "select top 1 * from btp_starmatch where season=%s and status=1" % season
+        cursor.execute(sql)
+        info = cursor.fetchone()
+        if not info:
+            print "match not finish or not match"
+            return
+        
+        mvp_player_id = info["MVPPlayerID"]
+        
+        cursor.execute("select name, clubid from btp_player5 where playerid = %s" % mvp_player_id)
+        player_info = cursor.fetchone()
+        
+        club_id = player_info["clubid"]
+        mvp_player_name = player_info["name"].strip()
+        
+        cursor.execute("select userid from btp_club where clubid = %s" % club_id)
+        user_info = cursor.fetchone()
+        
+        user_id = user_info["userid"]
+        
+        honor_sql = u"INSERT INTO BTP_Honor (UserID,SmallLogo,BigLogo,Remark)VALUES(%s, 'Union1.gif','Union1.gif', '全明星赛MVP')" % user_id
+        honor_sql = ensure_gbk(honor_sql)
+        cursor.execute(honor_sql)
+        
+        remark = u"恭喜你，您的球员%s在本赛季的全明星赛中获得MVP" % mvp_player_name
+        
+        message_sql = u"Exec AddNewMessage %s, 2,0,'秘书报告', '%s'" % (user_id, remark)
+        message_sql = ensure_gbk(message_sql)
+        cursor.execute(message_sql)
+        
+        cursor.execute("update btp_starmatch set status=2 where season=%s" % season)
+        
+        cursor.commit()
+    
+    except:
+        cursor.rollback()
+        raise
+    finally:
+        cursor.close()
         
 if __name__ == "__main__":
     #finish_star_player_vote()
-    add_match('东部明星队', '西部明星队', 5)
+    #add_match('东部明星队', '西部明星队', 5)
+    finish_star_match(5)

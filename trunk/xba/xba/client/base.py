@@ -34,7 +34,7 @@ class BaseClient(object):
                 self.sleep()
             
     def __call_cmd(self, cmd):
-        """µ÷ÓÃÃüÁî"""
+        """è°ƒç”¨å‘½ä»¤"""
         p = Popen(cmd, stdout=PIPE)
         while True:
             line = p.stdout.readline()

@@ -22,6 +22,13 @@ def betch_create_player():
         create_player(reg[2], 3, 48, reg[1], reg[0])  
     update_player5_category3()
 
+
+def betch_create_jx_player():
+    """刷极限球员"""
+    for reg in REG:
+        create_player(reg[2], 3, 48, reg[1], reg[0])  
+    update_player5_category3()
+
 def create_player(count, category, hours, now_point, max_point):
     """创建球员"""
     end_bid_time = datetime.now() + timedelta(hours=hours)
@@ -373,8 +380,20 @@ def view_all_player():
     finally:
         connection.close()
 
-
+def clean_dirty_char():
+    """"""
+    cursor = connection.cursor()
+    try:
+        sql = u"""update btp_player5 set name = replace(name, '1', '1')"""
+        print sql
+        cursor.execute(sql)
+        sql = u"update btp_club set name = replace(name, '', '  ')"
+        cursor.execute(sql)
+        sql = u"update btp_club set mainxml = replace(mainxml, '', '  ')"
+        cursor.execute(sql)
+    finally:
+        connection.close()
 
 if __name__ == "__main__":
     view_all_player()
-
+    #clean_dirty_char()
