@@ -260,31 +260,8 @@ class GroupCupHandler(BaseClient):
     @ensure_success     
     def execute_match(self, cluba, clubb, xcupid, gain_code, round, category, match_id):
         cmd = "%s %s %s %s %s %s %s %s %s" % (CLIENT_EXE_PATH, 'xcup_match_handler', xcupid, gain_code, cluba, clubb, round, category, match_id)
-        i = 0
-        while i < 10:
-            i += 1
-            if self.call_cmd(cmd):
-                return True
-            else:
-                self.sleep(10)
-          
-    @ensure_success
-    def call_cmd(self, cmd):
-        """调用命令"""
-        p = Popen(cmd, stdout=PIPE)
-        while True:
-            line = p.stdout.readline()
-            if not line:
-                break
-            self.log(line.replace("\n", ""))
-            
-        if p.wait() == 0:
-            self.log("call %s success" % cmd)
-            return True
-        else:
-            self.log("call %s failure" % cmd)
-            return False
-            
+        self.call_cmd(cmd)
+                 
     @ensure_success
     def run_match(self):
         round = 7
