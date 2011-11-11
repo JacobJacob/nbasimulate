@@ -18,6 +18,14 @@ def update_account_dev_code(user_id, dev_code):
     finally:
         cursor.close()
         
+def add_promotion(user_id):
+    """更新用户推广积分"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("UPDATE BTP_Account SET promotion = promotion + 5 where UserID=%s" % user_id)
+    finally:
+        cursor.close()
+        
 def get_invite_code_list(page, pagesize, status):
     """获取邀请码列表"""
     session = Session()

@@ -108,3 +108,6 @@ class Article(Persistable):
 
 class User(Persistable):
     pass
+
+class PromotionHistory(Persistable):
+    pass
