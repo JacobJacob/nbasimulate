@@ -34,7 +34,7 @@
             {
                 text = StringItem.MD5Encrypt(text, Global.strMD5Key);
                 pToEncrypt = StringItem.MD5Encrypt(pToEncrypt, Global.strMD5Key);
-                if (SessionItem.SetSelfLogin(text, pToEncrypt, true) > 0)
+                if (SessionItem.SetSelfLogin(text, pToEncrypt, false) > 0)
                 {
                     base.Response.Redirect("Login.aspx");
                 }
