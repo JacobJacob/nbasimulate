@@ -9,6 +9,7 @@
     using System.Web.UI.WebControls;
     using Web.DBData;
     using Web.Helper;
+    using Web.Util;
 
     public class ShowPlayer : Page
     {
@@ -141,6 +142,7 @@
                 int intNumber = Convert.ToInt16(this.ddlNumber.SelectedItem.Value);
                 int intPosition = Convert.ToInt16(this.ddlPosition.SelectedItem.Value);
                 string strPlayerName = this.tbName.Text.Trim();
+                strPlayerName = StringUtil.CleanBadChar(strPlayerName);
                 if (strPlayerName.Length == 0)
                 {
                     strPlayerName = this.strName;
@@ -879,6 +881,13 @@
                 }
                 str2 = str2 + "&nbsp;&nbsp;";
             }
+
+
+            if (this.intCategory == 4 || this.intCategory == 2)
+            {
+                str6 = str2;  
+            }
+
             string strInfo = this.strInfo;
             this.strInfo = strInfo + "<table width='201' border='0' cellspacing='0' cellpadding='0'><tr><td width='92' valign='top'><img id='imgCharactor' src='" + SessionItem.GetImageURL() + "Player/Charactor/NewPlayer.png' width='90' height='130'><br>" + str6 + "</td><td width='109'><table width='109' border='0' cellspacing='0' cellpadding='0'><tr><td colspan=2 height='25' align='center'>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "&nbsp;<strong>" + str5 + "</strong></td></tr><tr><td height='18' width='37' align='center'>年龄</td>";
             if (flag3)

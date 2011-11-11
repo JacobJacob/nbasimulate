@@ -38,6 +38,7 @@
         private string strType;
         public string strUseWealth;
         public string strWealthToMoney = "";
+        public string strPlayerPromotion = "";
         protected HtmlTable Table2;
         protected TextBox tbCoin;
         protected TextBox tbGetWealth;
@@ -391,6 +392,7 @@
                 this.tblSendCoin.Visible = false;
                 DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
                 this.strPlayerWealth = accountRowByUserID["Wealth"].ToString();
+                this.strPlayerPromotion = accountRowByUserID["Promotion"].ToString();
                 if ((DateTime.Now.Hour < 10) && (DateTime.Now.Hour >= 4))
                 {
                     if (this.strType == "WEALTHMANAGE")
@@ -416,7 +418,7 @@
                         //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>金币商店</a></li>" + str + "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=COIN&Status=1'>金币财政</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";
                         //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>" + str + "</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";   
                         //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>";
-                        this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>会员商店</a></li>" + str + "</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";
+                        this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>会员商店</a></li>" + str + "</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span><span style='margin-left:50px;' width='100' height='24'  align='center'>推广积分: " + this.strPlayerPromotion + "</span>";
                         this.tblContainer.Visible = true;
                         this.SetToolList();
                         break;
@@ -583,6 +585,10 @@
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
                 }
             }
+
+            string link = "http://www.113388.net/?" + this.intUserID;
+
+            this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='6' align=\"left\">我的积分推广链接: <a href=\"" + link + "\" target=\"_blank\">" + link + "</a></td></tr>";
         }
 
         private void SetWealthManage()

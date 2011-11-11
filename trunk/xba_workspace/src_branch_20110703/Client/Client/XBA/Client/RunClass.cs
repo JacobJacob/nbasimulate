@@ -10,7 +10,26 @@ namespace Client.XBA.Client
     class RunClass
     {
 
+        private static string SUCCESS_FLG = "SUCCESS";
+        private static string FAILURE_FLG = "FAILURE";
+
         static void Main(string[] args)
+        {
+            try
+            {
+                __Main(args);
+                Console.WriteLine(SUCCESS_FLG);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(FAILURE_FLG);
+            }
+
+        }
+
+
+        static void __Main(string[] args)
         {
             if (args.Length >= 1)
             {
@@ -134,16 +153,38 @@ namespace Client.XBA.Client
                         Console.WriteLine("param error while handle cup match!!!!");
                     }
                 }
+                else if (args[0] == Constant.CLIENT_TYPE_STAR_MATCH_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 2)
+                    {
+                        int intSeason = Convert.ToInt32(args[1]);
+                        new StarMatchHandler(intSeason).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while handle star match!!!!");
+                    }
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_TEST_SUCCESS)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_TEST_ERROR)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    string nullString = null;
+                    nullString.ToUpper();
+                }
+                else
+                {
 
+                    Console.WriteLine("please input the command");
+                }
+
+                return;
             }
-            else
-            {
 
-                Console.WriteLine("please input the command");
-            }
-
-            return;
         }
-
     }
 }

@@ -10,6 +10,7 @@
         protected HtmlTable tblUserAbilityTop;
         protected HtmlTable tblUserVBTop;
         protected HtmlTable tblPlayerTop;
+        protected HtmlTable tblPlayer3Top;
 
         private void InitializeComponent()
         {
@@ -27,6 +28,7 @@
             this.tblUserAbilityTop.Visible = false;
             this.tblUserVBTop.Visible = false;
             this.tblPlayerTop.Visible = false;
+            this.tblPlayer3Top.Visible = false;
             switch (SessionItem.GetRequest("Type", 1).ToString().Trim())
             {
                 case "USERABILITYTOP":
@@ -35,6 +37,10 @@
 
                 case "PLAYERTOP":
                     this.tblPlayerTop.Visible = true;
+                    return;
+
+                case "PLAYER3TOP":
+                    this.tblPlayer3Top.Visible = true;
                     return;
 
                 case "USERVBTOP":

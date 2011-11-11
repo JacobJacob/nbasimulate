@@ -400,7 +400,7 @@
 
         private void btnSend_Click(object sender, ImageClickEventArgs e)
         {
-            string text = this.tbNickName.Text;
+            /*string text = this.tbNickName.Text;
             string validWords = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbMsg.Text.ToString().Trim()));
             text = StringItem.GetValidWords(text);
             if (StringItem.IsValidName(text, 2, 0x10))
@@ -426,7 +426,28 @@
             else
             {
                 this.strList = "<font color='#FF0000'>经理昵称不合要求！</font>";
+            }*/
+
+            string text = this.tbNickName.Text;
+            string validWords = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbMsg.Text.ToString().Trim()));
+            if (!StringItem.IsValidContent(validWords, 2, 500))
+            {
+                this.strList = "<font color='#FF0000'>消息内容必须在2-500个字符之间！</font>";
             }
+            else
+            {
+                BTPMessageManager.SetHasMsg(text);
+                if (BTPMessageManager.AddMessage(this.intUserID, this.strNickNameA, text, validWords))
+                {
+                    this.strList = "<font color='#FF0000'>消息发送成功！</font>";
+                    this.tbMsg.Text = "";
+                }
+                else
+                {
+                    this.strList = "<font color='#FF0000'>" + text + "并不存在，请查证是否输入正确，或对方以更改名称！</font>";
+                }
+            }
+            
         }
 
         private void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)

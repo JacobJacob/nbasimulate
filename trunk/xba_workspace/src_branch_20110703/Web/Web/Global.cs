@@ -684,9 +684,13 @@
             htError.Add("XGE01", new Error("您的资金不足，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
             htError.Add("XGE02", new Error("该竞猜已经超时，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
             htError.Add("XGE03", new Error("该竞猜不存在，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
+            htError.Add("XGE04", new Error("您已经竞猜过该经理了，对同一个经理只能下注一次。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
             htError.Add("XGS01", new Error("已经成功下注，您可以在我的竞猜中查看所有竞猜历史。", "XGuess.aspx?Type=MYGUESS", "THIS"));
 
-
+            htError.Add("SVE01", new Error("该球员未能入选明星参选赛。", "StarMatch.aspx?Type=MATCH", "THIS"));
+            htError.Add("SVE02", new Error("您不是会员，无法投票。", "StarMatch.aspx?Type=MATCH", "THIS"));
+            htError.Add("SVE03", new Error("您已经投过票了。", "StarMatch.aspx?Type=MATCH", "THIS"));
+            htError.Add("SVS01", new Error("投票成功，如果该名球员获得前三名的票数，将会获得参加全明星赛的资格。", "StarMatch.aspx?Type=MATCH", "THIS"));
            
         }
 

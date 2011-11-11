@@ -68,31 +68,9 @@
 
         public static string GetBuyCoinURL()
         {
-            if (ServerParameter.strCopartner == "CGA")
-            {
-                return "http://vip.cga.com.cn/game/XBA/";
-            }
-            if (ServerParameter.strCopartner == "51WAN")
-            {
-                return "http://pay.51wan.com/";
-            }
-            if (ServerParameter.strCopartner == "17173")
-            {
-                return "http://web.17173.com/xba/bangzhu/chongzhi.html";
-            }
-            if (ServerParameter.strCopartner == "DUNIU")
-            {
-                return "http://cn.mmoabc.com/buy/";
-            }
-            if (ServerParameter.strCopartner == "ZHW")
-            {
-                return "http://xba.game.china.com/PayChinaShow.aspx";
-            }
-            if (ServerParameter.strCopartner == "DW")
-            {
-                return "http://xba.duowan.com/0803/m_70641288537.html";
-            }
-            return (DBLogin.URLString(40) + "PayCenter.aspx");
+           
+           // return (DBLogin.URLString(40) + "PayCenter.aspx");
+            return "http://cz.hmpay.com/PayMent.aspx?sid=11365";
         }
 
         public static string GetChsNum(int intNum)
@@ -442,14 +420,14 @@
             {
                 return false;
             }
-            if (HasInvalidWord(strIn))
+            /*if (HasInvalidWord(strIn))
             {
                 return false;
             }
             if (GetHtmlEncode(strIn) != strIn)
             {
                 return false;
-            }
+            }*/
             return true;
         }
 
@@ -560,7 +538,22 @@
 
         public static bool IsValidWord(string strIn)
         {
-            return ((((strIn.IndexOf(",") == -1) && (strIn.IndexOf("\"") == -1)) && ((strIn.IndexOf("<") == -1) && (strIn.IndexOf(">") == -1))) && (((strIn.IndexOf("'") == -1) && (strIn.IndexOf("|") == -1)) && (strIn.IndexOf("&") == -1)));
+            if(strIn == null)
+            {
+                return true;
+            }
+            int lenght = strIn.Length;
+            for (int i = 0; i < lenght; i++)
+            { 
+                char c = strIn[i];
+                if (c == ',' || c == '"' || c == '"' || c == '<' || c == '>' || c == '\'' || c == '|' || c == '&')
+                {
+                    return false;
+                }
+
+            }
+
+            return true;
         }
 
         public static bool IsValidWord(string strIn, int intMin, int intMax)

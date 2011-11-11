@@ -247,6 +247,11 @@
                         this.strRightURL = "Intro/XBATop.aspx";
                         goto Label_08CA;
 
+                    case "STARMATCH":
+                        this.strCenterURL = "STARMATCH.aspx?Type=MATCH";
+                        this.strRightURL = "Intro/StarMatch.htm";
+                        goto Label_08CA;
+
                     default:
                         this.strCenterURL = "Temp_Center.aspx";
                         this.strRightURL = "Temp_Right.aspx";

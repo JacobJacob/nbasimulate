@@ -152,6 +152,7 @@
                             return;
                         }
                         int count = 1;
+                        int intRound = BTPXGameManager.GetXGameRound();
                         foreach (DataRow row in dataTable.Rows)
                         {
 
@@ -163,14 +164,23 @@
                             int intSort = (this.intPage - 1) * this.intPerPage + count;
                             count++;
 
+                            
+
                             this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                             this.sbList.Append("<td align=\"center\" height=\"24\">" + intSort + "</td>");
                             this.sbList.Append("<td align=\"left\" ><a href=\"ShowClub.aspx?Type=5&UserID=" + intUserID + "\" title=\"" + strClubName + "\" target=\"Right\">" + strClubName + "</a></td>");
 
                             this.sbList.Append(" <td align=\"center\">" + floatOdds + "</td>");
 
-                            this.sbList.Append("<td align=\"center\"><a href='SecretaryPage.aspx?Type=XGUESS&GuessID=" + intGuessID + "'>下注</a></td>");
-
+                            if (intRound > 1)
+                            {
+                                this.sbList.Append("<td align=\"center\">竞猜时间已过</td>");
+                            }
+                            else
+                            {
+                                this.sbList.Append("<td align=\"center\"><a href='SecretaryPage.aspx?Type=XGUESS&GuessID=" + intGuessID + "'>下注</a></td>");
+                            }
+                           
                             this.sbList.Append("</tr>");
                             this.sbList.Append("<tr><td height='1' background='Images/RM/Border_07.gif' colspan='8'></td></tr>");
                             
@@ -188,7 +198,7 @@
 
                 case "MYGUESS":
 
-                    strCurrentURL = "MYGUESS.aspx?Type=MYGUESS&";
+                    strCurrentURL = "XGuess.aspx?Type=MYGUESS&";
 
                     this.sbList = new StringBuilder();
                     this.sbList.Append("<tr>");
@@ -241,7 +251,7 @@
                             }
                             else if (intStatus == 2)
                             {
-                                double douWin = (int)douOdds * intMoney;
+                                double douWin = (int)(douOdds * intMoney);
                                 this.sbList.Append("<td align=\"center\" ><font color=\"red\">+" + douWin + "</font></td>");
                             }
                             else
@@ -264,7 +274,7 @@
 
                 case "NEWGUESS":
 
-                    strCurrentURL = "MYGUESS.aspx?Type=NEWGUESS&";
+                    strCurrentURL = "XGuess.aspx?Type=NEWGUESS&";
 
                     this.sbList = new StringBuilder();
                     this.sbList.Append("<tr>");
@@ -276,56 +286,69 @@
                     this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">盈亏</td>");
                     this.sbList.Append("</tr>");
 
-                    dataTable = BTPXGuessManager.GetXGuessNewRecord();
-
-                    if (dataTable == null)
+                    this.intTotal = BTPXGuessManager.GetXGuessRecordCount(0);
+                    if (this.intTotal > 0)
                     {
-                        this.sbList.Append("<tr><td height='30' align='center' colspan='8'>暂无数据</td></tr>");
-                        return;
+                        dataTable = BTPXGuessManager.GetXGuessRecord(0, this.intPage, this.intPerPage);
+
+                        if (dataTable == null)
+                        {
+                            this.sbList.Append("<tr><td height='30' align='center' colspan='8'>暂无数据</td></tr>");
+                            return;
+                        }
+
+                        int count = 1;
+
+                        foreach (DataRow row in dataTable.Rows)
+                        {
+
+
+                            int intUserID = Convert.ToInt32(row["UserID"]);
+                            string strNickName = BTPAccountManager.GetNickNameByUserID(intUserID);
+                            string strClubName = Convert.ToString(row["ClubName"]);
+                            double douOdds = Convert.ToDouble(row["Odds"]);
+                            int intClubID = Convert.ToInt32(row["ClubID"]);
+                            int intMoney = Convert.ToInt32(row["Money"]);
+                            int intStatus = Convert.ToInt32(row["Status"]);
+
+                            int intSort = (this.intPage - 1) * this.intPerPage + count;
+                            count++;
+
+                            DataRow accountRow = BTPAccountManager.GetAccountRowByClubID5(intClubID);
+                            int intClubUserID = Convert.ToInt32(accountRow["UserID"]);
+
+                            this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                            this.sbList.Append("<td align=\"center\" height=\"24\">" + intSort + "</td>");
+                            this.sbList.Append("<td align=\"left\" height=\"24\"><a href=\"ShowClub.aspx?Type=5&UserID=" + intUserID + "\" title=\"" + strNickName + "\" target=\"Right\">" + strNickName + "</a></td>");
+                            this.sbList.Append("<td align=\"left\" height=\"24\"><a href=\"ShowClub.aspx?Type=5&UserID=" + intClubUserID + "\" title=\"" + strClubName + "\" target=\"Right\">" + strClubName + "</a></td>");
+                            this.sbList.Append("<td align=\"center\" >" + douOdds + "</td>");
+                            this.sbList.Append("<td align=\"center\" >" + intMoney + "</td>");
+                            if (intStatus == 1)
+                            {
+                                this.sbList.Append("<td align=\"center\" >未平盘</td>");
+                            }
+                            else if (intStatus == 2)
+                            {
+                                double douWin = (int)(douOdds * intMoney);
+                                this.sbList.Append("<td align=\"center\" ><font color=\"red\">+" + douWin + "</font></td>");
+                            }
+                            else
+                            {
+                                this.sbList.Append("<td align=\"center\" ><font color=\"green\">-" + intMoney + "</font></td>");
+                            }
+                            this.sbList.Append("<tr><td height='1' background='Images/RM/Border_07.gif' colspan='8'></td></tr>");
+
+                        }
+                        this.sbList.Append("<tr><td height='30' align='right' colspan='8'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
+                        this.strScript = this.GetScript(strCurrentURL);
+
                     }
-                    int intIndex = 1;
-                    foreach (DataRow row in dataTable.Rows)
+                    else
                     {
+                        this.sbList.Append("<tr><td height='30' align='center' colspan='5'>暂无数据</td></tr>");
 
-
-                        int intUserID = Convert.ToInt32(row["UserID"]);
-                        string strNickName = BTPAccountManager.GetNickNameByUserID(intUserID);
-                        string strClubName = Convert.ToString(row["ClubName"]);
-                        double douOdds = Convert.ToDouble(row["Odds"]);
-                        int intClubID = Convert.ToInt32(row["ClubID"]);
-                        int intMoney = Convert.ToInt32(row["Money"]);
-                        int intStatus = Convert.ToInt32(row["Status"]);
-
-                        DataRow accountRow = BTPAccountManager.GetAccountRowByClubID5(intClubID);
-                        int intClubUserID = Convert.ToInt32(accountRow["UserID"]);
-
-                        this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                        this.sbList.Append("<td align=\"center\" height=\"24\">" + intIndex + "</td>");
-                        this.sbList.Append("<td align=\"left\" height=\"24\"><a href=\"ShowClub.aspx?Type=5&UserID=" + intUserID + "\" title=\"" + strNickName + "\" target=\"Right\">" + strNickName + "</a></td>");
-                        this.sbList.Append("<td align=\"left\" height=\"24\"><a href=\"ShowClub.aspx?Type=5&UserID=" + intClubUserID + "\" title=\"" + strClubName + "\" target=\"Right\">" + strClubName + "</a></td>");
-                        this.sbList.Append("<td align=\"center\" >" + douOdds + "</td>");
-                        this.sbList.Append("<td align=\"center\" >" + intMoney + "</td>");
-                        if (intStatus == 1)
-                        {
-                            this.sbList.Append("<td align=\"center\" >未平盘</td>");
-                        }
-                        else if (intStatus == 2)
-                        {
-                            double douWin = (int)douOdds * intMoney;
-                            this.sbList.Append("<td align=\"center\" ><font color=\"red\">+" + douWin + "</font></td>");
-                        }
-                        else
-                        {
-                            this.sbList.Append("<td align=\"center\" ><font color=\"green\">-" + intMoney + "</font></td>");
-                        }
-                        this.sbList.Append("<tr><td height='1' background='Images/RM/Border_07.gif' colspan='8'></td></tr>");
-
-                        intIndex++;
-
-                    }
-                    //this.sbList.Append("<tr><td height='30' align='right' colspan='8'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
-                    this.strScript = this.GetScript(strCurrentURL);
-
+                    } 
+                    
                     return;
 
                 default:

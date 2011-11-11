@@ -251,6 +251,69 @@
                     }
                     return;
 
+                case "PLAYER3TOP":
+
+                    strCurrentURL = "XBATop.aspx?Type=PLAYER3TOP&";
+
+                    this.sbList = new StringBuilder();
+                    this.sbList.Append("<tr>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\" height=\"24\">排名</td>");
+                    this.sbList.Append("<td align=\"left\" bgColor=\"#fcc6a4\">球员姓名</td>");
+                    this.sbList.Append("<td align=\"left\" bgColor=\"#fcc6a4\">所属经理</td>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">综合</td>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">年龄</td>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">身高</td>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">体重</td>");
+                    this.sbList.Append("</tr>");
+
+                    this.intTotal = 200;
+                    if (this.intTotal > 0)
+                    {
+                        dataTable = BTPXBATopManager.GetPlayer3AbilityTop(this.intPage, this.intPerPage);
+                        int index = 1;
+                        if (dataTable == null)
+                        {
+                            this.sbList.Append("<tr><td height='30' align='center' colspan='8'>暂无数据</td></tr>");
+                            return;
+                        }
+                        foreach (DataRow row in dataTable.Rows)
+                        {
+
+                            string strName = Convert.ToString(row["Name"]);
+                            int intUserID = Convert.ToInt32(row["UserID"]);
+                            string strNickName = Convert.ToString(row["NickName"]);
+                            int intAbility = Convert.ToInt32(row["Ability"]);
+                            int intAge = Convert.ToInt32(row["Age"]);
+                            int intHeight = Convert.ToInt32(row["Height"]);
+                            int intWeight = Convert.ToInt32(row["Weight"]);
+                            int intPlayerID = Convert.ToInt32(row["PlayerID"]);
+
+                            int intPlace = (this.intPage - 1) * this.intPerPage + index;
+                            index++;
+
+                            this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                            this.sbList.Append("<td align=\"center\" height=\"24\">" + intPlace + "</td>");
+                            this.sbList.Append("<td align=\"left\" ><span class=\"DIVPlayerName\" ><a href=\"ShowPlayer.aspx?Type=3&Kind=0&Check=0&PlayerID=" + intPlayerID + "\" target=\"Right\">" + strName + "</a></span></td>");
+                            this.sbList.Append("<td align=\"left\"><a href=\"ShowClub.aspx?Type=5&UserID=" + intUserID + "\" title=\"" + strNickName + "\" target=\"Right\">" + strNickName + "</a></td>");
+                            this.sbList.Append("<td align=\"center\" >" + PlayerItem.GetAbilityColor(intAbility) + "</td>");
+                            this.sbList.Append("<td align=\"center\" >" + intAge + "</td>");
+                            this.sbList.Append("<td align=\"center\" >" + intHeight + "</td>");
+                            this.sbList.Append("<td align=\"center\" >" + intWeight + "</td></tr>");
+                            this.sbList.Append("<tr><td height='1' background='Images/RM/Border_07.gif' colspan='8'></td></tr>");
+
+                        }
+                        this.sbList.Append("<tr><td height='30' align='right' colspan='8'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
+                        this.strScript = this.GetScript(strCurrentURL);
+
+                    }
+                    else
+                    {
+                        this.sbList.Append("<tr><td height='30' align='center' colspan='8'>暂无数据</td></tr>");
+
+                    }
+                    return;
+
+
                 case "USERVBTOP":
 
                     strCurrentURL = "XBATop.aspx?Type=USERABILITYTOP&";
@@ -331,14 +394,21 @@
                     this.sbPageIntro = new StringBuilder();
                     this.sbPageIntro.Append("<td><ul><li class='qian1'>球队综合</li>");  
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/XBATop.aspx?Type=PLAYERTOP\"'  href='XBATop.aspx?Type=PLAYERTOP&Page=1'>球员排行</a></li>");
-                    this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/XBATop.aspx?Type=USERVBTOP\"'href='XBATop.aspx?Type=USERVBTOP&Hour=14'>职业战绩</a></li></ul></td>");
+                    this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/XBATop.aspx?Type=PLAYER3TOP\"'href='XBATop.aspx?Type=PLAYER3TOP&Hour=14'>街球排行</a></li></ul></td>");
                     return;
 
                 case "PLAYERTOP":
                     this.sbPageIntro = new StringBuilder();
                     this.sbPageIntro.Append("<td><ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/XBATop.aspx?Type=USERABILITYTOP\"' href='XBATop.aspx?Type=USERABILITYTOP'>球队综合</a></li>");
                     this.sbPageIntro.Append("<li class='qian2'>球员排行</li>");
-                    this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/XBATop.aspx?Type=USERVBTOP\"'href='XBATop.aspx?Type=USERVBTOP&Hour=14'>职业战绩</a></li></ul></td>");
+                    this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/XBATop.aspx?Type=PLAYER3TOP\"'href='XBATop.aspx?Type=PLAYER3TOP&Page=1'>街球排行</a></li></ul></td>");
+                    return;
+
+                case "PLAYER3TOP":
+                    this.sbPageIntro = new StringBuilder();
+                    this.sbPageIntro.Append("<td><ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/XBATop.aspx?Type=USERABILITYTOP\"' href='XBATop.aspx?Type=USERABILITYTOP'>球队综合</a></li>");
+                    this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/XBATop.aspx?Type=PLAYERTOP\"'  href='XBATop.aspx?Type=PLAYERTOP&Page=1'>球员排行</a></li>");
+                    this.sbPageIntro.Append("<li class='qian2'>街球排行</li></ul></td>");
                     return;
 
                 case "USERVBTOP":

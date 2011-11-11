@@ -42,6 +42,21 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        public static int GetPlayer3AbilityTopCount()
+        {
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@DoCount", SqlDbType.Bit, 1), new SqlParameter("@PageIndex", SqlDbType.Int, 4), new SqlParameter("@PageSize", SqlDbType.Int, 4) };
+            commandParameters[0].Value = 1;
+            commandParameters[1].Value = 0;
+            commandParameters[2].Value = 0;
+            return (int)SqlHelper.ExecuteScalar(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetPlayer3AbilityTop200", commandParameters);
+        }
+
+        public static DataTable GetPlayer3AbilityTop(int intPage, int intPerPage)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetPlayer3AbilityTop200  0, ", intPage, ",", intPerPage });
+            return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
     }
 }
 

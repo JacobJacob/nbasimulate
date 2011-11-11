@@ -48,6 +48,15 @@ namespace Client.XBA.Common
         /*将球员从阵容中替掉*/
         public static String CHANGE_PLAYER_FROM_ARRANGE5_HANDLER = "change_player_from_arrange5_handler";
 
+        /*全明星赛比赛处理客户端*/
+        public static String CLIENT_TYPE_STAR_MATCH_HANDLER = "star_match_handler";
+
+        /*测试正常执行*/
+        public static String CLIENT_TYPE_TEST_SUCCESS = "test_success";
+
+        /*测测抛错*/
+        public static String CLIENT_TYPE_TEST_ERROR = "test_error";
+
 
         /*友谊赛*/
         public static int MATCH_CATEGORY_FRIEND = 1;

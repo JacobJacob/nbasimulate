@@ -1,4 +1,4 @@
-﻿namespace Web.VMatchEngine
+﻿namespace Web.TMatchEngine
 {
     using System;
     using System.Data;
@@ -74,10 +74,10 @@
             this.blnOnArrange = false;
             this.blnInjured = false;
             this.strName = StringItem.GetXMLTrueBody(drPlayer["Name"].ToString().Trim());
-            /*if (blnIsHome)
+            if (blnIsHome)
             {
                 this.strName = "&lt;u&gt;" + this.strName + "&lt;/u&gt;";
-            }*/
+            }
             this.intHeight = (byte) drPlayer["Height"];
             this.intWeight = (byte) drPlayer["Weight"];
             this.intPos = (byte) drPlayer["Pos"];

@@ -723,3 +723,7 @@ D:\develop\xba_workspace\src\Web\obj\Release\Web._51LoginOK.resources
 D:\develop\xba_workspace\src\Web\obj\Release\Web._51Reg.resources
 D:\develop\xba_workspace\src\Web\obj\Release\Web._51RegOK.resources
 D:\develop\xba_workspace\src\Web\obj\Release\Web.dll
+D:\develop\xba_workspace\src\Web\obj\Debug\Web.WebService.TOnlineReport.resources
+D:\develop\xba_workspace\src\Web\obj\Debug\Web.csproj.GenerateResource.Cache
+D:\develop\xba_workspace\src\Web\obj\Release\Web.WebService.TOnlineReport.resources
+D:\develop\xba_workspace\src\Web\obj\Release\Web.csproj.GenerateResource.Cache

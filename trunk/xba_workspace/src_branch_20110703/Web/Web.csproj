@@ -155,14 +155,35 @@
     <Compile Include="Web\DBData\BTPXBATopManager.cs" />
     <Compile Include="Web\DBData\BTPStockManager.cs" />
     <Compile Include="Web\DBData\BTPXGuessManager.cs" />
+    <Compile Include="Web\DBData\BTPStarMatchManager.cs" />
     <Compile Include="Web\Helper\Config.cs" />
     <Compile Include="Web\Helper\IniUtil.cs" />
     <Compile Include="Web\Helper\MainXmlHelper.cs" />
     <Compile Include="Web\Helper\PlayerHelper.cs" />
+    <Compile Include="Web\Helper\TOnlineReportData.cs" />
     <Compile Include="Web\Intro\XBATop.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\TMatchEngine\Arrange.cs" />
+    <Compile Include="Web\TMatchEngine\InjuryGenerator.cs" />
+    <Compile Include="Web\TMatchEngine\Language.cs" />
+    <Compile Include="Web\TMatchEngine\Match.cs" />
+    <Compile Include="Web\TMatchEngine\Player.cs" />
+    <Compile Include="Web\TMatchEngine\Quarter.cs" />
+    <Compile Include="Web\TMatchEngine\ScriptGenerator.cs" />
+    <Compile Include="Web\TMatchEngine\Team.cs" />
+    <Compile Include="Web\TMatchEngine\Timer.cs" />
+    <Compile Include="Web\TOnlineRepDetail.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TOnlineReport.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\Util\LogManager.cs" />
+    <Compile Include="Web\Util\StringUtil.cs" />
+    <Compile Include="Web\WebService\TOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Web\XBATop.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1291,6 +1312,9 @@
     <Compile Include="Web\XGuess.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\StarMatch.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <EmbeddedResource Include="Test.WebHttp.Request.resources" />
     <EmbeddedResource Include="Test.WebHttp.Response.resources" />
     <EmbeddedResource Include="Web.AccountManage.resources" />
@@ -1525,6 +1549,10 @@
     <EmbeddedResource Include="Web._51LoginOK.resources" />
     <EmbeddedResource Include="Web._51Reg.resources" />
     <EmbeddedResource Include="Web._51RegOK.resources" />
+    <EmbeddedResource Include="Web\WebService\TOnlineReport.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TOnlineReport.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -189,7 +189,9 @@
                 }
                 else
                 {
-                    str6 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=QUICKBUY&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "yikoujia.gif' border='0' width='33' height='9'></a><a href='SecretaryPage.aspx?Type=CANCELFOCUS&Category=", num, "&PlayerID=", num10, "' title='取消关注并不能撤销出价！'><img src='", SessionItem.GetImageURL(), "cancel.gif' border='0' width='24' height='9'></a>" });
+                    //str6 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=QUICKBUY&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "yikoujia.gif' border='0' width='33' height='9'></a><a href='SecretaryPage.aspx?Type=CANCELFOCUS&Category=", num, "&PlayerID=", num10, "' title='取消关注并不能撤销出价！'><img src='", SessionItem.GetImageURL(), "cancel.gif' border='0' width='24' height='9'></a>" });
+                    str6 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=CANCELFOCUS&Category=", num, "&PlayerID=", num10, "' title='取消关注并不能撤销出价！'><img src='", SessionItem.GetImageURL(), "cancel.gif' border='0' width='24' height='9'></a>" });
+                
                 }
             }
         Label_06C5:

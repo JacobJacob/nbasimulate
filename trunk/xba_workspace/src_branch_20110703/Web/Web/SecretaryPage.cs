@@ -1057,6 +1057,22 @@
                                     base.Response.Redirect("Report.aspx?Parameter=561");
                                 }
                                 goto Label_0A68;
+                            case 201:
+                  
+                                if (strNickName == "")
+                                {
+                                    
+                                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, string.Concat(new object[] { "购买", intCount, "个", str3 }));
+                                    num15 = BTPToolLinkManager.BuyLocationCard(request, this.intUserID, intCount);
+                                }
+                                else
+                                {
+                                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }));
+                                    BTPToolLinkManager.BuyLocationCard(request, this.intLookUserID, intCount);
+                                    BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", string.Concat(new object[] { AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex), "赠送给您", str3, " ", intCount, "个。" }));
+                                    BTPMessageManager.SetHasMsg(strNickName);
+                                }
+                                goto Label_0A68;
                         }
                         if (strNickName == "")
                         {
@@ -4431,7 +4447,16 @@
             else
             {
                 num = BTPPlayer3Manager.GetPlayer3CountByCID(this.intClubID3);
-                num2 = 8;
+                //是否有位置卡
+                bool hasLocationCard = BTPToolLinkManager.HasTool(this.intUserID,1, 201, 0);
+                if (hasLocationCard)
+                {
+                    num2 = 9;
+                }
+                else
+                {
+                    num2 = 8;
+                }
             }
             if (num >= num2)
             {
@@ -5343,6 +5368,7 @@
                 this.btnOrderOK.Visible = false;
                 this.trSafe.Visible = false;
                 this.btnInTeam.Visible = false;
+                this.tblXGuess.Visible = false;
                 this.btnSearchCancel.Visible = false;
                 this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.history.back();'>";
                 this.strType = (string) SessionItem.GetRequest("Type", 1);
@@ -5700,6 +5726,9 @@
 
                         case "XGUESS":
                             this.BetXGuess();
+                            break;
+                        case "STARVOTE":
+                            this.StarVote();
                             break;
 
                     }
@@ -8281,13 +8310,39 @@
                 return;
             }
 
+            int intRound = BTPXGameManager.GetXGameRound();
+            if (intRound > 1)
+            {
+                this.strSay = "冠军杯决赛阶段已经开始，不能再竞猜";
+                return;
+            }
+
             this.tblXGuess.Visible = true;
-            this.strSay = "请输入下注金额";
+            this.strSay = "请输入下注金额(大于10W小于100W)";
             this.btnOK.Visible = true;
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BETXGUESS);
 
           
          
+        }
+
+        private void StarVote()
+        {
+            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            if (accountRowByUserID == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+                return;
+            }
+
+
+            this.strSay = "你确定要将可贵的一票投给该名球员吗?";
+ 
+            this.btnOK.Visible = true;
+            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_STARVOTE);
+
         }
 
         private void btnOK_Click_BETXGUESS(object sender, ImageClickEventArgs e)
@@ -8311,6 +8366,11 @@
                 return;
 
             }
+            else if (intAmount > 1000000)
+            {
+                this.strSay = this.strNickName + "经理，单次最大只能竞猜1000000资金。";
+                return;
+            }
 
             int intRetValue = BTPXGuessManager.BetXGuess(this.intUserID, this.intXGuessID, intAmount);
             switch (intRetValue)
@@ -8324,14 +8384,38 @@
                 case -3:
                     base.Response.Redirect("Report.aspx?Parameter=XGE03");
                     break;
+                case -4:
+                    base.Response.Redirect("Report.aspx?Parameter=XGE04");
+                    break;
                 case 1:
                     base.Response.Redirect("Report.aspx?Parameter=XGS01");
                     break;
+
             }
             //base.Response.Redirect("Report.aspx?Parameter=P102!Type.3");
         }
 
+        private void btnOK_Click_STARVOTE(object sender, ImageClickEventArgs e)
+        {
 
+            int intRetValue = BTPStarMatchManager.VoteStarPlayer(this.intUserID, this.longPlayerID);
+            switch (intRetValue)
+            {
+                case -1:
+                    base.Response.Redirect("Report.aspx?Parameter=SVE01");
+                    break;
+                case -2:
+                    base.Response.Redirect("Report.aspx?Parameter=SVE02");
+                    break;
+                case -3:
+                    base.Response.Redirect("Report.aspx?Parameter=SVE03");
+                    break;
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=SVS01");
+                    break;
+
+            }
+        }
 
     }
 }

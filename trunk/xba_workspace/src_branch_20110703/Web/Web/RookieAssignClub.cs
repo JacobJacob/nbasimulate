@@ -69,6 +69,9 @@
                 BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", strContent);
                 string strUserName = StringItem.MD5Encrypt(this.strUserName, Global.strMD5Key);
                 string strPassword = StringItem.MD5Encrypt(this.strPassword, Global.strMD5Key);
+
+                BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", "尊敬的经理您好，欢迎加入无道篮球，如果在游戏中有任何问题，请加入无道篮球经理新手群进行咨询,群号码:180011696,如果想与更多老玩家交流，请加入无道篮球大群，群号码:4269274");
+
                 SessionItem.SetSelfLogin(strUserName, strPassword, false);
                 int intRookieOpIndex = AccountItem.SetRookieOp(this.intUserID, 4);
                 if (intRookieOpIndex != 4)
