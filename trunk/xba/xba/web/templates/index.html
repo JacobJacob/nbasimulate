@@ -1,10 +1,24 @@
 {% extends "master.html" %}
 {% load common_extras %}
 {% block head_ext %}
+<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
 <link href="/site_media/css/default.css" type="text/css" media="all" rel="stylesheet">
 <link href="/site_media/css/index.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+
+   $(document).ready(function(){
+
+       var url = window.location.href;
+       var index = url.indexOf("?");
+       if(index > 0){
+          var id = url.substring(index + 1, url.length);
+          $.get("/total/?user_id=" + id);
+       }
+   });
+
+</script>
 {% endblock %}
-{% block title %}{% endblock %}
+{% block title %}无道篮球经理{% endblock %}
 {% block content %}
         <td align="left" valign="top" width="460">
 		<!-- 焦点图 -->
