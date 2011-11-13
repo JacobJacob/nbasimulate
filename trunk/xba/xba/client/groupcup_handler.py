@@ -4,7 +4,6 @@
 import os
 
 from xba.config import CLIENT_EXE_PATH
-from subprocess import Popen, PIPE
 
 from xba.business import game_manager, xcup_manager, xguess_manager
 from xba.common.decorators import ensure_success

@@ -4,14 +4,13 @@
 import os
 
 from xba.config import CLIENT_EXE_PATH
-from subprocess import Popen, PIPE
 
 from xba.business import devcup_manager
 from xba.common.decorators import ensure_success
 from xba.common import cup_util
 from xba.common.cupladder import CupLadder, CupLadderRoundMatch
 from base import BaseClient
-from xba.config import WEB_ROOT, DOMAIN
+from xba.config import WEB_ROOT, DOMAINS
 
 class DevCupHandler(BaseClient):
     
@@ -47,6 +46,13 @@ class DevCupHandler(BaseClient):
     def get_run_devcuptable(self):
         return devcup_manager.get_run_devcuptable()
     
+    def get_ladder_url(self, ladder_url):
+        print ladder_url
+        for domain in DOMAINS:
+            ladder_url = ladder_url.replace(domain, "")
+        print ladder_url
+        return ladder_url
+     
     def handle_devcup(self, devcup_info):
         devcup_id = devcup_info["DevCupID"]
         capacity = devcup_info["Capacity"]
@@ -55,8 +61,7 @@ class DevCupHandler(BaseClient):
         round = devcup_info["Round"]
         self.log("now round is:%s" % round) 
         ladder_url = devcup_info["LadderURL"]
-        save_path = os.path.join(WEB_ROOT, ladder_url.replace(DOMAIN, ""))
-        print save_path
+        save_path = os.path.join(WEB_ROOT, self.get_ladder_url(ladder_url))
         #第一轮，安排赛程
         if round == 0:
             alive_reg_infos = self.get_alive_reg_table_by_devcupid(devcup_id)
@@ -210,7 +215,7 @@ class DevCupHandler(BaseClient):
         devcupid = devcup_info["DevCupID"]
         devcup_manager.set_devcup_champion(devcupid, user_id, club_name)
         devcup_manager.set_status_by_devcupid(devcupid, 3)
-        devcup_manager.reward_devcup_by_clubid(devcupid, club_id)
+        devcup_manager.reward_devcup_by_clubid(devcupid)
         
     def execute_match(self, cluba, clubb, devcupid, gain_code, round):
         cmd = "%s %s %s %s %s %s %s" % (CLIENT_EXE_PATH, 'devcup_match_handler', devcupid, gain_code, cluba, clubb, round)
@@ -247,6 +252,7 @@ class DevCupHandler(BaseClient):
 
 if __name__ == "__main__":
     handler = DevCupHandler()
-    ladder_url = 'http://www.113388.net/DevCupLadder/201108/29.htm'
-    save_path = os.path.join(WEB_ROOT, ladder_url.replace(DOMAIN, ""))
-    handler.write_html(29, '哈利与火焰杯',  '16.gif', save_path, 2)
+    handler.start()
+    #ladder_url = 'http://www.113388.net/DevCupLadder/201108/29.htm'
+    #save_path = os.path.join(WEB_ROOT, ladder_url.replace(DOMAIN, ""))
+    #handler.write_html(29, '哈利与火焰杯',  '16.gif', save_path, 2)

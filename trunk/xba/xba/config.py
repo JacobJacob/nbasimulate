@@ -71,12 +71,14 @@ class DjangoSettings:
 if DEBUG:
     CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
     #DOMAIN = 'http://localhost:34591/xbaweb/'
-    DOMAIN = 'http://www.113388.net/'
+    DOMAIN = 'http://n1.113388.net/'
     WEB_ROOT = "D:\\develop\\xba_workspace\\xbaweb"
 else:
     CLIENT_EXE_PATH = "E:\\xba_app\\xba\\doc\\bin\\Client.exe"
-    DOMAIN = 'http://www.113388.net/'
+    DOMAIN = 'http://n1.113388.net/'
     WEB_ROOT = "D:\\xba_root\\xbaweb"
+    
+DOMAINS = ["http://localhost:34591/xbaweb/", "http://n1.113388.net/"]
      
 NGINX_ACCESS_LOG = "E:\\nginx-0.8.33\\logs\\access.log"
 
