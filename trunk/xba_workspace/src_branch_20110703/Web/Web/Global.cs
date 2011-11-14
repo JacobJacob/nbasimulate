@@ -691,6 +691,11 @@
             htError.Add("SVE02", new Error("您不是会员，无法投票。", "StarMatch.aspx?Type=MATCH", "THIS"));
             htError.Add("SVE03", new Error("您已经投过票了。", "StarMatch.aspx?Type=MATCH", "THIS"));
             htError.Add("SVS01", new Error("投票成功，如果该名球员获得前三名的票数，将会获得参加全明星赛的资格。", "StarMatch.aspx?Type=MATCH", "THIS"));
+
+            /* 1 成功 -2 不是新人 -1 只可以买一次*/
+            htError.Add("BNS01", new Error("恭喜你，购买新人大礼包成功！", "ManagerTool.aspx", "THIS"));
+            htError.Add("BNE01", new Error("您已经购买过新人大礼包了，每个经理只可以购买一次！", "ManagerTool.aspx", "THIS"));
+            htError.Add("BNE02", new Error("您注册时间超过7天，无法购买新人大礼包", "ManagerTool.aspx", "THIS"));
            
         }
 

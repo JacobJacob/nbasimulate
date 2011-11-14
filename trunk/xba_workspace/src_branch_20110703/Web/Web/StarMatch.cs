@@ -243,9 +243,10 @@
                     this.sbList = new StringBuilder();
                     this.sbList.Append("<tr>");
                     this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">序号</td>");
-                    this.sbList.Append("<td align=\"left\" bgColor=\"#fcc6a4\" height=\"24\">赛季</td>");
-                    this.sbList.Append("<td align=\"left\" bgColor=\"#fcc6a4\">比赛结果</td>");
-                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">获胜球队</td>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\" height=\"24\">赛季</td>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">东部明星</td>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">比分</td>");
+                    this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">西部明星</td>");
                     this.sbList.Append("<td align=\"center\" bgColor=\"#fcc6a4\">全明星MVP</td>");
                     this.sbList.Append("</tr>");
 
@@ -265,40 +266,28 @@
                         foreach (DataRow row in dataTable.Rows)
                         {
 
-
-                            int intUserID = Convert.ToInt32(row["UserID"]);
-                            string strNickName = BTPAccountManager.GetNickNameByUserID(intUserID);
-                            string strClubName = Convert.ToString(row["ClubName"]);
-                            double douOdds = Convert.ToDouble(row["Odds"]);
-                            int intClubID = Convert.ToInt32(row["ClubID"]);
-                            int intMoney = Convert.ToInt32(row["Money"]);
-                            int intStatus = Convert.ToInt32(row["Status"]);
+                            int season = Convert.ToInt32(row["Season"]);
+                            int intScoreA = Convert.ToInt32(row["ScoreA"]);
+                            int intScoreB = Convert.ToInt32(row["ScoreB"]);
+                            string strMvpName = Convert.ToString(row["MVPPlayer"]);
+                            string strClubNameA = Convert.ToString(row["ClubNameA"]);
+                            string strClubNameB= Convert.ToString(row["ClubNameB"]);
+                            
+                            int intMvpID = Convert.ToInt32(row["MVPPlayerID"]);
 
                             int intSort = (this.intPage - 1) * this.intPerPage + count;
                             count++;
 
-                            DataRow accountRow = BTPAccountManager.GetAccountRowByClubID5(intClubID);
-                            int intClubUserID = Convert.ToInt32(accountRow["UserID"]);
 
                             this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                           
                             this.sbList.Append("<td align=\"center\" height=\"24\">" + intSort + "</td>");
-                            this.sbList.Append("<td align=\"left\" height=\"24\"><a href=\"ShowClub.aspx?Type=5&UserID=" + intUserID + "\" title=\"" + strNickName + "\" target=\"Right\">" + strNickName + "</a></td>");
-                            this.sbList.Append("<td align=\"left\" height=\"24\"><a href=\"ShowClub.aspx?Type=5&UserID=" + intClubUserID + "\" title=\"" + strClubName + "\" target=\"Right\">" + strClubName + "</a></td>");
-                            this.sbList.Append("<td align=\"center\" >" + douOdds + "</td>");
-                            this.sbList.Append("<td align=\"center\" >" + intMoney + "</td>");
-                            if (intStatus == 1)
-                            {
-                                this.sbList.Append("<td align=\"center\" >未平盘</td>");
-                            }
-                            else if (intStatus == 2)
-                            {
-                                double douWin = (int)(douOdds * intMoney);
-                                this.sbList.Append("<td align=\"center\" ><font color=\"red\">+" + douWin + "</font></td>");
-                            }
-                            else
-                            {
-                                this.sbList.Append("<td align=\"center\" ><font color=\"green\">-" + intMoney + "</font></td>");
-                            }
+                            this.sbList.Append("<td align=\"center\" height=\"24\">" + season + "</td>");
+                            this.sbList.Append("<td align=\"center\" height=\"24\">" + strClubNameA + "</td>");
+                            this.sbList.Append("<td align=\"center\" height=\"24\">" + intScoreA + ":" + intScoreB + "</td>");
+                            this.sbList.Append("<td align=\"center\" height=\"24\">" + strClubNameB + "</td>");
+                            this.sbList.Append("<td align=\"center\" ><span class=\"DIVPlayerName\" ><a href=\"ShowPlayer.aspx?Type=5&Kind=0&Check=0&PlayerID=" + intMvpID + "\" target=\"Right\">" + strMvpName + "</a></span></td>");
+                        
                             this.sbList.Append("<tr><td height='1' background='Images/RM/Border_07.gif' colspan='8'></td></tr>");
 
                         }

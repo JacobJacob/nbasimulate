@@ -255,6 +255,16 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        /**
+         *推广积分换游戏币 
+         */
+
+        public static int ExchangePromotionPoint(int intUserID, int intAmount)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangePromotionPoint ", intUserID, ",", intAmount });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
         public static int GetAccountCount()
         {
             string commandText = "Exec NewBTP.dbo.GetAccountCount";

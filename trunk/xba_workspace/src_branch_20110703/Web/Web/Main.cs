@@ -305,7 +305,7 @@
 
             object obj2 = str;
             //str = string.Concat(new object[] { obj2, "' target='_blank'><img border=0 src='Images/xinshou.gif'  height='21px' width='60' /></a></td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'><a href='javascript:;'onclick=window.open('ShowClubIFrom.aspx?UserID=-99','XBA','height=392,width=224,status=no,toolbar=no,menubar=no,location=no');><font color='red'>在线聊天</font></a>" });
-            str = string.Concat(new object[] { obj2, "' target='_blank'><img border=0 src='Images/xinshou.gif'  height='21px' width='60' /></a></td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'>官方群:4269274" });
+            str = string.Concat(new object[] { obj2, "' target='_blank'><img border=0 src='Images/xinshou.gif'  height='21px' width='60' /></a></td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'><strong>官方群</strong>:4269274" });
             //str = string.Concat(new object[] { obj2, "</td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'>&nbsp;</a>" });
             if (ServerParameter.strCopartner == "CGA")
             {

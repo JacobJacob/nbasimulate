@@ -1282,6 +1282,9 @@
     <Compile Include="Web\XBAFinanceAD.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\zh\com\xba\match_5\TOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Web\_51Admin.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1549,10 +1552,6 @@
     <EmbeddedResource Include="Web._51LoginOK.resources" />
     <EmbeddedResource Include="Web._51Reg.resources" />
     <EmbeddedResource Include="Web._51RegOK.resources" />
-    <EmbeddedResource Include="Web\WebService\TOnlineReport.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>TOnlineReport.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -39,6 +39,7 @@
         public string strUseWealth;
         public string strWealthToMoney = "";
         public string strPlayerPromotion = "";
+        public string strPromotionToWealth = "";
         protected HtmlTable Table2;
         protected TextBox tbCoin;
         protected TextBox tbGetWealth;
@@ -587,8 +588,10 @@
             }
 
             string link = "http://www.113388.net/?" + this.intUserID;
+            this.strPromotionToWealth = "<a href=\"Temp_Right.aspx?Type=PROMOTIONEXCHANGE\" target=\"Right\">推广积分兑换游戏币</a><br/><br/>我的积分推广链接:<a href=\"" + link + "\" target=\"_blank\">" + link + "</a>";
 
-            this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='6' align=\"left\">我的积分推广链接: <a href=\"" + link + "\" target=\"_blank\">" + link + "</a></td></tr>";
+            this.strList = this.strList + "<tr><td height='25' style='padding-left:10px;' colspan='6'><br/>" + this.strPromotionToWealth + "</td></tr>";
+
         }
 
         private void SetWealthManage()

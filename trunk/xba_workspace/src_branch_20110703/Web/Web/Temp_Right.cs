@@ -12,6 +12,7 @@
     {
         protected ImageButton btnDelMaster;
         protected ImageButton btnOK;
+        protected ImageButton btnPromotionOk;
         protected ImageButton btnSend;
         protected ImageButton btnSendB;
         protected ImageButton btnSendMsg;
@@ -37,6 +38,7 @@
         protected HtmlTable tblDelMaster;
         protected HtmlTable tblDevsion;
         protected HtmlTable tblExchange;
+        protected HtmlTable tblPromotionExchange;
         protected HtmlTable tblFmatchMsg;
         protected HtmlTable tblGuess;
         protected HtmlTable tblHonour;
@@ -62,6 +64,7 @@
         protected HtmlTable tbStreenLev;
         protected TextBox tbUnionWealth;
         protected TextBox tbWealth;
+        protected TextBox tbPromotion;
 
         private void btnDelMaster_Click(object sender, ImageClickEventArgs e)
         {
@@ -142,6 +145,44 @@
                 this.strMsg = "不能输入负数，请重新输入。";
             }
         }
+
+        private void btnPromotionOk_Click(object sender, ImageClickEventArgs e)
+        {
+            string str = this.tbPromotion.Text.ToString().Trim();
+            int intPromotion = 0;
+            if (StringItem.IsNumber(str))
+            {
+                intPromotion = Convert.ToInt32(str);
+            }
+            else
+            {
+                this.strMsg = "只能输入半角数字。";
+                return;
+            }
+            if (intPromotion < 1)
+            {
+                this.strMsg = "最少兑换1分推广积分。";
+            }
+            else if (intPromotion >= 0x186a0)
+            {
+                this.strMsg = "您输入的推广积分数量过大，请重新输入。";
+            }
+            else
+            {
+                switch (BTPAccountManager.ExchangePromotionPoint(this.intUserID, intPromotion))
+                {
+                    case 1:
+                        this.strMsg = "成功兑换到" + intPromotion + "游戏币，请查收。";
+                        return;
+
+                    case -1:
+                        this.strMsg = "您的推广积分不足，无法进行游戏币兑换。";
+                        return;
+                }
+                this.strMsg = "不能输入负数，请重新输入。";
+            }
+        }
+
 
         private void btnSend_Click(object sender, ImageClickEventArgs e)
         {
@@ -325,6 +366,8 @@
             this.btnSetReputation.Click += new ImageClickEventHandler(this.btnSetReputation_Click);
             this.btnDelMaster.Click += new ImageClickEventHandler(this.btnDelMaster_Click);
 
+            this.btnPromotionOk.Click += new ImageClickEventHandler(this.btnPromotionOk_Click);
+            this.btnPromotionOk.Attributes["onclick"] = base.GetPostBackEventReference(this.btnPromotionOk) + ";this.disabled=true;";
 
             this.btnDelMaster.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
 
@@ -372,8 +415,10 @@
             this.tblChampionCup.Visible = false;
             this.tblReputation.Visible = false;
             this.tblDelMaster.Visible = false;
+            this.tblPromotionExchange.Visible = false;
 
             this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnPromotionOk.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSend.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSendMsg.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSetReputation.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
@@ -463,6 +508,10 @@
 
                 case "EXCHANGE":
                     this.tblExchange.Visible = true;
+                    return;
+
+                case "PROMOTIONEXCHANGE":
+                    this.tblPromotionExchange.Visible = true;
                     return;
 
                 case "SENDWEALTH":

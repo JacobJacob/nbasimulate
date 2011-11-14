@@ -1,0 +1,12 @@
+D:\develop\xba_workspace\src\LoginParameter\bin\Release\LoginParameter.dll
+D:\develop\xba_workspace\src\LoginParameter\bin\Release\ServerManage.dll
+D:\develop\xba_workspace\src\LoginParameter\bin\Release\ServerManage.pdb
+D:\develop\xba_workspace\src\LoginParameter\obj\Release\ResolveAssemblyReference.cache
+D:\develop\xba_workspace\src\LoginParameter\obj\Release\LoginParameter.dll
+D:\develop\xba_workspace\src\LoginParameter\obj\Debug\ResolveAssemblyReference.cache
+D:\develop\xba_workspace\src\LoginParameter\bin\Debug\LoginParameter.dll
+D:\develop\xba_workspace\src\LoginParameter\bin\Debug\LoginParameter.pdb
+D:\develop\xba_workspace\src\LoginParameter\bin\Debug\ServerManage.dll
+D:\develop\xba_workspace\src\LoginParameter\bin\Debug\ServerManage.pdb
+D:\develop\xba_workspace\src\LoginParameter\obj\Debug\LoginParameter.dll
+D:\develop\xba_workspace\src\LoginParameter\obj\Debug\LoginParameter.pdb

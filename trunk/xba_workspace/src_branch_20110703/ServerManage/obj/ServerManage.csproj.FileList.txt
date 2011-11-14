@@ -1,0 +1,4 @@
+bin\Debug\ServerManage.dll
+bin\Debug\ServerManage.pdb
+obj\Debug\ServerManage.dll
+obj\Debug\ServerManage.pdb

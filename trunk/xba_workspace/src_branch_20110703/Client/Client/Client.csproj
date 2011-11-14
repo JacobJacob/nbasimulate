@@ -1,0 +1,72 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B12BA219-64C6-41DC-A839-061F7E0E79C6}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Client</RootNamespace>
+    <AssemblyName>Client</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XBA\Client\BaseClient.cs" />
+    <Compile Include="XBA\Client\Club5MatchHandler.cs" />
+    <Compile Include="XBA\Client\RunClass.cs" />
+    <Compile Include="XBA\Client\OnlyOneMatchHandler.cs" />
+    <Compile Include="XBA\Client\RoundUpdateHandler.cs" />
+    <Compile Include="XBA\Client\DevMatchHandler.cs" />
+    <Compile Include="XBA\Client\Club3MatchHandler.cs" />
+    <Compile Include="XBA\Client\SeasonUpdateHandler.cs" />
+    <Compile Include="XBA\Client\DevCupMatchHandler.cs" />
+    <Compile Include="XBA\Client\ChangePlayerFromArrange5Handler.cs" />
+    <Compile Include="XBA\Client\CupMatchHandler.cs" />
+    <Compile Include="XBA\Client\XCupMatchHandler.cs" />
+    <Compile Include="XBA\Client\StarMatchHandler.cs" />
+    <Compile Include="XBA\Common\Constant.cs" />
+    <Compile Include="XBA\Common\LogManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ServerManage\ServerManage.csproj">
+      <Project>{25718A16-A3F3-4DA2-8408-1F80F2D691D2}</Project>
+      <Name>ServerManage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Web.csproj">
+      <Project>{B2ACDF01-AA6B-4AF7-A031-21F9EF1DE3E3}</Project>
+      <Name>Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

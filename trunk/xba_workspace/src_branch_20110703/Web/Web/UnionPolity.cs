@@ -119,6 +119,7 @@
                 this.SetDelMaster();
             }
             base.Load += new EventHandler(this.Page_Load);
+
             this.btnDel.Click += new ImageClickEventHandler(this.btnDel_Click);
         }
 

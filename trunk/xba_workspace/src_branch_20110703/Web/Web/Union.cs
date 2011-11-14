@@ -289,10 +289,10 @@
                     this.strErrMsg = "截止时间必须在每日的10点之后。";
                     return;
                 }
-                num6 = 0;//Convert.ToInt32(this.ddlHortation.SelectedValue.ToString());
-                num7 = 0;// Convert.ToInt32(this.ddlHortation1.SelectedValue.ToString());
-                num8 = 0;//Convert.ToInt32(this.ddlHortation2.SelectedValue.ToString());
-                num9 = 0;//Convert.ToInt32(this.ddlHortation3.SelectedValue.ToString());
+                num6 = Convert.ToInt32(this.ddlHortation.SelectedValue.ToString());
+                num7 = Convert.ToInt32(this.ddlHortation1.SelectedValue.ToString());
+                num8 = Convert.ToInt32(this.ddlHortation2.SelectedValue.ToString());
+                num9 = Convert.ToInt32(this.ddlHortation3.SelectedValue.ToString());
                 str4 = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbDevCupIntro.Text.ToString().Trim()));
                 if (!StringItem.IsValidContent(str4, 1, 400))
                 {
@@ -305,28 +305,28 @@
                     case "2":
                     case "3":
                     case "4":
-                        num10 = 0x20;
+                        num10 = 32;
                         num12 = 100;
                         if (str == "1")
                         {
-                            num11 = 100;
+                            num11 = 0;
                         }
                         else if (str == "2")
                         {
-                            num11 = 200;
+                            num11 = 100;
                         }
                         else if (str == "3")
                         {
-                            num11 = 400;
+                            num11 = 200;
                         }
                         else if (str == "4")
                         {
-                            num11 = 800;
+                            num11 = 400;
                         }
                         else
                         {
                             str = "1";
-                            num11 = 100;
+                            num11 = 0;
                         }
                         goto Label_0518;
 
@@ -334,28 +334,28 @@
                     case "6":
                     case "7":
                     case "8":
-                        num10 = 0x40;
+                        num10 = 64;
                         num12 = 200;
                         if (str == "5")
                         {
-                            num11 = 150;
+                            num11 = 75;
                         }
                         else if (str == "6")
                         {
-                            num11 = 300;
+                            num11 = 150;
                         }
                         else if (str == "7")
                         {
-                            num11 = 600;
+                            num11 = 300;
                         }
                         else if (str == "8")
                         {
-                            num11 = 0x4b0;
+                            num11 = 600;
                         }
                         else
                         {
                             str = "1";
-                            num11 = 100;
+                            num11 = 0;
                         }
                         goto Label_0518;
 
@@ -363,28 +363,28 @@
                     case "10":
                     case "11":
                     case "12":
-                        num10 = 0x80;
+                        num10 = 128;
                         num12 = 400;
                         if (str == "9")
                         {
-                            num11 = 200;
+                            num11 = 100;
                         }
                         else if (str == "10")
                         {
-                            num11 = 400;
+                            num11 = 200;
                         }
                         else if (str == "11")
                         {
-                            num11 = 800;
+                            num11 = 400;
                         }
                         else if (str == "12")
                         {
-                            num11 = 0x640;
+                            num11 = 800;
                         }
                         else
                         {
                             str = "1";
-                            num11 = 100;
+                            num11 = 0;
                         }
                         goto Label_0518;
 
@@ -392,23 +392,23 @@
                     case "14":
                     case "15":
                     case "16":
-                        num10 = 0x100;
+                        num10 = 256;
                         num12 = 800;
                         if (str == "13")
                         {
-                            num11 = 250;
+                            num11 = 125;
                         }
                         else if (str == "14")
                         {
-                            num11 = 500;
+                            num11 = 250;
                         }
                         else if (str == "15")
                         {
-                            num11 = 0x3e8;
+                            num11 = 500;
                         }
                         else if (str == "16")
                         {
-                            num11 = 0x7d0;
+                            num11 = 1000;
                         }
                         else
                         {
@@ -428,7 +428,7 @@
                 return;
             }
         Label_0518:
-            num11 = 0;
+            //num11 = num11 / 2;
             num12 = 0;
             if (intRegClub == 1)
             {
@@ -1442,6 +1442,7 @@
             this.btnCreate.ImageUrl = SessionItem.GetImageURL() + "button_46.gif";
             this.btnModify.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnAdd.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnDonate.ImageUrl = SessionItem.GetImageURL() + "button_44.gif";
         }
 
         private void SetImperialCupList()
@@ -1623,7 +1624,7 @@
                     return;
 
                 case "UNIONINFO":
-                    this.strPageIntro1 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;" + this.strUBBSU.Replace("＆", "&").ToString().Trim() + "<a href='Union.aspx?Type=" + this.strType + "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;";
+                    this.strPageIntro1 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;" + this.strUBBSU.Replace("＆", "&").ToString().Trim() + "<a href='Union.aspx?Type=" + this.strType + "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>";
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1634,7 +1635,7 @@
                     break;
 
                 case "UNIONBBS":
-                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;<font color='red'>联盟论坛</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;" });
+                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;<font color='red'>联盟论坛</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1648,7 +1649,7 @@
                     return;
 
                 case "INVITE":
-                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<font color='red'>联盟邀请</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;" });
+                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<font color='red'>联盟邀请</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1669,7 +1670,8 @@
 
                 case "UNIONMANAGE":
                     this.strPageIntro1 = string.Concat(new object[] { 
-                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;<font color='red'>&nbsp;|&nbsp;联盟管理</font>"
+                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
+                        "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a><font color='red'>&nbsp;|&nbsp;联盟管理</font>"
                      });
                     if (this.intUnionCategory != 1)
                     {
@@ -1680,7 +1682,7 @@
                     return;
 
                 case "UNIONCUP":
-                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;" });
+                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1695,7 +1697,7 @@
                     return;
 
                 case "UNIONCUPCHECK":
-                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;" });
+                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1710,7 +1712,7 @@
                     return;
 
                 case "VIEWUNIONCUP":
-                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;" });
+                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1725,7 +1727,7 @@
                     return;
 
                 case "UNIONCUPLIST":
-                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<font color='red'>联盟冠军榜</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;" });
+                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<font color='red'>联盟冠军榜</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1757,7 +1759,7 @@
                     return;
 
                 case "REPUTATION":
-                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<font color='red'>功勋榜</font>&nbsp;" });
+                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<font color='red'>功勋榜</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1777,7 +1779,7 @@
                     this.intUnionID = (int) accountRowByUserID["UnionID"];
                     accountRowByUserID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
                     this.intUnionWealthAll = (int) accountRowByUserID["Wealth"];
-                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;" });
+                    this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<font color='red'>游戏币财政</font>" });
                     if (this.intUnionCategory != 1)
                     {
                         str = this.strPageIntro1;
@@ -1793,7 +1795,8 @@
                 }
                 case "DONATEWEALTH":
                     this.strPageIntro1 = string.Concat(new object[] { 
-                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;"
+                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
+                        "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
                     if (this.intUnionCategory != 1)
                     {
@@ -1809,7 +1812,8 @@
 
                 case "CREATECUP":
                     this.strPageIntro1 = string.Concat(new object[] { 
-                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;"
+                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
+                        "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
                     if (this.intUnionCategory != 1)
                     {
@@ -1838,7 +1842,8 @@
 
                 case "CUPMANAGE":
                     this.strPageIntro1 = string.Concat(new object[] { 
-                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;"
+                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
+                        "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
                     if (this.intUnionCategory != 1)
                     {
@@ -1856,7 +1861,8 @@
 
                 case "MODIFYDEVCUP":
                     this.strPageIntro1 = string.Concat(new object[] { 
-                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;"
+                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
+                        "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
                     if (this.intUnionCategory != 1)
                     {
@@ -1874,7 +1880,8 @@
 
                 case "CUPREGMANAGE":
                     this.strPageIntro1 = string.Concat(new object[] { 
-                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|"
+                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
+                        "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
                     if (this.intUnionCategory != 1)
                     {
@@ -1998,9 +2005,9 @@
                     this.tblDemise.Visible = true;
                     return;
             }
-            //this.strPageIntro2 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&Page=1'>杯赛管理</a>";
-            //this.tblSetIntro.Visible = true;
-            //this.SetIntros();
+            this.strPageIntro2 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&Page=1'>杯赛管理</a>";
+            this.tblSetIntro.Visible = true;
+            this.SetIntros();
         }
 
         private void SetIntros()
@@ -2314,6 +2321,10 @@
 
         private void SetUnionIntro()
         {
+
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            this.intUnionID = (int)accountRowByUserID["UnionID"];
+            
             object obj2;
             this.divUnionIntro.Visible = true;
             int request = (int) SessionItem.GetRequest("UnionID", 0);
@@ -2334,14 +2345,22 @@
             string str6 = allInfoByUnionID["UQQ"].ToString().Trim();
             string str7 = "论坛";
             string str8 = allInfoByUnionID["UBBS"].ToString().Trim();
-            if (this.intUnionID == request && this.intUserID != intUserID)
+            if (this.intUnionID == request)
             {
-                //str4 = str4 + "<a href='Temp_Right.aspx?Type=DELATEMASTER' target=\"Right\"><font color=red>[弹劾]</font></a>";
+                DataRow unionPolityRow = BTPUnionPolity.GetDelMasterRow(this.intUnionID);
+                if (unionPolityRow == null)
+                {
+                    if (this.intUserID != intUserID)
+                    {
+                        str4 = str4 + "<a href='Temp_Right.aspx?Type=DELATEMASTER' target=\"Right\"><font color=red>[弹劾]</font></a>";
+                    }
+                }
+                else
+                {
+                    str4 = str4 + "<a href='UnionPolity.aspx?Type=DELMASTER' ><font color=red>[投票]</font></a>";
+                }
             }
-            else
-            {
-                //str4 = str4 + "<a href='Temp_Right.aspx?Type=DELATEMASTER' target=\"Right\"><font color=red>[弹劾]</font></a>";
-            }
+            
             if (str8.IndexOf("UnionBoard.aspx?Type=UNIONBBS") != -1)
             {
                 str7 = "<a href=\"UnionBoard.aspx?Type=UNIONBBS&UnionID=" + request + "&Page=1\">论坛</a>";
@@ -2359,7 +2378,7 @@
                 "<tr><td><table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td height='60'><img src='Images/UnionLogo/", str, ".gif' height='46' width='46' border='0'></td><td><font style='line-height:130%'><strong>联盟：</strong><a href='UnionList.aspx?UnionID=", request, "&Page=1' target='Right'>", str2, "[", str3, "]</a><br><strong>盟主：</strong>", str4, "</font></td><td><font style='line-height:130%'><strong>威望：</strong>", num2, "<br><strong>盟员：</strong><a href='UnionList.aspx?UnionID=", request, "&Page=1' target='Right'>", num3, 
                 "</a></font></td><td cospan='2'><font style='line-height:130%'>", str9, "<br> ", str7
              });
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+               
             int num5 = (int) accountRowByUserID["UnionID"];
             int num6 = (byte) accountRowByUserID["UnionCategory"];
             if ((num5 == request) && (num6 != 1))

@@ -1,0 +1,10 @@
+D:\xba_workspace\src\ServerManage\bin\Debug\ServerManage.dll
+D:\xba_workspace\src\ServerManage\bin\Debug\ServerManage.pdb
+D:\xba_workspace\src\ServerManage\obj\Debug\ServerManage.dll
+D:\xba_workspace\src\ServerManage\obj\Debug\ServerManage.pdb
+D:\develop\xba_workspace\src\ServerManage\bin\Release\ServerManage.dll
+D:\develop\xba_workspace\src\ServerManage\obj\Release\ServerManage.dll
+D:\develop\xba_workspace\src\ServerManage\bin\Debug\ServerManage.dll
+D:\develop\xba_workspace\src\ServerManage\bin\Debug\ServerManage.pdb
+D:\develop\xba_workspace\src\ServerManage\obj\Debug\ServerManage.dll
+D:\develop\xba_workspace\src\ServerManage\obj\Debug\ServerManage.pdb

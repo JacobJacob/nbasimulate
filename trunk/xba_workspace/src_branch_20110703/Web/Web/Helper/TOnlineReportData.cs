@@ -18,8 +18,9 @@
 
         public TOnlineReportData(DataSet ds)
         {
-            int num = (byte) Global.drParameter["RepStartTime"];
-            this.datStd = DateTime.Today.AddHours((double) num);
+            //int num = (byte) Global.drParameter["RepStartTime"];
+            int intRepStartTime = 17;
+            this.datStd = DateTime.Today.AddHours((double)intRepStartTime);
             this.datPre = DateTime.Parse("2005-1-1");
             this.intQNum = 1;
             this.intScriptID = 0;

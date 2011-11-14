@@ -387,6 +387,16 @@
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseToolCategory3 ", intUserID, ",", longPlayerID, ",", intMarket });
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
+
+        /*
+         *购买新人大礼包 
+         */
+
+        public static int BuyNewerToolBox(int intToolID, int intUserID)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.BuyNewerToolBox ", intToolID, ",", intUserID });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
     }
 }
 

@@ -53,23 +53,17 @@
 
                 DataRow starMathcRow = BTPStarMatchManager.GetOneStarMatchByID(intTag);
 
-                int num3 = (int)starMathcRow["ClubHScore"];
-                int num4 = (int)starMathcRow["ClubAScore"];
-                return string.Concat(new object[] { "全场比赛结束！<br>|", num3, ":", num4, "|END" });
+                int intClubAScore = (int)starMathcRow["ScoreA"];
+                int intClubBScore = (int)starMathcRow["ScoreB"];
+                return string.Concat(new object[] { "全场比赛结束！<br>|", intClubAScore, ":", intClubBScore, "|END" });
             }
             if (base.Session["RepSession"] == null)
             {
-                //DataRow row2 = BTPDevMatchManager.GetDevMRowByDevMatchID(intTag);
-
                 DataRow starMathcRow = BTPStarMatchManager.GetOneStarMatchByID(intTag);
 
                 if (starMathcRow == null)
                 {
                     quarterArrange = "暂无战报，请等待！|0:0|END";
-                }
-                else if ((((int)starMathcRow["ClubHID"]) == 0) || (((int)starMathcRow["ClubAID"]) == 0))
-                {
-                    quarterArrange = "本轮比赛轮空！|0:0|END";
                 }
                 else
                 {
@@ -80,7 +74,7 @@
                     }
                     else
                     {
-                        url = Config.GetDomain() + "/" + url;
+                        url = Config.GetDomain() + url;
                         XmlDataDocument document = new XmlDataDocument();
                         document.DataSet.ReadXmlSchema(base.Server.MapPath("../MatchXML/RepSchema.xsd"));
                         XmlTextReader reader = new XmlTextReader(url);

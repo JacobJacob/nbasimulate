@@ -1018,13 +1018,29 @@
                 base.Response.Redirect("Report.aspx?Parameter=204!Type.TOOLS^Page.1");
                 return;
             }
-            if (intCategory != 7)
+            if (intCategory == 16)//购买礼包
             {
-                /*if (!DBLogin.CanConn(40))
+                int intResult = BTPToolLinkManager.BuyNewerToolBox(request, this.intUserID);
+                switch (intResult)
                 {
-                    base.Response.Redirect("Report.aspx?Parameter=205!Type.TOOLS^Page.1");
-                    goto Label_0A68;
-                }*/
+                    case -1:
+                        base.Response.Redirect("Report.aspx?Parameter=BNE01!Type.TOOLS^Page.1");
+                        break;
+                    case -2:
+                        base.Response.Redirect("Report.aspx?Parameter=BNE02!Type.TOOLS^Page.1");
+                        break;
+                    default:
+                        BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin, 2, string.Concat(new object[] { "购买新人大礼包" }));                                   
+                        base.Response.Redirect("Report.aspx?Parameter=BNS01!Type.TOOLS^Page.1");
+                        break;                        
+                }
+
+                return;
+
+            }
+            else if (intCategory != 7)
+            {
+
                 if (intCategory != 8)
                 {
                     if (intCategory != 11)
@@ -4186,6 +4202,10 @@
                     {
                         case 9:
                         case 2:
+                            this.tbCount.Enabled = false;
+                            this.cbPresent.Visible = false;
+                            break;
+                        case 16:
                             this.tbCount.Enabled = false;
                             this.cbPresent.Visible = false;
                             break;
