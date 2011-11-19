@@ -16,7 +16,7 @@ class BaseClient(object):
     
     def __init__(self, name):
         self._name = name
-        self._log_file = "%s_%s" % (name.lower(), datetime.now().strftime("%Y_%m_%d"))
+        self._log_file = "%s_%s" % (name.lower(), datetime.now().strftime("%Y_%m_%d.log"))
     
     def work(self):
         raise "method not implement"
@@ -67,7 +67,7 @@ class BaseClient(object):
                 break
                 
     def log(self, msg):
-        s= "[%s]%s" % (datetime.now().strftime("%Y-%m-%d %H:%M:%S.log"), msg)
+        s= "[%s]%s" % (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg)
         f = open(os.path.join(PathSettings.LOG, self._log_file), "ab")
         try:
             f.write("%s\n" % s)

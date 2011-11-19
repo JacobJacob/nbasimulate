@@ -204,7 +204,25 @@ def add_match(cluba_name, clubb_name, season):
         return cursor.execute(sql)
     finally:
         cursor.close()
-      
+          
+def init_star_match(season):
+    """初始化全明星赛数据"""
+    cluba_name = u"东部明星队"
+    clubb_name = u"西部明星队"
+    cursor = connection.cursor()
+    try:
+        cursor.start_transaction()
+        sql = u"INSERT INTO BTP_StarMatch(ClubNameA, ClubNameB, Season) VALUES('%s', '%s', %s)" % (cluba_name, clubb_name, season)
+        sql = ensure_gbk(sql)
+        cursor.execute(sql)
+        for table in ["btp_starplayer", "btp_starplayer", "btp_starvoterecord"]:
+            cursor.execute("Truncate Table %s" % table)
+        cursor.commit()
+    except:
+        cursor.rollback()
+        raise
+    finally:
+        cursor.close()
    
 def finish_star_match(season):
     """添加比赛"""

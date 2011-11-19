@@ -3,7 +3,8 @@
 
 from xba.config import CLIENT_EXE_PATH
 
-from xba.business import player5_manager, player3_manager, account_manager, tool_manager, xcup_manager, xbatop_manager
+from xba.business import player5_manager, player3_manager, account_manager, tool_manager, xcup_manager, xbatop_manager,\
+    xguess_manager, star_match_manager
 from xba.business import dev_match_manager
 from xba.business import game_manager
 from xba.business import finance_manager
@@ -62,6 +63,9 @@ class SeasonUpdateHandler(BaseClient):
         #联赛更新
         self.dev_update()
         
+        #清除14天不上的球队
+        self.delete_from_league_long_not_login()
+        
         #清训练点
         self.clear_train_point()
         
@@ -103,6 +107,15 @@ class SeasonUpdateHandler(BaseClient):
         
         #球退役处理
         self.player_retire()
+        
+        #删除联赛日志
+        self.delete_log_dev_msg()
+        
+        #清空冠军杯竟猜
+        self.clean_xguess()
+        
+        #初始化全明星赛
+        self.init_star_match()
 
         return "exist"
     
@@ -133,7 +146,17 @@ class SeasonUpdateHandler(BaseClient):
     def change_player_from_arrange5(self, player_id, club_id, category):
         command = "%s %s %s %s %s" % (CLIENT_EXE_PATH, "change_player_from_arrange5_handler", player_id, club_id, category)
         self.call_cmd(command)
-            
+    
+    @ensure_success        
+    def init_star_match(self):
+        """初始化全明星赛"""
+        return star_match_manager.init_star_match(self.__season + 1)
+    
+    @ensure_success
+    def delete_log_dev_msg(self):
+        """删除联赛日志"""
+        return dev_manager.delete_log_dev_msg()
+        
     @ensure_success
     def before_run(self):
         self.__dev_level_sum = self.get_total_level()
@@ -179,27 +202,42 @@ class SeasonUpdateHandler(BaseClient):
     def reset_level_dev(self, level):
         """将某一等级的俱乐部往前排"""
         club_infos = self.get_dev_table_by_level(level)
-        
+        self.log("reset_level_dev,club count[%s]" % len(club_infos))
         for i, club_info in enumerate(club_infos):
             club_id = club_info["ClubID"]
             dev_code = club_info["DevCode"]
             if club_id == 0:
+                self.log("club is empty,devcode[%s]" % dev_code)
                 #如果该俱乐部是空，则从最后面补一个上来
                 index, new_club_info = self.get_last_club_info(dev_code, club_infos)
                 if new_club_info and i < index:
                     #交换两支球队
                     self.exchange_two_dev(club_info, new_club_info)
                 else:
+                    self.log("can not get a club return.i[%s], index[%s]" % (i, index))
                     #从后面拿不到一支有俱乐部的dev，则退出
                     return
+            else:
+                self.log("has club[%s], i[%s]. dev_code[%s]" % (club_id, i, dev_code))
     
     @ensure_success            
     def init_xgame(self):
         """冠军杯初始化"""
         return xcup_manager.init_xgame()
+    
+    @ensure_success            
+    def clean_xguess(self):
+        """冠军杯竞猜清空"""
+        return xguess_manager.clean_xguess()
+    
+    @ensure_success
+    def delete_from_league_long_not_login(self):
+        """删除14天不上的球队"""
+        return dev_manager.delete_from_league_long_not_login()
                 
     @ensure_success
     def betch_create_player(self):
+        """创建球员"""
         return player5_manager.betch_create_player()
          
     @ensure_success
@@ -345,7 +383,7 @@ class SeasonUpdateHandler(BaseClient):
             self.log("level:%s, dev total:%s" % (level, dev_count))
             for sort in range(dev_count):
                 dev_code = self.get_dev_code_by(level, sort)
-                #self.log("start to handle dev[%s]" % dev_code)
+                self.log("start to handle dev[%s]" % dev_code)
                 self.handle_dev(dev_code)
                 
     @ensure_success
@@ -466,6 +504,9 @@ class SeasonUpdateHandler(BaseClient):
                 self.log("has club id less 0")
                 #从下一级拿一级最高综合的球队
                 user_infos = account_manager.get_one_level_max_team(level+1)
+                if not user_infos:
+                    #如果还不够，从下下一级要
+                    user_infos = account_manager.get_one_level_max_team(level+2)
                 self.log("get %s user infos" % len(user_infos))
                 for user_info in user_infos:
                     if user_info and user_info["UserID"]:
@@ -493,13 +534,8 @@ class SeasonUpdateHandler(BaseClient):
 def main():
     handler = SeasonUpdateHandler()
     handler.before_run()
-    handler.dev_update()
-    handler.reset_dev()
-    handler.fill_not_full_dev()
-    handler.assign_dev()
-    handler.reset_dev()
-    handler.up_all9_level()
-  
+    handler.reset_level_dev(8)
+
 def run():
     handler = SeasonUpdateHandler()
     handler.start()

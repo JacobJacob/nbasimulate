@@ -189,7 +189,7 @@ def get_one_level_max_team(level):
     """获取某一等级最大综合的球员"""
     cursor = connection.cursor()
     try:
-        sql = "select top 10 UserID from btp_account where len(DevCode)=%s order by TeamAbility Desc" % (level - 1)
+        sql = "select top 10 UserID from btp_account where len(DevCode)=%s and Category <> 2 order by TeamAbility Desc" % (level - 1)
         cursor.execute(sql)
         return cursor.fetchall()
     finally:

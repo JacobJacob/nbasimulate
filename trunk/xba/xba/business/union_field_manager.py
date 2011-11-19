@@ -21,6 +21,15 @@ def night_update_delete_union():
         cursor.execute(sql)
     finally:
         connection.close()
+        
+def update_delate_master():
+    """夜间更新弹劾"""
+    cursor = connection.cursor()
+    try:
+        sql = "exec UpdateDelateMaster"
+        cursor.execute(sql)
+    finally:
+        connection.close()
            
 if __name__ == "__main__":
     night_update_delete_union()

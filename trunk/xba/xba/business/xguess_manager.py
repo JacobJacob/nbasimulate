@@ -56,6 +56,15 @@ def add_xguess(user_id, club_id, club_name, odds, cursor=None):
     finally:
         if need_close:
             cursor.close()
+            
+def clean_xguess():
+    """清空冠军杯竞猜表"""
+    cursor = connection.cursor()
+    try:
+        sql = u"Truncate Table BTP_XGuess"
+        cursor.execute(sql)
+    finally:
+        cursor.close()
         
 def add_xgame_team_to_xguess():
     """添加竞猜球队"""
@@ -101,4 +110,4 @@ def add_xgame_team_to_xguess():
         
         
 if __name__ == "__main__":
-    xguess_settled(46)
+    clean_xguess()

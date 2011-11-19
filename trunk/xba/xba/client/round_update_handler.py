@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import traceback
 
 from datetime import datetime
 
@@ -106,10 +105,18 @@ class RoundUpdateHandler(BaseClient):
         self.log("start to clean_player5_pLink")
         self.clean_player5_pLink()
         
+        self.log("start to update delete master")
+        self.update_delate_master()
+        
         #after run
         self.after_run()
             
         return "exist"
+    
+    @ensure_success
+    def update_delate_master(self):
+        """联盟弹劾更新"""
+        return union_field_manager.update_delate_master()
     
     def update_season_mvp_value(self):
         """更新MVP值"""
@@ -165,11 +172,13 @@ class RoundUpdateHandler(BaseClient):
         
     def back_up(self):
         """备份数据"""
-        return db_backup.backup(file_name="round_update_handler")
+        if not DEBUG:
+            db_backup.backup(file_name="round_update_handler")
 
     def after_run(self):
         """结束前的收尾动作"""
-        self.set_to_next_days()
+        if self._turn != 28:
+            self.set_to_next_days()
         if self._days not in (14, 28):
             self.set_to_next_turn()   
             

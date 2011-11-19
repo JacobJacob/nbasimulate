@@ -19,6 +19,36 @@ def get_dev_clubs(devcode, only_base=False):
     finally:
         cursor.close()
         
+def delete_from_league_long_not_login():
+    """将超过14天没有登陆的球队踢出联赛"""
+    cursor = connection.cursor()
+    try:
+        #先算下大概要删除多少球队
+        cursor.execute("select count(1) as total from btp_dev where clubid > 0")
+        total_dev_club = cursor.fetchone()["total"]
+        
+        cursor.execute("select ClubID5 from btp_account where activetime < dateadd(dd, -14, getdate()) order by activetime asc")
+        infos = cursor.fetchall()
+        if infos:
+            club_ids = []
+            for info in infos:
+                club_id = info["ClubID5"]
+                if club_id > 0:
+                    club_ids.append(club_id)
+        
+            pre_delte_count = len(club_ids)
+            
+            #剩下来补数的俱乐部
+            level_club = (total_dev_club - pre_delte_count) % 14
+            delete_club_count = pre_delte_count - level_club
+            for i in range(delete_club_count):
+                sql = "DeleteFromLeague %s" % club_ids[i]
+                print sql
+                cursor.execute(sql)
+            
+    finally:
+        cursor.close()
+        
 def get_dev_info_by_userid(userid):
     """根据用户ID获取联赛行"""
     cursor = connection.cursor()
@@ -28,6 +58,14 @@ def get_dev_info_by_userid(userid):
         if info:
             cursor.execute("SELECT * FROM btp_dev WHERE ClubID=%s" % info["ClubID"])
             return cursor.fetchone()
+    finally:
+        cursor.close()
+
+def delete_log_dev_msg():
+    """删除联赛日志"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("EXEC DeleteLogDevMsg")
     finally:
         cursor.close()
         
