@@ -112,11 +112,84 @@ def get_club_list(page, pagesize, category):
     if total > 0:
         infos = session.query(Club).filter(Club.category==category).order_by(Club.clubid).offset(index).limit(pagesize).all()
     return total, infos
+
+def fill_player():
+    """球员不足8个的补球员"""
+    cursor = connection.cursor()
+    try:
+        
+        while True:        
+            cursor.execute("select top 1 * from btp_arrange5 where cid=0 or pfid = 0 or sfid = 0 or sgid=0 or pgid = 0")
+            info = cursor.fetchone()
+            if not info:
+                print info
+                break
+            
+            arrangeid = info["Arrange5ID"]
+            clubid = info["ClubID"]
+            cid = info["CID"]
+            pfid = info["PFID"]
+            sfid = info["SFID"]
+            sgid = info["SGID"]
+            pgid = info["PGID"]
+            
+            need = False
+            
+            if cid <= 0:
+                need = True
+                cursor.execute("CreateFillPlayer5 %s" % clubid)
+                cursor.execute("select playerid from btp_player5 where clubid = %s and playerid not in (%s,%s,%s,%s,%s)" % (clubid, cid, pfid, sfid, sgid, pgid))
+                data = cursor.fetchone()
+                cid = data["playerid"]
+            
+            if pfid <= 0:
+                need = True
+                cursor.execute("CreateFillPlayer5 %s" % clubid)
+                cursor.execute("select playerid from btp_player5 where clubid = %s and playerid not in (%s,%s,%s,%s,%s)" % (clubid, cid, pfid, sfid, sgid, pgid))
+                data = cursor.fetchone()
+                pfid = data["playerid"]
+            
+            if sfid <= 0:
+                need = True
+                cursor.execute("CreateFillPlayer5 %s" % clubid)
+                cursor.execute("select playerid from btp_player5 where clubid = %s and playerid not in (%s,%s,%s,%s,%s)" % (clubid, cid, pfid, sfid, sgid, pgid))
+                data = cursor.fetchone()
+                sfid = data["playerid"]
+                
+            if sgid <= 0:
+                need = True
+                cursor.execute("CreateFillPlayer5 %s" % clubid)
+                cursor.execute("select playerid from btp_player5 where clubid = %s and playerid not in (%s,%s,%s,%s,%s)" % (clubid, cid, pfid, sfid, sgid, pgid))
+                data = cursor.fetchone()
+                sgid = data["playerid"]
+                
+            if pgid <= 0:
+                need = True
+                cursor.execute("CreateFillPlayer5 %s" % clubid)
+                cursor.execute("select playerid from btp_player5 where clubid = %s and playerid not in (%s,%s,%s,%s,%s)" % (clubid, cid, pfid, sfid, sgid, pgid))
+                data = cursor.fetchone()
+                pgid = data["playerid"]
+           
+            if need:
+                sql = "ReSetArrange5 %s, %s, %s, %s, %s, %s" % (arrangeid, cid, pfid, sfid, sgid, pgid)
+                cursor.execute(sql)
+            
+        cursor.execute("select clubid ,  count(1) as total from btp_player5 where clubid > 0 group by clubid  order by total asc")
+        infos = cursor.fetchall()
+        print len(infos)
+        for info in infos:
+            clubid = info["clubid"]
+            total = info["total"]
+            
+            if total < 8:
+                add_count = 8 - total
+                for _ in range(add_count):
+                    sql = "CreateFillPlayer5 %s" % clubid
+                    cursor.execute(sql)
+        
+    finally:
+        cursor.close()  
+    
         
 if __name__ == "__main__":
-    club_infos = get_all_club(5)
-    for club_info in club_infos: 
-        print club_info["ClubID"]
-        s = get_club_by_id(club_info["ClubID"])  
-        print s["MainXML"]
-    
+    fill_player()

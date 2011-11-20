@@ -70,9 +70,10 @@ def reward_devcup_by_clubid(devcupid):
             for alive_club in alive_clubs:
                 club_id = alive_club["ClubID"]
                 wealth = reward_info.get("wealth")
+                wealth_count = wealth.wealth if wealth else 0
                 
-                if wealth > 0 or round == 100:
-                    sql = "exec RewardDevCupByClubID %s, %s, %s, %s" % (club_id, devcupid, round, wealth.wealth)
+                if wealth_count > 0 or round == 100:
+                    sql = "exec RewardDevCupByClubID %s, %s, %s, %s" % (club_id, devcupid, round, wealth_count)
                     print sql
                     cursor.execute(sql)
     except:

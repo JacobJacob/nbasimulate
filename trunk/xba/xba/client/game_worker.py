@@ -102,15 +102,15 @@ class GameWorker(BaseClient):
         files = file_utility.get_files(PathSettings.PROMOTION_LOG_PATH)
         for file in files:
             path = os.path.join(PathSettings.PROMOTION_LOG_PATH, file)
-            f = open(path, 'wb')
+            f = open(path, 'rb')
             try:
                 user_id, ip = pickle.load(f)
             finally:
                 f.close()
-            
+                
             os.remove(path)
             
-            self.log("handle promotion log.file[%s], user_id[%s], ip[%s]", (file, user_id, ip))
+            self.log("handle promotion log.file[%s], user_id[%s], ip[%s]" % (file, user_id, ip))
             history = PromotionHistory.load(user_id=user_id, ip=ip)
             if not history:
                 history = PromotionHistory()

@@ -534,7 +534,8 @@ class SeasonUpdateHandler(BaseClient):
 def main():
     handler = SeasonUpdateHandler()
     handler.before_run()
-    handler.reset_level_dev(8)
+    #handler.reset_level_dev(8)
+    handler.change_player_from_arrange5(14394, 1160, 5)
 
 def run():
     handler = SeasonUpdateHandler()
