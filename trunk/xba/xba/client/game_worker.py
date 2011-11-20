@@ -61,7 +61,7 @@ class GameWorker(BaseClient):
         self.log("start to update union filed game")
         self.day_update_union_field_game()
         
-        #推广积分处理\
+        #推广积分处理
         self.promotion()
         
         self.log("start sleep")
@@ -107,6 +107,8 @@ class GameWorker(BaseClient):
                 user_id, ip = pickle.load(f)
             finally:
                 f.close()
+            
+            os.remove(path)
             
             self.log("handle promotion log.file[%s], user_id[%s], ip[%s]", (file, user_id, ip))
             history = PromotionHistory.load(user_id=user_id, ip=ip)

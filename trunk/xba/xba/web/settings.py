@@ -60,7 +60,7 @@ TEMPLATE_LOADERS = (
 )
 #SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 MIDDLEWARE_CLASSES = (
-    'xba.common.middleware.exception_handler.ExceptionMiddleware',
+    'xba.common.exception_handler.ExceptionMiddleware',
     'xba.common.jsonrpcserver.JSONRPCServerMiddleware',
 )
 
