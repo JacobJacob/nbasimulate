@@ -21,6 +21,7 @@ class PathSettings:
     DB_BACKUP = WORKING_FOLDER + '/sqlserver/backup' # nginx日志
     ROUND_UPDATE_LOCK = WORKING_FOLDER + '/roundupdatelock' # nginx日志
     TRIAN_PLAYER_UPDATE_LOCK = WORKING_FOLDER + '/trianplayerupdatelock' # nginx日志
+    PROMOTION_LOG_PATH = WORKING_FOLDER + '/promotion_log' #推广积分日志文件
     if not os.path.exists(EXCEPTION):
         os.makedirs(EXCEPTION)
     if not os.path.exists(FILE_LOCKER):
@@ -39,6 +40,8 @@ class PathSettings:
         os.makedirs(ROUND_UPDATE_LOCK)
     if not os.path.exists(TRIAN_PLAYER_UPDATE_LOCK):
         os.makedirs(TRIAN_PLAYER_UPDATE_LOCK)
+    if not os.path.exists(PROMOTION_LOG_PATH):
+        os.makedirs(PROMOTION_LOG_PATH)
     PROJECT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class DbSetting:

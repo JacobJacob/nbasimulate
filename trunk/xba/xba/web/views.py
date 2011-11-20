@@ -1,8 +1,13 @@
 #-*- coding:utf-8 -*-
 
+import os
+import random
+import cPickle as pickle
+
 from xba.web.render import render_to_response, json_response
-from xba.business import xbatop_manager, account_manager
-from xba.model import Article, PromotionHistory
+from xba.business import xbatop_manager
+from xba.model import Article
+from xba.config import PathSettings
 
 from xba.common import staticutil
 
@@ -38,16 +43,11 @@ def total(request):
     
     if user_id > 0:
         ip = request.META['REMOTE_ADDR']
-        history = PromotionHistory.load(user_id=user_id, ip=ip)
-        if not history:
-            history = PromotionHistory()
-            history.user_id = user_id
-            history.ip = ip
-            history.count = 1
-            account_manager.add_promotion(user_id)
-        else:
-            history.count = history.count + 1
-            
-        history.persist()
+        path = os.path.join(PathSettings.PROMOTION_LOG_PATH, "%s_%s_%s" % (user_id, ip, random.random()))
+        f = open(path, "wb")
+        try:
+            pickle.dump((user_id, ip), f)
+        finally:
+            f.close()
     
     return json_response(1)

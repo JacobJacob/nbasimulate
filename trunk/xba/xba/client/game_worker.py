@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
+import cPickle as pickle
+
 from datetime import datetime, timedelta
 
 from xba.business import only_one_match_manager, game_manager, arrange_manager, union_field_manager, account_manager
@@ -9,7 +12,11 @@ from xba.common.constants.club import ClubCategory
 from base import BaseClient
 from xba.client.dev_match_handler import DevMatchHandler
 from xba.client.devcup_handler import DevCupHandler
-from xba.client.cup_handler import CupHandler
+from xba.client.cup_handler import CupHandler\
+
+from xba.config import PathSettings
+from xba.model import PromotionHistory
+from xba.common import file_utility
 
 class GameWorker(BaseClient):
     
@@ -54,6 +61,9 @@ class GameWorker(BaseClient):
         self.log("start to update union filed game")
         self.day_update_union_field_game()
         
+        #推广积分处理\
+        self.promotion()
+        
         self.log("start sleep")
         self.sleep()
         
@@ -86,6 +96,30 @@ class GameWorker(BaseClient):
         """街球杯赛处理"""
         handle = CupHandler()
         handle.start()
+        
+    def promotion(self):
+        """推广积分文件处理"""
+        files = file_utility.get_files(PathSettings.PROMOTION_LOG_PATH)
+        for file in files:
+            path = os.path.join(PathSettings.PROMOTION_LOG_PATH, file)
+            f = open(path, 'wb')
+            try:
+                user_id, ip = pickle.load(f)
+            finally:
+                f.close()
+            
+            self.log("handle promotion log.file[%s], user_id[%s], ip[%s]", (file, user_id, ip))
+            history = PromotionHistory.load(user_id=user_id, ip=ip)
+            if not history:
+                history = PromotionHistory()
+                history.user_id = user_id
+                history.ip = ip
+                history.count = 1
+                account_manager.add_promotion(user_id)
+            else:
+                history.count = history.count + 1
+            
+            history.persist()
         
     @ensure_success
     def set_online(self):
