@@ -18,11 +18,11 @@ def update_account_dev_code(user_id, dev_code):
     finally:
         cursor.close()
         
-def add_promotion(user_id):
+def add_promotion(user_id, promotion):
     """更新用户推广积分"""
     cursor = connection.cursor()
     try:
-        cursor.execute("UPDATE BTP_Account SET promotion = promotion + 5 where UserID=%s" % user_id)
+        cursor.execute("UPDATE BTP_Account SET promotion = promotion + %s where UserID=%s" % (promotion, user_id))
     finally:
         cursor.close()
         
