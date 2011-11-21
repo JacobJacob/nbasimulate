@@ -104,7 +104,7 @@ class GameWorker(BaseClient):
             path = os.path.join(PathSettings.PROMOTION_LOG_PATH, file)
             f = open(path, 'rb')
             try:
-                user_id, ip = pickle.load(f)
+                user_id, ip, referer = pickle.load(f)
             finally:
                 f.close()
                 

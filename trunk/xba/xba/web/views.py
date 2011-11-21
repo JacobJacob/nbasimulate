@@ -42,11 +42,14 @@ def total(request):
         user_id = 0
     
     if user_id > 0:
+        
+        referer = request.META.get("HTTP_REFERER")
         ip = request.META['REMOTE_ADDR']
+        
         path = os.path.join(PathSettings.PROMOTION_LOG_PATH, "%s_%s_%s" % (user_id, ip, random.random()))
         f = open(path, "wb")
         try:
-            pickle.dump((user_id, ip), f)
+            pickle.dump((user_id, ip, referer), f)
         finally:
             f.close()
     
