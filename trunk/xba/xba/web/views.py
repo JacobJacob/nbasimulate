@@ -34,7 +34,8 @@ def index(request):
 
 def total(request):
     '''统计'''
-    user_id = request.REQUEST.get("user_id")
+    user_id = request.REQUEST.get("u")
+    referer = request.REQUEST.get("r")
     
     try:
         user_id = int(user_id)
@@ -43,7 +44,6 @@ def total(request):
     
     if user_id > 0:
         
-        referer = request.META.get("HTTP_REFERER")
         ip = request.META['REMOTE_ADDR']
         
         path = os.path.join(PathSettings.PROMOTION_LOG_PATH, "%s_%s_%s" % (user_id, ip, random.random()))
