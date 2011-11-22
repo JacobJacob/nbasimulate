@@ -32,6 +32,7 @@ def arrange_group(xcup_id):
     club_info_map = {}
     try:
         cursor.start_transaction()
+        cursor.execute("Truncate Table btp_XGroupMatch")
         cursor.execute("GetGroupTeamByCategory 1")
         infos = cursor.fetchall()
         #乱序
@@ -61,7 +62,7 @@ def arrange_group(xcup_id):
                     add_group_match(cursor, 1, group_index, round, club_a_info['team_index'], club_b_info['team_index'], \
                                     club_a_info["club_id"], club_b_info["club_id"], match_time)
         set_status_by_xcupid(xcup_id, 1, cursor)
-        set_round_by_xcupid(xcup_id, round, cursor)
+        set_round_by_xcupid(xcup_id, 1, cursor)
         cursor.commit()
     except:
         cursor.rollback()
