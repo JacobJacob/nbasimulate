@@ -34,6 +34,8 @@ def arrange_group(xcup_id):
         cursor.start_transaction()
         cursor.execute("GetGroupTeamByCategory 1")
         infos = cursor.fetchall()
+        #乱序
+        random.shuffle(infos)
         for i, info in enumerate(infos):
             xgroup_team_id = info["XGroupTeamID"]
             club_id = info["ClubID"]
