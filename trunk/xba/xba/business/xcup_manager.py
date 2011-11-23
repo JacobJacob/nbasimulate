@@ -414,7 +414,39 @@ def reward_xcup(xcup_id, round):
         raise
     finally:
         cursor.close()
+        
+def set_one_index_match():
+    """设置某组的比赛,修复数据"""
+    start_time = datetime.strptime(datetime.now().strftime("%Y-%m-%d 16:00:00"), "%Y-%m-%d %H:%M:%S")
+    club_infos = []
+    
+    #1    852
+    #2    374
+    #3    1486
+    #4    1636
+    #5    914
+    #6    972
+    
+    club_infos.append({"team_index": 1, "club_id": 852})
+    club_infos.append({"team_index": 2, "club_id": 374})
+    club_infos.append({"team_index": 3, "club_id": 1486})
+    club_infos.append({"team_index": 4, "club_id": 1636})
+    club_infos.append({"team_index": 5, "club_id": 914})
+    club_infos.append({"team_index": 6, "club_id": 972})
+    cursor = connection.cursor()
+    for i, match_map in enumerate(match_maps):
+        round = i + 1
+        for map in match_map:
+            index_a, index_b = map[0], map[1]
+            if index_a > len(club_infos) or index_b > len(club_infos):
+                round += 1
+                continue
+            club_a_info = club_infos[index_a - 1]
+            club_b_info = club_infos[index_b - 1]
+            match_time = (start_time + timedelta(days=round)).strftime("%Y-%m-%d %H:%M:%S")
+            add_group_match(cursor, 1, 35, round, club_a_info['team_index'], club_b_info['team_index'], \
+                            club_a_info["club_id"], club_b_info["club_id"], match_time)
             
 if __name__ == "__main__":
-    pass
+    arrange_group()
     
