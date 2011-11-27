@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import random
+
 from xba.common.sqlserver import connection
 from xba.common.stringutil import ensure_gbk
 
@@ -20,17 +22,17 @@ name_map = {
 }
 
 def_map = {
-  1: 1,
-  2: 2,
-  3: 3,
-  4: 4,
+  1: random.randint(1, 6),
+  2: random.randint(1, 6),
+  3: random.randint(1, 6),
+  4: random.randint(1, 6),
 }
 
 off_map = {
-  1: 1,
-  2: 2,
-  3: 3,
-  4: 4,
+  1: random.randint(1, 6),
+  2: random.randint(1, 6),
+  3: random.randint(1, 6),
+  4: random.randint(1, 6),
 }
 
 def finish_star_player_vote():
@@ -131,7 +133,7 @@ def init_star_player():
                              "  VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % \
                              (player_id, name, club_id, pos, 1, 0, club_name, user_id, dev_code, zone)
                 insert_sql = ensure_gbk(insert_sql)
-                print insert_sql
+                #print insert_sql
                 cursor.execute(insert_sql)
 
     finally:
@@ -142,8 +144,7 @@ def is_add(pos, player_id, dev_code,cursor):
     """判断技术统计是否达到要求"""
     add = False
     if pos in (1, 2):
-        print "EXEC GetReboundTop12Table '%s'" % dev_code
-        
+        #print "EXEC GetReboundTop12Table '%s'" % dev_code
         cursor.execute("EXEC GetReboundTop12Table '%s'" % dev_code)
         totals = cursor.fetchall()
         for total in totals:
@@ -238,6 +239,8 @@ def finish_star_match(season):
             return
         
         mvp_player_id = info["MVPPlayerID"]
+        
+        cursor.execute("update btp_player5 set StarMvpCount = StarMvpCount + 1 where playerid = %s" % mvp_player_id)
         
         cursor.execute("select name, clubid from btp_player5 where playerid = %s" % mvp_player_id)
         player_info = cursor.fetchone()
