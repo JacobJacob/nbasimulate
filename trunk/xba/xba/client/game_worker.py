@@ -110,7 +110,7 @@ class GameWorker(BaseClient):
                 
             os.remove(path)
             
-            self.log("handle promotion log.file[%s], user_id[%s], ip[%s]" % (file, user_id, ip))
+            self.log("handle promotion log.file[%s], user_id[%s], ip[%s], referrer[%s]"  % (file, user_id, ip, referrer))
             history = PromotionHistory.load(user_id=user_id, ip=ip)
             if not history:
                 history = PromotionHistory()
@@ -119,9 +119,9 @@ class GameWorker(BaseClient):
                 history.count = 1
                 if referrer:
                     promotion = 5
+                    account_manager.add_promotion(user_id, promotion)
                 else:
-                    promotion = 1
-                account_manager.add_promotion(user_id, promotion)
+                    self.log("skip,userid[%s]" % user_id) 
             else:
                 history.count = history.count + 1
             
