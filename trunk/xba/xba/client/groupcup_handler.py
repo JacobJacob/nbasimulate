@@ -263,14 +263,14 @@ class GroupCupHandler(BaseClient):
                  
     @ensure_success
     def run_match(self):
-        round = 7
+        round = 1
         match_infos = self.get_group_match_to_play()
         if not match_infos:
             self.log("not match!!!!")
         if match_infos:
             for match_info in match_infos:
                 #比赛差错效验
-                if round != match_info["Round"] and False:
+                if round != match_info["Round"]:
                     self.log("the round not match:%s-->%s" % (round, match_info["Round"]))
                     continue
                 self.execute_match(match_info["ClubAID"], match_info["ClubBID"], 1, 0, round, 1, match_info["XGroupMatchID"])
