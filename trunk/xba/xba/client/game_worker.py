@@ -12,8 +12,9 @@ from xba.common.constants.club import ClubCategory
 from base import BaseClient
 from xba.client.dev_match_handler import DevMatchHandler
 from xba.client.devcup_handler import DevCupHandler
-from xba.client.cup_handler import CupHandler\
+from xba.client.cup_handler import CupHandler
 
+from xba.common.stringutil import ensure_utf8
 from xba.config import PathSettings
 from xba.model import PromotionHistory
 from xba.common import file_utility
@@ -110,7 +111,10 @@ class GameWorker(BaseClient):
                 
             os.remove(path)
             
+            referrer = ensure_utf8(referrer)
+
             self.log("handle promotion log.file[%s], user_id[%s], ip[%s], referrer[%s]"  % (file, user_id, ip, referrer))
+            
             history = PromotionHistory.load(user_id=user_id, ip=ip)
             if not history:
                 history = PromotionHistory()
