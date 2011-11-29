@@ -1,4 +1,4 @@
-#Sat Nov 26 22:38:41 CST 2011
+#Tue Nov 29 21:35:12 CST 2011
 eclipse.preferences.version=1
 encoding//xba/business/account_manager.py=utf-8
 encoding//xba/business/arrange_manager.py=utf-8
@@ -10,6 +10,7 @@ encoding//xba/business/dev_match_manager.py=utf-8
 encoding//xba/business/devcup_manager.py=utf-8
 encoding//xba/business/finance_manager.py=utf-8
 encoding//xba/business/game_manager.py=utf-8
+encoding//xba/business/guess_manager.py=utf-8
 encoding//xba/business/only_one_match_manager.py=utf-8
 encoding//xba/business/player3_manager.py=utf-8
 encoding//xba/business/player5_manager.py=utf-8
