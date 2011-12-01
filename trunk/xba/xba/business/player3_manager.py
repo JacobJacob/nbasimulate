@@ -113,8 +113,6 @@ def recover_power3():
     finally:
         cursor.close()
 
-if __name__ == "__main__":
-    
-    end_bid_time = datetime.now() + timedelta(hours=36)
-    create_player(1, 2, end_bid_time.strftime("%Y-%m-%d %H:%M:%S") , 48, 68)
+if __name__ == "__main__": 
+    create_player(1200, 6, 20)
 
