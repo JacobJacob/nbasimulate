@@ -84,4 +84,5 @@ def clear_xba_box():
         cursor.close()
         
 if __name__ == "__main__":
-    clear_xba_box()
+    #clear_xba_box()
+    pass
