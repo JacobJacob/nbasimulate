@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import random
+
 from xba.common.sqlserver import connection
 from xba.common.orm import Session
 from xba.model import Player5
@@ -348,18 +350,30 @@ def update_player5_hight_yishi():
 def view_player5_category3():
     cursor = connection.cursor()
     try:
-        sql = "select * from btp_player5 where category=3"
+        sql = "select * from btp_player5 where category=4"
         cursor.execute(sql)
         infos = cursor.fetchall()
         for info in infos:
+            id = info["PlayerID"]
             total1, total2 = 0, 0
             for ABILITY in ABILITYS:    
-                ability = info["%sMax" % ABILITY]
-                if ABILITY not in ("Attack","Defense","Team"):
-                    total2 += ability
-                total1 += ability
-            print info["Age"], info["Ability"], (total2 + 600) / 14, total1 / 14, total2 / 11
-                
+                #ability = info["%sMax" % ABILITY]
+                ability = info[ABILITY]
+                if ABILITY in ("Attack","Defense","Team"):
+                    total1 += ability
+                #total1 += ability
+            print total1 / 30
+            a = random.randint(200, 300)
+            b = random.randint(200, 300)
+            c = random.randint(200, 300)
+            sql = "update btp_player5 set attack=%s, Defense=%s, team=%s where playerid = %s" % (a, b, c, id)
+            cursor.execute(sql)
+            #print info["Age"], info["Ability"], (total2 + 600) / 14, total1 / 14, total2 / 11
+            sql = SQL % id
+            print sql
+            cursor.execute(sql)
+                        
+            
     except Exception, e:
         a = e.message.decode("gbk")
         print a
@@ -369,7 +383,7 @@ def view_player5_category3():
 def view_all_player():
     cursor = connection.cursor()
     try:
-        sql = "select * from btp_player5"
+        sql = "select * from btp_player5 where category = 4"
         cursor.execute(sql)
         infos = cursor.fetchall()
         print len(infos)
@@ -395,5 +409,5 @@ def clean_dirty_char():
         connection.close()
 
 if __name__ == "__main__":
-    view_all_player()
+    view_player5_category3()
     #clean_dirty_char()
