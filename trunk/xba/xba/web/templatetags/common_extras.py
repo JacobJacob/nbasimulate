@@ -66,3 +66,14 @@ def team_ability(ability):
     a = float(ability) / 50
     return "%0.1f" % a
 
+@register.filter
+def guess_result(result):
+    if result == 0:
+        return u"进行中"
+    elif result == 1:
+        return u"平盘中"
+    elif result == 3:
+        return u"已平盘"
+    
+    return u"未知"
+

@@ -1,0 +1,211 @@
+{% extends "admin/master.html" %}
+{% load common_extras %}
+{% block head_ext %}
+<script type="text/javascript" src="/site_media/js/rpc.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.core.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery/ui/ui.dialog.js"></script>
+<link rel="stylesheet" href="/site_media/js/jquery/ui/themes/flora/flora.all.css" type="text/css" media="screen" title="no title" />
+<meta http-equiv="content-type" content="text/html; charset=utf8" />
+<script type="text/javascript">
+     
+      
+     
+  service = new rpc.ServiceProxy("/services/guess/", {asynchronous:false, methods: ['add_guess', 'guess_begin', 'set_guess_result']});
+  
+  $(document).ready(function(){
+   
+   
+	genPageLinks({{total}}, {{pagesize}});
+	       
+	
+    $('input.add').click(function(){
+     
+	     $("#add_dialog").show().dialog({
+		     height: 230, width: 330, modal: true,
+	         title: '添加竞猜',
+		     overlay: {
+                opacity: 0.5, 
+                background: "black" 
+             }
+	     });
+	});
+	
+    $('#add_form input.button').click(function(){
+		var namea = $('#namea').val();
+		var nameb = $('#nameb').val();
+        var type = $('#type').val();
+        var start = $('#start').val();
+        var end = $('#end').val();
+        
+        if(!type){
+		   alert("请输入类型");
+	    }else if(!namea){
+	       alert("请输入主队 ");
+	    }else if(!nameb){
+	       alert("请输入客队");   
+		}else{
+		    try{
+		       service.add_guess(type, namea, nameb, 1, end, start);
+	           window.location.reload() ;
+			}catch(e){
+			   alert(e.message);
+			}
+	    }
+	});
+	
+	$('a.edit').click(function(){
+         var id = $(this).parent().parent().attr('id');
+         $("#guess_id").val(id)
+         alert(id);
+	     $("#set_result_dialog").show().dialog({
+		     height: 230, width: 330, modal: true,
+	         title: '设置结果',
+		     overlay: {
+                opacity: 0.5, 
+                background: "black" 
+             }
+	     });
+	});
+	
+    $('#set_result_dialog input.button').click(function(){
+    
+		var guess_id = $('#guess_id').val();
+		var result_type = $('#result_type').val();
+		var result_text = $('#result_text').val();
+        if(!result_text){
+		   alert("请输入赛果");
+		}else{
+		    try{
+		       service.set_guess_result(guess_id, result_type, result_text);
+	           window.location.reload() ;
+			}catch(e){
+			   alert(e.message);
+			}
+	    }
+	});
+	
+	$('a.finish').click(function(){
+    
+		var id = $(this).parent().parent().attr('id');
+        if(confirm("是否平盘?")){
+		    try{
+		       service.guess_begin(id);
+	           window.location.reload() ;
+			}catch(e){
+			   alert(e.message);
+			}
+	    }
+	});
+	
+	$('.has_result').click(function(){
+		 var has_result = $(this).attr('has_result');
+		 var url = "{% url guess-list %}?has_result=" + has_result
+		 window.location = url;
+	});
+	 
+	 $(".has_result").each(function(){
+	    if($(this).attr("has_result")=={{has_result}}){
+		   $(this).attr("disabled", "disabled");
+		}
+	});
+	 
+	 
+  });
+  
+</script>
+{% endblock %}
+{% block title %}游戏竞猜管理{% endblock %}
+{% block content %}
+<input type="button" class="add" value="添加竞猜"/><br/>
+<input type="button" class="has_result" has_result="0" value="进行中 " />
+<input type="button" class="has_result" has_result="1" value="平盘中" />
+<input type="button" class="has_result" has_result="3" value="已平盘" />
+<table cellspacing="1" class="tablesorter">
+  <thead>
+    <th>ID</th>
+    <th>类型</th>
+    <th>主队</th>
+    <th>客队</th>
+    <th>结束时间</th>
+    <th>状态</th>
+    <th>结果</th>
+    <th>操作</th>
+  </thead>
+  <tbody>
+    {% if infos %}
+      {% for info in infos %}
+       <tr id="{{ info.GuessID }}">
+         <td>{{ info.GuessID }}</td>
+         <td>{{ info.Type }}</td>
+         <td>{{ info.NameA }}</td>
+         <td>{{ info.NameB }}</td>
+         <td>{{ info.EndTime }}</td>
+         <td>{{ info.HasResult|guess_result }}</td>
+         <td>
+            {% ifequal info.ResultType 0 %}
+              主队赢
+            {% else %}
+              客队赢
+            {% endifequal %}
+        </td>
+         <td>
+            {% ifequal info.HasResult 0 %}
+             <a href="#" class="edit">设置结果</a>
+            {% endifequal %}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {% ifequal info.HasResult 1 %}
+             <a href="#" class="finish">平盘</a>
+            {% endifequal %}
+         </td>
+       </tr>
+      {% endfor %}
+    {% endif %}
+     <tr style="display:none"><td id="pageLink" colspan="12"></td></tr>
+  </tbody>
+</table>
+<div id="add_dialog" class="flora" style="display: none;">
+    <form id="add_form">
+        <p>
+    		<label>类型:</label>
+			<span><input id="type" type="text"/></span>
+	    </p> 
+    	<p>
+    		<label>主队:</label>
+			<span><input id="namea" type="text"/></span>
+	    </p>
+	    <p>
+    		<label>客队:</label>
+			<span><input id="nameb" type="text"/></span>
+	    </p>
+	    <p>
+    		<label>开始时间:</label>
+			<span><input id="start" type="text" value="0"/></span>
+	    </p> 
+	    <p>
+    		<label>结束时间:</label>
+			<span><input id="end" type="text" value="24"/></span>
+	    </p> 
+		<input class="button" type="button" value="提交" />
+    </form>
+</div>
+<div id="set_result_dialog" class="flora" style="display: none;">
+    <form id="set_result_form">
+        <input type="hidden" id="guess_id"/>
+	    <p>
+    		<label>结果:</label>
+			<span>
+			  <select id="result_type">
+			   <option value="0">主队胜出</option>
+			   <option value="1">客队胜出</option>
+			  </select>
+			</span>
+	    </p> 
+	    <p>
+    		<label>结果描述:</label>
+			<span><input id="result_text" type="text"/></span>
+	    </p> 
+		<input class="button" type="button" value="提交" />
+    </form>
+</div>
+
+{% endblock %}

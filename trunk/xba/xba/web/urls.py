@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     (r'^cup/', include('web.cup.urls')),
     (r'^account/', include('web.account.urls')),
     (r'^article/', include('web.article.urls')),
+    (r'^guess/', include('web.guess.urls')),
 )
 
 # json rpc settings
@@ -21,4 +22,5 @@ jsonrpc_urlpatterns = patterns('',
     (r'^services/account/$', 'web.services.account_service'),
     (r'^services/game/$', 'web.services.game_service'),
     (r'^services/admin/$', 'web.services.admin_service'),
+    (r'^services/guess/$', 'web.services.guess_service'),
 )
