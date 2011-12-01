@@ -93,7 +93,9 @@ def finish_star_player_vote():
             
             cid, pfid, sfid, sgid, pgid = zone_map[1][3]["PlayerID"], zone_map[2][3]["PlayerID"], zone_map[3][3]["PlayerID"], zone_map[4][3]["PlayerID"], zone_map[5][3]["PlayerID"]
             cursor.execute("update btp_starplayer set status=4 where playerid in (%s, %s, %s, %s, %s)" % (cid, pfid, sfid, sgid, pgid))
-            
+           
+        cursor.execute("update btp_starplayer set status=5 where status=1")
+         
     finally:
         cursor.close()
 
@@ -277,3 +279,4 @@ if __name__ == "__main__":
     #finish_star_player_vote()
     #add_match('东部明星队', '西部明星队', 5)
     finish_star_match(5)
+
