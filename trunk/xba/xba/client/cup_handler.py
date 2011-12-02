@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import os
+import random
 
 from xba.config import CLIENT_EXE_PATH
-from subprocess import Popen, PIPE
 
 from xba.business import cup_manager, tool_manager, account_manager
 from xba.common.decorators import ensure_success
@@ -66,6 +66,9 @@ class CupHandler(BaseClient):
             if not alive_reg_infos:
                 self.set_status_by_cupid(cup_id, 3)
                 return 
+            
+            #乱序
+            random.shuffle(alive_reg_infos)
             
             self.log("cup id is:%s" % cup_id) 
             club_ids = []

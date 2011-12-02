@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import random
 
 from xba.config import CLIENT_EXE_PATH
 
@@ -66,9 +67,13 @@ class DevCupHandler(BaseClient):
         if round == 0:
             alive_reg_infos = self.get_alive_reg_table_by_devcupid(devcup_id)
             #没人报名
+            
             if not alive_reg_infos:
                 self.set_status_by_devcupid(devcup_id, 3)
                 return
+            
+            #乱序
+            random.shuffle(alive_reg_infos)
             
             self.log("devcup id is:%s" % devcup_id) 
             club_ids = []

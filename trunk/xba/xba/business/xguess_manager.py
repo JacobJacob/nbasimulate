@@ -105,9 +105,13 @@ def add_xgame_team_to_xguess():
             odds = base_odds + random.random() * seed
             base_odds = odds
             add_xguess(user_id, club_id, club_name, odds + i * 0.1, cursor)
+        
+        msg_sql = u"EXEC SendSystemMsg '冠军杯竞猜开始啦,去支持你的心仪的球队吧, <a href=\"XGuess.aspx?Type=CLUBLIST\">我要下注</a>'"
+        msg_sql = ensure_gbk(msg_sql)
+        cursor.execute(msg_sql)
     finally:
         cursor.close()        
         
         
 if __name__ == "__main__":
-    clean_xguess()
+    add_xgame_team_to_xguess()
