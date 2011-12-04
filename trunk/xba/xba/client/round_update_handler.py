@@ -287,6 +287,8 @@ class RoundUpdateHandler(BaseClient):
     @ensure_success
     def create_player5(self):
         """刷职业球员"""
+        if self._days == 18:
+            player5_manager.betch_create_player(4)#出级限
         return player5_manager.create_player(120, 2, 20, 70, 70)
     
     @ensure_success
