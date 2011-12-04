@@ -9,7 +9,7 @@ from xba.model import Player5
 from datetime import datetime, timedelta
 from xba.common import log_execption
 
-REG = [
+REG_CATEGORY_3 = [
 [135, 55, 5],
 [130, 55, 10],       
 [125, 55, 10],
@@ -18,18 +18,24 @@ REG = [
 [110, 55, 120],       
 ]
 
-def betch_create_player():
+REG_CATEGORY_4 = [
+[130, 55, 5],
+[125, 55, 40],       
+[120, 55, 50],
+[115, 55, 80],
+[110, 55, 120],
+[105, 55, 240],       
+]
+
+def betch_create_player(category=3):
     """刷选透球员"""
-    for reg in REG:
-        create_player(reg[2], 3, 48, reg[1], reg[0])  
-    update_player5_category3()
-
-
-def betch_create_jx_player():
-    """刷极限球员"""
-    for reg in REG:
-        create_player(reg[2], 3, 48, reg[1], reg[0])  
-    update_player5_category3()
+    if category == 3:
+        for reg in REG_CATEGORY_3:
+            create_player(reg[2], 3, 48, reg[1], reg[0])  
+        update_player5_category3()
+    elif category == 4:
+        for reg in REG_CATEGORY_4:
+            create_player(reg[2], 3, 20, reg[1], reg[0])  
 
 def create_player(count, category, hours, now_point, max_point):
     """创建球员"""
