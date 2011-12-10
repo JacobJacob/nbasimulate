@@ -7,17 +7,16 @@ from xba.common.sqlserver import connection
 from xba.common.stringutil import ensure_gbk
 
         
-def add_guess(type, namea, nameb, hot, end_time_interval=24, show_time_interval=0):
+def add_guess(type, money_type, namea, nameb, hot, end_time_interval=24, show_time_interval=0):
     """添加竞猜"""
     cursor = connection.cursor()
     try:
-        money_type = 0
         end_time = datetime.now() + timedelta(hours=end_time_interval)
         show_time = datetime.now() + timedelta(hours=show_time_interval)
         sql = u"AddGuess '%s', %s, '%s', '%s', %s, '%s', '%s'" % (type, money_type, namea, nameb, hot, end_time.strftime("%Y-%m-%d %H:%M:%S"), show_time.strftime("%Y-%m-%d %H:%M:%S"))
         sql = ensure_gbk(sql)
         cursor.execute(sql)
-        msg_sql = u"EXEC SendSystemMsg '%s VS %s 的竞猜开始啦, <a href=\"Guess.aspx?Type=Guess\">我要下注</a>'" % (namea, nameb)
+        msg_sql = u"EXEC SendSystemMsg '[%s]%s VS %s 的竞猜开始啦, <a href=\"Guess.aspx?Type=Guess\">我要下注</a>'" % (u"资" if money_type == 0 else u"币", namea, nameb)
         msg_sql = ensure_gbk(msg_sql)
         cursor.execute(msg_sql)
     finally:

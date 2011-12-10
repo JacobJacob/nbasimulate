@@ -36,6 +36,7 @@
         var type = $('#type').val();
         var start = $('#start').val();
         var end = $('#end').val();
+        var money_type = $('#money_type').val();
         
         if(!type){
 		   alert("请输入类型");
@@ -45,7 +46,7 @@
 	       alert("请输入客队");   
 		}else{
 		    try{
-		       service.add_guess(type, namea, nameb, 1, end, start);
+		       service.add_guess(type, money_type, namea, nameb, 1, end, start);
 	           window.location.reload() ;
 			}catch(e){
 			   alert(e.message);
@@ -124,8 +125,9 @@
   <thead>
     <th>ID</th>
     <th>类型</th>
-    <th>主队</th>
-    <th>客队</th>
+    <th>资/币</th>
+    <th>主队(下注总额)</th>
+    <th>客队(下注总额)</th>
     <th>结束时间</th>
     <th>状态</th>
     <th>结果</th>
@@ -137,8 +139,15 @@
        <tr id="{{ info.GuessID }}">
          <td>{{ info.GuessID }}</td>
          <td>{{ info.Type }}</td>
-         <td>{{ info.NameA }}</td>
-         <td>{{ info.NameB }}</td>
+         <td>
+            {% ifequal info.MoneyType 0 %}
+              资
+            {% else %}
+              币
+            {% endifequal %}
+         </td>
+         <td>{{ info.NameA }}({{ info.NameAMoney }})</td>
+         <td>{{ info.NameB }}({{ info.NameBMoney }})</td>
          <td>{{ info.EndTime }}</td>
          <td>{{ info.HasResult|guess_result }}</td>
          <td>
@@ -169,6 +178,13 @@
     		<label>类型:</label>
 			<span><input id="type" type="text"/></span>
 	    </p> 
+	    <label>资金类型:</label>
+	    <span>
+	    <select id="money_type">
+			   <option value="0">资金</option>
+			   <option value="1">游戏币</option>
+	    </select>
+	    </span>
     	<p>
     		<label>主队:</label>
 			<span><input id="namea" type="text"/></span>
