@@ -113,7 +113,7 @@ def assign_devchoose_card_with_devsort():
     """发放选秀卡"""
     cursor = connection.cursor()
     try:
-        cursor.execute("delete from btp_toollink where toolid >= 4 and toolid <= 23")
+        cursor.execute("delete from btp_toollink where toolid >= 4 and toolid <= 23 ")
         cursor.execute("select devcode from btp_dev where clubid > 0 group by devcode")
         infos = cursor.fetchall()
         for info in infos:
@@ -163,7 +163,7 @@ def assign_promotion_card():
     """发放提拔卡"""
     cursor = connection.cursor()
     try:
-        cursor.execute("delete from btp_toollink where toolid = 27")
+        cursor.execute("delete from btp_toollink where toolid = 27 and expiretime <  dateadd(dd, 4, getdate())")
         cursor.execute("select UserID, NickName from btp_account")
         infos = cursor.fetchall()
         for info in infos:
