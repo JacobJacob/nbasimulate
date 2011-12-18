@@ -19,6 +19,17 @@ def get_dev_clubs(devcode, only_base=False):
     finally:
         cursor.close()
         
+        
+def get_delete_count(total, pre_delete):
+    print "原剩下的", total - pre_delete
+    level = (total - pre_delete) % 14
+    if level > 0:
+        level = 14 - level
+    print "打算留下的", level
+    delete = pre_delete - level    
+    print "实际删除的", delete
+    return delete
+    
 def delete_from_league_long_not_login():
     """将超过14天没有登陆的球队踢出联赛"""
     cursor = connection.cursor()
@@ -36,11 +47,10 @@ def delete_from_league_long_not_login():
                 if club_id > 0:
                     club_ids.append(club_id)
         
-            pre_delte_count = len(club_ids)
+            pre_delete_count = len(club_ids)
             
-            #剩下来补数的俱乐部
-            level_club = (total_dev_club - pre_delte_count) % 14
-            delete_club_count = pre_delte_count - level_club
+            #要删除的俱乐部数
+            delete_club_count = get_delete_count(total_dev_club, pre_delete_count)
             for i in range(delete_club_count):
                 sql = "DeleteFromLeague %s" % club_ids[i]
                 print sql
@@ -353,4 +363,7 @@ def cretae_sql():
         cursor.close()
        
 if __name__ == "__main__":
-    cretae_sql()
+    get_delete_count(28, 17)
+    get_delete_count(28, 3)
+    get_delete_count(33, 19)
+    get_delete_count(788, 98)

@@ -18,6 +18,7 @@ from xba.common.stringutil import ensure_utf8
 from xba.config import PathSettings
 from xba.model import PromotionHistory
 from xba.common import file_utility
+from xba.common import urlutil
 
 class GameWorker(BaseClient):
     
@@ -123,9 +124,14 @@ class GameWorker(BaseClient):
                 history.count = 1
                 if referrer:
                     promotion = 5
-                    account_manager.add_promotion(user_id, promotion)
+                    urlsplit = urlutil.standardize(referrer)
+                    if urlsplit and urlsplit.is_host:
+                        self.log("bad referrer:[%s]" % referrer )
+                    else:   
+                        account_manager.add_promotion(user_id, promotion)
                 else:
                     self.log("skip,userid[%s]" % user_id) 
+
             else:
                 history.count = history.count + 1
             
