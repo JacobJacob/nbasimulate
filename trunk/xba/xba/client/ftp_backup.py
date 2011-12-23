@@ -37,7 +37,7 @@ def upload(path):
         
 def get_ftp():
     ftp = FtpEx()
-    ftp.host = "222.73.85.199"
+    ftp.host = "103.22.231.73"
     ftp.user = "sxwailyc"
     ftp.password = "EEE2728B29d6cc"
     ftp.set_pasv(False)
