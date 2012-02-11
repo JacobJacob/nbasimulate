@@ -88,7 +88,7 @@ def init():
         for table in TRUNCATE_TABLES:
             cursor.execute("truncate table %s" % table)
             
-        cursor.execute("update btp_game set season=1, turn=1, days=1, oldtrun=1 ")
+        cursor.execute("update btp_game set season=1, turn=1, days=1, oldturn=1 ")
         cursor.execute("update btp_dev set clubid=0,win=0,lose=0,score=0,hashnewmsg=0")    
     finally:
         cursor.close()
