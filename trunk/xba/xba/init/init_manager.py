@@ -74,7 +74,7 @@ TRUNCATE_TABLES = ["BTP_Account",
                 "BTP_XCupReg",
                 "BTP_XGame",
                 "BTP_XGroupMatch",
-                "BTP_XroupTeam",
+                "BTP_XGroupTeam",
                 "BTP_XGuess",
                 "BTP_XGuessRecord"]
 
