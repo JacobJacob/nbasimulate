@@ -47,6 +47,6 @@ function Bgmove() {
     for (var i = 1; i <= 5; i++) {
         $("#div" + i).attr("class", "div_1"); $("#div" + i).css("background", "");
     }
-    window.location = "http://n1.113388.net/Register.aspx";
+    window.location = "http://n2.113388.net/Register.aspx";
 }
 
