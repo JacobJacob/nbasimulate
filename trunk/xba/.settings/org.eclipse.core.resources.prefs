@@ -1,4 +1,4 @@
-#Tue Nov 29 21:35:12 CST 2011
+#Sat Feb 11 08:46:09 CST 2012
 eclipse.preferences.version=1
 encoding//xba/business/account_manager.py=utf-8
 encoding//xba/business/arrange_manager.py=utf-8
@@ -94,7 +94,9 @@ encoding//xba/common/sqlserver/connection_wrapper.py=utf-8
 encoding//xba/common/sqlserver/cursor_wrapper.py=utf-8
 encoding//xba/common/staticutil.py=utf-8
 encoding//xba/common/stringutil.py=utf-8
+encoding//xba/common/urlutil.py=utf-8
 encoding//xba/config.py=utf-8
+encoding//xba/init/init_manager.py=utf-8
 encoding//xba/model/__init__.py=utf-8
 encoding//xba/read.py=utf-8
 encoding//xba/test/test.py=utf-8
@@ -114,6 +116,8 @@ encoding//xba/web/cup/urls.py=utf-8
 encoding//xba/web/cup/views.py=utf-8
 encoding//xba/web/game/urls.py=utf-8
 encoding//xba/web/game/views.py=utf-8
+encoding//xba/web/guess/urls.py=utf-8
+encoding//xba/web/guess/views.py=utf-8
 encoding//xba/web/manage.py=utf-8
 encoding//xba/web/player/urls.py=utf-8
 encoding//xba/web/player/views.py=utf-8
@@ -121,6 +125,7 @@ encoding//xba/web/render.py=utf-8
 encoding//xba/web/services/account_service.py=utf-8
 encoding//xba/web/services/admin_service.py=utf-8
 encoding//xba/web/services/game_service.py=utf-8
+encoding//xba/web/services/guess_service.py=utf-8
 encoding//xba/web/services/player_service.py=utf-8
 encoding//xba/web/settings.py=utf-8
 encoding//xba/web/templatetags/common_extras.py=utf-8
