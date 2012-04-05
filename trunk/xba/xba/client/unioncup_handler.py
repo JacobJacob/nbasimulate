@@ -110,6 +110,19 @@ class UnionCupHandler(BaseClient):
                         away_union_id = value
                         away_union_name = union_ids_map[value]["UnionName"].strip()
                         round_pair = CupLadderRoundPair(home_union_id, home_union_name, away_union_id, away_union_name)
+                        
+                        home_union_clubs = union_cup_manager.get_union_club(home_union_id)
+                        away_union_clubs = union_cup_manager.get_union_club(away_union_id)
+                        
+                        #下轮对轮表
+                        for i in range(3):
+                            home_club_id = home_union_clubs[i]['ClubID']
+                            away_club_id = away_union_clubs[i]['ClubID']
+                            user_id_home, club_name_home = self.get_user_id_club_name_by_club_id(home_club_id)
+                            user_id_away, club_name_away = self.get_user_id_club_name_by_club_id(away_club_id)
+                            match = CupLadderRoundMatch(user_id_home, club_name_home, user_id_away, club_name_away)
+                            round_pair.add_match(match)
+                        
                     else:#轮空
                         round_pair = CupLadderRoundPair(home_union_id, home_union_name)
                             
@@ -213,19 +226,32 @@ class UnionCupHandler(BaseClient):
                     matchs = []
                     home_win, away_win = 0, 0
                     #每次对阵是三盘两胜制
-                    for unioncup_match in unioncup_matchs:
-                        home_club_id = unioncup_match["ClubAID"]
-                        away_club_id =  unioncup_match["ClubBID"] 
-                        score_home = unioncup_match["ScoreA"]
-                        score_away = unioncup_match["ScoreB"]
-                        if score_home > score_away:
-                            home_win += 1
-                        else:
-                            away_win += 1
-                        user_id_home, club_name_home = self.get_user_id_club_name_by_club_id(home_club_id)
-                        user_id_away, club_name_away = self.get_user_id_club_name_by_club_id(away_club_id)
-                        match = CupLadderRoundMatch(user_id_home, club_name_home, user_id_away, club_name_away, unioncup_match) 
-                        matchs.append(match)
+                    
+                    if unioncup_matchs:
+                        for unioncup_match in unioncup_matchs:
+                            home_club_id = unioncup_match["ClubAID"]
+                            away_club_id =  unioncup_match["ClubBID"] 
+                            score_home = unioncup_match["ScoreA"]
+                            score_away = unioncup_match["ScoreB"]
+                            if score_home > score_away:
+                                home_win += 1
+                            else:
+                                away_win += 1
+                            user_id_home, club_name_home = self.get_user_id_club_name_by_club_id(home_club_id)
+                            user_id_away, club_name_away = self.get_user_id_club_name_by_club_id(away_club_id)
+                            match = CupLadderRoundMatch(user_id_home, club_name_home, user_id_away, club_name_away, unioncup_match) 
+                            matchs.append(match)
+                    else:
+                        home_union_clubs = union_cup_manager.get_union_club(home_union_id)
+                        away_union_clubs = union_cup_manager.get_union_club(away_union_id)
+                        #下轮对轮表
+                        for i in range(3):
+                            home_club_id = home_union_clubs[i]['ClubID']
+                            away_club_id = away_union_clubs[i]['ClubID']
+                            user_id_home, club_name_home = self.get_user_id_club_name_by_club_id(home_club_id)
+                            user_id_away, club_name_away = self.get_user_id_club_name_by_club_id(away_club_id)
+                            match = CupLadderRoundMatch(user_id_home, club_name_home, user_id_away, club_name_away)
+                            matchs.append(match)
                      
                     round_pair = CupLadderRoundPair(home_union_id, home_union_name, away_union_id, away_union_name, home_win, away_win, is_last_round)
                     for match in matchs:

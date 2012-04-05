@@ -135,7 +135,7 @@ class CupLadderRoundPair(RenderApple):
     def __str__(self):
         data = {"css_top": self.css_top, "css_left": self.css_left, "home_name": self.home_name, "away_name": self.away_name, \
                 "div_id": self.div_id, "home_win": self.home_win, "away_win": self.away_win, "matchs": self.__matchs}
-        if self.union_id_away and self.home_win:
+        if self.union_id_away and self.union_id_home:
             return self._render(data, LADDER_ROUND_HEAD_PAIR)
         elif self.is_last_round:
             return self._render(data, LADDER_ROUND_HEAD_PAIR_LAST_MATCH)
@@ -167,7 +167,7 @@ class CupLadderRoundMatch(RenderApple):
     REPORT_TEMPLAGE = """<a href="../../%sRep.aspx?Type=%s&Tag=%s&A=%s&B=%s" target="_blank">战报</a>"""
     STAT_TEMPLAGE = """<a href="../../%sStas.aspx?Type=%s&Tag=%s&A=%s&B=%s" target="_blank">统计</a>"""
     
-    def __init__(self, user_id_home, club_name_home, user_id_away, club_name_away, match):
+    def __init__(self, user_id_home, club_name_home, user_id_away, club_name_away, match=None):
         self.category = 7
         self.user_id_home = user_id_home
         self.club_name_home = club_name_home
