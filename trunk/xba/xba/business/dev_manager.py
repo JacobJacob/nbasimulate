@@ -45,7 +45,10 @@ def delete_from_league_long_not_login():
             for info in infos:
                 club_id = info["ClubID5"]
                 if club_id > 0:
-                    club_ids.append(club_id)
+                    cursor.execute("select * from btp_dev where clubid = %s" % club_id)
+                    dev_info = cursor.fetchone()
+                    if dev_info:
+                        club_ids.append(club_id)
         
             pre_delete_count = len(club_ids)
             
@@ -54,7 +57,7 @@ def delete_from_league_long_not_login():
             for i in range(delete_club_count):
                 sql = "DeleteFromLeague %s" % club_ids[i]
                 print sql
-                cursor.execute(sql)
+                #cursor.execute(sql)
             
     finally:
         cursor.close()
@@ -363,7 +366,4 @@ def cretae_sql():
         cursor.close()
        
 if __name__ == "__main__":
-    get_delete_count(28, 17)
-    get_delete_count(28, 3)
-    get_delete_count(33, 19)
-    get_delete_count(788, 98)
+    delete_from_league_long_not_login()
