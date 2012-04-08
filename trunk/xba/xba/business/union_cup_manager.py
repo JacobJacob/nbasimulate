@@ -134,7 +134,7 @@ def set_round_by_cup_id(cup_id, round):
     """设置杯赛轮数"""
     cursor = connection.cursor()
     try:
-        sql = "UPDATE BTP_UnionCup SET Round = %s, MatchTime=dateadd(dd, 1, getdate()) WHERE UnionCupID = %s " % (round, cup_id)
+        sql = "UPDATE BTP_UnionCup SET Round = %s, MatchTime=dateadd(dd, 1, MatchTime) WHERE UnionCupID = %s " % (round, cup_id)
         cursor.execute(sql)
     finally:
         connection.close()
