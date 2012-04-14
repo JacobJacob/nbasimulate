@@ -90,7 +90,7 @@ def add_unioncup(season):
     
     intro = u'杯赛采用联盟的方式参加，每个联盟派出三支队伍，实行五盘三胜制'
    
-    matchtime = datetime.now() + timedelta(hours=48)
+    matchtime = datetime.now().replace(hour=20, minute=0) + timedelta(hours=48)
     ladderurl = "UnionCupLadder/XResult%s.htm" % season
                    
     sql = "EXEC AddUnionCup %s, %s, '%s', '%s', '%s', '%s'" % (season, capacity, intro, reward_xml, matchtime.strftime("%Y-%m-%d %H:%M:%S"), ladderurl)
