@@ -88,7 +88,7 @@ def add_unioncup(season):
                   '<Money>2500000</Money><Reputation>150</Reputation></Reward><Reward><Round>9</Round><Money>5000000</Money>' \
                   '<Reputation>200</Reputation></Reward><Reward><Round>100</Round><Money>10000000</Money><Reputation>500</Reputation></Reward>'
     
-    intro = u'杯赛采用联盟的方式参加，每个联盟派出三支队伍，实行三盘二胜制'
+    intro = u'杯赛采用联盟的方式参加，每个联盟派出三支队伍，实行五盘三胜制'
    
     matchtime = datetime.now() + timedelta(hours=48)
     ladderurl = "UnionCupLadder/XResult%s.htm" % season
@@ -98,6 +98,11 @@ def add_unioncup(season):
     sql = ensure_gbk(sql)
     cursor = connection.cursor()
     try:
+        cursor.execute("delete from btp_tool where toolid = 1")
+        cursor.execute("update btp_union set unioncupcount = 5")
+        cursor.execute("delete from btp_unioncupmatch")
+        cursor.execute("delete from btp_unioncupreg")
+        cursor.execute("delete from btp_unioncupclubreg")
         cursor.execute(sql)
     finally:
         cursor.close()
@@ -173,7 +178,7 @@ def init_dead_round():
     """设置报名red round"""
     cursor = connection.cursor()
     try:
-        sql = "UPDATE BTP_UnionCupReg SET DeadRound = 100 WHERE ClubCount = 3 "
+        sql = "UPDATE BTP_UnionCupReg SET DeadRound = 100 WHERE ClubCount = 5 "
         cursor.execute(sql)
     finally:
         connection.close()
@@ -218,5 +223,5 @@ def set_dead_roun(union_id, round):
         connection.close()
         
 if __name__ == "__main__":
-    add_unioncup(9)
+    add_unioncup(11)
     

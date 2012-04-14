@@ -115,7 +115,7 @@ class UnionCupHandler(BaseClient):
                         away_union_clubs = union_cup_manager.get_union_club(away_union_id)
                         
                         #下轮对轮表
-                        for i in range(3):
+                        for i in range(5):
                             home_club_id = home_union_clubs[i]['ClubID']
                             away_club_id = away_union_clubs[i]['ClubID']
                             user_id_home, club_name_home = self.get_user_id_club_name_by_club_id(home_club_id)
@@ -245,7 +245,7 @@ class UnionCupHandler(BaseClient):
                         home_union_clubs = union_cup_manager.get_union_club(home_union_id)
                         away_union_clubs = union_cup_manager.get_union_club(away_union_id)
                         #下轮对轮表
-                        for i in range(3):
+                        for i in range(5):
                             home_club_id = home_union_clubs[i]['ClubID']
                             away_club_id = away_union_clubs[i]['ClubID']
                             user_id_home, club_name_home = self.get_user_id_club_name_by_club_id(home_club_id)
@@ -279,7 +279,7 @@ class UnionCupHandler(BaseClient):
         """一轮对阵"""
         home_union_teams = union_cup_manager.get_union_club(home_union_id)
         away_union_teams = union_cup_manager.get_union_club(away_union_id)
-        for i in range(3):
+        for i in range(5):
             home_union_team = home_union_teams[i]
             away_union_team = away_union_teams[i]
             home_club_id = home_union_team["ClubID"]
