@@ -15,6 +15,8 @@ from xba.config import WEB_ROOT, DOMAINS
 
 #联盟争赛赛处理器
 
+TEAM_COUNT = 7
+
 class UnionCupHandler(BaseClient):
     
     
@@ -58,7 +60,7 @@ class UnionCupHandler(BaseClient):
      
     def handle_unioncup(self, unioncup_info):
         unioncup_id = unioncup_info["UnionCupID"]
-        logo = "8.gif"
+        logo = "12.gif"
         name = "无道联盟争霸赛"
         round = unioncup_info["Round"]
         self.log("now round is:%s" % round) 
@@ -67,9 +69,9 @@ class UnionCupHandler(BaseClient):
         #第一轮，安排赛程
         if round == 0:
             #初始化DeadRound
-            union_cup_manager.init_dead_round()
+            union_cup_manager.init_dead_round(TEAM_COUNT)
             alive_reg_infos = self.get_alive_reg_table()
-            print alive_reg_infos
+            #print alive_reg_infos
             #没人报名
             if not alive_reg_infos:
                 self.log("没有人报名..")
@@ -115,7 +117,7 @@ class UnionCupHandler(BaseClient):
                         away_union_clubs = union_cup_manager.get_union_club(away_union_id)
                         
                         #下轮对轮表
-                        for i in range(5):
+                        for i in range(TEAM_COUNT):
                             home_club_id = home_union_clubs[i]['ClubID']
                             away_club_id = away_union_clubs[i]['ClubID']
                             user_id_home, club_name_home = self.get_user_id_club_name_by_club_id(home_club_id)
@@ -245,7 +247,7 @@ class UnionCupHandler(BaseClient):
                         home_union_clubs = union_cup_manager.get_union_club(home_union_id)
                         away_union_clubs = union_cup_manager.get_union_club(away_union_id)
                         #下轮对轮表
-                        for i in range(5):
+                        for i in range(TEAM_COUNT):
                             home_club_id = home_union_clubs[i]['ClubID']
                             away_club_id = away_union_clubs[i]['ClubID']
                             user_id_home, club_name_home = self.get_user_id_club_name_by_club_id(home_club_id)
@@ -279,7 +281,7 @@ class UnionCupHandler(BaseClient):
         """一轮对阵"""
         home_union_teams = union_cup_manager.get_union_club(home_union_id)
         away_union_teams = union_cup_manager.get_union_club(away_union_id)
-        for i in range(5):
+        for i in range(TEAM_COUNT):
             home_union_team = home_union_teams[i]
             away_union_team = away_union_teams[i]
             home_club_id = home_union_team["ClubID"]

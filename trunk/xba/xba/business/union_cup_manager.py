@@ -88,18 +88,18 @@ def add_unioncup(season):
                   '<Money>2500000</Money><Reputation>150</Reputation></Reward><Reward><Round>9</Round><Money>5000000</Money>' \
                   '<Reputation>200</Reputation></Reward><Reward><Round>100</Round><Money>10000000</Money><Reputation>500</Reputation></Reward>'
     
-    intro = u'杯赛采用联盟的方式参加，每个联盟派出三支队伍，实行五盘三胜制'
+    intro = u'杯赛采用联盟的方式参加，每个联盟派出三支队伍，实行7盘4胜制'
    
     matchtime = datetime.now().replace(hour=20, minute=0) + timedelta(hours=48)
-    ladderurl = "UnionCupLadder/XResult%s.htm" % season
+    ladderurl = "UnionCupLadder/XResult%s_b.htm" % season
                    
     sql = "EXEC AddUnionCup %s, %s, '%s', '%s', '%s', '%s'" % (season, capacity, intro, reward_xml, matchtime.strftime("%Y-%m-%d %H:%M:%S"), ladderurl)
     print sql
     sql = ensure_gbk(sql)
     cursor = connection.cursor()
     try:
-        cursor.execute("delete from btp_tool where toolid = 1")
-        cursor.execute("update btp_union set unioncupcount = 5")
+        cursor.execute("delete from btp_toollink where toolid = 117")
+        cursor.execute("update btp_union set unioncupcount = 7")
         cursor.execute("delete from btp_unioncupmatch")
         cursor.execute("delete from btp_unioncupreg")
         cursor.execute("delete from btp_unioncupclubreg")
@@ -174,11 +174,11 @@ def set_code_by_devregid(regid, code):
     finally:
         connection.close()
         
-def init_dead_round():
+def init_dead_round(team_count=5):
     """设置报名red round"""
     cursor = connection.cursor()
     try:
-        sql = "UPDATE BTP_UnionCupReg SET DeadRound = 100 WHERE ClubCount = 5 "
+        sql = "UPDATE BTP_UnionCupReg SET DeadRound = 100 WHERE ClubCount = %s " % team_count
         cursor.execute(sql)
     finally:
         connection.close()
