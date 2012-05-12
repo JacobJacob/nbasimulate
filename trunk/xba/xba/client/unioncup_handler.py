@@ -15,7 +15,7 @@ from xba.config import WEB_ROOT, DOMAINS
 
 #联盟争赛赛处理器
 
-TEAM_COUNT = 7
+TEAM_COUNT = 5
 
 class UnionCupHandler(BaseClient):
     
