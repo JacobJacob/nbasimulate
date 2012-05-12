@@ -72,7 +72,7 @@ class DjangoSettings:
         os.makedirs(WEB_ROOT + '/rrd')
 
 if DEBUG:
-    CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Debug\\Client.exe"
+    CLIENT_EXE_PATH = "D:\\develop\\xba_workspace\\src\\Client\\Client\\bin\\Release\\Client.exe"
     #DOMAIN = 'http://localhost:34591/xbaweb/'
     DOMAIN = 'http://n1.113388.net/'
     WEB_ROOT = "D:\\develop\\xba_workspace\\xbaweb"

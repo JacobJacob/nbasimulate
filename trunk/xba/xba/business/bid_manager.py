@@ -151,6 +151,19 @@ def get_club_player_number(club_id, type):
     finally:
         cursor.close()
     
+def get_random(max):
+    cursor = connection.cursor()
+    try:
+        sql = "select %s + 16  + POWER(%s, 1.5)/%s*(2+4*dbo.GetRandom())" % (max, max, max)
+        cursor.execute(sql)
+        return cursor.fetchone()[0]
+    finally:
+        cursor.close()
 if __name__ == "__main__":
-    set_auto_bid()
+    for i in range(20):
+        max = 750 - i * 10
+        print '当前属性:%s[' % int(max / 10),
+        for j in range(10):
+            print int(get_random(max)), ",",
+        print "]"
         

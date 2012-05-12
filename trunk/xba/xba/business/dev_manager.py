@@ -57,7 +57,7 @@ def delete_from_league_long_not_login():
             for i in range(delete_club_count):
                 sql = "DeleteFromLeague %s" % club_ids[i]
                 print sql
-                #cursor.execute(sql)
+                cursor.execute(sql)
             
     finally:
         cursor.close()
