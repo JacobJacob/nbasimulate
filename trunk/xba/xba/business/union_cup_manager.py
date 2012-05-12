@@ -88,7 +88,7 @@ def add_unioncup(season):
                   '<Money>2500000</Money><Reputation>150</Reputation></Reward><Reward><Round>9</Round><Money>5000000</Money>' \
                   '<Reputation>200</Reputation></Reward><Reward><Round>100</Round><Money>10000000</Money><Reputation>500</Reputation></Reward>'
     
-    intro = u'杯赛采用联盟的方式参加，每个联盟派出三支队伍，实行7盘4胜制'
+    intro = u'杯赛采用联盟的方式参加，每个联盟派出五支队伍，实行五盘三胜制'
    
     matchtime = datetime.now().replace(hour=20, minute=0) + timedelta(hours=48)
     ladderurl = "UnionCupLadder/XResult%s_b.htm" % season
