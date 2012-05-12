@@ -126,7 +126,7 @@ class CupLadderRoundPair(RenderApple):
         
     @property
     def css_top(self):
-        return 97 + (self.index) * 395
+        return 97 + (self.index) * 295
     
     @property
     def css_left(self):
@@ -323,7 +323,7 @@ CATEGORY_5_CSS = """<style type="text/css">body{background-color:#fcf6df;}ul{ ma
                 height:20px;}.CupName{ position:absolute; font-weight:bold;
                 font-size:14px; left:0px; padding:0 0 0 20px;}.Round{ width:200px;
                 height:25px; background-color:#fcdb7c; position:absolute;
-                font-weight:bold; top:68px;}.RoundClub{ width:200px; height:390px;
+                font-weight:bold; top:68px;}.RoundClub{ width:200px; height:290px;
                 background-color:#faedbc; position:absolute;}.CamClub{ width:200px;
                 height:25px; background-color:#faedbc; position:absolute;}
       </style>"""
