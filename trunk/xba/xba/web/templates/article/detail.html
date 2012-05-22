@@ -13,6 +13,14 @@
        <div class="Gray4 f14">
          {{article.content|safe}}
        </div>
+       <div style="margin-top:50px;">
+         {% if prev %}
+          上一篇: <a href="/article/{{ prev.category }}/detail/{{ prev.id }}.html" target="_blank" title="{{ prev.title }}">{{ prev.title }}</a><br/>
+         {% endif %}
+          {% if next %}
+          下一篇: <a href="/article/{{ next.category }}/detail/{{ next.id }}.html" target="_blank" title="{{ next.title }}">{{ next.title }}</a><br/>
+         {% endif %}
+       </div>
     </div>
 </td>
 {% endblock %}

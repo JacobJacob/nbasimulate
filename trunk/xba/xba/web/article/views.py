@@ -31,6 +31,12 @@ def detail(request, category, id):
     """街球 杯赛"""
     article = Article.load(id=id)
     
+    next_list = Article.query(condition="id>%s and category='%s'" % (id, article.category), order="id asc", limit=1)
+    next = next_list[0] if next_list else None
+   
+    prev_list = Article.query(condition="id<%s and category='%s'" % (id, article.category), order="id desc", limit=1)
+    prev = prev_list[0] if prev_list else None
+    
     response = render_to_response(request, "article/detail.html", locals())
     path = "/article/%s/detail/%s.html" % (category, id)
     staticutil.dump(response, path)
