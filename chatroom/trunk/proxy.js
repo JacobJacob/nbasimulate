@@ -15,6 +15,12 @@ doError = function(res, code){
     res.end(message, ENCODING);
 }
 
+/**
+处理客户端请求
+@param: path
+@param: req
+@param: res
+*/
 
 doGet = function(path, req, res){
     
@@ -42,6 +48,7 @@ doGet = function(path, req, res){
 		res.end(content);
 		res.writeHead(200, {'Content-Type': 'text/plain'});
  	}catch(error){
+	    console.log(error);
 	    var message = error.message;
 	    console.log("error type[" + error.name + "], message[" + message + "]");   	
 	    var code = 503;

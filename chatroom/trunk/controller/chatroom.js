@@ -1,6 +1,6 @@
 
 list = function(){
-    return "list";
+	return render_html("/chatroom/list", {});
 }
 
 exports.list = list;

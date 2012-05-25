@@ -1,4 +1,6 @@
 var http = require('http');
+require('./util/shotenjin');
+require('./util/render');
 
 http.createServer(function (request, response) {
 
