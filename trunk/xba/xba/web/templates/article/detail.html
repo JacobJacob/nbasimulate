@@ -23,9 +23,9 @@
        </div>
        <div style="margin-top:50px;">
        相关文章<br/>
-       {% foreach info in infos %}
+       {% for info in sub_list %}
          <a href="/article/{{ info.category }}/detail/{{ info.id }}.html" target="_blank" title="{{ info.title }}">{{ info.title }}</a><br/>
-       {% endforeach %}
+       {% endfor %}
        </div>
     </div>
 </td>
