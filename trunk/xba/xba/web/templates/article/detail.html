@@ -21,6 +21,12 @@
           下一篇: <a href="/article/{{ next.category }}/detail/{{ next.id }}.html" target="_blank" title="{{ next.title }}">{{ next.title }}</a><br/>
          {% endif %}
        </div>
+       <div style="margin-top:50px;">
+       相关文章<br/>
+       {% foreach info in infos %}
+         <a href="/article/{{ info.category }}/detail/{{ info.id }}.html" target="_blank" title="{{ info.title }}">{{ info.title }}</a><br/>
+       {% endforeach %}
+       </div>
     </div>
 </td>
 {% endblock %}
