@@ -58,7 +58,7 @@ def article_link(article):
 def category_name(category):
     """类型名"""
     map = {"notice": "游戏公告", "strategy": "游戏攻略", "guide": "新手指南", "experience": "玩家经验", "nba": "nba新闻"}
-    return map.get(category, "新手指南")
+    return map[category]
 
 @register.filter
 def team_ability(ability):
