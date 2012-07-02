@@ -49,7 +49,7 @@ def article_list(request):
     pagesize = int(request.REQUEST.get("pagesize", 10))
     category = request.REQUEST.get("category", "notice")
     
-    infos, total = Article.paging(page, pagesize, condition=" category = '%s' " % category)
+    infos, total = Article.paging(page, pagesize, condition=" category = '%s' " % category, order="id desc")
     return render_to_response(request, "admin/article_list.html", locals())
 
 @login_required
