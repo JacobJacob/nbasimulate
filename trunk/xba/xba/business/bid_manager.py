@@ -151,19 +151,48 @@ def get_club_player_number(club_id, type):
     finally:
         cursor.close()
     
-def get_random(max):
+def get_random(max, age):
     cursor = connection.cursor()
+    age_add = (26 - age ) * 2 + 6
     try:
-        sql = "select %s + 16  + POWER(%s, 1.5)/%s*(2+4*dbo.GetRandom())" % (max, max, max)
+        sql = "select %s + %s  + POWER(%s, 1.5)/%s*(2+4*dbo.GetRandom())" % (max, age_add, max, max)
         cursor.execute(sql)
         return cursor.fetchone()[0]
     finally:
         cursor.close()
 if __name__ == "__main__":
+    print "  7+\t8+\t9+\t10+\t11+\t12+\t13+"
     for i in range(20):
         max = 750 - i * 10
-        print '当前属性:%s[' % int(max / 10),
-        for j in range(10):
-            print int(get_random(max)), ",",
-        print "]"
-        
+        print '当前属性:%s\t' % int(max / 10),
+        add_7 = 0
+        add_8 = 0
+        add_9 = 0
+        add_10 = 0
+        add_11 = 0
+        add_12 = 0
+        add_13 = 0
+        for j in range(1000):
+            now = max * 11
+            new = 0
+            for k in range(11):
+                add = int(get_random(max, 21))
+                new += add
+            
+            add_ability = (new - now) / 14
+            if add_ability >= 130:
+                add_13 += 1
+            elif add_ability >= 120:
+                add_12 += 1
+            elif add_ability >= 110:
+                add_11 += 1
+            elif add_ability >= 100:
+                add_10 += 1
+            elif add_ability >= 90:
+                add_9 += 1
+            elif add_ability >= 80:
+                add_8 += 1
+            else:
+                add_7 += 1
+                
+        print "%s\t%s\t%s\t%s\t%s\t%s\t%s" % (add_7, add_8, add_9, add_10, add_11, add_12, add_13)    

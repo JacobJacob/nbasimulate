@@ -57,7 +57,7 @@ def article_link(article):
 @register.filter
 def category_name(category):
     """类型名"""
-    map = {"notice": "游戏公告", "strategy": "游戏攻略", "guide": "新手指南", "experience": "玩家经验", "nba": "nba新闻"}
+    map = {"notice": "游戏公告", "strategy": "游戏攻略", "guide": "新手指南", "experience": "玩家经验", "nba": "nba新闻", "video": "nba视频"}
     return map[category]
 
 @register.filter

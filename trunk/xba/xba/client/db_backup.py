@@ -42,6 +42,6 @@ def restore(db="NewBTP", file_name=None):
         log_execption()
     
 if __name__ == "__main__":
-    restore(file_name="D:\\NewBTP_2011_12_29_05_30_00.bak")
+    restore(file_name="D:\\NewBTP_2012_06_09_05_30_00.bak")
     #restore(file_name="2011_09_10/round_update_handler_2011_09_10_10_35_03.bak")
     #backup()
