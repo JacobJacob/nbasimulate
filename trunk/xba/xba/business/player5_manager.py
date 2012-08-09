@@ -8,6 +8,7 @@ from xba.common.orm import Session
 from xba.model import Player5
 from datetime import datetime, timedelta
 from xba.common import log_execption
+import traceback
 
 REG_CATEGORY_3 = [
 [135, 55, 5],
@@ -174,6 +175,23 @@ def add_player_age():
         print a
     finally:
         connection.close()
+        
+def point3_match_handle():
+    """处理三分大赛"""
+    cursor = connection.cursor()
+    try:
+        cursor.execute("select * from btp_point3match where status in (1, 2) and matchtime < getdate()")
+        infos = cursor.fetchall()
+        for info in infos:
+            playerid = info["PlayerID"]
+            status = 0 if info["Status"] == 1 else 3
+            sql = "exec StartPoint3Match %s, %s" % (playerid, status)
+            print sql
+            cursor.execute(sql)
+    except:
+        print traceback.format_exc()
+    finally:
+        cursor.close()
         
 def recover_healthy5():
     """职业球员受伤恢复以及事件更新"""
@@ -356,28 +374,49 @@ def update_player5_hight_yishi():
 def view_player5_category3():
     cursor = connection.cursor()
     try:
-        sql = "select * from btp_player5 where category=4"
+        #cursor.execute("update btp_player3 set Blockmax = 670, Passmax = 654, Strengthmax=647, Jumpmax=669,Dribblemax=589,Stealmax=560 where name = 'ABC'")
+        sql = "select * from btp_player5 "
         cursor.execute(sql)
         infos = cursor.fetchall()
         for info in infos:
             id = info["PlayerID"]
-            total1, total2 = 0, 0
+           
+            total_a, total_b, total_max_a, total_max_b, total_max_c = 0, 0, 0, 0, 0
             for ABILITY in ABILITYS:    
-                #ability = info["%sMax" % ABILITY]
+                ability_max = info["%sMax" % ABILITY]
                 ability = info[ABILITY]
-                if ABILITY in ("Attack","Defense","Team"):
-                    total1 += ability
+                #print ABILITY, ":", ability, ability_max
+                if ABILITY not in ("Attack","Defense","Team"):
+                    total_a += ability
+                    total_max_a += ability_max
+                    total_max_b += ability_max
+                else:
+                    total_max_b += ability
+                
+                total_b += ability
+                total_max_c += ability_max
+                
                 #total1 += ability
-            print total1 / 30
+                
+                
+            print "-" * 10
+            print "id:", id, "Age:", info["Age"], info["Name"]
+            print "当前算20意识", (total_a + 600) / 14,
+            print "最大算20意识", (total_max_a + 600) / 14,
+            print "当前包意识", total_b / 14,
+            print "最大包当前意识 ", total_max_b / 14,
+            print "最大包意识 ", total_max_c / 14
+            
+            #print total1 / 30
             a = random.randint(200, 300)
             b = random.randint(200, 300)
             c = random.randint(200, 300)
-            sql = "update btp_player5 set attack=%s, Defense=%s, team=%s where playerid = %s" % (a, b, c, id)
-            cursor.execute(sql)
+            #sql = "update btp_player5 set attack=%s, Defense=%s, team=%s where playerid = %s" % (a, b, c, id)
+            #cursor.execute(sql)
             #print info["Age"], info["Ability"], (total2 + 600) / 14, total1 / 14, total2 / 11
             sql = SQL % id
-            print sql
-            cursor.execute(sql)
+            #print sql
+            #cursor.execute(sql)
                         
             
     except Exception, e:
@@ -415,5 +454,6 @@ def clean_dirty_char():
         connection.close()
 
 if __name__ == "__main__":
-    view_player5_category3()
+    #view_player5_category3()
     #clean_dirty_char()
+    point3_match_handle()

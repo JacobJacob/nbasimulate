@@ -6,7 +6,8 @@ import cPickle as pickle
 
 from datetime import datetime, timedelta
 
-from xba.business import only_one_match_manager, game_manager, arrange_manager, union_field_manager, account_manager
+from xba.business import only_one_match_manager, game_manager, arrange_manager, union_field_manager, account_manager,\
+    player5_manager
 from xba.common.decorators import ensure_success
 from xba.common.constants.club import ClubCategory
 from base import BaseClient
@@ -66,6 +67,9 @@ class GameWorker(BaseClient):
         #推广积分处理
         self.promotion()
         
+        #三分大赛处理
+        self.handl_point3_match()
+        
         self.log("start sleep")
         self.sleep()
         
@@ -89,6 +93,10 @@ class GameWorker(BaseClient):
         """在线体力恢复"""
         return game_manager.add_power_by_online()
     
+    @ensure_success
+    def handl_point3_match(self):
+        return player5_manager.point3_match_handle()
+    
     def devcup_handle(self):
         """自定义杯赛处理"""
         handle = DevCupHandler()
@@ -102,8 +110,8 @@ class GameWorker(BaseClient):
     def promotion(self):
         """推广积分文件处理"""
         files = file_utility.get_files(PathSettings.PROMOTION_LOG_PATH)
-        for file in files:
-            path = os.path.join(PathSettings.PROMOTION_LOG_PATH, file)
+        for file_name in files:
+            path = os.path.join(PathSettings.PROMOTION_LOG_PATH, file_name)
             f = open(path, 'rb')
             try:
                 user_id, ip, referrer = pickle.load(f)
