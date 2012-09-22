@@ -4,7 +4,7 @@
 from xba.common import log_execption
 from xba.common.sqlserver import connection
 from xba.business import club_manager
-from xba.common.constants.dev import DEV_SORT_MONEY_MAP
+from xba.common.constants.dev import DEV_SORT_MONEY_MAP, DEV_SORT_REPUTATION_MAP
 
 def get_dev_clubs(devcode, only_base=False):
     """根据devcode获取所有俱乐部id"""
@@ -82,6 +82,39 @@ def delete_log_dev_msg():
     finally:
         cursor.close()
         
+def dev_sort_send_reputation(level, club_id, sort):
+    reputation = DEV_SORT_REPUTATION_MAP.get(level, {}).get(sort + 1, 0)
+    if reputation <= 0:
+        return
+    
+    club_info = club_manager.get_club_by_id(club_id)
+    if not club_info:
+        return
+    user_id = club_info["UserID"]
+
+    cursor = connection.cursor()
+    try:
+        cursor.start_transaction()
+        
+        cursor.execute("SELECT UnionID, Nickname FROM BTP_Account WHERE UserID = %s" % user_id)
+        info = cursor.fetchone()
+        union_id = info["UnionID"]
+        nickname = info["Nickname"]
+        if union_id > 0:
+            cursor.execute("UPDATE BTP_Union SET  Reputation=Reputation+%s WHERE UnionID=%s AND Reputation>0" % (reputation, union_id))
+            nickname = nickname.encode("utf8")
+            sql = "INSERT INTO BTP_UnionReputation (UserID,NickName,UnionID,Reputation,Note)VALUES(%s,'%s',%s,%s,'联赛奖励')" % (user_id, nickname, union_id, reputation)
+            sql = sql.decode("utf8").encode("gbk")
+            cursor.execute(sql)
+        
+        cursor.commit()
+    except:    
+        cursor.rollback()
+        raise
+    finally:
+        cursor.close()
+        
+        
 def dev_sort_send_money(level, club_id, sort):
     """联赛奖励"""
     money = DEV_SORT_MONEY_MAP.get(level, {}).get(sort + 1, 0)
@@ -103,7 +136,6 @@ def dev_sort_send_money(level, club_id, sort):
         sql = "UPDATE BTP_Account SET Money=Money+%s WHERE UserID=%s" % (money, user_id)
         cursor.execute(sql)
         sql = "Exec AddFinance %s,1,5,%s,1,'%s'" % (user_id, money, event)
-        print sql
         cursor.execute(sql)
         sql = "Exec AddNewMessage %s,2,0,'%s','%s'" % (user_id, sender, content)
         cursor.execute(sql)
@@ -366,4 +398,5 @@ def cretae_sql():
         cursor.close()
        
 if __name__ == "__main__":
-    delete_from_league_long_not_login()
+    pass
+    #dev_sort_dend_reputation(1, 140, 1)
