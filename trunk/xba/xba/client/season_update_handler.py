@@ -364,7 +364,11 @@ class SeasonUpdateHandler(BaseClient):
                     else:
                         self.log("start to dev sort send money for level:%s, club id:%s" % (level, club_id))
                         self.dev_sort_send_money(level, club_id, i)
-                        
+         
+    @ensure_success
+    def dev_sort_send_reputation(self, level, club_id, i):
+        return dev_manager.dev_sort_send_reputation(level, club_id, i)                  
+                   
     @ensure_success
     def reword_mvp_by_devcode(self, dev_code):
         return dev_manager.reword_mvp_by_devcode(dev_code)
