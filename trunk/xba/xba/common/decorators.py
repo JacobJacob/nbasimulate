@@ -4,7 +4,7 @@
 import time
 
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
 
 from xba.common import exception_mgr, log_execption
 from xba.business import user_roles

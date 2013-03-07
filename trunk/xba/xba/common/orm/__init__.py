@@ -1,7 +1,9 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from xba.config import DbSetting
 
-engine = create_engine('mssql+pymssql://BTPAdmin:BTPAdmin123@127.0.0.1:1433/NewBTP', echo=True)
+url = 'mssql+pymssql://%s:%s@%s:1433/%s' % (DbSetting.DATABASE_USER, DbSetting.DATABASE_PASSWORD, DbSetting.DATABASE_HOST, DbSetting.DATABASE_NAME)
+engine = create_engine(url, echo=True)
 connection = engine.connect()
 Session = sessionmaker(bind=engine)

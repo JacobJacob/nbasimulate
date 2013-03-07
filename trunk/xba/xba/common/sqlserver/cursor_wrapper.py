@@ -26,7 +26,6 @@ class Cursor(object):
         try:
             return self._cursor.execute(operation, *args)
         except OperationalError:
-            print operation
             log_execption()
             self._need_close_conn = True
             raise

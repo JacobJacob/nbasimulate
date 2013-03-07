@@ -4,7 +4,7 @@
 
 import os
 
-DEBUG = True
+DEBUG = False
 
 class PathSettings:
     if os.name == 'nt':
@@ -46,9 +46,10 @@ class PathSettings:
 
 class DbSetting:
     DATABASE_NAME = 'NewBTP'
-    DATABASE_USER = 'BTPAdmin'
-    DATABASE_PASSWORD = 'BTPAdmin123'
+    DATABASE_USER = 'sa'
+    DATABASE_PASSWORD = '123456'
     DATABASE_HOST = '127.0.0.1'
+    #DATABASE_HOST = 'www.113388.net'
     
 class DjangoSettings:
     DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.

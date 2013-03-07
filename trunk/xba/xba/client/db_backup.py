@@ -37,7 +37,8 @@ def restore(db="NewBTP", file_name=None):
     cmd = "sqlcmd -Q \"restore database [%s] from disk='%s' with replace\"" % (db, path)
     print cmd
     try:
-        os.system(cmd)
+        pass
+        #os.system(cmd)
     except:
         log_execption()
     
