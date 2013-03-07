@@ -375,7 +375,7 @@ def view_player5_category3():
     cursor = connection.cursor()
     try:
         #cursor.execute("update btp_player3 set Blockmax = 670, Passmax = 654, Strengthmax=647, Jumpmax=669,Dribblemax=589,Stealmax=560 where name = 'ABC'")
-        sql = "select * from btp_player5 "
+        sql = "select * from btp_player5 where clubid=0"
         cursor.execute(sql)
         infos = cursor.fetchall()
         for info in infos:
@@ -387,6 +387,7 @@ def view_player5_category3():
                 ability = info[ABILITY]
                 #print ABILITY, ":", ability, ability_max
                 if ABILITY not in ("Attack","Defense","Team"):
+                    
                     total_a += ability
                     total_max_a += ability_max
                     total_max_b += ability_max
@@ -398,12 +399,16 @@ def view_player5_category3():
                 
                 #total1 += ability
                 
+            t = total_max_b / 14
+            #print t
                 
-            print "-" * 10
-            print "id:", id, "Age:", info["Age"], info["Name"]
-            print "当前算20意识", (total_a + 600) / 14,
-            print "最大算20意识", (total_max_a + 600) / 14,
-            print "当前包意识", total_b / 14,
+            #print "-" * 10
+            #print info["Pos"], info["Height"]
+            print id, ',',
+            #print "id:", id, "Age:", info["Age"], info["Name"], info["Pos"]
+            #print "当前算20意识", (total_a + 600) / 14,
+            #print "最大算20意识", (total_max_a + 600) / 14,
+            #print "当前包意识", total_b / 14,
             print "最大包当前意识 ", total_max_b / 14,
             print "最大包意识 ", total_max_c / 14
             
@@ -454,6 +459,7 @@ def clean_dirty_char():
         connection.close()
 
 if __name__ == "__main__":
-    #view_player5_category3()
+    view_player5_category3()
     #clean_dirty_char()
-    point3_match_handle()
+    #point3_match_handle()
+    #create_player(5, 4, 24, 100, 120)

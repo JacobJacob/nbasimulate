@@ -73,7 +73,7 @@ def add_xgame_team_to_xguess():
         cursor.execute("truncate table BTP_XGuess")
         sql = "EXEC SetTeamAbility"
         cursor.execute(sql)
-        sql = "select * from btp_xcupreg"
+        sql = "select * from btp_xcupreg where deadround=100"
         cursor.execute(sql)
         reg_infos = cursor.fetchall()
         reg_info_map = {}

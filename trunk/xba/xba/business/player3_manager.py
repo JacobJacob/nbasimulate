@@ -15,7 +15,8 @@ def create_player(count, category, hours):
     cursor = connection.cursor()
     try:
         sql = "exec CreatePlayer3 %s, %s, '%s'" % (count, category, end_bid_time.strftime("%Y-%m-%d %H:%M:%S"))
-        cursor.execute(sql)
+        print sql
+        #cursor.execute(sql)
     except:
         log_execption()
     finally:
@@ -113,6 +114,7 @@ def recover_power3():
     finally:
         cursor.close()
 
-if __name__ == "__main__": 
-    create_player(1200, 6, 20)
-
+if __name__ == "__main__":
+    #end_bid_time = datetime.now() + timedelta(hours=36)
+    #create_player(1, 2, end_bid_time.strftime("%Y-%m-%d %H:%M:%S") , 48, 68)
+    create_player(10, 6, 5)
