@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import random
+
 from xba.config import CLIENT_EXE_PATH
 
 from xba.business import player5_manager, player3_manager, account_manager, tool_manager, xcup_manager, xbatop_manager,\
@@ -513,6 +515,7 @@ class SeasonUpdateHandler(BaseClient):
                     #如果还不够，从下下一级要
                     user_infos = account_manager.get_one_level_max_team(level+2)
                 self.log("get %s user infos" % len(user_infos))
+                random.shuffle(user_infos)
                 for user_info in user_infos:
                     if user_info and user_info["UserID"]:
                         new_dev_info = dev_manager.get_dev_info_by_userid(user_info["UserID"])
