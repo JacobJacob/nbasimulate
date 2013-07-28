@@ -17,7 +17,7 @@ from xba.client.cup_handler import CupHandler
 
 from xba.common.stringutil import ensure_utf8
 from xba.config import PathSettings
-from xba.model import PromotionHistory
+from xba.model import PromotionHistory, MatchTotal
 from xba.common import file_utility
 from xba.common import urlutil
 
@@ -65,10 +65,12 @@ class GameWorker(BaseClient):
         self.day_update_union_field_game()
         
         #推广积分处理
-        self.promotion()
+        #self.promotion()
         
         #三分大赛处理
         self.handl_point3_match()
+        
+        self.match_total_handle()
         
         self.log("start sleep")
         self.sleep()
@@ -107,6 +109,31 @@ class GameWorker(BaseClient):
         handle = CupHandler()
         handle.start()
         
+    def match_total_handle(self):
+        log_dir = "E:\\xba_log\\match_total\\"
+        files = file_utility.get_files(log_dir)
+        for file_name in files:
+            path = os.path.join(log_dir, file_name)
+            file_name = file_name.replace(log_dir, "")
+            short_file_name = file_name[:file_name.index(".")]
+            total_info = short_file_name.split("_") 
+            match_type = total_info[0]
+            match_id = total_info[1]
+            
+            f = open(path, 'rb')
+            try:
+                content = f.read()
+                match_total = MatchTotal()
+                match_total.type = match_type
+                match_total.match_id = match_id
+                match_total.data = content
+                match_total.persist()
+            finally:
+                f.close()
+                
+            #os.remove(path)
+        
+    
     def promotion(self):
         """推广积分文件处理"""
         files = file_utility.get_files(PathSettings.PROMOTION_LOG_PATH)
@@ -157,7 +184,7 @@ class GameWorker(BaseClient):
         if not self.__not_login_users or self.__expire_time < datetime.now():
             self.__not_login_users = self.get_not_active_users()
             self.__expire_time = datetime.now() + timedelta(hours=1)
-        self.__not_login_users.extend([15, 20, 46, 47, 75, 165, 158])
+        #self.__not_login_users.extend([15, 20, 46, 47, 75, 165, 158])
         for user_id in self.__not_login_users:
             only_one_reg_info = self.get_onlyone_match_row(user_id)
             if not only_one_reg_info:
@@ -207,3 +234,4 @@ class GameWorker(BaseClient):
 if __name__ == "__main__":
     worker = GameWorker()
     worker.start()
+    #worker.match_total_handle()
