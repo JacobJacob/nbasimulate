@@ -15,7 +15,7 @@ def view_total_with_path(file_path):
     return view_total(content)
 
 def view_total_with_match_id(type_id, match_id):
-    match_total = MatchTotal.load(type=type_id, match_id=match_id)
+    match_total = MatchTotal.load(match_id=match_id)
     if match_total:
         data = match_total.data
         return view_total(data)
