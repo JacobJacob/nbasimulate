@@ -21,7 +21,7 @@ def announce_list(request):
     total, infos = game_manager.get_announce(page, pagesize)
     if infos:
         for info in infos:
-            info.title = info.title.decode("gbk")
+            info.title = info.title.decode("utf8")
     return render_to_response(request, "game/announce.html", locals())
 
 

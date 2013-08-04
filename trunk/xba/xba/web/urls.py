@@ -3,7 +3,8 @@ from django.conf.urls.defaults import patterns, url, include
 
 urlpatterns = patterns('',
     # Example:
-     url(r'^index.html?$', 'xba.web.views.index', name='index'),
+    url(r'^index.html?$', 'xba.web.views.index', name='index'),
+    url(r'^match.html?$', 'xba.web.views.match_report', name='match_report'),
     url(r'^total/', 'xba.web.views.total', name='total'),
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_PATH}), 
     (r'^admin/', include('web.admin.urls')),

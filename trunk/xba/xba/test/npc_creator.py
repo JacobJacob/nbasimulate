@@ -11,12 +11,9 @@ ABILITYS = ["Speed","Jump","Strength","Stamina","Shot","Point3","Dribble","Pass"
   
 def main():
     i = 1
-    infos = excel_importer.parse_excel("D:\\battle_app\\input\\npc.xls")
-    id = 199047
-    data = infos[0]
-    del data["PlayerID"]
-    for _ in range(5):
-        
+    infos = excel_importer.parse_excel("npc1.xls")
+    
+    for data in infos:    
         info = {}
         for k, v in data.iteritems():
             info[k] = v
@@ -26,20 +23,16 @@ def main():
             ability_value = info[ability]
             #print ability, ability_value,
             ability_value = ability_value * 10 + random.randint(0, 10)
-            if id != 199047:
-                if ability in ("Attack","Defense","Team"):
-                    ability_value = ability_value - random.randint(50, 100)
-                else:
-                    ability_value = ability_value - random.randint(0, 5)
-            info["%sMax" % ability] = ability_value
             if ability in ("Attack","Defense","Team"):
-                info[ability] = 350
-                ability_total +=350
+                ability_value = ability_value - random.randint(50, 100)
             else:
-                info[ability] = 200
-                ability_total += 200
+                ability_value = ability_value - random.randint(0, 5)
+            info["%sMax" % ability] = ability_value
+            info[ability] = ability_value
+            ability_total += ability_value
              
-        playerid = id
+        playerid = info["PlayerID"]
+        del info["PlayerID"]
         i += 1
         for k, v in info.items():
             try:
@@ -55,12 +48,13 @@ def main():
             sql = sql.encode("gbk")
         
         
-        cursor = connection.cursor()
+        #cursor = connection.cursor()
         try:
-            cursor.execute(sql)
+            pass
+            #cursor.execute(sql)
         finally:
-            cursor.close()
-        id += 1
+            pass
+            #cursor.close()
         
 if __name__ == "__main__":
     main()

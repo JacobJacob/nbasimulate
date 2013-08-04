@@ -6,6 +6,7 @@ import cPickle as pickle
 
 from xba.web.render import render_to_response, json_response
 from xba.business import xbatop_manager
+from xba.business import match_total_manager
 from xba.model import Article
 from xba.config import PathSettings
 
@@ -54,3 +55,21 @@ def total(request):
             f.close()
     
     return json_response(1)
+
+def match_report(request):
+    
+    url = request.REQUEST.get("url")
+    
+    if url:
+        #datas = match_total_manager.view_total_with_path("E:\\xba_log\\match_total\\99_1677379.json")
+        type_id, match_id = match_total_manager.get_report_info(url)
+        if type != 0:
+            datas = match_total_manager.view_total_with_match_id(type_id, match_id)
+        if not datas:
+            datas = {'error_msg': u'比赛详细战况不存在'}
+    else:
+        datas = {'error_msg': u'请输入战报地址'}
+    
+    response = render_to_response(request, "match_report.html", datas)
+    return response
+    

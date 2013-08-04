@@ -9,7 +9,7 @@ body {
 	_font-family:"宋体"; 
 	height:100%;
 	color:#333;
-	background:#000 url(../image/bg_main.jpg) top center no-repeat;
+	background:#000 url(/site_media/image/bg_main.jpg) top center no-repeat;
 	text-align:center;
 	}
 
@@ -23,37 +23,37 @@ img {border:0;}
 
 
 .nav { width:820px; height:36px; margin:0 auto;}
-.nav li { width:110px; line-height:36px; float:left; background:url(../image/navg.png) no-repeat right;font-size:16px; color:#fff; font-weight:bold;}
+.nav li { width:110px; line-height:36px; float:left; background:url(/site_media/image/navg.png) no-repeat right;font-size:16px; color:#fff; font-weight:bold;}
 .nav li a { display:block; width:110px; line-height:36px; font-size:16px; color:#fff; font-weight:bold;}
 .nav li a:hover { position:relative; left:1px; top:1px;}
 .nav li a:visited {color:#fff;}
 
-.flist {width:197px; height:179px; background:url(../image/enter.png) no-repeat; text-align:center; padding:6px 0 0 6px;}
+.flist {width:197px; height:179px; background:url(/site_media/image/enter.png) no-repeat; text-align:center; padding:6px 0 0 6px;}
 .flist li { width:187px; height:22px; text-align:center; line-height:22px; background:#f6f6f6; border:1px solid #78766f; overflow:hidden; margin-top:5px;}
 .flist li a:hover { font-weight:bold;}
 
-.c2ul { width:442px; height:24px; background: url(../image/tbbg.png);}
+.c2ul { width:442px; height:24px; background: url(/site_media/image/tbbg.png);}
 .c2ul li { width:96px; height:24px; float:left;}
-.c2ul li a { display:block; width:96px; height:24px;background:url(../image/tb1.png); line-height:24px; text-align:center;}
+.c2ul li a { display:block; width:96px; height:24px;background:url(/site_media/image/tb1.png); line-height:24px; text-align:center;}
 .c2ul li a:hover { font-weight:bold;}
 .c2ul2 { width:440px; height:160px; border:1px solid #c9c9c9; border-top:none;}
-.c2ul2 li { width:428px; height:26px; line-height:26px; padding-left:12px; _padding-left:6px; background: url(../image/Images/dot.png) bottom repeat-x; text-align:left; clear:both;}
-.c2ul2 li a { display:block; width:368px;line-height:26px; padding-left:12px; _padding-left:6px; background: url(../image/arr.png) left center no-repeat; text-align:left; float:left;}
+.c2ul2 li { width:428px; height:26px; line-height:26px; padding-left:12px; _padding-left:6px; background: url(/site_media/image/Images/dot.png) bottom repeat-x; text-align:left; clear:both;}
+.c2ul2 li a { display:block; width:368px;line-height:26px; padding-left:12px; _padding-left:6px; background: url(/site_media/image/arr.png) left center no-repeat; text-align:left; float:left;}
 .c2ul2 li span { display:block; width:46px;line-height:26px;text-align:left; float:left; color:#949494;}
 
 .iask { width:440px; height:150px; border:1px solid #c9c9c9; border-top:none; text-align:center; padding-top:10px;}
 
 
-.c3ul { width:266px; height:24px; background: url(../image/tbbg.png);}
+.c3ul { width:266px; height:24px; background: url(/site_media/image/tbbg.png);}
 .c3ul li { width:96px; height:24px; float:left;}
-.c3ul li a { display:block; width:96px; height:24px;background:url(../image/tb1.png); line-height:24px; text-align:center;}
+.c3ul li a { display:block; width:96px; height:24px;background:url(/site_media/image/tb1.png); line-height:24px; text-align:center;}
 .c3ul li a:hover { font-weight:bold;}
 .c3ul3 { width:259px; height:180px; border:1px solid #c9c9c9; border-top:none; padding-left:5px;}
-.c3ul3 li { width:256px; height:60px; line-height:20px;background: url(../image/dot.png) bottom repeat-x; text-align:left; clear:both;}
+.c3ul3 li { width:256px; height:60px; line-height:20px;background: url(/site_media/image/dot.png) bottom repeat-x; text-align:left; clear:both;}
 .c3ul3 li span { display:block; width:60px; height:60px; text-align:left; float:left;}
 .c3ul3 li a { display:block; width:180px;line-height:20px; text-align:left; float:left;}
 
-.t1 { background:url(../image/t1.png) left center no-repeat}.t2 { background:url(../image/t2.png) left center no-repeat}.t3 { background:url(../image/t3.png) left center no-repeat}
+.t1 { background:url(/site_media/image/t1.png) left center no-repeat}.t2 { background:url(/site_media/image/t2.png) left center no-repeat}.t3 { background:url(/site_media/image/t3.png) left center no-repeat}
 
 .content {
 margin-left:30px;

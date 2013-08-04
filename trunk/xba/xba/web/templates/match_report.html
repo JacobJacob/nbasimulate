@@ -1,0 +1,76 @@
+{% extends "master.html" %}
+{% load common_extras %}
+{% block keyword %}{{article.keyword}}{% endblock %}
+{% block description %}{{article.title}}{% endblock %}
+{% block head_ext %}
+<script type="text/javascript" src="/site_media/js/jquery/jquery.min.js"></script>
+<link href="/site_media/css/list.css" type="text/css" media="all" rel="stylesheet">
+<script>
+ 
+	$(document).ready(function(){
+	 
+		 $('#submit').click(function(){
+			 var report_url = $("#report_url").val();
+			 var url = window.location + "?url=" + encodeURIComponent(report_url);
+			 alert(url);
+			 window.location = url;
+		 })
+		 
+	    
+	});
+
+</script>
+
+{% endblock %}
+{% block title %}无道xba篮球经理比赛进程详细报告{% endblock %}
+{% block content %}
+<td valign="top" align="left">
+    <div class="content" >
+       <h1>{{article.title}}</h1>
+       <div class="Gray4 f14">
+                              战报地址:<input type="text" id="report_url" size="80"/> <input type="button" value="查看" id="submit"/>  
+             
+     {% if error_msg %}
+                
+     <p style="font-weight:bold;color:#EE0000">{{ error_msg }}</p>
+                
+     {% else %}
+                
+      <p style="font-weight:bold;color:#0000AA">战术相克值</p>
+         {% for arrange_desc in arrange_desc_list %}
+           <p style="line-height:5px;">{{ arrange_desc|safe }}</p>
+         {% endfor %}              
+                              
+      <p style="font-weight:bold;color:#0000AA">主队能力值</p>
+		 {% for home_ability in home_ability_list %}
+		    <p style="line-height:5px;">{{ home_ability|safe }}</p>
+		 {% endfor %}
+		
+	  <p style="font-weight:bold;color:#0000AA">客队能力值</p>
+		 {% for away_ability in away_ability_list %}
+		    <p style="line-height:5px;">{{ away_ability|safe }}</p>
+		 {% endfor %} 
+		 
+	   <p style="font-weight:bold;color:#0000AA">主队进攻过程战力值</p>
+		 {% for home_action_desc in home_action_desc_list %}
+		    <p style="line-height:5px;font-size:0.5px;">{{ home_action_desc|safe }}</p>
+		 {% endfor %} 
+		         
+       <p style="font-weight:bold;color:#0000AA">客队进攻过程战力值</p>
+		 {% for away_action_desc in away_action_desc_list %}
+		    <p style="line-height:5px;font-size:0.5px;">{{ away_action_desc|safe }}</p>
+		 {% endfor %} 
+		         
+		     
+	  {% endif %}
+		                             
+       </div>
+       <div style="margin-top:50px;">
+  
+       </div>
+    </div>
+</td>
+{% endblock %}
+
+
+

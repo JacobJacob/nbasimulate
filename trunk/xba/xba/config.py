@@ -4,7 +4,7 @@
 
 import os
 
-DEBUG = False
+DEBUG = True
 
 class PathSettings:
     if os.name == 'nt':
@@ -46,8 +46,8 @@ class PathSettings:
 
 class DbSetting:
     DATABASE_NAME = 'NewBTP'
-    DATABASE_USER = 'sa'
-    DATABASE_PASSWORD = '123456'
+    DATABASE_USER = 'BTPAdmin'
+    DATABASE_PASSWORD = 'BTPAdmin123'
     DATABASE_HOST = '127.0.0.1'
     #DATABASE_HOST = 'www.113388.net'
     
@@ -57,9 +57,9 @@ class DjangoSettings:
     #DATABASE_USER = 'from gba'             # Not used with sqlite3.
     #DATABASE_PASSWORD = 'from gba.123'
     #DATABASE_HOST = '10.20.238.169'
-    DATABASE_USER = 'root'
-    DATABASE_PASSWORD = '123456'
-    DATABASE_HOST = 'localhost'
+    DATABASE_USER = 'xba'
+    DATABASE_PASSWORD = 'xba123xba321'
+    DATABASE_HOST = '210.209.125.3'
     DATABASE_PORT = 3306
         
     URL_PREFIX = ''
