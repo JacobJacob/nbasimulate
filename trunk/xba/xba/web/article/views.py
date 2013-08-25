@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
-from xba.web.render import render_to_response
-from xba.model import Article
+from xba.web.render import render_to_response, redirect
+from xba.model import Article, Comment
 
 from xba.common import staticutil
 from xba.common import listutil
@@ -21,7 +20,7 @@ def list(request, category, page=1):
     else:
         totalpage = (total -1) / pagesize + 1
     
-    nextpage = page + 1
+    nextpage = page + 1l
     prevpage = page - 1
     
     response = render_to_response(request, "article/list.html", locals())
@@ -43,7 +42,31 @@ def detail(request, category, id):
     
     sub_list = listutil.get_sub_list(same_category_list, 10)
     
+    comment_list = Comment.query(condition="article_id=%s " % id, order="id desc")
+
     response = render_to_response(request, "article/detail.html", locals())
     path = "/article/%s/detail/%s.html" % (category, id)
     staticutil.dump(response, path)
     return response
+
+def comment(request):
+    
+    article_id = request.REQUEST.get("id")
+    username = request.REQUEST.get("username")
+    content = request.REQUEST.get("content")
+    category = request.REQUEST.get("category")
+    
+    if content:
+        c = Comment()
+        c.article_id = article_id
+        c.username = username
+        c.content = content
+        c.persist()
+
+    path = "/article/%s/detail/%s.html" % (category, article_id)
+    staticutil.delete(path)
+
+    url = "/article/%s/detail/%s.html" % (category, article_id)
+
+    return redirect(url)
+    

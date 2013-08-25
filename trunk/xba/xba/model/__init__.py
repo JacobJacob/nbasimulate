@@ -114,3 +114,6 @@ class PromotionHistory(Persistable):
 
 class MatchTotal(Persistable):
     pass
+
+class Comment(Persistable):
+    pass

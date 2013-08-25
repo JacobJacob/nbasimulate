@@ -14,6 +14,25 @@
          {{article.content|safe}}
        </div>
        <div style="margin-top:50px;">
+       <p>评论:</p>
+         <form action="{% url comment %}" method="post">
+            <input type="hidden" value="{{article.id}}" name="id"/>
+            <input type="hidden" value="{{article.category}}" name="category"/>
+            <p><span style="width:30px;">用户:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span><input type="text" name="username" value="无道xba玩家"/></span></p>
+            <p>我想说:
+              <textarea rows="8" cols="80" name="content"></textarea>
+            </p>
+            <p><input type="submit" value="发我的看法"></p>
+         </form>
+       </div>   
+      <div class="comment_list">
+        {% for comment in comment_list %}
+           <p style="line-height:10px;margin-top:5px;">用户:{{comment.username}}  回复时间:{{comment.created_time}}</p>
+           <p style="margin-top:10px;">{{comment.content}}</p>
+           <p style="margin-top:10px;">------------------------------------------------------------------------------------</p>
+        {% endfor %}
+      </div>    
+       <div style="margin-top:50px;">
          {% if prev %}
           上一篇: <a href="/article/{{ prev.category }}/detail/{{ prev.id }}.html" target="_blank" title="{{ prev.title }}">{{ prev.title }}</a><br/>
          {% endif %}

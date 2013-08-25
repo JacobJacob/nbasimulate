@@ -23,6 +23,12 @@ def clean(path=DjangoSettings.WEB_ROOT):
     """清除静态文件"""
     file_utility.remove_dir_tree(path)
 
+def delete(path):
+    full_path = os.path.join(DjangoSettings.WEB_ROOT, path)
+    if os.path.exists(full_path):
+        os.remove(full_path)
+   
+
 if __name__ == "__main__":
     response = "test"
     dump(response, "arti/ddfsdf/s/html")
