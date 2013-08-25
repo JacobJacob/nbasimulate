@@ -12,6 +12,7 @@ def dump(response, path):
         path = path[1:]
     html = response.content
     full_path = os.path.join(DjangoSettings.WEB_ROOT, path)
+    print "dump", full_path
     file_utility.ensure_dir_exists(os.path.dirname(full_path))
     f = open(full_path, "wb")
     try:
@@ -24,6 +25,8 @@ def clean(path=DjangoSettings.WEB_ROOT):
     file_utility.remove_dir_tree(path)
 
 def delete(path):
+    if path[0] == "/":
+        path = path[1:]
     full_path = os.path.join(DjangoSettings.WEB_ROOT, path)
     if os.path.exists(full_path):
         os.remove(full_path)
