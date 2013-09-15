@@ -33,6 +33,15 @@
             return ("<div class=\"DIVPlayerName\"><font color='#FF0000'>" + strNickName.Trim() + "</font></div>");
         }
 
+        public static string GetNickNameInfo(int intUserID, string strNickName, int intCategory, int type)
+        {
+            if (intCategory == 1)
+            {
+                return string.Concat(new object[] { "<div class=\"DIVPlayerName\"><a href=\"ShowClub.aspx?UserID=", intUserID, "&Type=" + type + "\" target=\"Right\">", strNickName, "</a></div>" });
+            }
+            return ("<div class=\"DIVPlayerName\"><font color='#FF0000'>" + strNickName.Trim() + "</font></div>");
+        }
+
         public static string GetNickNameInfoMessage(int intUserID, string strNickName, int intCategory)
         {
             if (intCategory == 1)

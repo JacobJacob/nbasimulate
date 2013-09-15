@@ -172,7 +172,7 @@
                 {
                     Directory.CreateDirectory(str2);
                 }
-                if (this.uploadfile.PostedFile.ContentLength > 0x2800)
+                if (this.uploadfile.PostedFile.ContentLength > 0x6400)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=553");
                 }

@@ -9,9 +9,12 @@
     using System.Web.UI.WebControls;
     using Web.DBData;
     using Web.Helper;
+    using Web.Util;
+    using Web.VMatchEngine;
 
     public class ShowPlayer : Page
     {
+        public bool hasTool = true;
         public bool blnShowSkill;
         protected ImageButton btnModifyBody;
         protected ImageButton btnOK;
@@ -91,10 +94,13 @@
         protected HtmlTable tblDetail;
         protected HtmlTable tblModify;
         protected HtmlTable tblStas;
+        protected HtmlTable tblMax;
         protected HtmlTable tblStasing;
         protected TextBox tbName;
         protected HtmlTableRow trName;
         //protected HtmlTableRow trNoName;
+        public string strSeasonShootRate;
+        public string strLifeShootRate;
 
         private void btnModifyBody_Click(object sender, ImageClickEventArgs e)
         {
@@ -129,6 +135,7 @@
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
             int num = (int) this.drPlayer["ClubID"];
+            bool success = true;
             if ((num != this.intClubID3) && (num != this.intClubID5))
             {
                 base.Response.Redirect("Report.aspx?Parameter=4113");
@@ -138,6 +145,7 @@
                 int intNumber = Convert.ToInt16(this.ddlNumber.SelectedItem.Value);
                 int intPosition = Convert.ToInt16(this.ddlPosition.SelectedItem.Value);
                 string strPlayerName = this.tbName.Text.Trim();
+                strPlayerName = StringUtil.CleanBadChar(strPlayerName);
                 if (strPlayerName.Length == 0)
                 {
                     strPlayerName = this.strName;
@@ -149,10 +157,12 @@
                         if (BTPPlayer3Manager.GetPlayer3IDByPlayerName(strPlayerName) > 0L)
                         {
                             this.strChangeMsg = "有重名的球员";
+                            success = false;
                         }
                         else if (!StringItem.IsValidNameIn(strPlayerName, 1, 10))
                         {
                             this.strChangeMsg = "请勿使用非法球员名称！";
+                            success = false;
                         }
                         else
                         {
@@ -170,10 +180,12 @@
                     if (BTPPlayer5Manager.GetPlayer5IDByPlayerName(strPlayerName) > 0L)
                     {
                         this.strChangeMsg = "有重名的球员";
+                        success = false;
                     }
-                    else if (!StringItem.IsValidName(strPlayerName, 1, 10))
+                    else if (!StringItem.IsValidName(strPlayerName, 1, 12))
                     {
                         this.strChangeMsg = "球员名称不合法，请重新输入。";
+                        success = false;
                     }
                     else
                     {
@@ -187,7 +199,16 @@
                 }
             }
 
+            if (!success)
+            {
+                return;
+            }
+
             string strPlayerBody = this.Face.Value.ToString().Trim();
+            if (strPlayerBody == null || strPlayerBody.Length == 0)
+            {
+                return;
+            }
             if (this.intType == 3)
             {
                 num = BTPPlayer3Manager.UpdatePlayer3Body(this.longPlayerID, this.intClubID3, strPlayerBody, this.intUserID, this.strNickName);
@@ -225,6 +246,11 @@
 
         private string GetHtmlTable(int intAbility, int intAbilityMax)
         {
+            return GetHtmlTable(intAbility, intAbilityMax, false);
+        }
+
+        private string GetHtmlTable(int intAbility, int intAbilityMax, bool forceShowSkill)
+        {
             string str;
             int num = intAbility / 9;
             int num2 = intAbilityMax - intAbility;
@@ -232,7 +258,13 @@
             {
                 num2 = 0;
             }
-            if (((this.intKind == 0) || (this.intTeamDay < 5)) && !this.blnShowSkill)
+            int showSkillDay = 5;
+            if (this.intPayType == 1)
+            {
+                showSkillDay = 1;
+            }
+
+            if (((this.intKind == 0) || (this.intTeamDay < showSkillDay)) && !this.blnShowSkill && !forceShowSkill)
             {
                 str = "0";
             }
@@ -251,6 +283,14 @@
                     }
                 }
                 else if (this.blnShowSkill || (((int) this.drPlayer["ClubID"]) == this.intClubID5))
+                {
+                    flag = true;
+                    if (this.intCategory == 3 && !forceShowSkill)
+                    {
+                        flag = false;
+                    }
+                }
+                if (forceShowSkill)
                 {
                     flag = true;
                 }
@@ -497,6 +537,17 @@
                     }
                     goto Label_0F14;
 
+                case "MAX":
+                    if (BTPToolLinkManager.CheckHide(this.intUserID, this.longPlayerID, this.intType) == 1)
+                    {
+                        this.tblMax.Visible = true;
+                        this.SetPlayerRow();
+                        this.SetInfo();
+                        this.SetAbility();
+                        this.SetMax();
+                    }
+                    goto Label_0F14;
+
                 default:
                 {
                     this.SetPlayerRow();
@@ -580,6 +631,7 @@
             int num26 = (int) this.drPlayer["AttackMax"];
             int num27 = (int) this.drPlayer["DefenseMax"];
             int num28 = (int) this.drPlayer["TeamMax"];
+            DateTime time = (DateTime)this.drPlayer["EndBidTime"];
             if (((this.intKind == 1) && (this.intCategory > 1)) && (BTPToolLinkManager.CheckPrivateSkill(this.intUserID, this.longPlayerID, this.intType) == 1))
             {
                 this.blnShowSkill = true;
@@ -588,20 +640,61 @@
             {
                 this.blnShowSkill = false;
             }
-            this.strSpeed = this.GetHtmlTable(intAbility, intAbilityMax);
-            this.strJump = this.GetHtmlTable(num2, num16);
-            this.strStrength = this.GetHtmlTable(num3, num17);
-            this.strStamina = this.GetHtmlTable(num4, num18);
-            this.strShot = this.GetHtmlTable(num5, num19);
-            this.strPoint3 = this.GetHtmlTable(num6, num20);
-            this.strDribble = this.GetHtmlTable(num7, num21);
-            this.strPass = this.GetHtmlTable(num8, num22);
-            this.strRebound = this.GetHtmlTable(num9, num23);
-            this.strSteal = this.GetHtmlTable(num10, num24);
-            this.strBlock = this.GetHtmlTable(num11, num25);
-            this.strAttack = this.GetHtmlTable(num12, num26);
-            this.strDefense = this.GetHtmlTable(num13, num27);
-            this.strTeam = this.GetHtmlTable(num14, num28);
+
+            if (this.intType == 5 && this.intCategory == 3 )
+            {
+                if (DateTime.Now < time)
+                {
+                    this.strSpeed = this.GetHtmlTable(999, 999);
+                    this.strJump = this.GetHtmlTable(999, 999);
+                    this.strStrength = this.GetHtmlTable(999, 999);
+                    this.strStamina = this.GetHtmlTable(999, 999);
+                    this.strShot = this.GetHtmlTable(999, 999);
+                    this.strPoint3 = this.GetHtmlTable(999, 999);
+                    this.strDribble = this.GetHtmlTable(999, 999);
+                    this.strPass = this.GetHtmlTable(999, 999);
+                    this.strRebound = this.GetHtmlTable(999, 999);
+                    this.strSteal = this.GetHtmlTable(999, 999);
+                    this.strBlock = this.GetHtmlTable(999, 999);
+                    this.strAttack = this.GetHtmlTable(999, 999);
+                    this.strDefense = this.GetHtmlTable(999, 999);
+                    this.strTeam = this.GetHtmlTable(999, 999);
+                }
+                else
+                {
+                    this.strSpeed = this.GetHtmlTable(intAbility, intAbilityMax, true);
+                    this.strJump = this.GetHtmlTable(num2, num16, true);
+                    this.strStrength = this.GetHtmlTable(num3, num17, true);
+                    this.strStamina = this.GetHtmlTable(num4, num18, true);
+                    this.strShot = this.GetHtmlTable(num5, num19, true);
+                    this.strPoint3 = this.GetHtmlTable(num6, num20, true);
+                    this.strDribble = this.GetHtmlTable(num7, num21, true);
+                    this.strPass = this.GetHtmlTable(num8, num22, true);
+                    this.strRebound = this.GetHtmlTable(num9, num23, true);
+                    this.strSteal = this.GetHtmlTable(num10, num24, true);
+                    this.strBlock = this.GetHtmlTable(num11, num25, true);
+                    this.strAttack = this.GetHtmlTable(num12, num26);
+                    this.strDefense = this.GetHtmlTable(num13, num27);
+                    this.strTeam = this.GetHtmlTable(num14, num28);
+                }
+            }
+            else
+            {
+                this.strSpeed = this.GetHtmlTable(intAbility, intAbilityMax);
+                this.strJump = this.GetHtmlTable(num2, num16);
+                this.strStrength = this.GetHtmlTable(num3, num17);
+                this.strStamina = this.GetHtmlTable(num4, num18);
+                this.strShot = this.GetHtmlTable(num5, num19);
+                this.strPoint3 = this.GetHtmlTable(num6, num20);
+                this.strDribble = this.GetHtmlTable(num7, num21);
+                this.strPass = this.GetHtmlTable(num8, num22);
+                this.strRebound = this.GetHtmlTable(num9, num23);
+                this.strSteal = this.GetHtmlTable(num10, num24);
+                this.strBlock = this.GetHtmlTable(num11, num25);
+                this.strAttack = this.GetHtmlTable(num12, num26);
+                this.strDefense = this.GetHtmlTable(num13, num27);
+                this.strTeam = this.GetHtmlTable(num14, num28);
+            }
         }
 
         private void SetHide()
@@ -614,6 +707,25 @@
             int intAbilityMax = (int) this.drPlayer["AttackMax"];
             int num7 = (int) this.drPlayer["DefenseMax"];
             int num8 = (int) this.drPlayer["TeamMax"];
+            this.intKind = 1;
+            this.blnShowSkill = true;
+            this.strLeadShip = this.GetHtmlTable(num4, -1);
+            this.strHardness = this.GetHtmlTable(num5, -1);
+            this.strAttack = this.GetHtmlTable(intAbility, intAbilityMax);
+            this.strDefense = this.GetHtmlTable(num2, num7);
+            this.strTeam = this.GetHtmlTable(num3, num8);
+        }
+
+        private void SetMax()
+        {
+            int intAbility = (int)this.drPlayer["Attack"];
+            int num2 = (int)this.drPlayer["Defense"];
+            int num3 = (int)this.drPlayer["Team"];
+            int num4 = (int)this.drPlayer["LeadShip"];
+            int num5 = (int)this.drPlayer["Hardness"];
+            int intAbilityMax = (int)this.drPlayer["AttackMax"];
+            int num7 = (int)this.drPlayer["DefenseMax"];
+            int num8 = (int)this.drPlayer["TeamMax"];
             this.intKind = 1;
             this.blnShowSkill = true;
             this.strLeadShip = this.GetHtmlTable(num4, -1);
@@ -684,6 +796,7 @@
                 DataTable reader = BTPToolLinkManager.CheckPlayer5PLink(this.intUserID, this.longPlayerID, this.intType);
                 bool flag = false;
                 bool flag2 = false;
+                bool showMax = false;
                 if (reader != null)
                 {
                     foreach (DataRow row in reader.Rows)
@@ -691,12 +804,13 @@
                         switch (((byte)row["Category"]))
                         {
                             case 1:
-                                {
-                                    flag = true;
-                                    continue;
-                                }
+                                flag = true;
+                                break;
                             case 2:
                                 flag2 = true;
+                                break;
+                            case 3:
+                                //showMax = true;
                                 break;
                         }
                     }
@@ -708,13 +822,13 @@
                     {
                         if (flag)
                         {
-                            //str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=0&PlayerID=", this.longPlayerID, "><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
-                            str2 = "";
+                            str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=0&PlayerID=", this.longPlayerID, "><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
+                            //str2 = "";
                         }
                         else
                         {
-                            //str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=PRIVATESKILL&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
-                            str2 = "";
+                            str2 = string.Concat(new object[] { "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=PRIVATESKILL&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinPrivateSkill.gif' width='12' height='12' border='0' alt='查看球员潜力'><a>" });
+                            //str2 = "";
                         }
                     }
                     else
@@ -724,19 +838,40 @@
                 }
                 if (flag2)
                 {
-                    //str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Show=HIDE&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "><img  align='absmiddle'src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
-                    str2 = "";
+                    str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Show=HIDE&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "><img  align='absmiddle'src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
+                    //str2 = "";
                 }
                 else
                 {
-                    //str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=HIDE&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
-                    str2 = "";
+                    str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=HIDE&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinHideSkill.gif' width='12' height='12' border='0' alt='查看隐藏属性'><a>" });
+                    //str2 = "";
                 }
+
+                if (this.intType == 5)
+                {
+                    if (showMax)
+                    {
+                        //str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=ShowPlayer.aspx?Show=MAX&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "><img  align='absmiddle'src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0' alt='查看最终属性'><a>" });
+                       //str2 = "";
+                    }
+                    else
+                    {
+                        //str2 = string.Concat(new object[] { str2, "&nbsp;&nbsp;<a href=SecretaryPage.aspx?PlayerType=", this.intType, "&Type=MAX&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "&CheckType=", num, " target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0' alt='查看最终属性'><a>" });
+                        //str2 = "";
+                    }
+                }
+
                 if (((this.intCheck == 1) && ((intClubID == this.intClubID3) || (intClubID == this.intClubID5))) && (this.intCategory == 1))
                 {
                     obj2 = str2;
-                    //str2 = string.Concat(new object[] { obj2, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=REFASHION&PlayerID=", this.longPlayerID, "' target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinRefashion.gif' width='12' height='12' border='0' alt='球员洗点'><a>" });
-                    str2 = "";
+                    if (Config.GetXiDianEnable() == 1)
+                    {
+                        str2 = string.Concat(new object[] { obj2, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=REFASHION&PlayerID=", this.longPlayerID, "' target='Center'><img align='absmiddle' src='", SessionItem.GetImageURL(), "MinRefashion.gif' width='12' height='12' border='0' alt='球员洗点'><a>" });
+                    }
+                    /*if (Config.Player5SJEnable())
+                    {
+                        //TODO
+                    }*/
                 }
             }
             if (this.intType == 10)
@@ -749,6 +884,7 @@
             }
             this.strName = this.drPlayer["Name"].ToString().Trim();
             this.strFace = this.drPlayer["Face"].ToString().Trim();
+            this.Face.Value = this.strFace;
             DataRow accountRowByClubID = BTPAccountManager.GetAccountRowByClubID(intClubID);
             if (accountRowByClubID == null)
             {
@@ -795,20 +931,81 @@
             this.intTeamDay = (int) this.drPlayer["TeamDay"];
             int num17 = (byte) this.drPlayer["Category"];
             string str5 = this.drPlayer["Name"].ToString().Trim();
+
+            //实际能力tips
+            string tips = "";
+            if (this.intType == 5)
+            {
+                Player player = new Player(this.drPlayer, true);
+                player.SetAbility(this.intPosition);
+                int intOffAbility = player.intOffAbility;
+                int intDefAbility = player.intDefAbility;
+                int intAstAbility = player.intAstAbility;
+                int intBlockAbility = player.intBlockAbility;
+                int intRebAbility = player.intORebAbility + player.intDRebAbility;
+
+                if (this.intPayType == 1)
+                {
+
+                    tips = string.Format("进攻值{0},防守值{1},助攻值{2},篮板值{3},封盖值{4}", intOffAbility, intDefAbility, intAstAbility, intRebAbility, intBlockAbility);
+                }
+                else
+                {
+                    tips = string.Format("进攻值{0},防守值{1}", intOffAbility, intDefAbility);
+                }
+
+            }
+
+            DateTime time = (DateTime)this.drPlayer["EndBidTime"];
+            int intStarMvpCount = Convert.ToInt32(this.drPlayer["StarMvpCount"]); //全明星MVP次数
+
+            string strMvp = "";
+            if (intStarMvpCount > 0)
+            {
+                strMvp = "<img src=\"" + SessionItem.GetImageURL() + "all_star_mvp.gif\" alt=\"全明星MVP(" + intStarMvpCount + ")\">";
+            }
+
             bool flag3 = false;
             if (this.intType != 6)
             {
                 flag3 = (bool) this.drPlayer["IsRetire"];
             }
+
+            if (this.intType == 5 && this.intCategory == 3 && DateTime.Now < time)
+            {
+                num14 = 99.9f;
+            }
+
+
             string str6 = "";
             if (((num17 == 1) && (intClubID == this.intClubID3)) || ((num17 == 1) && (intClubID == this.intClubID5)))
             {
-                //str6 = string.Concat(new object[] { "<span style='padding-left:15px' width='90' ><img align='absmiddle' src='", SessionItem.GetImageURL(), "llzc.gif' width='12' height='12' border='0' alt='理疗中心'>&nbsp;<a href='PlayerCenter.aspx?PlayerType=", this.intType, "&Type=9&PlayerID=", this.longPlayerID, "' target='Center'>理疗中心</a></span>" });
-                str6 = "";
+                if (this.hasTool)
+                {
+                    if (Config.GetToolEnable() == 1)
+                    {
+                        str6 = string.Concat(new object[] { "<span style='padding-left:15px' width='90' ><img align='absmiddle' src='", SessionItem.GetImageURL(), "llzc.gif' width='12' height='12' border='0' alt='理疗中心'>&nbsp;<a href='PlayerCenter.aspx?PlayerType=", this.intType, "&Type=9&PlayerID=", this.longPlayerID, "' target='Center'>理疗中心</a></span>" });
+                    }
+                    else
+                    {
+                        str6 = "";
+                    }
+                }
+                else
+                {
+                    str6 = "";
+                }
                 str2 = str2 + "&nbsp;&nbsp;";
             }
+
+
+            if (this.intCategory == 4 || this.intCategory == 2)
+            {
+                str6 = str2;  
+            }
+
             string strInfo = this.strInfo;
-            this.strInfo = strInfo + "<table width='201' border='0' cellspacing='0' cellpadding='0'><tr><td width='92' valign='top'><img id='imgCharactor' src='" + SessionItem.GetImageURL() + "Player/Charactor/NewPlayer.png' width='90' height='130'><br>" + str6 + "</td><td width='109'><table width='109' border='0' cellspacing='0' cellpadding='0'><tr><td colspan=2 height='25' align='center'>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "&nbsp;<strong>" + str5 + "</strong></td></tr><tr><td height='18' width='37' align='center'>年龄</td>";
+            this.strInfo = strInfo + "<table width='201' border='0' cellspacing='0' cellpadding='0'><tr><td width='92' valign='top'><img id='imgCharactor' src='" + SessionItem.GetImageURL() + "Player/Charactor/NewPlayer.png' width='90' height='130'><br>" + str6 + "</td><td width='109'><table width='109' border='0' cellspacing='0' cellpadding='0'><tr><td colspan=2 height='25' align='center'>" + strMvp + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "&nbsp;<strong>" + str5 + "</strong></td></tr><tr><td height='18' width='37' align='center'>年龄</td>";
             if (flag3)
             {
                 obj2 = this.strInfo;
@@ -829,11 +1026,29 @@
                 this.strInfo = this.strInfo + "<tr><td height='18' align='center'>经理</td><td>" + str3 + "</td></tr><tr>";
             }
             obj2 = this.strInfo;
-            this.strInfo = string.Concat(new object[] { obj2, "<td height='18' width='37' align='center'>位置</td><td width='78'><a title='", PlayerItem.GetPlayerChsPosition(this.intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(this.intPosition), "</td></tr><tr><td height='18' align='center'>身高</td><td>", num11, "CM</td></tr><tr><td height='18' align='center'>体重</td><td>", num12, "KG</td></tr><tr><td height='18' align='center'>体力</td><td>", PlayerItem.GetPowerColor(intPower), "</td></tr><tr><td height='18' align='center'>综合</td><td>", num14, "</td></tr></table></td></tr></table>" });
+            this.strInfo = string.Concat(new object[] { obj2, "<td height='18' width='37' align='center'>位置</td><td width='78'><a title='", PlayerItem.GetPlayerChsPosition(this.intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(this.intPosition), "</td></tr><tr><td height='18' align='center'>身高</td><td>", num11, "CM</td></tr><tr><td height='18' align='center'>体重</td><td>", num12, "KG</td></tr><tr><td height='18' align='center'>体力</td><td>", PlayerItem.GetPowerColor(intPower), "</td></tr><tr><td height='18' align='center'><span title='" + tips + "'>综合</span></td><td>", num14, "</td></tr></table></td></tr></table>" });
             this.strInfo = this.strInfo + "<table style='padding:0px;margin:0px' width='201' border='0' cellspacing='0' cellpadding='0'><tr>";
             if (str == "")
             {
-                if (this.intCategory == 1)
+                if (this.intCategory == 6)
+                {
+                    if (this.intCheck == 0)
+                    {
+                        strInfo = this.strInfo;
+                        this.strInfo = strInfo + "<td align='left'>" + str2 + "</td><td align='right' style='padding-right:5px'>" + this.strLinkURL + "</td>";
+                    }
+                    else if ((this.intClubID3 != intClubID) && (this.intClubID5 != intClubID))
+                    {
+                        obj2 = this.strInfo;
+                        this.strInfo = string.Concat(new object[] { obj2, "<td height='18' style='padding:4px;'><a href='ShowClub.aspx?UserID=", num7, "&Type=", this.intType, "'>返回</a></td><td style='padding:4px;' align='right'>", this.strLinkURL, "</td>" });
+                    }
+                    else
+                    {
+                        obj2 = this.strInfo;
+                        this.strInfo = string.Concat(new object[] { obj2, "<td height='18' style='padding:4px;' colspan='2'><a href='ShowClub.aspx?UserID=", num7, "&Type=", this.intType, "'>返回</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", this.strLinkURL, "</td>" });
+                    }
+                }
+                else if (this.intCategory == 1)
                 {
                     if (this.intCheck == 1)
                     {
@@ -1020,6 +1235,74 @@
             this.intLifeAssist = (int) playerRowByPlayerID["LifeAssist"];
             this.intLifeBlock = (int) playerRowByPlayerID["LifeBlock"];
             this.intLifeSteal = (int) playerRowByPlayerID["LifeSteal"];
+
+
+            if (this.intType == 5)
+            {
+
+                string strShotRateSeason;
+                string strThreeRateSeason;
+                string strShotRateLife;
+                string strThreeRateLife;
+
+                int intSeasonShot =  (int) playerRowByPlayerID["SeasonShot"];
+                int intSeasonShotSuccess = (int)playerRowByPlayerID["SeasonShotSuccess"];
+                int intSeasonThree = (int)playerRowByPlayerID["SeasonThree"];
+                int intSeasonThreeSuccess = (int)playerRowByPlayerID["SeasonThreeSuccess"];
+                int intLifeShot = (int)playerRowByPlayerID["LifeShot"];
+                int intLifeShotSuccess = (int)playerRowByPlayerID["LifeShotSuccess"];
+                int intLifeThree = (int)playerRowByPlayerID["LifeThree"];
+                int intLifeThreeSuccess = (int)playerRowByPlayerID["LifeThreeSuccess"];
+
+                if (intSeasonShot > 0)
+                {
+                    strShotRateSeason = string.Format("{0:F}%", (float)(intSeasonShotSuccess * 100) / intSeasonShot);
+                }
+                else
+                {
+                    strShotRateSeason = "0%";
+                }
+
+                if (intSeasonThree > 0)
+                {
+                    strThreeRateSeason = string.Format("{0:F}%", (float)(intSeasonThreeSuccess * 100) / intSeasonThree);
+                }
+                else
+                {
+                    strThreeRateSeason = "0%";
+                }
+
+                if (intLifeShot > 0)
+                {
+                    strShotRateLife = string.Format("{0:F}%", (float)(intLifeShotSuccess * 100) / intLifeShot);
+                }
+                else
+                {
+                    strShotRateLife = "0%";
+                }
+
+                if (intLifeThree > 0)
+                {
+                    strThreeRateLife = string.Format("{0:F}%", (float)(intLifeThreeSuccess * 100) / intLifeThree);
+                }
+                else
+                {
+                    strThreeRateLife = "0%";
+                }
+
+                this.strSeasonShootRate = string.Format("两分命中率({0}),三分命中率({1})", strShotRateSeason, strThreeRateSeason);
+                this.strLifeShootRate = string.Format("两分命中率({0}),三分命中率({1})", strShotRateLife, strThreeRateLife); ;
+
+
+            }
+            else
+            {
+                this.strSeasonShootRate = "";
+                this.strLifeShootRate = "";
+
+            }
+
+
             if (this.intSeasonPlayed != 0)
             {
                 this.intSeasonAssistP = this.intSeasonAssist / this.intSeasonPlayed;

@@ -16,6 +16,7 @@
         protected HtmlInputHidden hihPlayerIDs;
         private int intCategory;
         private int intClubID3;
+        private int intClubID5;
         private int intUserID;
         private string strClubName;
         public string strIntro;
@@ -69,6 +70,17 @@
                 BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", strContent);
                 string strUserName = StringItem.MD5Encrypt(this.strUserName, Global.strMD5Key);
                 string strPassword = StringItem.MD5Encrypt(this.strPassword, Global.strMD5Key);
+
+                BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", "尊敬的经理您好，欢迎加入无道篮球，如果在游戏中有任何问题，请加入无道篮球经理新手群进行咨询,群号码:180011696,如果想与更多老玩家交流，请加入无道篮球大群，群号码:4269274");
+
+                ///创建填充球员
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 634, 709, 24, 1);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 675, 723, 23, 2);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 654, 701, 20, 3);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 681, 706, 23, 4);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 673, 732, 25, 0);
+                BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", "尊敬的经理您好，董事会对你的能力表示肯定，为了打造一支冠军球队，我们已经从市场上为你买入了五名有实力的球员，他们已经到队，请将他们加入阵容中，检验一下他们的实力吧!");
+
                 SessionItem.SetSelfLogin(strUserName, strPassword, false);
                 int intRookieOpIndex = AccountItem.SetRookieOp(this.intUserID, 4);
                 if (intRookieOpIndex != 4)
@@ -109,7 +121,7 @@
                         int num6 = (byte) row["Weight"];
                         int intAbility = (int) row["Ability"];
                         float single1 = ((float) ((int) row["Ability"])) / 10f;
-                        int num7 = (int) row["BidPrice"];
+                        long num7 = Convert.ToInt64(row["BidPrice"]);
                         object strList = this.strList;
                         this.strList = string.Concat(new object[] { 
                             strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>", num2, "</td><td align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, 10, 0, 1), "</td><td>", num3, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(intPosition), "</a></td><td>", num5, "</td><td>", num6, "</td><td>", 
@@ -157,6 +169,7 @@
                     this.strUserName = onlineRowByUserID["UserName"].ToString().Trim();
                     this.strPassword = onlineRowByUserID["Password"].ToString().Trim();
                     this.intClubID3 = (int) onlineRowByUserID["ClubID3"];
+                    this.intClubID5 = (int)onlineRowByUserID["ClubID5"];
                     this.strClubName = onlineRowByUserID["ClubName5"].ToString().Trim();
                     DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
                     this.intCategory = (byte) accountRowByUserID["Category"];

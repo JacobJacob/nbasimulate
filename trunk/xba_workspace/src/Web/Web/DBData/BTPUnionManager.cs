@@ -411,6 +411,16 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
+        public static int BuyUnionRep(int intUserID, int intUnionID, int intRep)
+        {
+            string commandText = "Exec NewBTP.dbo.[BuyUnionRep] @intUserID,@intUnionID,@intRep";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@intUnionID", SqlDbType.Int, 4), new SqlParameter("@intRep", SqlDbType.Int, 4)};
+            commandParameters[0].Value = intUserID;
+            commandParameters[1].Value = intUnionID;
+            commandParameters[2].Value = intRep;
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        }
+
         public static int UnlayUnion(int intUserID)
         {
             string commandText = "Exec NewBTP.dbo.UnlayUnion " + intUserID;

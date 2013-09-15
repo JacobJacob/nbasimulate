@@ -230,6 +230,10 @@
             return "盯人外线";
         }
 
+        /**
+         *比赛费体力 
+         */
+
         public static int GetVLosePower(int intStamina, int intHard)
         {
             int num = RandomItem.rnd.Next(0, 0x3e8);
@@ -241,7 +245,8 @@
             {
                 return 0;
             }
-            return 1;
+            return RandomItem.rnd.Next(2, 4);
+            //return 1;
         }
 
         public static string GetVOffName(int intOff)

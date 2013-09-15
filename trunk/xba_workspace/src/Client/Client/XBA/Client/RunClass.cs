@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Client.XBA.Common;
 using Web.Helper;
+using Web.Util;
 using System.Collections;
 
 namespace Client.XBA.Client
@@ -10,7 +11,26 @@ namespace Client.XBA.Client
     class RunClass
     {
 
+        private static string SUCCESS_FLG = "SUCCESS";
+        private static string FAILURE_FLG = "FAILURE";
+
         static void Main(string[] args)
+        {
+            try
+            {
+                __Main(args);
+                Console.WriteLine(SUCCESS_FLG);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(FAILURE_FLG);
+            }
+
+        }
+
+
+        static void __Main(string[] args)
         {
             if (args.Length >= 1)
             {
@@ -52,15 +72,142 @@ namespace Client.XBA.Client
                         new RoundUpdateHandler().start();
                     }
                 }
+                else if (args[0] == Constant.CLIENT_TYPE_DEVCUP_MATCH_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 6)
+                    {
+                        int devCupID = Convert.ToInt32(args[1]);
+                        string gainCode = args[2];
+                        int clubA = Convert.ToInt32(args[3]);
+                        int clubB = Convert.ToInt32(args[4]);
+                        int round = Convert.ToInt32(args[5]);
+                        new DevCupMatchHandler(devCupID, gainCode, clubA, clubB, round).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while handle devcup match!!!!");
+                    }
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_XCUP_MATCH_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 8)
+                    {
+                        int xCupID = Convert.ToInt32(args[1]);
+                        string gainCode = args[2];
+                        int clubA = Convert.ToInt32(args[3]);
+                        int clubB = Convert.ToInt32(args[4]);
+                        int round = Convert.ToInt32(args[5]);
+                        int category = Convert.ToInt32(args[6]);
+                        int matchId = Convert.ToInt32(args[7]);
+                        new XCupMatchHandler(xCupID, gainCode, clubA, clubB, round, category, matchId).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while handle devcup match!!!!");
+                    }
+                }
+                else if (args[0] == Constant.CHANGE_PLAYER_FROM_ARRANGE5_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 4)
+                    {
+                        long playerID = Convert.ToInt64(args[1]);
+                        int clubID = Convert.ToInt32(args[2]);
+                        int category = Convert.ToInt32(args[3]);
+                        new ChangePlayerFromArrange5Handler(playerID, clubID, category).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while change player from arrange5!!!!");
+                    }
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_CUP_MATCH_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 7)
+                    {
+                        int cupID = Convert.ToInt32(args[1]);
+                        string gainCode = args[2];
+                        int clubA = Convert.ToInt32(args[3]);
+                        int clubB = Convert.ToInt32(args[4]);
+                        int round = Convert.ToInt32(args[5]);
+                        int category = Convert.ToInt32(args[6]);
+                        new CupMatchHandler(cupID, gainCode, clubA, clubB, round, category).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while handle cup match!!!!");
+                    }
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_SEASON_UPDATE_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 2)
+                    {
+                        int step = Convert.ToInt32(args[1]);
+                        new SeasonUpdateHandler(step).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while handle cup match!!!!");
+                    }
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_STAR_MATCH_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 2)
+                    {
+                        int intSeason = Convert.ToInt32(args[1]);
+                        new StarMatchHandler(intSeason).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while handle star match!!!!");
+                    }
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_UNION_CUP_MATCH_HANDLER)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    if (args.Length == 7)
+                    {
+                        int intUnionCupID = Convert.ToInt32(args[1]);
+                        string strGainCode = args[2];
+                        int intClubA = Convert.ToInt32(args[3]);
+                        int intClubB = Convert.ToInt32(args[4]);
+                        int round = Convert.ToInt32(args[5]);
+                        int index = Convert.ToInt32(args[6]);
+                        new UnionCupMatchHandler(intUnionCupID, strGainCode, intClubA, intClubB, round, index).start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("param error while handle star match!!!!");
+                    }
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_TEST_SUCCESS)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                }
+                else if (args[0] == Constant.CLIENT_TYPE_TEST_ERROR)
+                {
+                    Console.WriteLine(String.Format("start to run {0}", args[0]));
+                    string nullString = null;
+                    nullString.ToUpper();
+                }
+                else
+                {
+                    Logger.Debug("test");
+                    Console.WriteLine("please input the command");
+                }
+
+                return;
             }
             else
             {
-
-                Console.WriteLine("please input the command");
+                Logger.Debug("test");
             }
 
-            return;
         }
-
     }
 }

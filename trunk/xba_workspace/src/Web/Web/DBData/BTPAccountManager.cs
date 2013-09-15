@@ -48,12 +48,12 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "AddDevInCome", commandParameters);
         }
 
-        public static void AddFullAccount(int intUserID, string strUserName, string strNickName, string strPassword, bool blnSex, int intPayType, string strDiskURL, string strBirth, string strProvince, string strCity, string strQQ)
+        public static void AddFullAccount(int intUserID, string strUserName, string strNickName, string strPassword, bool blnSex, int intPayType, string strDiskURL, string strBirth, string strProvince, string strCity, string strQQ, int intRecomUserID, string strEmail)
         {
             string name = new NameGenerator().GetName();
             string str2 = RandomItem.rnd.Next(1, 9).ToString();
-            string commandText = "Exec NewBTP.dbo.AddFullAccount @UserID,@UserName,@NickName,@SecName,@SecFace,@Password,@Sex,@PayType,@DiskURL,@Birth,@Province,@City,@QQ";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@SecName", SqlDbType.NVarChar, 20), new SqlParameter("@SecFace", SqlDbType.NVarChar, 20), new SqlParameter("@Password", SqlDbType.NChar, 20), new SqlParameter("@Sex", SqlDbType.Bit, 1), new SqlParameter("@PayType", SqlDbType.TinyInt, 1), new SqlParameter("@DiskURL", SqlDbType.NVarChar, 50), new SqlParameter("@Birth", SqlDbType.NChar, 10), new SqlParameter("@Province", SqlDbType.NChar, 20), new SqlParameter("@City", SqlDbType.NChar, 20), new SqlParameter("@QQ", SqlDbType.NChar, 20) };
+            string commandText = "Exec NewBTP.dbo.AddFullAccount @UserID,@UserName,@NickName,@SecName,@SecFace,@Password,@Sex,@PayType,@DiskURL,@Birth,@Province,@City,@QQ,@RecomUserID,@Email ";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@SecName", SqlDbType.NVarChar, 20), new SqlParameter("@SecFace", SqlDbType.NVarChar, 20), new SqlParameter("@Password", SqlDbType.NChar, 20), new SqlParameter("@Sex", SqlDbType.Bit, 1), new SqlParameter("@PayType", SqlDbType.TinyInt, 1), new SqlParameter("@DiskURL", SqlDbType.NVarChar, 50), new SqlParameter("@Birth", SqlDbType.NChar, 10), new SqlParameter("@Province", SqlDbType.NChar, 20), new SqlParameter("@City", SqlDbType.NChar, 20), new SqlParameter("@QQ", SqlDbType.NChar, 20), new SqlParameter("@RecomUserID", SqlDbType.Int, 4), new SqlParameter("@Email", SqlDbType.NVarChar, 100) };
             commandParameters[0].Value = intUserID;
             commandParameters[1].Value = strUserName;
             commandParameters[2].Value = strNickName;
@@ -67,6 +67,8 @@
             commandParameters[10].Value = strProvince;
             commandParameters[11].Value = strCity;
             commandParameters[12].Value = strQQ;
+            commandParameters[13].Value = intRecomUserID;
+            commandParameters[14].Value = strEmail;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
@@ -196,13 +198,14 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static void ChangePassword(int intUserID, string strPassword, string strConn)
+        public static int ChangePassword(int intUserID, string oldPassword, string strPassword)
         {
-            string commandText = "Exec NewBTP.dbo.ChangePassword @UserID,@Password";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@Password", SqlDbType.NChar, 20) };
+            string commandText = "Exec NewBTP.dbo.ChangePassword @UserID,@OldPassword,@Password";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@OldPassword", SqlDbType.NChar, 20), new SqlParameter("@Password", SqlDbType.NChar, 20) };
             commandParameters[0].Value = intUserID;
-            commandParameters[1].Value = strPassword;
-            SqlHelper.ExecuteNonQuery(strConn, CommandType.Text, commandText, commandParameters);
+            commandParameters[1].Value = oldPassword;
+            commandParameters[2].Value = strPassword;
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
         public static void ChangeSex(int intUserID, bool blnSex, string strConn)
@@ -245,6 +248,22 @@
         public static int ExchangeWealth(int intUserID, int intWealth)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangeWealth ", intUserID, ",", intWealth });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static int ExchangeOnlyPoint(int intUserID, int intAmount)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangeOnlyPoint ", intUserID, ",", intAmount });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        /**
+         *推广积分换游戏币 
+         */
+
+        public static int ExchangePromotionPoint(int intUserID, int intAmount)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangePromotionPoint ", intUserID, ",", intAmount });
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
@@ -895,7 +914,7 @@
                         bool flag = (bool) row2["ContinuePay"];
                         DateTime time = (DateTime) row2["MemberExpireTime"];
                         int num3 = Convert.ToInt32(row2["PayType"]);
-                        if (flag)
+                        /*if (flag)
                         {
                             if (ROOTUserManager.SpendCoin40Return(intUserID, intCoin, "购买1个" + str2, "") == 1)
                             {
@@ -948,7 +967,7 @@
                                 BTPMessageManager.AddMessage(intUserID, 2, 0, "秘书报告", str5);
                             }
                             continue;
-                        }
+                        }*/
                         commandText = "UPDATE BTP_Account SET PayType=0 WHERE UserID=" + intUserID;
                         SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                         string strContent = "您已失去会员资格，请手动购买会员卡，继续享受超值会员特权。";
@@ -979,6 +998,15 @@
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@strQQ", SqlDbType.NChar, 20) };
             commandParameters[0].Value = intUserID;
             commandParameters[1].Value = strQQ;
+            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        }
+
+        public static void UpdateEmail(int intUserID, string strEmail)
+        {
+            string commandText = "Exec NewBTP.dbo.UpdateEmail @intUserID,@strEmail";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@strEmail", SqlDbType.NChar, 50) };
+            commandParameters[0].Value = intUserID;
+            commandParameters[1].Value = strEmail;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
@@ -1018,6 +1046,40 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
            
         }
+
+        /// <summary>
+        /// 微博登录
+        /// </summary>
+        /// <param name="weiboId"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static DataRow WeiboLogin(string weiboId, int type)
+        {
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@WeiboId", SqlDbType.NChar, 50), new SqlParameter("@Type", SqlDbType.Int, 4) };
+            commandParameters[0].Value = weiboId;
+            commandParameters[1].Value = type;
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "WeiboLogin", commandParameters);
+        }
+
+
+        /// <summary>
+        /// 微博帐号绑定
+        /// </summary>
+        /// <param name="weiboId"></param>
+        /// <param name="type"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static int WeiboBid(string weiboId, int type, string username, string password)
+        {
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@WeiboId", SqlDbType.NChar, 50), new SqlParameter("@Type", SqlDbType.Int, 4), new SqlParameter("@Username", SqlDbType.NChar, 50), new SqlParameter("@Password", SqlDbType.NChar, 50) };
+            commandParameters[0].Value = weiboId;
+            commandParameters[1].Value = type;
+            commandParameters[2].Value = username;
+            commandParameters[3].Value = password;
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "WeiboBid", commandParameters);
+        }
+
 
     }
 }

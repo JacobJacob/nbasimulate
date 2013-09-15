@@ -88,6 +88,8 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+
+        //获取我的竞猜记录
         public static DataTable GetGuessRecordTableByUserID(int intUserID, int intDoCount, int intPageIndex, int intPageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetGuessRecordTableByUserID ", intUserID, ",", intDoCount, ",", intPageIndex, ",", intPageSize });
@@ -136,6 +138,7 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        //竞猜平盘
         public static int GuessBegin(int intGuessID)
         {
             string commandText = "Exec NewBTP.dbo.GuessBegin " + intGuessID;

@@ -103,6 +103,26 @@
                 }
                 path = row5["RepURL"].ToString().Trim();
             }
+            else if (this.intType == 7)
+            {
+                DataRow row5 = BTPUnionCupManager.GetUnionCupMatchByID(this.intTag);
+                if (row5 == null)
+                {
+                    base.Response.Redirect("Report.aspx?Parameter=2");
+                    return;
+                }
+                path = row5["RepURL"].ToString().Trim();
+            }
+            else if (this.intType == 9)
+            {
+                DataRow row5 = BTPStarMatchManager.GetOneStarMatchByID(this.intTag);
+                if (row5 == null)
+                {
+                    base.Response.Redirect("Report.aspx?Parameter=2");
+                    return;
+                }
+                path = row5["RepURL"].ToString().Trim();
+            }
             else
             {
                 DataRow devMRowByDevMatchID = BTPDevMatchManager.GetDevMRowByDevMatchID(this.intTag);

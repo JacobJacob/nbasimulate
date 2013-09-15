@@ -6,6 +6,8 @@
 
     public class Player
     {
+
+        public int intCategory;
         public bool blnInjured;
         public bool blnOnArrange;
         public bool blnOut;
@@ -30,6 +32,9 @@
         public int intFGs;
         public int intFoul;
         public int intFT;
+        /// <summary>
+        /// 罚球能力
+        /// </summary>
         public int intFTAbility;
         public int intFTs;
         public int intHappy;
@@ -121,6 +126,7 @@
             this.intORebAbility = 0;
             this.intDRebAbility = 0;
             this.intAstAbility = 0;
+            this.intCategory = Convert.ToInt32(drPlayer["Category"]);
         }
 
         public void SetAbility(int intPos)

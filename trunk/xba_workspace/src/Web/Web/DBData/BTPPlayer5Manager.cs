@@ -266,6 +266,10 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        /*
+            填充职业球员
+         */
+
         public static void CreateFillPlayer5(int intClubID)
         {
             string commandText = "Exec NewBTP.dbo.CreateFillPlayer5 " + intClubID;
@@ -567,10 +571,10 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static int GetSellMoneyPlayer5(int intUserID, long longPlayerID)
+        public static long GetSellMoneyPlayer5(int intUserID, long longPlayerID)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetSellMoneyPlayer5 ", intUserID, ",", longPlayerID });
-            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            return SqlHelper.ExecuteLongDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static DataTable GetSellPlayer5Table(int intClubID)
@@ -625,7 +629,7 @@
             return SqlHelper.ExecuteBoolDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        public static int NewSellPlayer5(int intUserID, long longPlayerID, string strMarketCode, int intBidPrice, DateTime datEndBidTime, string strEvent)
+        public static int NewSellPlayer5(int intUserID, long longPlayerID, string strMarketCode, long intBidPrice, DateTime datEndBidTime, string strEvent)
         {
             string commandText = "Exec NewBTP.dbo.NewSellPlayer5 @intUserID,@longPlayerID,@strMarketCode,@intBidPrice,@datEndBidTime,@strEvent";
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@longPlayerID", SqlDbType.BigInt, 8), new SqlParameter("@strMarketCode", SqlDbType.Char, 20), new SqlParameter("@intBidPrice", SqlDbType.Int, 4), new SqlParameter("@datEndBidTime", SqlDbType.DateTime, 8), new SqlParameter("@strEvent", SqlDbType.NVarChar, 100) };
@@ -668,7 +672,7 @@
                 Console.WriteLine(exception.ToString());
                 Console.WriteLine("Three ms later...\n");
                 Thread.Sleep(0x2bf20);
-                Player5Contract();
+                //Player5Contract();
             }
         }
 
@@ -696,7 +700,7 @@
                     long num1 = (long) row["PlayerID"];
                     string str2 = row["Name"].ToString().Trim();
                     int num2 = (byte) row["Age"];
-                    string strContent = str2 + "宣布将于本赛季结束后退役。您可以使用“理疗中心”的“返老还童”延长球员的篮球生涯！";
+                    string strContent = str2 + "宣布将于本赛季结束后退役。";
                     BTPMessageManager.AddMessageByClubID5(intClubID, strContent);
                     string clubNameByClubID = BTPClubManager.GetClubNameByClubID(intClubID);
                     string strLogEvent = string.Concat(new object[] { clubNameByClubID, "中的", str2, "（", num2, "岁）宣布将于本赛季结束后退役。" });
@@ -1058,6 +1062,20 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        public static int SetTrialPlayer(int intUserID, long longPlayerID)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.SetTrialPlayer ", intUserID, ",", longPlayerID});
+            return SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static int UnSetTrialPlayer(int clubID, long longPlayerID)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UnSetTrialPlayer ", clubID, ',', longPlayerID });
+            return SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        
+
         public static void UpdateNumPosNameByPlayerID5(long longPlayerID, int intNumber, int intPosition, string strPlayerName)
         {
             string commandText = "Exec NewBTP.dbo.UpdateNumPosNameByPlayerID5 @PlayerID,@Number,@Position,@PlayerName";
@@ -1147,10 +1165,10 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "UpdatePlayerPower", commandParameters);
         }
 
-        public static void UpdatePlayerStas(long longPlayerID, int intScore, int intRebound, int intAssist, int intBlock, int intSteal, bool blnPlayed, int intHappy, int intPower, int intTrainPoint, int intStatus, string strEvent, int intSuspend)
+        public static void UpdatePlayerStas(long longPlayerID, int intScore, int intRebound, int intAssist, int intBlock, int intSteal, bool blnPlayed, int intHappy, int intPower, int intTrainPoint, int intStatus, string strEvent, int intSuspend, int intShoot, int intShootSuccess, int intThree, int intThreeSuccess)
         {
-            string commandText = "Exec NewBTP.dbo.UpdatePlayer5Stas @longPlayerID,@intScore,@intRebound,@intAssist,@intBlock,@intSteal,@intHappy,@intPower,@intTrainPoint,@intStatus,@strEvent,@intSuspend,@Played";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@longPlayerID", SqlDbType.BigInt, 8), new SqlParameter("@intScore", SqlDbType.Int, 4), new SqlParameter("@intRebound", SqlDbType.Int, 4), new SqlParameter("@intAssist", SqlDbType.Int, 4), new SqlParameter("@intBlock", SqlDbType.Int, 4), new SqlParameter("@intSteal", SqlDbType.Int, 4), new SqlParameter("@intHappy", SqlDbType.TinyInt, 1), new SqlParameter("@intPower", SqlDbType.TinyInt, 1), new SqlParameter("@intTrainPoint", SqlDbType.Int, 4), new SqlParameter("@intStatus", SqlDbType.TinyInt, 1), new SqlParameter("@strEvent", SqlDbType.NVarChar, 0xff), new SqlParameter("@intSuspend", SqlDbType.TinyInt, 1), new SqlParameter("@Played", SqlDbType.Bit, 1) };
+            string commandText = "Exec NewBTP.dbo.UpdatePlayer5Stas @longPlayerID,@intScore,@intRebound,@intAssist,@intBlock,@intSteal,@intHappy,@intPower,@intTrainPoint,@intStatus,@strEvent,@intSuspend,@Played,@intShoot,@intShootSuccess,@intThree,@intThreeSuccess";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@longPlayerID", SqlDbType.BigInt, 8), new SqlParameter("@intScore", SqlDbType.Int, 4), new SqlParameter("@intRebound", SqlDbType.Int, 4), new SqlParameter("@intAssist", SqlDbType.Int, 4), new SqlParameter("@intBlock", SqlDbType.Int, 4), new SqlParameter("@intSteal", SqlDbType.Int, 4), new SqlParameter("@intHappy", SqlDbType.TinyInt, 1), new SqlParameter("@intPower", SqlDbType.TinyInt, 1), new SqlParameter("@intTrainPoint", SqlDbType.Int, 4), new SqlParameter("@intStatus", SqlDbType.TinyInt, 1), new SqlParameter("@strEvent", SqlDbType.NVarChar, 0xff), new SqlParameter("@intSuspend", SqlDbType.TinyInt, 1), new SqlParameter("@Played", SqlDbType.Bit, 1), new SqlParameter("@intShoot", SqlDbType.Int, 4), new SqlParameter("@intShootSuccess", SqlDbType.Int, 4), new SqlParameter("@intThree", SqlDbType.Int, 4), new SqlParameter("@intThreeSuccess", SqlDbType.Int, 4) };
             commandParameters[0].Value = longPlayerID;
             commandParameters[1].Value = intScore;
             commandParameters[2].Value = intRebound;
@@ -1164,6 +1182,10 @@
             commandParameters[10].Value = strEvent;
             commandParameters[11].Value = intSuspend;
             commandParameters[12].Value = blnPlayed;
+            commandParameters[13].Value = intShoot;
+            commandParameters[14].Value = intShootSuccess;
+            commandParameters[15].Value = intThree;
+            commandParameters[16].Value = intThreeSuccess;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
@@ -1178,6 +1200,26 @@
             commandParameters[4].Value = intSuspend;
             commandParameters[5].Value = strEvent;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        }
+
+        /// <summary>
+        /// 创建填充球员给新的经理
+        /// </summary>
+        /// <param name="clubID"></param>
+        /// <param name="nowAbility"></param>
+        /// <param name="maxAbility"></param>
+        /// <param name="baseAge"></param>
+        public static void CreatePlayer5ForReg(int clubID, int nowAbility, int maxAbility, int baseAge, int index)
+        {
+            string commandText = "Exec NewBTP.dbo.CreatePlayer5ForReg @clubID,@nowAbility,@maxAbility,@baseAge,@index";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@clubID", SqlDbType.Int, 4), new SqlParameter("@nowAbility", SqlDbType.Int, 4), new SqlParameter("@maxAbility", SqlDbType.Int, 4), new SqlParameter("@baseAge", SqlDbType.Int, 4), new SqlParameter("@index", SqlDbType.Int, 4) };
+            commandParameters[0].Value = clubID;
+            commandParameters[1].Value = nowAbility;
+            commandParameters[2].Value = maxAbility;
+            commandParameters[3].Value = baseAge;
+            commandParameters[4].Value = index;
+            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        
         }
     }
 }

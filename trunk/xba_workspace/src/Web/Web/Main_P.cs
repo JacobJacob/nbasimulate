@@ -46,6 +46,11 @@
                         this.strRightURL = "Intro/Union.htm";
                         goto Label_08CA;
 
+                    case "STOCK":
+                        this.strCenterURL = "Stock.aspx?Page=1&Type=COMPANY";
+                        this.strRightURL = "Intro/Stock.htm";
+                        goto Label_08CA;
+
                     case "UNIONFIELD":
                         this.strCenterURL = "UnionField.aspx?Type=FIELDLIST";
                         this.strRightURL = "Intro/UnionField.htm";
@@ -74,6 +79,11 @@
                     case "GUESS":
                         this.strCenterURL = "Guess.aspx?Type=CHAMPIONREG";
                         this.strRightURL = "Intro/GuessCenter.htm";
+                        goto Label_08CA;
+
+                    case "XGUESS":
+                        this.strCenterURL = "XGuess.aspx?Type=CLUBLIST";
+                        this.strRightURL = "Intro/XGuessCenter.htm";
                         goto Label_08CA;
 
                     case "WEALTHMARKET":
@@ -230,6 +240,35 @@
                     case "ONLINELIST":
                         this.strCenterURL = "FriMatchMessage.aspx?Type=ONLINE&Page=1";
                         this.strRightURL = "Intro/OnlineList.aspx?Type=ONLINELIST";
+                        goto Label_08CA;
+
+                    case "XBATOP":
+                        this.strCenterURL = "XBATop.aspx?Type=USERABILITYTOP";
+                        this.strRightURL = "Intro/XBATop.aspx";
+                        goto Label_08CA;
+
+                    case "STARMATCH":
+                        this.strCenterURL = "STARMATCH.aspx?Type=MATCH";
+                        this.strRightURL = "Intro/StarMatch.htm";
+                        goto Label_08CA;
+
+                    case "UNIONCUP1":
+                        this.strCenterURL = "UnionCup.aspx?Type=CUPREG";
+                        this.strRightURL = "Intro/UnionCup.htm";
+                        goto Label_08CA;
+
+                    case "NPC":
+                        this.strCenterURL = "NPC.aspx?Type=NPCLIST";
+                        this.strRightURL = "Intro/Npc.htm";
+                        goto Label_08CA;
+                    case "ARENA":
+                        this.strCenterURL = "ARENA.aspx?Type=LIST";
+                        this.strRightURL = "Intro/Arena.htm";
+                        goto Label_08CA;
+
+                    case "POINT3":
+                        this.strCenterURL = "Point3.aspx?Type=LIST";
+                        this.strRightURL = "Intro/Point3.htm";
                         goto Label_08CA;
 
                     default:

@@ -793,7 +793,8 @@
                 }
                 else if (request > 0)
                 {
-                    switch (BTPDevCupRegManager.AddDevCupReg(request, this.intUserID, this.intClubID, this.strClubName, this.strShortName, this.strDevCode, this.strClubLogo, intRank, level, strPassWord))
+                    int result = BTPDevCupRegManager.AddDevCupReg(request, this.intUserID, this.intClubID, this.strClubName, this.strShortName, this.strDevCode, this.strClubLogo, intRank, level, strPassWord);
+                    switch (result)
                     {
                         case 1:
                             base.Response.Redirect("Report.aspx?Parameter=522!Type.DEVCUPREG");
@@ -826,6 +827,9 @@
                         case 8:
                             base.Response.Redirect("Report.aspx?Parameter=535");
                             return;
+                        case 9:
+                            base.Response.Redirect("Report.aspx?Parameter=535b");
+                            return;
                     }
                 }
                 else
@@ -846,6 +850,10 @@
             this.IBtnBreak.Click += new ImageClickEventHandler(this.IBtnBreak_Click);
             this.btnCreate.Click += new ImageClickEventHandler(this.btnCreate_Click);
             this.btnModify.Click += new ImageClickEventHandler(this.btnModify_Click);
+
+            this.IBtnAddUMatch.ImageUrl = SessionItem.GetImageURL() + "button_47.gif";
+            this.IBtnBreak.ImageUrl = SessionItem.GetImageURL() + "button_48.gif";
+
             base.Load += new EventHandler(this.Page_Load);
         }
 

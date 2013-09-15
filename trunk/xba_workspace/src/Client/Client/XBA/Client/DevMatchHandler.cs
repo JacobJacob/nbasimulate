@@ -85,8 +85,17 @@ namespace Client.XBA.Client
               info.Add("ClubNameA", awayClub["Name"]);
               info.Add("ClubLogoH", homeClub["Logo"]);
               info.Add("ClubLogoA", awayClub["Logo"]);
-              info.Add("MVPName", match.pMVP.strName);
-              info.Add("MVPStas", string.Format("{0}|{1}|{2}|{3}|{4}", match.pMVP.intScore, match.pMVP.intOReb + match.pMVP.intDReb, match.pMVP.intAst, match.pMVP.intBlk, match.pMVP.intStl));
+
+              string mvpPlayer = match.pMVP.strName;
+
+              if (mvpPlayer != null)
+              {
+                  mvpPlayer = mvpPlayer.Replace("&lt;u&gt;", "");
+                  mvpPlayer = mvpPlayer.Replace("&lt;/u&gt;", "");
+              }
+
+              info.Add("MVPName", mvpPlayer);
+              info.Add("MVPStas", string.Format("{0}|{1}|{2}|{3}|{4}", match.pMVP.intScore, match.pMVP.intOReb + match.pMVP.intDReb, match.pMVP.intAst, match.pMVP.intStl, match.pMVP.intBlk));
 
               /*更新主队的MainXML*/
               string homeOldXml = null;
@@ -127,6 +136,8 @@ namespace Client.XBA.Client
               BTPDevManager.UpdateResult(clubIDA, homeWin, homeLose, diff);
               /*客队*/
               BTPDevManager.UpdateResult(clubIDB, awayWin, awayLose, diff);
+
+              BTPClubManager.ChangeReputation(clubIDA, clubIDB, homeScore, awayScore);
         }
 
     }

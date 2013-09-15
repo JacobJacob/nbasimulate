@@ -4,7 +4,7 @@
 
     public class ServerParameter
     {
-        public static bool blnIsExe = false;
+        public static bool blnIsExe = true;
         public static bool blnMoreServer = true;
         public static bool blnUseServer = true;
         public static int intGameCategory = 3;

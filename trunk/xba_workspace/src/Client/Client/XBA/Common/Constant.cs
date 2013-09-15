@@ -33,6 +33,33 @@ namespace Client.XBA.Common
         /*轮次更新客户端*/
         public static String CLIENT_TYPE_ROUND_UPDATE_HANDLER = "round_update_handler";
 
+        /*赛季更新客户端*/
+        public static String CLIENT_TYPE_SEASON_UPDATE_HANDLER = "season_update_handler";
+
+        /*自定义杯赛比赛客户端*/
+        public static String CLIENT_TYPE_DEVCUP_MATCH_HANDLER = "devcup_match_handler";
+
+        /*街球杯赛比赛客户端*/
+        public static String CLIENT_TYPE_CUP_MATCH_HANDLER = "cup_match_handler";
+
+        /*冠军杯赛比赛客户端*/
+        public static String CLIENT_TYPE_XCUP_MATCH_HANDLER = "xcup_match_handler";
+
+        /*将球员从阵容中替掉*/
+        public static String CHANGE_PLAYER_FROM_ARRANGE5_HANDLER = "change_player_from_arrange5_handler";
+
+        /*全明星赛比赛处理客户端*/
+        public static String CLIENT_TYPE_STAR_MATCH_HANDLER = "star_match_handler";
+
+        /**联盟争霸赛处理客户端*/
+        public static String CLIENT_TYPE_UNION_CUP_MATCH_HANDLER = "unioncup_match_handler";
+
+        /*测试正常执行*/
+        public static String CLIENT_TYPE_TEST_SUCCESS = "test_success";
+
+        /*测测抛错*/
+        public static String CLIENT_TYPE_TEST_ERROR = "test_error";
+
 
         /*友谊赛*/
         public static int MATCH_CATEGORY_FRIEND = 1;
@@ -48,6 +75,24 @@ namespace Client.XBA.Common
 
         /*职业训练*/
         public static int MATCH_CATEGORY_TRAIN = 11;
+
+        /*盟战*/
+        public static int MATCH_CATEGORY_UNION_FIELD = 9;
+
+        /*自定义杯赛比赛*/
+        public static int MATCH_CATEGORY_DEVCUP_MATCH = 6;
+
+        /*冠军杯赛比赛*/
+        public static int MATCH_CATEGORY_XCUP_MATCH = 6;
+
+        /*联盟争霸赛比赛*/
+        public static int MATCH_CATEGORY_UNIONCUP_MATCH = 7;
+
+        /*NPC挑战赛赛*/
+        public static int MATCH_CATEGORY_NPC_MATCH = 99;
+
+        /*擂台争霸赛*/
+        public static int MATCH_CATEGORY_ARENA_MATCH = 98;
         
         
         /* 这是街球的, > 2的为经典赛事*/

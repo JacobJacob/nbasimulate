@@ -394,10 +394,10 @@
                 str = "Team";
                 str2 = "团队意识";
             }
-            string commandText = string.Concat(new object[] { "UPDATE BTP_Player3 SET ", str, "Max=", str, "Max+", intRndAdd, " WHERE ", str, "Max<700 AND PlayerID=", longPlayerID });
+            string commandText = string.Concat(new object[] { "UPDATE BTP_Player3 SET ", str, "Max=", str, "Max+", intRndAdd, " WHERE ", str, "Max<770 AND PlayerID=", longPlayerID });
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             commandText = string.Concat(new object[] { "SELECT ", str, "Max FROM BTP_Player3 WHERE PlayerID=", longPlayerID });
-            if (SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText) < 700)
+            if (SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText) < 770)
             {
                 BTPMessageManager.AddMessage(BTPClubManager.GetUserIDByClubID(intClubID), 2, 0, "训练员报告", string.Concat(new object[] { strName, "在刻苦的训练中", str2, "潜力提升", ((float) intRndAdd) / 10f, "" }));
             }
@@ -882,6 +882,11 @@
                                     string strName = row3["Name"].ToString().Trim();
                                     int intPos = (byte) row3["Pos"];
                                     int num5 = RandomItem.rnd.Next(0, 260);
+                                    //180418 174411 184494
+                                    //if (longPlayerID == 180418 || longPlayerID == 174411 || longPlayerID == 184494 || longPlayerID == 168430)
+                                    //{
+                                    //    num5 += 120;
+                                    //}
                                     Console.WriteLine(string.Format("{0}-->{1}", num3, num5));
                                     if (num3 > num5)
                                     {

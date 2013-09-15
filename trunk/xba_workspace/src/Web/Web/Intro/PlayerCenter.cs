@@ -35,8 +35,8 @@
             this.tbNoNickInfo.Visible = false;
             this.PlayerNew.Visible = false;
             this.tblPlayerTran.Visible = false;
-            //this.tblSearch.Visible = false;
-            //this.tblContract.Visible = false;
+            this.tblSearch.Visible = false;
+            this.tblContract.Visible = false;
             switch (SessionItem.GetRequest("Type", 1).ToString().Trim())
             {
                 case "PLAYER3":

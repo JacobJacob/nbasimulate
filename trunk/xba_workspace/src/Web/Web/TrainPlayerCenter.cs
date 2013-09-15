@@ -165,6 +165,7 @@
                 int num33 = (int) row["ReboundMax"];
                 int num34 = (int) row["StealMax"];
                 int num35 = (int) row["BlockMax"];
+                int intCategory = Convert.ToInt32(row["Category"]);
                 int num36 = (((((((((num14 + num15) + num16) + num17) + num18) + num19) + num20) + num21) + num22) + num23) + num24;
                 int num37 = (((((((((num25 + num26) + num27) + num28) + num29) + num30) + num31) + num32) + num33) + num34) + num35;
                 if (this.intType == 3)
@@ -172,6 +173,7 @@
                     str3 = "<td>" + num10 + "</td>";
                     if (((intStatus == 1) && (intPower > 30)) && ((num10 > this.MinPoint(row)) && (num36 < num37)))
                     {
+                       
                         str4 = "<td><a href='#' onclick='ChangeTrain(" + longPlayerID + ")'>训练</a></td>";
                     }
                     else
@@ -185,15 +187,33 @@
                     str4 = "<td>";
                     if (((intPower > 30) && (num10 > 50)) && ((intStatus == 1) && (num36 < num37)))
                     {
-                        obj2 = str4;
-                        str4 = string.Concat(new object[] { obj2, "<a href='#' onclick='ChangeTrain(", longPlayerID, ")'>训练</a> | " });
+                       
+                        if (intCategory == 3)
+                        {
+                            obj2 = str4;
+                            str4 = string.Concat(new object[] { obj2, "训练 | " });
+                        }
+                        else
+                        {
+                            obj2 = str4;
+                            str4 = string.Concat(new object[] { obj2, "<a href='#' onclick='ChangeTrain(", longPlayerID, ")'>训练</a> | " });
+                        }
                     }
                     else
                     {
                         str4 = str4 + "<font color='#666666'>训练</font> | ";
                     }
-                    obj2 = str4;
-                    str4 = string.Concat(new object[] { obj2, "<a href='Dialogue.aspx?PlayerID=", longPlayerID, "'>谈话</a></td>" });
+                    if (intCategory != 3)
+                    {
+                        obj2 = str4;
+                        str4 = string.Concat(new object[] { obj2, "<a href='Dialogue.aspx?PlayerID=", longPlayerID, "'>谈话</a></td>" });
+                    }
+                    else
+                    {
+                        obj2 = str4;
+                        str4 = string.Concat(new object[] { obj2, "谈话</td>" });
+                        intAbility = 999;
+                    }
                 }
                 string str6 = "";
                 string str7 = "";
@@ -325,7 +345,7 @@
                     playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
                     this.strList = this.strList + "<tr class='BarHead'><td width='40'></td><td height='25' width='120'align='left' style='padding-left:3px'>姓名</td><td width='40'>年龄</td><td width='40'>位置</td><td width='40'>体力</td><td width='60'>状态</td><td width='43'>身高</td><td width='43'>体重</td><td width='34'>综合</td><td width='60'>训练点</td><td width='40'>操作</td></tr>";
                     this.strList = this.strList + this.GetPlayerList(playerTableByClubID);
-                    this.strTools = "";
+                    this.strTools = "<p align=\"center\" style=\"color:red;\">购买“<a href=\"ManagerTool.aspx?Type=STORE&Page=1\">双倍训练卡</a>”可获得双倍训练点，“理疗中心”可以让球员恢复最佳状态。</p>";
                     return;
 
                 case 5:
@@ -338,7 +358,7 @@
                     this.strTools = "";
                     return;
             }
-            playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
+            //playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
         }
 
         private void SetPageIntro()
@@ -355,26 +375,40 @@
             }
             if (this.intType == 3)
             {
-                strAddAllPower = this.strAddAllPower;
-                this.strAddAllPower = string.Concat(new object[] { strAddAllPower, "<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=ADDPLAYERALL&Category=1' target='Center'><img src='", SessionItem.GetImageURL(), "allt.gif' border='0' height='24' width='64' align='absmiddle'></a>" });
-                strAddAllPower = this.strAddAllPower;
-                this.strAddAllPower = string.Concat(new object[] { strAddAllPower, "<img src='", SessionItem.GetImageURL(), "blanks.gif' border='0' height='0' width='5'><a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=ADDPLAYERALL&Category=2' target='Center'><img src='", SessionItem.GetImageURL(), "allx.gif' border='0' height='24' width='64' align='absmiddle'></a>" });
+                if (Config.GetPlayer3RecoverEnable() == 1)
+                {
+                    strAddAllPower = this.strAddAllPower;
+                    this.strAddAllPower = string.Concat(new object[] { strAddAllPower, "<a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=ADDPLAYERALL&Category=1' target='Center'><img src='", SessionItem.GetImageURL(), "allt.gif' border='0' height='24' width='64' align='absmiddle'></a>" });
+                    strAddAllPower = this.strAddAllPower;
+                    this.strAddAllPower = string.Concat(new object[] { strAddAllPower, "<img src='", SessionItem.GetImageURL(), "blanks.gif' border='0' height='0' width='5'><a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=ADDPLAYERALL&Category=2' target='Center'><img src='", SessionItem.GetImageURL(), "allx.gif' border='0' height='24' width='64' align='absmiddle'></a>" });
+                }
+                else
+                {
+                    this.strAddAllPower = "";
+                }
             }
             else
             {
-                strAddAllPower = this.strAddAllPower;
-                this.strAddAllPower = string.Concat(new object[] { strAddAllPower, "<img src='", SessionItem.GetImageURL(), "blanks.gif' border='0' height='0' width='5'><a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=ADDPLAYERALL&Category=1' target='Center'><img src='", SessionItem.GetImageURL(), "allt.gif' border='0' height='24' width='64' align='absmiddle'></a>" });
+                if (Config.GetPlayer5RecoverEnable() == 1)
+                {
+                    strAddAllPower = this.strAddAllPower;
+                    this.strAddAllPower = string.Concat(new object[] { strAddAllPower, "<img src='", SessionItem.GetImageURL(), "blanks.gif' border='0' height='0' width='5'><a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=ADDPLAYERALL&Category=1' target='Center'><img src='", SessionItem.GetImageURL(), "allt.gif' border='0' height='24' width='64' align='absmiddle'></a>" });
+                }
+                else
+                {
+                    this.strAddAllPower = "";
+                }
             }
             string str2 = "";
             int num = ToolItem.HasTool(this.intUserID, 9, 0);
             int num2 = ToolItem.HasTool(this.intUserID, 10, 0);
             if ((num > 0) || (num2 > 0))
             {
-                str2 = "";
+                str2 = "<span style='color:red;margin-left:130px;line-height:20px;margin-top:4px'><strong>双倍训练卡:</strong> 已使用 球员训练效果翻倍</span>";
             }
             else
             {
-                str2 = "";
+                str2 = "<span style='color:red;margin-left:30px;line-height:20px;margin-top:4px'><strong>双倍训练卡:</strong> 未使用 <a href=\"ManagerTool.aspx?Type=STORE&Page=1\">点此购买</a> 球员将获得双倍训练点数</span>";
             }
             switch (this.intType)
             {

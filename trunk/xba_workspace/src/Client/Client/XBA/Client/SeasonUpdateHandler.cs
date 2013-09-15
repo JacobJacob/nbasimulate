@@ -34,7 +34,8 @@ namespace Client.XBA.Client
         {
             if (this.step == 1)
             {
-               
+                BTPPlayer5Manager.Player5RetireMsg();
+                BTPPlayer3Manager.Player3RetireMsg();
             }
             else
             {

@@ -24,10 +24,10 @@
         public static string strMD5Key = "sth31118";
         public static string strRoot = "D:";
         public static string strSessionName = "BestXBA";
-        public static string strWebFoot = "<table width=\"100%\" height=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td align=\"center\"><font color='#FFFFFF'>XBA篮球经理2008 <a style='cursor:hand;' onclick=\"javascript:NewEditionWin();\">v0403</a></font>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#FFFFFF'>增值电信业务经营许可证 </font> <a href=\"http://www.miibeian.gov.cn\" target=\"_blank\"><font color='#FFFFFF'>鲁B2-20071037号</font></a></td></tr></table>";
+        public static string strWebFoot = "<table width=\"100%\" height=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td align=\"center\"><font color='#FFFFFF'>XBA无道具篮球经理2011 <a style='cursor:hand;' onclick=\"javascript:NewEditionWin();\">v0403</a></font>&nbsp;&nbsp;&nbsp;&nbsp;<font color='#FFFFFF'>增值电信业务经营许可证 </font> <a href=\"http://www.miibeian.gov.cn\" target=\"_blank\"><font color='#FFFFFF'>粤ICP备09072237号-1</font></a><script src=\"http://s22.cnzz.com/stat.php?id=3254719&web_id=3254719\" language=\"JavaScript\"></script></td></tr></table>";
         public static string strWebKey = "<meta name=\"keywords\" content=\"街头篮球游戏，NBA，姚明，CBA，篮球论坛，赛事在线直播，校园篮球，basketball，online game，NBA live\">\n<meta name=\"description\" content=\"XBA篮球经理游戏是全球首款在线篮球经理游戏，仿真实NBA体育职业球队管理，含NBA、姚明新闻，街头篮球、篮球论坛、CBA、NBA live、球员转会选秀、火箭竞猜、赛事在线直播、灌篮高手、小游戏等游戏内容。\">";
-        public static string strWebName = "XBA篮球经理游戏 - 最火爆的在线篮球经理游戏.街头篮球.NBA.篮球论坛.";
-        public static string strWebURL = "xba.com.cn";
+        public static string strWebName = "无道具XBA篮球经理--让你体会无道具带来的乐趣";
+        public static string strWebURL = "113388.net";
 
         public Global()
         {
@@ -64,7 +64,14 @@
             string error_msg = "error";
             if (base.Server != null)
             {
-                error_msg = base.Server.GetLastError().InnerException.Message;
+                try
+                {
+                    error_msg = base.Server.GetLastError().InnerException.Message;
+                }
+                catch
+                {
+
+                }
             }
             string message = "错误页面：" + error_url + " 错误信息：" + error_msg;
             EventLog.WriteEntry("MyWebError", message, EventLogEntryType.Error);
@@ -75,6 +82,7 @@
             this.CreateError();
             this.CreateAppRepTable();
             this.CreateAppParameterTable();
+            log4net.Config.XmlConfigurator.Configure();
         }
 
         private void CreateAppParameterTable()
@@ -556,6 +564,7 @@
             htError.Add("533", new Error("杯赛已经开始您不能再踢出参赛玩家！", "Union.aspx", "THIS"));
             htError.Add("534", new Error("您不是举办杯赛的盟主！", "Union.aspx", "THIS"));
             htError.Add("535", new Error("您的杯赛报名密码不正确！", "NULL", "NULL"));
+            htError.Add("535b", new Error("您只可以同时报名参加两场自定义杯赛！", "NULL", "NULL"));
             htError.Add("536", new Error("您没有足够的游戏币可供捐献！", "NULL", "NULL"));
             htError.Add("537", new Error("您没有足够的游戏币来进行比赛！", "NULL", "NULL"));
             htError.Add("538", new Error("您填写的经理名称有错误！", "NULL", "NULL"));
@@ -586,6 +595,7 @@
             htError.Add("612", new Error("您联盟没有足够的游戏币用来建立该杯赛。", "Union.aspx", "THIS"));
             htError.Add("613", new Error("您不是该联盟的盟主，无法建立该杯赛。", "Union.aspx", "THIS"));
             htError.Add("614", new Error("请确认填写无误后，再创建杯赛。", "Union.aspx", "THIS"));
+            htError.Add("6147", new Error("你创建的一场杯赛正在进行中,无法建立杯赛。", "Union.aspx", "THIS"));
             htError.Add("622", new Error("您已经参加过本界杯赛！", "DevCup.aspx", "THIS"));
             htError.Add("623", new Error("杯赛创建成功！", "DevCup.aspx", "THIS"));
             htError.Add("624", new Error("您没有足够的游戏币用来建立该杯赛！", "DevCup.aspx", "THIS"));
@@ -670,6 +680,60 @@
             htError.Add("915", new Error("您好，您已经领取过奖品，将不能重复领取！", "NULL", "NULL"));
             htError.Add("916", new Error("对不起，您的游戏币不足，不能签VIP短合同！", "NULL", "NULL"));
             htError.Add("917", new Error("本次续约成功！3轮之内该球员的工资要求为正常工资的80%！", "PlayerCenter.aspx?Type=5", "THIS"));
+
+            /*-1 对方不是会员 -2 价钱不够, -3 已经持有股票, -4经理不存在, -5市值低于200W -6自己不是会员*/
+            htError.Add("SE01", new Error("该经理不是会员，无法购买其股票。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE02", new Error("你的资金不足。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE03", new Error("你已经持有该经理的股票，无法再购买。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE04", new Error("该经理尚未上市。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE05", new Error("该经理市值低于200万，无法购买。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SE06", new Error("你不是会员，无法购买股票。", "Stock.aspx?Type=COMPANY", "THIS"));
+            htError.Add("SS01", new Error("已成功购入该股票，您可以在我的股票列表中查看。", "Stock.aspx?Type=COMPANY", "THIS"));
+
+            htError.Add("XGE01", new Error("您的资金不足，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
+            htError.Add("XGE02", new Error("该竞猜已经超时，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
+            htError.Add("XGE03", new Error("该竞猜不存在，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
+            htError.Add("XGE04", new Error("您已经竞猜过该经理了，对同一个经理只能下注一次。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
+            htError.Add("XGS01", new Error("已经成功下注，您可以在我的竞猜中查看所有竞猜历史。", "XGuess.aspx?Type=MYGUESS", "THIS"));
+
+            htError.Add("SVE01", new Error("该球员未能入选明星参选赛。", "StarMatch.aspx?Type=MATCH", "THIS"));
+            htError.Add("SVE02", new Error("您不是会员，无法投票。", "StarMatch.aspx?Type=MATCH", "THIS"));
+            htError.Add("SVE03", new Error("您已经投过票了。", "StarMatch.aspx?Type=MATCH", "THIS"));
+            htError.Add("SVS01", new Error("投票成功，如果该名球员获得前三名的票数，将会获得参加全明星赛的资格。", "StarMatch.aspx?Type=MATCH", "THIS"));
+
+            /* 1 成功 -2 不是新人 -1 只可以买一次*/
+            htError.Add("BNS01", new Error("恭喜你，购买新人大礼包成功！", "ManagerTool.aspx", "THIS"));
+            htError.Add("BNE01", new Error("您已经购买过新人大礼包了，每个经理只可以购买一次！", "ManagerTool.aspx", "THIS"));
+            htError.Add("BNE02", new Error("您注册时间超过7天，无法购买新人大礼包", "ManagerTool.aspx", "THIS"));
+
+
+            htError.Add("BURE01", new Error("你不是盟主，不能购买联盟威望！", "Union.aspx", "THIS"));
+            htError.Add("BURE02", new Error("联盟游戏币不足，不能购买联盟威望！", "Union.aspx", "THIS"));
+            htError.Add("BURE03", new Error("请输入正确的半角数字！", "NULL", "NULL"));
+            htError.Add("BURS01", new Error("购买联盟威望成功！", "Union.aspx", "THIS"));
+
+            /*1,报名成功，2已经报过名，3没有邀请函,4联盟人数已满意，5.比赛已经开始*/
+            htError.Add("UCRS01", new Error("报名成功！", "UnionCup.aspx", "THIS"));
+            htError.Add("UCRE01", new Error("你已经报过名了！", "NULL", "NULL"));
+            htError.Add("UCRE02", new Error("您没有联盟争霸赛邀请函，请向盟主索取！", "NULL", "NULL"));
+            htError.Add("UCRE03", new Error("联盟报名人数已满！", "NULL", "NULL"));
+            htError.Add("UCRE04", new Error("比赛已经开始了，不能再报名！", "NULL", "NULL"));
+
+            ///
+            htError.Add("SNE01", new Error("对方球队有一场比赛正在进行中。", "NPC.aspx?Type=NPCLIST", "THIS"));
+            htError.Add("SNE02", new Error("您有一场挑战赛正在进行中", "NPC.aspx?Type=NPCLIST", "THIS"));
+            htError.Add("SNE03", new Error("您的游戏币不足", "NPC.aspx?Type=NPCLIST", "THIS"));
+            htError.Add("SNS01", new Error("挑战成功", "NPC.aspx?Type=MYMATCH", "THIS"));
+
+            htError.Add("SANE01", new Error("当前擂主正被挑战中，请等待一会。", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("SANE02", new Error("您就是当前擂主，不需要挑战自己", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("SANE03", new Error("您的游戏币不足", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("SANS01", new Error("挑战成功", "Arena.aspx?Type=MYMATCH", "THIS"));
+
+            htError.Add("P3E01", new Error("报名失败。", "Point3.aspx?Type=LIST", "THIS"));
+            htError.Add("P3E02", new Error("该球员已经比赛完了。", "Point3.aspx?Type=LIST", "THIS"));
+            htError.Add("P3S01", new Error("报名成功", "Point3.aspx?Type=LIST", "THIS"));
+
         }
 
         private void InitializeComponent()

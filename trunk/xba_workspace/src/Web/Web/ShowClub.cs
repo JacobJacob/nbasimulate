@@ -400,7 +400,7 @@
 
         private void btnSend_Click(object sender, ImageClickEventArgs e)
         {
-            string text = this.tbNickName.Text;
+            /*string text = this.tbNickName.Text;
             string validWords = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbMsg.Text.ToString().Trim()));
             text = StringItem.GetValidWords(text);
             if (StringItem.IsValidName(text, 2, 0x10))
@@ -426,7 +426,28 @@
             else
             {
                 this.strList = "<font color='#FF0000'>经理昵称不合要求！</font>";
+            }*/
+
+            string text = this.tbNickName.Text;
+            string validWords = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbMsg.Text.ToString().Trim()));
+            if (!StringItem.IsValidContent(validWords, 2, 500))
+            {
+                this.strList = "<font color='#FF0000'>消息内容必须在2-500个字符之间！</font>";
             }
+            else
+            {
+                BTPMessageManager.SetHasMsg(text);
+                if (BTPMessageManager.AddMessage(this.intUserID, this.strNickNameA, text, validWords))
+                {
+                    this.strList = "<font color='#FF0000'>消息发送成功！</font>";
+                    this.tbMsg.Text = "";
+                }
+                else
+                {
+                    this.strList = "<font color='#FF0000'>" + text + "并不存在，请查证是否输入正确，或对方以更改名称！</font>";
+                }
+            }
+            
         }
 
         private void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
@@ -787,7 +808,7 @@
         {
             DataTable playerTableByClubID = BTPPlayer5Manager.GetPlayerTableByClubID(this.intClub5ID);
             string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(this.intClub5ID);
-            //this.strToolsImg = string.Concat(new object[] { "<a href='DevisionView.aspx?UserID=", this.intUserIDA, "&Type=MATCHLOOK&Devision=", devCodeByClubID, "&Status=1&Page=1' target='Center'><img src='", SessionItem.GetImageURL(), "MinMatchLook.gif' width='12' height='12' border='0' alt='查看比赛录像'><a>" });
+            this.strToolsImg = string.Concat(new object[] { "<a href='DevisionView.aspx?UserID=", this.intUserIDA, "&Type=MATCHLOOK&Devision=", devCodeByClubID, "&Status=1&Page=1' target='Center'><img src='", SessionItem.GetImageURL(), "MinMatchLook.gif' width='12' height='12' border='0' alt='查看比赛录像'><a>" });
             DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub5ID, 5);
             bool flag = false;
             if (reader != null)
@@ -802,7 +823,7 @@
                 }
             }
             //reader.Close();
-            /*if (flag)
+           /** if (flag)
             {
                 this.strToolsImg = string.Concat(new object[] { this.strToolsImg, "&nbsp;&nbsp;<a href='VArrange.aspx?ClubID=", this.intClub5ID, "&UserID=", this.intUserIDA, "&Type=6' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
             }
@@ -810,7 +831,7 @@
             {
                 this.strToolsImg = string.Concat(new object[] { this.strToolsImg, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?ClubID=", this.intClub5ID, "&UserID=", this.intUserIDA, "&Type=MATCHLEV&ClubType=5' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
             }*/
-            this.strToolsImg = "";
+            //this.strToolsImg = "";
             if (playerTableByClubID == null)
             {
                 this.strPlayerList = "<tr  class='BarContent'><td colspan='4'>没有任何球员！</td></tr>";
@@ -823,6 +844,11 @@
                     int intPosition = (byte) row["Pos"];
                     int num2 = (byte) row["Number"];
                     int intAbility = (int) row["Ability"];
+                    int intCategory = Convert.ToInt32(row["Category"]);
+                    if (intCategory == 3)
+                    {
+                        intAbility = 999;
+                    }
                     string playerEngPosition = PlayerItem.GetPlayerEngPosition(intPosition);
                     int num4 = (byte) row["Height"];
                     int num5 = (byte) row["Weight"];

@@ -1,6 +1,7 @@
 ﻿namespace Web
 {
     using System;
+    using System.Data;
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using Web.DBData;
@@ -24,6 +25,7 @@
         public string strErrInviteCode;
         public string strMsg;
         public string strPageIntro;
+        public int intRecomUserID;
         protected TextBox tbCity;
         protected TextBox tbEmail;
         protected TextBox tbIntroNickName;
@@ -38,9 +40,9 @@
         {
             string text = this.tbUserName.Text;
             string strIn = this.tbPassword.Text;
-            string str3 = this.tbRePassword.Text;
+            string str3 = strIn;// this.tbRePassword.Text;
             string htmlEncode = StringItem.SetValidWord(this.tbNickName.Text.Trim());
-            string str5 = StringItem.SetValidWord(this.tbCity.Text);
+            string str5 = "北京"; //StringItem.SetValidWord(this.tbCity.Text);
             string str6 = this.tbEmail.Text;
             string str7 = this.tbIntroNickName.Text;
             string strFace = "0|0|0|0|0|0|0|0|0";
@@ -48,8 +50,12 @@
             string selectedValue = this.ddlYear.SelectedValue;
             string strMonth = this.ddlMonth.SelectedValue;
             string strProvince = this.ddlProvince.SelectedValue;
-            string str12 = StringItem.SetValidWord(this.tbSay.Text);
-            string strInviteCode = this.tbInviteCode.Text;
+            string str12 = "无道篮球"; StringItem.SetValidWord(this.tbSay.Text);
+            //string strInviteCode = this.tbInviteCode.Text;
+            if(str7 != null)
+            {
+                str7 = str7.Trim();
+            }
             bool flag2 = false;
             if (!StringItem.IsValidLogin(text))
             {
@@ -71,11 +77,11 @@
                 this.strErrCity = "<font color='#FF0000'>*城市填写错误！</font>";
                 flag2 = true;
             }
-            else if (!StringItem.IsValidEmail(str6))
+            /*else if (!StringItem.IsValidEmail(str6))
             {
                 this.strErrEmail = "<font color='#FF0000'>*Email填写错误！</font>";
                 flag2 = true;
-            }
+            }*/
             else if ((str7.Length > 0) && !StringItem.IsValidName(str7, 2, 0x10))
             {
                 this.strErrIntroNickName = "<font color='#FF0000'>*介绍人填写错误！</font>";
@@ -86,29 +92,29 @@
                 this.strErrSay = "<font color='#FF0000'>*宣言填写错误！</font>";
                 flag2 = true;
             }
-            else if (!StringItem.IsValidInviteCode(strInviteCode))
+            /*else if (!StringItem.IsValidInviteCode(strInviteCode))
             {
                 this.strErrInviteCode = "<font color='#FF0000'>*邀请码填写错误！</font>";
                 flag2 = true;
-            }
+            }*/
             text = StringItem.GetHtmlEncode(text);
             htmlEncode = StringItem.GetHtmlEncode(htmlEncode);
             str5 = StringItem.GetHtmlEncode(str5);
             str7 = StringItem.GetHtmlEncode(str7);
             str12 = StringItem.GetHtmlEncode(str12);
 
-            if (!flag2)
+           /* if (!flag2)
             {
                 if(!BTPAccountManager.CheckInviteCode(strInviteCode)){
                      this.strErrInviteCode = "<font color='#FF0000'>*邀请码无效，请联系客服！</font>";
                     flag2 = true;
                 }
-            }
+            }*/
 
 
             if (!flag2)
             {
-                switch (BTPAccountManager.CheckRegisterInfo(text, htmlEncode, str6))
+                switch (BTPAccountManager.CheckRegisterInfo(text, htmlEncode, "11@11.com"))
                 {
                     case 1:
                         this.strErrUserName = "<font color='#FF0000'>*用户名已存在，请重新输入！</font>";
@@ -150,11 +156,19 @@
                         flag2 = true;
                         break;
                 }
-                //if ((str7 != "") && !ROOTUserManager.HasNickName(str7))
-                //{
-                //    this.strErrIntroNickName = "<font color='#FF0000'>*您输入的介绍人并不存在，请重新输入或留空！</font>";
-                //    flag2 = true;
-                //}
+                if ((str7 != ""))
+                {
+                    DataRow recomUserRow = BTPAccountManager.GetAccountRowByNickName(str7.Trim());
+                    if (recomUserRow == null)
+                    {
+                        this.strErrIntroNickName = "<font color='#FF0000'>*您输入的介绍人并不存在，请重新输入或留空！</font>";
+                        flag2 = true;
+                    }
+                    else
+                    {
+                        this.intRecomUserID = Convert.ToInt32(recomUserRow["UserID"]);
+                    }
+                }
                 //if (DateTime.Now.AddMinutes(-60.0) < ROOTUserManager.GetLatestRegTimeByIP(base.Request.ServerVariables["REMOTE_ADDR"]))
                 //{
                 //    this.strMsg = "<font color='#FF0000'>使用同一IP注册间隔时间必须在60分钟以上。</font>";
@@ -175,8 +189,8 @@
                     try
                     {
                         int userId = BTPAccountManager.GetMaxUserID();
-                        BTPAccountManager.AddFullAccount(userId, text, htmlEncode, strIn, blnSex, 0, strDiskURL, "", strProvince, str5, "");
-                        BTPAccountManager.UpdateInviteCodeUsed(strInviteCode);
+                        BTPAccountManager.AddFullAccount(userId, text, htmlEncode, strIn, blnSex, 0, strDiskURL, "", strProvince, str5, "", this.intRecomUserID, str6);
+                        //BTPAccountManager.UpdateInviteCodeUsed(strInviteCode);
                         flag3 = true;
                     }
                     catch (Exception exception)
@@ -226,6 +240,18 @@
                 this.strMsg = "请严格按照注释填写下列各项。";
             }
             this.btnNext.ImageUrl = SessionItem.GetImageURL() + "button_11.GIF";
+
+            int recomUserID = (int)SessionItem.GetRequest("u", 0);
+            if (recomUserID > 0)
+            {
+                DataRow recomUser = BTPAccountManager.GetAccountRowByUserID(recomUserID);
+                if (recomUser != null)
+                {
+                    this.tbIntroNickName.Text = Convert.ToString(recomUser["NickName"]);
+                }
+
+            }
+
         }
 
         private void Page_Load(object sender, EventArgs e)

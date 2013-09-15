@@ -193,6 +193,9 @@
             }
             bool flag2 = false;
             bool flag3 = false;
+
+            int trainPointMultiple = Config.GetTrainPointMultiple();
+
             if (((this.intType == 3) || (this.intType == 2)) || (this.intType == 5))
             {
                 if (BTPToolLinkManager.HasTool(this.tHome.intUserID, 1, 9, 0) || BTPToolLinkManager.HasTool(this.tHome.intUserID, 1, 10, 0))
@@ -307,6 +310,9 @@
                     {
                         intTrainPoint *= 2;
                     }
+            
+                    intTrainPoint *= trainPointMultiple;
+
                     int intStatus = 1;
                     int intSuspend = 0;
                     string strEvent = "";
@@ -443,6 +449,9 @@
                     {
                         num4 *= 2;
                     }
+
+                    num4 *= trainPointMultiple;
+
                     int num5 = 1;
                     int num6 = 0;
                     string str2 = "";
@@ -569,7 +578,7 @@
             if (this.intType < 3)
             {
                 string str3 = StringItem.FormatDate(DateTime.Now, "yyyyMMdd");
-                string path = Path.GetFullPath(@"\BestXBA" + MatchItem.GetMatchPath() + @"\MatchXML\SRep\") + str3 + @"\";
+                string path = Path.GetFullPath(@"" + MatchItem.GetMatchPath() + @"\MatchXML\SRep\") + str3 + @"\";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -594,7 +603,7 @@
                 {
                     writer.Write(this.sbRepXml.ToString());
                 }
-                path = Path.GetFullPath(@"\BestXBA" + MatchItem.GetMatchPath() + @"\MatchXML\SStas\") + str3 + @"\";
+                path = Path.GetFullPath(@"" + MatchItem.GetMatchPath() + @"\MatchXML\SStas\") + str3 + @"\";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);

@@ -42,7 +42,7 @@
             int num4;
             int num5;
             int num6;
-            int num8;
+            long price;
             DateTime time;
             long num10;
             bool flag;
@@ -78,21 +78,21 @@
             if (row != null)
             {
                 int intUserID = (int) row["BidderID"];
-                num8 = Convert.ToInt32(row["BidPrice"]);
+                price = Convert.ToInt64(row["BidPrice"]);
                 if (intUserID != 0)
                 {
                     string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
-                    str3 = string.Concat(new object[] { "<a title='选秀顺位' style='CURSOR:hand'>", num8, "</a><br>", AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right") });
+                    str3 = string.Concat(new object[] { "<a title='选秀顺位' style='CURSOR:hand'>", price, "</a><br>", AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right") });
                 }
                 else
                 {
-                    str3 = "<a title='选秀顺位' style='CURSOR:hand'>" + num8 + "</a><br>--";
+                    str3 = "<a title='选秀顺位' style='CURSOR:hand'>" + price + "</a><br>--";
                 }
             }
             else
             {
-                num8 = Convert.ToInt32(reader["BidPrice"]);
-                str3 = "<a title='选秀顺位' style='CURSOR:hand'>" + num8 + "</a><br>--";
+                price = Convert.ToInt64(reader["BidPrice"]);
+                str3 = "<a title='选秀顺位' style='CURSOR:hand'>" + price + "</a><br>--";
             }
             this.sb.Append("<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
             this.sb.Append("<td height='34' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(num10, str, 5, 0, 0) + "</td>");
@@ -121,7 +121,7 @@
                 Convert.ToInt32(reader["Pos"]);
                 num2 = Convert.ToInt32(reader["Height"]);
                 num3 = Convert.ToInt32(reader["Weight"]);
-                num4 = (int) reader["Ability"];
+                num4 = 999;//(int) reader["Ability"];
                 time = (DateTime) reader["EndBidTime"];
                 num10 = (long) reader["PlayerID"];
                 float single1 = ((float) num4) / 10f;
@@ -129,6 +129,8 @@
                 num6 = (int) reader["BidCount"];
                 int num9 = (byte) reader["BidStatus"];
                 flag = (bool) reader["IsRetire"];
+                int clubID = Convert.ToInt32(reader["ClubID"]);
+                int bidderID = Convert.ToInt32(reader["BidderID"]);
                 if (DateTime.Now >= time)
                 {
                     switch (num9)
@@ -145,7 +147,22 @@
                 }
                 else
                 {
-                    str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    if (clubID > 0)
+                    {
+                        str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    }
+                    else
+                    {
+                        //if (bidderID > 0)
+                        //{
+                        //    str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                        //}
+                        //else
+                        //{
+                            str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=SETTRIAL&PlayerID=", num10, "&Market=5'>试训</a><a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                        //}
+                    }
+                   
                 }
                 goto Label_03F7;
             }
@@ -385,7 +402,11 @@
                     this.PageIntrosb.Append("<li class='qian2'>街头自由</li>");
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
                     this.PageIntrosb.Append(builder.ToString());
-                    this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
+
+                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
+               
+                    
+                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     if (this.intCategory == 5)
                     {
                         this.DevStreetList();
@@ -396,12 +417,28 @@
                     }
                     break;
 
+                case "STREETUTMOST":
+                    this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='MyFocus.aspx?Tommy=" + this.strIsStreet + "'>关注球员</a></li>");
+                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a>" }));
+                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
+                    this.PageIntrosb.Append(builder.ToString());
+
+                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2'>街头极限</li>" }));
+               
+
+                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
+                    this.StreetFreeList();
+                    break;
+
+
                 case "STREETCHOOSE":
                     this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=MYFOCUSPLAYER&Pos=0&Order=4&Page=1'>关注球员</a></li>");
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a>" }));
                     this.PageIntrosb.Append("<li class='qian2'>街头选秀</li>");
                     this.PageIntrosb.Append(builder.ToString());
-                    this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
+                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
+               
+                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.StreetChooseList();
                     break;
 
@@ -416,8 +453,10 @@
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
                     this.PageIntrosb.Append("<li class='qian2'>职业转会</li>");
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='拥有选秀卡就可在这里获得球员，选秀卡轮次靠前者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=DEVCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=DEVCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>职业选秀</a></li>" }));
+                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
+               
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='较好的球员，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=UTMOST\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=UTMOST&Pos=", this.intPos, "&Order=4&Page=1'>极限球员</a></li>" }));
-                    this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
+                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.TransferList();
                     break;
 
@@ -433,7 +472,9 @@
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='购买其他球队卖出的球员，直接进入职业队，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=TRANSFER\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=TRANSFER&Pos=", this.intPos, "&Order=4&Page=1'>职业转会</a></li>" }));
                     this.PageIntrosb.Append("<li class='qian2'>职业选秀</li>");
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='较好的球员，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=UTMOST\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=UTMOST&Pos=", this.intPos, "&Order=4&Page=1'>极限球员</a></li>" }));
-                    this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
+                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
+                
+                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.DevChooseList();
                     break;
 
@@ -449,7 +490,9 @@
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='购买其他球队卖出的球员，直接进入职业队，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=TRANSFER\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=TRANSFER&Pos=", this.intPos, "&Order=4&Page=1'>职业转会</a></li>" }));
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='拥有选秀卡就可在这里获得球员，选秀卡轮次靠前者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=DEVCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=DEVCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>职业选秀</a></li>" }));
                     this.PageIntrosb.Append("<li class='qian2'>极限球员</li>");
-                    this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
+                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
+               
+                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.TransferList();
                     break;
 
@@ -614,6 +657,7 @@
                 else
                 {
                     str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=QUICKBUY&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "yikoujia.gif' border='0' width='33' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=2&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    //str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=2&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
                 }
                 goto Label_03F7;
             }
@@ -712,7 +756,9 @@
                 }
                 else
                 {
-                    str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETFREE&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=1&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    //str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETFREE&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=1&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVSTREET&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=1&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                
                 }
                 goto Label_03C7;
             }
@@ -733,7 +779,7 @@
             int num4;
             int num5;
             int num6;
-            int num8;
+            long price;
             DateTime time;
             bool flag;
             long num10;
@@ -785,14 +831,14 @@
             if (reader2.Read())
             {
                 int intUserID = (int) reader2["UserID"];
-                num8 = Convert.ToInt32(reader2["Price"]);
+                price = Convert.ToInt64(reader2["Price"]);
                 string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
-                str3 = num8 + "<br>" + AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right");
+                str3 = price + "<br>" + AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right");
             }
             else
             {
-                num8 = Convert.ToInt32(reader["BidPrice"]);
-                str3 = num8 + "<br>--";
+                price = Convert.ToInt64(reader["BidPrice"]);
+                str3 = price + "<br>--";
             }
             reader2.Close();
             string strDevCode = BTPPlayer5Manager.GetPlayerRowByPlayerID(num10)["MarketCode"].ToString();

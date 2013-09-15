@@ -33,6 +33,13 @@
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetMatchByDevCupIDClubID ", intDevCupID, ",", intClubIDA, ",", intClubIDB });
             return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
+
+        public static int GetMaxDevCupMatchID()
+        {
+            string commandText = "Exec NewBTP.dbo.[GetMaxDevCupMatchID] ";
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
     }
 }
 

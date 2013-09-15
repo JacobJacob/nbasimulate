@@ -18,6 +18,9 @@
         public int intOffCenter;
         public int intOffense;
         public int intOffHard;
+        /// <summary>
+        /// 进攻方式
+        /// </summary>
         public int intOffMethod;
         public int intORebAbility;
         public Player pACP;
@@ -25,6 +28,9 @@
         public Player pC;
         public Player pDCP;
         public Player pDRP;
+        /// <summary>
+        /// 当前进攻者
+        /// </summary>
         public Player pOCP;
         public Player pORP;
         public Player pPF;
@@ -33,12 +39,18 @@
         public Player pSG;
         private Random rnd;
 
+        /// <summary>
+        /// 能力
+        /// </summary>
+        public int intAbility;
+
         public Arrange()
         {
             this.intOffAbility = 0;
             this.intDefAbility = 0;
             this.intORebAbility = 0;
             this.intDRebAbility = 0;
+            this.intAbility = 0;
             this.rnd = new Random(DateTime.Now.Millisecond);
         }
 
@@ -104,14 +116,26 @@
             {
                 this.intOffHard = (byte) row["OffHard"];
                 this.intDefHard = (byte) row["DefHard"];
+               
             }
             else
             {
-                this.intOffHard = 100;
-                this.intDefHard = 100;
+                this.intOffHard = 110;
+                this.intDefHard = 110;
             }
-            this.intOffense = (byte) row["Offense"];
-            this.intDefense = (byte) row["Defense"];
+
+            if (Config.IsNPCClub(team.intClubID))
+            {
+                this.intOffense = this.rnd.Next(1, 7);
+                this.intDefense = this.rnd.Next(1, 7);
+                Console.WriteLine("IS NPC[" + team.intClubID + "]");
+            }
+            else
+            {
+                this.intOffense = (byte)row["Offense"];
+                this.intDefense = (byte)row["Defense"];
+                Console.WriteLine("IS NOT NPC[" + team.intClubID + "]");
+            }
             this.intOffCenter = (byte) row["OffCenter"];
             this.intDefCenter = (byte) row["DefCenter"];
             DataRow dr = BTPArrangeLvlManager.GetArrange5Lvl(team.intUserID);
@@ -1170,6 +1194,10 @@
             return MatchItem.GetArrangeAdd(intLvl);
         }
 
+        /// <summary>
+        /// 进攻篮板能力
+        /// </summary>
+        /// <returns></returns>
         public int GetOffRebAbility()
         {
             int num = (((this.pC.intORebAbility * 12) / 10) * this.pC.intHeight) / 210;

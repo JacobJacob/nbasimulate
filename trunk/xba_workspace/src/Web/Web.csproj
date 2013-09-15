@@ -42,15 +42,23 @@
   <ItemGroup>
     <Reference Include="AjaxPro, Version=6.6.14.2, Culture=neutral, PublicKeyToken=4735ae9824c7d3ec">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\AjaxPro.dll</HintPath>
+      <HintPath>lib\AjaxPro.dll</HintPath>
     </Reference>
     <Reference Include="CBMD5, Version=1.0.1934.17073, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\CBMD5.dll</HintPath>
+      <HintPath>lib\CBMD5.dll</HintPath>
     </Reference>
     <Reference Include="Interop.jmail, Version=4.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\xba_workspace\xbaweb\Bin\Interop.jmail.dll</HintPath>
+      <HintPath>lib\Interop.jmail.dll</HintPath>
+    </Reference>
+    <Reference Include="LitJson, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\LitJson.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="LoginParameter, Version=1.0.2861.31937, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -110,6 +118,9 @@
     <Compile Include="Web\Announce.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\Arena.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\AssignClub.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -152,11 +163,64 @@
     <Compile Include="Web\ClubSetting.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\DBData\BTPArenaManager.cs" />
+    <Compile Include="Web\DBData\BTPNPCManager.cs" />
+    <Compile Include="Web\DBData\BTPUnionCupManager.cs" />
+    <Compile Include="Web\DBData\BTPXBATopManager.cs" />
+    <Compile Include="Web\DBData\BTPStockManager.cs" />
+    <Compile Include="Web\DBData\BTPXGuessManager.cs" />
+    <Compile Include="Web\DBData\BTPStarMatchManager.cs" />
+    <Compile Include="Web\DBData\BTPPoint3Manager.cs" />
     <Compile Include="Web\Helper\Config.cs" />
     <Compile Include="Web\Helper\IniUtil.cs" />
     <Compile Include="Web\Helper\MainXmlHelper.cs" />
     <Compile Include="Web\Helper\PlayerHelper.cs" />
+    <Compile Include="Web\Helper\TOnlineReportData.cs" />
+    <Compile Include="Web\Intro\XBATop.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Lang\ASObject.cs" />
+    <Compile Include="Web\Lang\MyDictionary.cs" />
+    <Compile Include="Web\NPC.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TMatchEngine\Arrange.cs" />
+    <Compile Include="Web\TMatchEngine\InjuryGenerator.cs" />
+    <Compile Include="Web\TMatchEngine\Language.cs" />
+    <Compile Include="Web\TMatchEngine\Match.cs" />
+    <Compile Include="Web\TMatchEngine\Player.cs" />
+    <Compile Include="Web\TMatchEngine\Quarter.cs" />
+    <Compile Include="Web\TMatchEngine\ScriptGenerator.cs" />
+    <Compile Include="Web\TMatchEngine\Team.cs" />
+    <Compile Include="Web\TMatchEngine\Timer.cs" />
+    <Compile Include="Web\TOnlineRepDetail.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\TOnlineReport.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UnionCup.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Util\DropOffUtil.cs" />
+    <Compile Include="Web\Util\Json.cs" />
+    <Compile Include="Web\Util\Logger.cs" />
     <Compile Include="Web\Util\LogManager.cs" />
+    <Compile Include="Web\Util\PageUtil.cs" />
+    <Compile Include="Web\Util\RandonUtil.cs" />
+    <Compile Include="Web\Util\StringUtil.cs" />
+    <Compile Include="Web\VMatchEngine\Context.cs" />
+    <Compile Include="Web\VMatchEngine\MatchTotal.cs" />
+    <Compile Include="Web\VMatchEngine\Logger.cs" />
+    <Compile Include="Web\VMatchEngine\MatchHelper.cs" />
+    <Compile Include="Web\VMatchEngine\MatchType.cs" />
+    <Compile Include="Web\VMatchEngine\ReportHelper.cs" />
+    <Compile Include="Web\WebService\TOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\XBATop.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\zh\com\cga\xba\match1\VOnlineReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1252,6 +1316,9 @@
     <Compile Include="Web\XBAFinanceAD.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\zh\com\xba\match_5\TOnlineReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Web\_51Admin.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1271,6 +1338,24 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\_51RegOK.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\NPCMatchCenter.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Stock.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\XGuess.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\StarMatch.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Point3.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\BidWeibo.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <EmbeddedResource Include="Test.WebHttp.Request.resources" />
@@ -1507,6 +1592,11 @@
     <EmbeddedResource Include="Web._51LoginOK.resources" />
     <EmbeddedResource Include="Web._51Reg.resources" />
     <EmbeddedResource Include="Web._51RegOK.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

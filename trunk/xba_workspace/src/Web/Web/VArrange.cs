@@ -226,6 +226,7 @@
             foreach (DataRow row2 in BTPPlayer5Manager.GetArrPlayerTable(this.intClubID).Rows)
             {
                 long num5 = (long) row2["PlayerID"];
+                int intCategory = Convert.ToInt32(row2["Category"]);
                 int num11 = (byte) row2["Age"];
                 string str2 = row2["Name"].ToString().Trim();
                 int intPosition = (byte) row2["Pos"];
@@ -249,6 +250,25 @@
                 float single1 = ((float) ((int) row2["Attack"])) / 10f;
                 float single2 = ((float) ((int) row2["Defense"])) / 10f;
                 float single3 = ((float) ((int) row2["Team"])) / 10f;
+                if (intCategory == 3)
+                {
+                    num12 = 99.9f;
+                    num13 = 99.9f;
+                    num14 = 99.9f;
+                    num15 = 99.9f;
+                    num16 = 99.9f;
+                    num17 = 99.9f;
+                    num18 = 99.9f;
+                    num19 = 99.9f;
+                    num20 = 99.9f;
+                    num21 = 99.9f;
+                    num22 = 99.9f;
+                    num23 = 99.9f;
+                    single1 = 99.9f;
+                    single2 = 99.9f;
+                    single3 = 99.9f;
+
+                }
                 object strPlayerList = this.strPlayerList;
                 this.strPlayerList = string.Concat(new object[] { 
                     strPlayerList, "<DIV onmouseup=putdown(this);down=false; onmousedown=logpos(this); id='", num5, "' style='Z-INDEX:100;LEFT:", num25, "px;CURSOR:hand;POSITION:absolute;TOP:", num24, "px;HEIGHT:30px;WEIGHT:28px' ><DIV title='姓名：", str2, "[", num11, "]<br>位置：", playerChsPosition, "<br>身高：", num9, "CM<br>体重：", 
@@ -860,6 +880,12 @@
             this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td></td><td height='25'><font color='#FF0000'>防守</font></td><td>盯人内线</td><td>", num11, str, "</td><td>", num23, "/", BTPArrangeLvlManager.Get5ArrangeNeed(num11), "</td><td></td></tr>" });
             strList = this.strList;
             this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td></td><td height='25'><font color='#FF0000'>防守</font></td><td>盯人外线</td><td>", num12, str, "</td><td>", num24, "/", BTPArrangeLvlManager.Get5ArrangeNeed(num12), "</td><td></td></tr>" });
+       
+           //<tr>
+											//<td colspan="6"><p style="MARGIN: 5px 0px 10px" align="center"><img src='Images//button_xd.GIF' width='70' height='24' style='CURSOR: hand' onclick='javascript:window.location="AfreshArrange.aspx";'></p>
+											//</td>
+										//</tr>
+        
         }
     }
 }

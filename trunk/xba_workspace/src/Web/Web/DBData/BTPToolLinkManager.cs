@@ -76,6 +76,12 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        public static int BuyLocationCard(int intToolID, int intUserID, int intCount)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.BuyLocationCard ", intToolID, ",", intUserID, ",", intCount });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
         public static int BuyTool(int intToolID, int intUserID, DateTime datTime, int intCount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.BuyTool ", intToolID, ",", intUserID, ",'", datTime, "',", intCount });
@@ -380,6 +386,16 @@
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseToolCategory3 ", intUserID, ",", longPlayerID, ",", intMarket });
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        /*
+         *购买新人大礼包 
+         */
+
+        public static int BuyNewerToolBox(int intToolID, int intUserID)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.BuyNewerToolBox ", intToolID, ",", intUserID });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
     }
 }

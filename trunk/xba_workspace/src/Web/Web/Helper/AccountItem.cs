@@ -30,31 +30,29 @@
             {
                 strClubName = "暂无联盟";
             }
+            string strSex = "";
+            string strPayType = "";
             if (blnSex)
             {
-                if (intPayType == 1)
-                {
-                    return string.Concat(new object[] { 
-                        "<img id='NickCard' alt='<span style=\"width:146px;\"><strong>经理名片</strong><br><br>经 理 名：<font color=\"ff6600\">", strNickName, "</font><br>性　　别：女<br>年　　龄：", intAge, "<br>省　　份：", strProvince, "<br>城　　市：", strCity, "<br>联赛等级：", strDevLev, "<br>所在联盟：", strClubName, "<br>最后登录：", StringItem.FormatDate(dtActiveTime, "yyyy-MM-dd"), "<br>王者积分：", lngOnlyPoint, 
-                        "</span>'src='Images/NickCard.gif' border='0' width=12 hight=12>"
-                     });
-                }
-                return string.Concat(new object[] { 
-                    "<img id='NickCard' alt='<span style=\"width:146px;\"><strong>经理名片</strong><br><br>经 理 名：", strNickName, "<br>性　　别：女<br>年　　龄：", intAge, "<br>省　　份：", strProvince, "<br>城　　市：", strCity, "<br>联赛等级：", strDevLev, "<br>所在联盟：", strClubName, "<br>最后登录：", StringItem.FormatDate(dtActiveTime, "yyyy-MM-dd"), "<br>王者积分：", lngOnlyPoint, 
-                    "</span>'src='Images/NickCard.gif' border='0' width=12 hight=12>"
-                 });
+                strSex = "MM";
             }
+            else
+            {
+                strSex = "GG";
+            }
+
             if (intPayType == 1)
             {
-                return string.Concat(new object[] { 
-                    "<img id='NickCard' alt='<span style=\"width:146px;\"><strong>经理名片</strong><br><br>经 理 名：<font color=\"ff6600\">", strNickName, "</font><br>性　　别：男<br>年　　龄：", intAge, "<br>省　　份：", strProvince, "<br>城　　市：", strCity, "<br>联赛等级：", strDevLev, "<br>所在联盟：", strClubName, "<br>最后登录：", StringItem.FormatDate(dtActiveTime, "yyyy-MM-dd"), "<br>王者积分：", lngOnlyPoint, 
-                    "</span>' src='Images/NickCard.gif' border='0' width=12 hight=12>"
-                 });
+                strPayType = "尊贵会员";
             }
-            return string.Concat(new object[] { 
-                "<img id='NickCard' alt='<span style=\"width:146px;\"><strong>经理名片</strong><br><br>经 理 名：", strNickName, "<br>性　　别：男<br>年　　龄：", intAge, "<br>省　　份：", strProvince, "<br>城　　市：", strCity, "<br>联赛等级：", strDevLev, "<br>所在联盟：", strClubName, "<br>最后登录：", StringItem.FormatDate(dtActiveTime, "yyyy-MM-dd"), "<br>王者积分：", lngOnlyPoint, 
-                "</span>' src='Images/NickCard.gif' border='0' width=12 hight=12>"
-             });
+            else
+            {
+                strPayType = "普通玩家";
+            }
+
+            string strTitle = string.Concat(new object[] { "经 理 名：", strNickName, "&#10;性　　别：", strSex, "&#10;年　　龄：", intAge, "&#10;省　　份：", strProvince, "&#10;城　　市：", strCity, "&#10;联赛等级：", strDevLev, "&#10;所在联盟：", strClubName, "&#10;最后登录：", StringItem.FormatDate(dtActiveTime, "yyyy-MM-dd"), "&#10;王者积分：", lngOnlyPoint, "&#10玩家类型：", strPayType});
+
+            return string.Concat(new object[] {"<img id='NickCard'src='Images/NickCard.gif' alt='", strTitle, "' border='0' width=12 hight=12>"});
         }
 
         public static string GetNickLogoCard(string strNickName, bool blnSex, int intAge, string strCity, string strProvince, string strDevLev, DateTime dtActiveTime, int intPayType, string strClubName, string strClubLogo, long lngOnlyPoint)
@@ -153,13 +151,17 @@
                 {
                     return "<font color='#0070DD'>[富人]</font>";
                 }
-                if ((intWealth >= 0x3e8) && (intWealth < 0x2710))
+                if ((intWealth >= 0x3e8) && (intWealth < 30000))
                 {
                     return "<font color='#A335EE'>[富翁]</font>";
                 }
-                if (intWealth >= 0x2710)
+                if ((intWealth >= 30000) && (intWealth < 100000))
                 {
                     return "<font color='#FF8000'>[富豪]</font>";
+                }
+                if (intWealth > 100000)
+                {
+                    return "<font color='#FF0000'>[土豪]</font>";
                 }
             }
             return "<font color='#666666'>[乞丐]</font>";

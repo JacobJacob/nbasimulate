@@ -214,7 +214,7 @@
                         this.strModel = "<a href='Player5AutoTrain.aspx?Type=Model1&PlayerID=" + this.lngPlayerID + "'>高级模式</a>";
                         this.strtrTitle = "请选择训练项目";
                     }
-                    this.strImgReturn = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "/button_48.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?PlayerType=5&Type=9&PlayerID=", this.lngPlayerID, "\";'>" });
+                    this.strImgReturn = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_48.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?PlayerType=5&Type=9&PlayerID=", this.lngPlayerID, "\";'>" });
                     this.InitializeComponent();
                     base.OnInit(e);
                 }

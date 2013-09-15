@@ -15,6 +15,7 @@
     {
         private bool blnSex;
         protected Button btnMNickName;
+        protected Button btnMEmail;
         protected Button btnMPassword;
         protected Button btnMSexFace;
         protected DropDownList ddlBody;
@@ -40,6 +41,7 @@
         private string strKind;
         public string strMsg;
         public string strNickName;
+        public string strEmail;
         public string strPageIntro;
         private string strPassword;
         public string strScript;
@@ -50,10 +52,12 @@
         protected HtmlTable tblNickName;
         protected HtmlTable tblPassword;
         protected HtmlTable tblSexFace;
+        protected HtmlTable tblEmail;
         protected TextBox tbNewPwd;
         protected TextBox tbNickName;
         protected TextBox tbOldPwd;
         protected TextBox tbRePwd;
+        protected DateTime dateLastChangeNickname;
 
         private void btnMNickName_Click(object sender, EventArgs e)
         {
@@ -64,7 +68,7 @@
                 this.strErrNickName = "<font color='#FF0000'>*昵称填写错误！</font>";
                 flag = true;
             }
-            else if (ROOTUserManager.HasNickName(validWords))
+            else if (BTPAccountManager.HasNickName(validWords))
             {
                 this.strErrNickName = "<font color='#FF0000'>*所填写昵称已存在，请重新填写！</font>";
                 flag = true;
@@ -76,87 +80,71 @@
             }
             if (!flag)
             {
-                ROOTUserManager.ChangeNickName(this.intUserID, validWords);
+                //ROOTUserManager.ChangeNickName(this.intUserID, validWords);
                 BTPAccountManager.ChangeNickName(this.intUserID, validWords);
                 SessionItem.SetSomebodyLogin(this.intUserID);
                 base.Response.Redirect("AlterOtherInfo.aspx?Type=NICKNAME&Kind=YES");
             }
         }
 
-        private void btnMPassword_Click(object sender, EventArgs e)
+        private void btnMEmail_Click(object sender, EventArgs e)
         {
-            string text = this.tbEmail.Text;
-            string strIn = this.tbOldPwd.Text;
-            string str3 = this.tbNewPwd.Text;
-            string str4 = this.tbRePwd.Text;
             bool flag = false;
-            if (!StringItem.IsValidEmail(text))
+            string strEmail = this.tbEmail.Text;
+            
+            if (!StringItem.IsValidEmail(strEmail))
             {
                 this.strErrEmail = "<font color='#FF0000'>*Email填写错误！</font>";
                 flag = true;
             }
-            else if (!StringItem.IsValidLogin(strIn))
+            if (!flag)
+            {
+
+                BTPAccountManager.UpdateEmail(this.intUserID, strEmail);
+                SessionItem.SetSomebodyLogin(this.intUserID);
+                base.Response.Redirect("AlterOtherInfo.aspx?Type=EMAIL&Kind=YES");
+            }
+        }
+
+
+        private void btnMPassword_Click(object sender, EventArgs e)
+        {
+            //string text = this.tbEmail.Text;
+            string strOldPwd = this.tbOldPwd.Text;
+            string strNewPwd = this.tbNewPwd.Text;
+            string strNewRePwd = this.tbRePwd.Text;
+            bool flag = false;
+
+            if (!StringItem.IsValidLogin(strOldPwd))
             {
                 this.strErrOldPwd = "<font color='#FF0000'>*密码填写错误！</font>";
                 flag = true;
             }
-            else if (!StringItem.IsValidLogin(str3))
+            else if (!StringItem.IsValidLogin(strNewPwd))
             {
                 this.strErrNewPwd = "<font color='#FF0000'>*密码填写错误！</font>";
                 flag = true;
             }
-            else if (str3 != str4)
+            else if (strNewPwd != strNewRePwd)
             {
                 this.strErrRePwd = "<font color='#FF0000'>*两次密码填写不同！</font>";
                 flag = true;
             }
             if (!flag)
             {
-                if (!DBLogin.CanConn(0))
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=10114");
-                }
-                else
-                {
-                    switch (ROOTUserManager.ChangePS(this.intUserID, text, strIn, str3))
-                    {
-                        case 1:
-                            if (this.intCategory > 0)
-                            {
-                                DataTable userGameTableByUserID = ROOTUserGameManager.GetUserGameTableByUserID(this.intUserID);
-                                if (userGameTableByUserID != null)
-                                {
-                                    foreach (DataRow row in userGameTableByUserID.Rows)
-                                    {
-                                        int intCategory = (int) row["Category"];
-                                        try
-                                        {
-                                            BTPAccountManager.ChangePassword(this.intUserID, str3, DBLogin.ConnString(intCategory));
-                                            continue;
-                                        }
-                                        catch
-                                        {
-                                            base.Response.Write("您在" + DBLogin.GameNameChinese(intCategory) + "的密码修改失败！系统将会在1个工作日内将密码同步，请届时再使用新密码登录。");
-                                            base.Response.End();
-                                            return;
-                                        }
-                                    }
-                                }
-                            }
-                            base.Response.Redirect("AlterOtherInfo.aspx?Type=PASSWORD&Kind=YES");
-                            return;
 
-                        case 2:
-                            this.strErrOldPwd = "<font color='#FF0000'>*所写密码与原密码不同！</font>";
-                            flag = true;
-                            return;
+                switch (BTPAccountManager.ChangePassword(this.intUserID, strOldPwd, strNewPwd))
+                {
+                    case 1:
+                        base.Response.Redirect("AlterOtherInfo.aspx?Type=PASSWORD&Kind=YES");
+                        return;
 
-                        case 3:
-                            this.strErrEmail = "<font color='#FF0000'>*所写Email与原Email不同！</font>";
-                            flag = true;
-                            return;
-                    }
+                    case 2:
+                        this.strErrOldPwd = "<font color='#FF0000'>*所写密码与原密码不同！</font>";
+                        flag = true;
+                        return;
                 }
+                
             }
         }
 
@@ -219,7 +207,7 @@
 
         private void InitializeComponent()
         {
-            if (this.strType == "NICKNAME")
+            if (this.strType == "NICKNAMEAA")
             {
                 base.Response.Redirect("Report.aspx?Parameter=4007");
             }
@@ -229,14 +217,11 @@
                 {
                     case "PASSWORD":
                         this.tblPassword.Visible = true;
-                        if (this.strKind == "NO")
+                        if (this.strKind == "YES")
                         {
-                            this.strMsg = "<a href='Forum.aspx'>论坛</a> | <a href='AlterInfo.aspx'>设置</a> | 修改密码时必须确认原始密码和Email。";
+                            this.strMsg = "密码修改成功，下次使用新密码登录！";
                         }
-                        else
-                        {
-                            this.strMsg = "<a href='Forum.aspx'>论坛</a> | <a href='AlterInfo.aspx'>设置</a> | 密码修改成功，下次使用新密码登录！";
-                        }
+                       
                         this.btnMPassword.Click += new EventHandler(this.btnMPassword_Click);
                         break;
 
@@ -247,16 +232,42 @@
                             return;
                         }
                         this.tblNickName.Visible = true;
-                        if (this.strKind == "NO")
+                        this.tbNickName.Text = this.strNickName;
+
+                        DataRow accountRow = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                        this.dateLastChangeNickname = (DateTime)accountRow["LastChangeNickname"];
+                        if (this.dateLastChangeNickname.AddDays(180) > DateTime.Now)
                         {
-                            this.strMsg = "<a href='Forum.aspx'>论坛</a> | <a href='AlterInfo.aspx'>设置</a> | 您是尊贵的付费玩家，可以修改昵称。";
+                            this.tbNickName.Enabled = false;
                         }
-                        else
+                        
+
+                        if (this.strKind == "YES")
                         {
-                            this.strMsg = "<a href='Forum.aspx'>论坛</a> | <a href='AlterInfo.aspx'>设置</a> | 昵称修改成功！";
+                            this.strMsg = "昵称修改成功！";
                         }
                         this.btnMNickName.Click += new EventHandler(this.btnMNickName_Click);
                         break;
+
+                    case "EMAIL":
+                       
+                        this.tblEmail.Visible = true;
+                        this.tbEmail.Text = this.strEmail;
+
+                        if (this.strEmail != null &&  this.strEmail.Length > 0)
+                        {
+                            this.tbEmail.Enabled = false;
+                            this.btnMEmail.Enabled = false;
+                        }
+
+
+                        if (this.strKind == "YES")
+                        {
+                            this.strMsg = "邮箱绑定成功！";
+                        }
+                        this.btnMEmail.Click += new EventHandler(this.btnMEmail_Click);
+                        break;
+
 
                     case "SEXFACE":
                         this.tblSexFace.Visible = true;
@@ -298,23 +309,24 @@
             }
             else
             {
-                DataRow userInfoByID;
+                //DataRow userInfoByID;
                 bool flag;
                 this.strCategory = ServerParameter.intGameCategory.ToString().Trim();
-                DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
+                DataRow onlineRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
                 this.strUserName = onlineRowByUserID["UserName"].ToString();
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.intPayType = (int) onlineRowByUserID["PayType"];
-                this.blnSex = (bool) onlineRowByUserID["Sex"];
+                this.intPayType = Convert.ToInt32(onlineRowByUserID["PayType"]);
+                //this.blnSex = (bool) onlineRowByUserID["Sex"];
                 this.strPassword = onlineRowByUserID["Password"].ToString().Trim();
+                this.strEmail = onlineRowByUserID["Email"].ToString().Trim();
                 try
                 {
-                    userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
+                    //userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
                     flag = true;
                 }
                 catch
                 {
-                    userInfoByID = null;
+                    //userInfoByID = null;
                     flag = false;
                 }
                 if (!flag)
@@ -323,12 +335,13 @@
                 }
                 else
                 {
-                    this.strFace = userInfoByID["Face"].ToString().Trim();
-                    this.strDiskURL = userInfoByID["DiskURL"].ToString().Trim();
-                    this.intCategory = (byte) userInfoByID["Category"];
+                    //this.strFace = userInfoByID["Face"].ToString().Trim();
+                    //this.strDiskURL = userInfoByID["DiskURL"].ToString().Trim();
+                    //this.intCategory = (byte) userInfoByID["Category"];
                     this.tblNickName.Visible = false;
                     this.tblPassword.Visible = false;
                     this.tblSexFace.Visible = false;
+                    this.tblEmail.Visible = false;
                     this.strType = (string) SessionItem.GetRequest("Type", 1);
                     this.strKind = (string) SessionItem.GetRequest("Kind", 1);
                     this.InitializeComponent();

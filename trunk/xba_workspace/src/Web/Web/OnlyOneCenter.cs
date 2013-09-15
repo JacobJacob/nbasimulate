@@ -815,6 +815,7 @@
                 if (dr == null)
                 {
                     int num42 = BTPOnlyOneCenterReg.OnlyErrorOutByUserID(intUserID);
+                    BTPErrorManager.AddError("onlyone", string.Format("胜者意外退出，获取不到比赛信息，俱乐部ID{0}", intClubID));
                     return ("error|1;GoSay(" + num42 + ");");
                 }
                 int num15 = (int) dr["ClubIDA"];
@@ -1093,10 +1094,10 @@
                                 }
                                 DataRow row2 = XmlHelper.GetRow(dt, "QuarterID=" + str21 + " AND ClubID=" + str12, "");
                                 DataRow row3 = XmlHelper.GetRow(dt, "QuarterID=" + str21 + " AND ClubID=" + str13, "");
-                                string vOffName = MatchItem.GetVOffName((int) row2["Offense"]);
-                                string vDefName = MatchItem.GetVDefName((int) row2["Defense"]);
-                                string str27 = MatchItem.GetVOffName((int) row3["Offense"]);
-                                string str28 = MatchItem.GetVDefName((int) row3["Defense"]);
+                                string vOffName = MatchItem.GetVOffName((int)row2["Offense"]);
+                                string vDefName = MatchItem.GetVDefName((int)row2["Defense"]);
+                                string str27 = MatchItem.GetVOffName((int)row3["Offense"]);
+                                string str28 = MatchItem.GetVDefName((int)row3["Defense"]);
                                 if (byeStatus > 4)
                                 {
                                     builder.Append("<div class=\"zdiv\" id='MatchNode" + intNum + "'>");
@@ -1116,14 +1117,14 @@
                                 intNum++;
                             }
                             reader.Close();
-                            TimeSpan span3 = (TimeSpan) (time.AddMinutes(1.0) - DateTime.Now);
+                            TimeSpan span3 = (TimeSpan)(time.AddMinutes(1.0) - DateTime.Now);
                             int num39 = 60 - Convert.ToInt32(span3.TotalSeconds);
                             if (byeStatus < 5)
                             {
                                 if (num39 > 60)
                                 {
                                     int num40 = ((num39 - 60) / 30) + 1;
-                                    span3 = (TimeSpan) (time.AddSeconds((double) ((num40 * 30) + 60)) - DateTime.Now);
+                                    span3 = (TimeSpan)(time.AddSeconds((double)((num40 * 30) + 60)) - DateTime.Now);
                                     obj2 = str;
                                     str = string.Concat(new object[] { obj2, "SetRunTime(1,", num39, ",", Convert.ToInt32(span3.TotalSeconds), ",", count, ");" });
                                     num9++;
@@ -1136,11 +1137,23 @@
                                 }
                             }
                         }
-                        catch
+                        catch (System.Net.WebException ne)
+                        {
+                            if (!flag2)
+                            {
+                                int num41 = 1;//BTPOnlyOneCenterReg.OnlyErrorOutByUserID(intUserID);
+                                String errorDetail = ne.ToString();
+                                BTPErrorManager.AddError("onlyone", string.Format("胜者意外退出，获取不到比赛战报，用户ID{0},错误详情{1}", intUserID, errorDetail));
+                                return ("error|1;GoSay(" + num41 + ");");
+                            }
+                        }
+                        catch (Exception e)
                         {
                             if (!flag2)
                             {
                                 int num41 = BTPOnlyOneCenterReg.OnlyErrorOutByUserID(intUserID);
+                                String errorDetail = e.ToString();
+                                BTPErrorManager.AddError("onlyone", string.Format("胜者意外退出，获取不到比赛战报，用户ID{0},错误详情{1}", intUserID, errorDetail));
                                 return ("error|1;GoSay(" + num41 + ");");
                             }
                         }

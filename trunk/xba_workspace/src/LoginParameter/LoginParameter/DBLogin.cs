@@ -77,7 +77,7 @@
                 }
                 return null;
             }*/
-            return "老玩家永无道具服";
+            return "无道服";
         }
 
         public static string GameNameEnglish(int intCategory)
@@ -148,7 +148,10 @@
         public static string GetConnWithTime(int intCategory, int intTimeout)
         {
 
-            return ("user id = BTPAdmin;password = BTPAdmin123;initial catalog=NewBTP;data source=127.0.0.1;Connection Timeout=" + intTimeout + ";");
+            //return ("user id = BTPAdmin;password = BTPAdmin123;initial catalog=NewBTP;data source=www.113388.net;Connection Timeout=" + intTimeout + ";");
+
+            return ("user id = BTPAdmin;password = BTPAdmin123;initial catalog=NewBTP;data source=n1.113388.net;Connection Timeout=" + intTimeout + ";");
+
 
             //if (!ServerParameter.blnUseServer)
             //{
@@ -234,7 +237,7 @@
 
         public static string URLString(int intCategory)
         {
-            if (!ServerParameter.blnUseServer)
+            /*if (!ServerParameter.blnUseServer)
             {
                 switch (intCategory)
                 {
@@ -293,7 +296,7 @@
                         return "http://d1.xba.com.cn/";
 
                     case 40:
-                        return "http://www.xba.com.cn/";
+                        return "http://www.113388.net/";
                 }
                 return null;
             }
@@ -315,7 +318,8 @@
                 }
                 return null;
             }
-            return null;
+            return null;*/
+            return "http://www.113388.net/";
         }
     }
 }

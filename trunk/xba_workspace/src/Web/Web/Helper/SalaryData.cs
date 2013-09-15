@@ -31,41 +31,49 @@
             int num5 = clubSalaryByClubID - salaryTop;
             if (num5 > 0)
             {
+                /*20001*/
                 if (num5 < 0x4e21)
                 {
                     num3 = 110;
                     num4 = 1;
                 }
+                /*15000*/
                 else if (num5 < 0x3a98)
                 {
                     num3 = 0x6d;
                     num4 = 2;
                 }
+                /*21000*/
                 else if (num5 <= 0x5208)
                 {
                     num3 = 0x6c;
                     num4 = 3;
                 }
+                /*25000*/
                 else if (num5 <= 0x61a8)
                 {
                     num3 = 0x6b;
                     num4 = 4;
                 }
+                /*29000*/
                 else if (num5 <= 0x7148)
                 {
                     num3 = 0x6a;
                     num4 = 5;
                 }
+                /*33000*/
                 else if (num5 <= 0x80e8)
                 {
                     num3 = 0x69;
                     num4 = 6;
                 }
+                /*37000*/
                 else if (num5 <= 0x9088)
                 {
                     num3 = 0x68;
                     num4 = 7;
                 }
+                /*41000*/
                 else if (num5 <= 0xa028)
                 {
                     num3 = 0x67;

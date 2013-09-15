@@ -154,6 +154,10 @@
                     int num9 = (byte) row["Category"];
                     string strEvent = row["Event"].ToString();
                     int intAbility = (int) row["Ability"];
+                    if (num9 == 3)
+                    {
+                        intAbility = 999;
+                    }
                     int intSuspend = (byte) row["Suspend"];
                     int num14 = (byte) row["Happy"];
                     bool flag2 = (bool) row["IsRetire"];
@@ -191,6 +195,17 @@
                     else if ((this.intType == 5) && (num9 == 2))
                     {
                         str2 = "<font color='#660066'>拍卖中</font>";
+                    }
+                    else if ((this.intType == 5) && (num9 == 3))
+                    {
+                        if (row2 == null)
+                        {
+                            str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=UNSETTRIAL&PlayerID=", longPlayerID, "'>结束试训</a>" });
+                        }
+                        else
+                        {
+                            str2 = "试训中";
+                        }
                     }
                     else
                     {
@@ -359,17 +374,34 @@
                     byte num1 = (byte) row["Category"];
                     int intAbility = (int) row["Ability"];
                     int num2 = (int) row["AbilityMax"];
-                    if (num2 > 550)
+
+                    int intMax0 = 550;
+                    int intMax1 = 520;
+                    int intMax2 = 490;
+                    int intMax3 = 470;
+                    if (num6 > 206)
+                    {
+                        intMax0 = 510;
+                        intMax1 = 480;
+                        intMax2 = 470;
+                        intMax3 = 460;
+                    }
+
+                    if (num2 > intMax0)
+                    {
+                        str2 = "<font color=\"#080808\">未来的领袖</font>";
+                        str5 = "不愧是" + this.strNickName + "经理！您竟然可以选中" + str2 + "！一定要好好培养，他将来一定会成为您的球队领袖的！";
+                    }else if (num2 > intMax1 && num2 <= intMax0)
                     {
                         str2 = "<font color=\"#fe0022\">天下的巨星</font>";
                         str5 = "不愧是" + this.strNickName + "经理！您竟然一次就选中了一个" + str2 + "！果然是慧眼识英才！您的球队一定会越来越强大的！";
                     }
-                    else if ((num2 > 520) && (num2 <= 550))
+                    else if ((num2 > intMax2) && (num2 <= intMax1)) 
                     {
                         str2 = "<font color=\"#0000fe\">旷世的奇才</font>";
                         str5 = "太厉害了！您选择了一个" + str2 + "，将来的他一定会成为您球队中的一线球员！我很期待再次与您合作！";
                     }
-                    else if ((num2 > 480) && (num2 <= 520))
+                    else if ((num2 > intMax3) && (num2 <= intMax2))
                     {
                         str2 = "<font color=\"#b01b2f\">篮坛的奇葩</font>";
                         str5 = "您选择的球员是一个" + str2 + "，他的能力也是得到我的肯定的，不过应该还有更加有潜力的球员，下次努力吧！";
@@ -404,7 +436,7 @@
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                     num9++;
                 }
-                this.sbList.Append("<tr><td colspan='9' height=\"20\"></td></tr>");
+                //this.sbList.Append("<tr><td colspan='9' height=\"20\"></td></tr>");
                 this.sbList.Append("<tr><td colspan='9'>");
                 this.sbList.Append("<table  width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
                 this.sbList.Append("<tr>");
@@ -607,26 +639,35 @@
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                 }
             }
-            if (num9 > 0x1a)
+
+
+            /*返老功能是否可用*/
+            if (Config.Player5FLEnable())
             {
-                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                this.sbList.Append("<td height='25'><strong>返老还童</strong></td>");
-                this.sbList.Append("<td align='left' >使用之后，球员的年龄将会降低1岁，小于27岁的球员无效。</td>");
-                this.sbList.Append("<td><font color='red'>" + num13 + "</font></td>");
-                this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=3' target='Center'>使用<a></td>" }));
-                this.sbList.Append("</tr>");
-                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+
+                if (num9 > 0x1a)
+                {
+                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    this.sbList.Append("<td height='25'><strong>返老还童</strong></td>");
+                    this.sbList.Append("<td align='left' >使用之后，球员的年龄将会降低1岁，小于27岁的球员无效。</td>");
+                    this.sbList.Append("<td><font color='red'>" + num13 + "</font></td>");
+                    this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=3' target='Center'>使用<a></td>" }));
+                    this.sbList.Append("</tr>");
+                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                }
+                else
+                {
+                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    this.sbList.Append("<td height='25'><strong>返老还童</strong></td>");
+                    this.sbList.Append("<td align='left' >使用之后，球员的年龄将会降低1岁，小于27岁的球员无效。</td>");
+                    this.sbList.Append("<td><font color='red'>" + num13 + "</font></td>");
+                    this.sbList.Append("<td style='color:#666666'>使用</td>");
+                    this.sbList.Append("</tr>");
+                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                }
+
             }
-            else
-            {
-                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                this.sbList.Append("<td height='25'><strong>返老还童</strong></td>");
-                this.sbList.Append("<td align='left' >使用之后，球员的年龄将会降低1岁，小于27岁的球员无效。</td>");
-                this.sbList.Append("<td><font color='red'>" + num13 + "</font></td>");
-                this.sbList.Append("<td style='color:#666666'>使用</td>");
-                this.sbList.Append("</tr>");
-                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
-            }
+
             if (num != 1)
             {
                 this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
@@ -649,35 +690,41 @@
             }
             if (intPlayerType == 5)
             {
-                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                this.sbList.Append("<td height='25'><strong>魔鬼训练</strong></td>");
-                this.sbList.Append("<td align='left'>训练成功则现有能力值降低2点，扣除10点体力，并增加球员某一项能力的最大值2点。训练失败则仅扣除10点体力</td>");
-                this.sbList.Append("<td><font color='red'>" + num15 + "</font></td>");
-                this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=5' target='Center'>使用<a></td>" }));
-                this.sbList.Append("</tr>");
-                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
-            }
-            if (intPlayerType == 3)
-            {
-                if (num9 < 0x16)
+                if (Config.Player5MGEnable())
                 {
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
-                    this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
-                    this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
-                    this.sbList.Append("<td><a href='SecretaryPage.aspx?Type=TIMEHOUSE&PlayerID=" + lngPlayerID + "' target='Center'>使用<a></td>");
+                    this.sbList.Append("<td height='25'><strong>魔鬼训练</strong></td>");
+                    this.sbList.Append("<td align='left'>训练成功则现有能力值降低2点，扣除10点体力，并增加球员某一项能力的最大值2点。训练失败则仅扣除10点体力</td>");
+                    this.sbList.Append("<td><font color='red'>" + num15 + "</font></td>");
+                    this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=5' target='Center'>使用<a></td>" }));
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                 }
-                else
+                }
+            if (intPlayerType == 3)
+            {
+                if (Config.Player3SZEnable())
                 {
-                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
-                    this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
-                    this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
-                    this.sbList.Append("<td style='color:#666666'>使用</td>");
-                    this.sbList.Append("</tr>");
-                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    if (num9 < 0x16)
+                    {
+                        this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                        this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
+                        this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
+                        this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
+                        this.sbList.Append("<td><a href='SecretaryPage.aspx?Type=TIMEHOUSE&PlayerID=" + lngPlayerID + "' target='Center'>使用<a></td>");
+                        this.sbList.Append("</tr>");
+                        this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    }
+                    else
+                    {
+                        this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                        this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
+                        this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
+                        this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
+                        this.sbList.Append("<td style='color:#666666'>使用</td>");
+                        this.sbList.Append("</tr>");
+                        this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    }
                 }
             }
             if (intPlayerType == 5)
@@ -691,25 +738,31 @@
                 {
                     str = "<font color='red'>" + num17 + "</font>";
                 }
-                if (!flag)
+
+                if (Config.Player5JSEnable())
                 {
-                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append("<td height='25'><strong>极速特训</strong></td>");
-                    this.sbList.Append("<td align='left'>送球员参加极速特训，可以瞬间获得1个赛季的现有能力的成长，同时年龄增加1岁。</td>");
-                    this.sbList.Append("<td>" + str + "</td>");
-                    this.sbList.Append("<td><a href='Player5AutoTrain.aspx?PlayerID=" + lngPlayerID + "' target='Center'>使用<a></td>");
-                    this.sbList.Append("</tr>");
-                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
-                }
-                else
-                {
-                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append("<td height='25'><strong>极速特训</strong></td>");
-                    this.sbList.Append("<td align='left'>送球员参加极速特训，可以瞬间获得1个赛季的现有能力的成长，同时年龄增加1岁。</td>");
-                    this.sbList.Append("<td>" + str + "</td>");
-                    this.sbList.Append("<td style='color:#666666'>使用</td>");
-                    this.sbList.Append("</tr>");
-                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+
+                    if (!flag)
+                    {
+                        this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                        this.sbList.Append("<td height='25'><strong>极速特训</strong></td>");
+                        this.sbList.Append("<td align='left'>送球员参加极速特训，可以瞬间获得1个赛季的现有能力的成长，同时年龄增加1岁。</td>");
+                        this.sbList.Append("<td>" + str + "</td>");
+                        this.sbList.Append("<td><a href='Player5AutoTrain.aspx?PlayerID=" + lngPlayerID + "' target='Center'>使用<a></td>");
+                        this.sbList.Append("</tr>");
+                        this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    }
+                    else
+                    {
+                        this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                        this.sbList.Append("<td height='25'><strong>极速特训</strong></td>");
+                        this.sbList.Append("<td align='left'>送球员参加极速特训，可以瞬间获得1个赛季的现有能力的成长，同时年龄增加1岁。</td>");
+                        this.sbList.Append("<td>" + str + "</td>");
+                        this.sbList.Append("<td style='color:#666666'>使用</td>");
+                        this.sbList.Append("</tr>");
+                        this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+                    }
+
                 }
             }
         }
@@ -740,6 +793,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
+            this.tbMedicineCenter.Visible = false;
             this.SetPageIntro();
             this.SetList();
         }
@@ -1012,8 +1066,11 @@
                     this.sbPageIntro.Append(str);
                     this.sbPageIntro.Append(str2);
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.strSalaryTopDown = "<a onclick='javascript:window.top.Main.Right.location=\"Intro/PlayerCenter.aspx?Type=SEARCH\"' href=\"PlayerCenter.aspx?UserID=" + this.intUserID + "&Type=7\"><img Width=\"64\" Height=\"24\" src=\"Images/qt.gif\" id=\"imgSearchPlayer\" border=\"0\" /></a>";
-                    return;
+                    if (Config.Player3QTEnable())
+                    {
+                        this.strSalaryTopDown = "<a onclick='javascript:window.top.Main.Right.location=\"Intro/PlayerCenter.aspx?Type=SEARCH\"' href=\"PlayerCenter.aspx?UserID=" + this.intUserID + "&Type=7\"><img Width=\"64\" Height=\"24\" src=\"Images/qt.gif\" id=\"imgSearchPlayer\" border=\"0\" /></a>";
+                    }
+                        return;
 
                 case 4:
                     this.sbPageIntro = new StringBuilder();

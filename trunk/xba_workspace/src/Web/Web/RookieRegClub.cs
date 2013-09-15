@@ -24,6 +24,7 @@
         public string strTimeName;
         protected TextBox tbClubName;
         protected HtmlTable tblLogin_02;
+        protected int intRecomUserID;
 
         private void btnRegClub_Click(object sender, ImageClickEventArgs e)
         {
@@ -159,7 +160,7 @@
                         this.strNickName = onlineRowByUserID["NickName"].ToString().Trim();
                         bool blnSex = (bool) onlineRowByUserID["Sex"];
                         str8 = onlineRowByUserID["DiskURL"].ToString().Trim();
-                        BTPAccountManager.AddFullAccount(this.intUserID, pToEncrypt, this.strNickName, str2, blnSex, 0, str8 + "/", str6, str5, str4, strQQ);
+                        BTPAccountManager.AddFullAccount(this.intUserID, pToEncrypt, this.strNickName, str2, blnSex, 0, str8 + "/", str6, str5, str4, strQQ, this.intRecomUserID, "");
                         string str11 = Convert.ToString((int) (ServerParameter.intGameCategory + 0x7d0)).Trim();
                         str7 = str7.Trim() + str11 + ",";
                         ROOTUserGameManager.UpdateDeptTagByUserID(this.intUserID, str7);

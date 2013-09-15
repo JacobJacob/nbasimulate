@@ -23,6 +23,7 @@
         protected ImageButton btnModify;
         protected ImageButton btnO;
         protected ImageButton btnOK;
+        protected ImageButton btnBuyRep;
         protected ImageButton btnOKA;
         protected ImageButton btnPicOK;
         protected ImageButton btnSearch;
@@ -165,6 +166,7 @@
         protected HtmlTable tblWealthFinance;
         protected HtmlTable tblXCupIntro;
         protected HtmlTable tblXResult;
+        protected HtmlTable tblBuyRep;
         protected TextBox tbMessage;
         protected TextBox tbName;
         protected TextBox tbNickNameA;
@@ -187,6 +189,7 @@
         protected TextBox tbUQQ;
         protected TextBox tbUQQM;
         protected TextBox tbWealth;
+        protected TextBox tbRep;
         protected HtmlTableRow trXCupReg;
 
         private void Assign()
@@ -251,7 +254,7 @@
             {
                 num2 = 0;
             }
-            int intRegCharge = Convert.ToInt32(this.ddlRegCharge.SelectedValue.ToString());
+            int intRegCharge = 0;//Convert.ToInt32(this.ddlRegCharge.SelectedValue.ToString());
             if (intRegCharge < 0)
             {
                 intRegCharge = 0;
@@ -305,28 +308,28 @@
                     case "2":
                     case "3":
                     case "4":
-                        num10 = 0x20;
+                        num10 = 32;
                         num12 = 100;
                         if (str == "1")
                         {
-                            num11 = 100;
+                            num11 = 0;
                         }
                         else if (str == "2")
                         {
-                            num11 = 200;
+                            num11 = 100;
                         }
                         else if (str == "3")
                         {
-                            num11 = 400;
+                            num11 = 200;
                         }
                         else if (str == "4")
                         {
-                            num11 = 800;
+                            num11 = 400;
                         }
                         else
                         {
                             str = "1";
-                            num11 = 100;
+                            num11 = 0;
                         }
                         goto Label_0518;
 
@@ -334,28 +337,28 @@
                     case "6":
                     case "7":
                     case "8":
-                        num10 = 0x40;
+                        num10 = 64;
                         num12 = 200;
                         if (str == "5")
                         {
-                            num11 = 150;
+                            num11 = 75;
                         }
                         else if (str == "6")
                         {
-                            num11 = 300;
+                            num11 = 150;
                         }
                         else if (str == "7")
                         {
-                            num11 = 600;
+                            num11 = 300;
                         }
                         else if (str == "8")
                         {
-                            num11 = 0x4b0;
+                            num11 = 600;
                         }
                         else
                         {
                             str = "1";
-                            num11 = 100;
+                            num11 = 0;
                         }
                         goto Label_0518;
 
@@ -363,28 +366,28 @@
                     case "10":
                     case "11":
                     case "12":
-                        num10 = 0x80;
+                        num10 = 128;
                         num12 = 400;
                         if (str == "9")
                         {
-                            num11 = 200;
+                            num11 = 100;
                         }
                         else if (str == "10")
                         {
-                            num11 = 400;
+                            num11 = 200;
                         }
                         else if (str == "11")
                         {
-                            num11 = 800;
+                            num11 = 400;
                         }
                         else if (str == "12")
                         {
-                            num11 = 0x640;
+                            num11 = 800;
                         }
                         else
                         {
                             str = "1";
-                            num11 = 100;
+                            num11 = 0;
                         }
                         goto Label_0518;
 
@@ -392,23 +395,23 @@
                     case "14":
                     case "15":
                     case "16":
-                        num10 = 0x100;
+                        num10 = 256;
                         num12 = 800;
                         if (str == "13")
                         {
-                            num11 = 250;
+                            num11 = 125;
                         }
                         else if (str == "14")
                         {
-                            num11 = 500;
+                            num11 = 250;
                         }
                         else if (str == "15")
                         {
-                            num11 = 0x3e8;
+                            num11 = 500;
                         }
                         else if (str == "16")
                         {
-                            num11 = 0x7d0;
+                            num11 = 1000;
                         }
                         else
                         {
@@ -428,6 +431,8 @@
                 return;
             }
         Label_0518:
+            //num11 = num11 / 2;
+            num12 = 0;
             if (intRegClub == 1)
             {
                 str5 = "<UnionID>" + intUnionIDS + "</UnionID>";
@@ -531,6 +536,40 @@
 
                 case 1:
                     base.Response.Redirect("Report.aspx?Parameter=521!Type.MYUNION^Kind.WEALTHFINANCE^Page.1");
+                    break;
+            }
+        }
+
+        private void btnBuyRep_Click(object sender, ImageClickEventArgs e)
+        {
+            int intResult = 0;
+            string strRep = this.tbRep.Text.ToString();
+            if (StringItem.IsNumber(strRep))
+            {
+                int intRep = Convert.ToInt32(strRep);
+                if (intRep<=0)
+                {
+                    intRep = intRep * -1;   
+                }
+                intResult = BTPUnionManager.BuyUnionRep(this.intUserID, this.intUnionIDS, intRep);
+            }
+            else
+            {
+                base.Response.Redirect("Report.aspx?Parameter=BURE03");
+                return;
+            }
+            switch (intResult)
+            {
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=BURE01");
+                    return;
+
+                case 2:
+                    base.Response.Redirect("Report.aspx?Parameter=BURE02");
+                    return;
+
+                case 3:
+                    base.Response.Redirect("Report.aspx?Parameter=BURS01!Type.MYUNION^Kind.WEALTHFINANCE^Page.1");
                     break;
             }
         }
@@ -1172,7 +1211,15 @@
             string str2 = "";
             if (this.strKind == "WEALTHFINANCE")
             {
-                str2 = "<span style='margin-right:80px' algin='left'><a href='Union.aspx?Type=MYUNION&Kind=DONATEWEALTH&Page=1'>捐赠游戏币</a></span>";
+                str2 = "<span style='margin-right:30px' algin='left'><a href='Union.aspx?Type=MYUNION&Kind=DONATEWEALTH&Page=1'>捐赠游戏币</a></span>";
+
+
+                DataRow allInfoByUnionID = BTPUnionManager.GetAllInfoByUnionID(this.intUnionID);
+                int intUserID = (int)allInfoByUnionID["Creater"];
+                if (intUserID == this.intUserID)
+                {
+                    str2 = str2 + "<span style='margin-right:30px' algin='left'><a href='Union.aspx?Type=MYUNION&Kind=BUYREP&Page=1'>购买联盟威望</a></span>";
+                }
             }
             if (this.intPage == 1)
             {
@@ -1286,6 +1333,7 @@
             this.btnUOK.Click += new ImageClickEventHandler(this.btnUOK_Click);
             this.btnCreate.Click += new ImageClickEventHandler(this.btnCreate_Click);
             this.btnModify.Click += new ImageClickEventHandler(this.btnModify_Click);
+            this.btnBuyRep.Click += new ImageClickEventHandler(this.btnBuyRep_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -1400,6 +1448,7 @@
                 this.tblXCupIntro.Visible = false;
                 this.tblXResult.Visible = false;
                 this.tblDonateWealth.Visible = false;
+                this.tblBuyRep.Visible = false;
                 this.tblWealthFinance.Visible = false;
                 this.tblCreateDevCup.Visible = false;
                 this.tblCupManage.Visible = false;
@@ -1437,7 +1486,11 @@
             this.btnXResult.ImageUrl = SessionItem.GetImageURL() + "button_35.gif";
             this.btnXSchedule.ImageUrl = SessionItem.GetImageURL() + "button_36.gif";
             this.btnDemise.ImageUrl = SessionItem.GetImageURL() + "btn_Demise.gif";
+            this.btnCreate.ImageUrl = SessionItem.GetImageURL() + "button_46.gif";
+            this.btnModify.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnAdd.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnDonate.ImageUrl = SessionItem.GetImageURL() + "button_44.gif";
+            this.btnBuyRep.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
         }
 
         private void SetImperialCupList()
@@ -1805,6 +1858,23 @@
                     this.tblDonateWealth.Visible = true;
                     return;
 
+                case "BUYREP":
+                    this.strPageIntro1 = string.Concat(new object[] { 
+                        "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
+                        "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
+                     });
+                    if (this.intUnionCategory != 1)
+                    {
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                    }
+                    else
+                    {
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                    }
+                    this.tblBuyRep.Visible = true;
+                    return;
+
                 case "CREATECUP":
                     this.strPageIntro1 = string.Concat(new object[] { 
                         "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
@@ -2000,9 +2070,9 @@
                     this.tblDemise.Visible = true;
                     return;
             }
-            //this.strPageIntro2 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&Page=1'>杯赛管理</a>";
-            //this.tblSetIntro.Visible = true;
-            //this.SetIntros();
+            this.strPageIntro2 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&Page=1'>杯赛管理</a>";
+            this.tblSetIntro.Visible = true;
+            this.SetIntros();
         }
 
         private void SetIntros()
@@ -2316,6 +2386,10 @@
 
         private void SetUnionIntro()
         {
+
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            this.intUnionID = (int)accountRowByUserID["UnionID"];
+            
             object obj2;
             this.divUnionIntro.Visible = true;
             int request = (int) SessionItem.GetRequest("UnionID", 0);
@@ -2336,6 +2410,22 @@
             string str6 = allInfoByUnionID["UQQ"].ToString().Trim();
             string str7 = "论坛";
             string str8 = allInfoByUnionID["UBBS"].ToString().Trim();
+            if (this.intUnionID == request)
+            {
+                DataRow unionPolityRow = BTPUnionPolity.GetDelMasterRow(this.intUnionID);
+                if (unionPolityRow == null)
+                {
+                    if (this.intUserID != intUserID)
+                    {
+                        str4 = str4 + "<a href='Temp_Right.aspx?Type=DELATEMASTER' target=\"Right\"><font color=red>[弹劾]</font></a>";
+                    }
+                }
+                else
+                {
+                    str4 = str4 + "<a href='UnionPolity.aspx?Type=DELMASTER' ><font color=red>[投票]</font></a>";
+                }
+            }
+            
             if (str8.IndexOf("UnionBoard.aspx?Type=UNIONBBS") != -1)
             {
                 str7 = "<a href=\"UnionBoard.aspx?Type=UNIONBBS&UnionID=" + request + "&Page=1\">论坛</a>";
@@ -2353,7 +2443,7 @@
                 "<tr><td><table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td height='60'><img src='Images/UnionLogo/", str, ".gif' height='46' width='46' border='0'></td><td><font style='line-height:130%'><strong>联盟：</strong><a href='UnionList.aspx?UnionID=", request, "&Page=1' target='Right'>", str2, "[", str3, "]</a><br><strong>盟主：</strong>", str4, "</font></td><td><font style='line-height:130%'><strong>威望：</strong>", num2, "<br><strong>盟员：</strong><a href='UnionList.aspx?UnionID=", request, "&Page=1' target='Right'>", num3, 
                 "</a></font></td><td cospan='2'><font style='line-height:130%'>", str9, "<br> ", str7
              });
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+               
             int num5 = (int) accountRowByUserID["UnionID"];
             int num6 = (byte) accountRowByUserID["UnionCategory"];
             if ((num5 == request) && (num6 != 1))
@@ -2603,6 +2693,13 @@
                             obj2 = str6;
                             str6 = string.Concat(new object[] { obj2, "|<a title='邀请参加冠军杯' target=\"Right\" href='Temp_Right.aspx?Type=CHAMPIONCUP&UserID=", intUserID, "'>邀</a>" });
                         }
+
+                        if(true)
+                        {
+                            obj2 = str6;
+                            str6 = string.Concat(new object[] { obj2, "|<a title='邀请参加联盟争霸赛' target=\"Right\" href='Temp_Right.aspx?Type=UNIONCUPSEND&UserID=", intUserID, "'>霸</a>" });
+                        }
+
                     }
                     else if (((num5 == 2) && (num3 != 2)) && (num3 != 1))
                     {

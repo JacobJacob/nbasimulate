@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Web.Util
 {
-    public class LogManager
+    internal class LogManager
     {
         private static string logPath = string.Empty;
         public static string LogPath

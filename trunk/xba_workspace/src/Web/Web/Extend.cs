@@ -75,9 +75,13 @@
             {
                 this.longPlayerID = (long) SessionItem.GetRequest("PlayerID", 3);
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
+                int intClubId = BTPClubManager.GetClubIDByUserID(this.intUserID);
                 string str = playerRowByPlayerID["Name"].ToString().Trim();
                 int num = (int) playerRowByPlayerID["PV"];
+                int intFromClubID = Convert.ToInt32(playerRowByPlayerID["FromClubID"]);
+                int intPlayedYear = Convert.ToInt32(playerRowByPlayerID["PlayedYear"]);
                 int num2 = (byte) playerRowByPlayerID["Contract"];
+                int age = Convert.ToInt32(playerRowByPlayerID["Age"]);
                 this.blnContractType = (bool) playerRowByPlayerID["ContractType"];
                 if (num2 > 10)
                 {
@@ -95,6 +99,17 @@
                     {
                         this.intSalary = 0xc350;
                     }
+
+                    if (intFromClubID == intClubId && intPlayedYear <= 1 && this.intSalary > 20000)
+                    {
+                        this.intSalary = 20000;
+                    }
+
+                    if (age >= 32 && this.intSalary > 20000)
+                    {
+                        this.intSalary = 20000;
+                    }
+
                     playerRowByPlayerID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
                     if (playerRowByPlayerID != null)
                     {

@@ -2,3 +2,11 @@ D:\xba_workspace\src\AjaxPro\obj\Debug\ResolveAssemblyReference.cache
 D:\xba_workspace\src\AjaxPro\obj\Debug\AjaxPro.core.js
 D:\xba_workspace\src\AjaxPro\obj\Debug\AjaxPro.prototype.js
 D:\xba_workspace\src\AjaxPro\obj\Debug\ms\AjaxPro.js
+D:\develop\xba_workspace\src\AjaxPro\obj\Release\ResolveAssemblyReference.cache
+D:\develop\xba_workspace\src\AjaxPro\obj\Release\AjaxPro.core.js
+D:\develop\xba_workspace\src\AjaxPro\obj\Release\AjaxPro.prototype.js
+D:\develop\xba_workspace\src\AjaxPro\obj\Release\ms\AjaxPro.js
+E:\xba_workspace\src\AjaxPro\obj\Debug\ResolveAssemblyReference.cache
+E:\xba_workspace\src\AjaxPro\obj\Debug\AjaxPro.core.js
+E:\xba_workspace\src\AjaxPro\obj\Debug\AjaxPro.prototype.js
+E:\xba_workspace\src\AjaxPro\obj\Debug\ms\AjaxPro.js

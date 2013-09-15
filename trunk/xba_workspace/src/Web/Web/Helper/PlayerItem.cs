@@ -23,6 +23,11 @@
 
         public static void ChangePlayerFromArrange3(long longPlayerID, int intClubID)
         {
+            ChangePlayerFromArrange3(longPlayerID, intClubID, false);
+        }
+
+        public static void ChangePlayerFromArrange3(long longPlayerID, int intClubID, bool fouce)
+        {
             DataTable arrTableByClubID = BTPArrange3Manager.GetArrTableByClubID(intClubID);
             bool flag = false;
             foreach (DataRow row in arrTableByClubID.Rows)
@@ -33,8 +38,14 @@
                 {
                     if (longIDs[i] == longPlayerID)
                     {
-                        longIDs[i] = BTPPlayer3Manager.GetCanPlay3ID(longIDs, intClubID);
+                        long id = BTPPlayer3Manager.GetCanPlay3ID(longIDs, intClubID);
+                        if (fouce && id <= 0)
+                        {
+                            BTPPlayer3Manager.CreateFillPlayer3(intClubID);
+                            id = BTPPlayer3Manager.GetCanPlay3ID(longIDs, intClubID);
+                        } 
                         flag = true;
+                        longIDs[i] = id;
                     }
                 }
                 if (flag)
@@ -47,17 +58,30 @@
 
         public static void ChangePlayerFromArrange5(long longPlayerID, int intClubID)
         {
+            ChangePlayerFromArrange5(longPlayerID, intClubID, false);
+        }
+
+        public static void ChangePlayerFromArrange5(long longPlayerID, int intClubID, bool fouce)
+        {
             DataTable arrTableByClubID = BTPArrange5Manager.GetArrTableByClubID(intClubID);
             bool flag = false;
             foreach (DataRow row in arrTableByClubID.Rows)
             {
-                int intArrangeID = (int) row["Arrange5ID"];
-                long[] longIDs = new long[] { (long) row["CID"], (long) row["PFID"], (long) row["SFID"], (long) row["SGID"], (long) row["PGID"] };
+                int intArrangeID = (int)row["Arrange5ID"];
+                long[] longIDs = new long[] { (long)row["CID"], (long)row["PFID"], (long)row["SFID"], (long)row["SGID"], (long)row["PGID"] };
                 for (int i = 0; i < longIDs.Length; i++)
                 {
                     if (longIDs[i] == longPlayerID)
                     {
-                        longIDs[i] = BTPPlayer5Manager.GetCanPlay5ID(longIDs, intClubID);
+                        Console.WriteLine("remove " + longPlayerID + " from arrange");
+                        long id = BTPPlayer5Manager.GetCanPlay5ID(longIDs, intClubID);
+                        if (fouce && id <= 0)
+                        {
+                            BTPPlayer5Manager.CreateFillPlayer5(intClubID);
+                            id = BTPPlayer5Manager.GetCanPlay5ID(longIDs, intClubID);
+                            Console.WriteLine("reget playerid is:" + id);
+                        } 
+                        longIDs[i] = id;
                         flag = true;
                     }
                 }

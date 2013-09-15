@@ -9,7 +9,7 @@
         private string strEmail;
         private string strNickName;
         private string strSender = "postmaster@xba.com.cn";
-        private string strSendServiceName = "mail.xba.com.cn";
+        private string strSendServiceName = "mail.1xba.com.cn";
         private string strSendServicePW = "20031118";
         private string strSmtp;
         private string strTitle;

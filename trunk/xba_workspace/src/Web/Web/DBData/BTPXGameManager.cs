@@ -153,6 +153,18 @@
             string commandText = "UPDATE BTP_XGame SET MatchTime=DATEADD(Day,1,MatchTime) WHERE XGameID=" + intXGameID;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
+
+        public static int GetXGameRound()
+        {
+            string commandText = "SELECT TOP 1 Round FROM BTP_XGame Order By XGameID Desc";
+            DataRow dataRow = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            int intRound = 0;
+            if (dataRow != null)
+            {
+                intRound = Convert.ToInt32(dataRow["Round"]);
+            }
+            return intRound;
+        }
     }
 }
 

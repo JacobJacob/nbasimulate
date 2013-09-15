@@ -108,7 +108,7 @@
                         int num6 = (byte) row["Weight"];
                         int intAbility = (int) row["Ability"];
                         float single1 = ((float) ((int) row["Ability"])) / 10f;
-                        int num7 = (int) row["BidPrice"];
+                        long num7 = Convert.ToInt64(row["BidPrice"]);
                         object strList = this.strList;
                         this.strList = string.Concat(new object[] { 
                             strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>", num2, "</td><td align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, 10, 0, 1), "</td><td>", num3, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(intPosition), "</a></td><td>", num5, "</td><td>", num6, "</td><td>", 

@@ -245,13 +245,13 @@
             return SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static void SetDevisionTran(long longPlayerID, int intUserID, int intPrice, string strCreateTime, string strIP, int intStatus)
+        public static void SetDevisionTran(long longPlayerID, int intUserID, long longPrice, string strCreateTime, string strIP, int intStatus)
         {
             string commandText = "Exec NewBTP.dbo.SetDevisionTran @longPlayerID,@intUserID,@intPrice,@strCreateTime,@strIP,@intStatus";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@longPlayerID", SqlDbType.BigInt, 8), new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@intPrice", SqlDbType.Int, 4), new SqlParameter("@strCreateTime", SqlDbType.DateTime, 8), new SqlParameter("@strIP", SqlDbType.NVarChar, 50), new SqlParameter("@intStatus", SqlDbType.TinyInt, 1) };
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@longPlayerID", SqlDbType.BigInt, 8), new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@intPrice", SqlDbType.BigInt, 8), new SqlParameter("@strCreateTime", SqlDbType.DateTime, 8), new SqlParameter("@strIP", SqlDbType.NVarChar, 50), new SqlParameter("@intStatus", SqlDbType.TinyInt, 1) };
             commandParameters[0].Value = longPlayerID;
             commandParameters[1].Value = intUserID;
-            commandParameters[2].Value = intPrice;
+            commandParameters[2].Value = longPrice;
             commandParameters[3].Value = strCreateTime;
             commandParameters[4].Value = strIP;
             commandParameters[5].Value = intStatus;

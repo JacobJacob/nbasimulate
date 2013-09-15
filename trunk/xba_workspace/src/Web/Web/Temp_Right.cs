@@ -12,12 +12,15 @@
     {
         protected ImageButton btnDelMaster;
         protected ImageButton btnOK;
+        protected ImageButton btnPromotionOk;
         protected ImageButton btnSend;
         protected ImageButton btnSendB;
+        protected ImageButton btnSendUnionCupB;
         protected ImageButton btnSendMsg;
         protected ImageButton btnSetReputation;
         protected CheckBox cbNoName;
         public int intChampionB = 0;
+        public int intUnionCupB = 0;
         public int intTopReputation = 0;
         private int intUnionCategory;
         private int intUnionID;
@@ -33,10 +36,12 @@
         protected HtmlTable tbChooseClub;
         protected TextBox tbContent;
         protected HtmlTable tblChampionCup;
+        protected HtmlTable tblUnionCup;
         protected HtmlTable tblCupList;
         protected HtmlTable tblDelMaster;
         protected HtmlTable tblDevsion;
         protected HtmlTable tblExchange;
+        protected HtmlTable tblPromotionExchange;
         protected HtmlTable tblFmatchMsg;
         protected HtmlTable tblGuess;
         protected HtmlTable tblHonour;
@@ -49,19 +54,21 @@
         protected HtmlTable tblTrainPlayerCenter;
         protected HtmlTable tblTransferMarket;
         protected HtmlTable tblUnion;
-        protected HtmlTable tblUnionCup;
+        protected HtmlTable tblUnionCupB;
         protected HtmlTable tblUnionMsgSend;
         protected HtmlTable tblWealthMarket;
         protected HtmlTable tblXBACup;
         protected HtmlTable tbMatchLev;
         protected TextBox tbNickName;
         protected TextBox tbNickNameCup;
+        protected TextBox tbNickNameUnionCup;
         protected TextBox tbReason;
         protected TextBox tbReputation;
         protected TextBox tbSendWealth;
         protected HtmlTable tbStreenLev;
         protected TextBox tbUnionWealth;
         protected TextBox tbWealth;
+        protected TextBox tbPromotion;
 
         private void btnDelMaster_Click(object sender, ImageClickEventArgs e)
         {
@@ -121,27 +128,65 @@
             }
             if (intWealth < 1)
             {
-                this.strMsg = "最少兑换1枚游戏币。";
+                this.strMsg = "最少兑换1分王者积分。";
             }
             else if (intWealth >= 0x186a0)
             {
-                this.strMsg = "您输入的游戏币数量过大，请重新输入。";
+                this.strMsg = "您输入的王者积分数量过大，请重新输入。";
             }
             else
             {
-                switch (BTPAccountManager.ExchangeWealth(this.intUserID, intWealth))
+                switch (BTPAccountManager.ExchangeOnlyPoint(this.intUserID, intWealth))
                 {
                     case 1:
-                        this.strMsg = "成功兑换到" + (intWealth * 0x2710) + "球队资金，请查收。";
+                        this.strMsg = "成功兑换到" + intWealth + "游戏币，请查收。";
                         return;
 
                     case -1:
-                        this.strMsg = "您的游戏币不足，无法进行游戏币兑换。";
+                        this.strMsg = "您的王者积分不足，无法进行游戏币兑换。";
                         return;
                 }
                 this.strMsg = "不能输入负数，请重新输入。";
             }
         }
+
+        private void btnPromotionOk_Click(object sender, ImageClickEventArgs e)
+        {
+            string str = this.tbPromotion.Text.ToString().Trim();
+            int intPromotion = 0;
+            if (StringItem.IsNumber(str))
+            {
+                intPromotion = Convert.ToInt32(str);
+            }
+            else
+            {
+                this.strMsg = "只能输入半角数字。";
+                return;
+            }
+            if (intPromotion < 1)
+            {
+                this.strMsg = "最少兑换1分推广积分。";
+            }
+            else if (intPromotion >= 0x186a0)
+            {
+                this.strMsg = "您输入的推广积分数量过大，请重新输入。";
+            }
+            else
+            {
+                switch (BTPAccountManager.ExchangePromotionPoint(this.intUserID, intPromotion))
+                {
+                    case 1:
+                        this.strMsg = "成功兑换到" + intPromotion + "游戏币，请查收。";
+                        return;
+
+                    case -1:
+                        this.strMsg = "您的推广积分不足，无法进行游戏币兑换。";
+                        return;
+                }
+                this.strMsg = "不能输入负数，请重新输入。";
+            }
+        }
+
 
         private void btnSend_Click(object sender, ImageClickEventArgs e)
         {
@@ -202,6 +247,44 @@
                 this.intChampionB = (int) unionRowByID["XBACupCount"];
             }
         }
+
+        private void btnSendUnionCupB_Click(object sender, ImageClickEventArgs e)
+        {
+            int result = BTPUnionCupManager.SendUnionCup(this.intUserID, this.intUserIDB);
+
+            switch (result)
+            {
+                case 1:
+                    this.strMsg = "<font color=red>发放成功！</font>";
+                    break;
+
+                case -3:
+                    this.strMsg = "<font color=red>对不起，联盟争霸赛邀请函已发送完毕！</font>";
+                    break;
+
+                case -4:
+                    this.strMsg = "<font color=red>对不起，对方已经有本届联盟争霸赛邀请函了！</font>";
+                    break;
+
+                case -1:
+                    this.strMsg = "<font color=red>对不起，此经理不是您联盟成员！</font>";
+                    break;
+
+                case -2:
+                    this.strMsg = "<font color=red>对不起，您不是联盟盟主！</font>";
+                    break;
+
+                case -5:
+                    this.strMsg = "<font color=red>对不起，此经理没有职业队！</font>";
+                    break;
+            }
+            DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
+            if (unionRowByID != null)
+            {
+                this.intUnionCupB = (int)unionRowByID["UnionCupCount"];
+            }
+        }
+
 
         private void btnSendMsg_Click(object sender, ImageClickEventArgs e)
         {
@@ -320,10 +403,22 @@
             this.btnSend.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSend) + ";this.disabled=true;";
             this.btnSendMsg.Click += new ImageClickEventHandler(this.btnSendMsg_Click);
             this.btnSendMsg.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSendMsg) + ";this.disabled=true;";
+            
             this.btnSendB.Click += new ImageClickEventHandler(this.btnSendB_Click);
             this.btnSendB.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSendB) + ";this.disabled=true;";
+
+            this.btnSendUnionCupB.Click += new ImageClickEventHandler(this.btnSendUnionCupB_Click);
+            this.btnSendUnionCupB.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSendUnionCupB) + ";this.disabled=true;";
+            
+            
             this.btnSetReputation.Click += new ImageClickEventHandler(this.btnSetReputation_Click);
             this.btnDelMaster.Click += new ImageClickEventHandler(this.btnDelMaster_Click);
+
+            this.btnPromotionOk.Click += new ImageClickEventHandler(this.btnPromotionOk_Click);
+            this.btnPromotionOk.Attributes["onclick"] = base.GetPostBackEventReference(this.btnPromotionOk) + ";this.disabled=true;";
+
+            this.btnDelMaster.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -366,14 +461,19 @@
             this.tblSendUnionWealth.Visible = false;
             this.tblUnionMsgSend.Visible = false;
             this.tblChampionCup.Visible = false;
+            this.tblUnionCupB.Visible = false;
             this.tblReputation.Visible = false;
             this.tblDelMaster.Visible = false;
+            this.tblPromotionExchange.Visible = false;
 
             this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnPromotionOk.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSend.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSendMsg.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSetReputation.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
-
+            this.btnSendB.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            this.btnSendUnionCupB.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
+            
             switch (SessionItem.GetRequest("Type", 1).ToString().Trim())
             {
                 case "AUTOTRAIN":
@@ -401,7 +501,7 @@
                     return;
 
                 case "UNIONCUP":
-                    this.tblUnionCup.Visible = true;
+                    this.tblUnionCupB.Visible = true;
                     return;
 
                 case "XBACUP":
@@ -460,6 +560,10 @@
                     this.tblExchange.Visible = true;
                     return;
 
+                case "PROMOTIONEXCHANGE":
+                    this.tblPromotionExchange.Visible = true;
+                    return;
+
                 case "SENDWEALTH":
                 {
                     DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
@@ -499,6 +603,12 @@
                     this.tblChampionCup.Visible = true;
                     this.tbNickNameCup.Enabled = false;
                     this.SendChampionCupB();
+                    return;
+
+                case "UNIONCUPSEND":
+                    this.tblUnionCup.Visible = true;
+                    this.tbNickNameUnionCup.Enabled = false;
+                    this.SendUnionCupB();
                     return;
 
                 case "SETUREPUTATION":
@@ -568,6 +678,54 @@
                 }
             }
         }
+
+        private void SendUnionCupB()
+        {
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            if (accountRowByUserID == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else
+            {
+                this.intUnionCategory = (byte)accountRowByUserID["UnionCategory"];
+                this.intUnionID = (int)accountRowByUserID["UnionID"];
+                if (this.intUnionCategory != 1)
+                {
+                    this.strMsg = "<font color=red>对不起您不是联盟盟主不能发放邀请！</font>";
+                    this.btnSendUnionCupB.Visible = false;
+                }
+                else
+                {
+                    this.intUserIDB = (int)SessionItem.GetRequest("UserID", 0);
+                    accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserIDB);
+                    if (accountRowByUserID == null)
+                    {
+                        this.strMsg = "<font color=red>查无此经理！</font>";
+                        this.btnSendUnionCupB.Visible = false;
+                    }
+                    else
+                    {
+                        this.intUnionIDB = (int)accountRowByUserID["UnionID"];
+                        this.tbNickNameUnionCup.Text = accountRowByUserID["NickName"].ToString().Trim();
+                        if (this.intUnionIDB != this.intUnionID)
+                        {
+                            this.strMsg = "<font color=red>此经理不在您的联盟中！</font>";
+                            this.btnSendUnionCupB.Visible = false;
+                        }
+                        else
+                        {
+                            accountRowByUserID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
+                            if (accountRowByUserID != null)
+                            {
+                                this.intUnionCupB = (int)accountRowByUserID["UnionCupCount"];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         private void SetUnionMsg()
         {

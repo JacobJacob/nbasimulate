@@ -260,7 +260,7 @@
         {
             this.btnReg.Click += new ImageClickEventHandler(this.btnReg_Click);
             this.btnReg.Attributes["onclick"] = base.GetPostBackEventReference(this.btnReg) + ";this.disabled=true;";
-            this.btnFindMatch.Click += new ImageClickEventHandler(this.btnFindMatch_Click);
+            //this.btnFindMatch.Click += new ImageClickEventHandler(this.btnFindMatch_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -502,6 +502,11 @@
                 this.btnReg.Visible = false;
                 groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(1);
                 int num21 = (byte) groupTeamRowByCID["Status"];
+                /*
+                 status = 1 小组赛
+                 status = 3 安排赛程
+                 
+                 */
                 int num22 = (byte) groupTeamRowByCID["Round"];
                 DateTime time2 = (DateTime) groupTeamRowByCID["MatchTime"];
                 bool flag = false;
@@ -595,7 +600,7 @@
                 this.strChampionSay = str11;
                 return;
             }
-            if ((this.intTurn <= 3) && ((this.intTurn != 3) || (DateTime.Now.Hour < 0x11)))
+            if ((this.intTurn <= 4) && ((this.intTurn != 4) || (DateTime.Now.Hour < 0x11)))
             {
                 this.tblRegBegin.Visible = true;
                 this.tblRegEnd.Visible = false;
@@ -963,6 +968,7 @@
                     else
                     {
                         str2 = "";
+                        /*暂时关闭该功能*/
                         if ((num == intRound) || (num == (intRound + 1)))
                         {
                             string str11 = row2["ArrangeA"].ToString().Trim();
@@ -971,21 +977,22 @@
                             {
                                 if (str12 != "NO")
                                 {
-                                    str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='管理预设战术' src='", SessionItem.GetImageURL(), "Tactics_e.gif' border='0' width='12' height='16'>" });
+                                    //str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='管理预设战术' src='", SessionItem.GetImageURL(), "Tactics_e.gif' border='0' width='12' height='16'>" });
                                 }
                                 else
                                 {
-                                    str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='启用预设战术' src='", SessionItem.GetImageURL(), "Tactics.gif' border='0' width='12' height='16'>" });
+                                    //str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='启用预设战术' src='", SessionItem.GetImageURL(), "Tactics.gif' border='0' width='12' height='16'>" });
                                 }
                             }
                             else if (str11 != "NO")
                             {
-                                str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='管理预设战术' src='", SessionItem.GetImageURL(), "Tactics_e.gif' border='0' width='12' height='16'>" });
+                                //str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='管理预设战术' src='", SessionItem.GetImageURL(), "Tactics_e.gif' border='0' width='12' height='16'>" });
                             }
                             else
                             {
-                                str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='启用预设战术' src='", SessionItem.GetImageURL(), "Tactics.gif' border='0' width='12' height='16'>" });
+                                //str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='启用预设战术' src='", SessionItem.GetImageURL(), "Tactics.gif' border='0' width='12' height='16'>" });
                             }
+                            str = "";
                         }
                         else
                         {

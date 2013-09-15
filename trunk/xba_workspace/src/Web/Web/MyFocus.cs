@@ -117,6 +117,11 @@
             int num7 = (byte) playerRowByPlayerID["Height"];
             int num8 = (byte) playerRowByPlayerID["Weight"];
             int intAbility = (int) playerRowByPlayerID["Ability"];
+            if (num2 == 5)
+            {
+                intAbility = 999;
+            }
+            
             DateTime datIn = (DateTime) playerRowByPlayerID["EndBidTime"];
             num10 = (long) playerRowByPlayerID["PlayerID"];
             float single1 = ((float) intAbility) / 10f;
@@ -184,7 +189,9 @@
                 }
                 else
                 {
-                    str6 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=QUICKBUY&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "yikoujia.gif' border='0' width='33' height='9'></a><a href='SecretaryPage.aspx?Type=CANCELFOCUS&Category=", num, "&PlayerID=", num10, "' title='取消关注并不能撤销出价！'><img src='", SessionItem.GetImageURL(), "cancel.gif' border='0' width='24' height='9'></a>" });
+                    //str6 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=QUICKBUY&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "yikoujia.gif' border='0' width='33' height='9'></a><a href='SecretaryPage.aspx?Type=CANCELFOCUS&Category=", num, "&PlayerID=", num10, "' title='取消关注并不能撤销出价！'><img src='", SessionItem.GetImageURL(), "cancel.gif' border='0' width='24' height='9'></a>" });
+                    str6 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=CANCELFOCUS&Category=", num, "&PlayerID=", num10, "' title='取消关注并不能撤销出价！'><img src='", SessionItem.GetImageURL(), "cancel.gif' border='0' width='24' height='9'></a>" });
+                
                 }
             }
         Label_06C5:
@@ -205,7 +212,7 @@
             if (focusTableByUserID.Read())
             {
                 int num3;
-                int num4;
+                long price;
                 str7 = "";
                 num10 = (long) focusTableByUserID["PlayerID"];
                 num = (byte) focusTableByUserID["Category"];
@@ -219,9 +226,9 @@
                         if (devTranTopUser.Read())
                         {
                             num3 = (int) devTranTopUser["UserID"];
-                            num4 = Convert.ToInt32(devTranTopUser["Price"]);
+                            price = Convert.ToInt64(devTranTopUser["Price"]);
                             this.strNickName = BTPAccountManager.GetNickNameByUserID(num3);
-                            str4 = num4 + "<br>" + AccountItem.GetNickNameInfo(num3, this.strNickName, "Right");
+                            str4 = price + "<br>" + AccountItem.GetNickNameInfo(num3, this.strNickName, "Right");
                         }
                         else
                         {
@@ -236,15 +243,15 @@
                         if (row2 != null)
                         {
                             num3 = (int) row2["BidderID"];
-                            num4 = Convert.ToInt32(row2["BidPrice"]);
+                            price = Convert.ToInt64(row2["BidPrice"]);
                             if (num3 != 0)
                             {
                                 this.strNickName = BTPAccountManager.GetNickNameByUserID(num3);
-                                str4 = string.Concat(new object[] { "<a title='选秀顺位' style='CURSOR:hand'>", num4, "</a><br>", AccountItem.GetNickNameInfo(num3, this.strNickName, "Right") });
+                                str4 = string.Concat(new object[] { "<a title='选秀顺位' style='CURSOR:hand'>", price, "</a><br>", AccountItem.GetNickNameInfo(num3, this.strNickName, "Right") });
                             }
                             else
                             {
-                                str4 = "<a title='选秀顺位' style='CURSOR:hand'>" + num4 + "</a><br>--";
+                                str4 = "<a title='选秀顺位' style='CURSOR:hand'>" + price + "</a><br>--";
                             }
                         }
                         else
@@ -301,8 +308,10 @@
                 this.PageIntrosb.Append("<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=STREETFREE&Pos=0&Order=4&Page=1'>街头自由</a></li>");
                 this.PageIntrosb.Append("<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=STREETCHOOSE&Pos=0&Order=4&Page=1'>街头选秀</a></li>");
                 this.PageIntrosb.Append(builder.ToString());
-                this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                this.PageIntrosb.Append("<a style='cursor:hand;' onclick='javascript:window.location.reload();' title='刷新'><img src='" + SessionItem.GetImageURL() + "MenuCard/Refresh.GIF' border='0' height='24' width='19'></a>");
+                this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=1&Order=4&Page=1'>街头极限</a>" }));
+               
+                //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
+                this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick='javascript:window.location.reload();' title='刷新'><img src='" + SessionItem.GetImageURL() + "MenuCard/Refresh.GIF' border='0' height='24' width='19'></a></li>");
                 this.MyFocusPlayer();
                 this.InitializeComponent();
                 base.OnInit(e);
