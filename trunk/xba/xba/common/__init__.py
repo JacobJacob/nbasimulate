@@ -44,7 +44,7 @@ class _InitLog(object):
         logging.root.setLevel(logging.DEBUG)
 
         #handler1 = handlers.SysLogHandler((self.loghost, handlers.SYSLOG_UDP_PORT), 'local1')
-        handler1 = handlers.RotatingFileHandler(filename=os.path.join(PathSettings.LOG, 'error.log'), maxBytes=1024*3)
+        handler1 = handlers.RotatingFileHandler(filename=os.path.join(PathSettings.LOG, 'all.log'), maxBytes=1024*3)
         handler1.setLevel(logging.WARNING)
         handler1.setFormatter(logging.Formatter(format1))
         logging.root.addHandler(handler1)
