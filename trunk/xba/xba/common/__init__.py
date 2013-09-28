@@ -36,7 +36,7 @@ class _InitLog(object):
         return self.force_init(prefix)
     
     def force_init(self, prefix=''):        
-        format1 = '%(process)d|%(threadName)s|%(levelname)s|%(pathname)s|%(lineno)s|%(funcName)s|%(message)s'
+        format1 = '%(process)d|%(threadName)s|%(levelname)s|%(pathname)s|%(lineno)s|%(funcName)s|%(asctime)s|%(message)s'
         format2 = '%(asctime)s|%(message)s'
         
         [x.close() for x in logging.root.handlers]
@@ -44,7 +44,7 @@ class _InitLog(object):
         logging.root.setLevel(logging.DEBUG)
 
         #handler1 = handlers.SysLogHandler((self.loghost, handlers.SYSLOG_UDP_PORT), 'local1')
-        handler1 = handlers.RotatingFileHandler(filename=os.path.join(PathSettings.LOG, 'all.log'), maxBytes=1024*3)
+        handler1 = handlers.RotatingFileHandler(filename=os.path.join(PathSettings.LOG, 'all.log'), maxBytes=1024*3, backupCount=20)
         handler1.setLevel(logging.DEBUG)
         handler1.setFormatter(logging.Formatter(format1))
         logging.root.addHandler(handler1)
