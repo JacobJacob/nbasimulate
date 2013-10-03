@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import time
+
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
@@ -10,6 +12,9 @@ from xba.model import Article
 from xba.business import user_roles
 from xba.common.decorators import login_required
 from xba.business.user_roles import REDIRECT_FIELD_NAME, SESSION_KEY
+from xba.common import get_loging()
+
+logging = get_loging()
 
 @login_required
 def create_article(request):
@@ -45,12 +50,26 @@ def create_article(request):
 @login_required
 def article_list(request):
     """文章列表"""
+
+    t = time.time()
+
     page = int(request.REQUEST.get("page", 1))
     pagesize = int(request.REQUEST.get("pagesize", 10))
     category = request.REQUEST.get("category", "notice")
     
+    logging.debug("time1:%s" % (time.time() - t))
+
     infos, total = Article.paging(page, pagesize, condition=" category = '%s' " % category, order="id desc")
-    return render_to_response(request, "admin/article_list.html", locals())
+
+
+    logging.debug("time2:%s" % (time.time() - t)
+
+    response = render_to_response(request, "admin/article_list.html", locals())
+
+    loging.deubg("time3:%s" % (time.time() - t)
+
+    return response
+
 
 @login_required
 def index(request):
