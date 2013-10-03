@@ -4,17 +4,16 @@
 import time
 
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
 
 from xba.web.render import render_to_response
 from xba.model import Article
 
 from xba.business import user_roles
 from xba.common.decorators import login_required
-from xba.business.user_roles import REDIRECT_FIELD_NAME, SESSION_KEY
-from xba.common import get_loging()
+from xba.business.user_roles import SESSION_KEY
+from xba.common import get_logging
 
-logging = get_loging()
+logging = get_logging()
 
 @login_required
 def create_article(request):
@@ -62,11 +61,11 @@ def article_list(request):
     infos, total = Article.paging(page, pagesize, condition=" category = '%s' " % category, order="id desc")
 
 
-    logging.debug("time2:%s" % (time.time() - t)
+    logging.debug("time2:%s" % (time.time() - t))
 
     response = render_to_response(request, "admin/article_list.html", locals())
 
-    loging.deubg("time3:%s" % (time.time() - t)
+    logging.deubg("time3:%s" % (time.time() - t))
 
     return response
 
