@@ -4,6 +4,7 @@
 import time
 
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from xba.web.render import render_to_response
 from xba.model import Article
@@ -65,7 +66,7 @@ def article_list(request):
 
     response = render_to_response(request, "admin/article_list.html", locals())
 
-    logging.deubg("time3:%s" % (time.time() - t))
+    logging.debug("time3:%s" % (time.time() - t))
 
     return response
 
@@ -96,7 +97,7 @@ def login(request):
     
     r, session_id_or_msg = user_roles.login(username, password)
     if r == 0:
-        redirect_to = request.GET.get(REDIRECT_FIELD_NAME, reverse('admin-index'))
+        redirect_to = request.GET.get("next", reverse('admin-index'))
         response = HttpResponseRedirect(redirect_to)
         response.set_cookie(user_roles.SESSION_KEY, session_id_or_msg)
         return response

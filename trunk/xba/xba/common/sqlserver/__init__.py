@@ -7,7 +7,7 @@ connection = __Connection(
                           database = __DbSetting.DATABASE_NAME,
                           password = __DbSetting.DATABASE_PASSWORD,
                           host = __DbSetting.DATABASE_HOST,
-                          charset = "gbk",
+                          charset = 'utf8',
                           as_dict= True
                           )
 del __DbSetting

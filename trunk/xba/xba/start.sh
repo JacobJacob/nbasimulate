@@ -8,7 +8,7 @@ rdate -s time.iastate.edu
 PROJDIR="/data/apps/xba/xba"
 PIDFILE="$PROJDIR/fastcgi.pid"
 
-python $PROJDIR/web/manage.py runfcgi method=prefork maxrequests=1000 \
+python $PROJDIR/web/manage.py runfcgi method=threaded maxrequests=1000 \
 	maxspare=5 minspare=2 host=127.0.0.1 port=8090 pidfile=$PIDFILE
 
 echo "python manage.py"

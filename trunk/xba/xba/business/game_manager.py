@@ -52,7 +52,7 @@ def add_announce(title, type=0):
     """添加公告"""
     session = Session()
     announce = Announce()
-    announce.title = title.encode("gbk")
+    announce.title = title.encode("utf8")
     announce.created_time = datetime.now()
     announce.type = type
     session.add(announce)
@@ -74,9 +74,8 @@ def add_system_message(content):
     """添加系统消息"""
     cursor = connection.cursor()
     try:
-        sql = "EXEC SendSystemMsg '%s'" % content.encode("gbk")
-        print sql
-        print cursor.execute(sql)
+        sql = "EXEC SendSystemMsg '%s'" % content.encode("utf8")
+        cursor.execute(sql)
         cursor.commit()
     finally:
         connection.close()

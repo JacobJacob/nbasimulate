@@ -4,7 +4,7 @@
 from datetime import datetime, timedelta
 
 from xba.common.sqlserver import connection
-from xba.common.stringutil import ensure_gbk
+from xba.common.stringutil import ensure_gbk, ensure_utf8
 
         
 def add_guess(type, money_type, namea, nameb, hot, end_time_interval=24, show_time_interval=0):
@@ -14,10 +14,10 @@ def add_guess(type, money_type, namea, nameb, hot, end_time_interval=24, show_ti
         end_time = datetime.now() + timedelta(hours=end_time_interval)
         show_time = datetime.now() + timedelta(hours=show_time_interval)
         sql = u"AddGuess '%s', %s, '%s', '%s', %s, '%s', '%s'" % (type, money_type, namea, nameb, hot, end_time.strftime("%Y-%m-%d %H:%M:%S"), show_time.strftime("%Y-%m-%d %H:%M:%S"))
-        sql = ensure_gbk(sql)
+        sql = ensure_utf8(sql)
         cursor.execute(sql)
         msg_sql = u"EXEC SendSystemMsg '[%s]%s VS %s 的竞猜开始啦, <a href=\"Guess.aspx?Type=Guess\">我要下注</a>'" % (u"资" if money_type == 0 else u"币", namea, nameb)
-        msg_sql = ensure_gbk(msg_sql)
+        msg_sql = ensure_utf8(msg_sql)
         cursor.execute(msg_sql)
     finally:
         cursor.close()

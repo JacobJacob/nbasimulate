@@ -433,7 +433,7 @@ def view_player5_category3():
 def view_all_player():
     cursor = connection.cursor()
     try:
-        sql = "select * from btp_player5 where category = 4"
+        sql = "select top 1 *  from btp_player5 where category = 4"
         cursor.execute(sql)
         infos = cursor.fetchall()
         print len(infos)
@@ -459,7 +459,7 @@ def clean_dirty_char():
         connection.close()
 
 if __name__ == "__main__":
-    view_player5_category3()
+    view_all_player()
     #clean_dirty_char()
     #point3_match_handle()
     #create_player(5, 4, 24, 100, 120)

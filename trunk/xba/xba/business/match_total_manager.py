@@ -51,7 +51,6 @@ def view_total(data):
               
     awayAblityMap = info["awayAblityMap"]
     away_ability_list, _, _ = get_team_ability(awayAblityMap)
-    print away_ability_list
     datas["away_ability_list"] = away_ability_list
 
     homeActionInfoList = info.get("homeActionInfoList")
@@ -143,6 +142,6 @@ def get_action_info(info):
     return action_desc, total_rate, success
         
 if __name__ == "__main__":
-    #view_total(2, 311415)
-    view_total_with_path("E:\\xba_log\\match_total\\99_1677379.json")
-    print get_report_info("http://n1.113388.net/VStas.aspx?Type=1&Tag=1677379&A=2&B=38")
+    view_total_with_match_id(2, 324308)
+    #view_total_with_path("E:\\xba_log\\match_total\\99_1677379.json")
+    #print get_report_info("http://n1.113388.net/VStas.aspx?Type=1&Tag=1677379&A=2&B=38")
