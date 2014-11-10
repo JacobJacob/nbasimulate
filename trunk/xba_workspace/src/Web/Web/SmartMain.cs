@@ -4,7 +4,6 @@
     using System;
     using System.Configuration;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web;
     using System.Web.UI;
@@ -23,26 +22,22 @@
 
         protected override void OnInit(EventArgs e)
         {
+            string str6;
             this.strFromMemberCenter = SessionItem.GetRequest("Type", 1).ToString().Trim();
             DataRow accountRowByUserID = null;
             string strCopartner = ServerParameter.strCopartner;
-            switch (strCopartner)
+            if (((str6 = strCopartner) != null) && (((str6 == "17173") || (str6 == "ZHW")) || ((str6 == "DUNIU") || (str6 == "DW"))))
             {
-                case "17173":
-                case "ZHW":
-                case "DUNIU":
-                case "DW":
-                    if (base.Request.UrlReferrer == null)
-                    {
-                        base.Response.Write("<script>alert(\"您的访问被拒绝，请通过主页访问重试。\");window.top.location=\"" + ConfigurationSettings.AppSettings.Get("MainUrl").Trim() + "\";</script>");
-                        return;
-                    }
-                    if (!base.Request.UrlReferrer.ToString().StartsWith(ConfigurationSettings.AppSettings.Get("MainUrl").Trim()))
-                    {
-                        base.Response.Write("<script>alert(\"您的访问被拒绝，请通过主页访问重试。\");window.top.location=\"" + ConfigurationSettings.AppSettings.Get("MainUrl").Trim() + "\";</script>");
-                        return;
-                    }
-                    break;
+                if (base.Request.UrlReferrer == null)
+                {
+                    base.Response.Write("<script>alert(\"您的访问被拒绝，请通过主页访问重试。\");window.top.location=\"" + ConfigurationSettings.AppSettings.Get("MainUrl").Trim() + "\";</script>");
+                    return;
+                }
+                if (!base.Request.UrlReferrer.ToString().StartsWith(ConfigurationSettings.AppSettings.Get("MainUrl").Trim()))
+                {
+                    base.Response.Write("<script>alert(\"您的访问被拒绝，请通过主页访问重试。\");window.top.location=\"" + ConfigurationSettings.AppSettings.Get("MainUrl").Trim() + "\";</script>");
+                    return;
+                }
             }
             this.intUserID = SessionItem.CheckLogin(1);
             if (this.intUserID < 0)
@@ -66,67 +61,66 @@
                 }
                 else
                 {
-                    int request = (int) SessionItem.GetRequest("F", 0);
+                    int request = SessionItem.GetRequest("F", 0);
                     if (request == 1)
                     {
-                        int intUserID = (int) SessionItem.GetRequest("U", 0);
+                        int intUserID = SessionItem.GetRequest("U", 0);
                         string str3 = SessionItem.GetRequest("S", 1).ToString().Trim();
                         accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(intUserID);
-                        if (accountRowByUserID == null)
+                        if (accountRowByUserID != null)
                         {
-                            DataRow reader = ROOTUserManager.Get40UserRowByUserID(intUserID);
-                            if (reader != null)
+                            string str = accountRowByUserID["UserName"].ToString().Trim();
+                            string str8 = strCopartner;
+                            if (str8 != null)
                             {
-                                string str = reader["UserName"].ToString().Trim();
-                                switch (strCopartner)
+                                if (str8 == "51WAN")
                                 {
-                                    case "51WAN":
-                                        str = str.ToLower();
-                                        break;
-
-                                    case "CGA":
-                                        str = HttpUtility.UrlEncode(str, Encoding.GetEncoding("GB2312"));
-                                        break;
+                                    str = str.ToLower();
                                 }
-                                if (StringItem.MD5Encrypt(request.ToString() + intUserID.ToString() + str, "a)@8Kh~7").ToString().Trim().Substring(0, 8) != str3)
+                                else if (str8 == "CGA")
                                 {
-                                    base.Response.Redirect("Report.aspx?Parameter=12");
-                                    return;
+                                    str = HttpUtility.UrlEncode(str, Encoding.GetEncoding("GB2312"));
                                 }
+                            }
+                            if (StringItem.MD5Encrypt(request.ToString() + intUserID.ToString() + str, "a)@8Kh~7").ToString().Trim().Substring(0, 8) == str3)
+                            {
                                 this.intUserID = intUserID;
                                 SessionItem.SetSomebodyGameLogin(this.intUserID);
-                              
                             }
                             else
                             {
                                 base.Response.Redirect("Report.aspx?Parameter=12");
                                 return;
                             }
-                            //reader.Close();
                         }
                         else
                         {
-                            string str6 = accountRowByUserID["UserName"].ToString().Trim();
-                            switch (strCopartner)
-                            {
-                                case "51WAN":
-                                    str6 = str6.ToLower();
-                                    break;
-
-                                case "CGA":
-                                    str6 = HttpUtility.UrlEncode(str6, Encoding.GetEncoding("GB2312"));
-                                    break;
-                            }
-                            if (StringItem.MD5Encrypt(request.ToString() + intUserID.ToString() + str6, "a)@8Kh~7").ToString().Trim().Substring(0, 8) == str3)
-                            {
-                                this.intUserID = intUserID;
-                                SessionItem.SetSomebodyGameLogin(this.intUserID);
-                            }
-                            else
+                            DataRow row2 = ROOTUserManager.Get40UserRowByUserID(intUserID);
+                            if (row2 == null)
                             {
                                 base.Response.Redirect("Report.aspx?Parameter=12");
                                 return;
                             }
+                            string str4 = row2["UserName"].ToString().Trim();
+                            string str7 = strCopartner;
+                            if (str7 != null)
+                            {
+                                if (str7 == "51WAN")
+                                {
+                                    str4 = str4.ToLower();
+                                }
+                                else if (str7 == "CGA")
+                                {
+                                    str4 = HttpUtility.UrlEncode(str4, Encoding.GetEncoding("GB2312"));
+                                }
+                            }
+                            if (StringItem.MD5Encrypt(request.ToString() + intUserID.ToString() + str4, "a)@8Kh~7").ToString().Trim().Substring(0, 8) != str3)
+                            {
+                                base.Response.Redirect("Report.aspx?Parameter=12");
+                                return;
+                            }
+                            this.intUserID = intUserID;
+                            SessionItem.SetSomebodyGameLogin(this.intUserID);
                         }
                     }
                 }
@@ -144,24 +138,27 @@
                 {
                     base.Response.Redirect("Report.aspx?Parameter=19");
                 }
-                else if ((num3 == 0) || (num3 == 4))
-                {
-                    base.Response.Redirect("RookieMain_M.aspx");
-                }
-                else if (((num3 == 3) || (num3 == 10)) || (num3 == 2))
-                {
-                    SessionItem.SetSomebodyGameLogin(this.intUserID);
-                    if (accountRowByUserID["RookieOp"].ToString().Trim().IndexOf("0") != -1)
-                    {
-                        base.Response.Redirect("RookieMain_M.aspx");
-                    }
-                    else
-                    {
-                        base.Response.Redirect("WebAD.aspx");
-                    }
-                }
                 else
                 {
+                    switch (num3)
+                    {
+                        case 0:
+                        case 4:
+                            base.Response.Redirect("RookieMain_M.aspx");
+                            return;
+
+                        case 3:
+                        case 10:
+                        case 2:
+                            SessionItem.SetSomebodyGameLogin(this.intUserID);
+                            if (accountRowByUserID["RookieOp"].ToString().Trim().IndexOf("0") != -1)
+                            {
+                                base.Response.Redirect("RookieMain_M.aspx");
+                                return;
+                            }
+                            base.Response.Redirect("WebAD.aspx");
+                            return;
+                    }
                     SessionItem.SetSomebodyGameLogin(this.intUserID);
                     base.Response.Redirect("WebAD.aspx");
                     this.InitializeComponent();

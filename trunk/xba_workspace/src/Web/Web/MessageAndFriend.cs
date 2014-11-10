@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -71,7 +70,7 @@
             {
                 foreach (DataRow row in friendTableByUserID.Rows)
                 {
-                    string str3;
+                    string str;
                     int intUserID = (int) row["FUserID"];
                     string strNickName = row["NickName"].ToString().Trim();
                     string strLogo = row["ClubLogo"].ToString().Trim();
@@ -89,18 +88,18 @@
                     }
                     if (DTOnlineManager.GetOnlineRowByUserID(intUserID) == null)
                     {
-                        str3 = "<font color='666666'>否</font>";
+                        str = "<font color='666666'>否</font>";
                     }
                     else
                     {
-                        str3 = "<font color='Red'>是</font>";
+                        str = "<font color='Red'>是</font>";
                     }
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='50'></td>");
                     this.sbList.Append("<td>" + MessageItem.GetClubLogo(strLogo, intLevels) + "</td>");
                     this.sbList.Append("<td>" + AccountItem.GetNickNameInfoA(intUserID, strNickName, "Right", blnSex) + "</td>");
                     this.sbList.Append("<td>" + intLevels + "</td>");
-                    this.sbList.Append("<td>" + str3 + "</td>");
+                    this.sbList.Append("<td>" + str + "</td>");
                     this.sbList.Append("<td>" + str4 + "</td>");
                     this.sbList.Append("<td><a href='MessageCenter.aspx?Type=SENDMSG&UserID=" + intUserID + "'>消息</a>");
                     this.sbList.Append(string.Concat(new object[] { " | <a href='FriendDel.aspx?UserID=", intUserID, "' onclick=\"return FriendDel('", strNickName, "');\">删除</a></td>" }));
@@ -139,45 +138,39 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", msgSendTotal, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", msgSendTotal, "个记录 跳转", str3 });
         }
 
         private int GetMsgTotal()
@@ -198,45 +191,39 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", msgTotal, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", msgTotal, "个记录 跳转", str3 });
         }
 
         private void InitializeComponent()
@@ -250,13 +237,13 @@
             this.sbList = new StringBuilder();
             string strCurrentURL = "MessageAndFriend.aspx?Type=MSGLIST&";
             this.intPerPage = 5;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.GetMsgTotal();
             this.GetMsgScript(strCurrentURL);
-            DataTable reader = BTPMessageManager.GetMessageTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader != null)
+            DataTable table = BTPMessageManager.GetMessageTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     int intMessageID = (int) row["MessageID"];
                     int intUserID = (int) row["SendID"];
@@ -299,7 +286,6 @@
                 }
                 this.sbList.Append("<tr><td height='25' align='right' colspan='4'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>");
             }
-            //reader.Close();
         }
 
         protected override void OnInit(EventArgs e)
@@ -380,52 +366,52 @@
             this.sbList = new StringBuilder();
             string strCurrentURL = "MessageAndFriend.aspx?Type=SENDMSGMY&";
             this.intPerPage = 5;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
             }
             this.GetMsgSendTotal();
             this.GetMsgScript(strCurrentURL);
-            DataTable reader = BTPMessageManager.GetMessageTableBySendID(this.intUserID, this.intPage, this.intPerPage);
-            if (reader != null)
+            DataTable table = BTPMessageManager.GetMessageTableBySendID(this.intUserID, this.intPage, this.intPerPage);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string str4;
+                    string str2;
                     int num = (int) row["MessageID"];
                     int intUserID = (int) row["UserID"];
                     row["Sender"].ToString().Trim();
                     int intCategory = (byte) row["Category"];
                     DateTime datIn = (DateTime) row["SendTime"];
-                    string str2 = StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss");
-                    string str3 = row["Content"].ToString();
+                    string str3 = StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss");
+                    string str4 = row["Content"].ToString();
                     string strNickName = row["NameInfo"].ToString().Split(new char[] { '|' })[0].Trim();
                     strNickName = MessageItem.GetNickNameInfo(intUserID, strNickName, intCategory);
                     switch (intCategory)
                     {
                         case 1:
-                            str4 = "<a href='MessageDel.aspx?Type=2&MessageID=" + num + "' onclick='return MessageDel(1);'>删除</a>";
+                            str2 = "<a href='MessageDel.aspx?Type=2&MessageID=" + num + "' onclick='return MessageDel(1);'>删除</a>";
                             break;
 
                         case 3:
                         case 5:
-                            str4 = "<font color='#999999'>删除</font>";
+                            str2 = "<font color='#999999'>删除</font>";
                             strNickName = "联盟短信";
                             break;
 
                         default:
-                            str4 = "<font color='#999999'>删除</font>";
+                            str2 = "<font color='#999999'>删除</font>";
                             break;
                     }
                     this.sbList.Append("<tr class='BarHead'>");
                     this.sbList.Append("<td height='25' width='100'>" + strNickName + "</td>");
-                    this.sbList.Append("<td width='130' align='left' style='padding-left:5px'>" + str2 + "</td>");
+                    this.sbList.Append("<td width='130' align='left' style='padding-left:5px'>" + str3 + "</td>");
                     this.sbList.Append("<td width='100'></td>");
-                    this.sbList.Append("<td width='210'>" + str4 + "</td>");
+                    this.sbList.Append("<td width='210'>" + str2 + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\" style='padding:4px;table-layout:fixed;word-break:break-all;'>");
-                    this.sbList.Append("<td height='40' colspan='4'>" + str3 + "</td>");
+                    this.sbList.Append("<td height='40' colspan='4'>" + str4 + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr>");
                     this.sbList.Append("<td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td>");
@@ -433,7 +419,6 @@
                 }
                 this.sbList.Append("<tr><td height='25' align='right' colspan='4'>" + this.GetMsgSendViewPage(strCurrentURL) + "</td></tr>");
             }
-            //reader.Close();
         }
     }
 }

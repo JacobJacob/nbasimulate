@@ -14,14 +14,14 @@
         protected ImageButton btnOK;
         private DateTime dtAutoTrainTime;
         private int intAutoTrain;
-        private int intAutoTrainDev = 0;
+        private int intAutoTrainDev;
         private int intCategory;
         private int intClubID3;
         private int intClubID5;
         public int intCoin;
         public int intPayCoin;
-        private int intPercent = 0;
-        private int intTurn = 0;
+        private int intPercent;
+        private int intTurn;
         private int intUserID;
         public StringBuilder sbDevList = new StringBuilder("");
         public StringBuilder sbList = new StringBuilder("");
@@ -40,10 +40,10 @@
         {
             if (this.intCoin < this.intPayCoin)
             {
-                int num2;
+                int num;
                 try
                 {
-                    num2 = ROOTUserManager.SpendCoin40Return(this.intUserID, this.intCoin, "使用离线训练", "");
+                    num = ROOTUserManager.SpendCoin40Return(this.intUserID, this.intCoin, "使用离线训练", "");
                 }
                 catch
                 {
@@ -51,7 +51,7 @@
                     base.Response.Redirect("Report.aspx?Parameter=905");
                     return;
                 }
-                if (num2 == 1)
+                if (num == 1)
                 {
                     BTPPlayer3Manager.AddPlayerExpByUserID(this.intUserID, this.intPercent, this.intCoin);
                     BTPPlayer5Manager.AddPlayer5ExpByUserID(this.intUserID, this.intPercent, this.intCoin);
@@ -65,10 +65,10 @@
             }
             else
             {
-                int num;
+                int num2;
                 try
                 {
-                    num = ROOTUserManager.SpendCoin40Return(this.intUserID, this.intPayCoin, "使用离线训练", "");
+                    num2 = ROOTUserManager.SpendCoin40Return(this.intUserID, this.intPayCoin, "使用离线训练", "");
                 }
                 catch
                 {
@@ -76,7 +76,7 @@
                     base.Response.Redirect("Report.aspx?Parameter=905");
                     return;
                 }
-                if (num != 1)
+                if (num2 != 1)
                 {
                     this.Session.Add("AutoType", 1);
                     base.Response.Redirect("Report.aspx?Parameter=905");

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web;
     using System.Web.UI;
     using Web.DBData;
@@ -23,7 +22,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            string request = (string) SessionItem.GetRequest("CheckCookie", 1);
+            string request = SessionItem.GetRequest("CheckCookie", 1);
             int intUserID = Convert.ToInt32(StringItem.MD5Decrypt(SessionItem.GetRequest("UserID", 1).ToString().Trim(), Global.strMainMD5Key));
             if (request == "true")
             {
@@ -33,7 +32,6 @@
                     DataRow dr = ROOTUserManager.Get40UserRowByUserID(intUserID);
                     if (dr != null)
                     {
-                        //dr.Close();
                         base.Response.Redirect("Report.aspx?Parameter=12");
                         return;
                     }

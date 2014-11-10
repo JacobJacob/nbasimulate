@@ -25,8 +25,8 @@
             }
             else
             {
-                this.intFMatchID = (int) SessionItem.GetRequest("FMatchID", 0);
-                this.intType = (short) SessionItem.GetRequest("Type", 2);
+                this.intFMatchID = SessionItem.GetRequest("FMatchID", 0);
+                this.intType = SessionItem.GetRequest("Type", 2);
                 this.InitializeComponent();
                 base.OnInit(e);
             }

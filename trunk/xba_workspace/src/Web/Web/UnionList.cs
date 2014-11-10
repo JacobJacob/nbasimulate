@@ -38,19 +38,19 @@
             {
                 num2 = 1;
             }
-            string str2 = "<select name='Page' onChange=JumpPage()>";
+            string str = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str2 = str2 + "<option value=" + i;
+                str = str + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str2 = str2 + " selected";
+                    str = str + " selected";
                 }
-                object obj2 = str2;
-                str2 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str;
+                str = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str2 = str2 + "</select>";
-            return string.Concat(new object[] { "共", total, "人 跳转", str2 });
+            str = str + "</select>";
+            return string.Concat(new object[] { "共", total, "人 跳转", str });
         }
 
         private void InitializeComponent()
@@ -61,12 +61,12 @@
         private void List()
         {
             this.intPerPage = 7;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
             }
-            this.intUnionID = (int) SessionItem.GetRequest("UnionID", 0);
+            this.intUnionID = SessionItem.GetRequest("UnionID", 0);
             string str = "";
             DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
             if (unionRowByID != null)

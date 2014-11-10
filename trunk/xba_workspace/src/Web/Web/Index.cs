@@ -3,7 +3,6 @@
     using LoginParameter;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using Web.DBData;
     using Web.Helper;
@@ -58,7 +57,7 @@
                 {
                     string str;
                     int intUserID = (int) row["UserID"];
-                    int num2 = (int) row["Wealth"];
+                    int num3 = (int) row["Wealth"];
                     DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(intUserID);
                     if (userRowByUserID != null)
                     {
@@ -68,9 +67,8 @@
                     {
                         str = "";
                     }
-                    //userRowByUserID.Read();
                     object strForumWealthList = this.strForumWealthList;
-                    this.strForumWealthList = string.Concat(new object[] { strForumWealthList, "<tr><td height='24' width='40' style='COLOR:black' align='center'>", num, "</td><td width='100'  style='COLOR:black'>", str, "</td><td width='78'  style='COLOR:black' align='center'>", num2, "</td></tr>" });
+                    this.strForumWealthList = string.Concat(new object[] { strForumWealthList, "<tr><td height='24' width='40' style='COLOR:black' align='center'>", num, "</td><td width='100'  style='COLOR:black'>", str, "</td><td width='78'  style='COLOR:black' align='center'>", num3, "</td></tr>" });
                     if (num < topWealthTable.Rows.Count)
                     {
                         this.strForumWealthList = this.strForumWealthList + "<tr><td height='1' background='Images/web/Rocketman_line.gif' colspan='3'></td></tr>";
@@ -133,22 +131,22 @@
                 foreach (DataRow row in table.Rows)
                 {
                     int num = (int) row["TopicID"];
-                    string str2 = row["NickName"].ToString().Trim();
-                    string str3 = row["PicURL"].ToString().Trim();
+                    string str = row["NickName"].ToString().Trim();
+                    string str2 = row["PicURL"].ToString().Trim();
                     int intCategory = (byte) row["Category"];
-                    string str = DBLogin.GameNameChinese(intCategory);
+                    string str3 = DBLogin.GameNameChinese(intCategory);
                     bool flag = (bool) row["Gender"];
                     string str4 = row["BoardID"].ToString().Trim();
                     if (flag)
                     {
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.URLString(0), "Topic.aspx?TopicID=", num, "&BoardID=", str4, "&Page=1' target='_blank'><font color='#ff005a'>", str2, "</font></a> <font color='#009900'>", str, "</font>" });
+                        str = string.Concat(new object[] { "<a href='", DBLogin.URLString(0), "Topic.aspx?TopicID=", num, "&BoardID=", str4, "&Page=1' target='_blank'><font color='#ff005a'>", str, "</font></a> <font color='#009900'>", str3, "</font>" });
                     }
                     else
                     {
-                        str2 = string.Concat(new object[] { "<a href='", DBLogin.URLString(0), "Topic.aspx?TopicID=", num, "&BoardID=", str4, "&Page=1' target='_blank'><font color='blue'>", str2, "</font></a> <font color='#009900'>", str, "</font>" });
+                        str = string.Concat(new object[] { "<a href='", DBLogin.URLString(0), "Topic.aspx?TopicID=", num, "&BoardID=", str4, "&Page=1' target='_blank'><font color='blue'>", str, "</font></a> <font color='#009900'>", str3, "</font>" });
                     }
                     object strPlayerPhotoList = this.strPlayerPhotoList;
-                    this.strPlayerPhotoList = string.Concat(new object[] { strPlayerPhotoList, "<tr><td background='Images/web/Right02_left.gif'></td><td height='109' align='center' valign='top' bgcolor='#f0efef'><table width='153' border='0' cellspacing='0' cellpadding='0'><tr><td height='10' colspan='3'><img src='Images/web/photo_1.gif' width='153' height='10'></td></tr><tr><td width='28' height='73'><img src='Images/web/photo_2.gif' width='28' height='73'></td><td width='100' align='left' valign='top'><a href='", DBLogin.URLString(0), "Topic.aspx?TopicID=", num, "&BoardID=", str4, "&Page=1' target='_blank'><img src='", str3, "' width='100' height='73' border='0'></a></td><td width='25' background='Images/web/photo_3.gif'></td></tr><tr align='center'><td height='26' colspan='3' background='Images/web/photo_4.gif'>", str2, "</td></tr></table></td><td background='Images/web/Right02_right.gif'></td></tr>" });
+                    this.strPlayerPhotoList = string.Concat(new object[] { strPlayerPhotoList, "<tr><td background='Images/web/Right02_left.gif'></td><td height='109' align='center' valign='top' bgcolor='#f0efef'><table width='153' border='0' cellspacing='0' cellpadding='0'><tr><td height='10' colspan='3'><img src='Images/web/photo_1.gif' width='153' height='10'></td></tr><tr><td width='28' height='73'><img src='Images/web/photo_2.gif' width='28' height='73'></td><td width='100' align='left' valign='top'><a href='", DBLogin.URLString(0), "Topic.aspx?TopicID=", num, "&BoardID=", str4, "&Page=1' target='_blank'><img src='", str2, "' width='100' height='73' border='0'></a></td><td width='25' background='Images/web/photo_3.gif'></td></tr><tr align='center'><td height='26' colspan='3' background='Images/web/photo_4.gif'>", str, "</td></tr></table></td><td background='Images/web/Right02_right.gif'></td></tr>" });
                 }
             }
             else
@@ -168,7 +166,7 @@
                 {
                     string str;
                     int intUserID = (int) row["UserID"];
-                    int num2 = (int) row["MonthPoint"];
+                    int num3 = (int) row["MonthPoint"];
                     DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(intUserID);
                     if (userRowByUserID != null)
                     {
@@ -178,9 +176,8 @@
                     {
                         str = "";
                     }
-                    //userRowByUserID.Close();
                     object strRMScoreList = this.strRMScoreList;
-                    this.strRMScoreList = string.Concat(new object[] { strRMScoreList, "<tr><td height='23' width='50' style='COLOR:black' align='center'>", num, "</td><td width='100'  style='COLOR:black'>", str, "</td><td width='68'  style='COLOR:black' align='center'>", num2, "</td></tr>" });
+                    this.strRMScoreList = string.Concat(new object[] { strRMScoreList, "<tr><td height='23' width='50' style='COLOR:black' align='center'>", num, "</td><td width='100'  style='COLOR:black'>", str, "</td><td width='68'  style='COLOR:black' align='center'>", num3, "</td></tr>" });
                     if (num < monthScoreList.Rows.Count)
                     {
                         this.strRMScoreList = this.strRMScoreList + "<tr><td height='1' background='Images/web/Rocketman_line.gif' colspan='3'></td></tr>";

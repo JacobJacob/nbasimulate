@@ -17,7 +17,7 @@
 
         protected override void OnInit(EventArgs e)
         {
-            this.iJNetBillID = (string) SessionItem.GetRequest("iJNetBillID", 1);
+            this.iJNetBillID = SessionItem.GetRequest("iJNetBillID", 1);
             this.InitializeComponent();
             base.OnInit(e);
         }

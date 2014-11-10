@@ -117,9 +117,7 @@
         private void InitializeComponent()
         {
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
-
             this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
-
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -190,7 +188,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            this.intTag = (int) SessionItem.GetRequest("Tag", 0);
+            this.intTag = SessionItem.GetRequest("Tag", 0);
             BTPGameManager.GetTurn();
             DataRow xGroupMatchRowByID = BTPXGroupMatchManager.GetXGroupMatchRowByID(this.intTag);
             if (xGroupMatchRowByID != null)

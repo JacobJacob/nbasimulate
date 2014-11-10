@@ -5,7 +5,6 @@
     using System;
     using System.Collections;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using Web;
     using Web.DBData;
@@ -59,7 +58,6 @@
                     str = str + ">" + str3 + "</option>";
                 }
             }
-            //boardByTopID.Close();
             return (str + "</select>");
         }
 
@@ -132,12 +130,12 @@
                 {
                     obj2 = str;
                     str = string.Concat(new object[] { obj2, "\tif(document.getElementById(\"", GetRadioID(i, j), "\").checked){strURL+=\"", GetRadioID(i, j), "|\";blnHasCheck_i", i, "=true;}" });
-                    string str6 = (string) list2[j];
-                    TagReader reader3 = new TagReader(str6);
-                    string str4 = (string) reader3.GetItems("Content")[0];
-                    string str5 = (string) reader3.GetItems("VoteCount")[0];
+                    string str4 = (string) list2[j];
+                    TagReader reader3 = new TagReader(str4);
+                    string str5 = (string) reader3.GetItems("Content")[0];
+                    string str6 = (string) reader3.GetItems("VoteCount")[0];
                     string str7 = strContent;
-                    strContent = str7 + "　" + GetItemTag(i, j) + str4 + "　<font color='red'>" + str5 + "</font> 票<br>";
+                    strContent = str7 + "　" + GetItemTag(i, j) + str5 + "　<font color='red'>" + str6 + "</font> 票<br>";
                 }
                 obj2 = str;
                 str = string.Concat(new object[] { obj2, "if(!blnHasCheck_i", i, "){alert(\"请对第", i + 1, "个调查进行投票！\");return;}" });
@@ -169,18 +167,18 @@
             string[] strArray = str2.Split(new char[] { '|' });
             for (int j = 0; j < strArray.Length; j++)
             {
-                string str5;
+                string str3;
                 string strBoardID = strArray[j];
                 string boardNameByBoardID = ROOTBoardManager.GetBoardNameByBoardID(strBoardID);
                 if (j == 0)
                 {
-                    str5 = str;
-                    str = str5 + "&gt; <a href='FrameBoardList.aspx?BoardID=" + strBoardID + "&Page=1'>" + boardNameByBoardID + "</a>";
+                    str3 = str;
+                    str = str3 + "&gt; <a href='FrameBoardList.aspx?BoardID=" + strBoardID + "&Page=1'>" + boardNameByBoardID + "</a>";
                 }
                 else
                 {
-                    str5 = str;
-                    str = str5 + " &gt; <a href='FrameBoard.aspx?BoardID=" + strBoardID + "&Page=1'>" + boardNameByBoardID + "</a>";
+                    str3 = str;
+                    str = str3 + " &gt; <a href='FrameBoard.aspx?BoardID=" + strBoardID + "&Page=1'>" + boardNameByBoardID + "</a>";
                 }
             }
             if (strInfo != "")
@@ -238,46 +236,46 @@
             string str = "<table width=\"170\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
             if ((DateTime.Now > DateTime.Today.AddHours((double) Global.intStartUpdate)) && (DateTime.Now < DateTime.Today.AddHours(10.0)))
             {
-                string str4 = str;
-                str = str4 + "<tr><td height='21' align='left' style='padding-left:4px;'>第1轮</td><td>联赛开始</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第2轮</td><td>大杯赛报名</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第3轮</td><td>大杯赛开赛</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第14轮</td><td>上半赛季结束</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>休赛日</td><td>联赛休赛</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>休赛日</td><td>队内选拔</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第15轮</td><td>大杯赛报名</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第16轮</td><td>大杯赛开赛</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第17轮</td><td>千人杯赛报名</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第17轮</td><td>千人杯赛开赛</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第26轮</td><td>联赛结束</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>联赛后</td><td>联赛升降级</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='20' align='left' style='padding-left:4px;'>联赛后</td><td>新赛季赛程</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='10'></td></tr>";
+                string str2 = str;
+                str = str2 + "<tr><td height='21' align='left' style='padding-left:4px;'>第1轮</td><td>联赛开始</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第2轮</td><td>大杯赛报名</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第3轮</td><td>大杯赛开赛</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第14轮</td><td>上半赛季结束</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>休赛日</td><td>联赛休赛</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>休赛日</td><td>队内选拔</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第15轮</td><td>大杯赛报名</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第16轮</td><td>大杯赛开赛</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第17轮</td><td>千人杯赛报名</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第17轮</td><td>千人杯赛开赛</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>第26轮</td><td>联赛结束</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='21' align='left' style='padding-left:4px;'>联赛后</td><td>联赛升降级</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='20' align='left' style='padding-left:4px;'>联赛后</td><td>新赛季赛程</td></tr><tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr><tr><td height='10'></td></tr>";
             }
             else
             {
                 DataTable clubTableByDevCode = BTPDevManager.GetClubTableByDevCode("");
                 if (clubTableByDevCode != null)
                 {
-                    int num7 = 1;
+                    int num4 = 1;
                     foreach (DataRow row in clubTableByDevCode.Rows)
                     {
-                        string str2;
                         string str3;
+                        string str4;
                         int count = clubTableByDevCode.Rows.Count;
-                        int num5 = (int) row["Win"];
+                        int num6 = (int) row["Win"];
                         int intClubID = (int) row["ClubID"];
                         if (intClubID == 0)
                         {
-                            str2 = "空缺";
+                            str3 = "空缺";
                         }
                         else
                         {
-                            str2 = BTPClubManager.GetClubNameByClubID(intClubID, 5, "Index", 13);
+                            str3 = BTPClubManager.GetClubNameByClubID(intClubID, 5, "Index", 13);
                         }
-                        if (num7 < 3)
+                        if (num4 < 3)
                         {
-                            str3 = "#fce5d2";
+                            str4 = "#fce5d2";
                         }
-                        else if (num7 > (count - 4))
+                        else if (num4 > (count - 4))
                         {
-                            str3 = "#e7e7e7";
+                            str4 = "#e7e7e7";
                         }
                         else
                         {
-                            str3 = "";
+                            str4 = "";
                         }
                         obj2 = str;
-                        str = string.Concat(new object[] { obj2, "<tr class='BarContent' bgColor='", str3, "' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td width=\"25\" align=\"center\" height=\"20\"><font color='#660066'>", num7, "</font></td><td width=\"110\" align=\"left\">", str2, "</td><td width=\"35\" align=\"center\">", num5, "胜</td></tr>" });
+                        str = string.Concat(new object[] { obj2, "<tr class='BarContent' bgColor='", str4, "' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td width=\"25\" align=\"center\" height=\"20\"><font color='#660066'>", num4, "</font></td><td width=\"110\" align=\"left\">", str3, "</td><td width=\"35\" align=\"center\">", num6, "胜</td></tr>" });
                         str = str + "<tr><td colspan='3' height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif'></td></tr>";
-                        num7++;
+                        num4++;
                     }
                 }
             }
@@ -305,12 +303,12 @@
                 {
                     obj2 = str;
                     str = string.Concat(new object[] { obj2, "\tif(document.getElementById(\"", GetRadioID(i, j), "\").checked){strURL+=\"", GetRadioID(i, j), "|\";blnHasCheck_i", i, "=true;}" });
-                    string str6 = (string) list2[j];
-                    TagReader reader3 = new TagReader(str6);
-                    string str4 = (string) reader3.GetItems("Content")[0];
-                    string str5 = (string) reader3.GetItems("VoteCount")[0];
+                    string str4 = (string) list2[j];
+                    TagReader reader3 = new TagReader(str4);
+                    string str5 = (string) reader3.GetItems("Content")[0];
+                    string str6 = (string) reader3.GetItems("VoteCount")[0];
                     string str7 = strContent;
-                    strContent = str7 + "　" + GetItemTag(i, j) + str4 + "　<font color='red'>" + str5 + "</font> 票<br>";
+                    strContent = str7 + "　" + GetItemTag(i, j) + str5 + "　<font color='red'>" + str6 + "</font> 票<br>";
                 }
                 obj2 = str;
                 str = string.Concat(new object[] { obj2, "if(!blnHasCheck_i", i, "){alert(\"请对第", i + 1, "个调查进行投票！\");return;}" });
@@ -388,18 +386,18 @@
             string[] strArray = str2.Split(new char[] { '|' });
             for (int j = 0; j < strArray.Length; j++)
             {
-                string str5;
+                string str3;
                 string strBoardID = strArray[j];
                 string boardNameByBoardID = ROOTBoardManager.GetBoardNameByBoardID(strBoardID);
                 if (j == 0)
                 {
-                    str5 = str;
-                    str = str5 + "&gt; <a href='BoardList.aspx?BoardID=" + strBoardID + "&Page=1'>" + boardNameByBoardID + "</a>";
+                    str3 = str;
+                    str = str3 + "&gt; <a href='BoardList.aspx?BoardID=" + strBoardID + "&Page=1'>" + boardNameByBoardID + "</a>";
                 }
                 else
                 {
-                    str5 = str;
-                    str = str5 + " &gt; <a href='Board.aspx?BoardID=" + strBoardID + "&Page=1'>" + boardNameByBoardID + "</a>";
+                    str3 = str;
+                    str = str3 + " &gt; <a href='Board.aspx?BoardID=" + strBoardID + "&Page=1'>" + boardNameByBoardID + "</a>";
                 }
             }
             if (strInfo != "")
@@ -555,7 +553,11 @@
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(intUserID);
             int num = (byte) accountRowByUserID["UnionCategory"];
             int num2 = (int) accountRowByUserID["UnionID"];
-            return (((num == 1) || (num == 2)) && (intUnionID == num2));
+            if ((num != 1) && (num != 2))
+            {
+                return false;
+            }
+            return (intUnionID == num2);
         }
 
         public static string OnlineString(string strNickName, int intType)

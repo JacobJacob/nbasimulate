@@ -56,46 +56,46 @@
             }
             else
             {
-                string str2;
+                string str;
                 if (this.rbLogo10.Checked)
                 {
-                    str2 = "TopicPic10.gif";
+                    str = "TopicPic10.gif";
                 }
                 else if (this.rbLogo11.Checked)
                 {
-                    str2 = "TopicPic11.gif";
+                    str = "TopicPic11.gif";
                 }
                 else if (this.rbLogo12.Checked)
                 {
-                    str2 = "TopicPic12.gif";
+                    str = "TopicPic12.gif";
                 }
                 else if (this.rbLogo13.Checked)
                 {
-                    str2 = "TopicPic13.gif";
+                    str = "TopicPic13.gif";
                 }
                 else if (this.rbLogo14.Checked)
                 {
-                    str2 = "TopicPic14.gif";
+                    str = "TopicPic14.gif";
                 }
                 else if (this.rbLogo15.Checked)
                 {
-                    str2 = "TopicPic15.gif";
+                    str = "TopicPic15.gif";
                 }
                 else if (this.rbLogo16.Checked)
                 {
-                    str2 = "TopicPic16.gif";
+                    str = "TopicPic16.gif";
                 }
                 else if (this.rbLogo17.Checked)
                 {
-                    str2 = "TopicPic17.gif";
+                    str = "TopicPic17.gif";
                 }
                 else if (this.rbLogo18.Checked)
                 {
-                    str2 = "TopicPic18.gif";
+                    str = "TopicPic18.gif";
                 }
                 else
                 {
-                    str2 = "TopicPic19.gif";
+                    str = "TopicPic19.gif";
                 }
                 string validWords = StringItem.GetValidWords(this.ebContent.Text);
                 if (!StringItem.IsValidName(validWords, 10, 0xea60))
@@ -104,22 +104,22 @@
                 }
                 else
                 {
-                    string str7;
+                    string str3;
                     DataRow topicRowByID = ROOTTopicManager.GetTopicRowByID(this.intTopicID);
                     string strMainTitle = topicRowByID["Title"].ToString();
                     string strMainLogo = topicRowByID["Logo"].ToString().Trim();
                     string strTitle = "Re:" + strMainTitle;
                     try
                     {
-                        ROOTTopicManager.AddReply(this.strBoardID, this.intUserID, this.strNickName, str2, strTitle, validWords, this.intTopicID, strMainTitle, strMainLogo, false);
+                        ROOTTopicManager.AddReply(this.strBoardID, this.intUserID, this.strNickName, str, strTitle, validWords, this.intTopicID, strMainTitle, strMainLogo, false);
                         ROOTTopicManager.AddTopicWealth(this.intUserID, 1);
-                        str7 = string.Concat(new object[] { "Report.aspx?Parameter=4001!BoardID.", this.strBoardID, "^TopicID.", this.intTopicID, "^Page.", this.intPage });
+                        str3 = string.Concat(new object[] { "Report.aspx?Parameter=4001!BoardID.", this.strBoardID, "^TopicID.", this.intTopicID, "^Page.", this.intPage });
                     }
                     catch
                     {
-                        str7 = "Report.aspx?Parameter=3";
+                        str3 = "Report.aspx?Parameter=3";
                     }
-                    base.Response.Redirect(str7);
+                    base.Response.Redirect(str3);
                 }
             }
         }
@@ -136,86 +136,89 @@
             if (this.intUserID < 0)
             {
                 base.Response.Redirect("Report.aspx?Parameter=12");
-                return;
-            }
-            DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
-            this.strNickName = onlineRowByUserID["NickName"].ToString();
-            this.strUserName = onlineRowByUserID["UserName"].ToString();
-            this.strPassword = onlineRowByUserID["Password"].ToString();
-            DataRow userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
-            this.intWealth = (int) userInfoByID["Wealth"];
-            int num = (byte) userInfoByID["LockTime"];
-            if (num > 0)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=19b");
-                return;
-            }
-            this.strBoardID = (string) SessionItem.GetRequest("BoardID", 1);
-            this.intTopicID = (int) SessionItem.GetRequest("TopicID", 0);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
-            if (this.strBoardID == "")
-            {
-                base.Response.Redirect("Report.aspx?Parameter=3");
-                return;
-            }
-            this.trKeyword.Visible = false;
-            DataRow boardRowByBoardID = ROOTBoardManager.GetBoardRowByBoardID(this.strBoardID);
-            if (boardRowByBoardID == null)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=3");
             }
             else
             {
-                this.strMaster = boardRowByBoardID["Master"].ToString().Trim();
-                switch (((byte) boardRowByBoardID["Category"]))
+                DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
+                this.strNickName = onlineRowByUserID["NickName"].ToString();
+                this.strUserName = onlineRowByUserID["UserName"].ToString();
+                this.strPassword = onlineRowByUserID["Password"].ToString();
+                DataRow userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
+                this.intWealth = (int) userInfoByID["Wealth"];
+                int num = (byte) userInfoByID["LockTime"];
+                if (num > 0)
                 {
-                    case 1:
-                        if ((this.intUserID > -1) && (this.intWealth >= 0))
+                    base.Response.Redirect("Report.aspx?Parameter=19b");
+                }
+                else
+                {
+                    this.strBoardID = SessionItem.GetRequest("BoardID", 1);
+                    this.intTopicID = SessionItem.GetRequest("TopicID", 0);
+                    this.intPage = SessionItem.GetRequest("Page", 0);
+                    if (this.strBoardID == "")
+                    {
+                        base.Response.Redirect("Report.aspx?Parameter=3");
+                    }
+                    else
+                    {
+                        this.trKeyword.Visible = false;
+                        DataRow boardRowByBoardID = ROOTBoardManager.GetBoardRowByBoardID(this.strBoardID);
+                        if (boardRowByBoardID == null)
                         {
-                            if (!BoardItem.IsBoardMaster(this.intUserID, this.strMaster))
-                            {
-                                this.blnCanReply = true;
-                            }
+                            base.Response.Redirect("Report.aspx?Parameter=3");
                         }
                         else
                         {
-                            this.blnCanReply = false;
-                        }
-                        goto Label_0221;
+                            this.strMaster = boardRowByBoardID["Master"].ToString().Trim();
+                            switch (((byte) boardRowByBoardID["Category"]))
+                            {
+                                case 1:
+                                    if ((this.intUserID <= -1) || (this.intWealth < 0))
+                                    {
+                                        this.blnCanReply = false;
+                                        break;
+                                    }
+                                    if (!BoardItem.IsBoardMaster(this.intUserID, this.strMaster))
+                                    {
+                                        this.blnCanReply = true;
+                                    }
+                                    break;
 
-                    case 2:
-                        if ((this.intUserID <= -1) || (this.intWealth < 0))
-                        {
-                            base.Response.Redirect("Report.aspx?Parameter=4004");
-                            return;
-                        }
-                        if (!BoardItem.CanView(this.intUserID, this.strBoardID))
-                        {
-                            base.Response.Redirect("Report.aspx?Parameter=4004");
-                            return;
-                        }
-                        goto Label_0221;
+                                case 2:
+                                    if ((this.intUserID > -1) && (this.intWealth >= 0))
+                                    {
+                                        if (!BoardItem.CanView(this.intUserID, this.strBoardID))
+                                        {
+                                            base.Response.Redirect("Report.aspx?Parameter=4004");
+                                            return;
+                                        }
+                                        break;
+                                    }
+                                    base.Response.Redirect("Report.aspx?Parameter=4004");
+                                    return;
 
-                    case 3:
-                        base.Response.Redirect("Report.aspx?Parameter=4003");
-                        return;
+                                case 3:
+                                    base.Response.Redirect("Report.aspx?Parameter=4003");
+                                    return;
+                            }
+                        }
+                        if (!this.blnCanReply)
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=57");
+                        }
+                        else
+                        {
+                            DataRow topicRowByID = ROOTTopicManager.GetTopicRowByID(this.intTopicID);
+                            string str = topicRowByID["Title"].ToString();
+                            topicRowByID["Logo"].ToString().Trim();
+                            string str2 = "Re:" + str;
+                            this.tbTitle.Enabled = false;
+                            this.tbTitle.Text = str2;
+                            this.InitializeComponent();
+                            base.OnInit(e);
+                        }
+                    }
                 }
-            }
-        Label_0221:
-            if (!this.blnCanReply)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=57");
-            }
-            else
-            {
-                DataRow topicRowByID = ROOTTopicManager.GetTopicRowByID(this.intTopicID);
-                string str = topicRowByID["Title"].ToString();
-                topicRowByID["Logo"].ToString().Trim();
-                string str2 = "Re:" + str;
-                this.tbTitle.Enabled = false;
-                this.tbTitle.Text = str2;
-                this.InitializeComponent();
-                base.OnInit(e);
             }
         }
 

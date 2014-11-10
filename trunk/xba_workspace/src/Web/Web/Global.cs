@@ -1,5 +1,6 @@
 ﻿namespace Web
 {
+    using log4net.Config;
     using LoginParameter;
     using ServerManage;
     using System;
@@ -14,7 +15,7 @@
     public class Global : HttpApplication
     {
         public static bool blnServerTag = true;
-        private IContainer components = null;
+        private IContainer components;
         public static DataRow drParameter;
         public static Hashtable htError;
         public static int intOnlineLimit = 0x5dc;
@@ -56,24 +57,23 @@
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            string error_url = "/";
+            string str = "/";
             if (base.Request != null)
             {
-                error_url = base.Request.Url.ToString();
+                str = base.Request.Url.ToString();
             }
-            string error_msg = "error";
+            string str2 = "error";
             if (base.Server != null)
             {
                 try
                 {
-                    error_msg = base.Server.GetLastError().InnerException.Message;
+                    str2 = base.Server.GetLastError().InnerException.Message;
                 }
                 catch
                 {
-
                 }
             }
-            string message = "错误页面：" + error_url + " 错误信息：" + error_msg;
+            string message = "错误页面：" + str + " 错误信息：" + str2;
             EventLog.WriteEntry("MyWebError", message, EventLogEntryType.Error);
         }
 
@@ -82,16 +82,17 @@
             this.CreateError();
             this.CreateAppRepTable();
             this.CreateAppParameterTable();
-            log4net.Config.XmlConfigurator.Configure();
+            XmlConfigurator.Configure();
         }
 
         private void CreateAppParameterTable()
         {
             DataTable table = new DataTable("Parameter");
-            DataColumn column = new DataColumn("ParameterID", typeof(int));
-            column.AutoIncrement = true;
-            column.AutoIncrementSeed = 1L;
-            column.AutoIncrementStep = 1L;
+            DataColumn column = new DataColumn("ParameterID", typeof(int)) {
+                AutoIncrement = true,
+                AutoIncrementSeed = 1L,
+                AutoIncrementStep = 1L
+            };
             table.Columns.Add(column);
             table.PrimaryKey = new DataColumn[] { column };
             table.Columns.Add(new DataColumn("LatestReadTime", typeof(DateTime)));
@@ -107,10 +108,11 @@
         private void CreateAppRepTable()
         {
             DataTable table = new DataTable("Report");
-            DataColumn column = new DataColumn("RepID", typeof(int));
-            column.AutoIncrement = true;
-            column.AutoIncrementSeed = 1L;
-            column.AutoIncrementStep = 1L;
+            DataColumn column = new DataColumn("RepID", typeof(int)) {
+                AutoIncrement = true,
+                AutoIncrementSeed = 1L,
+                AutoIncrementStep = 1L
+            };
             table.Columns.Add(column);
             table.PrimaryKey = new DataColumn[] { column };
             table.Columns.Add(new DataColumn("TagID", typeof(int)));
@@ -385,6 +387,8 @@
             htError.Add("P102", new Error("此球员被成功下放，离开XBA。", "PlayerCenter.aspx", "THIS"));
             htError.Add("P103", new Error("此球员已经是挂牌状态，无需重复操作。", "PlayerCenter.aspx", "THIS"));
             htError.Add("P104", new Error("此球员成功在转会市场挂牌。", "PlayerCenter.aspx", "THIS"));
+            htError.Add("P105", new Error("一口绑定的经理不存在。", "PlayerCenter.aspx", "THIS"));
+            htError.Add("P106", new Error("你的游戏币不足，不能进行一口绑定。", "PlayerCenter.aspx", "THIS"));
             htError.Add("101", new Error("您的资金不够，无法参加联赛，请返回。", "NULL", "NULL"));
             htError.Add("102", new Error("联赛申请成功，如果您所属的联赛满14人，XBA将会为您安排赛程，次日开始职业联赛的比赛。", "Main.aspx", "TOP"));
             htError.Add("103", new Error("您还没有职业队，不能申请联赛。", "NULL", "NULL"));
@@ -680,8 +684,6 @@
             htError.Add("915", new Error("您好，您已经领取过奖品，将不能重复领取！", "NULL", "NULL"));
             htError.Add("916", new Error("对不起，您的游戏币不足，不能签VIP短合同！", "NULL", "NULL"));
             htError.Add("917", new Error("本次续约成功！3轮之内该球员的工资要求为正常工资的80%！", "PlayerCenter.aspx?Type=5", "THIS"));
-
-            /*-1 对方不是会员 -2 价钱不够, -3 已经持有股票, -4经理不存在, -5市值低于200W -6自己不是会员*/
             htError.Add("SE01", new Error("该经理不是会员，无法购买其股票。", "Stock.aspx?Type=COMPANY", "THIS"));
             htError.Add("SE02", new Error("你的资金不足。", "Stock.aspx?Type=COMPANY", "THIS"));
             htError.Add("SE03", new Error("你已经持有该经理的股票，无法再购买。", "Stock.aspx?Type=COMPANY", "THIS"));
@@ -689,51 +691,51 @@
             htError.Add("SE05", new Error("该经理市值低于200万，无法购买。", "Stock.aspx?Type=COMPANY", "THIS"));
             htError.Add("SE06", new Error("你不是会员，无法购买股票。", "Stock.aspx?Type=COMPANY", "THIS"));
             htError.Add("SS01", new Error("已成功购入该股票，您可以在我的股票列表中查看。", "Stock.aspx?Type=COMPANY", "THIS"));
-
             htError.Add("XGE01", new Error("您的资金不足，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
             htError.Add("XGE02", new Error("该竞猜已经超时，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
             htError.Add("XGE03", new Error("该竞猜不存在，无法下注。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
             htError.Add("XGE04", new Error("您已经竞猜过该经理了，对同一个经理只能下注一次。", "XGuess.aspx?Type=CLUBLIST", "THIS"));
             htError.Add("XGS01", new Error("已经成功下注，您可以在我的竞猜中查看所有竞猜历史。", "XGuess.aspx?Type=MYGUESS", "THIS"));
-
             htError.Add("SVE01", new Error("该球员未能入选明星参选赛。", "StarMatch.aspx?Type=MATCH", "THIS"));
             htError.Add("SVE02", new Error("您不是会员，无法投票。", "StarMatch.aspx?Type=MATCH", "THIS"));
             htError.Add("SVE03", new Error("您已经投过票了。", "StarMatch.aspx?Type=MATCH", "THIS"));
             htError.Add("SVS01", new Error("投票成功，如果该名球员获得前三名的票数，将会获得参加全明星赛的资格。", "StarMatch.aspx?Type=MATCH", "THIS"));
-
-            /* 1 成功 -2 不是新人 -1 只可以买一次*/
             htError.Add("BNS01", new Error("恭喜你，购买新人大礼包成功！", "ManagerTool.aspx", "THIS"));
             htError.Add("BNE01", new Error("您已经购买过新人大礼包了，每个经理只可以购买一次！", "ManagerTool.aspx", "THIS"));
             htError.Add("BNE02", new Error("您注册时间超过7天，无法购买新人大礼包", "ManagerTool.aspx", "THIS"));
-
-
             htError.Add("BURE01", new Error("你不是盟主，不能购买联盟威望！", "Union.aspx", "THIS"));
             htError.Add("BURE02", new Error("联盟游戏币不足，不能购买联盟威望！", "Union.aspx", "THIS"));
             htError.Add("BURE03", new Error("请输入正确的半角数字！", "NULL", "NULL"));
             htError.Add("BURS01", new Error("购买联盟威望成功！", "Union.aspx", "THIS"));
-
-            /*1,报名成功，2已经报过名，3没有邀请函,4联盟人数已满意，5.比赛已经开始*/
             htError.Add("UCRS01", new Error("报名成功！", "UnionCup.aspx", "THIS"));
             htError.Add("UCRE01", new Error("你已经报过名了！", "NULL", "NULL"));
             htError.Add("UCRE02", new Error("您没有联盟争霸赛邀请函，请向盟主索取！", "NULL", "NULL"));
             htError.Add("UCRE03", new Error("联盟报名人数已满！", "NULL", "NULL"));
             htError.Add("UCRE04", new Error("比赛已经开始了，不能再报名！", "NULL", "NULL"));
-
-            ///
             htError.Add("SNE01", new Error("对方球队有一场比赛正在进行中。", "NPC.aspx?Type=NPCLIST", "THIS"));
             htError.Add("SNE02", new Error("您有一场挑战赛正在进行中", "NPC.aspx?Type=NPCLIST", "THIS"));
             htError.Add("SNE03", new Error("您的游戏币不足", "NPC.aspx?Type=NPCLIST", "THIS"));
             htError.Add("SNS01", new Error("挑战成功", "NPC.aspx?Type=MYMATCH", "THIS"));
-
             htError.Add("SANE01", new Error("当前擂主正被挑战中，请等待一会。", "Arena.aspx?Type=LIST", "THIS"));
             htError.Add("SANE02", new Error("您就是当前擂主，不需要挑战自己", "Arena.aspx?Type=LIST", "THIS"));
             htError.Add("SANE03", new Error("您的游戏币不足", "Arena.aspx?Type=LIST", "THIS"));
             htError.Add("SANS01", new Error("挑战成功", "Arena.aspx?Type=MYMATCH", "THIS"));
-
             htError.Add("P3E01", new Error("报名失败。", "Point3.aspx?Type=LIST", "THIS"));
             htError.Add("P3E02", new Error("该球员已经比赛完了。", "Point3.aspx?Type=LIST", "THIS"));
             htError.Add("P3S01", new Error("报名成功", "Point3.aspx?Type=LIST", "THIS"));
-
+            htError.Add("ARENA1", new Error("成攻获得球馆抢夺权！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENA2", new Error("你的联盟正抢夺另一座球馆！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENA3", new Error("比赛开始前30分钟不能抢夺别的联盟的抢夺权！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENA4", new Error("您的联盟威望不足！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENA5", new Error("现在不是报名阶段！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENA6", new Error("你不是盟主！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENA7", new Error("你的联盟威望低于当前抢夺权的联盟！", "THIS", "THIS"));
+            htError.Add("ARENA100", new Error("数据异常！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENAREG1", new Error("成攻报名球馆抢夺战！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENAREG2", new Error("您已经报过名，请勿重复报名！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENAREG3", new Error("当前不是报名时间段！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENAREG4", new Error("您的联盟没有参与该球馆争夺战！", "Arena.aspx?Type=LIST", "THIS"));
+            htError.Add("ARENAREG100", new Error("数据异常！", "Arena.aspx?Type=LIST", "THIS"));
         }
 
         private void InitializeComponent()

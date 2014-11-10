@@ -26,9 +26,9 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            int request = (int) SessionItem.GetRequest("Kind", 0);
-            int num2 = (int) SessionItem.GetRequest("GameCategory", 0);
-            this.strURL = (string) SessionItem.GetRequest("URL", 1);
+            int request = SessionItem.GetRequest("Kind", 0);
+            int num2 = SessionItem.GetRequest("GameCategory", 0);
+            this.strURL = SessionItem.GetRequest("URL", 1);
             if ((this.strURL == null) || (this.strURL == ""))
             {
                 this.strURL = "1";
@@ -45,8 +45,8 @@
                     str2 = ("?" + str2.Replace("^", "&").Replace(".", "=")).Replace("$", ".");
                 }
                 string url = strURL + str2;
-                this.strUserName = (string) SessionItem.GetRequest("ue3tu23ce3vdmbv", 1);
-                this.strPassword = (string) SessionItem.GetRequest("stey86yi2jfdace", 1);
+                this.strUserName = SessionItem.GetRequest("ue3tu23ce3vdmbv", 1);
+                this.strPassword = SessionItem.GetRequest("stey86yi2jfdace", 1);
                 string strUserName = StringItem.MD5Decrypt(this.strUserName, Global.strMD5Key);
                 string strPassword = StringItem.MD5Decrypt(this.strPassword, Global.strMD5Key);
                 if (((ServerParameter.intGameCategory == 0) || (url == "RegClub.aspx")) || (url == "SmartMain.aspx"))
@@ -63,7 +63,6 @@
                     }
                     else
                     {
-                        //userRowByUserNamePWD.Close();
                         base.Response.Redirect("Report.aspx?Parameter=12");
                     }
                 }

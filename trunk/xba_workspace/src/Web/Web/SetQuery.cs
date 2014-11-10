@@ -25,8 +25,8 @@
             }
             else
             {
-                this.intOrderID = (int) SessionItem.GetRequest("ORDERID", 0);
-                this.strOID = (string) SessionItem.GetRequest("OID", 1);
+                this.intOrderID = SessionItem.GetRequest("ORDERID", 0);
+                this.strOID = SessionItem.GetRequest("OID", 1);
                 this.InitializeComponent();
                 base.OnInit(e);
             }

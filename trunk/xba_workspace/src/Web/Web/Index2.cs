@@ -88,10 +88,10 @@
                 foreach (DataRow row in monthScoreList.Rows)
                 {
                     int intUserID = (int) row["UserID"];
-                    int num2 = (int) row["MonthPoint"];
+                    int num3 = (int) row["MonthPoint"];
                     string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
                     object strRMScoreList = this.strRMScoreList;
-                    this.strRMScoreList = string.Concat(new object[] { strRMScoreList, "<tr align='center'><td height='23' width='50' style='COLOR:black'>", num, "</td><td width='100'  style='COLOR:black'>", nickNameByUserID, "</td><td width='68'  style='COLOR:black'>", num2, "</td></tr>" });
+                    this.strRMScoreList = string.Concat(new object[] { strRMScoreList, "<tr align='center'><td height='23' width='50' style='COLOR:black'>", num, "</td><td width='100'  style='COLOR:black'>", nickNameByUserID, "</td><td width='68'  style='COLOR:black'>", num3, "</td></tr>" });
                     if (num < monthScoreList.Rows.Count)
                     {
                         this.strRMScoreList = this.strRMScoreList + "<tr><td height='1' background='Images/web/Rocketman_line.gif' colspan='3'></td></tr>";

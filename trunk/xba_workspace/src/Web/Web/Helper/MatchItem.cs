@@ -3,9 +3,6 @@
     using System;
     using System.Data;
     using System.Data.SqlClient;
-    using System.Text;
-    using System.IO;
-    using System.Runtime.InteropServices;
     using Web.DBConnection;
     using Web.VMatchEngine;
 
@@ -74,8 +71,7 @@
 
         public static string GetMatchPath()
         {
-            //return "\\develop\\xba_workspace\\xbaweb";
-            return IniUtil.ReadIniData("PathConfig", "MatchPath", "", "C:\\xba.ini");
+            return IniUtil.ReadIniData("PathConfig", "MatchPath", "", @"C:\xba.ini");
         }
 
         public static int GetOneByOneLosePower(int intStamina, int intHard)
@@ -230,10 +226,6 @@
             return "盯人外线";
         }
 
-        /**
-         *比赛费体力 
-         */
-
         public static int GetVLosePower(int intStamina, int intHard)
         {
             int num = RandomItem.rnd.Next(0, 0x3e8);
@@ -246,7 +238,6 @@
                 return 0;
             }
             return RandomItem.rnd.Next(2, 4);
-            //return 1;
         }
 
         public static string GetVOffName(int intOff)
@@ -304,12 +295,12 @@
             string commandText = "SELECT AVG(Happy) FROM BTP_Player3 WHERE ClubID=" + intClubIDA;
             int num = SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             commandText = "SELECT MIN(Happy) FROM BTP_Player3 WHERE ClubID=" + intClubIDA;
-            int num3 = SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            int num2 = SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             if (num < 0x4b)
             {
                 return 2;
             }
-            if (num3 < 0x41)
+            if (num2 < 0x41)
             {
                 return 2;
             }
@@ -324,10 +315,10 @@
             if ((intType == 1) || (intType == 3))
             {
                 commandText = "SELECT AVG(Happy) FROM BTP_Player3 WHERE ClubID=" + intClubIDB;
-                int num2 = SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+                int num3 = SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                 commandText = "SELECT MIN(Happy) FROM BTP_Player3 WHERE ClubID=" + intClubIDB;
                 int num4 = SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-                if (num2 < 0x4b)
+                if (num3 < 0x4b)
                 {
                     return 3;
                 }
@@ -358,8 +349,8 @@
             commandText = "SELECT AVG(Power) FROM BTP_Player5 WHERE ClubID=" + intClubIDA;
             int num = SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             commandText = "SELECT MIN(Power) FROM BTP_Player5 WHERE ClubID=" + intClubIDA;
-            int num3 = SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-            if ((num < 70) || (num3 < 50))
+            int num2 = SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            if ((num < 70) || (num2 < 50))
             {
                 return 10;
             }
@@ -384,10 +375,10 @@
             if ((intType == 1) || (intType == 3))
             {
                 commandText = "SELECT AVG(Power) FROM BTP_Player5 WHERE ClubID=" + intClubIDB;
-                int num2 = SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+                int num3 = SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                 commandText = "SELECT MIN(Power) FROM BTP_Player5 WHERE ClubID=" + intClubIDB;
                 int num4 = SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-                if ((num2 < 70) || (num4 < 50))
+                if ((num3 < 70) || (num4 < 50))
                 {
                     return 11;
                 }

@@ -4,7 +4,6 @@
     using LoginParameter;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -53,21 +52,21 @@
                 {
                     return "-1|0|0";
                 }
-                DataTable reader = BTPFriMatchMsgManager.GetAddFriMatchMsg(intFMatchMsgID, strContent, intUserID);
+                DataTable table = BTPFriMatchMsgManager.GetAddFriMatchMsg(intFMatchMsgID, strContent, intUserID);
                 StringBuilder builder = new StringBuilder("");
                 int num4 = 0;
                 int num5 = 0;
-                if (reader != null)
+                if (table != null)
                 {
-                    foreach (DataRow row in reader.Rows)
+                    foreach (DataRow row in table.Rows)
                     {
-                        DateTime datIn = (DateTime)row["CreateTime"];
-                        num4 = (int)row["FMatchMsgID"];
+                        DateTime datIn = (DateTime) row["CreateTime"];
+                        num4 = (int) row["FMatchMsgID"];
                         string text1 = "[" + StringItem.FormatDate(datIn, "hh:mm") + "]";
                         string strIn = row["Content"].ToString().Trim();
                         string str2 = row["NickName"].ToString().Trim();
-                        bool flag = (bool)row["Sex"];
-                        int num6 = (int)row["UserID"];
+                        bool flag = (bool) row["Sex"];
+                        int num6 = (int) row["UserID"];
                         if (flag)
                         {
                             str2 = "<font color='#ff005a'>" + StringItem.GetShortString(str2, 10) + "</font>";
@@ -79,7 +78,6 @@
                         builder.Append(string.Concat(new object[] { "<a href='javascript:;' onclick=window.open('ShowClubIFrom.aspx?UserID=", num6, "','','height=452,width=224,status=no,toolbar=no,menubar=no,location=no');>", str2, "</a>:", StringItem.GetShortString(strIn, 100), "&" }));
                         num5++;
                     }
-                    //reader.Close();
                     return string.Concat(new object[] { num5, "|", builder.ToString().Trim(), "|", num4 });
                 }
                 return "0|null";
@@ -124,7 +122,6 @@
                         builder.Append(string.Concat(new object[] { "<a href='javascript:;' onclick=window.open('ShowClubIFrom.aspx?UserID=", num3, "','','height=452,width=224,status=no,toolbar=no,menubar=no,location=no');>", str2, "</a>:", StringItem.GetShortString(strIn, 100), "&" }));
                         num2++;
                     }
-                    //friMatchMsgNew.Close();
                     return string.Concat(new object[] { num2, "|", builder.ToString().Trim(), "|", num });
                 }
                 return "0|null";
@@ -226,7 +223,6 @@
                     this.sbMsg.Append(string.Concat(new object[] { "<li onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><a href=\"javascript:;\" onclick=\"window.open('ShowClubIFrom.aspx?UserID=", num3, "','','height=452,width=224,status=no,toolbar=no,menubar=no,location=no');\">", str2, "</a>:", StringItem.GetShortString(strIn, 100), "</li>" }));
                     num2++;
                 }
-                //friMatchMsgNew.Close();
                 for (int i = 0x19 - num2; i > 0; i--)
                 {
                     this.strAddMsg = this.strAddMsg + "<li>&nbsp;</li>";
@@ -247,22 +243,21 @@
             this.strTitle1 = "<a style=\"cursor:pointer\" onclick=\"javascript:window.top.Main.location='Main_P.aspx?Tag=" + this.intUserID + "&Type=DevLog'\">【联赛日志】...</a>";
             this.strTitle2 = "<a style=\"cursor:pointer\" onclick=\"javascript:window.top.Main.location='Main_P.aspx?Tag=" + this.intUserID + "&Type=DevMsg'\">【联赛留言】...</a>";
             string strDevCode = BTPAccountManager.GetAccountRowByUserID(this.intUserID)["DevCode"].ToString().Trim();
-            DataTable reader = BTPDevMatchManager.GetDevLogByDevCode(0, 1, 3, strDevCode);
+            DataTable table = BTPDevMatchManager.GetDevLogByDevCode(0, 1, 3, strDevCode);
             int num = 0;
             this.sbTodayElite.Append("<div style=\"COLOR: red;margin-top:2px;color:red;margin-bottom: 3px\"><strong >" + this.strTitle1 + "</strong></div>");
             this.sbTodayElite.Append("<div style=\"Z-INDEX: 1; OVERFLOW: hidden; WIDTH: 195px; WORD-BREAK: break-all; LINE-HEIGHT: 20px; HEIGHT: 145px\">");
-            if (reader != null)
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     if (num > 0)
                     {
                         this.sbTodayElite.Append("<div style=\"padding:0; margin-top:0px; margin-bottom:0px;OVERFLOW: hidden;margin-left:15px;WIDTH:165px;height:1px;background:url(Images/RM/Border_07.gif) repeat-x; \"></div>");
                     }
-                    this.sbTodayElite.Append("<div onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">" + (("<font color='#660066'>[" + StringItem.FormatDate((DateTime)row["CreateTime"], "MM-dd").Trim() + "]</font> ") + row["LogEvent"].ToString().Trim()) + "</div>");
+                    this.sbTodayElite.Append("<div onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><font color='#660066'>[" + StringItem.FormatDate((DateTime) row["CreateTime"], "MM-dd").Trim() + "]</font> " + row["LogEvent"].ToString().Trim() + "</div>");
                     num = 1;
                 }
-                //reader.Close();
             }
             else
             {
@@ -272,19 +267,19 @@
             this.sbNewTopic.Append("<div style=\"Z-INDEX: 2; COLOR: red;margin-top:2px\"><strong >" + this.strTitle2 + "</strong></div>");
             this.sbNewTopic.Append("<div style=\"Z-INDEX:2; OVERFLOW:hidden; WIDTH:195px; WORD-BREAK:break-all; LINE-HEIGHT:20px; HEIGHT:145px\">");
             int devMessageCountByCode = BTPDevMessageManager.GetDevMessageCountByCode(strDevCode);
-            DataTable table = BTPDevMessageManager.GetTableByDevCode(strDevCode, 1, 10, 7, devMessageCountByCode);
+            DataTable table2 = BTPDevMessageManager.GetTableByDevCode(strDevCode, 1, 10, 7, devMessageCountByCode);
             num = 0;
-            if (table != null)
+            if (table2 != null)
             {
-                foreach (DataRow row2 in table.Rows)
+                foreach (DataRow row2 in table2.Rows)
                 {
                     if (num > 0)
                     {
                         this.sbNewTopic.Append("<div style=\"padding:0; margin-top:0px; margin-bottom:0px;OVERFLOW: hidden;margin-left:15px;WIDTH:165px;height:1px;background:url(Images/RM/Border_07.gif) repeat-x; \"></div>");
                     }
-                    string str4 = row2["Content"].ToString().Trim();
-                    string str5 = row2["NickName"].ToString().Trim();
-                    this.sbNewTopic.Append("<div onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">" + (("<font color='#660066'>[" + StringItem.FormatDate((DateTime) row2["CreateTime"], "MM-dd").Trim() + "] " + str5 + ":</font>") + str4) + "</div>");
+                    string str2 = row2["Content"].ToString().Trim();
+                    string str3 = row2["NickName"].ToString().Trim();
+                    this.sbNewTopic.Append("<div onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><font color='#660066'>[" + StringItem.FormatDate((DateTime) row2["CreateTime"], "MM-dd").Trim() + "] " + str3 + ":</font>" + str2 + "</div>");
                     num = 1;
                 }
             }

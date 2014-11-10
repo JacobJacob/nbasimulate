@@ -88,7 +88,7 @@
                 this.intClubID = (int) onlineRowByUserID["ClubID5"];
                 SessionItem.CheckCanUseAfterUpdate(5);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.strDevCode = (string) SessionItem.GetRequest("Devision", 1);
+                this.strDevCode = SessionItem.GetRequest("Devision", 1);
                 this.GetList();
                 this.InitializeComponent();
                 base.OnInit(e);

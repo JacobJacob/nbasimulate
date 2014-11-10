@@ -48,41 +48,38 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            this.strType = (string) SessionItem.GetRequest("Type", 1);
+            this.strType = SessionItem.GetRequest("Type", 1);
             this.strGuideCode = BTPAccountManager.GetGuideCode(this.intUserID);
             int index = new Cuter(Convert.ToString(this.Session["Advance" + this.intUserID])).GetIndex("0");
-            if (this.strType != "")
+            switch (this.strType)
             {
-                switch (this.strType)
-                {
-                    case "STAFF":
-                        if ((index != -1) && (index != 2))
-                        {
-                            base.Response.Write("<script>window.top.Main.location='Main_I.aspx';</script>");
-                            return;
-                        }
-                        this.strCenterURL = "StaffManage.aspx?Type=STREET";
-                        this.strRightURL = "Staff.aspx?Type=0&Grade=0&Page=1&Refresh=0";
+                case "STAFF":
+                    if ((index != -1) && (index != 2))
+                    {
+                        base.Response.Write("<script>window.top.Main.location='Main_I.aspx';</script>");
                         return;
+                    }
+                    this.strCenterURL = "StaffManage.aspx?Type=STREET";
+                    this.strRightURL = "Staff.aspx?Type=0&Grade=0&Page=1&Refresh=0";
+                    return;
 
-                    case "FINANCE":
-                        if (index != -1)
-                        {
-                            base.Response.Write("<script>window.top.Main.location='Main_I.aspx';</script>");
-                            return;
-                        }
-                        SessionItem.CheckCanUseAfterUpdate(this.intCategory);
-                        this.strCenterURL = "TFinance.aspx?Type=TURN&Kind=SHOW&Page=1";
-                        this.strRightURL = "TUFinance.aspx?Status=0&Page=1";
+                case "FINANCE":
+                    if (index != -1)
+                    {
+                        base.Response.Write("<script>window.top.Main.location='Main_I.aspx';</script>");
                         return;
-                }
-                this.strCenterURL = "Temp_Center.aspx";
-                this.strRightURL = "Temp_Right.aspx";
+                    }
+                    SessionItem.CheckCanUseAfterUpdate(this.intCategory);
+                    this.strCenterURL = "TFinance.aspx?Type=TURN&Kind=SHOW&Page=1";
+                    this.strRightURL = "TUFinance.aspx?Status=0&Page=1";
+                    return;
+
+                case "":
+                    base.Response.Redirect("Report.aspx?Parameter=1");
+                    return;
             }
-            else
-            {
-                base.Response.Redirect("Report.aspx?Parameter=1");
-            }
+            this.strCenterURL = "Temp_Center.aspx";
+            this.strRightURL = "Temp_Right.aspx";
         }
     }
 }

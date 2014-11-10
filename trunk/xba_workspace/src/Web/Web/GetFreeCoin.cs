@@ -34,7 +34,6 @@
                     num2 = (int) userRowByUserID["Coin"];
                     num3 = (int) userRowByUserID["FreeCoin"];
                 }
-                //userRowByUserID.Close();
                 index = base.Request.ServerVariables["HTTP_USER_AGENT"].IndexOf("Alexa Toolbar");
                 if ((num2 < 10) && (index > 0))
                 {
@@ -46,17 +45,19 @@
                     else
                     {
                         num4 = RandomItem.rnd.Next(0, Convert.ToInt32(Math.Pow(10.0, (double) (num3 + 1))));
-                        HttpCookie cookie = new HttpCookie("FromFromR");
-                        cookie.Value = num4.ToString();
-                        cookie.Expires = DateTime.Now.AddHours(24.0);
+                        HttpCookie cookie = new HttpCookie("FromFromR") {
+                            Value = num4.ToString(),
+                            Expires = DateTime.Now.AddHours(24.0)
+                        };
                         base.Response.Cookies.Add(cookie);
                     }
                     if (num4 < 1)
                     {
                         ROOTUserManager.AddFreeCoin(this.intUserID, 1);
-                        HttpCookie cookie2 = new HttpCookie("FromFromR");
-                        cookie2.Value = "10";
-                        cookie2.Expires = DateTime.Now.AddHours(24.0);
+                        HttpCookie cookie2 = new HttpCookie("FromFromR") {
+                            Value = "10",
+                            Expires = DateTime.Now.AddHours(24.0)
+                        };
                         base.Response.Cookies.Add(cookie2);
                     }
                 }

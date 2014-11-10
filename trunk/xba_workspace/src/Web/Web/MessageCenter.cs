@@ -12,7 +12,7 @@
 
     public class MessageCenter : Page
     {
-        private bool blnBtn = false;
+        private bool blnBtn;
         protected ImageButton btnAdd;
         protected ImageButton btnSearchOK;
         protected ImageButton btnSend;
@@ -166,23 +166,23 @@
         private void GetAgeResult()
         {
             this.sbList = new StringBuilder();
-            string str5 = this.ddlAge.SelectedValue.ToString().Trim();
-            if (str5 == "0")
+            string str = this.ddlAge.SelectedValue.ToString().Trim();
+            if (str == "0")
             {
                 this.strStartYear = Convert.ToString(DateTime.Today.AddYears(-15).Year).Trim() + "-1-1 0:00:00";
                 this.strEndYear = Convert.ToString(DateTime.Now.Year).Trim() + "-12-31 23:59:59";
             }
-            else if (str5 == "1")
+            else if (str == "1")
             {
                 this.strStartYear = Convert.ToString(DateTime.Today.AddYears(-22).Year).Trim() + "-1-1 0:00:00";
                 this.strEndYear = Convert.ToString(DateTime.Today.AddYears(-16).Year).Trim() + "-12-31 23:59:59";
             }
-            else if (str5 == "2")
+            else if (str == "2")
             {
                 this.strStartYear = Convert.ToString(DateTime.Today.AddYears(-30).Year).Trim() + "-1-1 0:00:00";
                 this.strEndYear = Convert.ToString(DateTime.Today.AddYears(-23).Year).Trim() + "-12-31 23:59:59";
             }
-            else if (str5 == "3")
+            else if (str == "3")
             {
                 this.strStartYear = Convert.ToString(DateTime.Today.AddYears(-40).Year).Trim() + "-1-1 0:00:00";
                 this.strEndYear = Convert.ToString(DateTime.Today.AddYears(-31).Year).Trim() + "-12-31 23:59:59";
@@ -202,12 +202,12 @@
             {
                 foreach (DataRow row in table.Rows)
                 {
-                    string str6;
+                    string str2;
                     string strNickName = row["NickName"].ToString().Trim();
                     row["ClubName"].ToString().Trim();
                     int intUserID = (int) row["UserID"];
                     string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
-                    int num = (byte) row["Levels"];
+                    int num2 = (byte) row["Levels"];
                     string strQQ = row["QQ"].ToString().Trim();
                     bool blnSex = (bool) row["Sex"];
                     int intWealth = (int) row["Wealth"];
@@ -222,18 +222,18 @@
                     }
                     if (DTOnlineManager.GetOnlineRowByUserID(intUserID) == null)
                     {
-                        str6 = "<font color='666666'>否</font>";
+                        str2 = "<font color='666666'>否</font>";
                     }
                     else
                     {
-                        str6 = "<font color='red'>是</font>";
+                        str2 = "<font color='red'>是</font>";
                     }
                     this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#eeeeee'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td align='center' height='28'>" + wealthName + "</td>");
                     this.sbList.Append("<td align='center'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", blnSex) + "</td>");
-                    this.sbList.Append("<td align='center'>" + num + "</td>");
+                    this.sbList.Append("<td align='center'>" + num2 + "</td>");
                     this.sbList.Append("<td align='center'>" + dev + "</td>");
-                    this.sbList.Append("<td align='center'>" + str6 + "</td>");
+                    this.sbList.Append("<td align='center'>" + str2 + "</td>");
                     this.sbList.Append("<td align='center'>" + strQQ + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
@@ -268,19 +268,21 @@
                     return;
                 }
             }
-            HttpCookie cookie = new HttpCookie("Province");
-            cookie.Value = this.strProvince;
-            cookie.Name = "Province";
+            HttpCookie cookie = new HttpCookie("Province") {
+                Value = this.strProvince,
+                Name = "Province"
+            };
             cookie.Expires.AddDays(365.0);
             base.Response.Cookies.Add(cookie);
-            HttpCookie cookie2 = new HttpCookie("City");
-            cookie2.Value = this.strCity;
-            cookie2.Name = "City";
+            HttpCookie cookie2 = new HttpCookie("City") {
+                Value = this.strCity,
+                Name = "City"
+            };
             cookie2.Expires.AddDays(365.0);
             base.Response.Cookies.Add(cookie2);
             this.intGender = Convert.ToInt32(this.rbGender.SelectedValue);
             this.intPrePage = 10;
-            int request = (int) SessionItem.GetRequest("Sex", 0);
+            int request = SessionItem.GetRequest("Sex", 0);
             if ((request == 0) || this.blnBtn)
             {
                 this.intGender = Convert.ToInt32(this.rbGender.SelectedValue);
@@ -291,15 +293,15 @@
                 {
                     case 1:
                         this.intGender = 0;
-                        goto Label_0212;
+                        goto Label_0211;
 
                     case 2:
                         this.intGender = 1;
-                        goto Label_0212;
+                        goto Label_0211;
                 }
                 this.intGender = 2;
             }
-        Label_0212:
+        Label_0211:
             table = BTPAccountManager.GetSearchResultByCity(0, this.intPage, this.intPrePage, this.strProvince, this.strCity, this.intGender);
             if (table == null)
             {
@@ -309,12 +311,12 @@
             {
                 foreach (DataRow row in table.Rows)
                 {
-                    string str5;
+                    string str;
                     string strNickName = row["NickName"].ToString().Trim();
                     row["ClubName"].ToString().Trim();
                     int intUserID = (int) row["UserID"];
                     string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
-                    int num = (byte) row["Levels"];
+                    int num3 = (byte) row["Levels"];
                     string strQQ = row["QQ"].ToString().Trim();
                     bool blnSex = (bool) row["Sex"];
                     int intWealth = (int) row["Wealth"];
@@ -329,18 +331,18 @@
                     }
                     if (DTOnlineManager.GetOnlineRowByUserID(intUserID) == null)
                     {
-                        str5 = "<font color='666666'>否</font>";
+                        str = "<font color='666666'>否</font>";
                     }
                     else
                     {
-                        str5 = "<font color='red'>是</font>";
+                        str = "<font color='red'>是</font>";
                     }
                     this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#eeeeee'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td align='center' height='28'>" + wealthName + "</td>");
                     this.sbList.Append("<td align='center'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", blnSex) + "</td>");
-                    this.sbList.Append("<td align='center'>" + num + "</td>");
+                    this.sbList.Append("<td align='center'>" + num3 + "</td>");
                     this.sbList.Append("<td align='center'>" + dev + "</td>");
-                    this.sbList.Append("<td align='center'>" + str5 + "</td>");
+                    this.sbList.Append("<td align='center'>" + str + "</td>");
                     this.sbList.Append("<td align='center'>" + strQQ + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>");
@@ -899,12 +901,12 @@
                 {
                     foreach (DataRow row in searchResultByClubName.Rows)
                     {
-                        string str5;
+                        string str;
                         string strNickName = row["NickName"].ToString().Trim();
                         row["ClubName"].ToString().Trim();
                         int intUserID = (int) row["UserID"];
                         string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
-                        int num = (byte) row["Levels"];
+                        int num2 = (byte) row["Levels"];
                         string strQQ = row["QQ"].ToString().Trim();
                         bool blnSex = (bool) row["Sex"];
                         int intWealth = (int) row["Wealth"];
@@ -919,18 +921,18 @@
                         }
                         if (DTOnlineManager.GetOnlineRowByUserID(intUserID) == null)
                         {
-                            str5 = "否";
+                            str = "否";
                         }
                         else
                         {
-                            str5 = "<font color='red'>是</font>";
+                            str = "<font color='red'>是</font>";
                         }
                         this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                         this.sbList.Append("<td align='center' height='28'>" + wealthName + "</td>");
                         this.sbList.Append("<td align='center'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", blnSex) + "</td>");
-                        this.sbList.Append("<td align='center'>" + num + "</td>");
+                        this.sbList.Append("<td align='center'>" + num2 + "</td>");
                         this.sbList.Append("<td align='center'>" + dev + "</td>");
-                        this.sbList.Append("<td align='center'>" + str5 + "</td>");
+                        this.sbList.Append("<td align='center'>" + str + "</td>");
                         this.sbList.Append("<td align='center'>" + strQQ + "</td>");
                         this.sbList.Append("</tr>");
                         this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
@@ -943,7 +945,7 @@
         {
             DataTable table;
             this.sbList = new StringBuilder();
-            int request = (int) SessionItem.GetRequest("Sex", 0);
+            int request = SessionItem.GetRequest("Sex", 0);
             if ((request == 0) || this.blnBtn)
             {
                 this.intGender = Convert.ToInt32(this.rbGender.SelectedValue);
@@ -954,15 +956,15 @@
                 {
                     case 1:
                         this.intGender = 0;
-                        goto Label_0065;
+                        goto Label_006E;
 
                     case 2:
                         this.intGender = 1;
-                        goto Label_0065;
+                        goto Label_006E;
                 }
                 this.intGender = 2;
             }
-        Label_0065:
+        Label_006E:
             table = BTPAccountManager.GetSearchResultByGender(0, this.intPage, this.intPrePage, this.intGender);
             if (table == null)
             {
@@ -972,12 +974,12 @@
             {
                 foreach (DataRow row in table.Rows)
                 {
-                    string str5;
+                    string str;
                     string strNickName = row["NickName"].ToString().Trim();
                     row["ClubName"].ToString().Trim();
                     int intUserID = (int) row["UserID"];
                     string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
-                    int num = (byte) row["Levels"];
+                    int num3 = (byte) row["Levels"];
                     string strQQ = row["QQ"].ToString().Trim();
                     bool blnSex = (bool) row["Sex"];
                     int intWealth = (int) row["Wealth"];
@@ -992,18 +994,18 @@
                     }
                     if (DTOnlineManager.GetOnlineRowByUserID(intUserID) == null)
                     {
-                        str5 = "<font color='666666'>否</font>";
+                        str = "<font color='666666'>否</font>";
                     }
                     else
                     {
-                        str5 = "<font color='red'>是</font>";
+                        str = "<font color='red'>是</font>";
                     }
                     this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#eeeeee'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td align='center' height='28'>" + wealthName + "</td>");
                     this.sbList.Append("<td align='center'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", blnSex) + "</td>");
-                    this.sbList.Append("<td align='center'>" + num + "</td>");
+                    this.sbList.Append("<td align='center'>" + num3 + "</td>");
                     this.sbList.Append("<td align='center'>" + dev + "</td>");
-                    this.sbList.Append("<td align='center'>" + str5 + "</td>");
+                    this.sbList.Append("<td align='center'>" + str + "</td>");
                     this.sbList.Append("<td align='center'>" + strQQ + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
@@ -1034,12 +1036,12 @@
                 {
                     foreach (DataRow row in searchResultByNickName.Rows)
                     {
-                        string str5;
+                        string str;
                         string strNickName = row["NickName"].ToString().Trim();
                         row["ClubName"].ToString().Trim();
                         int intUserID = (int) row["UserID"];
                         string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
-                        int num = (byte) row["Levels"];
+                        int num2 = (byte) row["Levels"];
                         string strQQ = row["QQ"].ToString().Trim();
                         bool blnSex = (bool) row["Sex"];
                         int intWealth = (int) row["Wealth"];
@@ -1054,18 +1056,18 @@
                         }
                         if (DTOnlineManager.GetOnlineRowByUserID(intUserID) == null)
                         {
-                            str5 = "否";
+                            str = "否";
                         }
                         else
                         {
-                            str5 = "<font color='red'>是</font>";
+                            str = "<font color='red'>是</font>";
                         }
                         this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#eeeeee'\" onmouseout=\"this.style.backgroundColor=''\">");
                         this.sbList.Append("<td align='center' height='28'>" + wealthName + "</td>");
                         this.sbList.Append("<td align='center'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", blnSex) + "</td>");
-                        this.sbList.Append("<td align='center'>" + num + "</td>");
+                        this.sbList.Append("<td align='center'>" + num2 + "</td>");
                         this.sbList.Append("<td align='center'>" + dev + "</td>");
-                        this.sbList.Append("<td align='center'>" + str5 + "</td>");
+                        this.sbList.Append("<td align='center'>" + str + "</td>");
                         this.sbList.Append("<td align='center'>" + strQQ + "</td>");
                         this.sbList.Append("</tr>");
                         this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
@@ -1110,45 +1112,39 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", total, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", total, "个记录 跳转", str3 });
         }
 
         private void InitializeComponent()
@@ -1197,8 +1193,8 @@
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/MessageCenter.aspx?Type=FRIENDLIST\"' href='MessageAndFriend.aspx?Type=FRIENDLIST'>好友列表</a></li>");
                     this.sbPageIntro.Append("<li class='qian2'>经理查询</li></ul>");
                     this.sbPageIntro.Append("<a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.intPage = (int) SessionItem.GetRequest("Page", 0);
-                    this.intCheck = (int) SessionItem.GetRequest("Check", 0);
+                    this.intPage = SessionItem.GetRequest("Page", 0);
+                    this.intCheck = SessionItem.GetRequest("Check", 0);
                     if (this.intPage <= 0)
                     {
                         this.intPage = 1;
@@ -1211,48 +1207,49 @@
             }
             if (this.strType == "SEARCH")
             {
-                switch (this.strStatus)
+                string strStatus = this.strStatus;
+                if (strStatus == null)
                 {
-                    case "CITY":
-                        this.sbSearchPageIntro.Append("<font color='red'>城市查询</font>");
-                        this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=GENDER'>性别查询</a>");
-                        this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&&Status=NICKNAME'>经理名查询</a>");
-                        this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=CLUBNAME'>俱乐部名查询</a>");
-                        this.GetCityScript();
-                        this.tblCity.Visible = true;
-                        this.SetProvince();
-                        goto Label_056E;
-
-                    case "GENDER":
+                    goto Label_0504;
+                }
+                if (strStatus != "CITY")
+                {
+                    if (strStatus == "GENDER")
+                    {
                         this.sbSearchPageIntro.Append("<a href='MessageCenter.aspx?Type=SEARCH&Status=CITY'>城市查询</a>");
                         this.sbSearchPageIntro.Append(" | <font color='red'>性别查询</font>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&&Status=NICKNAME'>经理名查询</a>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=CLUBNAME'>俱乐部名查询</a>");
-                        goto Label_056E;
-
-                    case "NICKNAME":
+                        goto Label_055A;
+                    }
+                    if (strStatus == "NICKNAME")
+                    {
                         this.sbSearchPageIntro.Append("<a href='MessageCenter.aspx?Type=SEARCH&Status=CITY'>城市查询</a>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=GENDER'>性别查询</a>");
                         this.sbSearchPageIntro.Append(" | <font color='red'>经理名查询</font>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=CLUBNAME'>俱乐部名查询</a>");
                         this.tblNick.Visible = true;
-                        goto Label_056E;
-
-                    case "AGE":
+                        goto Label_055A;
+                    }
+                    if (strStatus == "AGE")
+                    {
                         this.sbSearchPageIntro.Append("<a href='MessageCenter.aspx?Type=SEARCH&Status=CITY'>城市查询</a>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=GENDER'>性别查询</a>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&&Status=NICKNAME'>经理名查询</a>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=CLUBNAME'>俱乐部名查询</a>");
                         this.tblAge.Visible = true;
-                        goto Label_056E;
-
-                    case "CLUBNAME":
+                        goto Label_055A;
+                    }
+                    if (strStatus == "CLUBNAME")
+                    {
                         this.sbSearchPageIntro.Append("<a href='MessageCenter.aspx?Type=SEARCH&Status=CITY'>城市查询</a>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=GENDER'>性别查询</a>");
                         this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&&Status=NICKNAME'>经理名查询</a>");
                         this.sbSearchPageIntro.Append(" | <font color='red'>俱乐部名查询</font>");
                         this.tblClub.Visible = true;
-                        goto Label_056E;
+                        goto Label_055A;
+                    }
+                    goto Label_0504;
                 }
                 this.sbSearchPageIntro.Append("<font color='red'>城市查询</font>");
                 this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=GENDER'>性别查询</a>");
@@ -1260,8 +1257,17 @@
                 this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=CLUBNAME'>俱乐部名查询</a>");
                 this.GetCityScript();
                 this.tblCity.Visible = true;
+                this.SetProvince();
             }
-        Label_056E:
+            goto Label_055A;
+        Label_0504:
+            this.sbSearchPageIntro.Append("<font color='red'>城市查询</font>");
+            this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=GENDER'>性别查询</a>");
+            this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&&Status=NICKNAME'>经理名查询</a>");
+            this.sbSearchPageIntro.Append(" | <a href='MessageCenter.aspx?Type=SEARCH&Status=CLUBNAME'>俱乐部名查询</a>");
+            this.GetCityScript();
+            this.tblCity.Visible = true;
+        Label_055A:
             this.btnSearchOK.Click += new ImageClickEventHandler(this.btnSearchOK_Click);
             if ((this.intPage > 1) || (this.intCheck == 1))
             {
@@ -1289,10 +1295,10 @@
                 this.tblNick.Visible = false;
                 this.tblClub.Visible = false;
                 this.btnSearchOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
-                this.strStatus = (string) SessionItem.GetRequest("Status", 1);
+                this.strType = SessionItem.GetRequest("Type", 1);
+                this.strStatus = SessionItem.GetRequest("Status", 1);
                 this.Session["Status"] = this.strStatus;
-                this.intCheck = (int) SessionItem.GetRequest("Check", 0);
+                this.intCheck = SessionItem.GetRequest("Check", 0);
                 this.InitializeComponent();
                 base.OnInit(e);
             }
@@ -1333,7 +1339,7 @@
 
         private void SendMsg()
         {
-            this.intRUserID = (int) SessionItem.GetRequest("UserID", 0);
+            this.intRUserID = SessionItem.GetRequest("UserID", 0);
             if (this.intRUserID == 0)
             {
                 this.tbNickName.Text = "";
@@ -1359,14 +1365,16 @@
             string str = SessionItem.GetRequest("Province", 1).ToString().Trim();
             if (str != "")
             {
-                HttpCookie cookie = new HttpCookie("Province");
-                cookie.Value = str;
-                cookie.Name = "Province";
+                HttpCookie cookie = new HttpCookie("Province") {
+                    Value = str,
+                    Name = "Province"
+                };
                 cookie.Expires.AddDays(365.0);
                 base.Response.Cookies.Add(cookie);
-                HttpCookie cookie2 = new HttpCookie("City");
-                cookie2.Value = "不限";
-                cookie2.Name = "City";
+                HttpCookie cookie2 = new HttpCookie("City") {
+                    Value = "不限",
+                    Name = "City"
+                };
                 cookie2.Expires.AddDays(365.0);
                 base.Response.Cookies.Add(cookie2);
             }

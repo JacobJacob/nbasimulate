@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -107,6 +106,9 @@
                             this.strMsg = "<font color='red'>请正确输入分数！</font>";
                             return;
 
+                        case 1:
+                            break;
+
                         case 2:
                             this.strMsg = "<font color='red'>请正确输入" + this.strHomeName + "分数！</font>";
                             return;
@@ -118,6 +120,9 @@
                         case 4:
                             this.strMsg = "<font color='red'>请正确输入姚明分数！</font>";
                             break;
+
+                        default:
+                            return;
                     }
                 }
             }
@@ -148,13 +153,7 @@
             }
             if (this.intPage != 1)
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
                 string text1 = string.Concat(strArray);
             }
             if (this.intPage != num2)
@@ -162,19 +161,19 @@
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
                 string text2 = string.Concat(strArray);
             }
-            string str2 = "<select name='Page' onChange=JumpPage()>";
+            string str = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str2 = str2 + "<option value=" + i;
+                str = str + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str2 = str2 + " selected";
+                    str = str + " selected";
                 }
-                object obj2 = str2;
-                str2 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str;
+                str = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str2 = str2 + "</select>";
-            return string.Concat(new object[] { "共", msgTotal, "个记录 跳转", str2 });
+            str = str + "</select>";
+            return string.Concat(new object[] { "共", msgTotal, "个记录 跳转", str });
         }
 
         private void GuessList()
@@ -236,15 +235,15 @@
         {
             string strCurrentURL = "RMCenter.aspx?Type=MYRM&";
             this.intPerPage = 11;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intCount = this.intPerPage * this.intPage;
             this.intTotal = this.GetMsgTotal();
             this.strScript = this.GetMsgScript(strCurrentURL);
             this.strList = "<table width='362' border='2' cellpadding='0' cellspacing='0' bordercolor='#FFFFFF'><tr><td width='180' height='26' align='center' bgcolor='#C11642'><strong>比赛竞猜</strong></td><td width='116' align='center' bgcolor='#C11642'><strong>姚明</strong></td><td width='58' align='center' bgcolor='#C11642'><strong>积分</strong></td></tr>";
-            DataTable reader = RMRecordManager.GetRecordByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
-            if (reader != null)
+            DataTable table = RMRecordManager.GetRecordByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     int num1 = (int) row["UserID"];
                     int intMatchID = (int) row["MatchID"];
@@ -266,7 +265,6 @@
             {
                 this.strList = this.strList + "<tr align='center'><td height='20' colspan='3'><font color='#9B052B'>暂时没有竞猜记录</font></td></tr></table>";
             }
-            //reader.Close();
         }
 
         protected override void OnInit(EventArgs e)
@@ -341,8 +339,8 @@
         {
             int num;
             int num2;
+            int num3;
             int num4;
-            int num5;
             string str;
             string str2;
             string str3;
@@ -353,14 +351,14 @@
             DataRow nextMatchRow = RMMatchManager.GetNextMatchRow();
             if (nextMatchRow != null)
             {
-                int num3 = (int) nextMatchRow["MatchID"];
-                num4 = (int) nextMatchRow["HomeTeamID"];
-                num5 = (int) nextMatchRow["AwayTeamID"];
-                teamNameByTeamID = RMTeamManager.GetTeamNameByTeamID(num4);
-                str7 = RMTeamManager.GetTeamNameByTeamID(num5);
-                if (num3 > 1)
+                int num5 = (int) nextMatchRow["MatchID"];
+                num3 = (int) nextMatchRow["HomeTeamID"];
+                num4 = (int) nextMatchRow["AwayTeamID"];
+                teamNameByTeamID = RMTeamManager.GetTeamNameByTeamID(num3);
+                str7 = RMTeamManager.GetTeamNameByTeamID(num4);
+                if (num5 > 1)
                 {
-                    DataRow matchRowByMatchID = RMMatchManager.GetMatchRowByMatchID(num3 - 1);
+                    DataRow matchRowByMatchID = RMMatchManager.GetMatchRowByMatchID(num5 - 1);
                     int num1 = (int) matchRowByMatchID["MatchID"];
                     num = (int) matchRowByMatchID["HomeTeamID"];
                     num2 = (int) matchRowByMatchID["AwayTeamID"];
@@ -372,8 +370,8 @@
                 }
                 else
                 {
-                    num = num4;
-                    num2 = num5;
+                    num = num3;
+                    num2 = num4;
                     str3 = "--";
                     str4 = "--";
                     str5 = "--";
@@ -394,17 +392,17 @@
                 str2 = RMTeamManager.GetTeamNameByTeamID(num2);
                 teamNameByTeamID = "--";
                 str7 = "--";
+                num3 = 0;
                 num4 = 0;
-                num5 = 0;
                 this.strRMLogo = "<img src='" + SessionItem.GetImageURL() + "RM/Border_G_08.gif' border='0'>";
             }
-            string str8 = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "NBALogo/", num4, ".gif'>" });
-            string str9 = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "NBALogo/", num5, ".gif'>" });
-            if (num4 == 0)
+            string str8 = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "NBALogo/", num3, ".gif'>" });
+            string str9 = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "NBALogo/", num4, ".gif'>" });
+            if (num3 == 0)
             {
                 str8 = "";
             }
-            if (num5 == 0)
+            if (num4 == 0)
             {
                 str9 = "";
             }

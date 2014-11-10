@@ -3,7 +3,6 @@
     using AjaxPro;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using Web.DBData;
@@ -81,45 +80,39 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", total, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", total, "个记录 跳转", str3 });
         }
 
         private void InitializeComponent()
@@ -139,10 +132,10 @@
             {
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.intType = (int) SessionItem.GetRequest("Type", 0);
-                this.intGrade = (int) SessionItem.GetRequest("Grade", 0);
-                this.intPage = (int) SessionItem.GetRequest("Page", 0);
-                int request = (int) SessionItem.GetRequest("Refresh", 0);
+                this.intType = SessionItem.GetRequest("Type", 0);
+                this.intGrade = SessionItem.GetRequest("Grade", 0);
+                this.intPage = SessionItem.GetRequest("Page", 0);
+                int request = SessionItem.GetRequest("Refresh", 0);
                 if (request == 1)
                 {
                     base.Response.Write("<script language=\"javascript\">parent.Center.location.reload();</script>");
@@ -324,7 +317,6 @@
             {
                 this.sbList.Append("<tr class='BarContent'><td height='20' colspan='6'>暂时没有职员！</td></tr>");
             }
-            //staffTable.Close();
             this.sbList.Append("<tr><td height='25' align='right' colspan='6'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
         }
     }

@@ -1,9 +1,7 @@
 ﻿namespace Web
 {
-    using LoginParameter;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -69,13 +67,13 @@
             }
             switch (num)
             {
+                case 0:
+                    base.Response.Redirect("Report.aspx?Parameter=105!Type." + this.strType + "^Devision." + this.strDevCode + "^Page.1");
+                    return;
+
                 case 1:
                     base.Response.Redirect(string.Concat(new object[] { "Devision.aspx?UserID=", this.intUserID, "&Type=", this.strType, "&Devision=", devCode, "&Page=1" }));
                     return;
-
-                case 0:
-                    base.Response.Redirect("Report.aspx?Parameter=105!Type." + this.strType + "^Devision." + this.strDevCode + "^Page.1");
-                    break;
             }
         }
 
@@ -107,45 +105,39 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", total, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", total, "个记录 跳转", str3 });
         }
 
         private void InitializeComponent()
@@ -170,8 +162,8 @@
                 this.intClubID = (int) onlineRowByUserID["ClubID5"];
                 SessionItem.CheckCanUseAfterUpdate(5);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
-                this.strDevCode = (string) SessionItem.GetRequest("Devision", 1);
+                this.strType = SessionItem.GetRequest("Type", 1);
+                this.strDevCode = SessionItem.GetRequest("Devision", 1);
                 this.tblList.Visible = false;
                 this.tblStat.Visible = false;
                 this.tblRival.Visible = false;
@@ -198,8 +190,8 @@
             this.intPerPage = 14;
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
-            int num5 = 1;
-            string str3 = "";
+            int num = 1;
+            string str2 = "";
             DataTable clubTableByDevCode = BTPDevManager.GetClubTableByDevCode(this.strDevCode);
             if (clubTableByDevCode == null)
             {
@@ -209,36 +201,36 @@
             {
                 foreach (DataRow row in clubTableByDevCode.Rows)
                 {
-                    string str2;
+                    string str3;
                     int count = clubTableByDevCode.Rows.Count;
-                    int num = (int) row["Win"];
-                    int num2 = (int) row["Lose"];
-                    int num3 = (int) row["Score"];
+                    int num3 = (int) row["Win"];
+                    int num4 = (int) row["Lose"];
+                    int num5 = (int) row["Score"];
                     int intClubID = (int) row["ClubID"];
                     if (intClubID == 0)
                     {
-                        str2 = "空缺";
+                        str3 = "空缺";
                     }
                     else
                     {
-                        str2 = BTPClubManager.GetClubNameByClubID(intClubID, 5, "Right", 0x11);
+                        str3 = BTPClubManager.GetClubNameByClubID(intClubID, 5, "Right", 0x11);
                     }
-                    if (num5 < 3)
+                    if (num < 3)
                     {
-                        str3 = "#fce5d2";
+                        str2 = "#fce5d2";
                     }
-                    else if (num5 > (count - 4))
+                    else if (num > (count - 4))
                     {
-                        str3 = "#e7e7e7";
+                        str2 = "#e7e7e7";
                     }
                     else
                     {
-                        str3 = "";
+                        str2 = "";
                     }
                     object strList = this.strList;
-                    this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' bgColor='", str3, "' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", num5, "</font></td><td  align='left'>", str2, "</td><td>", num, "</td><td>", num2, "</td><td>", num3, "</td><td></td></tr>" });
+                    this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' bgColor='", str2, "' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", num, "</font></td><td  align='left'>", str3, "</td><td>", num3, "</td><td>", num4, "</td><td>", num5, "</td><td></td></tr>" });
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
-                    num5++;
+                    num++;
                 }
             }
         }
@@ -297,37 +289,41 @@
             }
             else
             {
-                switch (this.strType)
+                string strType = this.strType;
+                if (strType != null)
                 {
-                    case "LIST":
-                        this.strPageIntro = string.Concat(new object[] { 
-                            "<img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_02.GIF' border='0' height='24' width='72'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_04.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=STAT\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=STAT&Devision=", this.strDevCode, "&Status=1&Page=1'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_C_03.GIF' border='0' height='24' width='71'></a><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_01.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=PIC\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Page=1'><img src='", SessionItem.GetImageURL(), 
-                            "MenuCard/Devision/Devision_C_05.GIF' border='0' height='24' width='71'></a><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='", SessionItem.GetImageURL(), "MenuCard/Help.GIF' border='0' height='24' width='19'></a>"
-                         });
-                        this.SetList();
-                        this.tblList.Visible = true;
-                        this.tdDDL.Visible = true;
-                        return;
+                    switch (strType)
+                    {
+                        case "LIST":
+                            this.strPageIntro = string.Concat(new object[] { 
+                                "<img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_02.GIF' border='0' height='24' width='72'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_04.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=STAT\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=STAT&Devision=", this.strDevCode, "&Status=1&Page=1'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_C_03.GIF' border='0' height='24' width='71'></a><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_01.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=PIC\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Page=1'><img src='", SessionItem.GetImageURL(), 
+                                "MenuCard/Devision/Devision_C_05.GIF' border='0' height='24' width='71'></a><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='", SessionItem.GetImageURL(), "MenuCard/Help.GIF' border='0' height='24' width='19'></a>"
+                             });
+                            this.SetList();
+                            this.tblList.Visible = true;
+                            this.tdDDL.Visible = true;
+                            return;
 
-                    case "STAT":
-                        this.strPageIntro = string.Concat(new object[] { 
-                            "<img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_02.GIF' border='0' height='24' width='72'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_04.GIF' border='0' height='24' width='71'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_03.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=LIST\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=LIST&Devision=", this.strDevCode, "&Page=1'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_C_01.GIF' border='0' height='24' width='71'></a><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=PIC\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Page=1'><img src='", SessionItem.GetImageURL(), 
-                            "MenuCard/Devision/Devision_C_05.GIF' border='0' height='24' width='71'></a><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='", SessionItem.GetImageURL(), "MenuCard/Help.GIF' border='0' height='24' width='19'></a>"
-                         });
-                        this.SetStat();
-                        this.tblStat.Visible = true;
-                        this.tdDDL.Visible = true;
-                        return;
+                        case "STAT":
+                            this.strPageIntro = string.Concat(new object[] { 
+                                "<img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_02.GIF' border='0' height='24' width='72'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_04.GIF' border='0' height='24' width='71'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_03.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=LIST\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=LIST&Devision=", this.strDevCode, "&Page=1'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_C_01.GIF' border='0' height='24' width='71'></a><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=PIC\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Page=1'><img src='", SessionItem.GetImageURL(), 
+                                "MenuCard/Devision/Devision_C_05.GIF' border='0' height='24' width='71'></a><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='", SessionItem.GetImageURL(), "MenuCard/Help.GIF' border='0' height='24' width='19'></a>"
+                             });
+                            this.SetStat();
+                            this.tblStat.Visible = true;
+                            this.tdDDL.Visible = true;
+                            return;
 
-                    case "PIC":
-                        this.strPageIntro = string.Concat(new object[] { 
-                            "<img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_02.GIF' border='0' height='24' width='72'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_04.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=STAT\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=STAT&Devision=", this.strDevCode, "&Status=1&Page=1'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_C_03.GIF' border='0' height='24' width='71'></a><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=LIST\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=LIST&Devision=", this.strDevCode, "&Page=1'><img src='", SessionItem.GetImageURL(), 
-                            "MenuCard/Devision/Devision_C_01.GIF' border='0' height='24' width='71'></a><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_05.GIF' border='0' height='24' width='71'><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='", SessionItem.GetImageURL(), "MenuCard/Help.GIF' border='0' height='24' width='19'></a>"
-                         });
-                        this.SetsbList();
-                        this.tblPic.Visible = true;
-                        this.tdDDL.Visible = true;
-                        return;
+                        case "PIC":
+                            this.strPageIntro = string.Concat(new object[] { 
+                                "<img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_02.GIF' border='0' height='24' width='72'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_04.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=STAT\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=STAT&Devision=", this.strDevCode, "&Status=1&Page=1'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_C_03.GIF' border='0' height='24' width='71'></a><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=LIST\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=LIST&Devision=", this.strDevCode, "&Page=1'><img src='", SessionItem.GetImageURL(), 
+                                "MenuCard/Devision/Devision_C_01.GIF' border='0' height='24' width='71'></a><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_05.GIF' border='0' height='24' width='71'><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='", SessionItem.GetImageURL(), "MenuCard/Help.GIF' border='0' height='24' width='19'></a>"
+                             });
+                            this.SetsbList();
+                            this.tblPic.Visible = true;
+                            this.tdDDL.Visible = true;
+                            return;
+                    }
                 }
                 this.strPageIntro = string.Concat(new object[] { 
                     "<img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_02.GIF' border='0' height='24' width='72'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_G_04.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=STAT\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=STAT&Devision=", this.strDevCode, "&Status=1&Page=1'><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_C_03.GIF' border='0' height='24' width='71'></a><img src='", SessionItem.GetImageURL(), "MenuCard/Devision/Devision_01.GIF' border='0' height='24' width='71'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Devision.aspx?Type=PIC\"' href='Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Page=1'><img src='", SessionItem.GetImageURL(), 
@@ -360,14 +356,14 @@
             }
             else
             {
-                foreach (DataRow row2 in devMatchTableByRound.Rows)
+                foreach (DataRow row in devMatchTableByRound.Rows)
                 {
-                    int num1 = (int) row2["Round"];
-                    num = (int) row2["DevMatchID"];
-                    num2 = (int) row2["ClubHID"];
-                    num4 = (int) row2["ClubAID"];
-                    num3 = (int) row2["ClubHScore"];
-                    num5 = (int) row2["ClubAScore"];
+                    int num1 = (int) row["Round"];
+                    num = (int) row["DevMatchID"];
+                    num2 = (int) row["ClubHID"];
+                    num4 = (int) row["ClubAID"];
+                    num3 = (int) row["ClubHScore"];
+                    num5 = (int) row["ClubAScore"];
                     if (((num2 != 0) && (num4 != 0)) && ((num3 != 0) || (num5 != 0)))
                     {
                         str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
@@ -416,14 +412,14 @@
             }
             else
             {
-                foreach (DataRow row3 in table2.Rows)
+                foreach (DataRow row2 in table2.Rows)
                 {
-                    int num7 = (int) row3["Round"];
-                    num = (int) row3["DevMatchID"];
-                    num2 = (int) row3["ClubHID"];
-                    num4 = (int) row3["ClubAID"];
-                    num3 = (int) row3["ClubHScore"];
-                    num5 = (int) row3["ClubAScore"];
+                    int num7 = (int) row2["Round"];
+                    num = (int) row2["DevMatchID"];
+                    num2 = (int) row2["ClubHID"];
+                    num4 = (int) row2["ClubAID"];
+                    num3 = (int) row2["ClubHScore"];
+                    num5 = (int) row2["ClubAScore"];
                     if (((num2 != 0) && (num4 != 0)) && ((num3 != 0) || (num5 != 0)))
                     {
                         str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", num, "&A=", num2, "&B=", num4, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
@@ -476,39 +472,38 @@
             {
                 strDevCode = accountRowByUserID["DevCode"].ToString().Trim();
             }
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage <= 0)
             {
                 this.intPage = 1;
             }
             this.intPerPage = 10;
-            DataTable reader = BTPDevMatchManager.GetDevLogByDevCode(0, this.intPage, this.intPerPage, strDevCode);
-            int num2 = 1;
-            string str3 = "";
-            if (reader != null)
+            DataTable table = BTPDevMatchManager.GetDevLogByDevCode(0, this.intPage, this.intPerPage, strDevCode);
+            int num = 1;
+            string str2 = "";
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row2 in table.Rows)
                 {
-                    row["NickName"].ToString().Trim();
-                    row["ClubName"].ToString().Trim();
-                    string str2 = row["LogEvent"].ToString().Trim();
-                    int intClubID = (int) row["ClubID"];
-                    DateTime datIn = (DateTime) row["CreateTime"];
-                    if ((num2++ % 2) == 1)
+                    row2["NickName"].ToString().Trim();
+                    row2["ClubName"].ToString().Trim();
+                    string str3 = row2["LogEvent"].ToString().Trim();
+                    int intClubID = (int) row2["ClubID"];
+                    DateTime datIn = (DateTime) row2["CreateTime"];
+                    if ((num++ % 2) == 1)
                     {
-                        str3 = "#FBE2D4";
+                        str2 = "#FBE2D4";
                     }
                     else
                     {
-                        str3 = "";
+                        str2 = "";
                     }
-                    this.sbList.Append("<tr bgcolor='" + str3 + "'>");
+                    this.sbList.Append("<tr bgcolor='" + str2 + "'>");
                     this.sbList.Append("<td align=\"center\" >" + StringItem.FormatDate(datIn, "MM-dd hh:mm") + "</td>");
                     this.sbList.Append("<td height=\"25\" style=\"padding:2px;\" align=\"left\">" + BTPClubManager.GetClubNameByClubID(intClubID, 5, "Right", 20) + "</td>");
-                    this.sbList.Append("<td align=\"left\" style=\"padding:2px;\">" + str2 + "</td></tr>");
+                    this.sbList.Append("<td align=\"left\" style=\"padding:2px;\">" + str3 + "</td></tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='3'></td></tr>");
                 }
-                //reader.Close();
                 this.sbList.Append("<tr><td align=right colspan=3>" + this.GetViewPage(string.Concat(new object[] { "Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Devision=", strDevCode, "&" })) + "</td></tr>");
                 this.strScript = this.GetScript(string.Concat(new object[] { "Devision.aspx?UserID=", this.intUserID, "&Type=PIC&Devision=", strDevCode, "&" }));
             }
@@ -527,13 +522,13 @@
             int num2;
             int num3;
             int num4;
+            int num5;
             int num6;
             int num7;
-            int num12;
-            float num13;
+            float num8;
             DataTable mVPTable;
             object strList;
-            this.intStatus = (int) SessionItem.GetRequest("Status", 0);
+            this.intStatus = SessionItem.GetRequest("Status", 0);
             switch (this.intStatus)
             {
                 case 1:
@@ -554,14 +549,14 @@
                             num4 = (int) row["ClubID"];
                             str = BTPClubManager.GetClubNameByClubID(num4, 5, "Right", 13);
                             playerEngPosition = PlayerItem.GetPlayerEngPosition(num3);
-                            num7 = (int) row["Ability"];
-                            float single1 = ((float) num7) / 10f;
+                            num6 = (int) row["Ability"];
+                            float single1 = ((float) num6) / 10f;
                             long num1 = (long) row["PlayerID"];
-                            num12 = (int) row["MVPValue"];
+                            num7 = (int) row["MVPValue"];
                             strList = this.strList;
                             this.strList = string.Concat(new object[] { 
-                                strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num7), "</td><td>", 
-                                num12, "</td></tr>"
+                                strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num6), "</td><td>", 
+                                num7, "</td></tr>"
                              });
                             this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>";
                         }
@@ -577,41 +572,41 @@
                      });
                     this.strList = "<tr align='center' class='BarHead'><td height='25' width='100'>姓名</td><td width='43'>身高</td><td width='43'>体重</td><td width='43'>位置</td><td width='100'>所在球队</td><td width='40'>综合</td><td width='50'>总得分</td><td width='50'>总出场</td><td width='67'>场均得分</td></tr>";
                     mVPTable = BTPPlayer5Manager.GetTop12Table(this.strDevCode);
-                    if (mVPTable == null)
+                    if (mVPTable != null)
                     {
-                        this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='9'>暂时没有球员。</td></tr>";
-                        return;
-                    }
-                    foreach (DataRow row2 in mVPTable.Rows)
-                    {
-                        str2 = row2["Name"].ToString().Trim();
-                        num = (byte) row2["Height"];
-                        num2 = (byte) row2["Weight"];
-                        num3 = (byte) row2["Pos"];
-                        int num5 = (int) row2["SeasonScore"];
-                        num6 = (int) row2["SeasonPlayed"];
-                        num4 = (int) row2["ClubID"];
-                        num7 = (int) row2["Ability"];
-                        float single2 = ((float) num7) / 10f;
-                        str = BTPClubManager.GetClubNameByClubID(num4, 5, "Right", 13);
-                        playerEngPosition = PlayerItem.GetPlayerEngPosition(num3);
-                        if (num6 != 0)
+                        foreach (DataRow row2 in mVPTable.Rows)
                         {
-                            num13 = ((float) ((num5 * 100) / num6)) / 100f;
+                            str2 = row2["Name"].ToString().Trim();
+                            num = (byte) row2["Height"];
+                            num2 = (byte) row2["Weight"];
+                            num3 = (byte) row2["Pos"];
+                            int num9 = (int) row2["SeasonScore"];
+                            num5 = (int) row2["SeasonPlayed"];
+                            num4 = (int) row2["ClubID"];
+                            num6 = (int) row2["Ability"];
+                            float single2 = ((float) num6) / 10f;
+                            str = BTPClubManager.GetClubNameByClubID(num4, 5, "Right", 13);
+                            playerEngPosition = PlayerItem.GetPlayerEngPosition(num3);
+                            if (num5 != 0)
+                            {
+                                num8 = ((float) ((num9 * 100) / num5)) / 100f;
+                            }
+                            else
+                            {
+                                num8 = 0f;
+                            }
+                            long num15 = (long) row2["PlayerID"];
+                            strList = this.strList;
+                            this.strList = string.Concat(new object[] { 
+                                strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num6), "</td><td>", 
+                                num9, "</td><td>", num5, "</td><td>", num8, "</td></tr>"
+                             });
+                            this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>";
                         }
-                        else
-                        {
-                            num13 = 0f;
-                        }
-                        long num15 = (long) row2["PlayerID"];
-                        strList = this.strList;
-                        this.strList = string.Concat(new object[] { 
-                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num7), "</td><td>", 
-                            num5, "</td><td>", num6, "</td><td>", num13, "</td></tr>"
-                         });
-                        this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>";
+                        break;
                     }
-                    break;
+                    this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='9'>暂时没有球员。</td></tr>";
+                    return;
 
                 case 3:
                     this.strIntro = string.Concat(new object[] { 
@@ -631,26 +626,26 @@
                         num = (byte) row3["Height"];
                         num2 = (byte) row3["Weight"];
                         num3 = (byte) row3["Pos"];
-                        int num11 = (int) row3["SeasonRebound"];
-                        num6 = (int) row3["SeasonPlayed"];
+                        int num10 = (int) row3["SeasonRebound"];
+                        num5 = (int) row3["SeasonPlayed"];
                         num4 = (int) row3["ClubID"];
-                        num7 = (int) row3["Ability"];
-                        float single3 = ((float) num7) / 10f;
+                        num6 = (int) row3["Ability"];
+                        float single3 = ((float) num6) / 10f;
                         str = BTPClubManager.GetClubNameByClubID(num4, 5, "Right", 13);
                         playerEngPosition = PlayerItem.GetPlayerEngPosition(num3);
-                        if (num6 != 0)
+                        if (num5 != 0)
                         {
-                            num13 = ((float) ((num11 * 100) / num6)) / 100f;
+                            num8 = ((float) ((num10 * 100) / num5)) / 100f;
                         }
                         else
                         {
-                            num13 = 0f;
+                            num8 = 0f;
                         }
                         long num16 = (long) row3["PlayerID"];
                         strList = this.strList;
                         this.strList = string.Concat(new object[] { 
-                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num7), "</td><td>", 
-                            num11, "</td><td>", num6, "</td><td>", num13, "</td></tr>"
+                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num6), "</td><td>", 
+                            num10, "</td><td>", num5, "</td><td>", num8, "</td></tr>"
                          });
                         this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>";
                     }
@@ -674,26 +669,26 @@
                         num = (byte) row4["Height"];
                         num2 = (byte) row4["Weight"];
                         num3 = (byte) row4["Pos"];
-                        int num10 = (int) row4["SeasonAssist"];
-                        num6 = (int) row4["SeasonPlayed"];
+                        int num11 = (int) row4["SeasonAssist"];
+                        num5 = (int) row4["SeasonPlayed"];
                         num4 = (int) row4["ClubID"];
-                        num7 = (int) row4["Ability"];
-                        float single4 = ((float) num7) / 10f;
+                        num6 = (int) row4["Ability"];
+                        float single4 = ((float) num6) / 10f;
                         str = BTPClubManager.GetClubNameByClubID(num4, 5, "Right", 13);
                         playerEngPosition = PlayerItem.GetPlayerEngPosition(num3);
-                        if (num6 != 0)
+                        if (num5 != 0)
                         {
-                            num13 = ((float) ((num10 * 100) / num6)) / 100f;
+                            num8 = ((float) ((num11 * 100) / num5)) / 100f;
                         }
                         else
                         {
-                            num13 = 0f;
+                            num8 = 0f;
                         }
                         long num17 = (long) row4["PlayerID"];
                         strList = this.strList;
                         this.strList = string.Concat(new object[] { 
-                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num7), "</td><td>", 
-                            num10, "</td><td>", num6, "</td><td>", num13, "</td></tr>"
+                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num6), "</td><td>", 
+                            num11, "</td><td>", num5, "</td><td>", num8, "</td></tr>"
                          });
                         this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>";
                     }
@@ -717,26 +712,26 @@
                         num = (byte) row5["Height"];
                         num2 = (byte) row5["Weight"];
                         num3 = (byte) row5["Pos"];
-                        int num8 = (int) row5["SeasonSteal"];
-                        num6 = (int) row5["SeasonPlayed"];
+                        int num12 = (int) row5["SeasonSteal"];
+                        num5 = (int) row5["SeasonPlayed"];
                         num4 = (int) row5["ClubID"];
-                        num7 = (int) row5["Ability"];
-                        float single5 = ((float) num7) / 10f;
+                        num6 = (int) row5["Ability"];
+                        float single5 = ((float) num6) / 10f;
                         str = BTPClubManager.GetClubNameByClubID(num4, 5, "Right", 13);
                         playerEngPosition = PlayerItem.GetPlayerEngPosition(num3);
-                        if (num6 != 0)
+                        if (num5 != 0)
                         {
-                            num13 = ((float) ((num8 * 100) / num6)) / 100f;
+                            num8 = ((float) ((num12 * 100) / num5)) / 100f;
                         }
                         else
                         {
-                            num13 = 0f;
+                            num8 = 0f;
                         }
                         long num18 = (long) row5["PlayerID"];
                         strList = this.strList;
                         this.strList = string.Concat(new object[] { 
-                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num7), "</td><td>", 
-                            num8, "</td><td>", num6, "</td><td>", num13, "</td></tr>"
+                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num6), "</td><td>", 
+                            num12, "</td><td>", num5, "</td><td>", num8, "</td></tr>"
                          });
                         this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>";
                     }
@@ -760,26 +755,26 @@
                         num = (byte) row6["Height"];
                         num2 = (byte) row6["Weight"];
                         num3 = (byte) row6["Pos"];
-                        int num9 = (int) row6["SeasonBlock"];
-                        num6 = (int) row6["SeasonPlayed"];
+                        int num13 = (int) row6["SeasonBlock"];
+                        num5 = (int) row6["SeasonPlayed"];
                         num4 = (int) row6["ClubID"];
-                        num7 = (int) row6["Ability"];
-                        float single6 = ((float) num7) / 10f;
+                        num6 = (int) row6["Ability"];
+                        float single6 = ((float) num6) / 10f;
                         str = BTPClubManager.GetClubNameByClubID(num4, 5, "Right", 13);
                         playerEngPosition = PlayerItem.GetPlayerEngPosition(num3);
-                        if (num6 != 0)
+                        if (num5 != 0)
                         {
-                            num13 = ((float) ((num9 * 100) / num6)) / 100f;
+                            num8 = ((float) ((num13 * 100) / num5)) / 100f;
                         }
                         else
                         {
-                            num13 = 0f;
+                            num8 = 0f;
                         }
                         long num19 = (long) row6["PlayerID"];
                         strList = this.strList;
                         this.strList = string.Concat(new object[] { 
-                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num7), "</td><td>", 
-                            num9, "</td><td>", num6, "</td><td>", num13, "</td></tr>"
+                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num6), "</td><td>", 
+                            num13, "</td><td>", num5, "</td><td>", num8, "</td></tr>"
                          });
                         this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>";
                     }
@@ -810,14 +805,14 @@
                         num4 = (int) row7["ClubID"];
                         str = BTPClubManager.GetClubNameByClubID(num4, 5, "Right", 13);
                         playerEngPosition = PlayerItem.GetPlayerEngPosition(num3);
-                        num7 = (int) row7["Ability"];
-                        float single7 = ((float) num7) / 10f;
+                        num6 = (int) row7["Ability"];
+                        float single7 = ((float) num6) / 10f;
                         long num20 = (long) row7["PlayerID"];
-                        num12 = (int) row7["MVPValue"];
+                        num7 = (int) row7["MVPValue"];
                         strList = this.strList;
                         this.strList = string.Concat(new object[] { 
-                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num7), "</td><td>", 
-                            num12, "</td></tr>"
+                            strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color='#660066'>", str2, "</font></td><td>", num, "</td><td>", num2, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(num3), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td align='left'>", str, "</td><td>", PlayerItem.GetAbilityColor(num6), "</td><td>", 
+                            num7, "</td></tr>"
                          });
                         this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>";
                     }

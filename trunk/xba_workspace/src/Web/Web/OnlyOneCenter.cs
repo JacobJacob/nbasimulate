@@ -1,10 +1,9 @@
 ﻿namespace Web
 {
     using AjaxPro;
-    using LoginParameter;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
+    using System.Net;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -71,34 +70,10 @@
             {
                 base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=-8");
             }
-            /*else if (StringItem.IsNumber(this.tbTopWealth.Text))
-            {
-                int num2;
-                int intTopWealth = Convert.ToInt32(this.tbTopWealth.Text);
-                if (this.tbOnlyPay.Checked)
-                {
-                    num2 = BTPOnlyOneCenterReg.OnlyOneCenterReg(this.intUserID, intTopWealth, 1);
-                }
-                else
-                {
-                    num2 = BTPOnlyOneCenterReg.OnlyOneCenterReg(this.intUserID, 0, 0);
-                }
-                
-                num2 = BTPOnlyOneCenterReg.OnlyOneCenterReg(this.intUserID, 0, 0);  
-                
-                if ((num2 == 1) && this.tbOnlyPay.Checked)
-                {
-                    num2 = 2;
-                }
-                base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=" + num2);
-            }*/
             else
             {
-                //base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=-6");
-
-                int num2;
-                num2 = BTPOnlyOneCenterReg.OnlyOneCenterReg(this.intUserID, 0, 0);
-                base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=" + num2);
+                int num = BTPOnlyOneCenterReg.OnlyOneCenterReg(this.intUserID, 0, 0);
+                base.Response.Redirect("SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=MATCHREG&Status=" + num);
             }
         }
 
@@ -129,7 +104,7 @@
         private int GetMsgTotal()
         {
             int onlyOneTodayCount = 0;
-            string request = (string) SessionItem.GetRequest("Type", 1);
+            string request = SessionItem.GetRequest("Type", 1);
             switch (request)
             {
                 case "MATCHREG":
@@ -139,7 +114,7 @@
                 case "MATCHTODAY":
                     if (this.strType == "MATCHTODAY")
                     {
-                        int intClubID = (int) SessionItem.GetRequest("ClubID", 0);
+                        int intClubID = SessionItem.GetRequest("ClubID", 0);
                         return BTPOnlyOneCenterReg.GetOnlyOneCountMy(intClubID);
                     }
                     return BTPOnlyOneCenterReg.GetOnlyOneCountMy(this.intClubID5);
@@ -165,9 +140,9 @@
 
         private string GetMsgViewPage(string strCurrentURL)
         {
-            string str5;
+            string str;
             string[] strArray;
-            int request = (int) SessionItem.GetRequest("Page", 0);
+            int request = SessionItem.GetRequest("Page", 0);
             if (request < 1)
             {
                 request = 1;
@@ -190,15 +165,8 @@
             }
             else
             {
-                str5 = str2;
-                strArray = new string[6];
-                strArray[0] = str5;
-                strArray[1] = "<a href='";
-                strArray[2] = strCurrentURL;
-                strArray[3] = "Page=";
-                int num5 = request - 1;
-                strArray[4] = num5.ToString();
-                strArray[5] = "'>上一页</a>";
+                str = str2;
+                strArray = new string[] { str, "<a href='", strCurrentURL, "Page=", (request - 1).ToString(), "'>上一页</a>" };
                 str2 = string.Concat(strArray);
             }
             string str3 = "";
@@ -208,8 +176,8 @@
             }
             else
             {
-                str5 = str3;
-                strArray = new string[] { str5, "<a href='", strCurrentURL, "Page=", (request + 1).ToString(), "'>下一页</a>" };
+                str = str3;
+                strArray = new string[] { str, "<a href='", strCurrentURL, "Page=", (request + 1).ToString(), "'>下一页</a>" };
                 str3 = string.Concat(strArray);
             }
             string str4 = "<select name='Page' onChange=JumpPage()>";
@@ -322,40 +290,39 @@
                     builder.Append("    <td align=\"center\" bgColor=\"#fcc6a4\">奖金</td>\n");
                     builder.Append("    <td align=\"center\" bgColor=\"#fcc6a4\">操作</td>\n");
                     builder.Append("</tr>\n");
-                    int request = (int) SessionItem.GetRequest("Page", 0);
+                    int request = SessionItem.GetRequest("Page", 0);
                     if (request < 1)
                     {
                         request = 1;
                     }
-                    DataTable reader = BTPOnlyOneCenterReg.GetOnlyOneRegOnePay(request, 10, intUserID);
-                    if (reader != null)
+                    DataTable table = BTPOnlyOneCenterReg.GetOnlyOneRegOnePay(request, 10, intUserID);
+                    if (table != null)
                     {
-                        foreach (DataRow row in reader.Rows)
+                        foreach (DataRow row2 in table.Rows)
                         {
-                            string str7;
-                            string strNickName = this.RepBadWord(row["ClubName"].ToString().Trim());
-                            int num11 = (byte) row["Status"];
-                            int num12 = (int) row["TopWealth"];
-                            int num13 = (int) row["Win"];
-                            int num14 = (int) row["UserID"];
+                            string str5;
+                            string strNickName = this.RepBadWord(row2["ClubName"].ToString().Trim());
+                            int num11 = (byte) row2["Status"];
+                            int num12 = (int) row2["TopWealth"];
+                            int num13 = (int) row2["Win"];
+                            int num14 = (int) row2["UserID"];
                             if (num11 == 0)
                             {
-                                str7 = "<a href='SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=ONLYPAYMATCH&UserID=" + num14 + "'>开始比赛</a>";
+                                str5 = "<a href='SecretaryPage.aspx?Type=ONLYONEMATCH&PageType=ONLYPAYMATCH&UserID=" + num14 + "'>开始比赛</a>";
                             }
                             else
                             {
-                                str7 = "比赛中…";
+                                str5 = "比赛中…";
                             }
                             strNickName = AccountItem.GetNickNameInfo(num14, strNickName, "Right");
                             builder.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">\n");
                             builder.Append("    <td align=\"center\" >" + num13 + "</td>\n");
                             builder.Append("    <td  style=\"padding-left:5px\" align=\"left\">" + strNickName + "</td>\n");
                             builder.Append("    <td align=\"center\" >" + num12 + "</td>\n");
-                            builder.Append("    <td align=\"center\" >" + str7 + "</td>\n");
+                            builder.Append("    <td align=\"center\" >" + str5 + "</td>\n");
                             builder.Append("</tr>\n");
                             builder.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>");
                         }
-                        //reader.Close();
                         string strCurrentURL = "OnlyOneCenter.aspx?Type=MATCHREG&";
                         this.sbList.Append("<tr><td height='30' align='right' colspan='5'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>");
                         this.GetMsgScript(strCurrentURL);
@@ -385,10 +352,10 @@
 
         private void GetOnlyMatchTop()
         {
-            DataTable reader;
+            DataTable table;
             string str;
-            int request = (int) SessionItem.GetRequest("Status", 0);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            int request = SessionItem.GetRequest("Status", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (request < 1)
             {
                 request = 1;
@@ -399,7 +366,7 @@
             }
             if (this.strType == "TOPTODAY")
             {
-                reader = BTPOnlyOneCenterReg.GetOnlyOneTodayTop(request, this.intPage, this.intPerPage);
+                table = BTPOnlyOneCenterReg.GetOnlyOneTodayTop(request, this.intPage, this.intPerPage);
                 this.sbList.Append("  <tr>\n");
                 this.sbList.Append("    <td align='center' width='30'  bgcolor=\"#FCC6A4\">名次</td>\n");
                 this.sbList.Append("    <td align='left' style='padding-left:3px' bgcolor=\"#FCC6A4\">球队名</td>\n");
@@ -412,7 +379,7 @@
             }
             else
             {
-                reader = BTPOnlyOneCenterReg.GetOnlyOneTop(request, this.intPage, this.intPerPage);
+                table = BTPOnlyOneCenterReg.GetOnlyOneTop(request, this.intPage, this.intPerPage);
                 this.sbList.Append("  <tr>\n");
                 this.sbList.Append("    <td align='center' width='30'  bgcolor=\"#FCC6A4\">名次</td>\n");
                 this.sbList.Append("    <td align='left' style='padding-left:3px' bgcolor=\"#FCC6A4\">球队名</td>\n");
@@ -423,10 +390,10 @@
                 this.sbList.Append("  </tr>\n");
                 str = "OnlyOneCenter.aspx?Type=TOPHISTORY&Status=" + request + "&";
             }
-            if (reader != null)
+            if (table != null)
             {
-                int i = 1 + (this.intPerPage * (this.intPage - 1));
-                foreach(DataRow row in reader.Rows)
+                int num2 = 1 + (this.intPerPage * (this.intPage - 1));
+                foreach (DataRow row in table.Rows)
                 {
                     int intUserID = (int) row["UserID"];
                     string strClubName = row["ClubName"].ToString().Trim();
@@ -437,7 +404,7 @@
                     long num6 = Convert.ToInt64(row["WealthTop"]);
                     bool blnSex = (bool) row["Sex"];
                     this.sbList.Append("  <tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">\n");
-                    this.sbList.Append("    <td height='25' align='center' >" + i + "</td>\n");
+                    this.sbList.Append("    <td height='25' align='center' >" + num2 + "</td>\n");
                     this.sbList.Append("    <td align='left' style='padding-left:3px' >" + ClubItem.GetClubNameInfo(intUserID, strClubName, shortName, "Right", 0x12) + "</td>\n");
                     this.sbList.Append("    <td align='left' style='padding-left:3px' >" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", blnSex) + "</td>\n");
                     this.sbList.Append("    <td align=\"center\" >" + num5 + "</td>\n");
@@ -445,9 +412,8 @@
                     this.sbList.Append("    <td align=\"center\" >" + num4 + "</td>\n");
                     this.sbList.Append("  </tr>\n");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>");
-                    i++;
+                    num2++;
                 }
-                //reader.Close();
                 this.GetMsgScript(str);
                 this.sbList.Append("<tr><td height='30' align='right' colspan='6'>" + this.GetMsgViewPage(str) + "</td></tr>");
             }
@@ -463,12 +429,12 @@
             }
             Convert.ToInt32(onlyOneMatchRow["Status"]);
             DateTime time = (DateTime) onlyOneMatchRow["StatusTime"];
-            int num2 = (byte) onlyOneMatchRow["Status"];
-            if ((num2 == 1) && (time.AddSeconds(100.0) < DateTime.Now))
+            int num = (byte) onlyOneMatchRow["Status"];
+            if ((num == 1) && (time.AddSeconds(100.0) < DateTime.Now))
             {
-                num2 = 2;
+                num = 2;
             }
-            return num2;
+            return num;
         }
 
         private void InitializeComponent()
@@ -553,7 +519,7 @@
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
                 this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
+                this.strType = SessionItem.GetRequest("Type", 1);
                 this.tblMatchReg.Visible = false;
                 this.tblMatchRun.Visible = false;
                 this.tblMatchMy.Visible = false;
@@ -566,25 +532,25 @@
 
         private void OnlyMatchDay()
         {
-            int request = (int) SessionItem.GetRequest("Status", 0);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            int request = SessionItem.GetRequest("Status", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
             }
             this.intPerPage = 12;
-            int intClubID = (int) SessionItem.GetRequest("ClubID", 0);
-            DataTable reader = BTPOnlyOneCenterReg.GetOnlyOneMatchMy(intClubID, 1, 13, 0);
-            if (reader != null)
+            int intClubID = SessionItem.GetRequest("ClubID", 0);
+            DataTable table = BTPOnlyOneCenterReg.GetOnlyOneMatchMy(intClubID, 1, 13, 0);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int num6 = (int) row["FMatchID"];
-                    int num2 = (int) row["ClubIDA"];
-                    int num3 = (int) row["ClubIDB"];
-                    int num10 = (int) row["WealthA"];
+                    int num2 = (int) row["FMatchID"];
+                    int num3 = (int) row["ClubIDA"];
+                    int num4 = (int) row["ClubIDB"];
+                    int num5 = (int) row["WealthA"];
                     int num13 = (int) row["WealthB"];
-                    int num11 = (int) row["ClubAPoint"];
+                    int num6 = (int) row["ClubAPoint"];
                     int num14 = (int) row["ClubBPoint"];
                     byte num15 = (byte) row["Category"];
                     int num7 = (byte) row["Type"];
@@ -599,57 +565,56 @@
                     byte num16 = (byte) row["Status"];
                     row["Intro"].ToString().Trim();
                     DateTime datIn = (DateTime) row["CreateTime"];
-                    string str2 = StringItem.FormatDate(datIn, "MM-dd hh:mm");
+                    string str = StringItem.FormatDate(datIn, "MM-dd hh:mm");
                     string strNickName = row["ClubInfoA"].ToString().Trim();
-                    string str4 = row["ClubInfoB"].ToString().Trim();
+                    string str3 = row["ClubInfoB"].ToString().Trim();
                     row["ChsCategory"].ToString().Trim();
                     string[] strArray = strNickName.Split(new char[] { '|' });
                     int intUserID = Convert.ToInt32(strArray[0]);
                     strNickName = strArray[1].Trim();
-                    string[] strArray2 = str4.Split(new char[] { '|' });
-                    int num5 = Convert.ToInt32(strArray2[0]);
-                    str4 = strArray2[1].Trim();
-                    int num8 = (int) row["ScoreA"];
-                    int num9 = (int) row["ScoreB"];
+                    string[] strArray2 = str3.Split(new char[] { '|' });
+                    int num9 = Convert.ToInt32(strArray2[0]);
+                    str3 = strArray2[1].Trim();
+                    int num10 = (int) row["ScoreA"];
+                    int num11 = (int) row["ScoreB"];
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 12);
-                    str4 = AccountItem.GetNickNameInfo(num5, str4, "Right", 12);
-                    string str = string.Concat(new object[] { 
-                        "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num6, "&A=", num2, "&B=", num3, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num6, "&A=", num2, 
-                        "&B=", num3, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
+                    str3 = AccountItem.GetNickNameInfo(num9, str3, "Right", 12);
+                    string str4 = string.Concat(new object[] { 
+                        "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num2, "&A=", num3, "&B=", num4, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num2, "&A=", num3, 
+                        "&B=", num4, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                      });
-                    if (num2 != this.intClubID5)
+                    if (num3 != this.intClubID5)
                     {
-                        if (num8 > num9)
+                        if (num10 > num11)
                         {
-                            num11 = 0;
-                            num10 = 0;
+                            num6 = 0;
+                            num5 = 0;
                         }
                         string str5 = strNickName;
-                        strNickName = str4;
-                        str4 = str5;
-                        int num12 = num8;
-                        num8 = num9;
-                        num9 = num12;
+                        strNickName = str3;
+                        str3 = str5;
+                        int num12 = num10;
+                        num10 = num11;
+                        num11 = num12;
                     }
-                    else if (num9 > num8)
+                    else if (num11 > num10)
                     {
-                        num11 = 0;
-                        num10 = 0;
+                        num6 = 0;
+                        num5 = 0;
                     }
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">\n");
                     this.sbList.Append("    <td align=\"right\">" + strNickName + "</td>\n");
-                    this.sbList.Append("    <td align=\"right\" width=\"20\">" + num8 + "</td>\n");
+                    this.sbList.Append("    <td align=\"right\" width=\"20\">" + num10 + "</td>\n");
                     this.sbList.Append("    <td align=\"center\" width=\"5\">:</td>\n");
-                    this.sbList.Append("    <td align=\"left\" width=\"20\">" + num9 + "</td>\n");
-                    this.sbList.Append("    <td align=\"left\">" + str4 + "</td>\n");
-                    this.sbList.Append("    <td align=\"center\">" + num11 + "</td>\n");
-                    this.sbList.Append("    <td align=\"center\">" + num10 + "</td>\n");
-                    this.sbList.Append("    <td align=\"center\">" + str2 + "</td>\n");
+                    this.sbList.Append("    <td align=\"left\" width=\"20\">" + num11 + "</td>\n");
+                    this.sbList.Append("    <td align=\"left\">" + str3 + "</td>\n");
+                    this.sbList.Append("    <td align=\"center\">" + num6 + "</td>\n");
+                    this.sbList.Append("    <td align=\"center\">" + num5 + "</td>\n");
                     this.sbList.Append("    <td align=\"center\">" + str + "</td>\n");
+                    this.sbList.Append("    <td align=\"center\">" + str4 + "</td>\n");
                     this.sbList.Append("</tr>\n");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>");
                 }
-                //reader.Close();
             }
             else
             {
@@ -660,29 +625,29 @@
         private void OnlyMatchMy()
         {
             this.sbPageIntro.Append("<span style=\"margin-left:30px\">历史积分 " + ((long) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["OnlyPoint"]) + "</span>");
-            int request = (int) SessionItem.GetRequest("Status", 0);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            int request = SessionItem.GetRequest("Status", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
             }
             this.intPerPage = 13;
-            DataTable reader = BTPOnlyOneCenterReg.GetOnlyOneMatchMy(this.intClubID5, this.intPage, this.intPerPage, request);
-            if (reader != null)
+            DataTable table = BTPOnlyOneCenterReg.GetOnlyOneMatchMy(this.intClubID5, this.intPage, this.intPerPage, request);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     string str;
-                    int num7 = (int) row["FMatchID"];
+                    int num2 = (int) row["FMatchID"];
                     int num3 = (int) row["ClubIDA"];
                     int num4 = (int) row["ClubIDB"];
-                    int num11 = (int) row["WealthA"];
+                    int num5 = (int) row["WealthA"];
                     int num1 = (int) row["WealthB"];
-                    int num12 = (int) row["ClubAPoint"];
-                    int num14 = (int) row["ClubBPoint"];
-                    byte num15 = (byte) row["Category"];
-                    int num8 = (byte) row["Type"];
-                    if (num8 == 3)
+                    int num6 = (int) row["ClubAPoint"];
+                    int num13 = (int) row["ClubBPoint"];
+                    byte num14 = (byte) row["Category"];
+                    int num7 = (byte) row["Type"];
+                    if (num7 == 3)
                     {
                         this.strType = "<font color='green'>街球<font>";
                     }
@@ -690,7 +655,7 @@
                     {
                         this.strType = "<font color='red'>职业</font>";
                     }
-                    byte num16 = (byte) row["Status"];
+                    byte num15 = (byte) row["Status"];
                     row["Intro"].ToString().Trim();
                     DateTime datIn = (DateTime) row["CreateTime"];
                     string str2 = StringItem.FormatDate(datIn, "yy-MM-dd");
@@ -701,56 +666,55 @@
                     int intUserID = Convert.ToInt32(strArray[0]);
                     strNickName = strArray[1].Trim();
                     string[] strArray2 = str4.Split(new char[] { '|' });
-                    int num6 = Convert.ToInt32(strArray2[0]);
+                    int num9 = Convert.ToInt32(strArray2[0]);
                     str4 = strArray2[1].Trim();
-                    int num9 = (int) row["ScoreA"];
-                    int num10 = (int) row["ScoreB"];
+                    int num10 = (int) row["ScoreA"];
+                    int num11 = (int) row["ScoreB"];
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 12);
-                    str4 = AccountItem.GetNickNameInfo(num6, str4, "Right", 12);
-                    if ((((num9 == 20) || (num9 == 2)) && (num10 == 0)) || (((num10 == 20) || (num10 == 2)) && (num9 == 0)))
+                    str4 = AccountItem.GetNickNameInfo(num9, str4, "Right", 12);
+                    if ((((num10 == 20) || (num10 == 2)) && (num11 == 0)) || (((num11 == 20) || (num11 == 2)) && (num10 == 0)))
                     {
                         str = "— —";
                     }
                     else
                     {
                         str = string.Concat(new object[] { 
-                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num7, "&A=", num3, "&B=", num4, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num7, "&A=", num3, 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num2, "&A=", num3, "&B=", num4, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num2, "&A=", num3, 
                             "&B=", num4, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
                          });
                     }
                     if (num3 != this.intClubID5)
                     {
-                        if (num9 > num10)
+                        if (num10 > num11)
                         {
-                            num12 = 0;
-                            num11 = 0;
+                            num6 = 0;
+                            num5 = 0;
                         }
                         string str5 = strNickName;
                         strNickName = str4;
                         str4 = str5;
-                        int num13 = num9;
-                        num9 = num10;
-                        num10 = num13;
+                        int num12 = num10;
+                        num10 = num11;
+                        num11 = num12;
                     }
-                    else if (num10 > num9)
+                    else if (num11 > num10)
                     {
-                        num12 = 0;
-                        num11 = 0;
+                        num6 = 0;
+                        num5 = 0;
                     }
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">\n");
                     this.sbList.Append("    <td align=\"right\">" + strNickName + "</td>\n");
-                    this.sbList.Append("    <td align=\"right\" width=\"20\">" + num9 + "</td>\n");
+                    this.sbList.Append("    <td align=\"right\" width=\"20\">" + num10 + "</td>\n");
                     this.sbList.Append("    <td align=\"center\" width=\"5\">:</td>\n");
-                    this.sbList.Append("    <td align=\"left\" width=\"20\">" + num10 + "</td>\n");
+                    this.sbList.Append("    <td align=\"left\" width=\"20\">" + num11 + "</td>\n");
                     this.sbList.Append("    <td align=\"left\">" + str4 + "</td>\n");
-                    this.sbList.Append("    <td align=\"center\">" + num12 + "</td>\n");
-                    this.sbList.Append("    <td align=\"center\">" + num11 + "</td>\n");
+                    this.sbList.Append("    <td align=\"center\">" + num6 + "</td>\n");
+                    this.sbList.Append("    <td align=\"center\">" + num5 + "</td>\n");
                     this.sbList.Append("    <td align=\"center\">" + str2 + "</td>\n");
                     this.sbList.Append("    <td align=\"center\">" + str + "</td>\n");
                     this.sbList.Append("</tr>\n");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>");
                 }
-                //reader.Close();
                 string strCurrentURL = "OnlyOneCenter.aspx?Type=MATCHMY&";
                 this.GetMsgScript(strCurrentURL);
             }
@@ -792,100 +756,100 @@
             dr = BTPAccountManager.GetAccountRowByUserID(intUserID);
             if (dr != null)
             {
+                string str2;
+                string str3;
+                string str4;
                 string str5;
                 string str6;
                 string str7;
-                string str8;
-                string str9;
-                string str10;
+                int num10;
                 int num11;
                 int num12;
-                int num18;
-                int num28;
+                int num13;
                 object obj2;
                 int intClubID = (int) dr["ClubID5"];
                 long num1 = (long) dr["OnlyPoint"];
-                string str2 = dr["ClubLogo"].ToString().Trim();
+                string str8 = dr["ClubLogo"].ToString().Trim();
                 string strBadWord = dr["ClubName"].ToString().Trim();
-                string str4 = dr["NickName"].ToString().Trim();
+                string str10 = dr["NickName"].ToString().Trim();
                 strBadWord = this.RepBadWord(strBadWord);
-                str4 = this.RepBadWord(str4);
+                str10 = this.RepBadWord(str10);
                 dr = BTPFriMatchManager.GetFriMatchRowByUserID(intClubID, 8, 2);
                 bool flag2 = false;
                 if (dr == null)
                 {
-                    int num42 = BTPOnlyOneCenterReg.OnlyErrorOutByUserID(intUserID);
+                    int num15 = BTPOnlyOneCenterReg.OnlyErrorOutByUserID(intUserID);
                     BTPErrorManager.AddError("onlyone", string.Format("胜者意外退出，获取不到比赛信息，俱乐部ID{0}", intClubID));
-                    return ("error|1;GoSay(" + num42 + ");");
+                    return ("error|1;GoSay(" + num15 + ");");
                 }
-                int num15 = (int) dr["ClubIDA"];
-                int num43 = (int) dr["ClubIDB"];
-                int num16 = (int) dr["ScoreA"];
-                int num17 = (int) dr["ScoreB"];
-                int num13 = (int) dr["ClubIDA"];
-                int num14 = (int) dr["ClubIDB"];
-                int num19 = (int) dr["ScoreA"];
-                int num20 = (int) dr["ScoreB"];
+                int num16 = (int) dr["ClubIDA"];
+                int num44 = (int) dr["ClubIDB"];
+                int num17 = (int) dr["ScoreA"];
+                int num18 = (int) dr["ScoreB"];
+                int num19 = (int) dr["ClubIDA"];
+                int num20 = (int) dr["ClubIDB"];
+                int num21 = (int) dr["ScoreA"];
+                int num22 = (int) dr["ScoreB"];
                 int topWealthByClubID = (int) dr["WealthA"];
-                int num22 = (int) dr["ClubAPoint"];
-                int num23 = (int) dr["FMatchID"];
-                int num24 = (int) dr["ReputationA"];
-                int num25 = (int) dr["ReputationB"];
-                int num26 = 0;
-                if (intClubID == num13)
+                int num24 = (int) dr["ClubAPoint"];
+                int num25 = (int) dr["FMatchID"];
+                int num26 = (int) dr["ReputationA"];
+                int num27 = (int) dr["ReputationB"];
+                int num28 = 0;
+                if (intClubID == num19)
                 {
-                    num26 = num24;
+                    num28 = num26;
                 }
                 else
                 {
-                    num26 = num25;
+                    num28 = num27;
                 }
-                if ((((num19 == 20) || (num19 == 2)) && (num20 == 0)) || (((num20 == 20) || (num20 == 2)) && (num19 == 0)))
+                if ((((num21 == 20) || (num21 == 2)) && (num22 == 0)) || (((num22 == 20) || (num22 == 2)) && (num21 == 0)))
                 {
                     flag2 = true;
                 }
                 string url = Config.GetDomain() + dr["RepURL"].ToString().Trim();
                 string str12 = dr["ClubIDA"].ToString().Trim();
                 string str13 = dr["ClubIDB"].ToString().Trim();
-                if (intClubID == num13)
+                if (intClubID == num19)
                 {
-                    num18 = num14;
-                    str5 = str2;
-                    num11 = intUserID;
-                    str7 = AccountItem.GetNickNameInfo(num11, strBadWord, "Right", 0x10);
-                    str9 = str4;
-                    dr = BTPAccountManager.GetAccountRowByClubID5(num14);
+                    num12 = num20;
+                    str2 = str8;
+                    num10 = intUserID;
+                    str4 = AccountItem.GetNickNameInfo(num10, strBadWord, "Right", 0x10);
+                    str6 = str10;
+                    dr = BTPAccountManager.GetAccountRowByClubID5(num20);
                     if (dr == null)
                     {
                         base.Response.Redirect("Report.aspx?Parameter=3");
                         return "";
                     }
-                    str6 = dr["ClubLogo"].ToString().Trim();
-                    num12 = (int) dr["UserID"];
-                    str10 = dr["NickName"].ToString().Trim();
-                    str10 = this.RepBadWord(str10);
-                    str8 = AccountItem.GetNickNameInfo(num12, this.RepBadWord(dr["ClubName"].ToString().Trim()), "Right", 0x10);
+                    str3 = dr["ClubLogo"].ToString().Trim();
+                    num11 = (int) dr["UserID"];
+                    str7 = dr["NickName"].ToString().Trim();
+                    str7 = this.RepBadWord(str7);
+                    str5 = AccountItem.GetNickNameInfo(num11, this.RepBadWord(dr["ClubName"].ToString().Trim()), "Right", 0x10);
                 }
                 else
                 {
-                    num18 = num13;
+                    num12 = num19;
                     string str14 = str12;
                     str12 = str13;
                     str13 = str14;
-                    str5 = str2;
-                    num11 = intUserID;
-                    str7 = AccountItem.GetNickNameInfo(num11, strBadWord, "Right", 0x10);
-                    str9 = str4;
-                    dr = BTPAccountManager.GetAccountRowByClubID5(num13);
+                    str2 = str8;
+                    num10 = intUserID;
+                    str4 = AccountItem.GetNickNameInfo(num10, strBadWord, "Right", 0x10);
+                    str6 = str10;
+                    dr = BTPAccountManager.GetAccountRowByClubID5(num19);
                     if (dr != null)
                     {
-                        int num27 = num19;
-                        num19 = num20;
-                        num20 = num27;
-                        str6 = dr["ClubLogo"].ToString().Trim();
-                        num12 = (int) dr["UserID"];
-                        str10 = this.RepBadWord(dr["NickName"].ToString().Trim());
-                        str8 = AccountItem.GetNickNameInfo(num12, this.RepBadWord(dr["ClubName"].ToString().Trim()), "Right", 0x10);
+                        int num29 = num21;
+                        num21 = num22;
+                        num22 = num29;
+                        str3 = dr["ClubLogo"].ToString().Trim();
+                        num11 = (int) dr["UserID"];
+                        str7 = this.RepBadWord(dr["NickName"].ToString().Trim());
+                        str5 = AccountItem.GetNickNameInfo(num11, this.RepBadWord(dr["ClubName"].ToString().Trim()), "Right", 0x10);
                     }
                     else
                     {
@@ -895,47 +859,47 @@
                 }
                 if ((byeStatus == 5) || (byeStatus == 3))
                 {
-                    num28 = num2;
+                    num13 = num2;
                 }
                 else
                 {
-                    num28 = num2 + 1;
+                    num13 = num2 + 1;
                 }
-                string str15 = num22 + "/" + num5;
-                int num29 = num2;
+                string str15 = num24 + "/" + num5;
+                int num30 = num2;
                 if (((byeStatus < 3) || (byeStatus == 4)) || (byeStatus == 6))
                 {
-                    num29++;
+                    num30++;
                 }
-                int num30 = num5;
+                int num31 = num5;
                 if (byeStatus == 3)
                 {
-                    num30 -= num22;
+                    num31 -= num24;
                 }
-                if (num29 < 4)
+                if (num30 < 4)
                 {
-                    str15 = "<span id='MatchPoint'>1</span>/<span id='AllPoint'>" + num30 + "</span>";
+                    str15 = "<span id='MatchPoint'>1</span>/<span id='AllPoint'>" + num31 + "</span>";
                 }
-                else if (num29 < 7)
+                else if (num30 < 7)
                 {
-                    str15 = "<span id='MatchPoint'>2</span>/<span id='AllPoint'>" + num30 + "</span>";
+                    str15 = "<span id='MatchPoint'>2</span>/<span id='AllPoint'>" + num31 + "</span>";
                 }
                 else
                 {
-                    str15 = "<span id='MatchPoint'>4</span>/<span id='AllPoint'>" + num30 + "</span>";
+                    str15 = "<span id='MatchPoint'>4</span>/<span id='AllPoint'>" + num31 + "</span>";
                 }
                 topWealthByClubID = BTPOnlyOneCenterReg.GetTopWealthByClubID(intClubID);
-                int num31 = 0;
-                num31 = topWealthByClubID * 2;
-                int num32 = (num6 + num) - topWealthByClubID;
-                string str16 = string.Concat(new object[] { "<span id='MatchWealth'>", num31, "</span>/<span id='AllWealth'>", num32, "</span>" });
+                int num32 = 0;
+                num32 = topWealthByClubID * 2;
+                int num33 = (num6 + num) - topWealthByClubID;
+                string str16 = string.Concat(new object[] { "<span id='MatchWealth'>", num32, "</span>/<span id='AllWealth'>", num33, "</span>" });
                 if (byeStatus == 3)
                 {
-                    str16 = string.Concat(new object[] { "<span id='MatchWealth'>", num31, "</span>/<span id='AllWealth'>", num32 - topWealthByClubID, "</span>" });
+                    str16 = string.Concat(new object[] { "<span id='MatchWealth'>", num32, "</span>/<span id='AllWealth'>", num33 - topWealthByClubID, "</span>" });
                 }
                 if (byeStatus == 5)
                 {
-                    str16 = string.Concat(new object[] { "<span id='MatchWealth'>", num31, "</span>/<span id='AllWealth'>", num6 + num, "</span>" });
+                    str16 = string.Concat(new object[] { "<span id='MatchWealth'>", num32, "</span>/<span id='AllWealth'>", num6 + num, "</span>" });
                 }
                 if (flag)
                 {
@@ -946,49 +910,49 @@
                     str15 = "<a style=\"cursor:hand;\" title=\"应得积分/总积分\">积分：" + str15 + "</a>";
                 }
                 builder.Append("  <tr>\n");
-                builder.Append(string.Concat(new object[] { "    <td height=\"20\" bgcolor=\"#fcc6a4\"><span style=\"padding-right:12px\" >第 <span id='MatchTurn'>", num28, "</span> 场比赛</span><span style=\"padding-left:230px\">", str15, "<span style=\"width:30px\"></span><a style=\"cursor:hand;\" title=\"本场奖金/当前奖金\">奖金：", str16, "</a></span></td>\n" }));
+                builder.Append(string.Concat(new object[] { "    <td height=\"20\" bgcolor=\"#fcc6a4\"><span style=\"padding-right:12px\" >第 <span id='MatchTurn'>", num13, "</span> 场比赛</span><span style=\"padding-left:230px\">", str15, "<span style=\"width:30px\"></span><a style=\"cursor:hand;\" title=\"本场奖金/当前奖金\">奖金：", str16, "</a></span></td>\n" }));
                 builder.Append("  </tr>\n");
                 builder.Append("    <td height=\"22\" align=\"center\" style=\" color:#001d59\">\n");
                 builder.Append("    \n");
                 builder.Append("    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\t\t\t\t\t\t\t\n");
                 builder.Append("    <tr>\t\t\t\t\t\t\t\t\n");
-                builder.Append(string.Concat(new object[] { "    <td width='25%' align='center' valign='top' style='Padding-Top:10px'><font style='line-height:140%'><font color='#660066'>", str7, "</font><a href='OnlyOneCenter.aspx?Type=MATCHTODAY&ClubID=", intClubID, "'><img align='absmiddle' style='margin-left:5px' alt='查看此经理战绩' src='", SessionItem.GetImageURL(), "zhanji.gif' border='0' width='12' height='16'></a><br>\n" }));
-                builder.Append("      <font color='#666666'>" + str9 + "</font></font>\n");
+                builder.Append(string.Concat(new object[] { "    <td width='25%' align='center' valign='top' style='Padding-Top:10px'><font style='line-height:140%'><font color='#660066'>", str4, "</font><a href='OnlyOneCenter.aspx?Type=MATCHTODAY&ClubID=", intClubID, "'><img align='absmiddle' style='margin-left:5px' alt='查看此经理战绩' src='", SessionItem.GetImageURL(), "zhanji.gif' border='0' width='12' height='16'></a><br>\n" }));
+                builder.Append("      <font color='#666666'>" + str6 + "</font></font>\n");
                 builder.Append("    </td>\t\t\t\t\t\t\t\t\n");
-                builder.Append("    <td width='10%'><img src='" + str5 + "' border='0' width='46' height='46'></td>\t\t\t\t\t\t\t\t\n");
+                builder.Append("    <td width='10%'><img src='" + str2 + "' border='0' width='46' height='46'></td>\t\t\t\t\t\t\t\t\n");
                 if ((byeStatus == 5) || (byeStatus == 6))
                 {
                     string str17;
                     string str18;
-                    int num33 = num19 / 100;
-                    if (num33 == 0)
+                    int num34 = num21 / 100;
+                    if (num34 == 0)
                     {
                         str17 = "99";
                     }
                     else
                     {
-                        str17 = num33.ToString();
+                        str17 = num34.ToString();
                     }
-                    int num34 = num20 / 100;
-                    if (num34 == 0)
+                    int num35 = num22 / 100;
+                    if (num35 == 0)
                     {
                         str18 = "99";
                     }
                     else
                     {
-                        str18 = num34.ToString();
+                        str18 = num35.ToString();
                     }
-                    builder.Append(string.Concat(new object[] { "    <td width='30%' align='center'><img id='ScoreA1' src='Images/Score/", str17, ".gif' border='0' width='19' height='28'><img id='ScoreA2' src='Images/Score/", (num19 / 10) % 10, ".gif' border='0' width='19' height='28'><img id='ScoreA3' src='Images/Score/", num19 % 10, ".gif' border='0' width='19' height='28'><img src='Images/Score/00.gif' width='19' height='28' border='0'><img id='ScoreB1' src='Images/Score/", str18, ".gif' border='0' width='19' height='28'><img id='ScoreB2' src='Images/Score/", (num20 / 10) % 10, ".gif' border='0' width='19' height='28'><img id='ScoreB3' src='Images/Score/", num20 % 10, ".gif' border='0' width='19' height='28'>\n" }));
+                    builder.Append(string.Concat(new object[] { "    <td width='30%' align='center'><img id='ScoreA1' src='Images/Score/", str17, ".gif' border='0' width='19' height='28'><img id='ScoreA2' src='Images/Score/", (num21 / 10) % 10, ".gif' border='0' width='19' height='28'><img id='ScoreA3' src='Images/Score/", num21 % 10, ".gif' border='0' width='19' height='28'><img src='Images/Score/00.gif' width='19' height='28' border='0'><img id='ScoreB1' src='Images/Score/", str18, ".gif' border='0' width='19' height='28'><img id='ScoreB2' src='Images/Score/", (num22 / 10) % 10, ".gif' border='0' width='19' height='28'><img id='ScoreB3' src='Images/Score/", num22 % 10, ".gif' border='0' width='19' height='28'>\n" }));
                 }
                 else
                 {
                     builder.Append("    <td width='30%' align='center'><img id='ScoreA1' src='Images/Score/99.gif' border='0' width='19' height='28'><img id='ScoreA2' src='Images/Score/Bar.gif' border='0' width='19' height='28'><img id='ScoreA3' src='Images/Score/Bar.gif' border='0' width='19' height='28'><img src='Images/Score/00.gif' width='19' height='28' border='0'><img id='ScoreB1' src='Images/Score/Bar.gif' border='0' width='19' height='28'><img id='ScoreB2' src='Images/Score/Bar.gif' border='0' width='19' height='28'><img id='ScoreB3' src='Images/Score/99.gif' border='0' width='19' height='28'>\n");
                 }
                 builder.Append("    </td>\t\t\t\t\t\t\t\t\n");
-                builder.Append("    <td width='10%' align='center'><img src='" + str6 + "' border='0' width='46' height='46'>\n");
+                builder.Append("    <td width='10%' align='center'><img src='" + str3 + "' border='0' width='46' height='46'>\n");
                 builder.Append("    </td>\n");
-                builder.Append(string.Concat(new object[] { "    <td width='25%' align='center' valign='top' style='Padding-Top:10px'><font style='line-height:140%'>", str8, "<a href='OnlyOneCenter.aspx?Type=MATCHTODAY&ClubID=", num18, "'><img style='margin-left:5px' align='absmiddle' alt='查看此经理战绩' src='", SessionItem.GetImageURL(), "zhanji.gif' border='0' width='12' height='16'></a><br>\n" }));
-                builder.Append("      <font color='#666666'>" + str10 + "</font></font>\n");
+                builder.Append(string.Concat(new object[] { "    <td width='25%' align='center' valign='top' style='Padding-Top:10px'><font style='line-height:140%'>", str5, "<a href='OnlyOneCenter.aspx?Type=MATCHTODAY&ClubID=", num12, "'><img style='margin-left:5px' align='absmiddle' alt='查看此经理战绩' src='", SessionItem.GetImageURL(), "zhanji.gif' border='0' width='12' height='16'></a><br>\n" }));
+                builder.Append("      <font color='#666666'>" + str7 + "</font></font>\n");
                 builder.Append("    </td>\t\t\t\t\t\t\t\n");
                 builder.Append("    </tr>\t\t\t\t\n");
                 builder.Append("    </table>\n");
@@ -1008,8 +972,8 @@
                     }
                     else
                     {
-                        int num35 = (((Convert.ToInt32(-span.TotalSeconds) / 30) + 1) * 30) + 60;
-                        span = (TimeSpan) (time.AddSeconds((double) num35) - DateTime.Now);
+                        int num36 = (((Convert.ToInt32(-span.TotalSeconds) / 30) + 1) * 30) + 60;
+                        span = (TimeSpan) (time.AddSeconds((double) num36) - DateTime.Now);
                         builder.Append(" <tr id='trMatchWait'><td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\">赛前准备中……您还有<span id='ShowTime' style=\"color:red\"></span>秒时间进行战术安排</td></tr>\n");
                         builder.Append("<tr id='trMatchIn' style='display:none'> <td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\">球员入场中……比赛将在<span id='ShowTime2' style=\"color:red\"></span>秒后开始</td>");
                         obj2 = str;
@@ -1029,8 +993,8 @@
                     }
                     else
                     {
-                        int num36 = (((Convert.ToInt32(-span2.TotalSeconds) / 10) + 1) * 10) + 30;
-                        span2 = (TimeSpan) (time.AddSeconds((double) num36) - DateTime.Now);
+                        int num37 = (((Convert.ToInt32(-span2.TotalSeconds) / 10) + 1) * 10) + 30;
+                        span2 = (TimeSpan) (time.AddSeconds((double) num37) - DateTime.Now);
                         builder.Append("<td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\">球员入场中……比赛将在<span id='ShowTime2' style=\"color:red\"></span>秒后开始</td>");
                         obj2 = str;
                         str = string.Concat(new object[] { obj2, "SetRunSeconds(", Convert.ToInt32(span2.TotalSeconds), ",'ShowTime2',2);" });
@@ -1041,25 +1005,25 @@
                 {
                     builder.Append(" <tr  id='TimeTitle'>   <td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\"><span id='MatchTime'></span></td></tr>\n");
                     builder.Append("<tr style='display:none' id='MatchEndTitle'><td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\">比赛已结束 " + string.Concat(new object[] { 
-                        "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, "' target='_blank'>本场战报</a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, 
+                        "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num25, "&A=", num19, "&B=", num20, "' target='_blank'>本场战报</a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num25, "&A=", num19, "&B=", num20, 
                         "' target='_blank'>本场统计</a>"
                      }) + "</td>\n");
                 }
                 else if (((byeStatus == 5) || (byeStatus == 6)) || flag2)
                 {
-                    string str20;
+                    string str19;
                     if (!flag2)
                     {
-                        str20 = string.Concat(new object[] { 
-                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, "' target='_blank'>本场战报</a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num23, "&A=", num13, "&B=", num14, 
+                        str19 = string.Concat(new object[] { 
+                            "<a href='", Config.GetDomain(), "VRep.aspx?Type=1&Tag=", num25, "&A=", num19, "&B=", num20, "' target='_blank'>本场战报</a>  <a href='", Config.GetDomain(), "VStas.aspx?Type=1&Tag=", num25, "&A=", num19, "&B=", num20, 
                             "' target='_blank'>本场统计</a>"
                          });
                     }
                     else
                     {
-                        str20 = "";
+                        str19 = "";
                     }
-                    builder.Append("<tr  id='MatchEndTitle'><td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\">比赛已结束 " + str20 + "</td>\n");
+                    builder.Append("<tr  id='MatchEndTitle'><td height=\"20\" align=\"center\" valign=\"bottom\" style=\"color:#009933\">比赛已结束 " + str19 + "</td>\n");
                 }
                 builder.Append("  </tr>\n");
                 builder.Append("  <tr>\n");
@@ -1083,21 +1047,21 @@
                             int intNum = 1;
                             foreach (DataRow row in table.Rows)
                             {
-                                string str21 = row["QuarterID"].ToString();
-                                string str22 = row["ScoreH"].ToString();
-                                string str23 = row["ScoreA"].ToString();
-                                if (intClubID != num13)
+                                string str20 = row["QuarterID"].ToString();
+                                string str21 = row["ScoreH"].ToString();
+                                string str22 = row["ScoreA"].ToString();
+                                if (intClubID != num19)
                                 {
-                                    string str24 = str22;
+                                    string str23 = str21;
+                                    str21 = str22;
                                     str22 = str23;
-                                    str23 = str24;
                                 }
-                                DataRow row2 = XmlHelper.GetRow(dt, "QuarterID=" + str21 + " AND ClubID=" + str12, "");
-                                DataRow row3 = XmlHelper.GetRow(dt, "QuarterID=" + str21 + " AND ClubID=" + str13, "");
-                                string vOffName = MatchItem.GetVOffName((int)row2["Offense"]);
-                                string vDefName = MatchItem.GetVDefName((int)row2["Defense"]);
-                                string str27 = MatchItem.GetVOffName((int)row3["Offense"]);
-                                string str28 = MatchItem.GetVDefName((int)row3["Defense"]);
+                                DataRow row2 = XmlHelper.GetRow(dt, "QuarterID=" + str20 + " AND ClubID=" + str12, "");
+                                DataRow row3 = XmlHelper.GetRow(dt, "QuarterID=" + str20 + " AND ClubID=" + str13, "");
+                                string vOffName = MatchItem.GetVOffName((int) row2["Offense"]);
+                                string vDefName = MatchItem.GetVDefName((int) row2["Defense"]);
+                                string str26 = MatchItem.GetVOffName((int) row3["Offense"]);
+                                string str27 = MatchItem.GetVDefName((int) row3["Defense"]);
                                 if (byeStatus > 4)
                                 {
                                     builder.Append("<div class=\"zdiv\" id='MatchNode" + intNum + "'>");
@@ -1106,55 +1070,55 @@
                                 {
                                     builder.Append("<div class=\"zdiv\" id='MatchNode" + intNum + "' style=\"display:none\">");
                                 }
-                                builder.Append(string.Concat(new object[] { "<span id='NodeScoreA", intNum, "' style=\"display:none\">", str22, "</span>" }));
-                                builder.Append(string.Concat(new object[] { "<span id='NodeScoreB", intNum, "' style=\"display:none\">", str23, "</span>" }));
+                                builder.Append(string.Concat(new object[] { "<span id='NodeScoreA", intNum, "' style=\"display:none\">", str21, "</span>" }));
+                                builder.Append(string.Concat(new object[] { "<span id='NodeScoreB", intNum, "' style=\"display:none\">", str22, "</span>" }));
                                 builder.Append("<span class=\"zspan1\">" + MatchItem.GetQName(intNum, 5) + "</span>");
                                 builder.Append("<span class=\"zspan1\">" + vOffName + "</span>");
                                 builder.Append("<span class=\"zspan2\">" + vDefName + "</span>");
+                                builder.Append("<span class=\"zspan1\">" + str26 + "</span>");
                                 builder.Append("<span class=\"zspan1\">" + str27 + "</span>");
-                                builder.Append("<span class=\"zspan1\">" + str28 + "</span>");
                                 builder.Append("</div>");
                                 intNum++;
                             }
                             reader.Close();
-                            TimeSpan span3 = (TimeSpan)(time.AddMinutes(1.0) - DateTime.Now);
-                            int num39 = 60 - Convert.ToInt32(span3.TotalSeconds);
+                            TimeSpan span3 = (TimeSpan) (time.AddMinutes(1.0) - DateTime.Now);
+                            int num40 = 60 - Convert.ToInt32(span3.TotalSeconds);
                             if (byeStatus < 5)
                             {
-                                if (num39 > 60)
+                                if (num40 > 60)
                                 {
-                                    int num40 = ((num39 - 60) / 30) + 1;
-                                    span3 = (TimeSpan)(time.AddSeconds((double)((num40 * 30) + 60)) - DateTime.Now);
+                                    int num41 = ((num40 - 60) / 30) + 1;
+                                    span3 = (TimeSpan) (time.AddSeconds((double) ((num41 * 30) + 60)) - DateTime.Now);
                                     obj2 = str;
-                                    str = string.Concat(new object[] { obj2, "SetRunTime(1,", num39, ",", Convert.ToInt32(span3.TotalSeconds), ",", count, ");" });
+                                    str = string.Concat(new object[] { obj2, "SetRunTime(1,", num40, ",", Convert.ToInt32(span3.TotalSeconds), ",", count, ");" });
                                     num9++;
                                 }
                                 else
                                 {
                                     obj2 = str;
-                                    str = string.Concat(new object[] { obj2, "SetRunTime(0,", num39 + 1, ",0,", count, ");" });
+                                    str = string.Concat(new object[] { obj2, "SetRunTime(0,", num40 + 1, ",0,", count, ");" });
                                     num9++;
                                 }
                             }
                         }
-                        catch (System.Net.WebException ne)
+                        catch (WebException exception)
                         {
                             if (!flag2)
                             {
-                                int num41 = 1;//BTPOnlyOneCenterReg.OnlyErrorOutByUserID(intUserID);
-                                String errorDetail = ne.ToString();
-                                BTPErrorManager.AddError("onlyone", string.Format("胜者意外退出，获取不到比赛战报，用户ID{0},错误详情{1}", intUserID, errorDetail));
-                                return ("error|1;GoSay(" + num41 + ");");
+                                int num42 = 1;
+                                string str28 = exception.ToString();
+                                BTPErrorManager.AddError("onlyone", string.Format("胜者意外退出，获取不到比赛战报，用户ID{0},错误详情{1}", intUserID, str28));
+                                return ("error|1;GoSay(" + num42 + ");");
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception exception2)
                         {
                             if (!flag2)
                             {
-                                int num41 = BTPOnlyOneCenterReg.OnlyErrorOutByUserID(intUserID);
-                                String errorDetail = e.ToString();
-                                BTPErrorManager.AddError("onlyone", string.Format("胜者意外退出，获取不到比赛战报，用户ID{0},错误详情{1}", intUserID, errorDetail));
-                                return ("error|1;GoSay(" + num41 + ");");
+                                int num43 = BTPOnlyOneCenterReg.OnlyErrorOutByUserID(intUserID);
+                                string str29 = exception2.ToString();
+                                BTPErrorManager.AddError("onlyone", string.Format("胜者意外退出，获取不到比赛战报，用户ID{0},错误详情{1}", intUserID, str29));
+                                return ("error|1;GoSay(" + num43 + ");");
                             }
                         }
                     }
@@ -1162,9 +1126,9 @@
                     {
                         builder.Append("<div class=\"zdiv\" id='MatchNode1'></div>");
                         builder.Append("<div class=\"zdiv\" id='MatchNode2'></div>");
-                        if (num15 == intClubID)
+                        if (num16 == intClubID)
                         {
-                            if (num16 < num17)
+                            if (num17 < num18)
                             {
                                 builder.Append("<div class=\"zdiv\" id='MatchNode3'>您的球员人数不足，无法进行比赛！</div>");
                             }
@@ -1173,7 +1137,7 @@
                                 builder.Append("<div class=\"zdiv\" id='MatchNode3'>对方的球员人数不足，无法进行比赛！</div>");
                             }
                         }
-                        else if (num16 > num17)
+                        else if (num17 > num18)
                         {
                             builder.Append("<div class=\"zdiv\" id='MatchNode3'>您的球员人数不足，无法进行比赛！</div>");
                         }
@@ -1193,19 +1157,19 @@
                 builder.Append("  </tr>\n");
                 if (byeStatus == 5)
                 {
-                    string str29 = "";
+                    string str30 = "";
                     if (!flag)
                     {
-                        str29 = "积分<font color=\"green\" style=\"font-size:16px\"><strong>+" + num22 + "</strong></font>";
+                        str30 = "积分<font color=\"green\" style=\"font-size:16px\"><strong>+" + num24 + "</strong></font>";
                     }
-                    builder.Append("<tr><td align=\"center\">比赛胜利！获得" + str29);
+                    builder.Append("<tr><td align=\"center\">比赛胜利！获得" + str30);
                     if (topWealthByClubID > 0)
                     {
                         builder.Append("奖金<font color=\"green\" style=\"font-size:16px\"><strong>+" + topWealthByClubID + "</strong></font>游戏币");
                     }
-                    if (num26 > 0)
+                    if (num28 > 0)
                     {
-                        builder.Append("，本场获威望<font color=\"green\" style=\"font-size:16px\"><strong>+" + num26 + "</strong></font>");
+                        builder.Append("，本场获威望<font color=\"green\" style=\"font-size:16px\"><strong>+" + num28 + "</strong></font>");
                     }
                     if (num4 > 0)
                     {
@@ -1221,19 +1185,19 @@
                 }
                 else if (byeStatus == 3)
                 {
-                    string str30 = "";
+                    string str31 = "";
                     if (!flag)
                     {
-                        str30 = "积分<font color=\"green\" style=\"font-size:16px\"><strong>+" + num22 + "</strong></font>";
+                        str31 = "积分<font color=\"green\" style=\"font-size:16px\"><strong>+" + num24 + "</strong></font>";
                     }
-                    builder.Append("<tr id='WinPoint' style='display:none'><td align=\"center\">比赛胜利！获得" + str30);
+                    builder.Append("<tr id='WinPoint' style='display:none'><td align=\"center\">比赛胜利！获得" + str31);
                     if (topWealthByClubID > 0)
                     {
                         builder.Append("，奖金<font color=\"green\" style=\"font-size:16px\"><strong>+" + topWealthByClubID + "</strong></font>游戏币");
                     }
-                    if (num26 > 0)
+                    if (num28 > 0)
                     {
-                        builder.Append("，本场获威望<font color=\"green\" style=\"font-size:16px\"><strong>+" + num26 + "</strong></font>");
+                        builder.Append("，本场获威望<font color=\"green\" style=\"font-size:16px\"><strong>+" + num28 + "</strong></font>");
                     }
                     if (num4 > 0)
                     {
@@ -1309,16 +1273,8 @@
                 this.tblMatchReg.Visible = true;
                 onlyOneMatchRow = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
                 this.intWealth = (int) onlyOneMatchRow["Wealth"];
-                if (this.intWealth >= 10)
+                if (this.intWealth < 10)
                 {
-                    //this.tbOnlyPay.Checked = true;
-                    //this.tbTopWealth.Text = "10";
-                }
-                else
-                {
-                    //this.tbOnlyPay.Enabled = false;
-                    //this.tbTopWealth.Text = "0";
-                    //this.tbTopWealth.Enabled = false;
                 }
             }
             else

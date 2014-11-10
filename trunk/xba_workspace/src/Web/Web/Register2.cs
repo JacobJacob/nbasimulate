@@ -23,8 +23,9 @@
             if (base.Request.Cookies["FromName"] != null)
             {
                 this.strFromName = base.Request.Cookies["FromName"].Value.ToString();
-                HttpCookie cookie = new HttpCookie("FromName");
-                cookie.Value = "";
+                HttpCookie cookie = new HttpCookie("FromName") {
+                    Value = ""
+                };
                 base.Response.Cookies.Add(cookie);
             }
             else

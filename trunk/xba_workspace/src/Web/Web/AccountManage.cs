@@ -71,7 +71,7 @@
 
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
-            string str2;
+            string str;
             int num;
             int num2;
             int num3;
@@ -80,40 +80,40 @@
             string strOID = "34107" + StringItem.FormatDate(now, "yyyyMMddhhmmss") + num4;
             if (this.rbA.Checked)
             {
-                str2 = "20枚金币";
+                str = "20枚金币";
                 num = 1;
                 num2 = 10;
                 num3 = 1;
             }
             else if (this.rbB.Checked)
             {
-                str2 = "40枚金币";
+                str = "40枚金币";
                 num = 1;
                 num2 = 20;
                 num3 = 2;
             }
             else if (this.rbC.Checked)
             {
-                str2 = "100枚金币";
+                str = "100枚金币";
                 num = 1;
                 num2 = 0x2d;
                 num3 = 3;
             }
             else if (this.rbD.Checked)
             {
-                str2 = "250枚金币";
+                str = "250枚金币";
                 num = 1;
                 num2 = 100;
                 num3 = 4;
             }
             else
             {
-                str2 = "3000枚金币";
+                str = "3000枚金币";
                 num = 1;
                 num2 = 0x3e8;
                 num3 = 5;
             }
-            ROOTUserManager.AddPayOrder(this.intUserID, this.strUserName, 1, strOID, str2, num3, num, num2);
+            ROOTUserManager.AddPayOrder(this.intUserID, this.strUserName, 1, strOID, str, num3, num, num2);
             string url = "AccountManage.aspx?Type=ORDER&Page=1";
             base.Response.Redirect(url);
         }
@@ -134,54 +134,54 @@
             string validWords = this.tbPayNick.Text.ToString().Trim();
             strIn = StringItem.GetValidWords(strIn);
             validWords = StringItem.GetValidWords(validWords);
-            if (StringItem.IsNumber(num))
+            if (!StringItem.IsNumber(num))
             {
-                if (!StringItem.IsValidName(strIn, 1, 20))
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=432");
-                }
-                else if (!StringItem.IsValidName(validWords, 1, 20))
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=436");
-                }
-                else if (!DBLogin.CanConn(0))
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=445");
-                }
-                else
-                {
-                    switch (ROOTUserManager.ConferCoin(this.intUserID, validWords, num))
-                    {
-                        case 0:
-                            base.Response.Redirect("Report.aspx?Parameter=431");
-                            return;
-
-                        case 1:
-                            base.Response.Redirect("Report.aspx?Parameter=430");
-                            return;
-
-                        case 2:
-                        {
-                            string strNickName = BTPAccountManager.GetAccountRowByUserName(strIn)["NickName"].ToString().Trim();
-                            BTPMessageManager.AddMessage(0, "篮球经理", this.strNickName, string.Concat(new object[] { "您赠与", strNickName, "经理金币", num, "枚" }));
-                            BTPMessageManager.AddMessage(0, "篮球经理", strNickName, string.Concat(new object[] { this.strNickName, "经理赠与您", num, "枚金币" }));
-                            base.Response.Redirect("Report.aspx?Parameter=429");
-                            return;
-                        }
-                        case 3:
-                            base.Response.Redirect("Report.aspx?Parameter=434");
-                            return;
-
-                        case 4:
-                            base.Response.Redirect("Report.aspx?Parameter=435");
-                            return;
-                    }
-                    base.Response.Redirect("Report.aspx?Parameter=3");
-                }
+                base.Response.Redirect("Report.aspx?Parameter=433");
+            }
+            else if (!StringItem.IsValidName(strIn, 1, 20))
+            {
+                base.Response.Redirect("Report.aspx?Parameter=432");
+            }
+            else if (!StringItem.IsValidName(validWords, 1, 20))
+            {
+                base.Response.Redirect("Report.aspx?Parameter=436");
+            }
+            else if (!DBLogin.CanConn(0))
+            {
+                base.Response.Redirect("Report.aspx?Parameter=445");
             }
             else
             {
-                base.Response.Redirect("Report.aspx?Parameter=433");
+                switch (ROOTUserManager.ConferCoin(this.intUserID, validWords, num))
+                {
+                    case 0:
+                        base.Response.Redirect("Report.aspx?Parameter=431");
+                        break;
+
+                    case 1:
+                        base.Response.Redirect("Report.aspx?Parameter=430");
+                        return;
+
+                    case 2:
+                    {
+                        string strNickName = BTPAccountManager.GetAccountRowByUserName(strIn)["NickName"].ToString().Trim();
+                        BTPMessageManager.AddMessage(0, "篮球经理", this.strNickName, string.Concat(new object[] { "您赠与", strNickName, "经理金币", num, "枚" }));
+                        BTPMessageManager.AddMessage(0, "篮球经理", strNickName, string.Concat(new object[] { this.strNickName, "经理赠与您", num, "枚金币" }));
+                        base.Response.Redirect("Report.aspx?Parameter=429");
+                        return;
+                    }
+                    case 3:
+                        base.Response.Redirect("Report.aspx?Parameter=434");
+                        return;
+
+                    case 4:
+                        base.Response.Redirect("Report.aspx?Parameter=435");
+                        return;
+
+                    default:
+                        base.Response.Redirect("Report.aspx?Parameter=3");
+                        return;
+                }
             }
         }
 
@@ -258,12 +258,12 @@
             {
                 switch (ROOTUserManager.AddFlack(this.intUserID, strFlackURL))
                 {
-                    case 1:
-                        base.Response.Redirect("Report.aspx?Parameter=404");
-                        return;
-
                     case 0:
                         base.Response.Redirect("Report.aspx?Parameter=405");
+                        return;
+
+                    case 1:
+                        base.Response.Redirect("Report.aspx?Parameter=404");
                         return;
 
                     case 2:
@@ -290,11 +290,11 @@
         {
             string strCurrentURL = "AccountManage.aspx?Type=ORDER&";
             this.strScript = this.GetScript(strCurrentURL);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             int intCount = this.intPerPage * this.intPage;
             int total = this.GetTotal();
+            string str2 = "--";
             string str3 = "--";
-            string str4 = "--";
             DataTable table = ROOTUserManager.GetOrderTableByUserID(this.intUserID, this.intPage, this.intPerPage, intCount, total);
             if (table == null)
             {
@@ -304,66 +304,66 @@
             {
                 foreach (DataRow row in table.Rows)
                 {
-                    string str6;
+                    string str4;
+                    object obj2;
                     int num3 = (int) row["OrderID"];
-                    int num8 = (byte) row["Category"];
+                    int num4 = (byte) row["Category"];
                     string str5 = (string) row["OID"];
-                    int num4 = (int) row["Count"];
-                    int num5 = (int) row["Price"];
-                    int num6 = (byte) row["Status"];
-                    string str2 = row["OrderName"].ToString().Trim();
-                    int num7 = (byte) row["OrderCategory"];
-                    switch (num8)
+                    int num5 = (int) row["Count"];
+                    int num6 = (int) row["Price"];
+                    int num7 = (byte) row["Status"];
+                    string str6 = row["OrderName"].ToString().Trim();
+                    int num8 = (byte) row["OrderCategory"];
+                    switch (num4)
                     {
                         case 1:
-                            str6 = "银行卡支付";
+                            str4 = "银行卡支付";
                             break;
 
                         case 2:
-                            str6 = "点卡充值";
+                            str4 = "点卡充值";
                             break;
 
                         default:
-                            str6 = "金币充值";
+                            str4 = "金币充值";
                             break;
                     }
-                    switch (num6)
+                    switch (num7)
                     {
                         case 1:
-                            str3 = "已结算";
-                            str4 = string.Concat(new object[] { "<a href='DelPayOrder.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(1);\">删除</a>" });
-                            break;
+                            str2 = "已结算";
+                            str3 = string.Concat(new object[] { "<a href='DelPayOrder.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(1);\">删除</a>" });
+                            goto Label_0320;
 
                         case 2:
-                            if (num8 == 1)
+                            if (num4 != 1)
                             {
-                                str3 = "未付款";
-                                str4 = string.Concat(new object[] { "<a href='Pay.aspx?OrderCategory=", num7, "&OrderID=", num3, "&OID=", str5, "'>付款</a> | <a href='DelPayOrder.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(1);\">删除</a>" });
+                                break;
                             }
-                            else
-                            {
-                                str3 = "未充值";
-                                str4 = string.Concat(new object[] { "<a href='#'>充值</a> | <a href='DelPayOrder.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(1);\">删除</a>" });
-                            }
-                            break;
+                            str2 = "未付款";
+                            str3 = string.Concat(new object[] { "<a href='Pay.aspx?OrderCategory=", num8, "&OrderID=", num3, "&OID=", str5, "'>付款</a> | <a href='DelPayOrder.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(1);\">删除</a>" });
+                            goto Label_0320;
 
                         default:
-                            switch (num6)
+                            switch (num7)
                             {
-                                case 3:
-                                    str3 = "核查中";
-                                    str4 = "--";
-                                    break;
-
                                 case 0:
-                                    str3 = "未结算";
-                                    str4 = string.Concat(new object[] { "<a href='SetQuery.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(2);\">核查</a> | <a href='DelPayOrder.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(1);\">删除</a>" });
+                                    str2 = "未结算";
+                                    str3 = string.Concat(new object[] { "<a href='SetQuery.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(2);\">核查</a> | <a href='DelPayOrder.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(1);\">删除</a>" });
+                                    break;
+
+                                case 3:
+                                    str2 = "核查中";
+                                    str3 = "--";
                                     break;
                             }
-                            break;
+                            goto Label_0320;
                     }
-                    object strList = this.strList;
-                    this.strList = string.Concat(new object[] { strList, "<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'></td><td>", str2, "</td><td>", str6, num8, "</td><td>", num4, "</td><td>", num5, "</td><td>", str3, "</td><td>", str4, "</td><td></td></tr>" });
+                    str2 = "未充值";
+                    str3 = string.Concat(new object[] { "<a href='#'>充值</a> | <a href='DelPayOrder.aspx?ORDERID=", num3, "&OID=", str5, "' onclick=\"return MessageDel(1);\">删除</a>" });
+                Label_0320:
+                    obj2 = this.strList;
+                    this.strList = string.Concat(new object[] { obj2, "<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'></td><td>", str6, "</td><td>", str4, num4, "</td><td>", num5, "</td><td>", num6, "</td><td>", str2, "</td><td>", str3, "</td><td></td></tr>" });
                 }
             }
             this.strList = this.strList + "<tr><td height='30' colspan='7' align='right' style='padding-right:15px'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
@@ -397,9 +397,9 @@
             DataTable userGameTableByUserID = ROOTUserGameManager.GetUserGameTableByUserID(this.intUserID);
             if (userGameTableByUserID != null)
             {
-                foreach (DataRow row3 in userGameTableByUserID.Rows)
+                foreach (DataRow row2 in userGameTableByUserID.Rows)
                 {
-                    int intCategory = (int) row3["Category"];
+                    int intCategory = (int) row2["Category"];
                     try
                     {
                         if (((byte) BTPAccountManager.GetAccountRowByUserID(this.intUserID, DBLogin.ConnString(intCategory))["PayType"]) == 0)
@@ -411,12 +411,10 @@
                             object strUserGameTable = this.strUserGameTable;
                             this.strUserGameTable = string.Concat(new object[] { strUserGameTable, "您是", DBLogin.GameNameChinese(intCategory), "的会员，您要续费吗？<a href=\"AccountManage.aspx?Type=REGTRUE&GameCategory=", intCategory, "\">按钮</a><br>" });
                         }
-                        continue;
                     }
                     catch
                     {
                         base.Response.Write("" + DBLogin.GameNameChinese(intCategory) + "游戏服务器暂时无法连通！");
-                        continue;
                     }
                 }
             }
@@ -424,7 +422,7 @@
 
         private void GetRegTrue()
         {
-            this.intGameCategory = (int) SessionItem.GetRequest("GameCategory", 0);
+            this.intGameCategory = SessionItem.GetRequest("GameCategory", 0);
             DataRow userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
             this.intCoin = (int) userInfoByID["Coin"];
             if (this.intCoin < 20)
@@ -497,7 +495,7 @@
             DataRow userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
             this.intCoin = (int) userInfoByID["Coin"];
             string strCurrentURL = "AccountManage.aspx?Type=VIEW&";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
@@ -533,7 +531,7 @@
         private void GetViewFlack()
         {
             string strCurrentURL = "AccountManage.aspx?Type=VIEWFLACK&";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
@@ -550,34 +548,34 @@
             {
                 foreach (DataRow row in table.Rows)
                 {
-                    string str3;
-                    string str2 = row["FlackURL"].ToString().Trim();
+                    string str2;
+                    string str3 = row["FlackURL"].ToString().Trim();
                     DateTime datIn = (DateTime) row["CreateTime"];
-                    int num4 = (byte) row["CoinGain"];
+                    int num3 = (byte) row["CoinGain"];
                     row["CoinGain"].ToString().Trim();
-                    int num3 = (byte) row["Status"];
-                    if (num3 == 0)
+                    int num4 = (byte) row["Status"];
+                    if (num4 == 0)
                     {
-                        str3 = "等待审核";
+                        str2 = "等待审核";
                     }
-                    else if ((num3 == 2) && (num4 == 1))
+                    else if ((num4 == 2) && (num3 == 1))
                     {
-                        str3 = "奖励1金币。";
+                        str2 = "奖励1金币。";
                     }
-                    else if ((num3 == 2) && (num4 == 2))
+                    else if ((num4 == 2) && (num3 == 2))
                     {
-                        str3 = "奖励2金币。";
+                        str2 = "奖励2金币。";
                     }
-                    else if ((num3 == 2) && (num4 == 3))
+                    else if ((num4 == 2) && (num3 == 3))
                     {
-                        str3 = "奖励3金币。";
+                        str2 = "奖励3金币。";
                     }
                     else
                     {
-                        str3 = "未通过审核";
+                        str2 = "未通过审核";
                     }
                     string strList = this.strList;
-                    this.strList = strList + "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>" + StringItem.FormatDate(datIn, "yy-MM-dd hh:mm:ss") + "</td><td><a href='" + str2 + "' target='_blank'>" + str2 + "</a></td><td align='center'>" + str3 + "</td></tr>";
+                    this.strList = strList + "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>" + StringItem.FormatDate(datIn, "yy-MM-dd hh:mm:ss") + "</td><td><a href='" + str3 + "' target='_blank'>" + str3 + "</a></td><td align='center'>" + str2 + "</td></tr>";
                 }
                 this.strList = this.strList + "<tr><td height='25' align='right' colspan='5'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
             }
@@ -596,52 +594,46 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", total, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", total, "个记录 跳转", str3 });
         }
 
         private void GetWealth()
         {
             string strCurrentURL = "AccountManage.aspx?Type=WEALTH&";
             this.strScript = this.GetScript(strCurrentURL);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             int intCount = this.intPerPage * this.intPage;
             int total = this.GetTotal();
             DataRow userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
@@ -661,13 +653,13 @@
                 foreach (DataRow row2 in table.Rows)
                 {
                     int num1 = (int) row2["WealthID"];
-                    int num3 = (int) row2["Income"];
-                    int num4 = (int) row2["Outcome"];
+                    int num4 = (int) row2["Income"];
+                    int num5 = (int) row2["Outcome"];
                     byte num6 = (byte) row2["Category"];
-                    string str2 = row2["Event"].ToString().Trim();
+                    string str3 = row2["Event"].ToString().Trim();
                     DateTime datIn = (DateTime) row2["CreateTime"];
                     object strList = this.strList;
-                    this.strList = string.Concat(new object[] { strList, "<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'></td><td>", str2, "</td><td>", num3, "</td><td>", num4, "</td><td>", StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss"), "</td><td></td></tr>" });
+                    this.strList = string.Concat(new object[] { strList, "<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'></td><td>", str3, "</td><td>", num4, "</td><td>", num5, "</td><td>", StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss"), "</td><td></td></tr>" });
                 }
             }
             this.strList = this.strList + "<tr><td height='30' colspan='6' align='right' style='padding-right:15px'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";

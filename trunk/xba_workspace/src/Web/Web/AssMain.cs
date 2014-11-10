@@ -41,7 +41,7 @@
                 }
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 int num = (int) onlineRowByUserID["Category"];
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
+                this.strType = SessionItem.GetRequest("Type", 1);
                 if ((num != 3) && (this.strType != "CHOOSECLUB"))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=3");

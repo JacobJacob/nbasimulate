@@ -10,27 +10,27 @@
     {
         public static void AddStaff()
         {
-            int num4;
+            int num;
             string str;
             int staffCountByType = GetStaffCountByType(1);
-            int num2 = GetStaffCountByType(2);
-            int num3 = GetStaffCountByType(3);
+            int num3 = GetStaffCountByType(2);
+            int num4 = GetStaffCountByType(3);
             if (staffCountByType < 800)
             {
-                num4 = 0x7d0 - staffCountByType;
-                str = "Exec NewBTP.dbo.AddStaff " + num4 + ",1";
-                SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, str);
-            }
-            if (num2 < 800)
-            {
-                num4 = 0x7d0 - num2;
-                str = "Exec NewBTP.dbo.AddStaff " + num4 + ",2";
+                num = 0x7d0 - staffCountByType;
+                str = "Exec NewBTP.dbo.AddStaff " + num + ",1";
                 SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, str);
             }
             if (num3 < 800)
             {
-                num4 = 0x7d0 - num3;
-                str = "Exec NewBTP.dbo.AddStaff " + num4 + ",3";
+                num = 0x7d0 - num3;
+                str = "Exec NewBTP.dbo.AddStaff " + num + ",2";
+                SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, str);
+            }
+            if (num4 < 800)
+            {
+                num = 0x7d0 - num4;
+                str = "Exec NewBTP.dbo.AddStaff " + num + ",3";
                 SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, str);
             }
         }
@@ -202,24 +202,24 @@
             {
                 foreach (DataRow row in clubTable.Rows)
                 {
-                    string str2;
+                    string str;
                     int num = (int) row["ClubID"];
                     int num2 = (int) row["UserID"];
                     int num3 = (byte) row["Category"];
                     if (num3 == 3)
                     {
-                        str2 = "支付街球队职员工资。";
+                        str = "支付街球队职员工资。";
                     }
                     else
                     {
-                        str2 = "支付职业队职员工资。";
+                        str = "支付职业队职员工资。";
                     }
                     string commandText = "Exec NewBTP.dbo.SendStaffSalary @intClubID,@intUserID,@intCategory,@strEvent";
                     SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intClubID", SqlDbType.Int, 4), new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@intCategory", SqlDbType.Int, 4), new SqlParameter("@strEvent", SqlDbType.NVarChar, 100) };
                     commandParameters[0].Value = num;
                     commandParameters[1].Value = num2;
                     commandParameters[2].Value = num3;
-                    commandParameters[3].Value = str2;
+                    commandParameters[3].Value = str;
                     SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
                 }
             }

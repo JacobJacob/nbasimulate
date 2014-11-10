@@ -27,10 +27,10 @@
             }
             else
             {
-                this.intFMatchID = (int) SessionItem.GetRequest("FMatchID", 0);
-                this.intStatus = (int) SessionItem.GetRequest("Status", 0);
-                this.intType = (short) SessionItem.GetRequest("Type", 2);
-                this.intUserIDA = (int) SessionItem.GetRequest("UserIDA", 0);
+                this.intFMatchID = SessionItem.GetRequest("FMatchID", 0);
+                this.intStatus = SessionItem.GetRequest("Status", 0);
+                this.intType = SessionItem.GetRequest("Type", 2);
+                this.intUserIDA = SessionItem.GetRequest("UserIDA", 0);
                 this.InitializeComponent();
                 base.OnInit(e);
             }
@@ -38,52 +38,52 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            if (this.intStatus == 2)
+            if (this.intStatus != 2)
             {
-                if (MatchItem.InOnlyOneMatch(BTPClubManager.GetClubIDByUserID(this.intUserID)) && (this.intType == 5))
+                if (BTPFriMatchManager.UpDateFriMatchStatus(this.intUserID, this.intFMatchID, this.intStatus, this.intType) == 1)
                 {
-                    base.Response.Redirect("Report.aspx?Parameter=491b");
+                    DTOnlineManager.SetHasMsgByUserID(this.intUserIDA);
+                    base.Response.Redirect("Report.aspx?Parameter=43");
                 }
                 else
                 {
-                    switch (BTPFriMatchManager.UpDateFriMatchStatus(this.intUserID, this.intFMatchID, this.intStatus, this.intType))
-                    {
-                        case 1:
-                            DTOnlineManager.SetHasMsgByUserID(this.intUserIDA);
-                            base.Response.Redirect("Report.aspx?Parameter=42");
-                            return;
-
-                        case 0:
-                            base.Response.Redirect("Report.aspx?Parameter=451");
-                            return;
-
-                        case 5:
-                            base.Response.Redirect("Report.aspx?Parameter=452");
-                            return;
-
-                        case 2:
-                            base.Response.Redirect("Report.aspx?Parameter=537");
-                            return;
-
-                        case 0x15:
-                            base.Response.Redirect("Report.aspx?Parameter=500c");
-                            return;
-
-                        case 0x16:
-                            base.Response.Redirect("Report.aspx?Parameter=500d");
-                            return;
-                    }
-                    base.Response.Redirect("Report.aspx?Parameter=45");
+                    base.Response.Redirect("Report.aspx?Parameter=46");
                 }
             }
-            else if (BTPFriMatchManager.UpDateFriMatchStatus(this.intUserID, this.intFMatchID, this.intStatus, this.intType) == 1)
+            else if (MatchItem.InOnlyOneMatch(BTPClubManager.GetClubIDByUserID(this.intUserID)) && (this.intType == 5))
             {
-                DTOnlineManager.SetHasMsgByUserID(this.intUserIDA);
-                base.Response.Redirect("Report.aspx?Parameter=43");
+                base.Response.Redirect("Report.aspx?Parameter=491b");
             }
             else
             {
-                base.Response.Redirect("Report.aspx?Parameter=46");
+                switch (BTPFriMatchManager.UpDateFriMatchStatus(this.intUserID, this.intFMatchID, this.intStatus, this.intType))
+                {
+                    case 0:
+                        base.Response.Redirect("Report.aspx?Parameter=451");
+                        return;
+
+                    case 1:
+                        DTOnlineManager.SetHasMsgByUserID(this.intUserIDA);
+                        base.Response.Redirect("Report.aspx?Parameter=42");
+                        return;
+
+                    case 2:
+                        base.Response.Redirect("Report.aspx?Parameter=537");
+                        return;
+
+                    case 5:
+                        base.Response.Redirect("Report.aspx?Parameter=452");
+                        return;
+
+                    case 0x15:
+                        base.Response.Redirect("Report.aspx?Parameter=500c");
+                        return;
+
+                    case 0x16:
+                        base.Response.Redirect("Report.aspx?Parameter=500d");
+                        return;
+                }
+                base.Response.Redirect("Report.aspx?Parameter=45");
             }
         }
     }

@@ -14,7 +14,7 @@
             StringBuilder builder = new StringBuilder();
             string str = ROOTBoardManager.GetBoardByBoardID(strBoardID)["Name"].ToString().Trim();
             DataTable boardByTopID = ROOTBoardManager.GetBoardByTopID(strBoardID);
-            int num3 = 80 / intC;
+            int num = 80 / intC;
             builder.Append("<tr bgcolor='#FCC6A4'>");
             builder.Append("<td height='25'></td>");
             builder.Append("<td class='Forum001'>" + str + "</td>");
@@ -25,61 +25,60 @@
             builder.Append("<tr><td colspan='5'>");
             builder.Append("<table width='100%' cellspacing='0' cellpadding='0'>");
             int boardCountByTopID = ROOTBoardManager.GetBoardCountByTopID(strBoardID);
-            int num5 = boardCountByTopID % intC;
-            int num6 = boardCountByTopID / intC;
-            if (num5 > 0)
+            int num3 = boardCountByTopID % intC;
+            int num4 = boardCountByTopID / intC;
+            if (num3 > 0)
             {
-                num6++;
+                num4++;
             }
-            for (int i = 0; i < num6; i++)
+            for (int i = 0; i < num4; i++)
             {
                 builder.Append("<tr>");
                 for (int j = 0; j < intC; j++)
                 {
-                    string str6;
+                    string str2;
                     int num7 = (i * intC) + j;
                     int num8 = i + j;
                     if ((num8 % 2) == 1)
                     {
-                        str6 = "#FFFFFF";
+                        str2 = "#FFFFFF";
                     }
                     else
                     {
-                        str6 = "";
+                        str2 = "";
                     }
-                    if ((num7 < boardCountByTopID) && boardByTopID != null)
+                    if ((num7 < boardCountByTopID) && (boardByTopID != null))
                     {
                         foreach (DataRow row in boardByTopID.Rows)
                         {
-                            string str2 = row["BoardID"].ToString().Trim();
-                            string str3 = row["Name"].ToString().Trim();
-                            int intCategory = (byte)row["Category"];
+                            string str3 = row["BoardID"].ToString().Trim();
+                            string str4 = row["Name"].ToString().Trim();
+                            int intCategory = (byte) row["Category"];
                             BoardItem.GetCategory(intCategory);
                             row["Intro"].ToString().Trim();
                             string strMaster = row["Master"].ToString().Trim();
-                            int num2 = (int)row["TopicCount"];
+                            int num10 = (int) row["TopicCount"];
                             row["NewTitle"].ToString().Trim();
                             row["NewLogo"].ToString().Trim();
-                            int num1 = (int)row["NewTitleID"];
-                            DateTime time1 = (DateTime)row["NewTime"];
+                            int num1 = (int) row["NewTitleID"];
+                            DateTime time1 = (DateTime) row["NewTime"];
                             row["NewAuthor"].ToString().Trim();
-                            string str5 = row["Logo"].ToString().Trim();
-                            builder.Append("<td bgcolor='" + str6 + "' class='Forum003' height='50' width='40' align='center'><img src='" + SessionItem.GetImageURL() + "Forum/BoardLogo/" + str5 + "'></td>");
-                            builder.Append(string.Concat(new object[] { "<td bgcolor='", str6, "' width='", num3, "%' class='Forum003' height='50'><a href='Board.aspx?BoardID=", str2 }));
-                            builder.Append("&Page=1'><strong>" + str3 + "</strong></a><br>");
-                            builder.Append("<strong><font color='#333333'>主题数:</font></strong> <font color='#666666'>" + num2 + "</font><br>");
+                            string str6 = row["Logo"].ToString().Trim();
+                            builder.Append("<td bgcolor='" + str2 + "' class='Forum003' height='50' width='40' align='center'><img src='" + SessionItem.GetImageURL() + "Forum/BoardLogo/" + str6 + "'></td>");
+                            builder.Append(string.Concat(new object[] { "<td bgcolor='", str2, "' width='", num, "%' class='Forum003' height='50'><a href='Board.aspx?BoardID=", str3 }));
+                            builder.Append("&Page=1'><strong>" + str4 + "</strong></a><br>");
+                            builder.Append("<strong><font color='#333333'>主题数:</font></strong> <font color='#666666'>" + num10 + "</font><br>");
                             builder.Append("<strong><font color='#333333'>版主:</font></strong> <font class='ForumTime'>");
                             builder.Append(BoardItem.GetMasterNickName(strMaster) + "</font></td>");
                         }
                     }
                     else
                     {
-                        builder.Append("<td bgcolor='" + str6 + "' class='Forum003' height='50'></td><td bgcolor='" + str6 + "' class='Forum003' height='50'></td>");
+                        builder.Append("<td bgcolor='" + str2 + "' class='Forum003' height='50'></td><td bgcolor='" + str2 + "' class='Forum003' height='50'></td>");
                     }
                 }
                 builder.Append("<tr>");
             }
-            //boardByTopID.Close();
             builder.Append("</table></td></tr>");
             return builder.ToString();
         }
@@ -102,15 +101,15 @@
                 {
                     string str2 = row["BoardID"].ToString().Trim();
                     string str3 = row["Name"].ToString().Trim();
-                    int intCategory = (byte)row["Category"];
+                    int intCategory = (byte) row["Category"];
                     BoardItem.GetCategory(intCategory);
                     string str4 = row["Intro"].ToString().Trim();
                     string strMaster = row["Master"].ToString().Trim();
-                    int num2 = (int)row["TopicCount"];
+                    int num2 = (int) row["TopicCount"];
                     string str6 = row["NewTitle"].ToString().Trim();
                     string str7 = row["NewLogo"].ToString().Trim();
-                    int num3 = (int)row["NewTitleID"];
-                    DateTime datIn = (DateTime)row["NewTime"];
+                    int num3 = (int) row["NewTitleID"];
+                    DateTime datIn = (DateTime) row["NewTime"];
                     string str8 = row["NewAuthor"].ToString().Trim();
                     string str9 = row["Logo"].ToString().Trim();
                     builder.Append("<tr>");
@@ -125,7 +124,6 @@
                     builder.Append("</tr>");
                 }
             }
-            //boardByTopID.Close();
             return builder.ToString();
         }
 

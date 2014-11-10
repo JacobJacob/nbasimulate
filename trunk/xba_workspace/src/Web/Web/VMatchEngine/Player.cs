@@ -6,8 +6,6 @@
 
     public class Player
     {
-
-        public int intCategory;
         public bool blnInjured;
         public bool blnOnArrange;
         public bool blnOut;
@@ -22,6 +20,7 @@
         public int intBlk;
         public int intBlock;
         public int intBlockAbility;
+        public int intCategory;
         public int intDefAbility;
         public int intDefense;
         public int intDReb;
@@ -32,9 +31,6 @@
         public int intFGs;
         public int intFoul;
         public int intFT;
-        /// <summary>
-        /// 罚球能力
-        /// </summary>
         public int intFTAbility;
         public int intFTs;
         public int intHappy;

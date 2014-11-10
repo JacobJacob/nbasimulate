@@ -35,7 +35,7 @@
             int length = originalParameters.Length;
             while (index < length)
             {
-                parameterArray[index] = (SqlParameter) ((ICloneable) originalParameters[index]).Clone();
+                parameterArray[index] = ((ICloneable) originalParameters[index]).Clone();
                 index++;
             }
             return parameterArray;
@@ -51,17 +51,18 @@
             {
                 throw new ArgumentNullException("spName");
             }
-            SqlCommand command = new SqlCommand(spName, connection);
-            command.CommandType = CommandType.StoredProcedure;
+            SqlCommand command = new SqlCommand(spName, connection) {
+                CommandType = CommandType.StoredProcedure
+            };
             try
             {
                 connection.Open();
                 SqlCommandBuilder.DeriveParameters(command);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                LogManager.WriteLog("error", e.Message);
-                throw e;
+                LogManager.WriteLog("error", exception.Message);
+                throw exception;
             }
             finally
             {
@@ -71,13 +72,13 @@
             {
                 command.Parameters.RemoveAt(0);
             }
-            SqlParameter[] parameterArray = new SqlParameter[command.Parameters.Count];
-            command.Parameters.CopyTo((Array) parameterArray, 0);
-            foreach (SqlParameter parameter in parameterArray)
+            SqlParameter[] array = new SqlParameter[command.Parameters.Count];
+            command.Parameters.CopyTo(array, 0);
+            foreach (SqlParameter parameter in array)
             {
                 parameter.Value = DBNull.Value;
             }
-            return parameterArray;
+            return array;
         }
 
         public static SqlParameter[] GetCachedParameterSet(string connectionString, string commandText)
@@ -115,7 +116,7 @@
             {
                 throw new ArgumentNullException("connection");
             }
-            using (SqlConnection connection2 = (SqlConnection) ((ICloneable) connection).Clone())
+            using (SqlConnection connection2 = ((ICloneable) connection).Clone())
             {
                 return GetSpParameterSetInternal(connection2, spName, includeReturnValueParameter);
             }

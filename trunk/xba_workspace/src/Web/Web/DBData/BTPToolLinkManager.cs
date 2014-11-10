@@ -82,6 +82,12 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        public static int BuyNewerToolBox(int intToolID, int intUserID)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.BuyNewerToolBox ", intToolID, ",", intUserID });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
         public static int BuyTool(int intToolID, int intUserID, DateTime datTime, int intCount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.BuyTool ", intToolID, ",", intUserID, ",'", datTime, "',", intCount });
@@ -139,6 +145,12 @@
         public static int CheckMatchLook(int intUserID, int intDevMatchID)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.CheckMatchLook ", intUserID, ",", intDevMatchID });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static int CheckMax(int intUserID, long longPlayerID, int intType)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.CheckMax ", intUserID, ",", longPlayerID, ",", intType });
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
@@ -360,13 +372,13 @@
 
         public static void UseHide(int intUserID, long longPlayerID, int intType, int intCategory, int intPlayType)
         {
-            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseHide\t ", intUserID, ",", longPlayerID, ",", intType, ",", intCategory, ",", intPlayType });
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseHide ", intUserID, ",", longPlayerID, ",", intType, ",", intCategory, ",", intPlayType });
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static void UseMatchLev(int intUserID, int intClubID, int intType)
         {
-            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseMatchLev\t ", intUserID, ",", intClubID, ",", intType });
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseMatchLev ", intUserID, ",", intClubID, ",", intType });
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
@@ -374,6 +386,12 @@
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseMatchLook ", intUserID, ",", intDevMatchID, ",", intPayType });
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static void UseMax(int intUserID, long longPlayerID, int intType, int intCategory, int intPlayType)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseMax  ", intUserID, ",", longPlayerID, ",", intType, ",", intCategory, ",", intPlayType });
+            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static void UsePrivateSkill(int intUserID, long longPlayerID, int intMarket)
@@ -386,16 +404,6 @@
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.UseToolCategory3 ", intUserID, ",", longPlayerID, ",", intMarket });
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-        }
-
-        /*
-         *购买新人大礼包 
-         */
-
-        public static int BuyNewerToolBox(int intToolID, int intUserID)
-        {
-            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.BuyNewerToolBox ", intToolID, ",", intUserID });
-            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
     }
 }

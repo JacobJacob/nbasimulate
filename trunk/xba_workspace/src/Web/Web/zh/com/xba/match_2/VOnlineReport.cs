@@ -7,7 +7,7 @@
     using System.Web.Services.Description;
     using System.Web.Services.Protocols;
 
-    [DesignerCategory("code"), WebServiceBinding(Name="VOnlineReportSoap", Namespace="http://tempuri.org/"), DebuggerStepThrough]
+    [WebServiceBinding(Name="VOnlineReportSoap", Namespace="http://tempuri.org/"), DebuggerStepThrough, DesignerCategory("code")]
     public class VOnlineReport : SoapHttpClientProtocol
     {
         public VOnlineReport()

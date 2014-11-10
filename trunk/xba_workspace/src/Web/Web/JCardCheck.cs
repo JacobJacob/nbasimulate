@@ -30,7 +30,7 @@
         {
             this.InitializeComponent();
             base.OnInit(e);
-            this.iJNetBillID = (string) SessionItem.GetRequest("iJNetBillID", 1);
+            this.iJNetBillID = SessionItem.GetRequest("iJNetBillID", 1);
             this.key = "sth21318";
         }
 

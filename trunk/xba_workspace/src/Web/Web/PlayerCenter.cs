@@ -39,93 +39,92 @@
             }
             else
             {
-                int num12 = 0;
+                int num = 0;
                 foreach (DataRow row in dt.Rows)
                 {
-                    string str2;
+                    string str;
                     long longPlayerID = (long) row["PlayerID"];
-                    if (num12 == 0)
+                    if (num == 0)
                     {
                         this.longFirstPlayerID = longPlayerID;
                     }
                     string strName = row["Name"].ToString();
-                    int num2 = (byte) row["Number"];
-                    int num3 = (byte) row["Age"];
+                    int num3 = (byte) row["Number"];
+                    int num4 = (byte) row["Age"];
                     int intPosition = (byte) row["Pos"];
                     int intPower = (byte) row["Power"];
-                    int num6 = (byte) row["Height"];
-                    int num7 = (byte) row["Weight"];
+                    int num7 = (byte) row["Height"];
+                    int num8 = (byte) row["Weight"];
                     int intAbility = (int) row["Ability"];
                     float single1 = ((float) ((int) row["Ability"])) / 10f;
                     int intStatus = (byte) row["Status"];
-                    int num9 = (byte) row["Category"];
+                    int num11 = (byte) row["Category"];
                     string strEvent = row["Event"].ToString();
                     int intSuspend = (byte) row["Suspend"];
                     DataRow row2 = BTPArrange3Manager.GetCheckArrange3(this.intClubID3, longPlayerID);
-                    if (num9 == 1)
+                    if (num11 == 1)
                     {
                         if (row2 != null)
                         {
-                            str2 = "阵容中";
+                            str = "阵容中";
                         }
-                        else if (num3 > 0x11)
+                        else if (num4 > 0x11)
                         {
-                            str2 = "<a href='SecretaryPage.aspx?Type=CHOOSE&PlayerID=" + longPlayerID + "'>职业选拔</a>";
+                            str = "<a href='SecretaryPage.aspx?Type=CHOOSE&PlayerID=" + longPlayerID + "'>职业选拔</a>";
                         }
                         else
                         {
-                            str2 = "--";
+                            str = "--";
                         }
                     }
-                    else if (num9 == 4)
+                    else if (num11 == 4)
                     {
-                        str2 = "<font color='#660066'>拍卖中</font>";
+                        str = "<font color='#660066'>拍卖中</font>";
                     }
                     else
                     {
-                        str2 = "禁止操作";
+                        str = "禁止操作";
                     }
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif\" width='16' height='19' border='0'></td>" }));
+                    this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num3, ".gif\" width='16' height='19' border='0'></td>" }));
                     this.sbList.Append("<td height='25' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(longPlayerID, strName, 3, 1, 1) + "</td>");
-                    this.sbList.Append("<td>" + num3 + "</td>");
+                    this.sbList.Append("<td>" + num4 + "</td>");
                     this.sbList.Append("<td><a title='" + PlayerItem.GetPlayerChsPosition(intPosition) + "' style='CURSOR: hand'>" + PlayerItem.GetPlayerEngPosition(intPosition) + "</td>");
                     this.sbList.Append("<td>" + PlayerItem.GetPowerColor(intPower) + "</td>");
                     this.sbList.Append("<td>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "</td>");
-                    this.sbList.Append("<td>" + num6 + "</td>");
                     this.sbList.Append("<td>" + num7 + "</td>");
+                    this.sbList.Append("<td>" + num8 + "</td>");
                     this.sbList.Append("<td>" + PlayerItem.GetAbilityColor(intAbility) + "</td>");
-                    this.sbList.Append("<td>" + str2 + "</td>");
+                    this.sbList.Append("<td>" + str + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='10'></td></tr>");
-                    num12++;
+                    num++;
                 }
             }
         }
 
         private string GetOldPlayerList(DataTable dt)
         {
-            if (dt == null)
+            if (dt != null)
             {
-                return "";
-            }
-            int num2 = 0;
-            foreach (DataRow row in dt.Rows)
-            {
-                long num = (long) row["PlayerID"];
-                if (num2 == 0)
+                int num = 0;
+                foreach (DataRow row in dt.Rows)
                 {
-                    this.longFirstPlayerID = num;
+                    long num2 = (long) row["PlayerID"];
+                    if (num == 0)
+                    {
+                        this.longFirstPlayerID = num2;
+                    }
+                    num++;
                 }
-                num2++;
             }
             return "";
         }
 
         private void GetPlayerList(DataTable dt)
         {
+            string str = "";
             string str2 = "";
-            string str5 = "";
             bool flag = false;
             if (dt == null)
             {
@@ -133,33 +132,33 @@
             }
             else
             {
-                int num15 = 0;
+                int num = 0;
                 foreach (DataRow row in dt.Rows)
                 {
                     DataRow row2;
                     long longPlayerID = (long) row["PlayerID"];
-                    if (num15 == 0)
+                    if (num == 0)
                     {
                         this.longFirstPlayerID = longPlayerID;
                     }
                     string strName = row["Name"].ToString();
-                    int num2 = (byte) row["Number"];
-                    int num3 = (byte) row["Age"];
+                    int num3 = (byte) row["Number"];
+                    int num4 = (byte) row["Age"];
                     int intPosition = (byte) row["Pos"];
                     int intPower = (byte) row["Power"];
-                    int num6 = (byte) row["Height"];
-                    int num7 = (byte) row["Weight"];
+                    int num7 = (byte) row["Height"];
+                    int num8 = (byte) row["Weight"];
                     float single1 = ((float) ((int) row["Ability"])) / 10f;
                     int intStatus = (byte) row["Status"];
-                    int num9 = (byte) row["Category"];
+                    int num10 = (byte) row["Category"];
                     string strEvent = row["Event"].ToString();
                     int intAbility = (int) row["Ability"];
-                    if (num9 == 3)
+                    if (num10 == 3)
                     {
-                        intAbility = 999;
+                        intAbility = 0x3e7;
                     }
                     int intSuspend = (byte) row["Suspend"];
-                    int num14 = (byte) row["Happy"];
+                    int num13 = (byte) row["Happy"];
                     bool flag2 = (bool) row["IsRetire"];
                     if (this.intType == 5)
                     {
@@ -173,49 +172,49 @@
                     {
                         row2 = BTPArrange5Manager.GetCheckArrange5(this.intClubID5, longPlayerID);
                     }
-                    if (num9 == 1)
+                    if (num10 == 1)
                     {
                         if (row2 != null)
                         {
-                            str2 = "阵容中";
+                            str = "阵容中";
                         }
                         else if (this.intType == 3)
                         {
-                            str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=PLAYER", this.intType, "BID&PlayerID=", longPlayerID, "'>选秀</a> | <a href='SecretaryPage.aspx?Type=PLAYER", this.intType, "FIRE&PlayerID=", longPlayerID, "'>下放</a>" });
+                            str = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=PLAYER", this.intType, "BID&PlayerID=", longPlayerID, "'>选秀</a> | <a href='SecretaryPage.aspx?Type=PLAYER", this.intType, "FIRE&PlayerID=", longPlayerID, "'>下放</a>" });
                         }
                         else if (this.intType == 5)
                         {
-                            str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=PLAYER", this.intType, "BID&PlayerID=", longPlayerID, "'>出售</a>" });
+                            str = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=PLAYER", this.intType, "BID&PlayerID=", longPlayerID, "'>出售</a>" });
                         }
                     }
-                    else if ((this.intType == 3) && (num9 == 4))
+                    else if ((this.intType == 3) && (num10 == 4))
                     {
-                        str2 = "<font color='#660066'>选秀中</font>";
+                        str = "<font color='#660066'>选秀中</font>";
                     }
-                    else if ((this.intType == 5) && (num9 == 2))
+                    else if ((this.intType == 5) && (num10 == 2))
                     {
-                        str2 = "<font color='#660066'>拍卖中</font>";
+                        str = "<font color='#660066'>拍卖中</font>";
                     }
-                    else if ((this.intType == 5) && (num9 == 3))
+                    else if ((this.intType == 5) && (num10 == 3))
                     {
                         if (row2 == null)
                         {
-                            str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=UNSETTRIAL&PlayerID=", longPlayerID, "'>结束试训</a>" });
+                            str = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=UNSETTRIAL&PlayerID=", longPlayerID, "'>结束试训</a>" });
                         }
                         else
                         {
-                            str2 = "试训中";
+                            str = "试训中";
                         }
                     }
                     else
                     {
-                        str2 = "禁止操作";
+                        str = "禁止操作";
                     }
                     switch (this.intType)
                     {
                         case 3:
                             this.strOp = "";
-                            goto Label_0369;
+                            goto Label_03B5;
 
                         case 5:
                             if (!flag || (((byte) row["Contract"]) >= 10))
@@ -223,96 +222,96 @@
                                 break;
                             }
                             this.strOp = "<a href='Extend.aspx?PlayerID=" + longPlayerID + "' >续约</a>";
-                            goto Label_0369;
+                            goto Label_03B5;
 
                         default:
                             this.strOp = "";
-                            goto Label_0369;
+                            goto Label_03B5;
                     }
                     this.strOp = "--";
-                Label_0369:
+                Label_03B5:
                     if (this.intType == 5)
                     {
-                        int num11 = (int) row["Salary"];
-                        int num12 = (byte) row["Contract"];
+                        int num14 = (int) row["Salary"];
+                        int num15 = (byte) row["Contract"];
                         this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                        this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif\" width='16' height='19' border='0'></td>" }));
+                        this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num3, ".gif\" width='16' height='19' border='0'></td>" }));
                         this.sbList.Append("<td align='left' style='padding-left:3px' height='25'>" + PlayerItem.GetPlayerNameInfo(longPlayerID, strName, this.intType, 1, 1) + "</td>");
                         if (flag2)
                         {
-                            this.sbList.Append("<td><a href=\"javascript:;\" style=\"cursor:pointer; color:red\" title=\"球员将在赛季结束后退役\" >" + num3 + "!</a></td>");
+                            this.sbList.Append("<td><a href=\"javascript:;\" style=\"cursor:pointer; color:red\" title=\"球员将在赛季结束后退役\" >" + num4 + "!</a></td>");
                         }
                         else
                         {
-                            this.sbList.Append("<td>" + num3 + "</td>");
+                            this.sbList.Append("<td>" + num4 + "</td>");
                         }
                         this.sbList.Append("<td><a title='" + PlayerItem.GetPlayerChsPosition(intPosition) + "' style='CURSOR: hand'>" + PlayerItem.GetPlayerEngPosition(intPosition) + "</a></td>");
-                        this.sbList.Append("<td>" + num6 + "</td>");
                         this.sbList.Append("<td>" + num7 + "</td>");
+                        this.sbList.Append("<td>" + num8 + "</td>");
                         this.sbList.Append("<td>" + PlayerItem.GetAbilityColor(intAbility) + "</td>");
-                        this.sbList.Append("<td>" + num11 + "</td>");
-                        this.sbList.Append("<td>" + num12 + "</td>");
-                        this.sbList.Append("<td>" + str2 + "</td>");
+                        this.sbList.Append("<td>" + num14 + "</td>");
+                        this.sbList.Append("<td>" + num15 + "</td>");
+                        this.sbList.Append("<td>" + str + "</td>");
                         this.sbList.Append("<td>" + this.strOp + "</td>");
                         this.sbList.Append("</tr>");
                         this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                     }
                     else
                     {
-                        string str4;
-                        if ((num14 >= 0) && (num14 < 50))
+                        string str5;
+                        if ((num13 >= 0) && (num13 < 50))
                         {
-                            str4 = "6.gif";
-                            str5 = "alt='坚决罢训'";
+                            str5 = "6.gif";
+                            str2 = "alt='坚决罢训'";
                         }
-                        else if ((num14 >= 50) && (num14 < 0x41))
+                        else if ((num13 >= 50) && (num13 < 0x41))
                         {
-                            str4 = "5.gif";
-                            str5 = "alt='反感训练'";
+                            str5 = "5.gif";
+                            str2 = "alt='反感训练'";
                         }
-                        else if ((num14 >= 0x41) && (num14 < 0x4b))
+                        else if ((num13 >= 0x41) && (num13 < 0x4b))
                         {
-                            str4 = "4.gif";
-                            str5 = "alt='训练懈怠'";
+                            str5 = "4.gif";
+                            str2 = "alt='训练懈怠'";
                         }
-                        else if ((num14 >= 0x4b) && (num14 < 0x55))
+                        else if ((num13 >= 0x4b) && (num13 < 0x55))
                         {
-                            str4 = "3.gif";
-                            str5 = "alt='正常训练'";
+                            str5 = "3.gif";
+                            str2 = "alt='正常训练'";
                         }
-                        else if ((num14 >= 0x55) && (num14 < 0x5f))
+                        else if ((num13 >= 0x55) && (num13 < 0x5f))
                         {
-                            str4 = "2.gif";
-                            str5 = "alt='训练积极'";
+                            str5 = "2.gif";
+                            str2 = "alt='训练积极'";
                         }
                         else
                         {
-                            str4 = "1.gif";
-                            str5 = "alt='渴望训练'";
+                            str5 = "1.gif";
+                            str2 = "alt='渴望训练'";
                         }
                         this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                        this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif\" width='16' height='19' border='0'></td>" }));
+                        this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num3, ".gif\" width='16' height='19' border='0'></td>" }));
                         this.sbList.Append("<td height='25' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(longPlayerID, strName, this.intType, 1, 1) + "</td>");
                         if (flag2)
                         {
-                            this.sbList.Append("<td><a href=\"javascript:;\" style=\"cursor:pointer; color:red\" title=\"球员将在赛季结束后退役\" >" + num3 + "!</a></td>");
+                            this.sbList.Append("<td><a href=\"javascript:;\" style=\"cursor:pointer; color:red\" title=\"球员将在赛季结束后退役\" >" + num4 + "!</a></td>");
                         }
                         else
                         {
-                            this.sbList.Append("<td>" + num3 + "</td>");
+                            this.sbList.Append("<td>" + num4 + "</td>");
                         }
                         this.sbList.Append("<td><a title='" + PlayerItem.GetPlayerChsPosition(intPosition) + "' style='CURSOR: hand'>" + PlayerItem.GetPlayerEngPosition(intPosition) + "</a></td>");
                         this.sbList.Append("<td>" + PlayerItem.GetPowerColor(intPower) + "</td>");
-                        this.sbList.Append("<td>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "&nbsp;&nbsp;<img src='" + SessionItem.GetImageURL() + "Player/Face/" + str4 + "' " + str5 + " hight='12' width='12' border='0'></td>");
-                        this.sbList.Append("<td>" + num6 + "</td>");
+                        this.sbList.Append("<td>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "&nbsp;&nbsp;<img src='" + SessionItem.GetImageURL() + "Player/Face/" + str5 + "' " + str2 + " hight='12' width='12' border='0'></td>");
                         this.sbList.Append("<td>" + num7 + "</td>");
+                        this.sbList.Append("<td>" + num8 + "</td>");
                         this.sbList.Append("<td>" + PlayerItem.GetAbilityColor(intAbility) + "</td>");
-                        this.sbList.Append("<td>" + str2 + "</td>");
+                        this.sbList.Append("<td>" + str + "</td>");
                         this.sbList.Append("<td>" + this.strOp + "</td>");
                         this.sbList.Append("</tr>");
                         this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                     }
-                    num15++;
+                    num++;
                 }
             }
         }
@@ -345,103 +344,101 @@
 
         private void GetSearchPlayerEndList(DataTable dt)
         {
-            string str2 = "";
-            string str3 = "未录用";
+            string str = "";
+            string str2 = "未录用";
             if (dt == null)
             {
                 this.sbList.Append("");
             }
             else
             {
-                int num9 = 0;
-                string str4 = "";
+                int num = 0;
+                string str3 = "";
                 int intType = 7;
-                string str5 = "";
+                string str4 = "";
                 foreach (DataRow row in dt.Rows)
                 {
                     long longPlayerID = (long) row["PlayerID"];
-                    if (num9 == 0)
+                    if (num == 0)
                     {
                         this.longFirstPlayerID = longPlayerID;
                     }
                     string strName = row["Name"].ToString();
-                    int num3 = (byte) row["Number"];
-                    int num4 = (byte) row["Age"];
+                    int num4 = (byte) row["Number"];
+                    int num5 = (byte) row["Age"];
                     int intPosition = (byte) row["Pos"];
-                    int num6 = (byte) row["Height"];
-                    int num7 = (byte) row["Weight"];
+                    int num7 = (byte) row["Height"];
+                    int num8 = (byte) row["Weight"];
                     float single1 = ((float) ((int) row["Ability"])) / 10f;
                     byte num1 = (byte) row["Category"];
                     int intAbility = (int) row["Ability"];
-                    int num2 = (int) row["AbilityMax"];
-
-                    int intMax0 = 550;
-                    int intMax1 = 520;
-                    int intMax2 = 490;
-                    int intMax3 = 470;
-                    if (num6 > 206)
+                    int num10 = (int) row["AbilityMax"];
+                    int num11 = 550;
+                    int num12 = 520;
+                    int num13 = 490;
+                    int num14 = 470;
+                    if (num7 > 0xce)
                     {
-                        intMax0 = 510;
-                        intMax1 = 480;
-                        intMax2 = 470;
-                        intMax3 = 460;
+                        num11 = 510;
+                        num12 = 480;
+                        num13 = 470;
+                        num14 = 460;
                     }
-
-                    if (num2 > intMax0)
+                    if (num10 > num11)
                     {
-                        str2 = "<font color=\"#080808\">未来的领袖</font>";
-                        str5 = "不愧是" + this.strNickName + "经理！您竟然可以选中" + str2 + "！一定要好好培养，他将来一定会成为您的球队领袖的！";
-                    }else if (num2 > intMax1 && num2 <= intMax0)
-                    {
-                        str2 = "<font color=\"#fe0022\">天下的巨星</font>";
-                        str5 = "不愧是" + this.strNickName + "经理！您竟然一次就选中了一个" + str2 + "！果然是慧眼识英才！您的球队一定会越来越强大的！";
+                        str = "<font color=\"#080808\">未来的领袖</font>";
+                        str4 = "不愧是" + this.strNickName + "经理！您竟然可以选中" + str + "！一定要好好培养，他将来一定会成为您的球队领袖的！";
                     }
-                    else if ((num2 > intMax2) && (num2 <= intMax1)) 
+                    else if ((num10 > num12) && (num10 <= num11))
                     {
-                        str2 = "<font color=\"#0000fe\">旷世的奇才</font>";
-                        str5 = "太厉害了！您选择了一个" + str2 + "，将来的他一定会成为您球队中的一线球员！我很期待再次与您合作！";
+                        str = "<font color=\"#fe0022\">天下的巨星</font>";
+                        str4 = "不愧是" + this.strNickName + "经理！您竟然一次就选中了一个" + str + "！果然是慧眼识英才！您的球队一定会越来越强大的！";
                     }
-                    else if ((num2 > intMax3) && (num2 <= intMax2))
+                    else if ((num10 > num13) && (num10 <= num12))
                     {
-                        str2 = "<font color=\"#b01b2f\">篮坛的奇葩</font>";
-                        str5 = "您选择的球员是一个" + str2 + "，他的能力也是得到我的肯定的，不过应该还有更加有潜力的球员，下次努力吧！";
+                        str = "<font color=\"#0000fe\">旷世的奇才</font>";
+                        str4 = "太厉害了！您选择了一个" + str + "，将来的他一定会成为您球队中的一线球员！我很期待再次与您合作！";
+                    }
+                    else if ((num10 > num14) && (num10 <= num13))
+                    {
+                        str = "<font color=\"#b01b2f\">篮坛的奇葩</font>";
+                        str4 = "您选择的球员是一个" + str + "，他的能力也是得到我的肯定的，不过应该还有更加有潜力的球员，下次努力吧！";
                     }
                     else
                     {
-                        str2 = "<font color=\"#009418\">碌碌无为的</font>";
-                        str5 = "您选择的是一个" + str2 + "球员，请看一下我对其他球员的评价，希望您下次会有更好的眼光。";
+                        str = "<font color=\"#009418\">碌碌无为的</font>";
+                        str4 = "您选择的是一个" + str + "球员，请看一下我对其他球员的评价，希望您下次会有更好的眼光。";
                     }
                     if (longPlayerID == this.longInTeamPlayerID)
                     {
-                        str4 = str5;
+                        str3 = str4;
                         intType = 3;
-                        str3 = "已录用";
+                        str2 = "已录用";
                     }
                     else
                     {
                         intType = 7;
-                        str3 = "<font color=\"#CCCCCC\">未录用</font>";
+                        str2 = "<font color=\"#CCCCCC\">未录用</font>";
                     }
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num3, ".gif\" width='16' height='19' border='0'></td>" }));
+                    this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num4, ".gif\" width='16' height='19' border='0'></td>" }));
                     this.sbList.Append("<td height='25' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(longPlayerID, strName, intType, 1, 1) + "</td>");
-                    this.sbList.Append("<td>" + num4 + "</td>");
+                    this.sbList.Append("<td>" + num5 + "</td>");
                     this.sbList.Append("<td><a title='" + PlayerItem.GetPlayerChsPosition(intPosition) + "' style='CURSOR: hand'>" + PlayerItem.GetPlayerEngPosition(intPosition) + "</a></td>");
-                    this.sbList.Append("<td>" + num6 + "</td>");
                     this.sbList.Append("<td>" + num7 + "</td>");
+                    this.sbList.Append("<td>" + num8 + "</td>");
                     this.sbList.Append("<td>" + PlayerItem.GetAbilityColor(intAbility) + "</td>");
-                    this.sbList.Append("<td><strong>" + str2 + "</strong></td>");
-                    this.sbList.Append("<td>" + str3 + "</td>");
+                    this.sbList.Append("<td><strong>" + str + "</strong></td>");
+                    this.sbList.Append("<td>" + str2 + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
-                    num9++;
+                    num++;
                 }
-                //this.sbList.Append("<tr><td colspan='9' height=\"20\"></td></tr>");
                 this.sbList.Append("<tr><td colspan='9'>");
                 this.sbList.Append("<table  width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
                 this.sbList.Append("<tr>");
                 this.sbList.Append("<td width=\"183\"><img src=\"Images/t.gif\" border=\"0\" width=\"183\" height=\"135\"></td>");
-                this.sbList.Append(string.Concat(new object[] { "<td style=\"padding-left:4px; line-height:18px; padding-left:10px;\">", str4, "<br><a href=\"PlayerCenter.aspx?Type=7&UserID=", this.intUserID, "\">再次寻找球员</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"PlayerCenter.aspx?UserID=", this.intUserID, "&Type=3\">返回</a></td>" }));
+                this.sbList.Append(string.Concat(new object[] { "<td style=\"padding-left:4px; line-height:18px; padding-left:10px;\">", str3, "<br><a href=\"PlayerCenter.aspx?Type=7&UserID=", this.intUserID, "\">再次寻找球员</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"PlayerCenter.aspx?UserID=", this.intUserID, "&Type=3\">返回</a></td>" }));
                 this.sbList.Append("</tr>");
                 this.sbList.Append("</table>");
                 this.sbList.Append("</td></tr>");
@@ -456,36 +453,36 @@
             }
             else
             {
-                int num8 = 0;
+                int num = 0;
                 foreach (DataRow row in dt.Rows)
                 {
                     long longPlayerID = (long) row["PlayerID"];
-                    if (num8 == 0)
+                    if (num == 0)
                     {
                         this.longFirstPlayerID = longPlayerID;
                     }
                     string strName = row["Name"].ToString();
-                    int num2 = (byte) row["Number"];
-                    int num3 = (byte) row["Age"];
+                    int num3 = (byte) row["Number"];
+                    int num4 = (byte) row["Age"];
                     int intPosition = (byte) row["Pos"];
-                    int num5 = (byte) row["Height"];
-                    int num6 = (byte) row["Weight"];
+                    int num6 = (byte) row["Height"];
+                    int num7 = (byte) row["Weight"];
                     float single1 = ((float) ((int) row["Ability"])) / 10f;
                     byte num1 = (byte) row["Category"];
                     int intAbility = (int) row["Ability"];
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif\" width='16' height='19' border='0'></td>" }));
+                    this.sbList.Append(string.Concat(new object[] { "<td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num3, ".gif\" width='16' height='19' border='0'></td>" }));
                     this.sbList.Append("<td height='25' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(longPlayerID, strName, this.intType, 1, 1) + "</td>");
-                    this.sbList.Append("<td>" + num3 + "</td>");
+                    this.sbList.Append("<td>" + num4 + "</td>");
                     this.sbList.Append("<td><a title='" + PlayerItem.GetPlayerChsPosition(intPosition) + "' style='CURSOR: hand'>" + PlayerItem.GetPlayerEngPosition(intPosition) + "</a></td>");
-                    this.sbList.Append("<td>" + num5 + "</td>");
                     this.sbList.Append("<td>" + num6 + "</td>");
+                    this.sbList.Append("<td>" + num7 + "</td>");
                     this.sbList.Append("<td>" + PlayerItem.GetAbilityColor(intAbility) + "</td>");
                     this.sbList.Append("<td  style=\"color:#b01f2e;\">未知</td>");
                     this.sbList.Append("<td><a href='SecretaryPage.aspx?Type=HIRE&PlayerID=" + longPlayerID + "'>录用</a></td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
-                    num8++;
+                    num++;
                 }
                 this.sbList.Append("<tr><td colspan='9'>");
                 this.sbList.Append("<table  width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
@@ -508,10 +505,10 @@
             DataRow parameterRow;
             byte num;
             byte num2;
-            long num19;
-            byte num3 = 0;
+            long num3;
+            byte num4 = 0;
             bool flag = false;
-            int num4 = 0;
+            int num5 = 0;
             if (intPlayerType == 3)
             {
                 parameterRow = BTPPlayer3Manager.GetPlayerRowByPlayerID(lngPlayerID);
@@ -520,13 +517,13 @@
                     base.Response.Redirect("Report.aspx?Parameter=3");
                     return;
                 }
-                int num5 = (int) parameterRow["ClubID"];
-                byte num6 = (byte) parameterRow["Category"];
+                int num6 = (int) parameterRow["ClubID"];
+                byte num7 = (byte) parameterRow["Category"];
                 num = (byte) parameterRow["Status"];
                 num2 = (byte) parameterRow["Power"];
-                num3 = (byte) parameterRow["Happy"];
-                num4 = (int) parameterRow["Ability"];
-                if ((num5 != this.intClubID3) || (num6 != 1))
+                num4 = (byte) parameterRow["Happy"];
+                num5 = (int) parameterRow["Ability"];
+                if ((num6 != this.intClubID3) || (num7 != 1))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=710");
                     return;
@@ -537,14 +534,14 @@
                 parameterRow = BTPPlayer5Manager.GetPlayerRowByPlayerID(lngPlayerID);
                 if (parameterRow != null)
                 {
-                    int num7 = (int) parameterRow["ClubID"];
-                    byte num8 = (byte) parameterRow["Category"];
+                    int num8 = (int) parameterRow["ClubID"];
+                    byte num9 = (byte) parameterRow["Category"];
                     num = (byte) parameterRow["Status"];
                     num2 = (byte) parameterRow["Power"];
                     byte num1 = (byte) parameterRow["Age"];
                     flag = (bool) parameterRow["IsRetire"];
-                    num4 = (int) parameterRow["Ability"];
-                    if ((num7 != this.intClubID5) || (num8 != 1))
+                    num5 = (int) parameterRow["Ability"];
+                    if ((num8 != this.intClubID5) || (num9 != 1))
                     {
                         base.Response.Redirect("Report.aspx?Parameter=710");
                         return;
@@ -556,41 +553,41 @@
                     return;
                 }
             }
-            byte num9 = (byte) parameterRow["Age"];
+            byte num10 = (byte) parameterRow["Age"];
             parameterRow = BTPParameterManager.GetParameterRow();
-            int num10 = (int) parameterRow["AddPowerWealth"];
-            int num11 = (int) parameterRow["AddHappyWealth"];
-            int num12 = num4 - 650;
-            if (num12 > 0)
+            int num11 = (int) parameterRow["AddPowerWealth"];
+            int num12 = (int) parameterRow["AddHappyWealth"];
+            int num13 = num5 - 650;
+            if (num13 > 0)
             {
-                num12 *= 10;
+                num13 *= 10;
             }
             else
             {
-                num12 *= 5;
+                num13 *= 5;
             }
-            int num13 = (int) parameterRow["MinusAgeWealth"];
-            num13 += num12;
-            if (num13 < 500)
+            int num14 = (int) parameterRow["MinusAgeWealth"];
+            num14 += num13;
+            if (num14 < 500)
             {
-                num13 = 500;
+                num14 = 500;
             }
-            int num14 = (int) parameterRow["AddStatusWealth"];
-            int num15 = (int) parameterRow["AddMaxWealth"];
-            int num16 = (int) parameterRow["TimeHouseWealth"];
-            int num17 = (int) parameterRow["TimeHouse5Wealth"];
-            int num18 = (int) parameterRow["TimeHouse5LowWealthint"];
+            int num15 = (int) parameterRow["AddStatusWealth"];
+            int num16 = (int) parameterRow["AddMaxWealth"];
+            int num17 = (int) parameterRow["TimeHouseWealth"];
+            int num18 = (int) parameterRow["TimeHouse5Wealth"];
+            int num19 = (int) parameterRow["TimeHouse5LowWealthint"];
             if (this.Session["MedicinePID"] != null)
             {
-                num19 = Convert.ToInt64(this.Session["MedicinePID"]);
+                num3 = Convert.ToInt64(this.Session["MedicinePID"]);
             }
             else
             {
-                num19 = 0L;
+                num3 = 0L;
             }
-            if (num19 > 0L)
+            if (num3 > 0L)
             {
-                this.strBtnCancel = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_48.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"TrainPlayer5.aspx?PID=", num19, "\";'>" });
+                this.strBtnCancel = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_48.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"TrainPlayer5.aspx?PID=", num3, "\";'>" });
             }
             else
             {
@@ -601,7 +598,7 @@
                 this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                 this.sbList.Append("<td height='25'><strong>康复理疗</strong></td>");
                 this.sbList.Append("<td align='left' >可一次性将球员的体力恢复到100</td>");
-                this.sbList.Append("<td><font color='red'>" + num10 + "</font></td>");
+                this.sbList.Append("<td><font color='red'>" + num11 + "</font></td>");
                 this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=1' target='Center'>使用<a></td>" }));
                 this.sbList.Append("</tr>");
                 this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
@@ -611,19 +608,19 @@
                 this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                 this.sbList.Append("<td height='25'><strong>康复理疗</strong></td>");
                 this.sbList.Append("<td align='left' >可一次性将球员的体力恢复到100</td>");
-                this.sbList.Append("<td><font color='red'>" + num10 + "</font></td>");
+                this.sbList.Append("<td><font color='red'>" + num11 + "</font></td>");
                 this.sbList.Append("<td style='color:#666666'>使用</td>");
                 this.sbList.Append("</tr>");
                 this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
             }
             if (intPlayerType == 3)
             {
-                if (num3 < 100)
+                if (num4 < 100)
                 {
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><strong>振奋士气</strong></td>");
                     this.sbList.Append("<td align='left' >可一次性将街头球员的训练热情恢复到最佳。</td>");
-                    this.sbList.Append("<td><font color='red'>" + num11 + "</font></td>");
+                    this.sbList.Append("<td><font color='red'>" + num12 + "</font></td>");
                     this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=2' target='Center'>使用<a></td>" }));
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
@@ -633,24 +630,20 @@
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><strong>振奋士气</strong></td>");
                     this.sbList.Append("<td align='left' >可一次性将街头球员的训练热情恢复到最佳。</td>");
-                    this.sbList.Append("<td><font color='red'>" + num11 + "</font></td>");
+                    this.sbList.Append("<td><font color='red'>" + num12 + "</font></td>");
                     this.sbList.Append("<td style='color:#666666'>使用</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                 }
             }
-
-
-            /*返老功能是否可用*/
             if (Config.Player5FLEnable())
             {
-
-                if (num9 > 0x1a)
+                if (num10 > 0x1a)
                 {
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><strong>返老还童</strong></td>");
                     this.sbList.Append("<td align='left' >使用之后，球员的年龄将会降低1岁，小于27岁的球员无效。</td>");
-                    this.sbList.Append("<td><font color='red'>" + num13 + "</font></td>");
+                    this.sbList.Append("<td><font color='red'>" + num14 + "</font></td>");
                     this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=3' target='Center'>使用<a></td>" }));
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
@@ -660,20 +653,18 @@
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><strong>返老还童</strong></td>");
                     this.sbList.Append("<td align='left' >使用之后，球员的年龄将会降低1岁，小于27岁的球员无效。</td>");
-                    this.sbList.Append("<td><font color='red'>" + num13 + "</font></td>");
+                    this.sbList.Append("<td><font color='red'>" + num14 + "</font></td>");
                     this.sbList.Append("<td style='color:#666666'>使用</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                 }
-
             }
-
             if (num != 1)
             {
                 this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                 this.sbList.Append("<td height='25'><strong>伤病治愈</strong></td>");
                 this.sbList.Append("<td align='left' >可以立即让受伤的球员恢复健康。</td>");
-                this.sbList.Append("<td><font color='red'>" + num14 + "</font></td>");
+                this.sbList.Append("<td><font color='red'>" + num15 + "</font></td>");
                 this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=4' target='Center'>使用<a></td>" }));
                 this.sbList.Append("</tr>");
                 this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
@@ -683,65 +674,57 @@
                 this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                 this.sbList.Append("<td height='25'><strong>伤病治愈</strong></td>");
                 this.sbList.Append("<td align='left' >可以立即让受伤的球员恢复健康。</td>");
-                this.sbList.Append("<td><font color='red'>" + num14 + "</font></td>");
+                this.sbList.Append("<td><font color='red'>" + num15 + "</font></td>");
                 this.sbList.Append("<td style='color:#666666'>使用</td>");
                 this.sbList.Append("</tr>");
                 this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
             }
-            if (intPlayerType == 5)
+            if ((intPlayerType == 5) && Config.Player5MGEnable())
             {
-                if (Config.Player5MGEnable())
+                this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                this.sbList.Append("<td height='25'><strong>魔鬼训练</strong></td>");
+                this.sbList.Append("<td align='left'>训练成功则现有能力值降低2点，扣除10点体力，并增加球员某一项能力的最大值2点。训练失败则仅扣除10点体力</td>");
+                this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
+                this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=5' target='Center'>使用<a></td>" }));
+                this.sbList.Append("</tr>");
+                this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
+            }
+            if ((intPlayerType == 3) && Config.Player3SZEnable())
+            {
+                if (num10 < 0x16)
                 {
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append("<td height='25'><strong>魔鬼训练</strong></td>");
-                    this.sbList.Append("<td align='left'>训练成功则现有能力值降低2点，扣除10点体力，并增加球员某一项能力的最大值2点。训练失败则仅扣除10点体力</td>");
-                    this.sbList.Append("<td><font color='red'>" + num15 + "</font></td>");
-                    this.sbList.Append(string.Concat(new object[] { "<td><a href='SecretaryPage.aspx?PlayerType=", intPlayerType, "&Type=ADDDATAONLY&PlayerID=", lngPlayerID, "&Category=5' target='Center'>使用<a></td>" }));
+                    this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
+                    this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
+                    this.sbList.Append("<td><font color='red'>" + num17 + "</font></td>");
+                    this.sbList.Append("<td><a href='SecretaryPage.aspx?Type=TIMEHOUSE&PlayerID=" + lngPlayerID + "' target='Center'>使用<a></td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                 }
-                }
-            if (intPlayerType == 3)
-            {
-                if (Config.Player3SZEnable())
+                else
                 {
-                    if (num9 < 0x16)
-                    {
-                        this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                        this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
-                        this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
-                        this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
-                        this.sbList.Append("<td><a href='SecretaryPage.aspx?Type=TIMEHOUSE&PlayerID=" + lngPlayerID + "' target='Center'>使用<a></td>");
-                        this.sbList.Append("</tr>");
-                        this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
-                    }
-                    else
-                    {
-                        this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                        this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
-                        this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
-                        this.sbList.Append("<td><font color='red'>" + num16 + "</font></td>");
-                        this.sbList.Append("<td style='color:#666666'>使用</td>");
-                        this.sbList.Append("</tr>");
-                        this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
-                    }
+                    this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
+                    this.sbList.Append("<td height='25'><strong>神之领域</strong></td>");
+                    this.sbList.Append("<td align='left'>送球员到神之领域中修炼，可以瞬间获得1个赛季的潜力成长，同时年龄增加1岁。22岁以下有效。</td>");
+                    this.sbList.Append("<td><font color='red'>" + num17 + "</font></td>");
+                    this.sbList.Append("<td style='color:#666666'>使用</td>");
+                    this.sbList.Append("</tr>");
+                    this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                 }
             }
             if (intPlayerType == 5)
             {
                 string str;
-                if (num18 < num17)
+                if (num19 < num18)
                 {
-                    str = "<font color='green'>" + num18 + "<br>优惠价</font>";
+                    str = "<font color='green'>" + num19 + "<br>优惠价</font>";
                 }
                 else
                 {
-                    str = "<font color='red'>" + num17 + "</font>";
+                    str = "<font color='red'>" + num18 + "</font>";
                 }
-
                 if (Config.Player5JSEnable())
                 {
-
                     if (!flag)
                     {
                         this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
@@ -762,7 +745,6 @@
                         this.sbList.Append("</tr>");
                         this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>");
                     }
-
                 }
             }
         }
@@ -781,7 +763,7 @@
                 this.intClubID3 = (int) onlineRowByUserID["ClubID3"];
                 this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
                 this.strNickName = onlineRowByUserID["NickName"].ToString().Trim();
-                this.intType = (int) SessionItem.GetRequest("Type", 0);
+                this.intType = SessionItem.GetRequest("Type", 0);
                 if (((this.intCategory == 1) && (this.intType != 3)) && ((this.intType != 6) && (this.intType != 9)))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=3");
@@ -801,94 +783,92 @@
         private void SetList()
         {
             DataTable playerTableByClubID;
+            int salaryTop;
             switch (this.intType)
             {
                 case 3:
-                    if (this.intClubID3 != 0)
+                    if (this.intClubID3 == 0)
                     {
-                        playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
-                        this.sbList = new StringBuilder();
-                        this.sbList.Append("<tr class='BarHead'>");
-                        this.sbList.Append("<td width='40'></td>");
-                        this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
-                        this.sbList.Append("<td width='35'>年龄</td>");
-                        this.sbList.Append("<td width='35'>位置</td>");
-                        this.sbList.Append("<td width='35'>体力</td>");
-                        this.sbList.Append("<td width='65'>状态</td>");
-                        this.sbList.Append("<td width='40'>身高</td>");
-                        this.sbList.Append("<td width='49'>体重</td>");
-                        this.sbList.Append("<td width='50'>综合</td>");
-                        this.sbList.Append("<td width='102'>操作</td>");
-                        this.sbList.Append("<td width='1'></td>");
-                        this.sbList.Append("</tr>");
-                        this.GetPlayerList(playerTableByClubID);
+                        base.Response.Redirect("Report.aspx?Parameter=3");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=3");
+                    playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
+                    this.sbList = new StringBuilder();
+                    this.sbList.Append("<tr class='BarHead'>");
+                    this.sbList.Append("<td width='40'></td>");
+                    this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
+                    this.sbList.Append("<td width='35'>年龄</td>");
+                    this.sbList.Append("<td width='35'>位置</td>");
+                    this.sbList.Append("<td width='35'>体力</td>");
+                    this.sbList.Append("<td width='65'>状态</td>");
+                    this.sbList.Append("<td width='40'>身高</td>");
+                    this.sbList.Append("<td width='49'>体重</td>");
+                    this.sbList.Append("<td width='50'>综合</td>");
+                    this.sbList.Append("<td width='102'>操作</td>");
+                    this.sbList.Append("<td width='1'></td>");
+                    this.sbList.Append("</tr>");
+                    this.GetPlayerList(playerTableByClubID);
                     return;
 
                 case 4:
-                    if (this.intClubID3 != 0)
+                    if (this.intClubID3 == 0)
                     {
-                        playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
-                        this.sbList = new StringBuilder();
-                        this.sbList.Append("<tr class='BarHead'>");
-                        this.sbList.Append("<td width='40'></td>");
-                        this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
-                        this.sbList.Append("<td width='40'>年龄</td>");
-                        this.sbList.Append("<td width='40'>位置</td>");
-                        this.sbList.Append("<td width='40'>体力</td>");
-                        this.sbList.Append("<td width='50'>状态</td>");
-                        this.sbList.Append("<td width='40'>身高</td>");
-                        this.sbList.Append("<td width='50'>体重</td>");
-                        this.sbList.Append("<td width='50'>综合</td>");
-                        this.sbList.Append("<td width='102'>操作</td>");
-                        this.sbList.Append("</tr>");
-                        this.GetChoosePlayerList(playerTableByClubID);
-                        this.strSalaryTopDown = "警告：俱乐部若超出工资帽，球队状态有可能因此而大幅下滑，请在球员管理页面查看详情。";
+                        base.Response.Redirect("Report.aspx?Parameter=3");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=3");
+                    playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
+                    this.sbList = new StringBuilder();
+                    this.sbList.Append("<tr class='BarHead'>");
+                    this.sbList.Append("<td width='40'></td>");
+                    this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
+                    this.sbList.Append("<td width='40'>年龄</td>");
+                    this.sbList.Append("<td width='40'>位置</td>");
+                    this.sbList.Append("<td width='40'>体力</td>");
+                    this.sbList.Append("<td width='50'>状态</td>");
+                    this.sbList.Append("<td width='40'>身高</td>");
+                    this.sbList.Append("<td width='50'>体重</td>");
+                    this.sbList.Append("<td width='50'>综合</td>");
+                    this.sbList.Append("<td width='102'>操作</td>");
+                    this.sbList.Append("</tr>");
+                    this.GetChoosePlayerList(playerTableByClubID);
+                    this.strSalaryTopDown = "警告：俱乐部若超出工资帽，球队状态有可能因此而大幅下滑，请在球员管理页面查看详情。";
                     return;
 
                 case 5:
-                    if (this.intClubID5 != 0)
+                {
+                    if (this.intClubID5 == 0)
                     {
-                        int salaryTop;
-                        playerTableByClubID = BTPPlayer5Manager.GetPlayerTableByClubID(this.intClubID5);
-                        this.sbList = new StringBuilder();
-                        this.sbList.Append("<tr class='BarHead'>");
-                        this.sbList.Append("<td width='40'></td>");
-                        this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
-                        this.sbList.Append("<td width='40'>年龄</td>");
-                        this.sbList.Append("<td width='40'>位置</td>");
-                        this.sbList.Append("<td width='35'>身高</td>");
-                        this.sbList.Append("<td width='35'>体重</td>");
-                        this.sbList.Append("<td width='50'>综合</td>");
-                        this.sbList.Append("<td width='40'>薪水</td>");
-                        this.sbList.Append("<td width='35'>合同</td>");
-                        this.sbList.Append("<td width='80'>操作</td>");
-                        this.sbList.Append("<td width='57'>续约</td>");
-                        this.sbList.Append("</tr>");
-                        this.GetPlayerList(playerTableByClubID);
-                        string devCodeByUserID = BTPDevManager.GetDevCodeByUserID(this.intUserID);
-                        if (this.intCategory == 5)
-                        {
-                            salaryTop = DevCalculator.GetSalaryTop(devCodeByUserID);
-                        }
-                        else
-                        {
-                            salaryTop = DevCalculator.GetSalaryTop("0000000000");
-                        }
-                        this.strSalaryTopDown = this.GetSalaryTop(salaryTop, this.intClubID5);
+                        base.Response.Redirect("Report.aspx?Parameter=3");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=3");
-                    return;
-
+                    playerTableByClubID = BTPPlayer5Manager.GetPlayerTableByClubID(this.intClubID5);
+                    this.sbList = new StringBuilder();
+                    this.sbList.Append("<tr class='BarHead'>");
+                    this.sbList.Append("<td width='40'></td>");
+                    this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
+                    this.sbList.Append("<td width='40'>年龄</td>");
+                    this.sbList.Append("<td width='40'>位置</td>");
+                    this.sbList.Append("<td width='35'>身高</td>");
+                    this.sbList.Append("<td width='35'>体重</td>");
+                    this.sbList.Append("<td width='50'>综合</td>");
+                    this.sbList.Append("<td width='40'>薪水</td>");
+                    this.sbList.Append("<td width='35'>合同</td>");
+                    this.sbList.Append("<td width='80'>操作</td>");
+                    this.sbList.Append("<td width='57'>续约</td>");
+                    this.sbList.Append("</tr>");
+                    this.GetPlayerList(playerTableByClubID);
+                    string devCodeByUserID = BTPDevManager.GetDevCodeByUserID(this.intUserID);
+                    if (this.intCategory != 5)
+                    {
+                        salaryTop = DevCalculator.GetSalaryTop("0000000000");
+                        break;
+                    }
+                    salaryTop = DevCalculator.GetSalaryTop(devCodeByUserID);
+                    break;
+                }
                 case 6:
                     this.intPerPage = 10;
-                    this.intPage = (int) SessionItem.GetRequest("Page", 0);
+                    this.intPage = SessionItem.GetRequest("Page", 0);
                     this.intTotal = BTPOldPlayerManager.GetHPlayerCount(this.intUserID);
                     this.intCount = this.intPage * this.intPerPage;
                     playerTableByClubID = BTPOldPlayerManager.GetHPlayerList(this.intUserID, this.intPage, this.intPerPage, this.intTotal, this.intCount);
@@ -907,68 +887,67 @@
                     return;
 
                 case 7:
-                    if (this.intClubID3 != 0)
+                    if (this.intClubID3 == 0)
                     {
-                        playerTableByClubID = BTPPlayer3Manager.GetPlayer3TableByCIDCat(this.intClubID3, 0x58);
-                        if (playerTableByClubID != null)
-                        {
-                            if (playerTableByClubID.Rows.Count < 8)
-                            {
-                                BTPPlayer3Manager.DeletePlayer3ByCIDCat(this.intClubID3, 0x58);
-                                playerTableByClubID = BTPPlayer3Manager.SearchPlayer3New(this.intClubID3, 0x58, DateTime.Now.ToString().Trim(), 120, 0x66);
-                                if (playerTableByClubID == null)
-                                {
-                                    base.Response.Redirect("Report.aspx?Parameter=913");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            playerTableByClubID = BTPPlayer3Manager.SearchPlayer3New(this.intClubID3, 0x58, DateTime.Now.ToString().Trim(), 120, 0x66);
-                            if (playerTableByClubID == null)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=913");
-                            }
-                        }
-                        this.sbList = new StringBuilder();
-                        this.sbList.Append("<tr class='BarHead'>");
-                        this.sbList.Append("<td width='40'></td>");
-                        this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
-                        this.sbList.Append("<td width='35'>年龄</td>");
-                        this.sbList.Append("<td width='35'>位置</td>");
-                        this.sbList.Append("<td width='35'>身高</td>");
-                        this.sbList.Append("<td width='39'>体重</td>");
-                        this.sbList.Append("<td width='50'>综合</td>");
-                        this.sbList.Append("<td width='100'>评价</td>");
-                        this.sbList.Append("<td width='102'>操作</td>");
-                        this.sbList.Append("<td width='1'></td>");
-                        this.sbList.Append("</tr>");
-                        this.GetSearchPlayerList(playerTableByClubID);
+                        base.Response.Redirect("Report.aspx?Parameter=3");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=3");
+                    playerTableByClubID = BTPPlayer3Manager.GetPlayer3TableByCIDCat(this.intClubID3, 0x58);
+                    if (playerTableByClubID == null)
+                    {
+                        playerTableByClubID = BTPPlayer3Manager.SearchPlayer3New(this.intClubID3, 0x58, DateTime.Now.ToString().Trim(), 120, 0x66);
+                        if (playerTableByClubID == null)
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=913");
+                        }
+                    }
+                    else if (playerTableByClubID.Rows.Count < 8)
+                    {
+                        BTPPlayer3Manager.DeletePlayer3ByCIDCat(this.intClubID3, 0x58);
+                        playerTableByClubID = BTPPlayer3Manager.SearchPlayer3New(this.intClubID3, 0x58, DateTime.Now.ToString().Trim(), 120, 0x66);
+                        if (playerTableByClubID == null)
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=913");
+                        }
+                    }
+                    this.sbList = new StringBuilder();
+                    this.sbList.Append("<tr class='BarHead'>");
+                    this.sbList.Append("<td width='40'></td>");
+                    this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
+                    this.sbList.Append("<td width='35'>年龄</td>");
+                    this.sbList.Append("<td width='35'>位置</td>");
+                    this.sbList.Append("<td width='35'>身高</td>");
+                    this.sbList.Append("<td width='39'>体重</td>");
+                    this.sbList.Append("<td width='50'>综合</td>");
+                    this.sbList.Append("<td width='100'>评价</td>");
+                    this.sbList.Append("<td width='102'>操作</td>");
+                    this.sbList.Append("<td width='1'></td>");
+                    this.sbList.Append("</tr>");
+                    this.GetSearchPlayerList(playerTableByClubID);
                     return;
 
                 case 8:
-                    if (this.intClubID3 != 0)
+                    if (this.intClubID3 == 0)
                     {
-                        playerTableByClubID = BTPPlayer3Manager.GetPlayer3TableByCIDCat(this.intClubID3, 0x58);
+                        base.Response.Redirect("Report.aspx?Parameter=3");
+                        return;
+                    }
+                    playerTableByClubID = BTPPlayer3Manager.GetPlayer3TableByCIDCat(this.intClubID3, 0x58);
+                    if (playerTableByClubID == null)
+                    {
+                        base.Response.Redirect("PlayerCenter.aspx?Type=7&UserID=" + this.intUserID);
+                    }
+                    else if (playerTableByClubID.Rows.Count >= 8)
+                    {
+                        base.Response.Redirect("PlayerCenter.aspx?Type=7&UserID=" + this.intUserID);
+                    }
+                    else
+                    {
+                        this.longInTeamPlayerID = SessionItem.GetRequest("INID", 3);
+                        playerTableByClubID = BTPPlayer3Manager.InTeamSearchTable(this.intClubID3, this.longInTeamPlayerID, 0x58);
                         if (playerTableByClubID != null)
                         {
-                            if (playerTableByClubID.Rows.Count < 8)
-                            {
-                                this.longInTeamPlayerID = (long) SessionItem.GetRequest("INID", 3);
-                                playerTableByClubID = BTPPlayer3Manager.InTeamSearchTable(this.intClubID3, this.longInTeamPlayerID, 0x58);
-                                if (playerTableByClubID == null)
-                                {
-                                    base.Response.Redirect("PlayerCenter.aspx?Type=7&UserID=" + this.intUserID);
-                                }
-                                else if (playerTableByClubID.Rows.Count != 8)
-                                {
-                                    base.Response.Redirect("PlayerCenter.aspx?Type=7&UserID=" + this.intUserID);
-                                }
-                            }
-                            else
+                            if (playerTableByClubID.Rows.Count != 8)
                             {
                                 base.Response.Redirect("PlayerCenter.aspx?Type=7&UserID=" + this.intUserID);
                             }
@@ -977,29 +956,27 @@
                         {
                             base.Response.Redirect("PlayerCenter.aspx?Type=7&UserID=" + this.intUserID);
                         }
-                        this.sbList = new StringBuilder();
-                        this.sbList.Append("<tr class='BarHead'>");
-                        this.sbList.Append("<td width='40'></td>");
-                        this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
-                        this.sbList.Append("<td width='35'>年龄</td>");
-                        this.sbList.Append("<td width='35'>位置</td>");
-                        this.sbList.Append("<td width='35'>身高</td>");
-                        this.sbList.Append("<td width='39'>体重</td>");
-                        this.sbList.Append("<td width='50'>综合</td>");
-                        this.sbList.Append("<td width='100'>评价</td>");
-                        this.sbList.Append("<td width='102'>操作</td>");
-                        this.sbList.Append("<td width='1'></td>");
-                        this.sbList.Append("</tr>");
-                        this.GetSearchPlayerEndList(playerTableByClubID);
-                        return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=3");
+                    this.sbList = new StringBuilder();
+                    this.sbList.Append("<tr class='BarHead'>");
+                    this.sbList.Append("<td width='40'></td>");
+                    this.sbList.Append("<td height='25' align='left' style='padding-left:3px' width='100'>姓名</td>");
+                    this.sbList.Append("<td width='35'>年龄</td>");
+                    this.sbList.Append("<td width='35'>位置</td>");
+                    this.sbList.Append("<td width='35'>身高</td>");
+                    this.sbList.Append("<td width='39'>体重</td>");
+                    this.sbList.Append("<td width='50'>综合</td>");
+                    this.sbList.Append("<td width='100'>评价</td>");
+                    this.sbList.Append("<td width='102'>操作</td>");
+                    this.sbList.Append("<td width='1'></td>");
+                    this.sbList.Append("</tr>");
+                    this.GetSearchPlayerEndList(playerTableByClubID);
                     return;
 
                 case 9:
                 {
-                    long request = (long) SessionItem.GetRequest("PlayerID", 3);
-                    int intPlayerType = (int) SessionItem.GetRequest("PlayerType", 0);
+                    long request = SessionItem.GetRequest("PlayerID", 3);
+                    int intPlayerType = SessionItem.GetRequest("PlayerType", 0);
                     this.sbList = new StringBuilder();
                     this.sbList.Append("<tr class='BarHead'>");
                     this.sbList.Append("<td height='25' width='100'>项目</td>");
@@ -1012,30 +989,33 @@
                     this.tbPlayerList.Visible = false;
                     return;
                 }
+                default:
+                    if (this.intClubID3 == 0)
+                    {
+                        base.Response.Redirect("Report.aspx?Parameter=3");
+                    }
+                    else
+                    {
+                        playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
+                        this.sbList = new StringBuilder();
+                        this.sbList.Append("<tr class='BarHead'>");
+                        this.sbList.Append("<td height='25'align='left' style='padding-left:3px' width='100'>姓名</td>");
+                        this.sbList.Append("<td width='40'>号码</td>");
+                        this.sbList.Append("<td width='40'>年龄</td>");
+                        this.sbList.Append("<td width='40'>位置</td>");
+                        this.sbList.Append("<td width='40'>体力</td>");
+                        this.sbList.Append("<td width='40'>状态</td>");
+                        this.sbList.Append("<td width='40'>身高</td>");
+                        this.sbList.Append("<td width='40'>体重</td>");
+                        this.sbList.Append("<td width='50'>综合</td>");
+                        this.sbList.Append("<td width='102'>操作</td>");
+                        this.sbList.Append("<td width='20'></td>");
+                        this.sbList.Append("</tr>");
+                        this.GetPlayerList(playerTableByClubID);
+                    }
+                    return;
             }
-            if (this.intClubID3 == 0)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=3");
-            }
-            else
-            {
-                playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
-                this.sbList = new StringBuilder();
-                this.sbList.Append("<tr class='BarHead'>");
-                this.sbList.Append("<td height='25'align='left' style='padding-left:3px' width='100'>姓名</td>");
-                this.sbList.Append("<td width='40'>号码</td>");
-                this.sbList.Append("<td width='40'>年龄</td>");
-                this.sbList.Append("<td width='40'>位置</td>");
-                this.sbList.Append("<td width='40'>体力</td>");
-                this.sbList.Append("<td width='40'>状态</td>");
-                this.sbList.Append("<td width='40'>身高</td>");
-                this.sbList.Append("<td width='40'>体重</td>");
-                this.sbList.Append("<td width='50'>综合</td>");
-                this.sbList.Append("<td width='102'>操作</td>");
-                this.sbList.Append("<td width='20'></td>");
-                this.sbList.Append("</tr>");
-                this.GetPlayerList(playerTableByClubID);
-            }
+            this.strSalaryTopDown = this.GetSalaryTop(salaryTop, this.intClubID5);
         }
 
         private void SetPageIntro()
@@ -1070,7 +1050,7 @@
                     {
                         this.strSalaryTopDown = "<a onclick='javascript:window.top.Main.Right.location=\"Intro/PlayerCenter.aspx?Type=SEARCH\"' href=\"PlayerCenter.aspx?UserID=" + this.intUserID + "&Type=7\"><img Width=\"64\" Height=\"24\" src=\"Images/qt.gif\" id=\"imgSearchPlayer\" border=\"0\" /></a>";
                     }
-                        return;
+                    return;
 
                 case 4:
                     this.sbPageIntro = new StringBuilder();

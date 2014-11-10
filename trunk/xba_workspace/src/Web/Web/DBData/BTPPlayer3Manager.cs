@@ -394,10 +394,30 @@
                 str = "Team";
                 str2 = "团队意识";
             }
-            string commandText = string.Concat(new object[] { "UPDATE BTP_Player3 SET ", str, "Max=", str, "Max+", intRndAdd, " WHERE ", str, "Max<770 AND PlayerID=", longPlayerID });
-            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-            commandText = string.Concat(new object[] { "SELECT ", str, "Max FROM BTP_Player3 WHERE PlayerID=", longPlayerID });
-            if (SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText) < 770)
+            string commandText = string.Concat(new object[] { "SELECT ", str, "Max FROM BTP_Player3 WHERE PlayerID=", longPlayerID });
+            int num2 = SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            int num3 = 700;
+            if (RandomItem.rnd.Next(0, 100) > 70)
+            {
+                num3 = 750;
+            }
+            if ((num2 + intRndAdd) > num3)
+            {
+                if (num3 == 750)
+                {
+                    intRndAdd = num3 - num2;
+                }
+                else if ((num2 + intRndAdd) > 750)
+                {
+                    intRndAdd = 750 - num2;
+                }
+            }
+            if (intRndAdd > 0)
+            {
+                commandText = string.Concat(new object[] { "UPDATE BTP_Player3 SET ", str, "Max=", str, "Max+", intRndAdd, " WHERE ", str, "Max<750 AND PlayerID=", longPlayerID });
+                SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            }
+            if (num2 <= 700)
             {
                 BTPMessageManager.AddMessage(BTPClubManager.GetUserIDByClubID(intClubID), 2, 0, "训练员报告", string.Concat(new object[] { strName, "在刻苦的训练中", str2, "潜力提升", ((float) intRndAdd) / 10f, "" }));
             }
@@ -665,8 +685,9 @@
 
         public static int GetPlayer3HappyNotFullCount(int intClubID)
         {
-            SqlParameter parameter = new SqlParameter("@ClubID", SqlDbType.Int, 4);
-            parameter.Value = intClubID;
+            SqlParameter parameter = new SqlParameter("@ClubID", SqlDbType.Int, 4) {
+                Value = intClubID
+            };
             return (int) SqlHelper.ExecuteScalar(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetPlayer3HappyNotFullCount", new SqlParameter[] { parameter });
         }
 
@@ -692,8 +713,9 @@
 
         public static int GetPlayer3PowerNotFullCount(int intClubID)
         {
-            SqlParameter parameter = new SqlParameter("@ClubID", SqlDbType.Int, 4);
-            parameter.Value = intClubID;
+            SqlParameter parameter = new SqlParameter("@ClubID", SqlDbType.Int, 4) {
+                Value = intClubID
+            };
             return (int) SqlHelper.ExecuteScalar(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetPlayer3PowerNotFullCount", new SqlParameter[] { parameter });
         }
 
@@ -864,15 +886,15 @@
                 DataTable table = BTPClubManager.GetAllClub3();
                 if (table != null)
                 {
-                    foreach (DataRow row2 in table.Rows)
+                    foreach (DataRow row in table.Rows)
                     {
-                        int intClubID = (int) row2["ClubID"];
+                        int intClubID = (int) row["ClubID"];
                         DataRow staffRow = BTPStaffManager.GetStaffRow(intClubID, 1);
                         if (staffRow != null)
                         {
-                            int num4 = (int) staffRow["StaffID"];
-                            int num3 = (byte) staffRow["Ability"];
-                            num3 = Convert.ToInt16(Math.Pow((double) (num3 * 100), 0.5));
+                            int num3 = (int) staffRow["StaffID"];
+                            int num4 = (byte) staffRow["Ability"];
+                            num4 = Convert.ToInt16(Math.Pow((double) (num4 * 100), 0.5));
                             DataTable yPlayerTableByClubID = GetYPlayerTableByClubID(intClubID);
                             if (yPlayerTableByClubID != null)
                             {
@@ -881,27 +903,22 @@
                                     long longPlayerID = (long) row3["PlayerID"];
                                     string strName = row3["Name"].ToString().Trim();
                                     int intPos = (byte) row3["Pos"];
-                                    int num5 = RandomItem.rnd.Next(0, 260);
-                                    //180418 174411 184494
-                                    //if (longPlayerID == 180418 || longPlayerID == 174411 || longPlayerID == 184494 || longPlayerID == 168430)
-                                    //{
-                                    //    num5 += 120;
-                                    //}
-                                    Console.WriteLine(string.Format("{0}-->{1}", num3, num5));
-                                    if (num3 > num5)
+                                    int num7 = RandomItem.rnd.Next(0, 260);
+                                    Console.WriteLine(string.Format("{0}-->{1}", num4, num7));
+                                    if (num4 > num7)
                                     {
-                                        int num6;
-                                        if ((longPlayerID % 4L) == (num4 % 4))
+                                        int num8;
+                                        if ((longPlayerID % 4L) == (num3 % 4))
                                         {
-                                            num6 = RandomItem.rnd.Next(0x23, 70);
+                                            num8 = RandomItem.rnd.Next(0x23, 70);
                                             Console.WriteLine("start add skill max");
-                                            AddSkillMax(intClubID, longPlayerID, num6, intPos, strName);
+                                            AddSkillMax(intClubID, longPlayerID, num8, intPos, strName);
                                         }
                                         else
                                         {
-                                            num6 = RandomItem.rnd.Next(20, 0x29);
+                                            num8 = RandomItem.rnd.Next(20, 0x29);
                                             Console.WriteLine("start add skill max");
-                                            AddSkillMax(intClubID, longPlayerID, num6, intPos, strName);
+                                            AddSkillMax(intClubID, longPlayerID, num8, intPos, strName);
                                         }
                                         if ((num % 500) == 0)
                                         {
@@ -910,7 +927,6 @@
                                         num++;
                                     }
                                 }
-                                continue;
                             }
                         }
                     }
@@ -1078,10 +1094,18 @@
             return SqlHelper.ExecuteBoolDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static void SetPlayer3Bid(long longPlayerID, int intBidPrice, DateTime datBidTime)
+        public static int SetPlayer3Bid(long longPlayerID, int intBidPrice, DateTime datBidTime, string lockNickname)
         {
-            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.SetPlayer3Bid ", longPlayerID, ",", intBidPrice, ",'", datBidTime.ToString(), "'" });
-            SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.SetPlayer3Bid ", longPlayerID, ",", intBidPrice, ",'", datBidTime.ToString(), "'", ",'", lockNickname, "'" });
+            if (string.IsNullOrEmpty(lockNickname))
+            {
+                commandText = string.Concat(new object[] { "Exec NewBTP.dbo.SetPlayer3Bid ", longPlayerID, ",", intBidPrice, ",'", datBidTime.ToString(), "'" });
+            }
+            else
+            {
+                commandText = string.Concat(new object[] { "Exec NewBTP.dbo.SetPlayer3Bid ", longPlayerID, ",", intBidPrice, ",'", datBidTime.ToString(), "'", ",'", lockNickname, "'" });
+            }
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static void SetPlayer3ClubID(long longPlayerID, int intClubID, int intNumber)
@@ -1178,8 +1202,9 @@
 
         public static void UpdatePlayerByUserID(int intUserID)
         {
-            SqlParameter parameter = new SqlParameter("@UserID", SqlDbType.Int, 4);
-            parameter.Value = intUserID;
+            SqlParameter parameter = new SqlParameter("@UserID", SqlDbType.Int, 4) {
+                Value = intUserID
+            };
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "UpdatePlayerByUserID", new SqlParameter[] { parameter });
         }
 

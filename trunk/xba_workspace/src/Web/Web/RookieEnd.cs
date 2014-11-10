@@ -22,45 +22,43 @@
         private void btnNext_Click(object sender, ImageClickEventArgs e)
         {
             int intMoney = (int) Global.drParameter["RegPMatchMoney"];
-            if (this.intCategory == 2)
+            if (this.intCategory != 2)
             {
-                if (BTPAccountManager.HasEnoughMoney(this.intUserID, intMoney))
-                {
-                    switch (BTPDevManager.SetFinanlDevByUserID(this.intUserID))
-                    {
-                        case 0:
-                            base.Response.Redirect("Report.aspx?Parameter=101");
-                            return;
-
-                        case 1:
-                        {
-                            DTOnlineManager.ChangeCategoryByUserID(this.intUserID, 5);
-                            int intRookieOpIndex = AccountItem.SetRookieOp(this.intUserID, 5);
-                            if (intRookieOpIndex != 5)
-                            {
-                                base.Response.Write("<script>window.top.Main.location=\"" + StringItem.GetRookieURL(intRookieOpIndex).ToString().Trim() + "\";</script>");
-                            }
-                            else
-                            {
-                                base.Response.Write("<script>window.top.location=\"Main.aspx\";</script>");
-                            }
-                            base.Response.Redirect("Report.aspx?Parameter=102");
-                            return;
-                        }
-                        case 2:
-                            base.Response.Redirect("Report.aspx?Parameter=103");
-                            return;
-                    }
-                    base.Response.Redirect("Report.aspx?Parameter=106");
-                }
-                else
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=101");
-                }
+                base.Response.Redirect("Report.aspx?Parameter=1");
+            }
+            else if (!BTPAccountManager.HasEnoughMoney(this.intUserID, intMoney))
+            {
+                base.Response.Redirect("Report.aspx?Parameter=101");
             }
             else
             {
-                base.Response.Redirect("Report.aspx?Parameter=1");
+                switch (BTPDevManager.SetFinanlDevByUserID(this.intUserID))
+                {
+                    case 0:
+                        base.Response.Redirect("Report.aspx?Parameter=101");
+                        return;
+
+                    case 1:
+                    {
+                        DTOnlineManager.ChangeCategoryByUserID(this.intUserID, 5);
+                        int intRookieOpIndex = AccountItem.SetRookieOp(this.intUserID, 5);
+                        if (intRookieOpIndex == 5)
+                        {
+                            base.Response.Write("<script>window.top.location=\"Main.aspx\";</script>");
+                            break;
+                        }
+                        base.Response.Write("<script>window.top.Main.location=\"" + StringItem.GetRookieURL(intRookieOpIndex).ToString().Trim() + "\";</script>");
+                        break;
+                    }
+                    case 2:
+                        base.Response.Redirect("Report.aspx?Parameter=103");
+                        return;
+
+                    default:
+                        base.Response.Redirect("Report.aspx?Parameter=106");
+                        return;
+                }
+                base.Response.Redirect("Report.aspx?Parameter=102");
             }
         }
 

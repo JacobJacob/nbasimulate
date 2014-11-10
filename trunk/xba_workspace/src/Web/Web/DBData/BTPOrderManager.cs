@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using Web.DBConnection;
 
     public class BTPOrderManager

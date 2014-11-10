@@ -3,7 +3,6 @@
     using ServerManage;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using Web.DBConnection;
     using Web.DBData;
@@ -42,12 +41,11 @@
                         this.intUserID = Convert.ToInt32(str);
                         if (BTPAccountManager.GetAccountRowByUserID(this.intUserID) != null)
                         {
-                            DataRow reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                            if (reader != null)
+                            DataRow row = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                            if (row != null)
                             {
-                                this.strDeptTag = reader["DeptTag"].ToString().Trim();
+                                this.strDeptTag = row["DeptTag"].ToString().Trim();
                             }
-                            //reader.Close();
                             string str2 = Convert.ToString((int) (ServerParameter.intGameCategory + 0x7d0)).Trim();
                             if (this.strDeptTag.IndexOf(str2) == -1)
                             {
@@ -62,12 +60,11 @@
             }
             else if (BTPAccountManager.GetAccountRowByUserID(this.intUserID) != null)
             {
-                DataRow reader2 = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                if (reader2 != null)
+                DataRow row2 = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                if (row2 != null)
                 {
-                    this.strDeptTag = reader2["DeptTag"].ToString().Trim();
+                    this.strDeptTag = row2["DeptTag"].ToString().Trim();
                 }
-                //reader2.Close();
                 string str4 = Convert.ToString((int) (ServerParameter.intGameCategory + 0x7d0)).Trim();
                 if (this.strDeptTag.IndexOf(str4) == -1)
                 {

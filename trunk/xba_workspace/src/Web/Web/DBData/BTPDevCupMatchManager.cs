@@ -39,7 +39,6 @@
             string commandText = "Exec NewBTP.dbo.[GetMaxDevCupMatchID] ";
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
-
     }
 }
 

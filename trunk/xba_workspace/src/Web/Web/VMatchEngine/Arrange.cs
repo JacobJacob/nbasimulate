@@ -7,6 +7,7 @@
 
     public class Arrange
     {
+        public int intAbility;
         public int intDefAbility;
         public int intDefAdd;
         public int intDefCenter;
@@ -18,9 +19,6 @@
         public int intOffCenter;
         public int intOffense;
         public int intOffHard;
-        /// <summary>
-        /// 进攻方式
-        /// </summary>
         public int intOffMethod;
         public int intORebAbility;
         public Player pACP;
@@ -28,9 +26,6 @@
         public Player pC;
         public Player pDCP;
         public Player pDRP;
-        /// <summary>
-        /// 当前进攻者
-        /// </summary>
         public Player pOCP;
         public Player pORP;
         public Player pPF;
@@ -38,11 +33,6 @@
         public Player pSF;
         public Player pSG;
         private Random rnd;
-
-        /// <summary>
-        /// 能力
-        /// </summary>
-        public int intAbility;
 
         public Arrange()
         {
@@ -116,14 +106,12 @@
             {
                 this.intOffHard = (byte) row["OffHard"];
                 this.intDefHard = (byte) row["DefHard"];
-               
             }
             else
             {
                 this.intOffHard = 110;
                 this.intDefHard = 110;
             }
-
             if (Config.IsNPCClub(team.intClubID))
             {
                 this.intOffense = this.rnd.Next(1, 7);
@@ -132,8 +120,8 @@
             }
             else
             {
-                this.intOffense = (byte)row["Offense"];
-                this.intDefense = (byte)row["Defense"];
+                this.intOffense = (byte) row["Offense"];
+                this.intDefense = (byte) row["Defense"];
                 Console.WriteLine("IS NOT NPC[" + team.intClubID + "]");
             }
             this.intOffCenter = (byte) row["OffCenter"];
@@ -161,14 +149,64 @@
                     num5 = (this.pPG.intAstAbility * 15) / 10;
                     num6 = ((num2 + num3) + num4) + num5;
                     num7 = this.rnd.Next(0, num6);
-                    if (num7 >= num2)
+                    if (num7 < num2)
                     {
-                        if ((num7 >= num2) && (num7 < (num2 + num3)))
+                        this.pACP = this.pPF;
+                        return;
+                    }
+                    if ((num7 < num2) || (num7 >= (num2 + num3)))
+                    {
+                        if ((num7 >= (num2 + num3)) && (num7 < ((num2 + num3) + num4)))
                         {
-                            this.pACP = this.pSF;
+                            this.pACP = this.pSG;
                             return;
                         }
-                        if ((num7 >= (num2 + num3)) && (num7 < ((num2 + num3) + num4)))
+                        this.pACP = this.pPG;
+                        return;
+                    }
+                    this.pACP = this.pSF;
+                    return;
+
+                case 2:
+                    intAstAbility = this.pC.intAstAbility;
+                    num3 = (this.pSF.intAstAbility * 12) / 10;
+                    num4 = (this.pSG.intAstAbility * 13) / 10;
+                    num5 = (this.pPG.intAstAbility * 15) / 10;
+                    num6 = ((intAstAbility + num3) + num4) + num5;
+                    num7 = this.rnd.Next(0, num6);
+                    if (num7 < intAstAbility)
+                    {
+                        this.pACP = this.pC;
+                        return;
+                    }
+                    if ((num7 < intAstAbility) || (num7 >= (intAstAbility + num3)))
+                    {
+                        if ((num7 >= (intAstAbility + num3)) && (num7 < ((intAstAbility + num3) + num4)))
+                        {
+                            this.pACP = this.pSG;
+                            return;
+                        }
+                        this.pACP = this.pPG;
+                        return;
+                    }
+                    this.pACP = this.pSF;
+                    return;
+
+                case 3:
+                    intAstAbility = this.pC.intAstAbility;
+                    num2 = (this.pPF.intAstAbility * 11) / 10;
+                    num4 = (this.pSG.intAstAbility * 13) / 10;
+                    num5 = (this.pPG.intAstAbility * 15) / 10;
+                    num6 = ((intAstAbility + num2) + num4) + num5;
+                    num7 = this.rnd.Next(0, num6);
+                    if (num7 < intAstAbility)
+                    {
+                        this.pACP = this.pC;
+                        return;
+                    }
+                    if ((num7 < intAstAbility) || (num7 >= (intAstAbility + num2)))
+                    {
+                        if ((num7 >= (intAstAbility + num2)) && (num7 < ((intAstAbility + num2) + num4)))
                         {
                             this.pACP = this.pSG;
                             return;
@@ -179,56 +217,6 @@
                     this.pACP = this.pPF;
                     return;
 
-                case 2:
-                    intAstAbility = this.pC.intAstAbility;
-                    num3 = (this.pSF.intAstAbility * 12) / 10;
-                    num4 = (this.pSG.intAstAbility * 13) / 10;
-                    num5 = (this.pPG.intAstAbility * 15) / 10;
-                    num6 = ((intAstAbility + num3) + num4) + num5;
-                    num7 = this.rnd.Next(0, num6);
-                    if (num7 >= intAstAbility)
-                    {
-                        if ((num7 >= intAstAbility) && (num7 < (intAstAbility + num3)))
-                        {
-                            this.pACP = this.pSF;
-                            return;
-                        }
-                        if ((num7 >= (intAstAbility + num3)) && (num7 < ((intAstAbility + num3) + num4)))
-                        {
-                            this.pACP = this.pSG;
-                            return;
-                        }
-                        this.pACP = this.pPG;
-                        return;
-                    }
-                    this.pACP = this.pC;
-                    return;
-
-                case 3:
-                    intAstAbility = this.pC.intAstAbility;
-                    num2 = (this.pPF.intAstAbility * 11) / 10;
-                    num4 = (this.pSG.intAstAbility * 13) / 10;
-                    num5 = (this.pPG.intAstAbility * 15) / 10;
-                    num6 = ((intAstAbility + num2) + num4) + num5;
-                    num7 = this.rnd.Next(0, num6);
-                    if (num7 >= intAstAbility)
-                    {
-                        if ((num7 >= intAstAbility) && (num7 < (intAstAbility + num2)))
-                        {
-                            this.pACP = this.pPF;
-                            return;
-                        }
-                        if ((num7 >= (intAstAbility + num2)) && (num7 < ((intAstAbility + num2) + num4)))
-                        {
-                            this.pACP = this.pSG;
-                            return;
-                        }
-                        this.pACP = this.pPG;
-                        return;
-                    }
-                    this.pACP = this.pC;
-                    return;
-
                 case 4:
                     intAstAbility = this.pC.intAstAbility;
                     num2 = (this.pPF.intAstAbility * 11) / 10;
@@ -236,13 +224,13 @@
                     num5 = (this.pPG.intAstAbility * 15) / 10;
                     num6 = ((intAstAbility + num2) + num3) + num5;
                     num7 = this.rnd.Next(0, num6);
-                    if (num7 >= intAstAbility)
+                    if (num7 < intAstAbility)
                     {
-                        if ((num7 >= intAstAbility) && (num7 < (intAstAbility + num2)))
-                        {
-                            this.pACP = this.pPF;
-                            return;
-                        }
+                        this.pACP = this.pC;
+                        return;
+                    }
+                    if ((num7 < intAstAbility) || (num7 >= (intAstAbility + num2)))
+                    {
                         if ((num7 >= (intAstAbility + num2)) && (num7 < ((intAstAbility + num2) + num3)))
                         {
                             this.pACP = this.pSF;
@@ -251,7 +239,7 @@
                         this.pACP = this.pPG;
                         return;
                     }
-                    this.pACP = this.pC;
+                    this.pACP = this.pPF;
                     return;
             }
             intAstAbility = this.pC.intAstAbility;
@@ -366,60 +354,60 @@
 
         public int GetDefAbility(Player pOCP, int intOffMethod)
         {
+            int num;
             int num2;
             int num3;
-            int num4;
             int intDefAbility;
-            int num6;
+            int num5;
             int intPos = pOCP.intPos;
             switch (this.intDefense)
             {
                 case 1:
-                    num2 = ((this.pC.intDefAbility * 140) / 100) + ((this.pPG.intDefAbility * 20) / 100);
-                    num3 = ((this.pPF.intDefAbility * 130) / 100) + ((this.pPG.intDefAbility * 10) / 100);
-                    num4 = (this.pSF.intDefAbility * 120) / 100;
+                    num = ((this.pC.intDefAbility * 140) / 100) + ((this.pPG.intDefAbility * 20) / 100);
+                    num2 = ((this.pPF.intDefAbility * 130) / 100) + ((this.pPG.intDefAbility * 10) / 100);
+                    num3 = (this.pSF.intDefAbility * 120) / 100;
                     intDefAbility = this.pSG.intDefAbility;
-                    num6 = this.pPG.intDefAbility;
+                    num5 = this.pPG.intDefAbility;
                     break;
 
                 case 2:
-                    num2 = this.pC.intDefAbility;
-                    num3 = this.pPF.intDefAbility;
-                    num4 = (this.pSF.intDefAbility * 120) / 100;
+                    num = this.pC.intDefAbility;
+                    num2 = this.pPF.intDefAbility;
+                    num3 = (this.pSF.intDefAbility * 120) / 100;
                     intDefAbility = ((this.pSG.intDefAbility * 130) / 100) + ((this.pPG.intDefAbility * 10) / 100);
-                    num6 = (this.pPG.intDefAbility * 130) / 100;
+                    num5 = (this.pPG.intDefAbility * 130) / 100;
                     break;
 
                 case 3:
-                    num2 = (this.pC.intDefAbility * 130) / 100;
-                    num3 = (this.pPF.intDefAbility * 120) / 100;
-                    num4 = (this.pSF.intDefAbility * 120) / 100;
+                    num = (this.pC.intDefAbility * 130) / 100;
+                    num2 = (this.pPF.intDefAbility * 120) / 100;
+                    num3 = (this.pSF.intDefAbility * 120) / 100;
                     intDefAbility = (this.pSG.intDefAbility * 0x7d) / 100;
-                    num6 = (this.pPG.intDefAbility * 110) / 100;
+                    num5 = (this.pPG.intDefAbility * 110) / 100;
                     break;
 
                 case 4:
-                    num2 = (this.pC.intDefAbility * 120) / 100;
-                    num3 = (this.pPF.intDefAbility * 130) / 100;
-                    num4 = (this.pSF.intDefAbility * 120) / 100;
+                    num = (this.pC.intDefAbility * 120) / 100;
+                    num2 = (this.pPF.intDefAbility * 130) / 100;
+                    num3 = (this.pSF.intDefAbility * 120) / 100;
                     intDefAbility = (this.pSG.intDefAbility * 0x7d) / 100;
-                    num6 = (this.pPG.intDefAbility * 110) / 100;
+                    num5 = (this.pPG.intDefAbility * 110) / 100;
                     break;
 
                 case 5:
-                    num2 = (this.pC.intDefAbility * 140) / 100;
-                    num3 = (this.pPF.intDefAbility * 130) / 100;
-                    num4 = (this.pSF.intDefAbility * 130) / 100;
+                    num = (this.pC.intDefAbility * 140) / 100;
+                    num2 = (this.pPF.intDefAbility * 130) / 100;
+                    num3 = (this.pSF.intDefAbility * 130) / 100;
                     intDefAbility = this.pSG.intDefAbility;
-                    num6 = this.pPG.intDefAbility;
+                    num5 = this.pPG.intDefAbility;
                     break;
 
                 default:
-                    num2 = this.pC.intDefAbility;
-                    num3 = (this.pPF.intDefAbility * 120) / 100;
-                    num4 = (this.pSF.intDefAbility * 130) / 100;
+                    num = this.pC.intDefAbility;
+                    num2 = (this.pPF.intDefAbility * 120) / 100;
+                    num3 = (this.pSF.intDefAbility * 130) / 100;
                     intDefAbility = (this.pSG.intDefAbility * 0x7d) / 100;
-                    num6 = (this.pPG.intDefAbility * 0x73) / 100;
+                    num5 = (this.pPG.intDefAbility * 0x73) / 100;
                     break;
             }
             if (((intPos == 1) || (intPos == 2)) && ((intOffMethod == 1) || (intOffMethod == 2)))
@@ -427,145 +415,133 @@
                 switch (this.intDefense)
                 {
                     case 1:
-                        if ((this.pC.intHeight - pOCP.intHeight) >= 5)
-                        {
-                            if ((this.pC.intHeight - pOCP.intHeight) > 5)
-                            {
-                                int num7 = this.pC.intHeight - pOCP.intHeight;
-                                if (num7 > 15)
-                                {
-                                    num7 = 15;
-                                }
-                                num2 = (num2 * (100 + (0x19 * num7))) / 100;
-                            }
-                            break;
-                        }
-                        num2 = (num2 * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
-                        break;
-
-                    case 2:
-                        if ((this.pC.intHeight - pOCP.intHeight) >= 5)
-                        {
-                            if ((this.pC.intHeight - pOCP.intHeight) > 5)
-                            {
-                                int num9 = this.pC.intHeight - pOCP.intHeight;
-                                if (num9 > 15)
-                                {
-                                    num9 = 15;
-                                }
-                                num2 = (num2 * (100 + (0x19 * num9))) / 100;
-                            }
-                        }
-                        else
-                        {
-                            num2 = (num2 * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
-                        }
-                        goto Label_0647;
-
-                    case 3:
-                        if ((this.pC.intHeight - pOCP.intHeight) >= 5)
-                        {
-                            if ((this.pC.intHeight - pOCP.intHeight) > 5)
-                            {
-                                int num10 = this.pC.intHeight - pOCP.intHeight;
-                                if (num10 > 15)
-                                {
-                                    num10 = 15;
-                                }
-                                num2 = (num2 * (100 + (0x19 * num10))) / 100;
-                            }
-                        }
-                        else
-                        {
-                            num2 = (num2 * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
-                        }
-                        goto Label_0647;
-
-                    case 4:
-                        if ((this.pC.intHeight - pOCP.intHeight) >= 5)
-                        {
-                            if ((this.pC.intHeight - pOCP.intHeight) > 5)
-                            {
-                                int num11 = this.pC.intHeight - pOCP.intHeight;
-                                if (num11 > 15)
-                                {
-                                    num11 = 15;
-                                }
-                                num2 = (num2 * (100 + (0x19 * num11))) / 100;
-                            }
-                        }
-                        else
-                        {
-                            num2 = (num2 * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
-                        }
-                        goto Label_0647;
-
-                    case 5:
-                        if ((this.pC.intHeight - pOCP.intHeight) >= 5)
-                        {
-                            if ((this.pC.intHeight - pOCP.intHeight) > 5)
-                            {
-                                int num12 = this.pC.intHeight - pOCP.intHeight;
-                                if (num12 > 15)
-                                {
-                                    num12 = 15;
-                                }
-                                num2 = (num2 * (100 + (0x19 * num12))) / 100;
-                            }
-                        }
-                        else
-                        {
-                            num2 = (num2 * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
-                        }
-                        if ((this.pPF.intHeight - pOCP.intHeight) > 5)
-                        {
-                            int num13 = this.pPF.intHeight - pOCP.intHeight;
-                            if (num13 > 15)
-                            {
-                                num13 = 15;
-                            }
-                            num3 = (num3 * (100 + (0x19 * num13))) / 100;
-                        }
-                        goto Label_0647;
-
-                    default:
                         if ((this.pC.intHeight - pOCP.intHeight) < 5)
                         {
-                            num2 = (num2 * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
+                            num = (num * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
                         }
                         else if ((this.pC.intHeight - pOCP.intHeight) > 5)
                         {
-                            int num14 = this.pC.intHeight - pOCP.intHeight;
+                            int num7 = this.pC.intHeight - pOCP.intHeight;
+                            if (num7 > 15)
+                            {
+                                num7 = 15;
+                            }
+                            num = (num * (100 + (0x19 * num7))) / 100;
+                        }
+                        if ((this.pPF.intHeight - pOCP.intHeight) > 5)
+                        {
+                            int num14 = this.pPF.intHeight - pOCP.intHeight;
                             if (num14 > 15)
                             {
                                 num14 = 15;
                             }
                             num2 = (num2 * (100 + (0x19 * num14))) / 100;
                         }
-                        goto Label_0647;
+                        goto Label_064F;
+
+                    case 2:
+                        if ((this.pC.intHeight - pOCP.intHeight) < 5)
+                        {
+                            num = (num * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
+                        }
+                        else if ((this.pC.intHeight - pOCP.intHeight) > 5)
+                        {
+                            int num8 = this.pC.intHeight - pOCP.intHeight;
+                            if (num8 > 15)
+                            {
+                                num8 = 15;
+                            }
+                            num = (num * (100 + (0x19 * num8))) / 100;
+                        }
+                        goto Label_064F;
+
+                    case 3:
+                        if ((this.pC.intHeight - pOCP.intHeight) < 5)
+                        {
+                            num = (num * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
+                        }
+                        else if ((this.pC.intHeight - pOCP.intHeight) > 5)
+                        {
+                            int num9 = this.pC.intHeight - pOCP.intHeight;
+                            if (num9 > 15)
+                            {
+                                num9 = 15;
+                            }
+                            num = (num * (100 + (0x19 * num9))) / 100;
+                        }
+                        goto Label_064F;
+
+                    case 4:
+                        if ((this.pC.intHeight - pOCP.intHeight) < 5)
+                        {
+                            num = (num * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
+                        }
+                        else if ((this.pC.intHeight - pOCP.intHeight) > 5)
+                        {
+                            int num10 = this.pC.intHeight - pOCP.intHeight;
+                            if (num10 > 15)
+                            {
+                                num10 = 15;
+                            }
+                            num = (num * (100 + (0x19 * num10))) / 100;
+                        }
+                        goto Label_064F;
+
+                    case 5:
+                        if ((this.pC.intHeight - pOCP.intHeight) < 5)
+                        {
+                            num = (num * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
+                            break;
+                        }
+                        if ((this.pC.intHeight - pOCP.intHeight) > 5)
+                        {
+                            int num11 = this.pC.intHeight - pOCP.intHeight;
+                            if (num11 > 15)
+                            {
+                                num11 = 15;
+                            }
+                            num = (num * (100 + (0x19 * num11))) / 100;
+                        }
+                        break;
+
+                    default:
+                        if ((this.pC.intHeight - pOCP.intHeight) < 5)
+                        {
+                            num = (num * (100 + (2 * (this.pC.intHeight - pOCP.intHeight)))) / 100;
+                        }
+                        else if ((this.pC.intHeight - pOCP.intHeight) > 5)
+                        {
+                            int num13 = this.pC.intHeight - pOCP.intHeight;
+                            if (num13 > 15)
+                            {
+                                num13 = 15;
+                            }
+                            num = (num * (100 + (0x19 * num13))) / 100;
+                        }
+                        goto Label_064F;
                 }
                 if ((this.pPF.intHeight - pOCP.intHeight) > 5)
                 {
-                    int num8 = this.pPF.intHeight - pOCP.intHeight;
-                    if (num8 > 15)
+                    int num12 = this.pPF.intHeight - pOCP.intHeight;
+                    if (num12 > 15)
                     {
-                        num8 = 15;
+                        num12 = 15;
                     }
-                    num3 = (num3 * (100 + (0x19 * num8))) / 100;
+                    num2 = (num2 * (100 + (0x19 * num12))) / 100;
                 }
             }
-        Label_0647:
+        Label_064F:
             if (this.intDefCenter == 1)
             {
-                num2 += this.pC.intHardness * 5;
+                num += this.pC.intHardness * 5;
             }
             else if (this.intDefCenter == 2)
             {
-                num3 += this.pPF.intHardness * 5;
+                num2 += this.pPF.intHardness * 5;
             }
             else if (this.intDefCenter == 3)
             {
-                num4 += this.pSF.intHardness * 5;
+                num3 += this.pSF.intHardness * 5;
             }
             else if (this.intDefCenter == 4)
             {
@@ -573,18 +549,18 @@
             }
             else if (this.intDefCenter == 5)
             {
-                num6 += this.pPG.intHardness * 5;
+                num5 += this.pPG.intHardness * 5;
             }
             else
             {
-                num2 += this.pC.intHardness;
-                num3 += this.pPF.intHardness;
-                num4 += this.pSF.intHardness;
+                num += this.pC.intHardness;
+                num2 += this.pPF.intHardness;
+                num3 += this.pSF.intHardness;
                 intDefAbility += this.pSG.intHardness;
-                num6 += this.pPG.intHardness;
+                num5 += this.pPG.intHardness;
             }
             this.intDefAbility = ((this.intDefAbility * this.intDefHard) * (100 + this.intDefAdd)) / 0x2710;
-            this.GetDCP(intPos, intOffMethod, num2, num3, num4, intDefAbility, num6);
+            this.GetDCP(intPos, intOffMethod, num, num2, num3, intDefAbility, num5);
             return this.intDefAbility;
         }
 
@@ -765,42 +741,43 @@
 
         public int GetOffAbility()
         {
+            int num;
             int num2;
-            int num3;
             int intOffAbility;
+            int num4;
             int num5;
-            int num6;
-            int num = this.rnd.Next(0, 100);
+            int num6 = this.rnd.Next(0, 100);
             switch (this.intOffense)
             {
                 case 1:
-                    if (num >= 50)
+                    if (num6 < 50)
                     {
-                        if ((num >= 50) && (num < 0x3a))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 0x3a) && (num < 0x3f))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num6 < 50) || (num6 >= 0x3a))
+                    {
+                        if ((num6 >= 0x3a) && (num6 < 0x3f))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x3f) && (num < 0x44))
+                        else if ((num6 >= 0x3f) && (num6 < 0x44))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x44) && (num < 70))
+                        else if ((num6 >= 0x44) && (num6 < 70))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 80) && (num < 0x54))
+                        else if ((num6 >= 80) && (num6 < 0x54))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x54) && (num < 0x5b))
+                        else if ((num6 >= 0x54) && (num6 < 0x5b))
                         {
                             this.intOffMethod = 7;
                         }
-                        else if ((num >= 0x5b) && (num < 0x62))
+                        else if ((num6 >= 0x5b) && (num6 < 0x62))
                         {
                             this.intOffMethod = 8;
                         }
@@ -810,37 +787,38 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
 
                 case 2:
-                    if (num >= 8)
+                    if (num6 < 8)
                     {
-                        if ((num >= 8) && (num < 0x3a))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 0x3a) && (num < 0x3f))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num6 < 8) || (num6 >= 0x3a))
+                    {
+                        if ((num6 >= 0x3a) && (num6 < 0x3f))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x3f) && (num < 0x42))
+                        else if ((num6 >= 0x3f) && (num6 < 0x42))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x42) && (num < 0x44))
+                        else if ((num6 >= 0x42) && (num6 < 0x44))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 0x44) && (num < 0x49))
+                        else if ((num6 >= 0x44) && (num6 < 0x49))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x49) && (num < 0x58))
+                        else if ((num6 >= 0x49) && (num6 < 0x58))
                         {
                             this.intOffMethod = 7;
                         }
-                        else if ((num >= 0x58) && (num < 0x62))
+                        else if ((num6 >= 0x58) && (num6 < 0x62))
                         {
                             this.intOffMethod = 8;
                         }
@@ -850,37 +828,38 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
 
                 case 3:
-                    if (num >= 3)
+                    if (num6 < 3)
                     {
-                        if ((num >= 3) && (num < 6))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 6) && (num < 0x33))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num6 < 3) || (num6 >= 6))
+                    {
+                        if ((num6 >= 6) && (num6 < 0x33))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x33) && (num < 0x38))
+                        else if ((num6 >= 0x33) && (num6 < 0x38))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x38) && (num < 0x4f))
+                        else if ((num6 >= 0x38) && (num6 < 0x4f))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 0x4f) && (num < 0x55))
+                        else if ((num6 >= 0x4f) && (num6 < 0x55))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x55) && (num < 0x5b))
+                        else if ((num6 >= 0x55) && (num6 < 0x5b))
                         {
                             this.intOffMethod = 7;
                         }
-                        else if ((num >= 0x5b) && (num < 0x61))
+                        else if ((num6 >= 0x5b) && (num6 < 0x61))
                         {
                             this.intOffMethod = 8;
                         }
@@ -890,37 +869,38 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
 
                 case 4:
-                    if (num >= 8)
+                    if (num6 < 8)
                     {
-                        if ((num >= 8) && (num < 13))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 13) && (num < 0x15))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num6 < 8) || (num6 >= 13))
+                    {
+                        if ((num6 >= 13) && (num6 < 0x15))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x15) && (num < 0x1a))
+                        else if ((num6 >= 0x15) && (num6 < 0x1a))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x1a) && (num < 0x22))
+                        else if ((num6 >= 0x1a) && (num6 < 0x22))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 0x22) && (num < 0x40))
+                        else if ((num6 >= 0x22) && (num6 < 0x40))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x40) && (num < 0x48))
+                        else if ((num6 >= 0x40) && (num6 < 0x48))
                         {
                             this.intOffMethod = 7;
                         }
-                        else if ((num >= 0x48) && (num < 80))
+                        else if ((num6 >= 0x48) && (num6 < 80))
                         {
                             this.intOffMethod = 8;
                         }
@@ -930,37 +910,38 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
 
                 case 5:
-                    if (num >= 2)
+                    if (num6 < 2)
                     {
-                        if ((num >= 2) && (num < 0x16))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 0x16) && (num < 0x18))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num6 < 2) || (num6 >= 0x16))
+                    {
+                        if ((num6 >= 0x16) && (num6 < 0x18))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x18) && (num < 0x2c))
+                        else if ((num6 >= 0x18) && (num6 < 0x2c))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x2c) && (num < 0x36))
+                        else if ((num6 >= 0x2c) && (num6 < 0x36))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 0x36) && (num < 0x39))
+                        else if ((num6 >= 0x36) && (num6 < 0x39))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x39) && (num < 0x4d))
+                        else if ((num6 >= 0x39) && (num6 < 0x4d))
                         {
                             this.intOffMethod = 7;
                         }
-                        else if ((num >= 0x4d) && (num < 0x61))
+                        else if ((num6 >= 0x4d) && (num6 < 0x61))
                         {
                             this.intOffMethod = 7;
                         }
@@ -970,37 +951,38 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
 
                 case 6:
-                    if (num >= 2)
+                    if (num6 < 2)
                     {
-                        if ((num >= 2) && (num < 4))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 4) && (num < 6))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num6 < 2) || (num6 >= 4))
+                    {
+                        if ((num6 >= 4) && (num6 < 6))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 6) && (num < 0x38))
+                        else if ((num6 >= 6) && (num6 < 0x38))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x38) && (num < 0x42))
+                        else if ((num6 >= 0x38) && (num6 < 0x42))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 0x42) && (num < 0x44))
+                        else if ((num6 >= 0x42) && (num6 < 0x44))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x44) && (num < 0x58))
+                        else if ((num6 >= 0x44) && (num6 < 0x58))
                         {
                             this.intOffMethod = 7;
                         }
-                        else if ((num >= 0x58) && (num < 0x62))
+                        else if ((num6 >= 0x58) && (num6 < 0x62))
                         {
                             this.intOffMethod = 8;
                         }
@@ -1010,90 +992,90 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
             }
             switch (this.intOffMethod)
             {
                 case 1:
-                    num2 = (this.pC.intOffAbility * 150) / 100;
-                    num3 = (this.pPF.intOffAbility * 140) / 100;
+                    num = (this.pC.intOffAbility * 150) / 100;
+                    num2 = (this.pPF.intOffAbility * 140) / 100;
                     intOffAbility = this.pSF.intOffAbility;
-                    num5 = this.pSG.intOffAbility;
-                    num6 = this.pPG.intOffAbility;
+                    num4 = this.pSG.intOffAbility;
+                    num5 = this.pPG.intOffAbility;
                     break;
 
                 case 2:
-                    num2 = ((this.pC.intOffAbility * 140) / 100) + ((this.pPG.intOffAbility * 20) / 100);
-                    num3 = ((this.pPF.intOffAbility * 120) / 100) + ((this.pPG.intOffAbility * 20) / 100);
+                    num = ((this.pC.intOffAbility * 140) / 100) + ((this.pPG.intOffAbility * 20) / 100);
+                    num2 = ((this.pPF.intOffAbility * 120) / 100) + ((this.pPG.intOffAbility * 20) / 100);
                     intOffAbility = this.pSF.intOffAbility;
-                    num5 = this.pSG.intOffAbility;
-                    num6 = this.pPG.intOffAbility;
+                    num4 = this.pSG.intOffAbility;
+                    num5 = this.pPG.intOffAbility;
                     break;
 
                 case 3:
-                    num2 = this.pC.intOffAbility;
-                    num3 = (this.pPF.intOffAbility * 110) / 100;
+                    num = this.pC.intOffAbility;
+                    num2 = (this.pPF.intOffAbility * 110) / 100;
                     intOffAbility = (this.pSF.intOffAbility * 140) / 100;
-                    num5 = (this.pSG.intOffAbility * 140) / 100;
-                    num6 = (this.pPG.intOffAbility * 110) / 100;
+                    num4 = (this.pSG.intOffAbility * 140) / 100;
+                    num5 = (this.pPG.intOffAbility * 110) / 100;
                     break;
 
                 case 4:
-                    num2 = this.pC.intOffAbility;
-                    num3 = (this.pPF.intOffAbility * 120) / 100;
+                    num = this.pC.intOffAbility;
+                    num2 = (this.pPF.intOffAbility * 120) / 100;
                     intOffAbility = ((this.pSF.intOffAbility * 130) / 100) + ((this.pPG.intOffAbility * 10) / 100);
-                    num5 = ((this.pSG.intOffAbility * 140) / 100) + ((this.pPG.intOffAbility * 20) / 100);
-                    num6 = this.pPG.intOffAbility;
+                    num4 = ((this.pSG.intOffAbility * 140) / 100) + ((this.pPG.intOffAbility * 20) / 100);
+                    num5 = this.pPG.intOffAbility;
                     break;
 
                 case 5:
-                    num2 = (this.pC.intOffAbility * 70) / 100;
-                    num3 = (this.pPF.intOffAbility * 90) / 100;
+                    num = (this.pC.intOffAbility * 70) / 100;
+                    num2 = (this.pPF.intOffAbility * 90) / 100;
                     intOffAbility = (this.pSF.intOffAbility * 120) / 100;
-                    num5 = (this.pSG.intOffAbility * 130) / 100;
-                    num6 = (this.pPG.intOffAbility * 120) / 100;
+                    num4 = (this.pSG.intOffAbility * 130) / 100;
+                    num5 = (this.pPG.intOffAbility * 120) / 100;
                     break;
 
                 case 6:
-                    num2 = this.pC.intOffAbility;
-                    num3 = this.pPF.intOffAbility;
+                    num = this.pC.intOffAbility;
+                    num2 = this.pPF.intOffAbility;
                     intOffAbility = (this.pSF.intOffAbility * 120) / 100;
-                    num5 = (this.pSG.intOffAbility * 140) / 100;
-                    num6 = (this.pPG.intOffAbility * 130) / 100;
+                    num4 = (this.pSG.intOffAbility * 140) / 100;
+                    num5 = (this.pPG.intOffAbility * 130) / 100;
                     break;
 
                 case 7:
-                    num2 = this.pC.intOffAbility;
-                    num3 = ((this.pPF.intOffAbility * 120) / 100) + ((this.pC.intOffAbility * 30) / 100);
+                    num = this.pC.intOffAbility;
+                    num2 = ((this.pPF.intOffAbility * 120) / 100) + ((this.pC.intOffAbility * 30) / 100);
                     intOffAbility = ((this.pSF.intOffAbility * 120) / 100) + ((this.pC.intOffAbility * 20) / 100);
-                    num5 = ((this.pSG.intOffAbility * 120) / 100) + ((this.pC.intOffAbility * 20) / 100);
-                    num6 = this.pPG.intOffAbility;
+                    num4 = ((this.pSG.intOffAbility * 120) / 100) + ((this.pC.intOffAbility * 20) / 100);
+                    num5 = this.pPG.intOffAbility;
                     break;
 
                 case 8:
-                    num2 = this.pC.intOffAbility;
-                    num3 = ((this.pPF.intOffAbility * 120) / 100) + ((this.pPG.intOffAbility * 20) / 100);
+                    num = this.pC.intOffAbility;
+                    num2 = ((this.pPF.intOffAbility * 120) / 100) + ((this.pPG.intOffAbility * 20) / 100);
                     intOffAbility = ((this.pSF.intOffAbility * 120) / 100) + ((this.pPG.intOffAbility * 20) / 100);
-                    num5 = ((this.pSG.intOffAbility * 110) / 100) + ((this.pPG.intOffAbility * 20) / 100);
-                    num6 = this.pPG.intOffAbility;
+                    num4 = ((this.pSG.intOffAbility * 110) / 100) + ((this.pPG.intOffAbility * 20) / 100);
+                    num5 = this.pPG.intOffAbility;
                     break;
 
                 default:
-                    num2 = this.pC.intOffAbility;
-                    num3 = this.pPF.intOffAbility;
+                    num = this.pC.intOffAbility;
+                    num2 = this.pPF.intOffAbility;
                     intOffAbility = (this.pSF.intOffAbility * 130) / 100;
-                    num5 = ((this.pSG.intOffAbility * 130) / 100) + ((this.pPG.intOffAbility * 10) / 100);
-                    num6 = (this.pPG.intOffAbility * 130) / 100;
+                    num4 = ((this.pSG.intOffAbility * 130) / 100) + ((this.pPG.intOffAbility * 10) / 100);
+                    num5 = (this.pPG.intOffAbility * 130) / 100;
                     break;
             }
             if (this.intOffCenter == 1)
             {
-                num2 += this.pC.intLeadship * 5;
+                num += this.pC.intLeadship * 5;
             }
             else if (this.intOffCenter == 2)
             {
-                num3 += this.pPF.intLeadship * 5;
+                num2 += this.pPF.intLeadship * 5;
             }
             else if (this.intOffCenter == 3)
             {
@@ -1101,22 +1083,22 @@
             }
             else if (this.intOffCenter == 4)
             {
-                num5 += this.pSG.intLeadship * 5;
+                num4 += this.pSG.intLeadship * 5;
             }
             else if (this.intOffCenter == 5)
             {
-                num6 += this.pPG.intLeadship * 5;
+                num5 += this.pPG.intLeadship * 5;
             }
             else
             {
-                num2 += this.pC.intLeadship;
-                num3 += this.pPF.intLeadship;
+                num += this.pC.intLeadship;
+                num2 += this.pPF.intLeadship;
                 intOffAbility += this.pSF.intLeadship;
-                num5 += this.pSG.intLeadship;
-                num6 += this.pPG.intLeadship;
+                num4 += this.pSG.intLeadship;
+                num5 += this.pPG.intLeadship;
             }
-            this.intOffAbility = (((num2 + num3) + intOffAbility) + num5) + num6;
-            this.GetOCP(num2, num3, intOffAbility, num5, num6);
+            this.intOffAbility = (((num + num2) + intOffAbility) + num4) + num5;
+            this.GetOCP(num, num2, intOffAbility, num4, num5);
             this.GetACP(this.pOCP.intPos);
             this.intOffAbility = ((this.intOffAbility * this.intOffHard) * (100 + this.intOffAdd)) / 0x2710;
             return this.intOffAbility;
@@ -1194,10 +1176,6 @@
             return MatchItem.GetArrangeAdd(intLvl);
         }
 
-        /// <summary>
-        /// 进攻篮板能力
-        /// </summary>
-        /// <returns></returns>
         public int GetOffRebAbility()
         {
             int num = (((this.pC.intORebAbility * 12) / 10) * this.pC.intHeight) / 210;

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using Web.DBData;
@@ -53,15 +52,14 @@
                 {
                     string strIn = row["Title"].ToString().Trim();
                     string str2 = row["NickName"].ToString().Trim();
-                    DateTime time = (DateTime)row["CreateTime"];
+                    DateTime time = (DateTime) row["CreateTime"];
                     string str3 = row["BoardID"].ToString().Trim();
-                    int num = (int)row["TopicID"];
+                    int num = (int) row["TopicID"];
                     builder.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     builder.Append(string.Concat(new object[] { "<td width='200' height='20' valign='middle' style='padding-left:8px'><a title='", strIn, "\n\n发表时间:", time, " 作者:", str2, "' href='Logout.aspx?GameCategory=-1&Type=OnlyJump&JumpURL=Topic.aspx!TopicID.", num, "^BoardID.", str3, "^Page.1' target=\"_blank\">", StringItem.GetShortString(strIn, 0x19), "</a></td>" }));
                     builder.Append("</tr>");
                 }
                 builder.Append("</table>");
-                //eliteTopic.Close();
             }
             catch
             {

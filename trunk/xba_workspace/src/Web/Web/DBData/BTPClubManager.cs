@@ -215,24 +215,24 @@
 
         public static string GetClubNameByClubID(int intClubID, byte byteCategory, int intLength, int intDevMatchID)
         {
+            string str;
             string str2;
-            string str3;
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetClubNameByDevMatchID ", intClubID, ",", intDevMatchID });
             DataRow row = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             string str4 = "";
             if (row != null)
             {
                 object obj2;
-                str2 = row["ClubName"].ToString().Trim();
+                str = row["ClubName"].ToString().Trim();
                 int num = (int) row["UnionID"];
-                str3 = row["ShortName"].ToString().Trim();
+                str2 = row["ShortName"].ToString().Trim();
                 if (num > 0)
                 {
-                    str3 = str3 + "-";
+                    str2 = str2 + "-";
                 }
                 else
                 {
-                    str3 = "";
+                    str2 = "";
                 }
                 intDevMatchID = (int) row["DevMatchID"];
                 int num2 = (int) row["ClubHID"];
@@ -283,50 +283,50 @@
             }
             else
             {
-                str3 = "";
-                str2 = "-- --";
+                str2 = "";
+                str = "-- --";
             }
             if (str4 == "")
             {
-                return string.Concat(new object[] { "<a href='ShowClub.aspx?ClubID=", intClubID, "&Type=", byteCategory, "' title='", str3, str2, "' target='Right'>", StringItem.GetShortString(str3 + str2, intLength, "."), "</a>" });
+                return string.Concat(new object[] { "<a href='ShowClub.aspx?ClubID=", intClubID, "&Type=", byteCategory, "' title='", str2, str, "' target='Right'>", StringItem.GetShortString(str2 + str, intLength, "."), "</a>" });
             }
-            return string.Concat(new object[] { "<a href='ShowClub.aspx?ClubID=", intClubID, "&Type=", byteCategory, "' title='", str3, str2, str4, "' target='Right' style='color:red'>", StringItem.GetShortString(str3 + str2, intLength, "."), "</a>" });
+            return string.Concat(new object[] { "<a href='ShowClub.aspx?ClubID=", intClubID, "&Type=", byteCategory, "' title='", str2, str, str4, "' target='Right' style='color:red'>", StringItem.GetShortString(str2 + str, intLength, "."), "</a>" });
         }
 
         public static string GetClubNameByClubID(int intClubID, byte byteCategory, string strTarget, int intLength)
         {
+            string str;
             string str2;
-            string str3;
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetClubNameByClubID ", intClubID, ",", byteCategory });
             DataRow row = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             if (row != null)
             {
-                str2 = row["ClubName"].ToString().Trim();
+                str = row["ClubName"].ToString().Trim();
                 int num = (int) row["UnionID"];
-                str3 = row["ShortName"].ToString().Trim();
+                str2 = row["ShortName"].ToString().Trim();
                 if (num > 0)
                 {
-                    str3 = str3 + "-";
+                    str2 = str2 + "-";
                 }
                 else
                 {
-                    str3 = "";
+                    str2 = "";
                 }
             }
             else
             {
-                str3 = "";
-                str2 = "-- --";
+                str2 = "";
+                str = "-- --";
             }
             if (strTarget == "Index")
             {
-                return ("<a style='cursor:hand;' title='" + str3 + str2 + "'>" + StringItem.GetShortString(str3 + str2, intLength, ".") + "</a>");
+                return ("<a style='cursor:hand;' title='" + str2 + str + "'>" + StringItem.GetShortString(str2 + str, intLength, ".") + "</a>");
             }
             if (strTarget == "Management")
             {
-                return StringItem.GetShortString(str3 + str2, intLength, ".");
+                return StringItem.GetShortString(str2 + str, intLength, ".");
             }
-            return string.Concat(new object[] { "<a href='ShowClub.aspx?ClubID=", intClubID, "&Type=", byteCategory, "' title='", str3, str2, "' target='", strTarget, "'>", StringItem.GetShortString(str3 + str2, intLength, "."), "</a>" });
+            return string.Concat(new object[] { "<a href='ShowClub.aspx?ClubID=", intClubID, "&Type=", byteCategory, "' title='", str2, str, "' target='", strTarget, "'>", StringItem.GetShortString(str2 + str, intLength, "."), "</a>" });
         }
 
         public static string GetClubNameByUserID(int intUserID, int intType)
@@ -462,9 +462,9 @@
             {
                 return ("<a style='cursor:hand;' title='" + str3 + str2 + "'>" + StringItem.GetShortString(str3 + str2, intLength, ".") + "</a>");
             }
-            string str5 = "";
-            str5 = DBLogin.URLString(ServerParameter.intGameCategory);
-            return string.Concat(new object[] { "<a href='", str5, "ShowClub.aspx?ClubID=", intClubID, "&Type=", intCategory, "' title='", str3, str2, "' target='", strTarget, "'>", StringItem.GetShortString(str3 + str2, intLength, "."), "</a>" });
+            string str4 = "";
+            str4 = DBLogin.URLString(ServerParameter.intGameCategory);
+            return string.Concat(new object[] { "<a href='", str4, "ShowClub.aspx?ClubID=", intClubID, "&Type=", intCategory, "' title='", str3, str2, "' target='", strTarget, "'>", StringItem.GetShortString(str3 + str2, intLength, "."), "</a>" });
         }
 
         public static bool HasBuyClub(int intUserID)
@@ -528,16 +528,16 @@
             DataTable table = SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             if (table != null)
             {
-                int num2 = 1;
+                int num = 1;
                 foreach (DataRow row in table.Rows)
                 {
                     int intClubID = (int) row["ClubID"];
                     UpdateAccountLevel(intClubID);
-                    if ((num2 % 100) == 0)
+                    if ((num % 100) == 0)
                     {
-                        Console.WriteLine(num2 + "个俱乐部已经更新完毕");
+                        Console.WriteLine(num + "个俱乐部已经更新完毕");
                     }
-                    num2++;
+                    num++;
                 }
             }
         }

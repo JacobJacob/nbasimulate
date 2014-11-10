@@ -33,6 +33,16 @@
             SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        public static int BuyUnionRep(int intUserID, int intUnionID, int intRep)
+        {
+            string commandText = "Exec NewBTP.dbo.[BuyUnionRep] @intUserID,@intUnionID,@intRep";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@intUnionID", SqlDbType.Int, 4), new SqlParameter("@intRep", SqlDbType.Int, 4) };
+            commandParameters[0].Value = intUserID;
+            commandParameters[1].Value = intUnionID;
+            commandParameters[2].Value = intRep;
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        }
+
         public static int CreateSociety(int intUserID, int intCategory, string strName, string strShortName, string strRemark, string strLogo, string strUQQ, string strUBBS)
         {
             string commandText = "Exec NewBTP.dbo.CreateSociety @UserID,@Category,@Name,@ShortName,@Remark,@Logo,@UQQ,@UBBS";
@@ -408,16 +418,6 @@
             commandParameters[4].Value = intType;
             commandParameters[5].Value = intWealth;
             commandParameters[6].Value = strRemark;
-            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
-        }
-
-        public static int BuyUnionRep(int intUserID, int intUnionID, int intRep)
-        {
-            string commandText = "Exec NewBTP.dbo.[BuyUnionRep] @intUserID,@intUnionID,@intRep";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@intUnionID", SqlDbType.Int, 4), new SqlParameter("@intRep", SqlDbType.Int, 4)};
-            commandParameters[0].Value = intUserID;
-            commandParameters[1].Value = intUnionID;
-            commandParameters[2].Value = intRep;
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 

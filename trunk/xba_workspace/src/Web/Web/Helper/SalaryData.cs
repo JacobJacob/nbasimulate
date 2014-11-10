@@ -14,10 +14,10 @@
         public SalaryData(int intClubID)
         {
             int salaryTop;
-            int num3;
+            int num2;
+            string str;
             string str2;
-            string str3;
-            int num4;
+            int num3;
             string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(intClubID);
             int clubSalaryByClubID = BTPPlayer5Manager.GetClubSalaryByClubID(intClubID);
             if ((devCodeByClubID != null) && (devCodeByClubID != ""))
@@ -31,145 +31,137 @@
             int num5 = clubSalaryByClubID - salaryTop;
             if (num5 > 0)
             {
-                /*20001*/
                 if (num5 < 0x4e21)
                 {
-                    num3 = 110;
-                    num4 = 1;
+                    num2 = 110;
+                    num3 = 1;
                 }
-                /*15000*/
                 else if (num5 < 0x3a98)
                 {
-                    num3 = 0x6d;
-                    num4 = 2;
+                    num2 = 0x6d;
+                    num3 = 2;
                 }
-                /*21000*/
                 else if (num5 <= 0x5208)
                 {
-                    num3 = 0x6c;
-                    num4 = 3;
+                    num2 = 0x6c;
+                    num3 = 3;
                 }
-                /*25000*/
                 else if (num5 <= 0x61a8)
                 {
-                    num3 = 0x6b;
-                    num4 = 4;
+                    num2 = 0x6b;
+                    num3 = 4;
                 }
-                /*29000*/
                 else if (num5 <= 0x7148)
                 {
-                    num3 = 0x6a;
-                    num4 = 5;
+                    num2 = 0x6a;
+                    num3 = 5;
                 }
-                /*33000*/
                 else if (num5 <= 0x80e8)
                 {
-                    num3 = 0x69;
-                    num4 = 6;
+                    num2 = 0x69;
+                    num3 = 6;
                 }
-                /*37000*/
                 else if (num5 <= 0x9088)
                 {
-                    num3 = 0x68;
-                    num4 = 7;
+                    num2 = 0x68;
+                    num3 = 7;
                 }
-                /*41000*/
                 else if (num5 <= 0xa028)
                 {
-                    num3 = 0x67;
-                    num4 = 8;
+                    num2 = 0x67;
+                    num3 = 8;
                 }
                 else if (num5 <= 0xafc8)
                 {
-                    num3 = 0x66;
-                    num4 = 9;
+                    num2 = 0x66;
+                    num3 = 9;
                 }
                 else if (num5 <= 0xbb80)
                 {
-                    num3 = 0x65;
-                    num4 = 10;
+                    num2 = 0x65;
+                    num3 = 10;
                 }
                 else if (num5 <= 0xc738)
                 {
-                    num3 = 100;
-                    num4 = 11;
+                    num2 = 100;
+                    num3 = 11;
                 }
                 else if (num5 <= 0xcf08)
                 {
-                    num3 = 0x63;
-                    num4 = 12;
+                    num2 = 0x63;
+                    num3 = 12;
                 }
                 else if (num5 <= 0xdac0)
                 {
-                    num3 = 0x62;
-                    num4 = 13;
+                    num2 = 0x62;
+                    num3 = 13;
                 }
                 else if (num5 <= 0xe290)
                 {
-                    num3 = 0x61;
-                    num4 = 14;
+                    num2 = 0x61;
+                    num3 = 14;
                 }
                 else if (num5 <= 0xee48)
                 {
-                    num3 = 0x60;
-                    num4 = 15;
+                    num2 = 0x60;
+                    num3 = 15;
                 }
                 else if (num5 <= 0xf618)
                 {
-                    num3 = 0x5f;
-                    num4 = 0x10;
+                    num2 = 0x5f;
+                    num3 = 0x10;
                 }
                 else if (num5 <= 0x101d0)
                 {
-                    num3 = 0x5e;
-                    num4 = 0x11;
+                    num2 = 0x5e;
+                    num3 = 0x11;
                 }
                 else if (num5 <= 0x109a0)
                 {
-                    num3 = 0x5d;
-                    num4 = 0x12;
+                    num2 = 0x5d;
+                    num3 = 0x12;
                 }
                 else if (num5 <= 0x11940)
                 {
-                    num3 = 0x5c;
-                    num4 = 0x13;
+                    num2 = 0x5c;
+                    num3 = 0x13;
                 }
                 else if (num5 <= 0x12110)
                 {
-                    num3 = 0x5b;
-                    num4 = 20;
+                    num2 = 0x5b;
+                    num3 = 20;
                 }
                 else
                 {
-                    num3 = 90;
-                    num4 = 0x15;
+                    num2 = 90;
+                    num3 = 0x15;
                 }
-                str2 = string.Concat(new object[] { "<font color=\"red\">阵容状态", num3 - 10, "%</font><img id=\"AlertA\" width=\"16\" height=\"16\" src=\"Images/alert.gif\" border=\"0\" alt=\"您的俱乐部超出工资帽", num5, "，<br/>当前阵容状态为", num3 - 10, "%\">" });
-                str3 = string.Concat(new object[] { "<font color=\"red\">阵容状态", num3 - 10, "%</font><img id=\"AlertB\" width=\"16\" height=\"16\" src=\"Images/alert.gif\" border=\"0\" alt=\"您的俱乐部超出工资帽", num5, "，<br/>当前阵容状态为", num3 - 10, "%\">" });
+                str = string.Concat(new object[] { "<font color=\"red\">阵容状态", num2 - 10, "%</font><img id=\"AlertA\" width=\"16\" height=\"16\" src=\"Images/alert.gif\" border=\"0\" alt=\"您的俱乐部超出工资帽", num5, "，<br/>当前阵容状态为", num2 - 10, "%\">" });
+                str2 = string.Concat(new object[] { "<font color=\"red\">阵容状态", num2 - 10, "%</font><img id=\"AlertB\" width=\"16\" height=\"16\" src=\"Images/alert.gif\" border=\"0\" alt=\"您的俱乐部超出工资帽", num5, "，<br/>当前阵容状态为", num2 - 10, "%\">" });
             }
             else
             {
-                num4 = 1;
-                num3 = 110;
-                str3 = "<font color=\"green\">阵容状态100%</font>";
-                str2 = "<font color=\"green\">阵容状态100% </font>";
+                num3 = 1;
+                num2 = 110;
+                str2 = "<font color=\"green\">阵容状态100%</font>";
+                str = "<font color=\"green\">阵容状态100% </font>";
             }
-            this.strOffStrong = str3;
-            this.strDefStrong = str2;
-            this.intStrong = num3;
+            this.strOffStrong = str2;
+            this.strDefStrong = str;
+            this.intStrong = num2;
             this.intSalaryC = num5;
-            this.intStrongType = num4;
+            this.intStrongType = num3;
         }
 
         public SalaryData(int intClubID, long lngPlayerIDC, long lngPlayerIDPF, long lngPlayerIDSF, long lngPlayerIDSG, long lngPlayerIDPG)
         {
             int salaryTop;
-            int num3;
+            int num2;
+            string str;
             string str2;
-            string str3;
-            int num4;
+            int num3;
             string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(intClubID);
-            int num = BTPPlayer5Manager.GetClubSalaryByPlayerID(lngPlayerIDC, lngPlayerIDPF, lngPlayerIDSF, lngPlayerIDSG, lngPlayerIDPG);
+            int num4 = BTPPlayer5Manager.GetClubSalaryByPlayerID(lngPlayerIDC, lngPlayerIDPF, lngPlayerIDSF, lngPlayerIDSG, lngPlayerIDPG);
             if ((devCodeByClubID != null) && (devCodeByClubID != ""))
             {
                 salaryTop = DevCalculator.GetSalaryTop(devCodeByClubID);
@@ -178,129 +170,129 @@
             {
                 salaryTop = 0xc350;
             }
-            int num5 = num - salaryTop;
+            int num5 = num4 - salaryTop;
             if (num5 > 0)
             {
                 if (num5 < 0x4e21)
                 {
-                    num3 = 110;
-                    num4 = 1;
+                    num2 = 110;
+                    num3 = 1;
                 }
                 else if (num5 < 0x3a98)
                 {
-                    num3 = 0x6d;
-                    num4 = 2;
+                    num2 = 0x6d;
+                    num3 = 2;
                 }
                 else if (num5 <= 0x5208)
                 {
-                    num3 = 0x6c;
-                    num4 = 3;
+                    num2 = 0x6c;
+                    num3 = 3;
                 }
                 else if (num5 <= 0x61a8)
                 {
-                    num3 = 0x6b;
-                    num4 = 4;
+                    num2 = 0x6b;
+                    num3 = 4;
                 }
                 else if (num5 <= 0x7148)
                 {
-                    num3 = 0x6a;
-                    num4 = 5;
+                    num2 = 0x6a;
+                    num3 = 5;
                 }
                 else if (num5 <= 0x80e8)
                 {
-                    num3 = 0x69;
-                    num4 = 6;
+                    num2 = 0x69;
+                    num3 = 6;
                 }
                 else if (num5 <= 0x9088)
                 {
-                    num3 = 0x68;
-                    num4 = 7;
+                    num2 = 0x68;
+                    num3 = 7;
                 }
                 else if (num5 <= 0xa028)
                 {
-                    num3 = 0x67;
-                    num4 = 8;
+                    num2 = 0x67;
+                    num3 = 8;
                 }
                 else if (num5 <= 0xafc8)
                 {
-                    num3 = 0x66;
-                    num4 = 9;
+                    num2 = 0x66;
+                    num3 = 9;
                 }
                 else if (num5 <= 0xbb80)
                 {
-                    num3 = 0x65;
-                    num4 = 10;
+                    num2 = 0x65;
+                    num3 = 10;
                 }
                 else if (num5 <= 0xc738)
                 {
-                    num3 = 100;
-                    num4 = 11;
+                    num2 = 100;
+                    num3 = 11;
                 }
                 else if (num5 <= 0xcf08)
                 {
-                    num3 = 0x63;
-                    num4 = 12;
+                    num2 = 0x63;
+                    num3 = 12;
                 }
                 else if (num5 <= 0xdac0)
                 {
-                    num3 = 0x62;
-                    num4 = 13;
+                    num2 = 0x62;
+                    num3 = 13;
                 }
                 else if (num5 <= 0xe290)
                 {
-                    num3 = 0x61;
-                    num4 = 14;
+                    num2 = 0x61;
+                    num3 = 14;
                 }
                 else if (num5 <= 0xee48)
                 {
-                    num3 = 0x60;
-                    num4 = 15;
+                    num2 = 0x60;
+                    num3 = 15;
                 }
                 else if (num5 <= 0xf618)
                 {
-                    num3 = 0x5f;
-                    num4 = 0x10;
+                    num2 = 0x5f;
+                    num3 = 0x10;
                 }
                 else if (num5 <= 0x101d0)
                 {
-                    num3 = 0x5e;
-                    num4 = 0x11;
+                    num2 = 0x5e;
+                    num3 = 0x11;
                 }
                 else if (num5 <= 0x109a0)
                 {
-                    num3 = 0x5d;
-                    num4 = 0x12;
+                    num2 = 0x5d;
+                    num3 = 0x12;
                 }
                 else if (num5 <= 0x11940)
                 {
-                    num3 = 0x5c;
-                    num4 = 0x13;
+                    num2 = 0x5c;
+                    num3 = 0x13;
                 }
                 else if (num5 <= 0x12110)
                 {
-                    num3 = 0x5b;
-                    num4 = 20;
+                    num2 = 0x5b;
+                    num3 = 20;
                 }
                 else
                 {
-                    num3 = 90;
-                    num4 = 0x15;
+                    num2 = 90;
+                    num3 = 0x15;
                 }
-                str2 = string.Concat(new object[] { "<font color=\"green\">工资帽<br>", salaryTop, "<br>当前阵容状态<br></font><font color=\"red\" style=\"font-size:18px\">", num3 - 10, "%</font>" });
-                str3 = string.Concat(new object[] { "<font color=\"green\">工资帽<br>", salaryTop, "<br>当前阵容状态<br></font><font color=\"red\" style=\"font-size:18px\">", num3 - 10, "%</font>" });
+                str = string.Concat(new object[] { "<font color=\"green\">工资帽<br>", salaryTop, "<br>当前阵容状态<br></font><font color=\"red\" style=\"font-size:18px\">", num2 - 10, "%</font>" });
+                str2 = string.Concat(new object[] { "<font color=\"green\">工资帽<br>", salaryTop, "<br>当前阵容状态<br></font><font color=\"red\" style=\"font-size:18px\">", num2 - 10, "%</font>" });
             }
             else
             {
-                num4 = 1;
-                num3 = 110;
-                str3 = "<font color=\"green\">工资帽<br>" + salaryTop + "<br>当前阵容状态<br></font><font color=\"red\" style=\"font-size:18px\">100%</font>";
+                num3 = 1;
+                num2 = 110;
                 str2 = "<font color=\"green\">工资帽<br>" + salaryTop + "<br>当前阵容状态<br></font><font color=\"red\" style=\"font-size:18px\">100%</font>";
+                str = "<font color=\"green\">工资帽<br>" + salaryTop + "<br>当前阵容状态<br></font><font color=\"red\" style=\"font-size:18px\">100%</font>";
             }
-            this.strOffStrong = str3;
-            this.strDefStrong = str2;
-            this.intStrong = num3;
+            this.strOffStrong = str2;
+            this.strDefStrong = str;
+            this.intStrong = num2;
             this.intSalaryC = num5;
-            this.intStrongType = num4;
+            this.intStrongType = num3;
         }
 
         public string DefStrong

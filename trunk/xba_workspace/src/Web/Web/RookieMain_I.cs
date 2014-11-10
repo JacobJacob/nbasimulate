@@ -21,23 +21,31 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            switch (SessionItem.GetRequest("Type", 1).ToString().Trim())
+            string str = SessionItem.GetRequest("Type", 1).ToString().Trim();
+            if (str != null)
             {
-                case "WELCOME":
+                if (str != "WELCOME")
+                {
+                    if (str != "REGCLUB")
+                    {
+                        if (str == "ENDDEVCREATE")
+                        {
+                            this.strCenter = "RookieEndDevCreate.aspx";
+                            return;
+                        }
+                        if (str == "END")
+                        {
+                            this.strCenter = "RookieEnd.aspx";
+                        }
+                        return;
+                    }
+                }
+                else
+                {
                     this.strCenter = "RookieWelcome.aspx";
                     return;
-
-                case "REGCLUB":
-                    this.strCenter = "RookieRegClub.aspx";
-                    return;
-
-                case "ENDDEVCREATE":
-                    this.strCenter = "RookieEndDevCreate.aspx";
-                    break;
-
-                case "END":
-                    this.strCenter = "RookieEnd.aspx";
-                    break;
+                }
+                this.strCenter = "RookieRegClub.aspx";
             }
         }
     }

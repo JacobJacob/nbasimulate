@@ -24,7 +24,7 @@
             }
             else
             {
-                this.intMessageID = (int) SessionItem.GetRequest("MessageID", 0);
+                this.intMessageID = SessionItem.GetRequest("MessageID", 0);
                 this.InitializeComponent();
                 base.OnInit(e);
             }
@@ -32,11 +32,11 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            int request = (int) SessionItem.GetRequest("DType", 0);
-            int intType = (int) SessionItem.GetRequest("Type", 0);
+            int request = SessionItem.GetRequest("DType", 0);
+            int intType = SessionItem.GetRequest("Type", 0);
             if (request == 1)
             {
-                int num3 = (int) SessionItem.GetRequest("Page", 0);
+                int num3 = SessionItem.GetRequest("Page", 0);
                 if (BTPUnionManager.DelUnionMessage(this.intUserID, this.intMessageID) == 1)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=21b!Type.UNIONMSG^Page." + num3);

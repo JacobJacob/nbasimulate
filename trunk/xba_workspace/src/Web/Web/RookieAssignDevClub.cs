@@ -54,18 +54,18 @@
                     index++;
                 }
                 BTPArrange5Manager.AddArrange(this.intClubID5, numArray[0], numArray[1], numArray[2], numArray[3], numArray[4], 1, 1, 100, 100);
-                int num4 = (int) BTPArrange5Manager.GetArrByCategory(this.intClubID5, 1)["Arrange5ID"];
-                BTPClubManager.AssignArrange5(this.intClubID5, num4);
+                int num3 = (int) BTPArrange5Manager.GetArrByCategory(this.intClubID5, 1)["Arrange5ID"];
+                BTPClubManager.AssignArrange5(this.intClubID5, num3);
                 BTPArrangeLvlManager.AddArrange5Lvl(this.intUserID);
                 BTPAccountManager.SetAccountCategory(this.intUserID, 10);
                 DTOnlineManager.ChangeCategoryByUserID(this.intUserID, 10);
                 string strUserName = StringItem.MD5Encrypt(this.strUserName, Global.strMD5Key);
                 string strPassword = StringItem.MD5Encrypt(this.strPassword, Global.strMD5Key);
                 SessionItem.SetSelfLogin(strUserName, strPassword, false);
-                int num5 = AccountItem.SetRookieOp(this.intUserID, 2);
-                if (num5 != 2)
+                int num4 = AccountItem.SetRookieOp(this.intUserID, 2);
+                if (num4 != 2)
                 {
-                    base.Response.Write("<script>window.top.Main.location=\"" + StringItem.GetRookieURL(num5) + "\";</script>");
+                    base.Response.Write("<script>window.top.Main.location=\"" + StringItem.GetRookieURL(num4) + "\";</script>");
                 }
                 else
                 {
@@ -94,10 +94,10 @@
             }
             else
             {
-                DataTable table2 = BTPPlayer5Manager.GetSelectPlayer5Table();
-                if (table2 != null)
+                DataTable table = BTPPlayer5Manager.GetSelectPlayer5Table();
+                if (table != null)
                 {
-                    foreach (DataRow row in table2.Rows)
+                    foreach (DataRow row in table.Rows)
                     {
                         long longPlayerID = (long) row["PlayerID"];
                         string strName = row["Name"].ToString();
@@ -108,11 +108,11 @@
                         int num6 = (byte) row["Weight"];
                         int intAbility = (int) row["Ability"];
                         float single1 = ((float) ((int) row["Ability"])) / 10f;
-                        long num7 = Convert.ToInt64(row["BidPrice"]);
+                        long num8 = Convert.ToInt64(row["BidPrice"]);
                         object strList = this.strList;
                         this.strList = string.Concat(new object[] { 
                             strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>", num2, "</td><td align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, 10, 0, 1), "</td><td>", num3, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(intPosition), "</a></td><td>", num5, "</td><td>", num6, "</td><td>", 
-                            PlayerItem.GetAbilityColor(intAbility), "</td><td><font color='#660066'>", num7, "</font></td><td><input type='checkbox' id='cb", longPlayerID, "' name='cb", longPlayerID, "' onclick='CBChange(this,this.checked)' value='", longPlayerID, "'><input type='hidden' id='PlayerID_", longPlayerID, "' name='PlayerID_", longPlayerID, "' value='", num7, "'></td></tr>"
+                            PlayerItem.GetAbilityColor(intAbility), "</td><td><font color='#660066'>", num8, "</font></td><td><input type='checkbox' id='cb", longPlayerID, "' name='cb", longPlayerID, "' onclick='CBChange(this,this.checked)' value='", longPlayerID, "'><input type='hidden' id='PlayerID_", longPlayerID, "' name='PlayerID_", longPlayerID, "' value='", num8, "'></td></tr>"
                          });
                     }
                 }

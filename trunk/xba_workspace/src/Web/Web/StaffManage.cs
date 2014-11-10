@@ -72,7 +72,7 @@
                 this.intClubID3 = (int) onlineRowByUserID["ClubID3"];
                 this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
                 this.intPayType = (int) onlineRowByUserID["PayType"];
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
+                this.strType = SessionItem.GetRequest("Type", 1);
                 if (((this.intCategory != 2) && (this.intCategory != 5)) && (this.strType != "STREET"))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=3");

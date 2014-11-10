@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -98,7 +97,7 @@
                 int num = (byte) arrByCategory["Offense"];
                 int num2 = (byte) arrByCategory["Defense"];
                 byte num1 = (byte) arrByCategory["OffHard"];
-                byte num27 = (byte) arrByCategory["DefHard"];
+                byte num29 = (byte) arrByCategory["DefHard"];
                 int num3 = (byte) arrByCategory["OffCenter"];
                 int num4 = (byte) arrByCategory["DefCenter"];
                 this.SD = new SalaryData(this.intClubID, this.longCID, this.longPFID, this.longSFID, this.longSGID, this.longPGID);
@@ -221,41 +220,38 @@
                         break;
                 }
             }
-            int num24 = 200;
-            int num25 = 20;
+            int num5 = 200;
+            int num6 = 20;
             foreach (DataRow row2 in BTPPlayer5Manager.GetArrPlayerTable(this.intClubID).Rows)
             {
-                long num5 = (long) row2["PlayerID"];
-                int intCategory = Convert.ToInt32(row2["Category"]);
-                int num11 = (byte) row2["Age"];
+                long num7 = (long) row2["PlayerID"];
+                int num8 = Convert.ToInt32(row2["Category"]);
+                int num9 = (byte) row2["Age"];
                 string str2 = row2["Name"].ToString().Trim();
                 int intPosition = (byte) row2["Pos"];
                 string playerChsPosition = PlayerItem.GetPlayerChsPosition(intPosition);
-                int num7 = (byte) row2["Number"];
-                int num8 = (byte) row2["Power"];
-                float num12 = ((float) ((int) row2["Ability"])) / 10f;
-                int num9 = (byte) row2["Height"];
-                int num10 = (byte) row2["Weight"];
-                float num13 = ((float) ((int) row2["Speed"])) / 10f;
-                float num14 = ((float) ((int) row2["Jump"])) / 10f;
-                float num15 = ((float) ((int) row2["Strength"])) / 10f;
-                float num16 = ((float) ((int) row2["Stamina"])) / 10f;
-                float num17 = ((float) ((int) row2["Shot"])) / 10f;
-                float num18 = ((float) ((int) row2["Point3"])) / 10f;
-                float num19 = ((float) ((int) row2["Dribble"])) / 10f;
-                float num20 = ((float) ((int) row2["Pass"])) / 10f;
-                float num21 = ((float) ((int) row2["Rebound"])) / 10f;
-                float num22 = ((float) ((int) row2["Steal"])) / 10f;
-                float num23 = ((float) ((int) row2["Block"])) / 10f;
+                int num11 = (byte) row2["Number"];
+                int num12 = (byte) row2["Power"];
+                float num13 = ((float) ((int) row2["Ability"])) / 10f;
+                int num14 = (byte) row2["Height"];
+                int num15 = (byte) row2["Weight"];
+                float num16 = ((float) ((int) row2["Speed"])) / 10f;
+                float num17 = ((float) ((int) row2["Jump"])) / 10f;
+                float num18 = ((float) ((int) row2["Strength"])) / 10f;
+                float num19 = ((float) ((int) row2["Stamina"])) / 10f;
+                float num20 = ((float) ((int) row2["Shot"])) / 10f;
+                float num21 = ((float) ((int) row2["Point3"])) / 10f;
+                float num22 = ((float) ((int) row2["Dribble"])) / 10f;
+                float num23 = ((float) ((int) row2["Pass"])) / 10f;
+                float num24 = ((float) ((int) row2["Rebound"])) / 10f;
+                float num25 = ((float) ((int) row2["Steal"])) / 10f;
+                float num26 = ((float) ((int) row2["Block"])) / 10f;
                 float single1 = ((float) ((int) row2["Attack"])) / 10f;
                 float single2 = ((float) ((int) row2["Defense"])) / 10f;
                 float single3 = ((float) ((int) row2["Team"])) / 10f;
-                if (intCategory == 3)
+                if (num8 == 3)
                 {
-                    num12 = 99.9f;
                     num13 = 99.9f;
-                    num14 = 99.9f;
-                    num15 = 99.9f;
                     num16 = 99.9f;
                     num17 = 99.9f;
                     num18 = 99.9f;
@@ -264,20 +260,19 @@
                     num21 = 99.9f;
                     num22 = 99.9f;
                     num23 = 99.9f;
-                    single1 = 99.9f;
-                    single2 = 99.9f;
-                    single3 = 99.9f;
-
+                    num24 = 99.9f;
+                    num25 = 99.9f;
+                    num26 = 99.9f;
                 }
                 object strPlayerList = this.strPlayerList;
                 this.strPlayerList = string.Concat(new object[] { 
-                    strPlayerList, "<DIV onmouseup=putdown(this);down=false; onmousedown=logpos(this); id='", num5, "' style='Z-INDEX:100;LEFT:", num25, "px;CURSOR:hand;POSITION:absolute;TOP:", num24, "px;HEIGHT:30px;WEIGHT:28px' ><DIV title='姓名：", str2, "[", num11, "]<br>位置：", playerChsPosition, "<br>身高：", num9, "CM<br>体重：", 
-                    num10, "KG<br>体力：", num8, "<br>综合：", num12, "<br><br>速度：", num13, "<br>弹跳：", num14, "<br>强壮：", num15, "<br>耐力：", num16, "<br>投篮：", num17, "<br>三分：", 
-                    num18, "<br>运球：", num19, "<br>传球：", num20, "<br>篮板：", num21, "<br>抢断：", num22, "<br>封盖：", num23, "' style='Z-INDEX: 1; BACKGROUND: url(", SessionItem.GetImageURL(), "Player/Number/", num7, ".gif); WIDTH: 16px; CURSOR: hand; COLOR: white; HEIGHT: 19px' align='center'></DIV></DIV>"
+                    strPlayerList, "<DIV onmouseup=putdown(this);down=false; onmousedown=logpos(this); id='", num7, "' style='Z-INDEX:100;LEFT:", num6, "px;CURSOR:hand;POSITION:absolute;TOP:", num5, "px;HEIGHT:30px;WEIGHT:28px' ><DIV title='姓名：", str2, "[", num9, "]<br>位置：", playerChsPosition, "<br>身高：", num14, "CM<br>体重：", 
+                    num15, "KG<br>体力：", num12, "<br>综合：", num13, "<br><br>速度：", num16, "<br>弹跳：", num17, "<br>强壮：", num18, "<br>耐力：", num19, "<br>投篮：", num20, "<br>三分：", 
+                    num21, "<br>运球：", num22, "<br>传球：", num23, "<br>篮板：", num24, "<br>抢断：", num25, "<br>封盖：", num26, "' style='Z-INDEX: 1; BACKGROUND: url(", SessionItem.GetImageURL(), "Player/Number/", num11, ".gif); WIDTH: 16px; CURSOR: hand; COLOR: white; HEIGHT: 19px' align='center'></DIV></DIV>"
                  });
-                num25 += 30;
+                num6 += 30;
                 strPlayerList = this.strPlayerPosArray;
-                this.strPlayerPosArray = string.Concat(new object[] { strPlayerList, "player_pos[\"", num5, "\"] = getpos(document.getElementById(\"", num5, "\"));" });
+                this.strPlayerPosArray = string.Concat(new object[] { strPlayerList, "player_pos[\"", num7, "\"] = getpos(document.getElementById(\"", num7, "\"));" });
             }
         }
 
@@ -354,8 +349,8 @@
                 string validWords = StringItem.GetValidWords(this.tbName.Text);
                 if (StringItem.IsValidContent(validWords, 2, 20))
                 {
-                    int num6;
-                    int num7;
+                    int num;
+                    int num2;
                     long lngPlayerIDC = Convert.ToInt64(this.form_c.Value);
                     long lngPlayerIDPF = Convert.ToInt64(this.form_pf.Value);
                     long lngPlayerIDSF = Convert.ToInt64(this.form_sf.Value);
@@ -363,139 +358,139 @@
                     long lngPlayerIDPG = Convert.ToInt64(this.form_pg.Value);
                     if (this.rbOff1.Checked)
                     {
-                        num6 = 1;
+                        num = 1;
                     }
                     else if (this.rbOff2.Checked)
                     {
-                        num6 = 2;
+                        num = 2;
                     }
                     else if (this.rbOff3.Checked)
                     {
-                        num6 = 3;
+                        num = 3;
                     }
                     else if (this.rbOff4.Checked)
                     {
-                        num6 = 4;
+                        num = 4;
                     }
                     else if (this.rbOff5.Checked)
                     {
-                        num6 = 5;
+                        num = 5;
                     }
                     else
                     {
-                        num6 = 6;
+                        num = 6;
                     }
                     if (this.rbDef1.Checked)
                     {
-                        num7 = 1;
+                        num2 = 1;
                     }
                     else if (this.rbDef2.Checked)
                     {
-                        num7 = 2;
+                        num2 = 2;
                     }
                     else if (this.rbDef3.Checked)
                     {
-                        num7 = 3;
+                        num2 = 3;
                     }
                     else if (this.rbDef4.Checked)
                     {
-                        num7 = 4;
+                        num2 = 4;
                     }
                     else if (this.rbDef5.Checked)
                     {
-                        num7 = 5;
+                        num2 = 5;
                     }
                     else
                     {
-                        num7 = 6;
+                        num2 = 6;
                     }
                     this.SD = new SalaryData(this.intClubID, lngPlayerIDC, lngPlayerIDPF, lngPlayerIDSF, lngPlayerIDSG, lngPlayerIDPG);
                     int strong = this.SD.Strong;
                     int intDefHard = this.SD.Strong;
                     int intOffCenter = Convert.ToInt16(this.ddlOffCenter.SelectedItem.Value);
                     int intDefCenter = Convert.ToInt16(this.ddlDefCenter.SelectedItem.Value);
-                    BTPArrange5Manager.SetArrange(this.intClubID, validWords, this.intType, lngPlayerIDC, lngPlayerIDPF, lngPlayerIDSF, lngPlayerIDSG, lngPlayerIDPG, strong, intDefHard, num6, num7, intOffCenter, intDefCenter);
+                    BTPArrange5Manager.SetArrange(this.intClubID, validWords, this.intType, lngPlayerIDC, lngPlayerIDPF, lngPlayerIDSF, lngPlayerIDSG, lngPlayerIDPG, strong, intDefHard, num, num2, intOffCenter, intDefCenter);
                     switch (strong)
                     {
-                        case 110:
-                            str = "Report.aspx?Parameter=75a!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x6d:
-                            str = "Report.aspx?Parameter=75b!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x6c:
-                            str = "Report.aspx?Parameter=75c!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x6b:
-                            str = "Report.aspx?Parameter=75d!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x6a:
-                            str = "Report.aspx?Parameter=75e!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x69:
-                            str = "Report.aspx?Parameter=75f!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x68:
-                            str = "Report.aspx?Parameter=75j!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x67:
-                            str = "Report.aspx?Parameter=75h!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x66:
-                            str = "Report.aspx?Parameter=75i!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x65:
-                            str = "Report.aspx?Parameter=75j!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 100:
-                            str = "Report.aspx?Parameter=75k!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x63:
-                            str = "Report.aspx?Parameter=75l!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x62:
-                            str = "Report.aspx?Parameter=75m!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x61:
-                            str = "Report.aspx?Parameter=75n!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x60:
-                            str = "Report.aspx?Parameter=75o!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x5f:
-                            str = "Report.aspx?Parameter=75p!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x5e:
-                            str = "Report.aspx?Parameter=75q!Type." + this.intType;
-                            goto Label_0487;
-
-                        case 0x5d:
-                            str = "Report.aspx?Parameter=75r!Type." + this.intType;
-                            goto Label_0487;
+                        case 0x5b:
+                            str = "Report.aspx?Parameter=75t!Type." + this.intType;
+                            goto Label_0468;
 
                         case 0x5c:
                             str = "Report.aspx?Parameter=75s!Type." + this.intType;
-                            goto Label_0487;
+                            goto Label_0468;
 
-                        case 0x5b:
-                            str = "Report.aspx?Parameter=75t!Type." + this.intType;
-                            goto Label_0487;
+                        case 0x5d:
+                            str = "Report.aspx?Parameter=75r!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x5e:
+                            str = "Report.aspx?Parameter=75q!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x5f:
+                            str = "Report.aspx?Parameter=75p!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x60:
+                            str = "Report.aspx?Parameter=75o!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x61:
+                            str = "Report.aspx?Parameter=75n!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x62:
+                            str = "Report.aspx?Parameter=75m!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x63:
+                            str = "Report.aspx?Parameter=75l!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 100:
+                            str = "Report.aspx?Parameter=75k!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x65:
+                            str = "Report.aspx?Parameter=75j!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x66:
+                            str = "Report.aspx?Parameter=75i!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x67:
+                            str = "Report.aspx?Parameter=75h!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x68:
+                            str = "Report.aspx?Parameter=75j!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x69:
+                            str = "Report.aspx?Parameter=75f!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x6a:
+                            str = "Report.aspx?Parameter=75e!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x6b:
+                            str = "Report.aspx?Parameter=75d!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x6c:
+                            str = "Report.aspx?Parameter=75c!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 0x6d:
+                            str = "Report.aspx?Parameter=75b!Type." + this.intType;
+                            goto Label_0468;
+
+                        case 110:
+                            str = "Report.aspx?Parameter=75a!Type." + this.intType;
+                            goto Label_0468;
                     }
                     str = "Report.aspx?Parameter=75u!Type." + this.intType;
                 }
@@ -509,7 +504,7 @@
                 exception.ToString();
                 str = "Report.aspx?Parameter=74";
             }
-        Label_0487:
+        Label_0468:
             base.Response.Redirect(str);
         }
 
@@ -519,13 +514,13 @@
             DataTable arrTableByClubID = BTPArrange5Manager.GetArrTableByClubID(this.intClubID);
             if (arrTableByClubID != null)
             {
-                int num2 = 0;
+                int num = 0;
                 foreach (DataRow row in arrTableByClubID.Rows)
                 {
-                    int num = (int) row["Arrange5ID"];
-                    num2++;
-                    str = str + num;
-                    if (num2 < 4)
+                    int num2 = (int) row["Arrange5ID"];
+                    num++;
+                    str = str + num2;
+                    if (num < 4)
                     {
                         str = str + ",";
                     }
@@ -603,7 +598,7 @@
             else
             {
                 BTPClubManager.SetArrange5(this.intClubID, strArrangeDev, strArrangeCup, strArrangeOther);
-                int request = (int) SessionItem.GetRequest("Jump", 0);
+                int request = SessionItem.GetRequest("Jump", 0);
                 if (request == 1)
                 {
                     base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
@@ -625,51 +620,50 @@
         private void MatchLev(int intUserIDA, int intClubIDA)
         {
             this.strList = "";
-            intUserIDA = (int) SessionItem.GetRequest("UserID", 0);
-            intClubIDA = (int) SessionItem.GetRequest("ClubID", 0);
-            DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, intClubIDA, 5);
+            intUserIDA = SessionItem.GetRequest("UserID", 0);
+            intClubIDA = SessionItem.GetRequest("ClubID", 0);
+            DataTable table = BTPToolLinkManager.CheckClubLink(this.intUserID, intClubIDA, 5);
             bool flag = false;
-            if (reader != null)
+            if (table != null)
             {
-                foreach (DataRow dataRow in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int num = (byte)dataRow["Category"];
+                    int num = (byte) row["Category"];
                     if (num == 1)
                     {
                         flag = true;
                     }
                 }
             }
-            //reader.Close();
             if (flag)
             {
                 this.intUserID = intUserIDA;
             }
-            DataRow row = BTPArrangeLvlManager.GetArrange5(this.intUserID);
-            int intLevel = (byte) row["VOInside"];
-            int num3 = (byte) row["VOCHelp"];
-            int num4 = (byte) row["VOOutside"];
-            int num5 = (byte) row["VOSpeed"];
-            int num6 = (byte) row["VOAll"];
-            int num7 = (byte) row["VOBlock"];
-            int num8 = (byte) row["VDArea23"];
-            int num9 = (byte) row["VDArea32"];
-            int num10 = (byte) row["VDArea212"];
-            int num11 = (byte) row["VDOne"];
-            int num12 = (byte) row["VDOneInside"];
-            int num13 = (byte) row["VDOneOutside"];
-            int num14 = (int) row["VOInsideP"];
-            int num15 = (int) row["VOCHelpP"];
-            int num16 = (int) row["VOOutsideP"];
-            int num17 = (int) row["VOSpeedP"];
-            int num18 = (int) row["VOAllP"];
-            int num19 = (int) row["VOBlockP"];
-            int num20 = (int) row["VDArea23P"];
-            int num21 = (int) row["VDArea32P"];
-            int num22 = (int) row["VDArea212P"];
-            int num23 = (int) row["VDOneP"];
-            int num24 = (int) row["VDOneInsideP"];
-            int num25 = (int) row["VDOneOutsideP"];
+            DataRow row2 = BTPArrangeLvlManager.GetArrange5(this.intUserID);
+            int intLevel = (byte) row2["VOInside"];
+            int num3 = (byte) row2["VOCHelp"];
+            int num4 = (byte) row2["VOOutside"];
+            int num5 = (byte) row2["VOSpeed"];
+            int num6 = (byte) row2["VOAll"];
+            int num7 = (byte) row2["VOBlock"];
+            int num8 = (byte) row2["VDArea23"];
+            int num9 = (byte) row2["VDArea32"];
+            int num10 = (byte) row2["VDArea212"];
+            int num11 = (byte) row2["VDOne"];
+            int num12 = (byte) row2["VDOneInside"];
+            int num13 = (byte) row2["VDOneOutside"];
+            int num14 = (int) row2["VOInsideP"];
+            int num15 = (int) row2["VOCHelpP"];
+            int num16 = (int) row2["VOOutsideP"];
+            int num17 = (int) row2["VOSpeedP"];
+            int num18 = (int) row2["VOAllP"];
+            int num19 = (int) row2["VOBlockP"];
+            int num20 = (int) row2["VDArea23P"];
+            int num21 = (int) row2["VDArea32P"];
+            int num22 = (int) row2["VDArea212P"];
+            int num23 = (int) row2["VDOneP"];
+            int num24 = (int) row2["VDOneInsideP"];
+            int num25 = (int) row2["VDOneOutsideP"];
             object strList = this.strList;
             this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td></td><td height='25'><font color='#00cc00'>进攻</font></td><td>内线强攻</td><td>", intLevel, "</td><td>", num14, "/", BTPArrangeLvlManager.Get5ArrangeNeed(intLevel), "</td><td></td></tr>" });
             strList = this.strList;
@@ -716,7 +710,7 @@
                 }
                 else
                 {
-                    this.intType = (int) SessionItem.GetRequest("Type", 0);
+                    this.intType = SessionItem.GetRequest("Type", 0);
                     if (this.intType != 0)
                     {
                         SessionItem.CheckCanUseAfterUpdate(this.intCategory);
@@ -775,8 +769,8 @@
                         case 6:
                         {
                             this.strPageIntro = "<img src='" + SessionItem.GetImageURL() + "MenuCard/VArrange/SArrange_07.GIF' border='0' height='24' width='73'><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>";
-                            int request = (int) SessionItem.GetRequest("UserID", 0);
-                            int intClubIDA = (int) SessionItem.GetRequest("ClubID", 0);
+                            int request = SessionItem.GetRequest("UserID", 0);
+                            int intClubIDA = SessionItem.GetRequest("ClubID", 0);
                             if ((request > 0) && (intClubIDA > 0))
                             {
                                 this.tblArrangeLvl.Visible = true;
@@ -880,12 +874,6 @@
             this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td></td><td height='25'><font color='#FF0000'>防守</font></td><td>盯人内线</td><td>", num11, str, "</td><td>", num23, "/", BTPArrangeLvlManager.Get5ArrangeNeed(num11), "</td><td></td></tr>" });
             strList = this.strList;
             this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td></td><td height='25'><font color='#FF0000'>防守</font></td><td>盯人外线</td><td>", num12, str, "</td><td>", num24, "/", BTPArrangeLvlManager.Get5ArrangeNeed(num12), "</td><td></td></tr>" });
-       
-           //<tr>
-											//<td colspan="6"><p style="MARGIN: 5px 0px 10px" align="center"><img src='Images//button_xd.GIF' width='70' height='24' style='CURSOR: hand' onclick='javascript:window.location="AfreshArrange.aspx";'></p>
-											//</td>
-										//</tr>
-        
         }
     }
 }

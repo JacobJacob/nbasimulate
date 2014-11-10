@@ -6,7 +6,7 @@
 
     public class ShowClubIFrom : Page
     {
-        public int intHeight = 0;
+        public int intHeight;
         public string strUrl = "";
 
         private void InitializeComponent()
@@ -22,7 +22,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            int request = (int) SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             if (request == -99)
             {
                 this.intHeight = 370;

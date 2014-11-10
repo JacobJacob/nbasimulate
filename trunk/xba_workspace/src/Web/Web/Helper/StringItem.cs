@@ -1,6 +1,5 @@
 ﻿namespace Web.Helper
 {
-    using LoginParameter;
     using ServerManage;
     using System;
     using System.IO;
@@ -19,14 +18,14 @@
             try
             {
                 string zero = GetZero(datIn.Year);
-                string str3 = GetZero(Convert.ToInt32(datIn.Year.ToString().Substring(2, 2)));
-                string replacement = (strFormat.IndexOf("yyyy") == -1) ? str3 : zero;
-                string str5 = GetZero(datIn.Month);
-                string str6 = GetZero(datIn.Day);
-                string str7 = GetZero(datIn.Hour);
-                string str8 = GetZero(datIn.Minute);
-                string str9 = GetZero(datIn.Second);
-                return Regex.Replace(Regex.Replace(Regex.Replace(Regex.Replace(Regex.Replace(Regex.Replace(strFormat, "dd", str6), "MM", str5), "y{1,4}", replacement), "hh", str7), "mm", str8), "ss", str9);
+                string str2 = GetZero(Convert.ToInt32(datIn.Year.ToString().Substring(2, 2)));
+                string replacement = (strFormat.IndexOf("yyyy") == -1) ? str2 : zero;
+                string str4 = GetZero(datIn.Month);
+                string str5 = GetZero(datIn.Day);
+                string str6 = GetZero(datIn.Hour);
+                string str7 = GetZero(datIn.Minute);
+                string str8 = GetZero(datIn.Second);
+                return Regex.Replace(Regex.Replace(Regex.Replace(Regex.Replace(Regex.Replace(Regex.Replace(strFormat, "dd", str5), "MM", str4), "y{1,4}", replacement), "hh", str6), "mm", str7), "ss", str8);
             }
             catch (Exception exception)
             {
@@ -37,40 +36,11 @@
 
         public static string Get51laURL()
         {
-
             return "";
-
         }
-
-
-        //    if (ServerParameter.strCopartner == "CGA")
-        //    {
-        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/155/27/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/155/27/ystat.gif\"></a></noscript>";
-        //    }
-        //    if (ServerParameter.strCopartner == "ZHW")
-        //    {
-        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/374/412/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/374/412/ystat.gif\"></a></noscript>";
-        //    }
-        //    if (ServerParameter.strCopartner == "51WAN")
-        //    {
-        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/41/206/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/41/206/ystat.gif\"></a></noscript>";
-        //    }
-        //    if (ServerParameter.strCopartner == "17173")
-        //    {
-        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/41/324/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/41/324/ystat.gif\"></a></noscript>";
-        //    }
-        //    if (ServerParameter.strCopartner == "DUNIU")
-        //    {
-        //        return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/1/204/216/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/1/204/216/ystat.gif\"></a></noscript>";
-        //    }
-        //    return "<script type=\"text/javascript\" src=\"http://js.tongji.yahoo.com.cn/0/155/28/ystat.js\"></script><noscript><a href=\"http://js.tongji.yahoo.com.cn\"><img src=\"http://js.tongji.yahoo.com.cn/0/155/28/ystat.gif\"></a></noscript>";
-        //}
 
         public static string GetBuyCoinURL()
         {
-           
-           // return (DBLogin.URLString(40) + "PayCenter.aspx");
-           // return "http://www.xs1234.com/?sid=11365";
             return Config.GetPayLink();
         }
 
@@ -162,43 +132,6 @@
         public static string GetLogoutURL()
         {
             return "LogOut.aspx";
-            //if (!ServerParameter.blnUseServer)
-            //{
-            //    return "LogOut.aspx";
-            //}
-            //if (ServerParameter.strCopartner == "CGA")
-            //{
-            //    return ("http://xba.cga.com.cn/Logout.aspx?S=web" + ServerParameter.intGameCategory + ".xba.cga.com.cn");
-            //}
-            //if (ServerParameter.strCopartner == "ZHW")
-            //{
-            //    return ("http://xba.game.china.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".game.china.com");
-            //}
-            //if (ServerParameter.strCopartner == "17173")
-            //{
-            //    if (ServerParameter.intGameCategory == 2)
-            //    {
-            //        return ("http://xba.web.17173.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".web.17173.com");
-            //    }
-            //    return ("http://xba.web.17173.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".web.17173.com");
-            //}
-            //if (ServerParameter.strCopartner == "51WAN")
-            //{
-            //    if (ServerParameter.intGameCategory == 2)
-            //    {
-            //        return ("http://xba.51wan.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".51wan.com");
-            //    }
-            //    return ("http://xba.51wan.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".51wan.com");
-            //}
-            //if (ServerParameter.strCopartner == "DUNIU")
-            //{
-            //    return ("http://xbas.mmoabc.com/Logout.aspx?S=xbaw" + ServerParameter.intGameCategory + ".mmoabc.com");
-            //}
-            //if (ServerParameter.strCopartner == "DW")
-            //{
-            //    return ("http://xbas.xba.duowan.com/Logout.aspx?S=xbam" + ServerParameter.intGameCategory + ".xba.duowan.com");
-            //}
-            //return (DBLogin.URLString(40) + "MemberCenter.aspx?IsLogout=1");
         }
 
         public static string GetPercent(int intA, int intB, int intNum)
@@ -421,14 +354,6 @@
             {
                 return false;
             }
-            /*if (HasInvalidWord(strIn))
-            {
-                return false;
-            }
-            if (GetHtmlEncode(strIn) != strIn)
-            {
-                return false;
-            }*/
             return true;
         }
 
@@ -441,19 +366,23 @@
             return Regex.IsMatch(strIn, @"^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$");
         }
 
-        public static bool IsValidLogin(string strIn)
-        {
-            return Regex.IsMatch(strIn, "^[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_]{4,16}$");
-        }
-
         public static bool IsValidInviteCode(string strInviteCode)
         {
             return Regex.IsMatch(strInviteCode, "^[0123456789abcdefghijklmnopqrstuvwxyz]{15}$");
         }
 
+        public static bool IsValidLogin(string strIn)
+        {
+            return Regex.IsMatch(strIn, "^[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_]{4,16}$");
+        }
+
         public static bool IsValidMsg(string strIn)
         {
-            return (((strIn.IndexOf("<") == -1) && (strIn.IndexOf(">") == -1)) && ((strIn.IndexOf("'") == -1) && (strIn.IndexOf("|") == -1)));
+            if ((strIn.IndexOf("<") != -1) || (strIn.IndexOf(">") != -1))
+            {
+                return false;
+            }
+            return ((strIn.IndexOf("'") == -1) && (strIn.IndexOf("|") == -1));
         }
 
         public static bool IsValidMsg(string strIn, int intMin, int intMax)
@@ -463,7 +392,11 @@
             {
                 return false;
             }
-            return (((strIn.IndexOf("<") == -1) && (strIn.IndexOf(">") == -1)) && ((strIn.IndexOf("'") == -1) && (strIn.IndexOf("|") == -1)));
+            if ((strIn.IndexOf("<") != -1) || (strIn.IndexOf(">") != -1))
+            {
+                return false;
+            }
+            return ((strIn.IndexOf("'") == -1) && (strIn.IndexOf("|") == -1));
         }
 
         public static bool IsValidName(string strIn, int intMin, int intMax)
@@ -539,21 +472,25 @@
 
         public static bool IsValidWord(string strIn)
         {
-            if(strIn == null)
+            if (strIn != null)
             {
-                return true;
-            }
-            int lenght = strIn.Length;
-            for (int i = 0; i < lenght; i++)
-            { 
-                char c = strIn[i];
-                if (c == ',' || c == '"' || c == '"' || c == '<' || c == '>' || c == '\'' || c == '|' || c == '&')
+                int length = strIn.Length;
+                for (int i = 0; i < length; i++)
                 {
-                    return false;
+                    switch (strIn[i])
+                    {
+                        case ',':
+                        case '"':
+                        case '"':
+                        case '<':
+                        case '>':
+                        case '\'':
+                        case '|':
+                        case '&':
+                            return false;
+                    }
                 }
-
             }
-
             return true;
         }
 
@@ -564,7 +501,11 @@
             {
                 return false;
             }
-            return ((((strIn.IndexOf(",") == -1) && (strIn.IndexOf("\"") == -1)) && ((strIn.IndexOf("<") == -1) && (strIn.IndexOf(">") == -1))) && (((strIn.IndexOf("'") == -1) && (strIn.IndexOf("|") == -1)) && (strIn.IndexOf("&") == -1)));
+            if (((strIn.IndexOf(",") != -1) || (strIn.IndexOf("\"") != -1)) || ((strIn.IndexOf("<") != -1) || (strIn.IndexOf(">") != -1)))
+            {
+                return false;
+            }
+            return (((strIn.IndexOf("'") == -1) && (strIn.IndexOf("|") == -1)) && (strIn.IndexOf("&") == -1));
         }
 
         public static bool IsValidXPassword(string strIn)
@@ -578,8 +519,7 @@
             byte[] buffer = new byte[pToDecrypt.Length / 2];
             for (int i = 0; i < (pToDecrypt.Length / 2); i++)
             {
-                int num2 = Convert.ToInt32(pToDecrypt.Substring(i * 2, 2), 0x10);
-                buffer[i] = (byte) num2;
+                buffer[i] = Convert.ToInt32(pToDecrypt.Substring(i * 2, 2), 0x10);
             }
             provider.Key = Encoding.ASCII.GetBytes(sKey);
             provider.IV = Encoding.ASCII.GetBytes(sKey);

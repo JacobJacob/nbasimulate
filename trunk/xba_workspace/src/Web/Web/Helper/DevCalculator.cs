@@ -45,8 +45,7 @@
 
         public static int GetSalaryTop(string strDevCode)
         {
-            int level = GetLevel(strDevCode);
-            switch (level)
+            switch (GetLevel(strDevCode))
             {
                 case 1:
                     return 0x35b60;

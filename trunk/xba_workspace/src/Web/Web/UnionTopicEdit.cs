@@ -187,8 +187,8 @@
             {
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.intTopicID = (int) SessionItem.GetRequest("TopicID", 0);
-                this.intUnionID = (int) SessionItem.GetRequest("UnionID", 0);
+                this.intTopicID = SessionItem.GetRequest("TopicID", 0);
+                this.intUnionID = SessionItem.GetRequest("UnionID", 0);
                 DataRow unionBoardRowByUnionID = BTPUnionBBSManager.GetUnionBoardRowByUnionID(this.intUnionID);
                 if (unionBoardRowByUnionID == null)
                 {

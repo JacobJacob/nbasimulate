@@ -15,14 +15,14 @@
         protected ImageButton btnPromotionOk;
         protected ImageButton btnSend;
         protected ImageButton btnSendB;
-        protected ImageButton btnSendUnionCupB;
         protected ImageButton btnSendMsg;
+        protected ImageButton btnSendUnionCupB;
         protected ImageButton btnSetReputation;
         protected CheckBox cbNoName;
-        public int intChampionB = 0;
-        public int intUnionCupB = 0;
-        public int intTopReputation = 0;
+        public int intChampionB;
+        public int intTopReputation;
         private int intUnionCategory;
+        public int intUnionCupB;
         private int intUnionID;
         private int intUnionIDB;
         private int intUserID;
@@ -36,24 +36,24 @@
         protected HtmlTable tbChooseClub;
         protected TextBox tbContent;
         protected HtmlTable tblChampionCup;
-        protected HtmlTable tblUnionCup;
         protected HtmlTable tblCupList;
         protected HtmlTable tblDelMaster;
         protected HtmlTable tblDevsion;
         protected HtmlTable tblExchange;
-        protected HtmlTable tblPromotionExchange;
         protected HtmlTable tblFmatchMsg;
         protected HtmlTable tblGuess;
         protected HtmlTable tblHonour;
         protected HtmlTable tblMessageCenter;
         protected HtmlTable tblModifyClub;
         protected HtmlTable tblPlayerCenter;
+        protected HtmlTable tblPromotionExchange;
         protected HtmlTable tblReputation;
         protected HtmlTable tblSendUnionWealth;
         protected HtmlTable tblTools;
         protected HtmlTable tblTrainPlayerCenter;
         protected HtmlTable tblTransferMarket;
         protected HtmlTable tblUnion;
+        protected HtmlTable tblUnionCup;
         protected HtmlTable tblUnionCupB;
         protected HtmlTable tblUnionMsgSend;
         protected HtmlTable tblWealthMarket;
@@ -62,88 +62,88 @@
         protected TextBox tbNickName;
         protected TextBox tbNickNameCup;
         protected TextBox tbNickNameUnionCup;
+        protected TextBox tbPromotion;
         protected TextBox tbReason;
         protected TextBox tbReputation;
         protected TextBox tbSendWealth;
         protected HtmlTable tbStreenLev;
         protected TextBox tbUnionWealth;
         protected TextBox tbWealth;
-        protected TextBox tbPromotion;
 
         private void btnDelMaster_Click(object sender, ImageClickEventArgs e)
         {
             string strIn = this.tbReason.Text.Trim();
-            if (StringItem.IsValidName(strIn, 1, 250))
+            if (!StringItem.IsValidName(strIn, 1, 250))
+            {
+                this.strMsg = "<font color=red>请输入正确的弹劾原因</font>";
+            }
+            else
             {
                 switch (BTPUnionPolity.DelateMaster(this.intUserID, strIn))
                 {
-                    case 1:
-                        this.strMsg = "发起弹劾成功！弹劾将在72小时后结束。";
-                        return;
-
-                    case -1:
-                        this.strMsg = "<font color=red>您没有联盟或已经被盟主标记踢出</font>";
-                        return;
-
-                    case -2:
-                        this.strMsg = "<font color=red>您加入联盟的时间小于7天不能发起盟主弹劾</font>";
-                        return;
-
-                    case -3:
-                        this.strMsg = "<font color=red>您没有足够的游戏币</font>";
-                        return;
-
-                    case -4:
-                        this.strMsg = "<font color=red>对不起，当前联盟正处在弹劾中，暂时不能发起弹劾！</font>";
+                    case -6:
+                        this.strMsg = "<font color=red>对不起，距上次弹劾结束不到5天，暂时不能发起新一轮弹劾</font>";
                         return;
 
                     case -5:
                         this.strMsg = "<font color=red>您已经是盟主了</font>";
                         return;
 
-                    case -6:
-                        this.strMsg = "<font color=red>对不起，距上次弹劾结束不到5天，暂时不能发起新一轮弹劾</font>";
+                    case -4:
+                        this.strMsg = "<font color=red>对不起，当前联盟正处在弹劾中，暂时不能发起弹劾！</font>";
+                        return;
+
+                    case -3:
+                        this.strMsg = "<font color=red>您没有足够的游戏币</font>";
+                        return;
+
+                    case -2:
+                        this.strMsg = "<font color=red>您加入联盟的时间小于7天不能发起盟主弹劾</font>";
+                        return;
+
+                    case -1:
+                        this.strMsg = "<font color=red>您没有联盟或已经被盟主标记踢出</font>";
+                        return;
+
+                    case 1:
+                        this.strMsg = "发起弹劾成功！弹劾将在72小时后结束。";
                         return;
                 }
                 this.strMsg = "<font color=red>系统错误请重试！</font>";
-            }
-            else
-            {
-                this.strMsg = "<font color=red>请输入正确的弹劾原因</font>";
             }
         }
 
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
             string str = this.tbWealth.Text.ToString().Trim();
-            int intWealth = 0;
+            int intAmount = 0;
             if (StringItem.IsNumber(str))
             {
-                intWealth = Convert.ToInt32(str);
+                intAmount = Convert.ToInt32(str);
             }
             else
             {
                 this.strMsg = "只能输入半角数字。";
                 return;
             }
-            if (intWealth < 1)
+            if (intAmount < 1)
             {
                 this.strMsg = "最少兑换1分王者积分。";
             }
-            else if (intWealth >= 0x186a0)
+            else if (intAmount >= 0x186a0)
             {
                 this.strMsg = "您输入的王者积分数量过大，请重新输入。";
             }
             else
             {
-                switch (BTPAccountManager.ExchangeOnlyPoint(this.intUserID, intWealth))
+                switch (BTPAccountManager.ExchangeOnlyPoint(this.intUserID, intAmount))
                 {
-                    case 1:
-                        this.strMsg = "成功兑换到" + intWealth + "游戏币，请查收。";
-                        return;
-
                     case -1:
                         this.strMsg = "您的王者积分不足，无法进行游戏币兑换。";
+                        return;
+
+                    case 1:
+                        this.strMsg = "成功兑换到" + intAmount + "游戏币，请查收。";
                         return;
                 }
                 this.strMsg = "不能输入负数，请重新输入。";
@@ -153,40 +153,39 @@
         private void btnPromotionOk_Click(object sender, ImageClickEventArgs e)
         {
             string str = this.tbPromotion.Text.ToString().Trim();
-            int intPromotion = 0;
+            int intAmount = 0;
             if (StringItem.IsNumber(str))
             {
-                intPromotion = Convert.ToInt32(str);
+                intAmount = Convert.ToInt32(str);
             }
             else
             {
                 this.strMsg = "只能输入半角数字。";
                 return;
             }
-            if (intPromotion < 1)
+            if (intAmount < 1)
             {
                 this.strMsg = "最少兑换1分推广积分。";
             }
-            else if (intPromotion >= 0x186a0)
+            else if (intAmount >= 0x186a0)
             {
                 this.strMsg = "您输入的推广积分数量过大，请重新输入。";
             }
             else
             {
-                switch (BTPAccountManager.ExchangePromotionPoint(this.intUserID, intPromotion))
+                switch (BTPAccountManager.ExchangePromotionPoint(this.intUserID, intAmount))
                 {
-                    case 1:
-                        this.strMsg = "成功兑换到" + intPromotion + "游戏币，请查收。";
-                        return;
-
                     case -1:
                         this.strMsg = "您的推广积分不足，无法进行游戏币兑换。";
+                        return;
+
+                    case 1:
+                        this.strMsg = "成功兑换到" + intAmount + "游戏币，请查收。";
                         return;
                 }
                 this.strMsg = "不能输入负数，请重新输入。";
             }
         }
-
 
         private void btnSend_Click(object sender, ImageClickEventArgs e)
         {
@@ -217,28 +216,28 @@
         {
             switch (BTPXGroupMatchManager.SendChampionCupB(this.intUserID, this.intUserIDB))
             {
-                case 1:
-                    this.strMsg = "<font color=red>发放成功！</font>";
-                    break;
-
-                case -3:
-                    this.strMsg = "<font color=red>对不起，联盟内的B级邀请函已发送完毕！</font>";
+                case -5:
+                    this.strMsg = "<font color=red>对不起，此经理没有职业队！</font>";
                     break;
 
                 case -4:
                     this.strMsg = "<font color=red>对不起，对方已经有本届冠军杯的邀请函了！</font>";
                     break;
 
-                case -1:
-                    this.strMsg = "<font color=red>对不起，此经理不是您联盟成员！</font>";
+                case -3:
+                    this.strMsg = "<font color=red>对不起，联盟内的B级邀请函已发送完毕！</font>";
                     break;
 
                 case -2:
                     this.strMsg = "<font color=red>对不起，您不是联盟盟主！</font>";
                     break;
 
-                case -5:
-                    this.strMsg = "<font color=red>对不起，此经理没有职业队！</font>";
+                case -1:
+                    this.strMsg = "<font color=red>对不起，此经理不是您联盟成员！</font>";
+                    break;
+
+                case 1:
+                    this.strMsg = "<font color=red>发放成功！</font>";
                     break;
             }
             DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
@@ -248,49 +247,15 @@
             }
         }
 
-        private void btnSendUnionCupB_Click(object sender, ImageClickEventArgs e)
-        {
-            int result = BTPUnionCupManager.SendUnionCup(this.intUserID, this.intUserIDB);
-
-            switch (result)
-            {
-                case 1:
-                    this.strMsg = "<font color=red>发放成功！</font>";
-                    break;
-
-                case -3:
-                    this.strMsg = "<font color=red>对不起，联盟争霸赛邀请函已发送完毕！</font>";
-                    break;
-
-                case -4:
-                    this.strMsg = "<font color=red>对不起，对方已经有本届联盟争霸赛邀请函了！</font>";
-                    break;
-
-                case -1:
-                    this.strMsg = "<font color=red>对不起，此经理不是您联盟成员！</font>";
-                    break;
-
-                case -2:
-                    this.strMsg = "<font color=red>对不起，您不是联盟盟主！</font>";
-                    break;
-
-                case -5:
-                    this.strMsg = "<font color=red>对不起，此经理没有职业队！</font>";
-                    break;
-            }
-            DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
-            if (unionRowByID != null)
-            {
-                this.intUnionCupB = (int)unionRowByID["UnionCupCount"];
-            }
-        }
-
-
         private void btnSendMsg_Click(object sender, ImageClickEventArgs e)
         {
-            int request = (int) SessionItem.GetRequest("UID", 0);
+            int request = SessionItem.GetRequest("UID", 0);
             DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(request);
-            if (unionRowByID != null)
+            if (unionRowByID == null)
+            {
+                this.strMsg = "无此联盟，请重新输入！";
+            }
+            else
             {
                 bool blnNoName = this.cbNoName.Checked;
                 string str = unionRowByID["Name"].ToString().Trim();
@@ -299,42 +264,78 @@
                 {
                     this.strMsg = "您无此权限，不能进行短信群发！";
                 }
-                else if (StringItem.IsValidName(strIn, 2, 500))
+                else if (!StringItem.IsValidName(strIn, 2, 500))
+                {
+                    this.strMsg = "您输入的短信内容有误，请重新输入！";
+                }
+                else
                 {
                     switch (BTPUnionManager.SendMsgReadByUserID(this.intUserID, request, strIn, blnNoName))
                     {
-                        case 1:
-                            this.strMsg = "发送成功，" + str + "所有盟员将在1分钟内收到该信息！";
-                            this.tbContent.Text = "";
-                            this.tbSendWealth.Text = BTPUnionManager.SendWealthByUserID(this.intUserID, request).ToString();
+                        case -2:
+                            this.strMsg = "您的游戏币不足！";
                             return;
 
                         case -1:
                             this.strMsg = "您要群发短信的联盟不存在，无法群发消息！";
                             return;
 
-                        case -2:
-                            this.strMsg = "您的游戏币不足！";
+                        case 1:
+                            this.strMsg = "发送成功，" + str + "所有盟员将在1分钟内收到该信息！";
+                            this.tbContent.Text = "";
+                            this.tbSendWealth.Text = BTPUnionManager.SendWealthByUserID(this.intUserID, request).ToString();
                             return;
                     }
                     this.strMsg = "发送时出现错误，请重试！";
                 }
-                else
-                {
-                    this.strMsg = "您输入的短信内容有误，请重新输入！";
-                }
             }
-            else
+        }
+
+        private void btnSendUnionCupB_Click(object sender, ImageClickEventArgs e)
+        {
+            switch (BTPUnionCupManager.SendUnionCup(this.intUserID, this.intUserIDB))
             {
-                this.strMsg = "无此联盟，请重新输入！";
+                case -5:
+                    this.strMsg = "<font color=red>对不起，此经理没有职业队！</font>";
+                    break;
+
+                case -4:
+                    this.strMsg = "<font color=red>对不起，对方已经有本届联盟争霸赛邀请函了！</font>";
+                    break;
+
+                case -3:
+                    this.strMsg = "<font color=red>对不起，联盟争霸赛邀请函已发送完毕！</font>";
+                    break;
+
+                case -2:
+                    this.strMsg = "<font color=red>对不起，您不是联盟盟主！</font>";
+                    break;
+
+                case -1:
+                    this.strMsg = "<font color=red>对不起，此经理不是您联盟成员！</font>";
+                    break;
+
+                case 1:
+                    this.strMsg = "<font color=red>发放成功！</font>";
+                    break;
+            }
+            DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
+            if (unionRowByID != null)
+            {
+                this.intUnionCupB = (int) unionRowByID["UnionCupCount"];
             }
         }
 
         private void btnSetReputation_Click(object sender, ImageClickEventArgs e)
         {
-            int request = (int) SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             string str = this.tbReputation.Text.Trim();
-            if (StringItem.IsNumber(str))
+            if (!StringItem.IsNumber(str))
+            {
+                this.strMsg = "可支配的联盟威望最小为1最高为" + this.intTopReputation;
+                this.tbReputation.Text = "";
+            }
+            else
             {
                 int intReputation = Convert.ToInt32(str);
                 if ((intReputation < 1) || (intReputation > this.intTopReputation))
@@ -346,21 +347,21 @@
                 {
                     switch (BTPUnionFieldManager.SetUReputation(this.intUserID, intReputation, request))
                     {
-                        case 1:
-                            this.strMsg = "操作成功，此经理的可支配威望为" + intReputation;
-                            return;
-
-                        case -1:
-                            this.strMsg = "您不是联盟的盟主无权进行此操作！";
+                        case -3:
+                            this.strMsg = "可支配的联盟威望最小为1最高为" + this.intTopReputation;
+                            this.tbReputation.Text = "";
                             return;
 
                         case -2:
                             this.strMsg = "此经理不是您联盟的盟员！";
                             return;
 
-                        case -3:
-                            this.strMsg = "可支配的联盟威望最小为1最高为" + this.intTopReputation;
-                            this.tbReputation.Text = "";
+                        case -1:
+                            this.strMsg = "您不是联盟的盟主无权进行此操作！";
+                            return;
+
+                        case 1:
+                            this.strMsg = "操作成功，此经理的可支配威望为" + intReputation;
                             return;
 
                         case -9:
@@ -369,11 +370,6 @@
                     }
                     this.strMsg = "系统错误请重试！";
                 }
-            }
-            else
-            {
-                this.strMsg = "可支配的联盟威望最小为1最高为" + this.intTopReputation;
-                this.tbReputation.Text = "";
             }
         }
 
@@ -403,22 +399,15 @@
             this.btnSend.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSend) + ";this.disabled=true;";
             this.btnSendMsg.Click += new ImageClickEventHandler(this.btnSendMsg_Click);
             this.btnSendMsg.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSendMsg) + ";this.disabled=true;";
-            
             this.btnSendB.Click += new ImageClickEventHandler(this.btnSendB_Click);
             this.btnSendB.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSendB) + ";this.disabled=true;";
-
             this.btnSendUnionCupB.Click += new ImageClickEventHandler(this.btnSendUnionCupB_Click);
             this.btnSendUnionCupB.Attributes["onclick"] = base.GetPostBackEventReference(this.btnSendUnionCupB) + ";this.disabled=true;";
-            
-            
             this.btnSetReputation.Click += new ImageClickEventHandler(this.btnSetReputation_Click);
             this.btnDelMaster.Click += new ImageClickEventHandler(this.btnDelMaster_Click);
-
             this.btnPromotionOk.Click += new ImageClickEventHandler(this.btnPromotionOk_Click);
             this.btnPromotionOk.Attributes["onclick"] = base.GetPostBackEventReference(this.btnPromotionOk) + ";this.disabled=true;";
-
             this.btnDelMaster.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
-
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -465,7 +454,6 @@
             this.tblReputation.Visible = false;
             this.tblDelMaster.Visible = false;
             this.tblPromotionExchange.Visible = false;
-
             this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnPromotionOk.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSend.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
@@ -473,7 +461,6 @@
             this.btnSetReputation.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSendB.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.btnSendUnionCupB.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
-            
             switch (SessionItem.GetRequest("Type", 1).ToString().Trim())
             {
                 case "AUTOTRAIN":
@@ -567,18 +554,17 @@
                 case "SENDWEALTH":
                 {
                     DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                    if (accountRowByUserID == null)
+                    {
+                        base.Response.Redirect("Report.aspx?Parameter=12");
+                        return;
+                    }
+                    this.intUnionCategory = (byte) accountRowByUserID["UnionCategory"];
+                    this.intUnionID = (int) accountRowByUserID["UnionID"];
+                    this.intUserIDB = SessionItem.GetRequest("UserID", 0);
+                    accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserIDB);
                     if (accountRowByUserID != null)
                     {
-                        this.intUnionCategory = (byte) accountRowByUserID["UnionCategory"];
-                        this.intUnionID = (int) accountRowByUserID["UnionID"];
-                        this.intUserIDB = (int) SessionItem.GetRequest("UserID", 0);
-                        accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserIDB);
-                        if (accountRowByUserID == null)
-                        {
-                            this.strMsg = "<font color=red>查无此经理！</font>";
-                            this.btnSend.Visible = false;
-                            return;
-                        }
                         this.intUnionIDB = (int) accountRowByUserID["UnionID"];
                         this.tbNickName.Text = accountRowByUserID["NickName"].ToString().Trim();
                         this.tbNickName.Enabled = false;
@@ -591,7 +577,8 @@
                         this.btnSend.Visible = false;
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=12");
+                    this.strMsg = "<font color=red>查无此经理！</font>";
+                    this.btnSend.Visible = false;
                     return;
                 }
                 case "UNIONMSGSEND":
@@ -615,13 +602,13 @@
                 {
                     this.tblReputation.Visible = true;
                     DataRow row2 = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                    if (row2 != null)
+                    if (row2 == null)
                     {
-                        this.intUnionID = (int) row2["UnionID"];
-                        this.SetUReputation();
+                        base.Response.Redirect("Report.aspx?Parameter=12");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=12");
+                    this.intUnionID = (int) row2["UnionID"];
+                    this.SetUReputation();
                     return;
                 }
                 case "DELATEMASTER":
@@ -650,7 +637,7 @@
                 }
                 else
                 {
-                    this.intUserIDB = (int) SessionItem.GetRequest("UserID", 0);
+                    this.intUserIDB = SessionItem.GetRequest("UserID", 0);
                     accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserIDB);
                     if (accountRowByUserID == null)
                     {
@@ -688,8 +675,8 @@
             }
             else
             {
-                this.intUnionCategory = (byte)accountRowByUserID["UnionCategory"];
-                this.intUnionID = (int)accountRowByUserID["UnionID"];
+                this.intUnionCategory = (byte) accountRowByUserID["UnionCategory"];
+                this.intUnionID = (int) accountRowByUserID["UnionID"];
                 if (this.intUnionCategory != 1)
                 {
                     this.strMsg = "<font color=red>对不起您不是联盟盟主不能发放邀请！</font>";
@@ -697,7 +684,7 @@
                 }
                 else
                 {
-                    this.intUserIDB = (int)SessionItem.GetRequest("UserID", 0);
+                    this.intUserIDB = SessionItem.GetRequest("UserID", 0);
                     accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserIDB);
                     if (accountRowByUserID == null)
                     {
@@ -706,7 +693,7 @@
                     }
                     else
                     {
-                        this.intUnionIDB = (int)accountRowByUserID["UnionID"];
+                        this.intUnionIDB = (int) accountRowByUserID["UnionID"];
                         this.tbNickNameUnionCup.Text = accountRowByUserID["NickName"].ToString().Trim();
                         if (this.intUnionIDB != this.intUnionID)
                         {
@@ -718,7 +705,7 @@
                             accountRowByUserID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
                             if (accountRowByUserID != null)
                             {
-                                this.intUnionCupB = (int)accountRowByUserID["UnionCupCount"];
+                                this.intUnionCupB = (int) accountRowByUserID["UnionCupCount"];
                             }
                         }
                     }
@@ -726,10 +713,9 @@
             }
         }
 
-
         private void SetUnionMsg()
         {
-            int request = (int) SessionItem.GetRequest("UID", 0);
+            int request = SessionItem.GetRequest("UID", 0);
             if (request < 1)
             {
                 request = this.intUnionID;
@@ -768,7 +754,7 @@
 
         private void SetUReputation()
         {
-            int request = (int) SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(request);
             if (accountRowByUserID != null)
             {

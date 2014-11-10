@@ -16,11 +16,12 @@
 
         public bool Send()
         {
-            MessageClass class2 = new MessageClass();
-            class2.Silent = true;
-            class2.Logging = true;
-            class2.Charset = "GB2312";
-            class2.ContentType = "text/html";
+            MessageClass class2 = new MessageClass {
+                Silent = true,
+                Logging = true,
+                Charset = "GB2312",
+                ContentType = "text/html"
+            };
             class2.AddRecipient(this.strEmail, "", "");
             class2.From = this.strSendServiceName;
             class2.FromName = "XBA管理团队";

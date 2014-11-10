@@ -74,8 +74,9 @@
                         else
                         {
                             BTPFriMatchMsgManager.AddFriMatchMsg(this.intUserID, this.strNickName, this.strClubName, validWords);
-                            HttpCookie cookie = new HttpCookie("SendTime");
-                            cookie.Value = DateTime.Now.ToString();
+                            HttpCookie cookie = new HttpCookie("SendTime") {
+                                Value = DateTime.Now.ToString()
+                            };
                             base.Response.Cookies.Add(cookie);
                             base.Response.Write("<script language='javascript'>window.parent.location.reload(true);</script>");
                         }

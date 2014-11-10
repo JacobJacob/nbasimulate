@@ -12,7 +12,7 @@
     public class AfreshArrange : Page
     {
         protected ImageButton btnOK;
-        public int intAllMoney = 0;
+        public int intAllMoney;
         private int intCategory;
         private int intClubID;
         private int[] intDefs = new int[6];

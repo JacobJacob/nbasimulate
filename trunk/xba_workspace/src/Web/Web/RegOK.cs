@@ -164,34 +164,36 @@
             }
             if (!flag)
             {
-                string str3;
-                string str4;
+                string str;
+                string str2;
                 string strFace = "0|0|0|0|0|0|0|0|0";
                 string strDiskURL = "NetDisk/" + StringItem.FormatDate(DateTime.Now, "yyyyMM") + "/";
                 if (base.Request.Cookies["FromURL"] != null)
                 {
-                    str3 = base.Request.Cookies["FromURL"].Value.ToString();
-                    HttpCookie cookie = new HttpCookie("FromURL");
-                    cookie.Value = "";
+                    str = base.Request.Cookies["FromURL"].Value.ToString();
+                    HttpCookie cookie = new HttpCookie("FromURL") {
+                        Value = ""
+                    };
                     base.Response.Cookies.Add(cookie);
                 }
                 else
                 {
-                    str3 = "";
+                    str = "";
                 }
                 if (base.Request.Cookies["UserCookies"] != null)
                 {
-                    str4 = base.Request.Cookies["UserCookies"].Value.ToString();
+                    str2 = base.Request.Cookies["UserCookies"].Value.ToString();
                 }
                 else
                 {
-                    str4 = StringItem.FormatDate(DateTime.Now, "yyyyMMddhhmmss").ToString() + RandomItem.rnd.Next(100, 0x3e7).ToString();
-                    HttpCookie cookie2 = new HttpCookie("UserCookies");
-                    cookie2.Value = str4;
-                    cookie2.Expires = DateTime.Now.AddYears(50);
+                    str2 = StringItem.FormatDate(DateTime.Now, "yyyyMMddhhmmss").ToString() + RandomItem.rnd.Next(100, 0x3e7).ToString();
+                    HttpCookie cookie2 = new HttpCookie("UserCookies") {
+                        Value = str2,
+                        Expires = DateTime.Now.AddYears(50)
+                    };
                     base.Response.Cookies.Add(cookie2);
                 }
-                int intUserID = ROOTUserManager.AddUser(this.strUserName, 0, this.strPassword, this.strNickName, this.blnSex, strFace, "", "", "", this.strEmail, this.strPrv, this.strCity, this.strIntroNickName, this.strSay, base.Request.ServerVariables["REMOTE_ADDR"], strDiskURL, str3, "", "", str4);
+                int intUserID = ROOTUserManager.AddUser(this.strUserName, 0, this.strPassword, this.strNickName, this.blnSex, strFace, "", "", "", this.strEmail, this.strPrv, this.strCity, this.strIntroNickName, this.strSay, base.Request.ServerVariables["REMOTE_ADDR"], strDiskURL, str, "", "", str2);
                 string str5 = "Boy";
                 if (this.blnSex)
                 {

@@ -4,7 +4,6 @@
     using ServerManage;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -17,6 +16,7 @@
         protected HtmlInputHidden hidClothes;
         protected HtmlInputHidden hidLogo;
         protected HtmlInputHidden hidMedal;
+        protected int intRecomUserID;
         private int intUserID;
         public string strErrClubName;
         public string strMsg;
@@ -24,7 +24,6 @@
         public string strTimeName;
         protected TextBox tbClubName;
         protected HtmlTable tblLogin_02;
-        protected int intRecomUserID;
 
         private void btnRegClub_Click(object sender, ImageClickEventArgs e)
         {
@@ -112,34 +111,17 @@
                 }
                 else
                 {
-                    string str4;
-                    string str5;
-                    string str6;
-                    string str7;
                     bool flag;
-                    string str8;
+                    string str5;
                     DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                     string pToEncrypt = onlineRowByUserID["UserName"].ToString().Trim();
-                    string str2 = onlineRowByUserID["Password"].ToString().Trim();
+                    string str7 = onlineRowByUserID["Password"].ToString().Trim();
                     int num1 = (int) onlineRowByUserID["Category"];
                     string strQQ = onlineRowByUserID["QQ"].ToString().Trim();
-                    //SqlDataReader reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                    //if (reader.Read())
-                    // {
-                    //    str4 = reader["City"].ToString().Trim();
-                     //   str5 = reader["Province"].ToString().Trim();
-                     //   str6 = reader["BirthDay"].ToString().Trim();
-                     //   str7 = reader["DeptTag"].ToString().Trim();
-                     //   reader.Close();
-                   // }
-                    //else
-                    //{
-                        str5 = "";
-                        str4 = "";
-                        str6 = "";
-                        str7 = "";
-                       // reader.Close();
-                    //}
+                    string strProvince = "";
+                    string strCity = "";
+                    string strBirth = "";
+                    string strDeptTag = "";
                     DataRow gameRow = BTPGameManager.GetGameRow();
                     if (gameRow != null)
                     {
@@ -156,27 +138,27 @@
                             return;
                         }
                         string strUserName = StringItem.MD5Encrypt(pToEncrypt, Global.strMD5Key);
-                        string strPassword = StringItem.MD5Encrypt(str2, Global.strMD5Key);
+                        string strPassword = StringItem.MD5Encrypt(str7, Global.strMD5Key);
                         this.strNickName = onlineRowByUserID["NickName"].ToString().Trim();
                         bool blnSex = (bool) onlineRowByUserID["Sex"];
-                        str8 = onlineRowByUserID["DiskURL"].ToString().Trim();
-                        BTPAccountManager.AddFullAccount(this.intUserID, pToEncrypt, this.strNickName, str2, blnSex, 0, str8 + "/", str6, str5, str4, strQQ, this.intRecomUserID, "");
+                        str5 = onlineRowByUserID["DiskURL"].ToString().Trim();
+                        BTPAccountManager.AddFullAccount(this.intUserID, pToEncrypt, this.strNickName, str7, blnSex, 0, str5 + "/", strBirth, strProvince, strCity, strQQ, this.intRecomUserID, "");
                         string str11 = Convert.ToString((int) (ServerParameter.intGameCategory + 0x7d0)).Trim();
-                        str7 = str7.Trim() + str11 + ",";
-                        ROOTUserGameManager.UpdateDeptTagByUserID(this.intUserID, str7);
+                        strDeptTag = strDeptTag.Trim() + str11 + ",";
+                        ROOTUserGameManager.UpdateDeptTagByUserID(this.intUserID, strDeptTag);
                         SessionItem.SetSelfLogin(strUserName, strPassword, false);
                     }
                     onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                     this.strNickName = onlineRowByUserID["NickName"].ToString();
-                    str8 = onlineRowByUserID["DiskURL"].ToString();
-                    string str12 = DBLogin.URLString(0) + str8 + "Face.png";
+                    str5 = onlineRowByUserID["DiskURL"].ToString();
+                    string str12 = DBLogin.URLString(0) + str5 + "Face.png";
                     int num2 = RandomItem.rnd.Next(0, 10);
                     this.strMsg = string.Concat(new object[] { "<table width='170' border='0' cellpadding='0' cellspacing='0'><tr><td height='60' align='center'><div style='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=", str12, "?RndID=", num2, ");width:37px;height:40px'></div><font class='ForumTime'>", this.strNickName, "</font></td></tr><tr><td height='27' align='center'>" });
                     string strMsg = this.strMsg;
                     this.strMsg = strMsg + "<a href='" + DBLogin.URLString(40) + "MemberCenter.aspx'><img src='" + SessionItem.GetImageURL() + "Button_portmanager.gif' width='76' height='24' border='0'></a>&nbsp;<a href='Logout.aspx?GameCategory=-1&Type=OnlyJump&JumpURL=Index.aspx' target='_blank'><img src='" + SessionItem.GetImageURL() + "button_06.gif' width='40' height='24' border='0'></a>&nbsp;<a href='" + StringItem.GetLogoutURL() + "'><img src='" + SessionItem.GetImageURL() + "button_07.gif' width='40' height='24' border='0'></a></td></tr></table>";
                     this.InitializeComponent();
                     base.OnInit(e);
-                    string request = (string) SessionItem.GetRequest("Type", 1);
+                    string request = SessionItem.GetRequest("Type", 1);
                     if (request == "NEXT")
                     {
                         this.btnRegClub.ImageUrl = SessionItem.GetImageURL() + "new/b2.gif";

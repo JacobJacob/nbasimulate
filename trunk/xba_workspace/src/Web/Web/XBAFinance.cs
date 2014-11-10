@@ -40,53 +40,53 @@
                 return;
             }
             string validWords = StringItem.GetValidWords(this.tbPayNick.Text.ToString().Trim());
-            if (StringItem.IsNumber(num))
+            if (!StringItem.IsNumber(num))
             {
-                if (!StringItem.IsValidName(validWords, 1, 20))
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=436");
-                }
-                else if (!DBLogin.CanConn(0))
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=445");
-                }
-                else
-                {
-                    switch (ROOTUserManager.ConferCoin(this.intUserID, validWords, num))
-                    {
-                        case 0:
-                            base.Response.Redirect("Report.aspx?Parameter=431");
-                            return;
-
-                        case 1:
-                            base.Response.Redirect("Report.aspx?Parameter=430");
-                            return;
-
-                        case 2:
-                            base.Response.Redirect("Report.aspx?Parameter=429");
-                            return;
-
-                        case 3:
-                            base.Response.Redirect("Report.aspx?Parameter=434");
-                            return;
-
-                        case 4:
-                            base.Response.Redirect("Report.aspx?Parameter=435");
-                            return;
-                    }
-                    base.Response.Redirect("Report.aspx?Parameter=3");
-                }
+                base.Response.Redirect("Report.aspx?Parameter=433");
+            }
+            else if (!StringItem.IsValidName(validWords, 1, 20))
+            {
+                base.Response.Redirect("Report.aspx?Parameter=436");
+            }
+            else if (!DBLogin.CanConn(0))
+            {
+                base.Response.Redirect("Report.aspx?Parameter=445");
             }
             else
             {
-                base.Response.Redirect("Report.aspx?Parameter=433");
+                switch (ROOTUserManager.ConferCoin(this.intUserID, validWords, num))
+                {
+                    case 0:
+                        base.Response.Redirect("Report.aspx?Parameter=431");
+                        break;
+
+                    case 1:
+                        base.Response.Redirect("Report.aspx?Parameter=430");
+                        return;
+
+                    case 2:
+                        base.Response.Redirect("Report.aspx?Parameter=429");
+                        return;
+
+                    case 3:
+                        base.Response.Redirect("Report.aspx?Parameter=434");
+                        return;
+
+                    case 4:
+                        base.Response.Redirect("Report.aspx?Parameter=435");
+                        return;
+
+                    default:
+                        base.Response.Redirect("Report.aspx?Parameter=3");
+                        return;
+                }
             }
         }
 
         private void GetCoinList()
         {
             string strCurrentURL = "XBAFinance.aspx?Type=COIN&";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 11;
             if (this.intPage == 0)
             {
@@ -137,87 +137,85 @@
             int num4;
             int num5;
             int num6;
+            string str;
             string str2;
-            string str5;
-            string str6;
+            string str3;
             string strCurrentURL = "XBAFinance.aspx?Type=ORDER&";
             this.strScript = this.GetScript(strCurrentURL);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 11;
             this.GetTotal();
-            string str3 = "--";
-            string str4 = "--";
+            string str5 = "--";
+            string str6 = "--";
             SqlDataReader reader = ROOTUserManager.GetOrderTableByUserIDNew(this.intUserID, this.intPage, this.intPerPage);
             this.strList = "<table width='502' border='2' cellpadding='0' cellspacing='0' bordercolor='#ffffff'><tr><td width='100' height='26' align='center' valign='middle' bgcolor='#ae1100'><strong>物品</strong></td><td width='129' align='center' valign='middle' bgcolor='#ae1100'><strong>支付方式</strong></td><td width='50' align='center' valign='middle' bgcolor='#ae1100'><strong>数量</strong></td><td width='50' align='center' bgcolor='#ae1100'><strong>价格</strong></td><td width='60' align='center' bgcolor='#ae1100'><strong>状态</strong></td><td width='100' align='center' bgcolor='#AE1100'><strong>操作</strong></td></tr>";
             if (reader.HasRows)
             {
-                goto Label_02D0;
+                goto Label_0221;
             }
             this.strList = this.strList + "<tr><td height='30' colspan='7' align='center' style='color:#9E0F00'>暂时没有订单记录</td></tr>";
-            goto Label_02DC;
-        Label_0155:
+            goto Label_0301;
+        Label_0093:
             switch (num4)
             {
                 case 1:
-                    str3 = "已结算";
-                    str4 = "--";
+                    str5 = "已结算";
+                    str6 = "--";
                     break;
 
                 case 2:
-                    if (num6 == 1)
+                    if (num6 != 1)
                     {
-                        str3 = "未付款";
-                        str4 = string.Concat(new object[] { "<a href='PayType.aspx?Type=PAY&OrderCategory=", num5, "&OrderID=", num, "&OID=", str5, "'>付款</a>" });
+                        str5 = "未充值";
+                        str6 = "<a href='#'>充值</a>";
+                        break;
                     }
-                    else
-                    {
-                        str3 = "未充值";
-                        str4 = "<a href='#'>充值</a>";
-                    }
+                    str5 = "未付款";
+                    str6 = string.Concat(new object[] { "<a href='PayType.aspx?Type=PAY&OrderCategory=", num5, "&OrderID=", num, "&OID=", str2, "'>付款</a>" });
                     break;
 
                 default:
                     switch (num4)
                     {
-                        case 3:
-                            str3 = "核查中";
-                            str4 = "--";
+                        case 0:
+                            str5 = "未结算";
+                            str6 = string.Concat(new object[] { "<a href='SetQuery.aspx?ORDERID=", num, "&OID=", str2, "' onclick=\"return MessageDel(2);\">核查</a>" });
                             break;
 
-                        case 0:
-                            str3 = "未结算";
-                            str4 = string.Concat(new object[] { "<a href='SetQuery.aspx?ORDERID=", num, "&OID=", str5, "' onclick=\"return MessageDel(2);\">核查</a>" });
+                        case 3:
+                            str5 = "核查中";
+                            str6 = "--";
                             break;
                     }
                     break;
             }
             object strList = this.strList;
-            this.strList = string.Concat(new object[] { strList, "<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='20'><font color='#9e0f00'>", str2, "</font></td><td style='color:#9E0F00'>", str6, "</td><td style='color:#9E0F00'>", num2, "</td><td style='color:#9E0F00'>", num3, "</td><td style='color:#9E0F00'>", str3, "</td><td style='color:#9E0F00'>", str4, "</td></tr>" });
-        Label_02D0:
+            this.strList = string.Concat(new object[] { strList, "<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='20'><font color='#9e0f00'>", str, "</font></td><td style='color:#9E0F00'>", str3, "</td><td style='color:#9E0F00'>", num2, "</td><td style='color:#9E0F00'>", num3, "</td><td style='color:#9E0F00'>", str5, "</td><td style='color:#9E0F00'>", str6, "</td></tr>" });
+        Label_0221:
             if (reader.Read())
             {
                 num = (int) reader["OrderID"];
                 num6 = (byte) reader["Category"];
-                str5 = (string) reader["OID"];
+                str2 = (string) reader["OID"];
                 num2 = (int) reader["Count"];
                 num3 = (int) reader["Price"];
                 num4 = (byte) reader["Status"];
-                str2 = reader["OrderName"].ToString().Trim();
+                str = reader["OrderName"].ToString().Trim();
                 num5 = (byte) reader["OrderCategory"];
                 switch (num6)
                 {
                     case 1:
-                        str6 = "银行卡支付";
-                        goto Label_0155;
+                        str3 = "银行卡支付";
+                        goto Label_0093;
 
                     case 2:
-                        str6 = "点卡充值";
-                        goto Label_0155;
+                        str3 = "点卡充值";
+                        goto Label_0093;
                 }
-                str6 = "金币充值";
-                goto Label_0155;
+                str3 = "金币充值";
+                goto Label_0093;
             }
-        Label_02DC:
+        Label_0301:
             reader.Close();
             this.strList = this.strList + "<tr><td height='30' colspan='7' align='right' style='padding-right:15px' style='color:#9E0F00'>" + this.GetViewPage(strCurrentURL) + "</td></tr></table>";
         }
@@ -258,51 +256,45 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", total, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", total, "个记录 跳转", str3 });
         }
 
         private void GetWealthList()
         {
             string strCurrentURL = "XBAFinance.aspx?Type=WEALTH&";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 11;
             if (this.intPage == 0)
             {

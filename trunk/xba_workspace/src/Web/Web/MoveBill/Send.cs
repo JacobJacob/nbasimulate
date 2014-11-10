@@ -78,18 +78,18 @@
                 byte[] bytes = null;
                 if (paramStr != null)
                 {
-                    int num3;
-                    for (int i = 0; i < paramStr.Length; i = num3 + 1)
+                    int num2;
+                    for (int i = 0; i < paramStr.Length; i = num2 + 1)
                     {
-                        num3 = paramStr.IndexOfAny(anyOf, i);
-                        if (num3 == -1)
+                        num2 = paramStr.IndexOfAny(anyOf, i);
+                        if (num2 == -1)
                         {
                             builder.Append(HttpUtility.UrlEncode(paramStr.Substring(i, paramStr.Length - i)));
                             break;
                         }
-                        builder.Append(HttpUtility.UrlEncodeUnicode(paramStr.Substring(i, num3 - i)));
+                        builder.Append(HttpUtility.UrlEncodeUnicode(paramStr.Substring(i, num2 - i)));
                         builder.ToString();
-                        builder.Append(paramStr.Substring(num3, 1));
+                        builder.Append(paramStr.Substring(num2, 1));
                     }
                     bytes = Encoding.UTF8.GetBytes(builder.ToString());
                     request.ContentLength = bytes.Length;

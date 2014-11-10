@@ -1,6 +1,5 @@
 ﻿namespace Web
 {
-    using LoginParameter;
     using System;
     using System.Data;
     using System.Web.UI;
@@ -50,7 +49,7 @@
                 this.intClubID = (int) onlineRowByUserID["ClubID5"];
                 SessionItem.CheckCanUseAfterUpdate(5);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.strDevCode = (string) SessionItem.GetRequest("Devision", 1);
+                this.strDevCode = SessionItem.GetRequest("Devision", 1);
                 this.InitializeComponent();
                 base.OnInit(e);
             }
@@ -81,18 +80,18 @@
                     int intDevMatchID = (int) row["DevMatchID"];
                     int intClubHID = (int) row["ClubHID"];
                     int intClubID = (int) row["ClubAID"];
-                    int num4 = (int) row["ClubHScore"];
+                    int num5 = (int) row["ClubHScore"];
                     int num6 = (int) row["ClubAScore"];
                     num = Convert.ToInt32(row["Round"]);
                     row["RepURL"].ToString().Trim();
                     row["StasURL"].ToString().Trim();
                     bool flag1 = (bool) row["UseStaffH"];
                     bool flag2 = (bool) row["UseStaffA"];
-                    byte num7 = (byte) row["MangerSayH"];
-                    byte num8 = (byte) row["MangerSayA"];
+                    byte num1 = (byte) row["MangerSayH"];
+                    byte num7 = (byte) row["MangerSayA"];
                     bool flag3 = (bool) row["AddArrangeLvlH"];
                     bool flag4 = (bool) row["AddArrangeLvlA"];
-                    if (((intClubHID != 0) && (intClubID != 0)) && ((num4 != 0) || (num6 != 0)))
+                    if (((intClubHID != 0) && (intClubID != 0)) && ((num5 != 0) || (num6 != 0)))
                     {
                         str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", intDevMatchID, "&A=", intClubHID, "&B=", intClubID, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
                         str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=2&Tag=", intDevMatchID, "&A=", intClubHID, "&B=", intClubID, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
@@ -105,26 +104,10 @@
                     else if (this.IsMatchH(intClubHID))
                     {
                         str = "";
-                        /*if (num7 > 0)
-                        {
-                            str2 = string.Concat(new object[] { "<img onclick=\"javascript:window.parent.location='SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", intDevMatchID, "';\" style=\"cursor:pointer;\" alt='球队状态较平时提升", num7, "%' src='", SessionItem.GetImageURL(), "louder", num7, ".gif' border='0' width='14' height='16'>" });
-                        }
-                        else
-                        {
-                            str2 = string.Concat(new object[] { "<img onclick=\"javascript:window.parent.location='SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", intDevMatchID, "';\" style=\"cursor:pointer;\" alt='还未奖励球员' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'>" });
-                        }*/
                     }
                     else
                     {
                         str = "";
-                        /*if (num8 > 0)
-                        {
-                            str2 = string.Concat(new object[] { "<img onclick=\"javascript:window.parent.location='SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", intDevMatchID, "';\" style=\"cursor:pointer;\" alt='球队状态较平时提升", num8, "%' src='", SessionItem.GetImageURL(), "louder", num8, ".gif' border='0' width='14' height='16'>" });
-                        }
-                        else
-                        {
-                            str2 = string.Concat(new object[] { "<img onclick=\"javascript:window.parent.location='SecretaryPage.aspx?Pos=1&Type=MANGERSAY&DevMatchID=", intDevMatchID, "';\" style=\"cursor:pointer;\" alt='还未奖励球员' src='", SessionItem.GetImageURL(), "louder.gif' border='0' width='14' height='16'>" });
-                        }*/
                     }
                     if (intClubHID != 0)
                     {
@@ -143,7 +126,7 @@
                         str4 = "轮空";
                     }
                     string str6 = "VS";
-                    if ((num4 == 0) && (num6 == 0))
+                    if ((num5 == 0) && (num6 == 0))
                     {
                         if (num < this.intTurn)
                         {
@@ -186,7 +169,7 @@
                     else
                     {
                         str5 = str + "&nbsp;&nbsp;" + str2;
-                        str6 = num4 + ":" + num6;
+                        str6 = num5 + ":" + num6;
                     }
                     string str9 = "";
                     string str10 = "BarContent border";

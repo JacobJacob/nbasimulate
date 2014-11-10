@@ -4,7 +4,6 @@
     using ServerManage;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -17,8 +16,8 @@
         protected ImageButton btnRegClub;
         protected HtmlInputHidden hidClothes;
         protected HtmlInputHidden hidLogo;
-        private int intUserID;
         private int intRecomuserID;
+        private int intUserID;
         public StringBuilder sbList = new StringBuilder("");
         public string strErrClubName;
         public string strMsg;
@@ -71,14 +70,12 @@
                         str4 = userRowByUserID["City"].ToString().Trim();
                         str5 = userRowByUserID["Province"].ToString().Trim();
                         str6 = userRowByUserID["Birth"].ToString().Trim();
-                        //userRowByUserID.Close();
                     }
                     else
                     {
                         str5 = "";
                         str4 = "";
                         str6 = "";
-                       // userRowByUserID.Close();
                     }
                     DataRow gameRow = BTPGameManager.GetGameRow();
                     if (gameRow != null)
@@ -112,16 +109,14 @@
                     this.strNickName = onlineRowByUserID["NickName"].ToString();
                     str7 = onlineRowByUserID["DiskURL"].ToString();
                     string str10 = DBLogin.URLString(0) + str7 + "Face.png";
-                    int num3 = RandomItem.rnd.Next(0, 10);
-                    this.strMsg = string.Concat(new object[] { "<table width='170' border='0' cellpadding='0' cellspacing='0'><tr><td height='60' align='center'><div style='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=", str10, "?RndID=", num3, ");width:37px;height:40px'></div><font class='ForumTime'>", this.strNickName, "</font></td></tr><tr><td height='27' align='center'>" });
+                    int num2 = RandomItem.rnd.Next(0, 10);
+                    this.strMsg = string.Concat(new object[] { "<table width='170' border='0' cellpadding='0' cellspacing='0'><tr><td height='60' align='center'><div style='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=", str10, "?RndID=", num2, ");width:37px;height:40px'></div><font class='ForumTime'>", this.strNickName, "</font></td></tr><tr><td height='27' align='center'>" });
                     string strMsg = this.strMsg;
                     this.strMsg = strMsg + "<a href='" + ServerItem.ToOtherServerURL(0, pToEncrypt, str2, "URL=MemberCenter.aspx") + "'><img src='" + SessionItem.GetImageURL() + "Button_portmanager.gif' width='76' height='24' border='0'></a>&nbsp;<a href='Logout.aspx?GameCategory=-1&Type=OnlyJump&JumpURL=Index.aspx' target='_blank'><img src='" + SessionItem.GetImageURL() + "button_06.gif' width='40' height='24' border='0'></a>&nbsp;<a href='" + StringItem.GetLogoutURL() + "'><img src='" + SessionItem.GetImageURL() + "button_07.gif' width='40' height='24' border='0'></a></td></tr></table>";
                     this.InitializeComponent();
                     base.OnInit(e);
-                    string request = (string) SessionItem.GetRequest("Type", 1);
-                    if (request == "NEXT")
-                    {
-                    }
+                    string request = SessionItem.GetRequest("Type", 1);
+                    bool flag1 = request == "NEXT";
                 }
             }
         }

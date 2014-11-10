@@ -45,19 +45,19 @@
             {
                 num2 = 1;
             }
-            string str2 = "<select name='Page' onChange=JumpPage()>";
+            string str = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str2 = str2 + "<option value=" + i;
+                str = str + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str2 = str2 + " selected";
+                    str = str + " selected";
                 }
-                object obj2 = str2;
-                str2 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str;
+                str = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str2 = str2 + "</select>";
-            return string.Concat(new object[] { "共", total, "位经理在线 跳转", str2 });
+            str = str + "</select>";
+            return string.Concat(new object[] { "共", total, "位经理在线 跳转", str });
         }
 
         private void InitializeComponent()
@@ -75,7 +75,7 @@
                 this.strUserName = onlineRowByUserID["UserName"].ToString().Trim();
                 this.strPassword = onlineRowByUserID["Password"].ToString().Trim();
             }
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.InitializeComponent();
             base.OnInit(e);
         }
@@ -111,7 +111,7 @@
             this.strScript = this.GetScript(strCurrentURL);
             this.intPerPage = 60;
             this.intC = 6;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
@@ -143,38 +143,38 @@
                     this.strList = this.strList + "<tr>";
                     for (int j = 0; j < this.intC; j++)
                     {
-                        string str6;
+                        string str2;
                         int index = (i * this.intC) + j;
-                        int num10 = i + j;
-                        if ((num10 % 2) == 1)
+                        int num12 = i + j;
+                        if ((num12 % 2) == 1)
                         {
-                            str6 = "#FFFFFF";
+                            str2 = "#FFFFFF";
                         }
                         else
                         {
-                            str6 = "";
+                            str2 = "";
                         }
                         if (index < num6)
                         {
-                            string str4;
+                            string str3;
                             DataRow row = onlineRow[index];
                             if ((bool) row["Sex"])
                             {
-                                str4 = "#ff005a";
+                                str3 = "#ff005a";
                             }
                             else
                             {
-                                str4 = "#0002ff";
+                                str3 = "#0002ff";
                             }
-                            string str3 = row["DiskURL"].ToString();
-                            string str2 = row["NickName"].ToString();
-                            string str5 = DBLogin.URLString(0) + str3 + "Face.png";
+                            string str4 = row["DiskURL"].ToString();
+                            string str5 = row["NickName"].ToString();
+                            string str6 = DBLogin.URLString(0) + str4 + "Face.png";
                             strList = this.strList;
-                            this.strList = string.Concat(new object[] { strList, "<td height='65' width='", 100 / this.intC, "%' bgcolor='", str6, "' align='center'><div style='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=", str5, "?RndID=", num5, ");width:37px;height:40px'></div><font color='", str4, "'>", str2, "</font></td>" });
+                            this.strList = string.Concat(new object[] { strList, "<td height='65' width='", 100 / this.intC, "%' bgcolor='", str2, "' align='center'><div style='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=", str6, "?RndID=", num5, ");width:37px;height:40px'></div><font color='", str3, "'>", str5, "</font></td>" });
                         }
                         else
                         {
-                            this.strList = this.strList + "<td bgcolor='" + str6 + "' class='Forum003' height='65'></td>";
+                            this.strList = this.strList + "<td bgcolor='" + str2 + "' class='Forum003' height='65'></td>";
                         }
                     }
                     this.strList = this.strList + "</tr>";

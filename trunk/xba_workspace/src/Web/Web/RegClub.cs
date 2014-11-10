@@ -4,7 +4,6 @@
     using ServerManage;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -112,15 +111,14 @@
                     string str8;
                     bool flag;
                     string str9;
-                    DataRow reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                    if (reader != null)
+                    DataRow row2 = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                    if (row2 != null)
                     {
-                        str4 = reader["City"].ToString().Trim();
-                        str5 = reader["Province"].ToString().Trim();
-                        str6 = reader["BirthDay"].ToString().Trim();
-                        str7 = reader["DeptTag"].ToString().Trim();
-                        str8 = reader["Email"].ToString().Trim();
-                        //reader.Close();
+                        str4 = row2["City"].ToString().Trim();
+                        str5 = row2["Province"].ToString().Trim();
+                        str6 = row2["BirthDay"].ToString().Trim();
+                        str7 = row2["DeptTag"].ToString().Trim();
+                        str8 = row2["Email"].ToString().Trim();
                     }
                     else
                     {
@@ -129,7 +127,6 @@
                         str6 = "";
                         str7 = "";
                         str8 = "";
-                        //reader.Close();
                     }
                     DataRow gameRow = BTPGameManager.GetGameRow();
                     if (gameRow != null)
@@ -172,7 +169,7 @@
                     this.strMsg = strMsg + "<a href='" + DBLogin.URLString(40) + "MemberCenter.aspx'><img src='" + SessionItem.GetImageURL() + "Button_portmanager.gif' width='76' height='24' border='0'></a>&nbsp;<a href='Logout.aspx?GameCategory=-1&Type=OnlyJump&JumpURL=Index.aspx' target='_blank'><img src='" + SessionItem.GetImageURL() + "button_06.gif' width='40' height='24' border='0'></a>&nbsp;<a href='" + StringItem.GetLogoutURL() + "'><img src='" + SessionItem.GetImageURL() + "button_07.gif' width='40' height='24' border='0'></a></td></tr></table>";
                     this.InitializeComponent();
                     base.OnInit(e);
-                    string request = (string) SessionItem.GetRequest("Type", 1);
+                    string request = SessionItem.GetRequest("Type", 1);
                     if (request == "NEXT")
                     {
                         this.btnRegClub.ImageUrl = SessionItem.GetImageURL() + "button_Next.gif";

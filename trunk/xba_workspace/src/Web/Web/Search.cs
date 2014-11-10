@@ -91,8 +91,7 @@
             }
             else
             {
-                int num4 = this.intPage - 1;
-                str3 = "<a href='Search.aspx?Type=1&Page=" + num4.ToString() + "'>上一页</a>";
+                str3 = "<a href='Search.aspx?Type=1&Page=" + ((this.intPage - 1)).ToString() + "'>上一页</a>";
                 str = "<a href='Search.aspx?Type=1&Page=1'>首页</a>";
             }
             string str4 = "";
@@ -167,7 +166,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
@@ -202,13 +201,13 @@
             }
             this.GetTotal();
             this.sb = new StringBuilder();
-            if (!(this.strKeyword != ""))
+            if (this.strKeyword == "")
             {
                 this.sb.Append("<tr><td height='50' colspan='6' class='Forum0011'>您在查找之前必须设置一个关键字！</td></tr>");
             }
             else
             {
-                SqlDataReader reader = null;//ROOTTopicManager.GetSearchTableNew(this.strKeyword, this.strCategory, this.intPage, this.intPerPage);
+                SqlDataReader reader = null;
                 if (reader.HasRows)
                 {
                     while (reader.Read())

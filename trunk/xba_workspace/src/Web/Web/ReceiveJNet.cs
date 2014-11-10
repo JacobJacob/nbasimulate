@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using Web.DBConnection;
     using Web.DBData;
@@ -28,12 +27,12 @@
 
         protected override void OnInit(EventArgs e)
         {
-            this.iServerID = (string) SessionItem.GetRequest("iServerID", 1);
-            this.iAreaID = (string) SessionItem.GetRequest("iAreaID", 1);
-            this.sUsername = (string) SessionItem.GetRequest("sUsername", 1);
-            this.iCardType = (string) SessionItem.GetRequest("iCardType", 1);
-            this.iJNetBillID = (string) SessionItem.GetRequest("iJNetBillID", 1);
-            this.sSign = (string) SessionItem.GetRequest("sSign", 1);
+            this.iServerID = SessionItem.GetRequest("iServerID", 1);
+            this.iAreaID = SessionItem.GetRequest("iAreaID", 1);
+            this.sUsername = SessionItem.GetRequest("sUsername", 1);
+            this.iCardType = SessionItem.GetRequest("iCardType", 1);
+            this.iJNetBillID = SessionItem.GetRequest("iJNetBillID", 1);
+            this.sSign = SessionItem.GetRequest("sSign", 1);
             this.key = "sth21318";
             this.InitializeComponent();
             base.OnInit(e);
@@ -43,14 +42,14 @@
         {
             if (StringItem.IsValidSign(this.sUsername + this.iCardType + this.iJNetBillID, this.sSign, this.key))
             {
-                string str2;
+                string str;
                 int num;
                 int num2;
                 int num3;
                 int num4;
                 if (this.iCardType == "5")
                 {
-                    str2 = "30枚金币";
+                    str = "30枚金币";
                     num4 = 30;
                     num = 1;
                     num2 = 1;
@@ -58,7 +57,7 @@
                 }
                 else
                 {
-                    str2 = "60枚金币";
+                    str = "60枚金币";
                     num4 = 60;
                     num = 2;
                     num2 = 1;
@@ -76,7 +75,7 @@
                     }
                     else
                     {
-                        ROOTUserManager.AddPayOrder(this.intUserID, this.strUserName, 2, this.iJNetBillID, str2, num, num2, num3);
+                        ROOTUserManager.AddPayOrder(this.intUserID, this.strUserName, 2, this.iJNetBillID, str, num, num2, num3);
                         if (ROOTUserManager.AddCoinReceive(this.strUserName, num4, this.iJNetBillID))
                         {
                             base.Response.Write("iReturn=1&iServerID=0&iAreaID=0&sUsername=" + this.strUserName + "&iCardType=" + this.iCardType + "&iJNetBillID=" + this.iJNetBillID + "&iBizBillID=" + this.iBizBillID + "&sSign=" + this.sSign + "&sMessage=充值成功！");
@@ -88,11 +87,9 @@
                             base.Response.End();
                         }
                     }
-                    //userRowByUserName.Close();
                 }
                 else
                 {
-                    //userRowByUserName.Close();
                     base.Response.Write("iReturn=0&iServerID=0&iAreaID=0&sUsername=" + this.strUserName + "&iCardType=" + this.iCardType + "&iJNetBillID=" + this.iJNetBillID + "&iBizBillID=" + this.iBizBillID + "&sSign=" + this.sSign + "&sMessage=未找到相关用户，充值失败！");
                     base.Response.End();
                 }

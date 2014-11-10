@@ -42,10 +42,8 @@
         public string GetChildMenu(string strURL, string strText, int intCategory)
         {
             strURL = strURL + "&rnd=" + DateTime.Now.Ticks;
-
             if (intCategory == 1)
             {
-               
                 return ("<tr><td height='18' align='center'><a href='" + strURL + "' target='Main'>" + strText + "</a></td></tr>");
             }
             return ("<tr><td height='18' align='center'><font color='#666666'>" + strText + "</font></td></tr>");
@@ -54,7 +52,6 @@
         public string GetChildMenu(string strURL, string strText, int intCategory, string strAlt)
         {
             strURL = strURL + "&rnd=" + DateTime.Now.Ticks;
-
             if (intCategory == 1)
             {
                 return ("<tr><td height='18' align='center'><a href='" + strURL + "' target='Main' " + strAlt + ">" + strText + "</a></td></tr>");
@@ -65,7 +62,6 @@
         public string GetFieldMenu(string strURL, string strText, int intCategory)
         {
             strURL = strURL + "&rnd=" + DateTime.Now.Ticks;
-
             if (intCategory == 1)
             {
                 return ("<tr><td height='18' align='center'><a href='" + strURL + "' target='Main'>" + strText + "</a> <span id='HasField2'></span></td></tr>");
@@ -75,73 +71,75 @@
 
         public string GetInfoList()
         {
-            string str7;
-            int num11;
-            string str = "";
+            string str;
+            int num;
+            string str2 = "";
             string dev = "";
-            string str6 = "0,0,0,0,0,0,0";
+            string str4 = "0,0,0,0,0,0,0";
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
             if (accountRowByUserID == null)
             {
-                return str;
+                return str2;
             }
-            str6 = accountRowByUserID["AdvanceOp"].ToString().Trim();
-            this.Session["Advance" + this.intUserID] = str6;
-            string str2 = accountRowByUserID["ClubName"].ToString().Trim();
+            str4 = accountRowByUserID["AdvanceOp"].ToString().Trim();
+            this.Session["Advance" + this.intUserID] = str4;
+            string str5 = accountRowByUserID["ClubName"].ToString().Trim();
             DateTime time1 = (DateTime) accountRowByUserID["CreateTime"];
-            int num6 = (int) accountRowByUserID["UnionID"];
-            string str3 = accountRowByUserID["ShortName"].ToString().Trim();
-            if (num6 > 0)
+            int num2 = (int) accountRowByUserID["UnionID"];
+            string str6 = accountRowByUserID["ShortName"].ToString().Trim();
+            if (num2 > 0)
             {
-                str3 = str3 + "-";
+                str6 = str6 + "-";
             }
             else
             {
-                str3 = "";
+                str6 = "";
             }
             accountRowByUserID["LogoLink"].ToString();
-            str2 = StringItem.GetShortName(str3 + str2, 15, ".");
-            string str4 = accountRowByUserID["ClubLogo"].ToString().Trim();
-            long num = (long) accountRowByUserID["OnlyPoint"];
-            long onlyUnionPoint = (long)accountRowByUserID["OnlyUnionPoint"];
-            num = num + onlyUnionPoint;
-            int num4 = (int) accountRowByUserID["Score"];
-            long num2 = (long) accountRowByUserID["Money"];
-            int num3 = (byte) accountRowByUserID["Levels"];
-            int num5 = (byte) accountRowByUserID["Category"];
-            long num7 = (long) accountRowByUserID["DevIncome"];
+            str5 = StringItem.GetShortName(str6 + str5, 15, ".");
+            string str7 = accountRowByUserID["ClubLogo"].ToString().Trim();
+            long num3 = (long) accountRowByUserID["OnlyPoint"];
+            long num4 = (long) accountRowByUserID["OnlyUnionPoint"];
+            num3 += num4;
+            int num5 = (int) accountRowByUserID["Score"];
+            long num6 = (long) accountRowByUserID["Money"];
+            int num7 = (byte) accountRowByUserID["Levels"];
+            int num8 = (byte) accountRowByUserID["Category"];
+            long num9 = (long) accountRowByUserID["DevIncome"];
             DataRow gameRow = BTPGameManager.GetGameRow();
-            int num8 = (int) gameRow["Season"];
-            int num9 = (int) gameRow["Turn"];
-            int num10 = (int) gameRow["Days"];
-            switch (num9)
+            int num10 = (int) gameRow["Season"];
+            int num11 = (int) gameRow["Turn"];
+            int num12 = (int) gameRow["Days"];
+            int num14 = num11;
+            if (num14 != 0)
             {
-                case 0x1b:
-                    str7 = "第 " + num8 + " 赛季结束";
-                    break;
-
-                case 0:
-                    str7 = "第 " + num8 + " 赛季";
-                    break;
-
-                default:
-                    if ((num9 == 14) && (num10 == 15))
+                if (num14 != 0x1b)
+                {
+                    if ((num11 == 14) && (num12 == 15))
                     {
-                        str7 = "第 " + num8 + " 赛季  休赛日";
+                        str = "第 " + num10 + " 赛季  休赛日";
                     }
                     else
                     {
-                        int round = num9;
-                        if (round > 1)
+                        int num13 = num11;
+                        if (num13 > 1)
                         {
-                            round = round - 1;
+                            num13--;
                         }
-                        str7 = string.Concat(new object[] { "第 ", num8, " 赛季  第 ", round, " 轮" });
+                        str = string.Concat(new object[] { "第 ", num10, " 赛季  第 ", num13, " 轮" });
                     }
-                    break;
+                }
+                else
+                {
+                    str = "第 " + num10 + " 赛季结束";
+                }
+            }
+            else
+            {
+                str = "第 " + num10 + " 赛季";
             }
             string str8 = "";
-            if (num5 == 5)
+            if (num8 == 5)
             {
                 dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(this.intUserID));
                 str8 = string.Concat(new object[] { "<a target='Main' href=\"Main_P.aspx?Tag=", this.intUserID, "&Type=DEVISION\">", dev, "</a>" });
@@ -151,184 +149,147 @@
                 dev = "无";
                 str8 = dev;
             }
-            switch (num3)
+            switch (num7)
             {
                 case 1:
-                    num11 = 5;
+                    num = 5;
                     break;
 
                 case 2:
-                    num11 = 15;
+                    num = 15;
                     break;
 
                 case 3:
-                    num11 = 0x19;
+                    num = 0x19;
                     break;
 
                 case 4:
-                    num11 = 40;
+                    num = 40;
                     break;
 
                 case 5:
-                    num11 = 0x37;
+                    num = 0x37;
                     break;
 
                 case 6:
-                    num11 = 70;
+                    num = 70;
                     break;
 
                 case 7:
-                    num11 = 90;
+                    num = 90;
                     break;
 
                 case 8:
-                    num11 = 110;
+                    num = 110;
                     break;
 
                 case 9:
-                    num11 = 0x87;
+                    num = 0x87;
                     break;
 
                 case 10:
-                    num11 = 160;
+                    num = 160;
                     break;
 
                 case 11:
-                    num11 = 190;
+                    num = 190;
                     break;
 
                 case 12:
-                    num11 = 220;
+                    num = 220;
                     break;
 
                 case 13:
-                    num11 = 250;
+                    num = 250;
                     break;
 
                 case 14:
-                    num11 = 290;
+                    num = 290;
                     break;
 
                 case 15:
-                    num11 = 330;
+                    num = 330;
                     break;
 
                 case 0x10:
-                    num11 = 400;
+                    num = 400;
                     break;
 
                 case 0x11:
-                    num11 = 500;
+                    num = 500;
                     break;
 
                 case 0x12:
-                    num11 = 600;
+                    num = 600;
                     break;
 
                 case 0x13:
-                    num11 = 800;
+                    num = 800;
                     break;
 
                 case 20:
-                    num11 = 0x3e8;
+                    num = 0x3e8;
                     break;
 
                 case 0x15:
-                    num11 = 0x5dc;
+                    num = 0x5dc;
                     break;
 
                 case 0x16:
-                    num11 = 0x7d0;
+                    num = 0x7d0;
                     break;
 
                 case 0x17:
-                    num11 = 0xbb8;
+                    num = 0xbb8;
                     break;
 
                 case 0x18:
-                    num11 = 0xfa0;
+                    num = 0xfa0;
                     break;
 
                 case 0x19:
-                    num11 = 0x1770;
+                    num = 0x1770;
                     break;
 
                 case 0x1a:
-                    num11 = 0x1f40;
+                    num = 0x1f40;
                     break;
 
                 case 0x1b:
-                    num11 = 0x2710;
+                    num = 0x2710;
                     break;
 
                 default:
-                    num11 = 5;
+                    num = 5;
                     break;
             }
-            string str9 = "<img id=imgLogo border=0 height=46 src='" + str4 + "'width=46>";
+            string str9 = "<img id=imgLogo border=0 height=46 src='" + str7 + "'width=46>";
             string kFURL = StringItem.GetKFURL();
             bool flag = true;
-            if (((num9 == 1) || ((num9 == 14) && (num10 == 15))) || (num9 > 0x1b))
+            if (((num11 == 1) || ((num11 == 14) && (num12 == 15))) || (num11 > 0x1b))
             {
                 flag = false;
             }
             if ((DateTime.Now.Hour < 10) && flag)
             {
-                num2 -= num7;
+                num6 -= num9;
             }
-            string str11 = string.Concat(new object[] { "<table width='150' border='0' cellspacing='0' cellpadding='0'><tr><td width=\"38\"><strong>资金</strong>：</td><td width=\"112\" valign=\"middle\"><div id=\"divMoney\" style=\"CURSOR:hand\"><a target='Main' href=\"Main_S.aspx?Tag=", this.intUserID, "&Type=FINANCE\">", num2, "</a>&nbsp;&nbsp;<span  title=\"点击更新资金\" onclick=\"RefreshMoney();\">更新</span></div></td></tr></table>" });
-            str = string.Concat(new object[] { "<table width='763' style='padding:4px;' border='0' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='center' rowspan='2' width='170' style='line-height:150%'><font style='font-size:14px'><strong>", str7, "</strong></font><br><strong>职业联赛</strong>：", str8, "</td><td rowspan='2' width='55'><a href='Main_P.aspx?Tag=", this.intUserID, "&Type=MODIFYCLUB' target='Main'>", str9, "</a></td><td width='150' height='25' valign='baseline'><strong>球队</strong>：", str2, "</td><td width='168' valign='baseline'><strong>王者积分</strong>：", num, "</td><td width='150' valign='baseline'><strong>客服</strong>：", kFURL, "</td><td width='70' align='right'><a href='" });
-            //str = string.Concat(new object[] { "<table width='763' style='padding:4px;' border='0' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='center' rowspan='2' width='170' style='line-height:150%'><font style='font-size:14px'><strong>", str7, "</strong></font><br><strong>职业联赛</strong>：", str8, "</td><td rowspan='2' width='55'><a href='Main_P.aspx?Tag=", this.intUserID, "&Type=MODIFYCLUB' target='Main'>", str9, "</a></td><td width='150' height='25' valign='baseline'><strong>球队</strong>：", str2, "</td><td width='168' valign='baseline'><strong>王者积分</strong>：", num, "</td><td width='150' valign='baseline'>&nbsp;</td><td width='70' align='right'>&nbsp;" });
-            /*if (ServerParameter.strCopartner == "CGA")
-            {
-                str = str + "http://xba.cga.com.cn/service.html";
-            }
-            else if (ServerParameter.strCopartner == "ZHW")
-            {
-                str = str + "http://xba.game.china.com/page/service.html";
-            }
-            else if (ServerParameter.strCopartner == "51WAN")
-            {
-                str = str + "http://www.51wan.com/xba/200801/20080124181751.shtml";
-            }
-            else if (ServerParameter.strCopartner == "17173")
-            {
-                str = str + "http://web.17173.com/xba/xinren/xinren3.html";
-            }
-            else if (ServerParameter.strCopartner == "DUNIU")
-            {
-                str = str + "http://cn.mmoabc.com/c_44.htm";
-            }
-            else if (ServerParameter.strCopartner == "DW")
-            {
-                str = str + "http://xba.duowan.com/0803/70460489439.html";
-            }
-            else
-            {
-                str = str + "http://www.xba.com.cn/page/service.html";
-            }*/
-
-            str += "http://bbs.113388.net/forum.php?mod=viewthread&tid=324&fromuid=1";
-
-            object obj2 = str;
-            //str = string.Concat(new object[] { obj2, "' target='_blank'><img border=0 src='Images/xinshou.gif'  height='21px' width='60' /></a></td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'><a href='javascript:;'onclick=window.open('ShowClubIFrom.aspx?UserID=-99','XBA','height=392,width=224,status=no,toolbar=no,menubar=no,location=no');><font color='red'>在线聊天</font></a>" });
-            str = string.Concat(new object[] { obj2, "' target='_blank'><img border=0 src='Images/xinshou.gif'  height='21px' width='60' /></a></td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'><strong>官方群</strong>:4269274" });
-            //str = string.Concat(new object[] { obj2, "</td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num3, "&nbsp;[", num4, "/", num11, "]</td><td valign='baseline'>&nbsp;</a>" });
+            string str11 = string.Concat(new object[] { "<table width='150' border='0' cellspacing='0' cellpadding='0'><tr><td width=\"38\"><strong>资金</strong>：</td><td width=\"112\" valign=\"middle\"><div id=\"divMoney\" style=\"CURSOR:hand\"><a target='Main' href=\"Main_S.aspx?Tag=", this.intUserID, "&Type=FINANCE\">", num6, "</a>&nbsp;&nbsp;<span  title=\"点击更新资金\" onclick=\"RefreshMoney();\">更新</span></div></td></tr></table>" });
+            object obj2 = string.Concat(new object[] { "<table width='763' style='padding:4px;' border='0' cellspacing='0' cellpadding='0'><tr><td valign='middle' align='center' rowspan='2' width='170' style='line-height:150%'><font style='font-size:14px'><strong>", str, "</strong></font><br><strong>职业联赛</strong>：", str8, "</td><td rowspan='2' width='55'><a href='Main_P.aspx?Tag=", this.intUserID, "&Type=MODIFYCLUB' target='Main'>", str9, "</a></td><td width='150' height='25' valign='baseline'><strong>球队</strong>：", str5, "</td><td width='168' valign='baseline'><strong>王者积分</strong>：", num3, "</td><td width='150' valign='baseline'><strong>客服</strong>：", kFURL, "</td><td width='70' align='right'><a href='" }) + "http://bbs.113388.net/forum.php?mod=viewthread&tid=324&fromuid=1";
+            str2 = string.Concat(new object[] { obj2, "' target='_blank'><img border=0 src='Images/xinshou.gif'  height='21px' width='60' /></a></td></tr><tr><td height='25' valign='baseline'>", str11, "</td><td valign='baseline'><strong>街球等级</strong>：", num7, "&nbsp;[", num5, "/", num, "]</td><td valign='baseline'><strong>官方群</strong>:4269274" });
             if (ServerParameter.strCopartner == "CGA")
             {
-                str = str + " <a style='cursor:hand;' href=\"http://bbs.cga.com.cn/list/list_285.asp?bid=285\" target=\"_blank\">论坛</a>";
+                str2 = str2 + " <a style='cursor:hand;' href=\"http://bbs.cga.com.cn/list/list_285.asp?bid=285\" target=\"_blank\">论坛</a>";
             }
             else if (ServerParameter.strCopartner == "ZHW")
             {
-                str = str + "";
+                str2 = str2 + "";
             }
             else
             {
-                str = str + " ";
+                str2 = str2 + " ";
             }
-            //return (str + " <a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\">经理手册</a></td><td align='right'><a href='" + StringItem.GetBuyCoinURL() + "' target='_blank'><img border=0 src='Images/chongzhi.gif'  height='21px' width='60' /></a></td></tr></table>");
-            return (str + "</td><td align='right'><a href='" + StringItem.GetBuyCoinURL() + "' target='_blank'>购买游戏币</a></td></tr></table>");
-            //return (str + " &nbsp;</td><td align='right'>&nbsp;</td></tr></table>");
+            return (str2 + "</td><td align='right'><a href='" + StringItem.GetBuyCoinURL() + "' target='_blank'>购买游戏币</a></td></tr></table>");
         }
 
         [AjaxMethod]
@@ -380,21 +341,12 @@
 
         public void MenuList()
         {
-
-            /*this.strMenuList = string.Concat(new object[] { 
-                "<tr><td onclick='ShowMenu(4)' style='height:28px; width:176px;'><a style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg2.gif) no-repeat 0px -27px' id='Img4' title='比赛约战、训练中心、自建杯赛；可以在这里训练球员、演练战术。' ></a></td></tr><tr id='Menu4' style='display:;'><td algin='center'><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLINELIST", "在 线 经 理", 1, "title='你可以和正在游戏的经理交流发送约战。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FMATCHMSG", "我 的 比 赛", 1, "title='查看自己的比赛记录。'"), "<td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FRIMATCHCENTER", "训 练 中 心", 1, "title='可以在这里报名等待别人向您发送训练赛。'"), "<tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FINDNICK", "同 城 交 友", 1, "title='您可以查找到很多来自同一个城市的朋友。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLYONEMATCH", "胜 者 为 王", 1, "title='体验一夫当千的快感。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XBATOP", "实 力 排 行", 1, "title='排行榜。'"), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(1)' style='height:28px; width:176px;'><a id='Img1' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -54px' title='球员管理、训练；职员管理、球队财政、球场升级、悬挂广告、更改球票、查看荣誉。' ></a></td></tr><tr id='Menu1' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=PLAYERCENTER", "球 员 管 理", 1, "title='出售球员、让球员参加选秀、下放、续约、从街球队向职业队提拔球员。'"), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_S.aspx?Type=STAFF", "职 员 管 理", 1, "title='好的职员帮助你的球员有更好的状态。'"), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=TRAINPLAYERCENTER", "球 员 训 练", 1, "title='可训练街球队员和职业队员，两种训练方式不同。'"), 
-                "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_S.aspx?Type=FINANCE", "球 队 财 政", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=CLUBBUILD", "球 队 建 设", this.intMenuCategory), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=HONOUR", "球 队 荣 誉", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr/>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XGUESS", "冠 军 竞 猜", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr/>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=GUESS", "有 奖 竞 猜", 1), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(2)' style='height:28px; width:176px;'><a id='Img2' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -82px' title='职业联赛赛程、排名；街球杯赛、职业XBA杯、联盟至尊杯。'></a></td></tr><tr id='Menu2' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=DEVISION", "职 业 联 赛", this.intMenuCategory), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=CUPLIST", "街 球 杯 赛", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XBACUP", "冠 军 杯 赛", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNIONCUP", "至 尊 杯 赛", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=DEVCUP", "自 建 杯 赛", 1, "title='一些没有加密的自建杯赛可以报名。'"), 
-                "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLYONEMATCH", "胜 者 为 王", 1, "title='体验一夫当千的快感。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=STARMATCH", "全 明 星 赛", 1, "title='全明星球员云集的赛事。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNIONCUP1", "联 盟 争 霸", 1, "title='体现联盟的整体实力。'"), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(3)' style='height:28px; width:176px;'><a id='Img3' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -109px' title='职业战术、街球战术；恰当的战术是赢球的关键。' ></a></td></tr><tr id='Menu3' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=VARRANGE", "职 业 战 术", this.intMenuCategory1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=SARRANGE", "街 球 战 术", 1), "</table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td onclick='ShowMenu(6)' id='Img6'  style='height:28px; width:176px;cursor:hand; background:url(Images/menubg1.gif) no-repeat 0px -193px'><a  style='height:28px; width:124px; display:block; float:left;' title='加入或组建自己的联盟，和朋友一起玩游戏。'></a><div style='margin:6px 22px 0 0' id='HasField1'></div></td></tr><tr id='Menu6' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Type=UNIONLIST", "联 盟 列 表", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNION&amp;Kind=VIEWUNION", "我 的 联 盟", this.intMenuCategoryU), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetFieldMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNIONFIELD", "联 盟 战 争 ", this.intMenuCategoryU), "</table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -137px'><A style='display:block; height:28px; width:176px;' href=\"Main_P.aspx?Tag=", this.intUserID, "&Type=TRANSFERMAEKET\" target=\"Main\" title='这里有很多不同的球员市场，可以购买到更好的球员。' ></A></td></tr><tr><td style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -165px'><a style='display:block; height:28px; width:176px;' href='Main_P.aspx?Tag=", this.intUserID, 
-                "&Type=TOOLS' target='Main' title='' ></a></td></tr><tr id='Menu5' style='display:none;'><td><table width='138' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td width='5' height='5'><img src='Images/corner_1.gif' width='5' height='5'></td><td background='Images/top.gif'></td><td width='7'><img src='Images/corner_2.gif' width='7' height='5'></td></tr><tr><td height='7'><img src='Images/corner_4.gif' width='5' height='7'></td><td background='Images/down.gif'></td><td><img src='Images/corner_3.gif' width='7' height='7'></td></tr></table></td></tr>"
-             });*/
-
             this.strMenuList = string.Concat(new object[] { 
-                 "<tr><td onclick='ShowMenu(4)' style='height:28px; width:176px;'><a style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg2.gif) no-repeat 0px -27px' id='Img4' title='比赛约战、训练中心、自建杯赛；可以在这里训练球员、演练战术。' ></a></td></tr><tr id='Menu4' style='display:;'><td algin='center'><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLINELIST", "在 线 经 理", 1, "title='你可以和正在游戏的经理交流发送约战。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FMATCHMSG", "我 的 比 赛", 1, "title='查看自己的比赛记录。'"), "<td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FRIMATCHCENTER", "训 练 中 心", 1, "title='可以在这里报名等待别人向您发送训练赛。'"), "<tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FINDNICK", "同 城 交 友", 1, "title='您可以查找到很多来自同一个城市的朋友。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLYONEMATCH", "胜 者 为 王", 1, "title='体验一夫当千的快感。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XBATOP", "实 力 排 行", 1, "title='排行榜。'"), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(1)' style='height:28px; width:176px;'><a id='Img1' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -54px' title='球员管理、训练；职员管理、球队财政、球场升级、悬挂广告、更改球票、查看荣誉。' ></a></td></tr><tr id='Menu1' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=PLAYERCENTER", "球 员 管 理", 1, "title='出售球员、让球员参加选秀、下放、续约、从街球队向职业队提拔球员。'"), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_S.aspx?Type=STAFF", "职 员 管 理", 1, "title='好的职员帮助你的球员有更好的状态。'"), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=TRAINPLAYERCENTER", "球 员 训 练", 1, "title='可训练街球队员和职业队员，两种训练方式不同。'"), 
-                 "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_S.aspx?Type=FINANCE", "球 队 财 政", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=CLUBBUILD", "球 队 建 设", this.intMenuCategory), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=HONOUR", "球 队 荣 誉", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr/>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XGUESS", "冠 军 竞 猜", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr/>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=GUESS", "有 奖 竞 猜", 1), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(2)' style='height:28px; width:176px;'><a id='Img2' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -82px' title='职业联赛赛程、排名；街球杯赛、职业XBA杯、联盟至尊杯。'></a></td></tr><tr id='Menu2' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=DEVISION", "职 业 联 赛", this.intMenuCategory), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=CUPLIST", "街 球 杯 赛", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XBACUP", "冠 军 杯 赛", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=DEVCUP", "自 建 杯 赛", 1, "title='一些没有加密的自建杯赛可以报名。'"), 
-                 "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLYONEMATCH", "胜 者 为 王", 1, "title='体验一夫当千的快感。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=STARMATCH", "全 明 星 赛", 1, "title='全明星球员云集的赛事。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNIONCUP1", "联 盟 争 霸", 1, "title='体现联盟的整体实力。'"),  "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=NPC", "NPC&nbsp;&nbsp;&nbsp;挑 战", 1, "title='考验你真正的实力。'"), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(3)' style='height:28px; width:176px;'><a id='Img3' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -109px' title='职业战术、街球战术；恰当的战术是赢球的关键。' ></a></td></tr><tr id='Menu3' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=VARRANGE", "职 业 战 术", this.intMenuCategory1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=SARRANGE", "街 球 战 术", 1), "</table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td onclick='ShowMenu(6)' id='Img6'  style='height:28px; width:176px;cursor:hand; background:url(Images/menubg1.gif) no-repeat 0px -193px'><a  style='height:28px; width:124px; display:block; float:left;' title='加入或组建自己的联盟，和朋友一起玩游戏。'></a><div style='margin:6px 22px 0 0' id='HasField1'></div></td></tr><tr id='Menu6' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Type=UNIONLIST", "联 盟 列 表", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNION&amp;Kind=VIEWUNION", "我 的 联 盟", this.intMenuCategoryU), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetFieldMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNIONFIELD", "联 盟 战 争 ", this.intMenuCategoryU), "</table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -137px'><A style='display:block; height:28px; width:176px;' href=\"Main_P.aspx?Tag=", this.intUserID, "&Type=TRANSFERMAEKET\" target=\"Main\" title='这里有很多不同的球员市场，可以购买到更好的球员。' ></A></td></tr><tr><td style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -165px'><a style='display:block; height:28px; width:176px;' href='Main_P.aspx?Tag=", this.intUserID, 
-                 "&Type=TOOLS' target='Main' title='' ></a></td></tr><tr id='Menu5' style='display:none;'><td><table width='138' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td width='5' height='5'><img src='Images/corner_1.gif' width='5' height='5'></td><td background='Images/top.gif'></td><td width='7'><img src='Images/corner_2.gif' width='7' height='5'></td></tr><tr><td height='7'><img src='Images/corner_4.gif' width='5' height='7'></td><td background='Images/down.gif'></td><td><img src='Images/corner_3.gif' width='7' height='7'></td></tr></table></td></tr>"
+                "<tr><td onclick='ShowMenu(4)' style='height:28px; width:176px;'><a style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg2.gif) no-repeat 0px -27px' id='Img4' title='比赛约战、训练中心、自建杯赛；可以在这里训练球员、演练战术。' ></a></td></tr><tr id='Menu4' style='display:;'><td algin='center'><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLINELIST", "在 线 经 理", 1, "title='你可以和正在游戏的经理交流发送约战。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FMATCHMSG", "我 的 比 赛", 1, "title='查看自己的比赛记录。'"), "<td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FRIMATCHCENTER", "训 练 中 心", 1, "title='可以在这里报名等待别人向您发送训练赛。'"), "<tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=FINDNICK", "同 城 交 友", 1, "title='您可以查找到很多来自同一个城市的朋友。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLYONEMATCH", "胜 者 为 王", 1, "title='体验一夫当千的快感。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XBATOP", "实 力 排 行", 1, "title='排行榜。'"), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(1)' style='height:28px; width:176px;'><a id='Img1' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -54px' title='球员管理、训练；职员管理、球队财政、球场升级、悬挂广告、更改球票、查看荣誉。' ></a></td></tr><tr id='Menu1' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=PLAYERCENTER", "球 员 管 理", 1, "title='出售球员、让球员参加选秀、下放、续约、从街球队向职业队提拔球员。'"), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_S.aspx?Type=STAFF", "职 员 管 理", 1, "title='好的职员帮助你的球员有更好的状态。'"), 
+                "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=TRAINPLAYERCENTER", "球 员 训 练", 1, "title='可训练街球队员和职业队员，两种训练方式不同。'"), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_S.aspx?Type=FINANCE", "球 队 财 政", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=CLUBBUILD", "球 队 建 设", this.intMenuCategory), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=HONOUR", "球 队 荣 誉", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr/>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XGUESS", "冠 军 竞 猜", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr/>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=GUESS", "有 奖 竞 猜", 1), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(2)' style='height:28px; width:176px;'><a id='Img2' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -82px' title='职业联赛赛程、排名；街球杯赛、职业XBA杯、联盟至尊杯。'></a></td></tr><tr id='Menu2' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=DEVISION", "职 业 联 赛", this.intMenuCategory), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=CUPLIST", "街 球 杯 赛", 1), 
+                "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=XBACUP", "冠 军 杯 赛", 1), "<tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=DEVCUP", "自 建 杯 赛", 1, "title='一些没有加密的自建杯赛可以报名。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ONLYONEMATCH", "胜 者 为 王", 1, "title='体验一夫当千的快感。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=STARMATCH", "全 明 星 赛", 1, "title='全明星球员云集的赛事。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNIONCUP1", "联 盟 争 霸", 1, "title='体现联盟的整体实力。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=ARENA", "球 馆 争 夺", 1, "title='同一联盟间盟友的配合。'"), "</tr><tr><td background='Images/line.gif' height='1'></td></tr><tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=NPC", "NPC&nbsp;&nbsp;&nbsp;挑 战", 1, "title='考验你真正的实力。'"), "</tr></table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style='cursor:hand;' onclick='ShowMenu(3)' style='height:28px; width:176px;'><a id='Img3' style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -109px' title='职业战术、街球战术；恰当的战术是赢球的关键。' ></a></td></tr><tr id='Menu3' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=VARRANGE", "职 业 战 术", this.intMenuCategory1), 
+                "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=SARRANGE", "街 球 战 术", 1), "</table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td onclick='ShowMenu(6)' id='Img6'  style='height:28px; width:176px;cursor:hand; background:url(Images/menubg1.gif) no-repeat 0px -193px'><a  style='height:28px; width:124px; display:block; float:left;' title='加入或组建自己的联盟，和朋友一起玩游戏。'></a><div style='margin:6px 22px 0 0' id='HasField1'></div></td></tr><tr id='Menu6' style='display:none;'><td><table width='164' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td style='width:5px;height:5px;background:url(Images/xbg1.gif) no-repeat -168px 0px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -29px'></td><td style='width:6px;height:5px;background:url(Images/xbg1.gif) no-repeat -173px 0px'></td></tr><tr><td style='background:url(Images/xbg1.gif) repeat-y -180px 0px; height:37px;'></td><td align='left' valign='top' bgcolor='#FBF2EB'><table cellpadding='0' cellspacing='0' width='153' bgcolor='#FBF2EB'>", this.GetChildMenu("Main_P.aspx?Type=UNIONLIST", "联 盟 列 表", 1), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetChildMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNION&amp;Kind=VIEWUNION", "我 的 联 盟", this.intMenuCategoryU), "<tr><td background='Images/line.gif' height='1'></td></tr>", this.GetFieldMenu("Main_P.aspx?Tag=" + this.intUserID + "&Type=UNIONFIELD", "联 盟 战 争 ", this.intMenuCategoryU), "</table></td><td style='background:url(Images/xbg1.gif) repeat-y -185px 0px'></td></tr><tr><td style='width:5px;height:7px;background:url(Images/xbg1.gif) no-repeat -168px -5px'></td><td style='background:url(Images/xbg2.gif) repeat-x 0px -113px'></td><td style='width:6px;height:7px;background:url(Images/xbg1.gif) no-repeat -173px -5px'></td></tr></table></td></tr><tr><td style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -137px'><A style='display:block; height:28px; width:176px;' href=\"Main_P.aspx?Tag=", this.intUserID, "&Type=TRANSFERMAEKET\" target=\"Main\" title='这里有很多不同的球员市场，可以购买到更好的球员。' ></A></td></tr><tr><td style=' cursor:hand; height:28px; width:176px; display:block; background:url(Images/menubg1.gif) no-repeat 0px -165px'><a style='display:block; height:28px; width:176px;' href='Main_P.aspx?Tag=", this.intUserID, "&Type=TOOLS' target='Main' title='' ></a></td></tr><tr id='Menu5' style='display:none;'><td><table width='138' border='0' cellspacing='0' cellpadding='0' align='center'><tr><td width='5' height='5'><img src='Images/corner_1.gif' width='5' height='5'></td><td background='Images/top.gif'></td><td width='7'><img src='Images/corner_2.gif' width='7' height='5'></td></tr><tr><td height='7'><img src='Images/corner_4.gif' width='5' height='7'></td><td background='Images/down.gif'></td><td><img src='Images/corner_3.gif' width='7' height='7'></td></tr></table></td></tr>"
              });
-             
         }
 
         protected override void OnInit(EventArgs e)
@@ -425,9 +377,9 @@
                 }
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                string str = onlineRowByUserID["DiskURL"].ToString();
+                string str2 = onlineRowByUserID["DiskURL"].ToString();
                 this.intClubID = (int) onlineRowByUserID["ClubID5"];
-                this.strFace = DBLogin.URLString(0) + str + "Face.png";
+                this.strFace = DBLogin.URLString(0) + str2 + "Face.png";
                 this.strFace = string.Concat(new object[] { "<div style='position:absolute;top:114px;left:82px;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=", this.strFace, "?RndID=", RandomItem.rnd.Next(0, 10), ");width:37px;height:40px'></div>" });
                 int num = Convert.ToInt32(onlineRowByUserID["Category"]);
                 this.intMsgFlag = Convert.ToInt32(onlineRowByUserID["HasMsg"]);
@@ -476,12 +428,12 @@
                         }
                         this.intMenuCategory = 0;
                     }
-                    string str2 = "";
+                    string str3 = "";
                     if (this.intPayType == 1)
                     {
-                        str2 = "<font color=red >&nbsp;&nbsp;[会员]</font>";
+                        str3 = "<font color=red >&nbsp;&nbsp;[会员]</font>";
                     }
-                    this.strMsg = "<table width='170' border='0' cellpadding='0' cellspacing='0'><tr><td height='40' align='center' width='100%'></td><tr><td height='20' align='center' colspan=2><font class='ForumTime'>" + this.strNickName + str2 + "</font></td></tr><tr><td height='27' align='center' colspan='2'>";
+                    this.strMsg = "<table width='170' border='0' cellpadding='0' cellspacing='0'><tr><td height='40' align='center' width='100%'></td><tr><td height='20' align='center' colspan=2><font class='ForumTime'>" + this.strNickName + str3 + "</font></td></tr><tr><td height='27' align='center' colspan='2'>";
                     if (ServerParameter.strCopartner == "DUNIU")
                     {
                         this.strMsg = this.strMsg + "<a target=\"_blank\" href='http://bbs.mmoabc.com/forums/18'><img src='" + SessionItem.GetImageURL() + "dnluntan.gif' width='51' height='24' border='0'></a>&nbsp;";

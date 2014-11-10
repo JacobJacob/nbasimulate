@@ -27,10 +27,10 @@
 
         protected override void OnInit(EventArgs e)
         {
-            this.intTag = (int) SessionItem.GetRequest("Tag", 0);
-            this.intType = (short) SessionItem.GetRequest("Type", 2);
-            this.intClubIDA = (int) SessionItem.GetRequest("A", 0);
-            this.intClubIDB = (int) SessionItem.GetRequest("B", 0);
+            this.intTag = SessionItem.GetRequest("Tag", 0);
+            this.intType = SessionItem.GetRequest("Type", 2);
+            this.intClubIDA = SessionItem.GetRequest("A", 0);
+            this.intClubIDB = SessionItem.GetRequest("B", 0);
             this.InitializeComponent();
             base.OnInit(e);
         }
@@ -109,19 +109,19 @@
             this.sbList.Append("\t</tr>");
             this.sbList.Append("</table>");
             int intNum = 1;
-            foreach (DataRow row7 in table2.Rows)
+            foreach (DataRow row5 in table2.Rows)
             {
-                string str12 = row7["QuarterID"].ToString();
-                string str10 = row7["ScoreH"].ToString();
-                string str11 = row7["ScoreA"].ToString();
+                string str10 = row5["QuarterID"].ToString();
+                string str11 = row5["ScoreH"].ToString();
+                string str12 = row5["ScoreA"].ToString();
                 try
                 {
-                    DataRow row5 = XmlHelper.GetRow(table3, "QuarterID=" + str12 + " AND ClubID=" + str2, "");
-                    DataRow row6 = XmlHelper.GetRow(table3, "QuarterID=" + str12 + " AND ClubID=" + str6, "");
+                    DataRow row6 = XmlHelper.GetRow(table3, "QuarterID=" + str10 + " AND ClubID=" + str2, "");
+                    DataRow row7 = XmlHelper.GetRow(table3, "QuarterID=" + str10 + " AND ClubID=" + str6, "");
                     this.sbList.Append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
                     this.sbList.Append("\t<tr>");
                     this.sbList.Append("\t\t<td height=\"30\" bgcolor=\"#fcc6a4\" style=\"PADDING-RIGHT:4px;PADDING-LEFT:4px;PADDING-BOTTOM:4px;PADDING-TOP:4px\">" + MatchItem.GetQName(intNum, 3) + "&nbsp;&nbsp;&nbsp;&nbsp;");
-                    this.sbList.Append("\t\t\t" + str10 + "：" + str11);
+                    this.sbList.Append("\t\t\t" + str11 + "：" + str12);
                     this.sbList.Append("\t\t</td>");
                     this.sbList.Append("\t</tr>");
                     this.sbList.Append("\t<tr>");
@@ -131,10 +131,10 @@
                     this.sbList.Append("\t\t\t\t</tr>");
                     this.sbList.Append("\t\t\t\t<tr>");
                     this.sbList.Append("\t\t\t\t\t<td height=\"25\" style=\"PADDING-RIGHT:4px;PADDING-LEFT:4px;PADDING-BOTTOM:4px;PADDING-TOP:4px\"><font color=\"#ad1a2c\">" + str3 + "");
-                    this.sbList.Append("\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;" + MatchItem.GetSOffName((int) row5["Offense"]) + "&nbsp;&nbsp;&nbsp;&nbsp;" + MatchItem.GetSDefName((int) row5["Defense"]) + "</font></td>");
+                    this.sbList.Append("\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;" + MatchItem.GetSOffName((int) row6["Offense"]) + "&nbsp;&nbsp;&nbsp;&nbsp;" + MatchItem.GetSDefName((int) row6["Defense"]) + "</font></td>");
                     this.sbList.Append("\t\t\t\t\t<td width=\"1\" bgcolor=\"#fcc6a4\"></td>");
                     this.sbList.Append("\t\t\t\t\t<td><font color=\"#ad1a2c\" style=\"PADDING-RIGHT:4px;PADDING-LEFT:4px;PADDING-BOTTOM:4px;PADDING-TOP:4px\">" + str7);
-                    this.sbList.Append("\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;" + MatchItem.GetSOffName((int) row6["Offense"]) + "&nbsp;&nbsp;&nbsp;&nbsp;" + MatchItem.GetSDefName((int) row6["Defense"]) + "</font></td>");
+                    this.sbList.Append("\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;" + MatchItem.GetSOffName((int) row7["Offense"]) + "&nbsp;&nbsp;&nbsp;&nbsp;" + MatchItem.GetSDefName((int) row7["Defense"]) + "</font></td>");
                     this.sbList.Append("\t\t\t\t</tr>");
                     this.sbList.Append("\t\t\t\t<tr>");
                     this.sbList.Append("\t\t\t\t\t<td width=\"501\" height=\"25\"><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"PADDING-RIGHT:4px;PADDING-LEFT:4px;PADDING-BOTTOM:4px;PADDING-TOP:4px\">");
@@ -147,7 +147,7 @@
                     this.sbList.Append("\t\t\t\t\t\t\t\t<td width=\"17%\">体重(kg)</td>");
                     this.sbList.Append("\t\t\t\t\t\t\t\t<td width=\"20%\">综合能力</td>");
                     this.sbList.Append("\t\t\t\t\t\t\t</tr>");
-                    DataView view = XmlHelper.GetView(table4, "ArrangeID=" + row5["ArrangeID"].ToString(), "");
+                    DataView view = XmlHelper.GetView(table4, "ArrangeID=" + row6["ArrangeID"].ToString(), "");
                     for (int i = 0; i < view.Count; i++)
                     {
                         this.sbList.Append("\t\t\t\t\t<tr align=\"center\">");
@@ -173,7 +173,7 @@
                     this.sbList.Append("\t\t\t\t\t\t\t\t<td width=\"17%\">体重(kg)</td>");
                     this.sbList.Append("\t\t\t\t\t\t\t\t<td width=\"20%\">综合能力</td>");
                     this.sbList.Append("\t\t\t\t\t\t\t</tr>");
-                    DataView view2 = XmlHelper.GetView(table4, "ArrangeID=" + row6["ArrangeID"].ToString(), "");
+                    DataView view2 = XmlHelper.GetView(table4, "ArrangeID=" + row7["ArrangeID"].ToString(), "");
                     for (int j = 0; j < view2.Count; j++)
                     {
                         this.sbList.Append("\t\t\t\t\t<tr align=\"center\">");
@@ -204,7 +204,7 @@
                     this.sbList.Append("\t\t<td width=\"12%\">主：客</td>");
                     this.sbList.Append("\t\t<td width=\"80%\">描 述</td>");
                     this.sbList.Append("\t</tr>");
-                    DataView view3 = XmlHelper.GetView(table5, "QuarterID=" + str12, "");
+                    DataView view3 = XmlHelper.GetView(table5, "QuarterID=" + str10, "");
                     for (int k = 0; k < view3.Count; k++)
                     {
                         this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#fcf1eb'\" onmouseout=\"this.style.backgroundColor=''\">");
@@ -218,11 +218,9 @@
                     this.sbList.Append("\t</tr>");
                     this.sbList.Append("</table>");
                     intNum++;
-                    continue;
                 }
                 catch
                 {
-                    continue;
                 }
             }
         }

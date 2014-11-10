@@ -77,19 +77,18 @@
 
         private string GetOldPlayerList(DataTable dt)
         {
-            if (dt == null)
+            if (dt != null)
             {
-                return "";
-            }
-            int num2 = 0;
-            foreach (DataRow row in dt.Rows)
-            {
-                long num = (long) row["PlayerID"];
-                if (num2 == 0)
+                int num = 0;
+                foreach (DataRow row in dt.Rows)
                 {
-                    this.longFirstPlayerID = num;
+                    long num2 = (long) row["PlayerID"];
+                    if (num == 0)
+                    {
+                        this.longFirstPlayerID = num2;
+                    }
+                    num++;
                 }
-                num2++;
             }
             return "";
         }
@@ -101,24 +100,24 @@
             {
                 return "";
             }
-            int num12 = 0;
+            int num = 0;
             foreach (DataRow row in dt.Rows)
             {
+                string str2;
                 string str3;
-                string str4;
                 object obj2;
                 long longPlayerID = (long) row["PlayerID"];
-                if (num12 == 0)
+                if (num == 0)
                 {
                     this.longFirstPlayerID = longPlayerID;
                 }
                 string strName = row["Name"].ToString();
-                int num2 = (byte) row["Number"];
-                int num3 = (byte) row["Age"];
+                int num3 = (byte) row["Number"];
+                int num4 = (byte) row["Age"];
                 int intPosition = (byte) row["Pos"];
                 int intPower = (byte) row["Power"];
-                int num6 = (byte) row["Height"];
-                int num7 = (byte) row["Weight"];
+                int num7 = (byte) row["Height"];
+                int num8 = (byte) row["Weight"];
                 float single1 = ((float) ((int) row["Ability"])) / 10f;
                 int intStatus = (byte) row["Status"];
                 byte num1 = (byte) row["Category"];
@@ -137,7 +136,7 @@
                 float single14 = ((float) ((int) row["Defense"])) / 10f;
                 float single15 = ((float) ((int) row["Team"])) / 10f;
                 int num10 = (int) row["TrainPoint"];
-                byte num38 = (byte) row["TrainType"];
+                byte num39 = (byte) row["TrainType"];
                 string strEvent = row["Event"].ToString();
                 int intAbility = (int) row["Ability"];
                 int intSuspend = (byte) row["Suspend"];
@@ -165,54 +164,52 @@
                 int num33 = (int) row["ReboundMax"];
                 int num34 = (int) row["StealMax"];
                 int num35 = (int) row["BlockMax"];
-                int intCategory = Convert.ToInt32(row["Category"]);
-                int num36 = (((((((((num14 + num15) + num16) + num17) + num18) + num19) + num20) + num21) + num22) + num23) + num24;
-                int num37 = (((((((((num25 + num26) + num27) + num28) + num29) + num30) + num31) + num32) + num33) + num34) + num35;
+                int num36 = Convert.ToInt32(row["Category"]);
+                int num37 = (((((((((num14 + num15) + num16) + num17) + num18) + num19) + num20) + num21) + num22) + num23) + num24;
+                int num38 = (((((((((num25 + num26) + num27) + num28) + num29) + num30) + num31) + num32) + num33) + num34) + num35;
                 if (this.intType == 3)
                 {
-                    str3 = "<td>" + num10 + "</td>";
-                    if (((intStatus == 1) && (intPower > 30)) && ((num10 > this.MinPoint(row)) && (num36 < num37)))
+                    str2 = "<td>" + num10 + "</td>";
+                    if (((intStatus == 1) && (intPower > 30)) && ((num10 > this.MinPoint(row)) && (num37 < num38)))
                     {
-                       
-                        str4 = "<td><a href='#' onclick='ChangeTrain(" + longPlayerID + ")'>训练</a></td>";
+                        str3 = "<td><a href='#' onclick='ChangeTrain(" + longPlayerID + ")'>训练</a></td>";
                     }
                     else
                     {
-                        str4 = "<td align='center'>--</td>";
+                        str3 = "<td align='center'>--</td>";
                     }
                 }
                 else
                 {
-                    str3 = "<td>" + num10 + "</td>";
-                    str4 = "<td>";
-                    if (((intPower > 30) && (num10 > 50)) && ((intStatus == 1) && (num36 < num37)))
+                    str2 = "<td>" + num10 + "</td>";
+                    str3 = "<td>";
+                    if (((intPower > 30) && (num10 > 50)) && ((intStatus == 1) && (num37 < num38)))
                     {
-                       
-                        if (intCategory == 3)
+                        if (num36 == 3)
                         {
-                            obj2 = str4;
-                            str4 = string.Concat(new object[] { obj2, "训练 | " });
+                            obj2 = str3;
+                            str3 = string.Concat(new object[] { obj2, "训练 | " });
                         }
                         else
                         {
-                            obj2 = str4;
-                            str4 = string.Concat(new object[] { obj2, "<a href='#' onclick='ChangeTrain(", longPlayerID, ")'>训练</a> | " });
+                            obj2 = str3;
+                            str3 = string.Concat(new object[] { obj2, "<a href='#' onclick='ChangeTrain(", longPlayerID, ")'>训练</a> | " });
                         }
                     }
                     else
                     {
-                        str4 = str4 + "<font color='#666666'>训练</font> | ";
+                        str3 = str3 + "<font color='#666666'>训练</font> | ";
                     }
-                    if (intCategory != 3)
+                    if (num36 != 3)
                     {
-                        obj2 = str4;
-                        str4 = string.Concat(new object[] { obj2, "<a href='Dialogue.aspx?PlayerID=", longPlayerID, "'>谈话</a></td>" });
+                        obj2 = str3;
+                        str3 = string.Concat(new object[] { obj2, "<a href='Dialogue.aspx?PlayerID=", longPlayerID, "'>谈话</a></td>" });
                     }
                     else
                     {
-                        obj2 = str4;
-                        str4 = string.Concat(new object[] { obj2, "谈话</td>" });
-                        intAbility = 999;
+                        obj2 = str3;
+                        str3 = string.Concat(new object[] { obj2, "谈话</td>" });
+                        intAbility = 0x3e7;
                     }
                 }
                 string str6 = "";
@@ -248,7 +245,7 @@
                     str7 = "alt='渴望训练'";
                 }
                 obj2 = str;
-                str = string.Concat(new object[] { obj2, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif\"></td><td height='25' align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, this.intType, 1, 1), "</td>" });
+                str = string.Concat(new object[] { obj2, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num3, ".gif\"></td><td height='25' align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, this.intType, 1, 1), "</td>" });
                 if (this.intType == 5)
                 {
                     str = str + "<td>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "</td>";
@@ -256,12 +253,12 @@
                 if (flag)
                 {
                     obj2 = str;
-                    str = string.Concat(new object[] { obj2, "<td><a href=\"javascript:;\" style=\"cursor:pointer; color:red\" title=\"球员将在赛季结束后退役\" >", num3, "!</a></td>" });
+                    str = string.Concat(new object[] { obj2, "<td><a href=\"javascript:;\" style=\"cursor:pointer; color:red\" title=\"球员将在赛季结束后退役\" >", num4, "!</a></td>" });
                 }
                 else
                 {
                     obj2 = str;
-                    str = string.Concat(new object[] { obj2, "<td>", num3, "</td>" });
+                    str = string.Concat(new object[] { obj2, "<td>", num4, "</td>" });
                 }
                 string str8 = str;
                 str = str8 + "<td><a title='" + PlayerItem.GetPlayerChsPosition(intPosition) + "' style='CURSOR: hand'>" + PlayerItem.GetPlayerEngPosition(intPosition) + "</td><td>" + PlayerItem.GetPowerColor(intPower) + "</td>";
@@ -271,8 +268,8 @@
                     str = str8 + "<td>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "&nbsp;&nbsp;<img src='" + SessionItem.GetImageURL() + "Player/Face/" + str6 + "' " + str7 + " hight='12' width='12' border='0'></td>";
                 }
                 obj2 = str;
-                str = string.Concat(new object[] { obj2, "<td>", num6, "</td><td>", num7, "</td><td>", PlayerItem.GetAbilityColor(intAbility), "</td>", str3 });
-                str = str + str4 + "</tr>";
+                str = string.Concat(new object[] { obj2, "<td>", num7, "</td><td>", num8, "</td><td>", PlayerItem.GetAbilityColor(intAbility), "</td>", str2 });
+                str = str + str3 + "</tr>";
                 if (this.intType == 3)
                 {
                     str = str + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='12'></td></tr>";
@@ -281,7 +278,7 @@
                 {
                     str = str + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='11'></td></tr>";
                 }
-                num12++;
+                num++;
             }
             return str;
         }
@@ -314,7 +311,7 @@
                 this.intClubID3 = (int) onlineRowByUserID["ClubID3"];
                 this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
                 this.btnOK.Visible = false;
-                this.intType = (int) SessionItem.GetRequest("Type", 0);
+                this.intType = SessionItem.GetRequest("Type", 0);
                 if (((this.intCategory == 1) && (this.intType != 3)) && (this.intType != 6))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=3");
@@ -348,6 +345,9 @@
                     this.strTools = "<p align=\"center\" style=\"color:red;\">购买“<a href=\"ManagerTool.aspx?Type=STORE&Page=1\">双倍训练卡</a>”可获得双倍训练点，“理疗中心”可以让球员恢复最佳状态。</p>";
                     return;
 
+                case 4:
+                    break;
+
                 case 5:
                     playerTableByClubID = BTPPlayer5Manager.GetPlayerTableByClubID(this.intClubID5);
                     this.strDevMsg = "<font color=\"red\">注：确认训练后，训练效果将在第二天显示。</font>";
@@ -356,9 +356,11 @@
                     this.strList = this.strList + this.GetPlayerList(playerTableByClubID);
                     this.GetManagerSay();
                     this.strTools = "";
+                    break;
+
+                default:
                     return;
             }
-            //playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClubID3);
         }
 
         private void SetPageIntro()
@@ -387,17 +389,14 @@
                     this.strAddAllPower = "";
                 }
             }
+            else if (Config.GetPlayer5RecoverEnable() == 1)
+            {
+                strAddAllPower = this.strAddAllPower;
+                this.strAddAllPower = string.Concat(new object[] { strAddAllPower, "<img src='", SessionItem.GetImageURL(), "blanks.gif' border='0' height='0' width='5'><a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=ADDPLAYERALL&Category=1' target='Center'><img src='", SessionItem.GetImageURL(), "allt.gif' border='0' height='24' width='64' align='absmiddle'></a>" });
+            }
             else
             {
-                if (Config.GetPlayer5RecoverEnable() == 1)
-                {
-                    strAddAllPower = this.strAddAllPower;
-                    this.strAddAllPower = string.Concat(new object[] { strAddAllPower, "<img src='", SessionItem.GetImageURL(), "blanks.gif' border='0' height='0' width='5'><a href='SecretaryPage.aspx?PlayerType=", this.intType, "&Type=ADDPLAYERALL&Category=1' target='Center'><img src='", SessionItem.GetImageURL(), "allt.gif' border='0' height='24' width='64' align='absmiddle'></a>" });
-                }
-                else
-                {
-                    this.strAddAllPower = "";
-                }
+                this.strAddAllPower = "";
             }
             string str2 = "";
             int num = ToolItem.HasTool(this.intUserID, 9, 0);

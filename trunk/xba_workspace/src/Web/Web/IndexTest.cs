@@ -3,7 +3,6 @@
     using LoginParameter;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -56,7 +55,6 @@
                 }
                 else
                 {
-                    //userRowByUserName.Close();
                     base.Response.Redirect("Report.aspx?Parameter=10");
                 }
             }
@@ -204,9 +202,9 @@
             DataRow row;
             string str;
             int num;
+            string str2;
             string str3;
             string str4;
-            string str5;
             object strNewsList;
             this.strNewsList = "";
             this.strTopicList = "";
@@ -218,29 +216,29 @@
                     row = tableByBoardID.Rows[i];
                     str = row["BoardID"].ToString().Trim();
                     num = (int) row["TopicID"];
-                    str3 = row["Title"].ToString();
-                    string str2 = row["Keyword"].ToString().Trim();
-                    if (str2 == "")
+                    str2 = row["Title"].ToString();
+                    string str5 = row["Keyword"].ToString().Trim();
+                    if (str5 == "")
                     {
-                        str2 = "新闻";
+                        str5 = "新闻";
                     }
-                    if (str2 == "新闻")
+                    if (str5 == "新闻")
                     {
-                        str5 = "<img src='" + SessionItem.GetImageURL() + "/icon_02.gif' width='4' height='8'>";
-                        str4 = "#ff3301";
+                        str4 = "<img src='" + SessionItem.GetImageURL() + "/icon_02.gif' width='4' height='8'>";
+                        str3 = "#ff3301";
                     }
-                    else if (str2 == "开发")
+                    else if (str5 == "开发")
                     {
-                        str5 = "<img src='" + SessionItem.GetImageURL() + "/icon_03.gif' width='4' height='8'>";
-                        str4 = "#039a01";
+                        str4 = "<img src='" + SessionItem.GetImageURL() + "/icon_03.gif' width='4' height='8'>";
+                        str3 = "#039a01";
                     }
                     else
                     {
-                        str5 = "<img src='" + SessionItem.GetImageURL() + "/icon_04.gif' width='4' height='8'>";
-                        str4 = "#0001fe";
+                        str4 = "<img src='" + SessionItem.GetImageURL() + "/icon_04.gif' width='4' height='8'>";
+                        str3 = "#0001fe";
                     }
                     strNewsList = this.strNewsList;
-                    this.strNewsList = string.Concat(new object[] { strNewsList, str5, "&nbsp;[<font color='", str4, "'>", str2, "</font>]&nbsp;<a href='Topic.aspx?BoardID=", str, "&TopicID=", num, "&Page=1'>", StringItem.GetShortString(str3, 0x1c), "</a>" });
+                    this.strNewsList = string.Concat(new object[] { strNewsList, str4, "&nbsp;[<font color='", str3, "'>", str5, "</font>]&nbsp;<a href='Topic.aspx?BoardID=", str, "&TopicID=", num, "&Page=1'>", StringItem.GetShortString(str2, 0x1c), "</a>" });
                     if (i < (tableByBoardID.Rows.Count - 1))
                     {
                         this.strNewsList = this.strNewsList + "<br>";
@@ -255,19 +253,19 @@
                     row = tableByBoardID.Rows[j];
                     str = row["BoardID"].ToString().Trim();
                     num = (int) row["TopicID"];
-                    str3 = row["Title"].ToString();
+                    str2 = row["Title"].ToString();
                     DateTime datIn = (DateTime) row["CreateTime"];
                     if (datIn.AddHours(24.0) > DateTime.Now)
                     {
-                        str4 = "#ff0000";
+                        str3 = "#ff0000";
                     }
                     else
                     {
-                        str4 = "#666666";
+                        str3 = "#666666";
                     }
-                    str5 = "<img src='" + SessionItem.GetImageURL() + "/icon_01.gif' width='4' height='8'>";
+                    str4 = "<img src='" + SessionItem.GetImageURL() + "/icon_01.gif' width='4' height='8'>";
                     strNewsList = this.strTopicList;
-                    this.strTopicList = string.Concat(new object[] { strNewsList, str5, "&nbsp;[<font color='", str4, "'>", StringItem.FormatDate(datIn, "hh:mm"), "</font>]&nbsp;<a href='Topic.aspx?BoardID=", str, "&TopicID=", num, "&Page=1'>", StringItem.GetShortString(str3, 0x1c), "</a>" });
+                    this.strTopicList = string.Concat(new object[] { strNewsList, str4, "&nbsp;[<font color='", str3, "'>", StringItem.FormatDate(datIn, "hh:mm"), "</font>]&nbsp;<a href='Topic.aspx?BoardID=", str, "&TopicID=", num, "&Page=1'>", StringItem.GetShortString(str2, 0x1c), "</a>" });
                     if (j < (tableByBoardID.Rows.Count - 1))
                     {
                         this.strTopicList = this.strTopicList + "<br>";

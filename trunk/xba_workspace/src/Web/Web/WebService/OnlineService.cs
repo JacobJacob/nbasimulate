@@ -8,7 +8,7 @@
 
     public class OnlineService : WebService
     {
-        private IContainer components = null;
+        private IContainer components;
 
         public OnlineService()
         {

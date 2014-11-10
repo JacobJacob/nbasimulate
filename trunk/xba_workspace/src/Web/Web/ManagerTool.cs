@@ -4,7 +4,6 @@
     using ServerManage;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -32,14 +31,15 @@
         private string strNickName;
         public string strPage = "";
         public string strPageIntro;
+        public string strPlayerActivePoint = "";
+        public string strPlayerPromotion = "";
         public string strPlayerWealth;
+        public string strPromotionToWealth = "";
         public string strSayScript;
         public string strScript;
         private string strType;
         public string strUseWealth;
         public string strWealthToMoney = "";
-        public string strPlayerPromotion = "";
-        public string strPromotionToWealth = "";
         protected HtmlTable Table2;
         protected TextBox tbCoin;
         protected TextBox tbGetWealth;
@@ -70,7 +70,7 @@
                         base.Response.Redirect("Report.aspx?Parameter=485");
                         return;
                     }
-                    int num = BTPAccountManager.SetWealthByUserID(this.intUserID, 1, getWealth);
+                    BTPAccountManager.SetWealthByUserID(this.intUserID, 1, getWealth);
                     BTPWealthFinanceManager.SetWealthFinance(this.intUserID, this.strNickName, 1, getWealth, "从论坛中提取" + getWealth + "财富到游戏里", "无内容");
                 }
                 else
@@ -95,8 +95,8 @@
             string strCopartner = ServerParameter.strCopartner;
             DateTime time1 = (DateTime) row["CreateTime"];
             this.lngCoin = (long) row["Coin"];
-            string str5 = this.tbnPW.Text.Trim();
-            string str6 = this.tbnPWA.Text.Trim();
+            string str4 = this.tbnPW.Text.Trim();
+            string str5 = this.tbnPWA.Text.Trim();
             string strIn = this.tbNickname.Text.Trim();
             if (StringItem.IsNumber(this.tbCoin.Text))
             {
@@ -120,9 +120,9 @@
                 base.Response.Redirect("Report.aspx?Parameter=816");
                 return;
             }
-            if ((strCopartner != "XBA") || str5.Equals(str6))
+            if ((strCopartner != "XBA") || str4.Equals(str5))
             {
-                if ((strCopartner == "XBA") && !str5.Equals(str))
+                if ((strCopartner == "XBA") && !str4.Equals(str))
                 {
                     this.tbnPW.Text = "";
                     this.tbnPWA.Text = "";
@@ -201,7 +201,7 @@
                 case 2:
                 {
                     this.tblCoinFinance.Visible = true;
-                    this.intPage = (int) SessionItem.GetRequest("Page", 0);
+                    this.intPage = SessionItem.GetRequest("Page", 0);
                     if (this.intPage == 0)
                     {
                         this.intPage = 1;
@@ -221,23 +221,22 @@
                     {
                         this.strCoin = "<a href=\"ManagerTool.aspx?Type=COIN&Status=3\">金币转赠</a>";
                     }
-                    DataTable reader = ROOTUserManager.GetCoinInFinanceList(this.intUserID, this.intPage, 12);
-                    if (reader != null)
+                    DataTable table = ROOTUserManager.GetCoinInFinanceList(this.intUserID, this.intPage, 12);
+                    if (table != null)
                     {
-                        foreach (DataRow row in reader.Rows)
+                        foreach (DataRow row2 in table.Rows)
                         {
-                            byte num1 = (byte) row["Category"];
-                            long num2 = (long) row["Income"];
-                            string str3 = row["Event"].ToString().Trim();
-                            datIn = (DateTime) row["CreateTime"];
+                            byte num1 = (byte) row2["Category"];
+                            long num = (long) row2["Income"];
+                            string str2 = row2["Event"].ToString().Trim();
+                            datIn = (DateTime) row2["CreateTime"];
                             this.sbCoin.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">\n");
                             this.sbCoin.Append("    <td align=\"center\">收入</td>\n");
-                            this.sbCoin.Append("    <td align=\"center\">" + num2 + "</td>\n");
+                            this.sbCoin.Append("    <td align=\"center\">" + num + "</td>\n");
                             this.sbCoin.Append("    <td align=\"center\">" + StringItem.FormatDate(datIn, "yy-MM-dd hh:mm") + "</td>\n");
-                            this.sbCoin.Append("    <td align=\"left\" style=\"padding-left:6px\">" + str3 + "</td>\n");
+                            this.sbCoin.Append("    <td align=\"left\" style=\"padding-left:6px\">" + str2 + "</td>\n");
                             this.sbCoin.Append("</tr>\n");
                         }
-                        //reader.Close();
                         string strCurrentURL = "ManagerTool.aspx?Type=COIN&Status=2&";
                         this.strScript = this.GetScript(strCurrentURL);
                         this.strPage = "<div style=\"padding:6px 0 0 0;text-align:right;\">" + this.GetViewPage(strCurrentURL) + "</div>";
@@ -256,7 +255,7 @@
                         this.trPwa.Visible = false;
                     }
                     this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
-                    break;
+                    return;
             }
         }
 
@@ -322,45 +321,39 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", total, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", total, "个记录 跳转", str3 });
         }
 
         private void InitializeComponent()
@@ -371,83 +364,75 @@
 
         protected override void OnInit(EventArgs e)
         {
+            string str;
             Utility.RegisterTypeForAjax(typeof(Main_P));
             this.intUserID = SessionItem.CheckLogin(1);
             if (this.intUserID < 0)
             {
                 base.Response.Redirect("Report.aspx?Parameter=12");
+                return;
             }
-            else
+            DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
+            this.strNickName = onlineRowByUserID["NickName"].ToString();
+            this.strType = SessionItem.GetRequest("Type", 1);
+            this.intPage = SessionItem.GetRequest("Page", 0);
+            this.intPerPage = 10;
+            this.tblContainer.Visible = false;
+            this.tblWealth.Visible = false;
+            this.tblBox.Visible = false;
+            this.tblMyCoin.Visible = false;
+            this.tblCoinFinance.Visible = false;
+            this.tblSendCoin.Visible = false;
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            this.strPlayerWealth = accountRowByUserID["Wealth"].ToString();
+            this.strPlayerPromotion = accountRowByUserID["Promotion"].ToString();
+            this.strPlayerActivePoint = accountRowByUserID["ActivePoint"].ToString();
+            if ((DateTime.Now.Hour < 10) && (DateTime.Now.Hour >= 4))
             {
-                string str;
-                DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
-                this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
-                this.intPage = (int) SessionItem.GetRequest("Page", 0);
-                this.intPerPage = 10;
-                this.tblContainer.Visible = false;
-                this.tblWealth.Visible = false;
-                this.tblBox.Visible = false;
-                this.tblMyCoin.Visible = false;
-                this.tblCoinFinance.Visible = false;
-                this.tblSendCoin.Visible = false;
-                DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                this.strPlayerWealth = accountRowByUserID["Wealth"].ToString();
-                this.strPlayerPromotion = accountRowByUserID["Promotion"].ToString();
-                if ((DateTime.Now.Hour < 10) && (DateTime.Now.Hour >= 4))
+                if (this.strType == "WEALTHMANAGE")
                 {
-                    if (this.strType == "WEALTHMANAGE")
-                    {
-                        str = "<li class='qian2a'><font color='#aaaaaa'>幸运抽奖</font></li>";
-                    }
-                    else
-                    {
-                        str = "<li class='qian2a'><font color='#aaaaaa'>幸运抽奖</font></li>";
-                    }
-                }
-                else if (this.strType == "WEALTHMANAGE")
-                {
-                    str = "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=USEBOX&Status=1'>幸运抽奖</a></li>";
+                    str = "<li class='qian2a'><font color='#aaaaaa'>幸运抽奖</font></li>";
                 }
                 else
                 {
-                    str = "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=USEBOX&Status=1'>幸运抽奖</a></li>";
+                    str = "<li class='qian2a'><font color='#aaaaaa'>幸运抽奖</font></li>";
                 }
-                switch (this.strType)
+            }
+            else if (this.strType == "WEALTHMANAGE")
+            {
+                str = "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=USEBOX&Status=1'>幸运抽奖</a></li>";
+            }
+            else
+            {
+                str = "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=USEBOX&Status=1'>幸运抽奖</a></li>";
+            }
+            string strType = this.strType;
+            if (strType != null)
+            {
+                switch (strType)
                 {
                     case "TOOLS":
-                        //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>金币商店</a></li>" + str + "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=COIN&Status=1'>金币财政</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";
-                        //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>" + str + "</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";   
-                        //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>";
-                        this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>会员商店</a></li>" + str + "</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span><span style='margin-left:50px;' width='100' height='24'  align='center'>推广积分: " + this.strPlayerPromotion + "</span>";
+                        this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>会员商店</a></li>" + str + "</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span><span style='margin-left:50px;' width='100' height='24'  align='center'>活跃度积分: " + this.strPlayerActivePoint + "</span>";
                         this.tblContainer.Visible = true;
                         this.SetToolList();
-                        break;
+                        goto Label_0594;
 
                     case "STORE":
-                        //this.strPageIntro = "<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=TOOLS\"' href='ManagerTool.aspx?Type=TOOLS&Page=1'>我的道具</a></li><li class='qian2'>金币商店</li>" + str + "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=COIN&Status=1'>金币财政</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span width=\"89\">&nbsp;</span><span style=\" padding-left:100px\"><a href='" + StringItem.GetBuyCoinURL() + "' target='_blank'><img  align='absmiddle' border=0 src='Images/chongzhi.gif'  height='21px' width='60' /></a></span>";
-                        //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>";
                         this.strPageIntro = "<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=TOOLS\"' href='ManagerTool.aspx?Type=TOOLS&Page=1'>我的道具</a></li><li class='qian2'>会员商店</li>" + str + "</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span width=\"89\">&nbsp;</span>";
                         this.tblContainer.Visible = true;
-                        //this.strWealthToMoney = "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a>";
-                        this.strWealthToMoney = "<br/><a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a><br/><br/>我的推广链接:<a href=\"" + Config.GetDomain() + "Register.aspx?u=" + this.intUserID + "\" target=\"_blank\">" + Config.GetDomain() + "Register.aspx?u=" + this.intUserID + "</a>";
+                        this.strWealthToMoney = string.Concat(new object[] { "<br/><a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a><br/><br/>我的推广链接:<a href=\"", Config.GetDomain(), "Register.aspx?u=", this.intUserID, "\" target=\"_blank\">", Config.GetDomain(), "Register.aspx?u=", this.intUserID, "</a>" });
                         this.SetStoreList();
-                        break;
+                        goto Label_0594;
 
                     case "WEALTHMANAGE":
                         this.strPageIntro = "<a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=TOOLS\"' href='ManagerTool.aspx?Type=TOOLS&Page=1'><img align='absmiddle'  src='" + SessionItem.GetImageURL() + "MenuCard/Goods/Goods_C_01.GIF' border='0' height='24' width='76'></a><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'><img align='absmiddle'  src='" + SessionItem.GetImageURL() + "MenuCard/Goods/Goods_C_02.GIF' border='0' height='24' width='75'></a><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/FMatchCenter/FMatchCenter_07.GIF' border='0' height='24' width='90'>" + str + "<a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span width=\"10\">&nbsp;</span><span style='margin-left:12px;'>现有游戏币: " + this.strPlayerWealth + "</span>";
-                        //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>";
                         this.tblContainer.Visible = true;
                         this.tblWealth.Visible = true;
                         this.SetWealthManage();
-                        //this.strWealthToMoney = "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a><br/>我的推广链接:<a href=\"http://www.113388.net/Register.aspx?u=" + this.intUserID + "\" target=\"_blank\">http://www.113388.net/Register.aspx?u=" + this.intUserID + "</a>";
-                        this.strWealthToMoney = "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a><br/>我的推广链接:<a href=\"" + Config.GetDomain() + "Register.aspx?u=" + this.intUserID + "\" target=\"_blank\">" + Config.GetDomain() + "Register.aspx?u=" + this.intUserID + "</a>";
-                        break;
+                        this.strWealthToMoney = string.Concat(new object[] { "<a href=\"Temp_Right.aspx?Type=EXCHANGE\" target=\"Right\">王者积分兑换游戏币</a><br/>我的推广链接:<a href=\"", Config.GetDomain(), "Register.aspx?u=", this.intUserID, "\" target=\"_blank\">", Config.GetDomain(), "Register.aspx?u=", this.intUserID, "</a>" });
+                        goto Label_0594;
 
                     case "USEBOX":
-                        //this.strPageIntro = "<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=TOOLS\"' href='ManagerTool.aspx?Type=TOOLS&Page=1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>金币商店</a></li><li class='qian2'>幸运抽奖</li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=COIN&Status=1'>金币财政</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>";
-                        //this.strPageIntro = "<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=TOOLS\"' href='ManagerTool.aspx?Type=TOOLS&Page=1'>我的道具</a></li><li class='qian2'>幸运抽奖</li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>";
-                        //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>";
                         this.strPageIntro = "<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=TOOLS\"' href='ManagerTool.aspx?Type=TOOLS&Page=1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>会员商店</a></li><li class='qian2'>幸运抽奖</li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>";
                         this.tblContainer.Visible = false;
                         this.tblWealth.Visible = false;
@@ -456,25 +441,20 @@
                             this.tblBox.Visible = true;
                         }
                         this.strBoxCount = ToolItem.HasTool(this.intUserID, 12, 1).ToString().Trim();
-                        break;
+                        goto Label_0594;
 
                     case "COIN":
                         this.strPageIntro = "<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=TOOLS\"' href='ManagerTool.aspx?Type=TOOLS&Page=1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>金币商店</a></li>" + str + "<li class='qian2'>金币财政</li></ul><a href='ManagerTool.aspx?Type=WEALTHMANAGE&Page=1'><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";
-                        //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>";
                         this.CoinFinance();
-                        break;
-
-                    default:
-                        this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>金币商店</a></li>" + str + "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=COIN&Status=1'>金币财政</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";
-                        //this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>金币商店</a></li>" + str + "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=COIN&Status=1'>金币财政</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";
-                        // this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li>";
-                        this.tblContainer.Visible = true;
-                        this.SetToolList();
-                        break;
-                } 
-                this.InitializeComponent();
-                base.OnInit(e);
+                        goto Label_0594;
+                }
             }
+            this.strPageIntro = "<ul><li class='qian1'>我的道具</a></li><li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=STORE&Page=1'>金币商店</a></li>" + str + "<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Tools.aspx?Type=STORE\"' href='ManagerTool.aspx?Type=COIN&Status=1'>金币财政</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img align='absmiddle' src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a><span style='margin-left:50px;' width='100' height='24'  align='center'>游戏币: " + this.strPlayerWealth + "</span>";
+            this.tblContainer.Visible = true;
+            this.SetToolList();
+        Label_0594:
+            this.InitializeComponent();
+            base.OnInit(e);
         }
 
         private void Page_Load(object sender, EventArgs e)
@@ -502,11 +482,11 @@
                     int num4 = (int) row["CoinCost"];
                     int num1 = (int) row["AmountInStock"];
                     byte num5 = (byte) row["TicketCategory"];
-                    string str3 = row["ToolImage"].ToString().Trim();
-                    string str4 = row["ToolIntroduction"].ToString().Trim();
-                    string str2 = row["ToolName"].ToString().Trim();
+                    string str2 = row["ToolImage"].ToString().Trim();
+                    string str3 = row["ToolIntroduction"].ToString().Trim();
+                    string str4 = row["ToolName"].ToString().Trim();
                     object strList = this.strList;
-                    this.strList = string.Concat(new object[] { strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='40' width='60' style='padding-right:4px;' align='right'><img alt='", str4, "' src='", SessionItem.GetImageURL(), "Tools/", str3, "' height='30' width='30' border='0'></td><td width='163' align='left' style='padding-left:5px;'><font color='blue'><span title='", str4, "'>", str2, "</span></font></td><td width='70' align='left'></td><td width='95' align='left'><font color='blue'>", num4, "</font>游戏币</td>" });
+                    this.strList = string.Concat(new object[] { strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='40' width='60' style='padding-right:4px;' align='right'><img alt='", str3, "' src='", SessionItem.GetImageURL(), "Tools/", str2, "' height='30' width='30' border='0'></td><td width='163' align='left' style='padding-left:5px;'><font color='blue'><span title='", str3, "'>", str4, "</span></font></td><td width='70' align='left'></td><td width='95' align='left'><font color='blue'>", num4, "</font>游戏币</td>" });
                     if (((num3 == 14) && (DateTime.Now.Hour < 10)) && (DateTime.Now.Hour >= 4))
                     {
                         this.strList = this.strList + "<td width='127'></td>";
@@ -515,7 +495,6 @@
                     {
                         strList = this.strList;
                         this.strList = string.Concat(new object[] { strList, "<td width='127'><a href='SecretaryPage.aspx?Type=BUYTOOL&ToolID=", num2, "'>购 买</a></td>" });
-                        //this.strList = string.Concat(new object[] { strList, "<td width='127'></td>" });
                     }
                     this.strList = this.strList + "<td >&nbsp;</td></tr>";
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
@@ -531,7 +510,7 @@
             int intCount = this.intPerPage * this.intPage;
             int total = this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
-            string str5 = "";
+            string str2 = "";
             DataTable table = BTPToolLinkManager.GetToolLinkList(this.intUserID, this.intPage, 0x3e8, intCount, total);
             if (table == null)
             {
@@ -539,15 +518,15 @@
             }
             else
             {
-                foreach (DataRow row2 in table.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     DataRow toolRowByID;
-                    int intToolID = (int) row2["ToolID"];
-                    int num1 = (int) row2["ToolLinkID"];
-                    int num7 = (int) row2["UserID"];
-                    int num4 = (int) row2["Amount"];
-                    DateTime datIn = (DateTime) row2["ExpireTime"];
-                    int num5 = (byte) row2["Type"];
+                    int intToolID = (int) row["ToolID"];
+                    int num1 = (int) row["ToolLinkID"];
+                    int num7 = (int) row["UserID"];
+                    int num4 = (int) row["Amount"];
+                    DateTime datIn = (DateTime) row["ExpireTime"];
+                    int num5 = (byte) row["Type"];
                     if (num5 == 1)
                     {
                         toolRowByID = BTPToolManager.GetToolRowByID(intToolID);
@@ -559,57 +538,54 @@
                         }
                         if (num6 == 12)
                         {
-                            str5 = "<a onclick='javascript:window.top.Main.Right.location=\"Intro/Box.aspx?Type=BOXSHOW\"' href='ManagerTool.aspx?Type=USEBOX'>使用</a>";
+                            str2 = "<a onclick='javascript:window.top.Main.Right.location=\"Intro/Box.aspx?Type=BOXSHOW\"' href='ManagerTool.aspx?Type=USEBOX'>使用</a>";
                         }
                         else
                         {
-                            str5 = "";
+                            str2 = "";
                         }
                     }
                     else
                     {
                         toolRowByID = BTPWealthToolManager.GetWealthToolRowByID(intToolID);
                         int num9 = (int) toolRowByID["WealthCost"];
-                        str5 = "";
+                        str2 = "";
                     }
                     byte num10 = (byte) toolRowByID["Category"];
                     int num11 = (int) toolRowByID["AmountInStock"];
                     byte num12 = (byte) toolRowByID["TicketCategory"];
                     string str3 = toolRowByID["ToolImage"].ToString().Trim();
                     string str4 = toolRowByID["ToolIntroduction"].ToString().Trim();
-                    string str2 = toolRowByID["ToolName"].ToString().Trim();
+                    string str5 = toolRowByID["ToolName"].ToString().Trim();
                     object strList = this.strList;
                     this.strList = string.Concat(new object[] { 
-                        strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='40' width='60' style='padding-right:4px;' align='right'><img alt='", str4, "' src='", SessionItem.GetImageURL(), "Tools/", str3, "' height='30' width='30' border='0'></td><td width='163'  align='left' style='padding-left:5px;><span title='", str4, "'><font color='blue'>", str2, "</font></span></td><td width='70' align='left'>", str5, "<td width='95' align='left'><strong>数量</strong>：<font color='blue'>", num4, "</font></td><td width='127'>有效期：<font color='blue'>", 
+                        strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='40' width='60' style='padding-right:4px;' align='right'><img alt='", str4, "' src='", SessionItem.GetImageURL(), "Tools/", str3, "' height='30' width='30' border='0'></td><td width='163'  align='left' style='padding-left:5px;><span title='", str4, "'><font color='blue'>", str5, "</font></span></td><td width='70' align='left'>", str2, "<td width='95' align='left'><strong>数量</strong>：<font color='blue'>", num4, "</font></td><td width='127'>有效期：<font color='blue'>", 
                         StringItem.FormatDate(datIn, "yyyy-MM-dd"), "</font></td><td >&nbsp;</td></tr>"
                      });
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
                 }
             }
-
-            string link = "http://www.113388.net/?" + this.intUserID;
-            this.strPromotionToWealth = "<a href=\"Temp_Right.aspx?Type=PROMOTIONEXCHANGE\" target=\"Right\">推广积分兑换游戏币</a><br/><br/>我的积分推广链接:<a href=\"" + link + "\" target=\"_blank\">" + link + "</a>";
-
+            string str6 = "http://www.113388.net/?" + this.intUserID;
+            this.strPromotionToWealth = "<a href=\"Temp_Right.aspx?Type=PROMOTIONEXCHANGE\" target=\"Right\">推广积分兑换游戏币</a><br/><br/>我的积分推广链接:<a href=\"" + str6 + "\" target=\"_blank\">" + str6 + "</a>";
             this.strList = this.strList + "<tr><td height='25' style='padding-left:10px;' colspan='6'><br/>" + this.strPromotionToWealth + "</td></tr>";
-
         }
 
         private void SetWealthManage()
         {
             this.strUseWealth = ROOTUserManager.GetWealthByUserID40(this.intUserID);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
             }
-            DataTable reader = BTPWealthFinanceManager.GetWealthFinanceTableByUserID(0, this.intPage, 10, this.intUserID);
-            if (reader != null)
+            DataTable table = BTPWealthFinanceManager.GetWealthFinanceTableByUserID(0, this.intPage, 10, this.intUserID);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int num = (int)row["Income"];
-                    int num2 = (int)row["Outcome"];
-                    DateTime datIn = (DateTime)row["CreateTime"];
+                    int num = (int) row["Income"];
+                    int num2 = (int) row["Outcome"];
+                    DateTime datIn = (DateTime) row["CreateTime"];
                     string str = row["Event"].ToString().Trim();
                     row["Remark"].ToString().Trim();
                     this.sbWealthFinance.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
@@ -621,7 +597,6 @@
                     this.sbWealthFinance.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>");
                 }
             }
-            //reader.Close();
             string strCurrentURL = "ManagerTool.aspx?Type=WEALTHMANAGE&";
             this.strScript = this.GetScript(strCurrentURL);
             this.intPerPage = 10;
@@ -649,16 +624,15 @@
                     int num2 = (int) row["WealthCost"];
                     int num3 = (int) row["AmountInStock"];
                     byte num5 = (byte) row["TicketCategory"];
-                    string str3 = row["ToolImage"].ToString().Trim();
+                    string str2 = row["ToolImage"].ToString().Trim();
                     row["ToolIntroduction"].ToString().Trim();
-                    string str2 = row["ToolName"].ToString().Trim();
+                    string str3 = row["ToolName"].ToString().Trim();
                     int num4 = (int) row["PayCost"];
                     object strList = this.strList;
-                    this.strList = string.Concat(new object[] { strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='40' width='40' align='center'><img src='", SessionItem.GetImageURL(), "Tools/", str3, "' height='30' width='30' border='0'></td><td width='100' style='padding-left:4px'><font color='blue'>", str2, "</font></td><td width='100' align='center'><strong>数量</strong>：<font color='blue'>", num3, "</font></td><td width='206'><strong>价格</strong>：<font color='blue'>", num2, "</font>枚 / <font color='red'>", num4, "</font>枚</td><td width='100' align='center'><a href='SecretaryPage.aspx?Type=INTROWEALTHTOOL&ToolID=", num, "'>说明</a> | 购买</td></tr>" });
+                    this.strList = string.Concat(new object[] { strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='40' width='40' align='center'><img src='", SessionItem.GetImageURL(), "Tools/", str2, "' height='30' width='30' border='0'></td><td width='100' style='padding-left:4px'><font color='blue'>", str3, "</font></td><td width='100' align='center'><strong>数量</strong>：<font color='blue'>", num3, "</font></td><td width='206'><strong>价格</strong>：<font color='blue'>", num2, "</font>枚 / <font color='red'>", num4, "</font>枚</td><td width='100' align='center'><a href='SecretaryPage.aspx?Type=INTROWEALTHTOOL&ToolID=", num, "'>说明</a> | 购买</td></tr>" });
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>";
                 }
             }
-            //wealthToolList.Close();
             this.strList = this.strList + "<tr><td height='25' align='right' colspan='6'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
         }
     }

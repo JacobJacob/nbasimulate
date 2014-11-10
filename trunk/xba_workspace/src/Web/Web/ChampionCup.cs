@@ -1,10 +1,8 @@
 ﻿namespace Web
 {
-    using LoginParameter;
     using System;
     using System.Collections;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -15,7 +13,7 @@
     public class ChampionCup : Page
     {
         public bool blnCanOpen = true;
-        public bool blnIsStop = false;
+        public bool blnIsStop;
         protected ImageButton btnFindMatch;
         protected ImageButton btnReg;
         protected ImageButton btnXResult;
@@ -25,7 +23,7 @@
         private int intPage;
         private int intPerPage = 6;
         private int intStatus;
-        public int intTop = 0;
+        public int intTop;
         private int intTurn;
         private int intUserID;
         public StringBuilder sbReturn = new StringBuilder();
@@ -99,6 +97,9 @@
                         base.Response.Redirect("Report.aspx?Parameter=438");
                         return;
 
+                    case 0:
+                        return;
+
                     case 1:
                         base.Response.Redirect("Report.aspx?Parameter=442");
                         return;
@@ -119,13 +120,13 @@
             DataRow lastGameRowByCategory = BTPXGameManager.GetLastGameRowByCategory(5);
             if (lastGameRowByCategory != null)
             {
-                string str8;
+                string str4;
                 string line = lastGameRowByCategory["RewardXML"].ToString().Trim();
                 byte num1 = (byte) lastGameRowByCategory["Round"];
-                string str5 = lastGameRowByCategory["LadderURL"].ToString().Trim();
-                if (((this.intStatus > 0) && (str5 != "")) && (str5.ToLower().IndexOf("http://match") == -1))
+                string str6 = lastGameRowByCategory["LadderURL"].ToString().Trim();
+                if (((this.intStatus > 0) && (str6 != "")) && (str6.ToLower().IndexOf("http://match") == -1))
                 {
-                    str5 = Config.GetDomain() + str5;
+                    str6 = Config.GetDomain() + str6;
                 }
                 TagReader reader = new TagReader();
                 IEnumerator enumerator = reader.GetItems(line, "<Reward>", "</Reward>").GetEnumerator();
@@ -139,38 +140,38 @@
                     }
                 }
                 this.intStatus = (byte) lastGameRowByCategory["Status"];
-                int num3 = (byte) lastGameRowByCategory["Round"];
-                int num4 = (int) lastGameRowByCategory["Capacity"];
-                int num5 = 1;
+                int num2 = (byte) lastGameRowByCategory["Round"];
+                int num3 = (int) lastGameRowByCategory["Capacity"];
+                int num4 = 1;
                 if (this.intStatus == 1)
                 {
                     str3 = string.Concat(new object[] { "您在第", num, "轮淘汰赛中被淘汰出局，获得", str, "资金与", str2, "点威望。" });
-                    while (num4 > 1)
+                    while (num3 > 1)
                     {
-                        num4 /= 2;
-                        num5++;
+                        num3 /= 2;
+                        num4++;
                     }
-                    int num6 = num5 - num3;
-                    if (num6 > 5)
+                    int num5 = num4 - num2;
+                    if (num5 > 5)
                     {
                         object obj2 = str3;
-                        str3 = string.Concat(new object[] { obj2, "目前淘汰赛进行至第", num3, "轮，关注赛事详情<a href='javascript:;' onclick=window.open('", str5, "')>请点击此处</a>" });
+                        str3 = string.Concat(new object[] { obj2, "目前淘汰赛进行至第", num2, "轮，关注赛事详情<a href='javascript:;' onclick=window.open('", str6, "')>请点击此处</a>" });
                     }
-                    else if (num6 > 2)
+                    else if (num5 > 2)
                     {
-                        str8 = str3;
-                        str3 = str8 + "目前淘汰赛进行至第" + Math.Pow(2.0, (double) num6).ToString() + "强阶段，关注赛事详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
+                        str4 = str3;
+                        str3 = str4 + "目前淘汰赛进行至第" + Math.Pow(2.0, (double) num5).ToString() + "强阶段，关注赛事详情<a href='javascript:;' onclick=window.open('" + str6 + "')>请点击此处</a>";
                     }
                     else
                     {
-                        switch (num6)
+                        switch (num5)
                         {
-                            case 2:
-                                str3 = str3 + "目前淘汰赛进行半决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
-                                goto Label_035C;
-
                             case 1:
-                                str3 = str3 + "目前淘汰赛进行决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
+                                str3 = str3 + "目前淘汰赛进行决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str6 + "')>请点击此处</a>";
+                                break;
+
+                            case 2:
+                                str3 = str3 + "目前淘汰赛进行半决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str6 + "')>请点击此处</a>";
                                 break;
                         }
                     }
@@ -180,11 +181,10 @@
                     string strNickName = lastGameRowByCategory["ChampionClubName"].ToString().Trim();
                     int intUserID = (int) lastGameRowByCategory["ChampionUserID"];
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20);
-                    str8 = str3;
-                    str3 = str8 + "本赛季冠军杯正式结束，" + strNickName + "获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
+                    str4 = str3;
+                    str3 = str4 + "本赛季冠军杯正式结束，" + strNickName + "获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str6 + "')>请点击此处</a>";
                 }
             }
-        Label_035C:
             this.sbReturn.Append("<tr>\n");
             this.sbReturn.Append("<td colspan=3 align=\"left\">" + str3 + "</td>\n");
             this.sbReturn.Append("</tr>\n");
@@ -214,53 +214,46 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            obj2 = str2 + " " + str3 + " ";
-            return string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
+            str3 = str3 + "</select>";
+            obj2 = str + " " + str2 + " ";
+            return string.Concat(new object[] { obj2, "总数:", total, "跳转", str3 });
         }
 
         private void InitializeComponent()
         {
             this.btnReg.Click += new ImageClickEventHandler(this.btnReg_Click);
             this.btnReg.Attributes["onclick"] = base.GetPostBackEventReference(this.btnReg) + ";this.disabled=true;";
-            //this.btnFindMatch.Click += new ImageClickEventHandler(this.btnFindMatch_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -377,22 +370,20 @@
                         lastGameRowByCategory = BTPXGameManager.GetLastGameRowByCategory(5);
                         if (lastGameRowByCategory != null)
                         {
-                            if (((byte) lastGameRowByCategory["Status"]) == 0)
-                            {
-                                DataRow row4 = BTPXGameManager.GetLastGameRowByCategory(1);
-                                if (lastGameRowByCategory != null)
-                                {
-                                    this.intTop = (byte) row4["Round"];
-                                }
-                                row4 = BTPXGameManager.GetLastGameRowByCategory(5);
-                                this.strXIntro = row4["Introduction"].ToString().Trim();
-                                this.tblChampionInfo.Visible = true;
-                            }
-                            else
+                            if (((byte) lastGameRowByCategory["Status"]) != 0)
                             {
                                 this.tblChampionCup.Visible = true;
                                 this.SetXCupMatch();
+                                break;
                             }
+                            DataRow row4 = BTPXGameManager.GetLastGameRowByCategory(1);
+                            if (lastGameRowByCategory != null)
+                            {
+                                this.intTop = (byte) row4["Round"];
+                            }
+                            row4 = BTPXGameManager.GetLastGameRowByCategory(5);
+                            this.strXIntro = row4["Introduction"].ToString().Trim();
+                            this.tblChampionInfo.Visible = true;
                         }
                         break;
 
@@ -407,8 +398,8 @@
                         this.strPageIntro1 = string.Concat(new object[] { "<ul><li class='qian1a'><a href='ChampionCup.aspx?Kind=CHAMPIONREG&Tag=", this.intUserID, "'>大赛报名</a></li>", str, "<li class='qian2a'><a href='ChampionCup.aspx?Kind=KEMP&Tag=", this.intUserID, "'>冠军榜</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='", SessionItem.GetImageURL(), "MenuCard/Help.GIF' border='0' height='24' width='19'></a>" });
                         lastGameRowByCategory = BTPXGameManager.GetLastGameRowByCategory(5);
                         string str3 = lastGameRowByCategory["LadderURL"].ToString().Trim();
-                        int num4 = (byte) lastGameRowByCategory["Status"];
-                        if ((num4 > 0) && (str3 != ""))
+                        int num3 = (byte) lastGameRowByCategory["Status"];
+                        if ((num3 > 0) && (str3 != ""))
                         {
                             if (str3.ToLower().IndexOf("http://match") == -1)
                             {
@@ -438,7 +429,6 @@
 
         private void SetChampionReg()
         {
-            string str16;
             DataRow groupTeamRowByCID = BTPXGroupTeamManager.GetGroupTeamRowByCID(this.intClubID5);
             if (!this.blnCanOpen)
             {
@@ -446,136 +436,238 @@
                 this.tblRegEnd.Visible = false;
                 this.btnReg.Visible = false;
                 this.strChampionSay = "本赛季暂不开放冠军杯赛，敬请在下个赛季关注！";
-                return;
             }
-            if (groupTeamRowByCID == null)
+            else
             {
-                string str11 = "";
-                string str12 = "left";
-                if ((this.intTurn < 3) || ((this.intTurn == 3) && (DateTime.Now.Hour < 0x10)))
+                string str;
+                string str13;
+                if (groupTeamRowByCID != null)
                 {
-                    int xCupRegCount = BTPXGameManager.GetXCupRegCount();
-                    int num18 = (int) BTPXGameManager.GetLastGameRowByCategory(1)["Capacity"];
-                    this.tblRegBegin.Visible = true;
-                    this.tblRegEnd.Visible = true;
-                    if (xCupRegCount >= num18)
+                    if ((this.intTurn <= 4) && ((this.intTurn != 4) || (DateTime.Now.Hour < 0x11)))
                     {
+                        this.tblRegBegin.Visible = true;
+                        this.tblRegEnd.Visible = false;
                         this.btnReg.Visible = false;
-                        str11 = "<span style='margin-left:210px'>冠军杯赛已经报满！</span>";
+                        this.strChampionSay = "您已成功报名，比赛会在联赛第三轮当天的下午4点安排赛程。";
+                        return;
                     }
-                    else
+                    this.tblRegEnd.Visible = true;
+                    DataTable championCupUPDown = BTPXGroupTeamManager.GetChampionCupUPDown(this.intClubID5);
+                    if (championCupUPDown == null)
                     {
-                        str11 = string.Concat(new object[] { "已报名", xCupRegCount, "人，还剩下", num18 - xCupRegCount, "空位。" });
-                        if (this.intTurn == 1)
-                        {
-                            if (ToolItem.HasTool(this.intUserID, 1, 100) < 1)
-                            {
-                                this.btnReg.Visible = false;
-                            }
-                            str11 = str11 + "只有持有冠军杯邀请函的经理可以在今天报名，如果持有的是冠军杯邀请函（盟），请明天再来。冠军杯邀请函（盟）可以向盟主索取。";
-                        }
-                        else if (this.intTurn == 2)
-                        {
-                            int num20 = ToolItem.HasTool(this.intUserID, 1, 100);
-                            if (num20 < 1)
-                            {
-                                num20 = ToolItem.HasTool(this.intUserID, 1, 0x65);
-                            }
-                            if (num20 < 1)
-                            {
-                                this.btnReg.Visible = false;
-                            }
-                            str11 = str11 + "持有冠军杯邀请函或冠军杯邀请函（盟）的经理可以在今天报名，如果没有这两种邀请函请明天再来。冠军杯邀请函（盟）可以向盟主索取。";
-                        }
-                        else
-                        {
-                            str12 = "center";
-                        }
+                        return;
                     }
-                    this.sbReturn.Append("<tr>\n");
-                    this.sbReturn.Append("<td colspan=3 align=\"" + str12 + "\">" + str11 + "</td>\n");
-                    this.sbReturn.Append("</tr>\n");
-                    return;
-                }
-                this.tblRegBegin.Visible = true;
-                this.tblRegEnd.Visible = false;
-                this.btnReg.Visible = false;
-                groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(1);
-                int num21 = (byte) groupTeamRowByCID["Status"];
-                /*
-                 status = 1 小组赛
-                 status = 3 安排赛程
-                 
-                 */
-                int num22 = (byte) groupTeamRowByCID["Round"];
-                DateTime time2 = (DateTime) groupTeamRowByCID["MatchTime"];
-                bool flag = false;
-                if ((DateTime.Now.Day == time2.Day) && (num21 == 3))
-                {
-                    flag = true;
-                }
-                if (flag)
-                {
-                    groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(5);
-                    if (groupTeamRowByCID != null)
+                    if (championCupUPDown.Rows.Count != 2)
                     {
-                        string str13 = groupTeamRowByCID["LadderURL"].ToString().Trim();
-                        num21 = (byte) groupTeamRowByCID["Status"];
-                        if (((num21 > 0) && (str13 != "")) && (str13.ToLower().IndexOf("http://match") == -1))
-                        {
-                            str13 = Config.GetDomain() + str13;
-                        }
-                        str11 = "冠军杯小组赛结束，当前正停赛一轮安排淘汰赛的赛程，查看赛程<a href='javascript:;' onclick=window.open('" + str13 + "')>请点击此处</a>";
+                        return;
                     }
-                }
-                else if (num21 == 1)
-                {
-                    str11 = "冠军杯小组赛进行至第" + num22 + "轮";
-                }
-                else
-                {
-                    groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(5);
-                    if (groupTeamRowByCID != null)
+                    groupTeamRowByCID = championCupUPDown.Rows[0];
+                    if (groupTeamRowByCID == null)
                     {
-                        num21 = (byte) groupTeamRowByCID["Status"];
-                        num22 = (byte) groupTeamRowByCID["Round"];
-                        int num23 = (int) groupTeamRowByCID["Capacity"];
-                        int num24 = 1;
-                        string str14 = groupTeamRowByCID["LadderURL"].ToString().Trim();
-                        if (((num21 > 0) && (str14 != "")) && (str14.ToLower().IndexOf("http://match") == -1))
+                        return;
+                    }
+                    int num10 = (int) groupTeamRowByCID["MatchID"];
+                    int num11 = (int) groupTeamRowByCID["ClubAID"];
+                    int num12 = (int) groupTeamRowByCID["ClubBID"];
+                    int num13 = (int) groupTeamRowByCID["ClubAScore"];
+                    int num14 = (int) groupTeamRowByCID["ClubBScore"];
+                    int intUserID = (int) groupTeamRowByCID["UserIDA"];
+                    int num16 = (int) groupTeamRowByCID["UserIDB"];
+                    string strNickName = groupTeamRowByCID["NameA"].ToString().Trim();
+                    string str8 = groupTeamRowByCID["NameB"].ToString().Trim();
+                    int num17 = (byte) groupTeamRowByCID["Type"];
+                    if ((num11 != -1) || (num12 != -1))
+                    {
+                        if ((num11 == -2) && (num12 == -2))
                         {
-                            str14 = Config.GetDomain() + str14;
+                            this.tblRegBegin.Visible = true;
+                            this.tblRegEnd.Visible = false;
+                            this.btnReg.Visible = false;
+                            groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(5);
+                            this.intStatus = (byte) groupTeamRowByCID["Status"];
+                            string str9 = groupTeamRowByCID["ChampionClubName"].ToString().Trim();
+                            int num18 = (int) groupTeamRowByCID["ChampionUserID"];
+                            str9 = AccountItem.GetNickNameInfo(num18, str9, "Right", 20);
+                            string str10 = groupTeamRowByCID["LadderURL"].ToString().Trim();
+                            if (((this.intStatus > 0) && (str10 != "")) && (str10.ToLower().IndexOf("http://match") == -1))
+                            {
+                                str10 = Config.GetDomain() + str10;
+                            }
+                            this.strChampionSay = "本赛季冠军杯正式结束，" + str9 + "获得总冠军！详情<a href='javascript:;' onclick=window.open('" + str10 + "')>请点击此处</a> ";
+                            return;
                         }
-                        if (num21 == 1)
+                        if ((num11 == -3) && (num12 == -3))
                         {
-                            while (num23 > 1)
+                            this.GetLostMatch();
+                            return;
+                        }
+                        if ((num11 != 0) || (num12 != 0))
+                        {
+                            if (intUserID > 0)
                             {
-                                num23 /= 2;
-                                num24++;
+                                strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20);
                             }
-                            int num25 = num24 - num22;
-                            if (num22 == 1)
+                            if (num16 > 0)
                             {
-                                str11 = "现在停赛一轮正在安排淘汰赛的赛程。点击<a href='javascript:;' onclick=window.open('" + str14 + "')>淘汰赛</a>";
+                                str8 = AccountItem.GetNickNameInfo(num16, str8, "Right", 20);
                             }
-                            else if (num25 > 5)
+                            this.sbReturn.Append("<tr>\n");
+                            this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>上轮战况</strong></td>\n");
+                            this.sbReturn.Append("</tr>\n");
+                            this.sbReturn.Append("<tr>\n");
+                            this.sbReturn.Append("\t<td width=\"43%\" align=\"right\">" + strNickName + "</td>\n");
+                            this.sbReturn.Append(string.Concat(new object[] { "\t<td align=\"center\">", num13, ":", num14, "</td>\n" }));
+                            this.sbReturn.Append("\t<td width=\"43%\" align=\"left\">" + str8 + string.Concat(new object[] { 
+                                "<a href='", Config.GetDomain(), "VRep.aspx?Tag=", num10, "&Type=", num17, "&A=", num11, "&B=", num12, "' style='padding-left:12px' target='_blank'>战报</a>|<a href='", Config.GetDomain(), "VStas.aspx?Tag=", num10, "&Type=", num17, 
+                                "&A=", num11, "&B=", num12, "' target='_blank'>统计</a>"
+                             }) + "</td>\n");
+                            this.sbReturn.Append("</tr>\n");
+                            this.sbReturn.Append("<tr>\n");
+                        }
+                        groupTeamRowByCID = championCupUPDown.Rows[1];
+                        if (groupTeamRowByCID != null)
+                        {
+                            string str11;
+                            num10 = (int) groupTeamRowByCID["MatchID"];
+                            num11 = (int) groupTeamRowByCID["ClubAID"];
+                            num12 = (int) groupTeamRowByCID["ClubBID"];
+                            num13 = (int) groupTeamRowByCID["ClubAScore"];
+                            num14 = (int) groupTeamRowByCID["ClubBScore"];
+                            intUserID = (int) groupTeamRowByCID["UserIDA"];
+                            num16 = (int) groupTeamRowByCID["UserIDB"];
+                            strNickName = groupTeamRowByCID["NameA"].ToString().Trim();
+                            str8 = groupTeamRowByCID["NameB"].ToString().Trim();
+                            int num19 = (byte) groupTeamRowByCID["Type"];
+                            if ((num19 == 5) && (num17 == 4))
                             {
-                                str11 = string.Concat(new object[] { "冠军杯淘汰赛进行到第", num22, "轮，关注赛事详情<a href='javascript:;' onclick=window.open('", str14, "')>请点击此处</a>" });
+                                string str12;
+                                groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(1);
+                                int num20 = (byte) groupTeamRowByCID["Status"];
+                                DateTime time2 = (DateTime) groupTeamRowByCID["MatchTime"];
+                                if ((DateTime.Now.Day == time2.AddDays(1.0).Day) && (num20 == 3))
+                                {
+                                    this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
+                                    this.sbReturn.Append("</tr>\n");
+                                    this.sbReturn.Append("<tr>\n");
+                                    this.sbReturn.Append("<td colspan=3 align=\"center\">小组赛已结束，淘汰赛将于明日正式开始</td>\n");
+                                    this.sbReturn.Append("</tr>\n");
+                                    return;
+                                }
+                                if ((num11 == -1) && (num11 == -1))
+                                {
+                                    this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
+                                    this.sbReturn.Append("</tr>\n");
+                                    this.sbReturn.Append("<tr>\n");
+                                    this.sbReturn.Append("<td colspan=3 align=\"center\">您已经输掉了冠军杯赛，下赛季继续努力</td>\n");
+                                    this.sbReturn.Append("</tr>\n");
+                                    return;
+                                }
+                                this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
+                                this.sbReturn.Append("</tr>\n");
+                                this.sbReturn.Append("<tr>\n");
+                                this.sbReturn.Append("<td width=\"43%\" align=\"right\">" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20) + "</td>\n");
+                                this.sbReturn.Append("<td align=\"center\">VS</td>\n");
+                                if (this.intStatus > 1)
+                                {
+                                    str12 = "ChampionCup.aspx?Kind=CHMAPIONCUP";
+                                }
+                                else
+                                {
+                                    str12 = "ChampionCup.aspx?Kind=TRYOUT";
+                                }
+                                this.sbReturn.Append("<td width=\"43%\" align=\"left\">" + AccountItem.GetNickNameInfo(num16, str8, "Right", 20) + "<a style='padding-left:12px' href=\"" + str12 + "\">查看赛程</a></td>\n");
+                                this.sbReturn.Append("</tr>\n");
+                                this.sbReturn.Append("<td colspan=3 style=\"padding:0\" align=\"center\">比赛会在每天16点进行</td>\n");
+                                this.sbReturn.Append("</tr>\n");
+                                return;
                             }
-                            else if (num25 > 2)
+                            if ((num11 == -1) && (num11 == -1))
                             {
-                                str11 = "冠军杯淘汰赛进行到" + Math.Pow(2.0, (double) num25).ToString() + "强阶段，关注赛事详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
+                                this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
+                                this.sbReturn.Append("</tr>\n");
+                                this.sbReturn.Append("<tr>\n");
+                                this.sbReturn.Append("<td colspan=3 align=\"center\">您已经输掉了冠军杯赛，下赛季继续努力</td>\n");
+                                this.sbReturn.Append("</tr>\n");
+                                return;
+                            }
+                            if (intUserID > 0)
+                            {
+                                strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20);
+                            }
+                            if (num16 > 0)
+                            {
+                                str8 = AccountItem.GetNickNameInfo(num16, str8, "Right", 20);
+                            }
+                            this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
+                            this.sbReturn.Append("</tr>\n");
+                            this.sbReturn.Append("<tr>\n");
+                            this.sbReturn.Append("<td width=\"43%\" align=\"right\">" + strNickName + "</td>\n");
+                            this.sbReturn.Append("<td align=\"center\">VS</td>\n");
+                            if (this.intStatus > 1)
+                            {
+                                str11 = "ChampionCup.aspx?Kind=CHMAPIONCUP";
                             }
                             else
                             {
-                                switch (num25)
+                                str11 = "ChampionCup.aspx?Kind=TRYOUT";
+                            }
+                            this.sbReturn.Append("<td width=\"43%\" align=\"left\">" + str8 + "<a style='padding-left:12px' href=\"" + str11 + "\">查看赛程</a></td>\n");
+                            this.sbReturn.Append("</tr>\n");
+                            this.sbReturn.Append("<tr>\n");
+                            this.sbReturn.Append("<td colspan=3 style=\"padding:0\" align=\"center\">比赛会在每天16点进行</td>\n");
+                            this.sbReturn.Append("</tr>\n");
+                        }
+                        return;
+                    }
+                    str13 = "";
+                    this.tblRegBegin.Visible = false;
+                    this.tblRegEnd.Visible = true;
+                    groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(5);
+                    if (groupTeamRowByCID != null)
+                    {
+                        this.intStatus = (byte) groupTeamRowByCID["Status"];
+                        int num21 = (byte) groupTeamRowByCID["Round"];
+                        int num22 = (int) groupTeamRowByCID["Capacity"];
+                        int num23 = 1;
+                        string str14 = groupTeamRowByCID["LadderURL"].ToString().Trim();
+                        if (((this.intStatus > 0) && (str14 != "")) && (str14.ToLower().IndexOf("http://match") == -1))
+                        {
+                            str14 = Config.GetDomain() + str14;
+                        }
+                        if (this.blnIsStop)
+                        {
+                            str13 = "您没有在小组赛出线，请下个赛季继续努力。现在停赛一轮正在安排淘汰赛的赛程。点击<a href='ChampionCup.aspx?Kind=CHMAPIONCUP&Tag=" + this.intUserID + "'> 淘汰赛</a>";
+                        }
+                        else if (this.intStatus == 1)
+                        {
+                            while (num22 > 1)
+                            {
+                                num22 /= 2;
+                                num23++;
+                            }
+                            int num24 = num23 - num21;
+                            if (num21 == 1)
+                            {
+                                str13 = "您没有在小组赛出线，请下个赛季继续努力。现在停赛一轮正在安排淘汰赛的赛程。点击<a href='javascript:;' onclick=window.open('" + str14 + "')>淘汰赛</a>";
+                            }
+                            else if (num24 > 5)
+                            {
+                                str13 = string.Concat(new object[] { "冠军杯淘汰赛进行到第", num21, "轮，关注赛事详情<a href='javascript:;' onclick=window.open('", str14, "')>请点击此处</a>" });
+                            }
+                            else if (num24 > 2)
+                            {
+                                str13 = "冠军杯淘汰赛进行到" + Math.Pow(2.0, (double) num24).ToString() + "强阶段，关注赛事详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
+                            }
+                            else
+                            {
+                                switch (num24)
                                 {
-                                    case 2:
-                                        str11 = "冠军杯淘汰赛进行半决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
+                                    case 1:
+                                        str13 = "冠军杯淘汰赛进行决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
                                         break;
 
-                                    case 1:
-                                        str11 = "冠军杯淘汰赛进行决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
+                                    case 2:
+                                        str13 = "冠军杯淘汰赛进行半决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
                                         break;
                                 }
                             }
@@ -583,277 +675,176 @@
                         else
                         {
                             string str15 = groupTeamRowByCID["ChampionClubName"].ToString().Trim();
-                            int num26 = (int) groupTeamRowByCID["ChampionUserID"];
-                            str15 = AccountItem.GetNickNameInfo(num26, str15, "Right", 20);
-                            if (num26 != this.intUserID)
+                            int num25 = (int) groupTeamRowByCID["ChampionUserID"];
+                            str15 = AccountItem.GetNickNameInfo(num25, str15, "Right", 20);
+                            if (num25 != this.intUserID)
                             {
-                                str16 = str11;
-                                str11 = str16 + "本赛季冠军杯正式结束，" + str15 + "获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
+                                str = str13;
+                                str13 = str + "本赛季冠军杯正式结束，" + str15 + "获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
                             }
                             else
                             {
-                                str11 = str11 + "本赛季冠军杯正式结束，恭喜您获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
+                                str13 = str13 + "本赛季冠军杯正式结束，恭喜您获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str14 + "')>请点击此处</a>";
                             }
-                        }
-                    }
-                }
-                this.strChampionSay = str11;
-                return;
-            }
-            if ((this.intTurn <= 4) && ((this.intTurn != 4) || (DateTime.Now.Hour < 0x11)))
-            {
-                this.tblRegBegin.Visible = true;
-                this.tblRegEnd.Visible = false;
-                this.btnReg.Visible = false;
-                this.strChampionSay = "您已成功报名，比赛会在联赛第三轮当天的下午4点安排赛程。";
-                return;
-            }
-            this.tblRegEnd.Visible = true;
-            DataTable championCupUPDown = BTPXGroupTeamManager.GetChampionCupUPDown(this.intClubID5);
-            if (championCupUPDown == null)
-            {
-                return;
-            }
-            if (championCupUPDown.Rows.Count != 2)
-            {
-                return;
-            }
-            groupTeamRowByCID = championCupUPDown.Rows[0];
-            if (groupTeamRowByCID == null)
-            {
-                return;
-            }
-            int num7 = (int) groupTeamRowByCID["MatchID"];
-            int num = (int) groupTeamRowByCID["ClubAID"];
-            int num2 = (int) groupTeamRowByCID["ClubBID"];
-            int num5 = (int) groupTeamRowByCID["ClubAScore"];
-            int num6 = (int) groupTeamRowByCID["ClubBScore"];
-            int intUserID = (int) groupTeamRowByCID["UserIDA"];
-            int num4 = (int) groupTeamRowByCID["UserIDB"];
-            string strNickName = groupTeamRowByCID["NameA"].ToString().Trim();
-            string str2 = groupTeamRowByCID["NameB"].ToString().Trim();
-            int num8 = (byte) groupTeamRowByCID["Type"];
-            if ((num != -1) || (num2 != -1))
-            {
-                if ((num == -2) && (num2 == -2))
-                {
-                    this.tblRegBegin.Visible = true;
-                    this.tblRegEnd.Visible = false;
-                    this.btnReg.Visible = false;
-                    groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(5);
-                    this.intStatus = (byte) groupTeamRowByCID["Status"];
-                    string str6 = groupTeamRowByCID["ChampionClubName"].ToString().Trim();
-                    int num14 = (int) groupTeamRowByCID["ChampionUserID"];
-                    str6 = AccountItem.GetNickNameInfo(num14, str6, "Right", 20);
-                    string str7 = groupTeamRowByCID["LadderURL"].ToString().Trim();
-                    if (((this.intStatus > 0) && (str7 != "")) && (str7.ToLower().IndexOf("http://match") == -1))
-                    {
-                        str7 = Config.GetDomain() + str7;
-                    }
-                    this.strChampionSay = "本赛季冠军杯正式结束，" + str6 + "获得总冠军！详情<a href='javascript:;' onclick=window.open('" + str7 + "')>请点击此处</a> ";
-                    return;
-                }
-                if ((num == -3) && (num2 == -3))
-                {
-                    this.GetLostMatch();
-                    return;
-                }
-                if ((num != 0) || (num2 != 0))
-                {
-                    if (intUserID > 0)
-                    {
-                        strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20);
-                    }
-                    if (num4 > 0)
-                    {
-                        str2 = AccountItem.GetNickNameInfo(num4, str2, "Right", 20);
-                    }
-                    this.sbReturn.Append("<tr>\n");
-                    this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>上轮战况</strong></td>\n");
-                    this.sbReturn.Append("</tr>\n");
-                    this.sbReturn.Append("<tr>\n");
-                    this.sbReturn.Append("\t<td width=\"43%\" align=\"right\">" + strNickName + "</td>\n");
-                    this.sbReturn.Append(string.Concat(new object[] { "\t<td align=\"center\">", num5, ":", num6, "</td>\n" }));
-                    this.sbReturn.Append("\t<td width=\"43%\" align=\"left\">" + str2 + string.Concat(new object[] { 
-                        "<a href='",  Config.GetDomain(), "VRep.aspx?Tag=", num7, "&Type=", num8, "&A=", num, "&B=", num2, "' style='padding-left:12px' target='_blank'>战报</a>|<a href='",  Config.GetDomain(), "VStas.aspx?Tag=", num7, "&Type=", num8, 
-                        "&A=", num, "&B=", num2, "' target='_blank'>统计</a>"
-                     }) + "</td>\n");
-                    this.sbReturn.Append("</tr>\n");
-                    this.sbReturn.Append("<tr>\n");
-                }
-                groupTeamRowByCID = championCupUPDown.Rows[1];
-                if (groupTeamRowByCID != null)
-                {
-                    string str10;
-                    num7 = (int) groupTeamRowByCID["MatchID"];
-                    num = (int) groupTeamRowByCID["ClubAID"];
-                    num2 = (int) groupTeamRowByCID["ClubBID"];
-                    num5 = (int) groupTeamRowByCID["ClubAScore"];
-                    num6 = (int) groupTeamRowByCID["ClubBScore"];
-                    intUserID = (int) groupTeamRowByCID["UserIDA"];
-                    num4 = (int) groupTeamRowByCID["UserIDB"];
-                    strNickName = groupTeamRowByCID["NameA"].ToString().Trim();
-                    str2 = groupTeamRowByCID["NameB"].ToString().Trim();
-                    int num15 = (byte) groupTeamRowByCID["Type"];
-                    if ((num15 == 5) && (num8 == 4))
-                    {
-                        string str9;
-                        groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(1);
-                        int num16 = (byte) groupTeamRowByCID["Status"];
-                        DateTime time = (DateTime) groupTeamRowByCID["MatchTime"];
-                        if ((DateTime.Now.Day == time.AddDays(1.0).Day) && (num16 == 3))
-                        {
-                            this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
-                            this.sbReturn.Append("</tr>\n");
-                            this.sbReturn.Append("<tr>\n");
-                            this.sbReturn.Append("<td colspan=3 align=\"center\">小组赛已结束，淘汰赛将于明日正式开始</td>\n");
-                            this.sbReturn.Append("</tr>\n");
-                            return;
-                        }
-                        if ((num == -1) && (num == -1))
-                        {
-                            this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
-                            this.sbReturn.Append("</tr>\n");
-                            this.sbReturn.Append("<tr>\n");
-                            this.sbReturn.Append("<td colspan=3 align=\"center\">您已经输掉了冠军杯赛，下赛季继续努力</td>\n");
-                            this.sbReturn.Append("</tr>\n");
-                            return;
-                        }
-                        this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
-                        this.sbReturn.Append("</tr>\n");
-                        this.sbReturn.Append("<tr>\n");
-                        this.sbReturn.Append("<td width=\"43%\" align=\"right\">" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20) + "</td>\n");
-                        this.sbReturn.Append("<td align=\"center\">VS</td>\n");
-                        if (this.intStatus > 1)
-                        {
-                            str9 = "ChampionCup.aspx?Kind=CHMAPIONCUP";
-                        }
-                        else
-                        {
-                            str9 = "ChampionCup.aspx?Kind=TRYOUT";
-                        }
-                        this.sbReturn.Append("<td width=\"43%\" align=\"left\">" + AccountItem.GetNickNameInfo(num4, str2, "Right", 20) + "<a style='padding-left:12px' href=\"" + str9 + "\">查看赛程</a></td>\n");
-                        this.sbReturn.Append("</tr>\n");
-                        this.sbReturn.Append("<td colspan=3 style=\"padding:0\" align=\"center\">比赛会在每天16点进行</td>\n");
-                        this.sbReturn.Append("</tr>\n");
-                        return;
-                    }
-                    if ((num == -1) && (num == -1))
-                    {
-                        this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
-                        this.sbReturn.Append("</tr>\n");
-                        this.sbReturn.Append("<tr>\n");
-                        this.sbReturn.Append("<td colspan=3 align=\"center\">您已经输掉了冠军杯赛，下赛季继续努力</td>\n");
-                        this.sbReturn.Append("</tr>\n");
-                        return;
-                    }
-                    if (intUserID > 0)
-                    {
-                        strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20);
-                    }
-                    if (num4 > 0)
-                    {
-                        str2 = AccountItem.GetNickNameInfo(num4, str2, "Right", 20);
-                    }
-                    this.sbReturn.Append("\t<td colspan=\"3\" align=\"center\" bgcolor=\"#f8ece6\" style=\"BORDER-BOTTOM:#f1c2a3 1px dotted\"><strong>下轮对手</strong></td>\n");
-                    this.sbReturn.Append("</tr>\n");
-                    this.sbReturn.Append("<tr>\n");
-                    this.sbReturn.Append("<td width=\"43%\" align=\"right\">" + strNickName + "</td>\n");
-                    this.sbReturn.Append("<td align=\"center\">VS</td>\n");
-                    if (this.intStatus > 1)
-                    {
-                        str10 = "ChampionCup.aspx?Kind=CHMAPIONCUP";
-                    }
-                    else
-                    {
-                        str10 = "ChampionCup.aspx?Kind=TRYOUT";
-                    }
-                    this.sbReturn.Append("<td width=\"43%\" align=\"left\">" + str2 + "<a style='padding-left:12px' href=\"" + str10 + "\">查看赛程</a></td>\n");
-                    this.sbReturn.Append("</tr>\n");
-                    this.sbReturn.Append("<tr>\n");
-                    this.sbReturn.Append("<td colspan=3 style=\"padding:0\" align=\"center\">比赛会在每天16点进行</td>\n");
-                    this.sbReturn.Append("</tr>\n");
-                }
-                return;
-            }
-            string str3 = "";
-            this.tblRegBegin.Visible = false;
-            this.tblRegEnd.Visible = true;
-            groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(5);
-            if (groupTeamRowByCID != null)
-            {
-                this.intStatus = (byte) groupTeamRowByCID["Status"];
-                int num9 = (byte) groupTeamRowByCID["Round"];
-                int num10 = (int) groupTeamRowByCID["Capacity"];
-                int num11 = 1;
-                string str4 = groupTeamRowByCID["LadderURL"].ToString().Trim();
-                if (((this.intStatus > 0) && (str4 != "")) && (str4.ToLower().IndexOf("http://match") == -1))
-                {
-                    str4 = Config.GetDomain() + str4;
-                }
-                if (this.blnIsStop)
-                {
-                    str3 = "您没有在小组赛出线，请下个赛季继续努力。现在停赛一轮正在安排淘汰赛的赛程。点击<a href='ChampionCup.aspx?Kind=CHMAPIONCUP&Tag=" + this.intUserID + "'> 淘汰赛</a>";
-                }
-                else if (this.intStatus == 1)
-                {
-                    while (num10 > 1)
-                    {
-                        num10 /= 2;
-                        num11++;
-                    }
-                    int num12 = num11 - num9;
-                    if (num9 == 1)
-                    {
-                        str3 = "您没有在小组赛出线，请下个赛季继续努力。现在停赛一轮正在安排淘汰赛的赛程。点击<a href='javascript:;' onclick=window.open('" + str4 + "')>淘汰赛</a>";
-                    }
-                    else if (num12 > 5)
-                    {
-                        str3 = string.Concat(new object[] { "冠军杯淘汰赛进行到第", num9, "轮，关注赛事详情<a href='javascript:;' onclick=window.open('", str4, "')>请点击此处</a>" });
-                    }
-                    else if (num12 > 2)
-                    {
-                        str3 = "冠军杯淘汰赛进行到" + Math.Pow(2.0, (double) num12).ToString() + "强阶段，关注赛事详情<a href='javascript:;' onclick=window.open('" + str4 + "')>请点击此处</a>";
-                    }
-                    else
-                    {
-                        switch (num12)
-                        {
-                            case 2:
-                                str3 = "冠军杯淘汰赛进行半决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str4 + "')>请点击此处</a>";
-                                goto Label_042C;
-
-                            case 1:
-                                str3 = "冠军杯淘汰赛进行决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str4 + "')>请点击此处</a>";
-                                break;
                         }
                     }
                 }
                 else
                 {
-                    string str5 = groupTeamRowByCID["ChampionClubName"].ToString().Trim();
-                    int num13 = (int) groupTeamRowByCID["ChampionUserID"];
-                    str5 = AccountItem.GetNickNameInfo(num13, str5, "Right", 20);
-                    if (num13 != this.intUserID)
+                    string str2 = "";
+                    string str3 = "left";
+                    if ((this.intTurn < 3) || ((this.intTurn == 3) && (DateTime.Now.Hour < 0x10)))
                     {
-                        str16 = str3;
-                        str3 = str16 + "本赛季冠军杯正式结束，" + str5 + "获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str4 + "')>请点击此处</a>";
+                        int xCupRegCount = BTPXGameManager.GetXCupRegCount();
+                        int num2 = (int) BTPXGameManager.GetLastGameRowByCategory(1)["Capacity"];
+                        this.tblRegBegin.Visible = true;
+                        this.tblRegEnd.Visible = true;
+                        if (xCupRegCount >= num2)
+                        {
+                            this.btnReg.Visible = false;
+                            str2 = "<span style='margin-left:210px'>冠军杯赛已经报满！</span>";
+                        }
+                        else
+                        {
+                            str2 = string.Concat(new object[] { "已报名", xCupRegCount, "人，还剩下", num2 - xCupRegCount, "空位。" });
+                            if (this.intTurn == 1)
+                            {
+                                if (ToolItem.HasTool(this.intUserID, 1, 100) < 1)
+                                {
+                                    this.btnReg.Visible = false;
+                                }
+                                str2 = str2 + "只有持有冠军杯邀请函的经理可以在今天报名，如果持有的是冠军杯邀请函（盟），请明天再来。冠军杯邀请函（盟）可以向盟主索取。";
+                            }
+                            else if (this.intTurn == 2)
+                            {
+                                int num3 = ToolItem.HasTool(this.intUserID, 1, 100);
+                                if (num3 < 1)
+                                {
+                                    num3 = ToolItem.HasTool(this.intUserID, 1, 0x65);
+                                }
+                                if (num3 < 1)
+                                {
+                                    this.btnReg.Visible = false;
+                                }
+                                str2 = str2 + "持有冠军杯邀请函或冠军杯邀请函（盟）的经理可以在今天报名，如果没有这两种邀请函请明天再来。冠军杯邀请函（盟）可以向盟主索取。";
+                            }
+                            else
+                            {
+                                str3 = "center";
+                            }
+                        }
+                        this.sbReturn.Append("<tr>\n");
+                        this.sbReturn.Append("<td colspan=3 align=\"" + str3 + "\">" + str2 + "</td>\n");
+                        this.sbReturn.Append("</tr>\n");
+                        return;
+                    }
+                    this.tblRegBegin.Visible = true;
+                    this.tblRegEnd.Visible = false;
+                    this.btnReg.Visible = false;
+                    groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(1);
+                    int num4 = (byte) groupTeamRowByCID["Status"];
+                    int num5 = (byte) groupTeamRowByCID["Round"];
+                    DateTime time = (DateTime) groupTeamRowByCID["MatchTime"];
+                    bool flag = false;
+                    if ((DateTime.Now.Day == time.Day) && (num4 == 3))
+                    {
+                        flag = true;
+                    }
+                    if (flag)
+                    {
+                        groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(5);
+                        if (groupTeamRowByCID != null)
+                        {
+                            string str4 = groupTeamRowByCID["LadderURL"].ToString().Trim();
+                            num4 = (byte) groupTeamRowByCID["Status"];
+                            if (((num4 > 0) && (str4 != "")) && (str4.ToLower().IndexOf("http://match") == -1))
+                            {
+                                str4 = Config.GetDomain() + str4;
+                            }
+                            str2 = "冠军杯小组赛结束，当前正停赛一轮安排淘汰赛的赛程，查看赛程<a href='javascript:;' onclick=window.open('" + str4 + "')>请点击此处</a>";
+                        }
+                    }
+                    else if (num4 == 1)
+                    {
+                        str2 = "冠军杯小组赛进行至第" + num5 + "轮";
                     }
                     else
                     {
-                        str3 = str3 + "本赛季冠军杯正式结束，恭喜您获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str4 + "')>请点击此处</a>";
+                        groupTeamRowByCID = BTPXGameManager.GetLastGameRowByCategory(5);
+                        if (groupTeamRowByCID != null)
+                        {
+                            num4 = (byte) groupTeamRowByCID["Status"];
+                            num5 = (byte) groupTeamRowByCID["Round"];
+                            int num6 = (int) groupTeamRowByCID["Capacity"];
+                            int num7 = 1;
+                            string str5 = groupTeamRowByCID["LadderURL"].ToString().Trim();
+                            if (((num4 > 0) && (str5 != "")) && (str5.ToLower().IndexOf("http://match") == -1))
+                            {
+                                str5 = Config.GetDomain() + str5;
+                            }
+                            if (num4 == 1)
+                            {
+                                while (num6 > 1)
+                                {
+                                    num6 /= 2;
+                                    num7++;
+                                }
+                                int num8 = num7 - num5;
+                                if (num5 == 1)
+                                {
+                                    str2 = "现在停赛一轮正在安排淘汰赛的赛程。点击<a href='javascript:;' onclick=window.open('" + str5 + "')>淘汰赛</a>";
+                                }
+                                else if (num8 > 5)
+                                {
+                                    str2 = string.Concat(new object[] { "冠军杯淘汰赛进行到第", num5, "轮，关注赛事详情<a href='javascript:;' onclick=window.open('", str5, "')>请点击此处</a>" });
+                                }
+                                else if (num8 > 2)
+                                {
+                                    str2 = "冠军杯淘汰赛进行到" + Math.Pow(2.0, (double) num8).ToString() + "强阶段，关注赛事详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
+                                }
+                                else
+                                {
+                                    switch (num8)
+                                    {
+                                        case 1:
+                                            str2 = "冠军杯淘汰赛进行决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
+                                            break;
+
+                                        case 2:
+                                            str2 = "冠军杯淘汰赛进行半决赛阶段！关注赛事详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                string str6 = groupTeamRowByCID["ChampionClubName"].ToString().Trim();
+                                int num9 = (int) groupTeamRowByCID["ChampionUserID"];
+                                str6 = AccountItem.GetNickNameInfo(num9, str6, "Right", 20);
+                                if (num9 != this.intUserID)
+                                {
+                                    str = str2;
+                                    str2 = str + "本赛季冠军杯正式结束，" + str6 + "获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
+                                }
+                                else
+                                {
+                                    str2 = str2 + "本赛季冠军杯正式结束，恭喜您获得总冠军，详情<a href='javascript:;' onclick=window.open('" + str5 + "')>请点击此处</a>";
+                                }
+                            }
+                        }
                     }
+                    this.strChampionSay = str2;
+                    return;
                 }
+                this.sbReturn.Append("<tr>\n");
+                this.sbReturn.Append("<td colspan=3 align=\"center\">" + str13 + "</td>\n");
+                this.sbReturn.Append("</tr>\n");
             }
-        Label_042C:
-            this.sbReturn.Append("<tr>\n");
-            this.sbReturn.Append("<td colspan=3 align=\"center\">" + str3 + "</td>\n");
-            this.sbReturn.Append("</tr>\n");
         }
 
         private void SetKemp()
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -864,30 +855,29 @@
             {
                 foreach (DataRow row in championCupKemp.Rows)
                 {
-                    string str2;
+                    string str;
                     string strNickName = row["ChampionClubName"].ToString().Trim();
-                    int intUserID = (int)row["ChampionUserID"];
-                    int intUnionID = (int)row["UnionID"];
+                    int intUserID = (int) row["ChampionUserID"];
+                    int intUnionID = (int) row["UnionID"];
                     DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(intUnionID);
                     if (unionRowByID != null)
                     {
-                        str2 = unionRowByID["Name"].ToString().Trim();
+                        str = unionRowByID["Name"].ToString().Trim();
                     }
                     else
                     {
-                        str2 = "暂无联盟";
+                        str = "暂无联盟";
                     }
                     string str3 = row["NickName"].ToString().Trim();
-                    DateTime datIn = (DateTime)row["MatchTime"];
+                    DateTime datIn = (DateTime) row["MatchTime"];
                     this.sbReturn.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbReturn.Append("\t<td align=\"left\">" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20) + "</td>");
                     this.sbReturn.Append("\t<td align=\"left\">" + AccountItem.GetNickNameInfo(intUserID, str3, "Right", 20) + "</td>");
-                    this.sbReturn.Append("\t<td align=\"left\">" + str2 + "</td>");
+                    this.sbReturn.Append("\t<td align=\"left\">" + str + "</td>");
                     this.sbReturn.Append("\t<td align=\"left\">" + StringItem.FormatDate(datIn, "yy-MM-dd") + "</td>");
                     this.sbReturn.Append("</tr>");
                     this.sbReturn.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>");
                 }
-                //championCupKemp.Close();
                 string strCurrentURL = "ChampionCup.aspx?Tag=" + this.intUserID + "&Kind=KEMP&";
                 this.strScript = this.GetScript(strCurrentURL);
                 this.sbReturn.Append("<tr><td height='25' align='right' colspan='4'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
@@ -900,97 +890,87 @@
 
         private void SetTryout()
         {
-            int num7;
+            int num;
             string str = "";
             string str2 = "";
             DataRow groupTeamRowByCID = BTPXGroupTeamManager.GetGroupTeamRowByCID(this.intClubID5);
             if (groupTeamRowByCID != null)
             {
-                num7 = (int) groupTeamRowByCID["GroupIndex"];
+                num = (int) groupTeamRowByCID["GroupIndex"];
             }
             else
             {
-                num7 = 1;
+                num = 1;
             }
             int intRound = (byte) BTPXGameManager.GetLastGameRowByCategory(1)["Round"];
-            DataTable table = BTPXGroupMatchManager.GetGroupMatchByCategoryGroupIndex(this.intClubID5, 1, num7);
+            DataTable table = BTPXGroupMatchManager.GetGroupMatchByCategoryGroupIndex(this.intClubID5, 1, num);
             if ((table == null) || (table.Rows.Count == 0))
             {
                 this.strMatchList = "<tr class='BarContent'><td height='25' colspan='6'>暂时没有比赛</td></tr>";
             }
             else
             {
-                int num;
-                int num2;
                 int num3;
                 int num4;
                 int num5;
                 int num6;
+                int num7;
+                int num8;
+                string str3;
+                string str4;
                 string str5;
-                string str6;
-                string str7;
                 string strUPList;
                 foreach (DataRow row2 in table.Rows)
                 {
-                    string str8;
-                    num = (byte) row2["Round"];
-                    num2 = (int) row2["XGroupMatchID"];
-                    num3 = (int) row2["ClubAID"];
-                    num5 = (int) row2["ClubBID"];
-                    num4 = (int) row2["ClubAScore"];
-                    num6 = (int) row2["ClubBScore"];
-                    num = Convert.ToInt32(row2["Round"]);
+                    string str7;
+                    num3 = (byte) row2["Round"];
+                    num4 = (int) row2["XGroupMatchID"];
+                    num5 = (int) row2["ClubAID"];
+                    num7 = (int) row2["ClubBID"];
+                    num6 = (int) row2["ClubAScore"];
+                    num8 = (int) row2["ClubBScore"];
+                    num3 = Convert.ToInt32(row2["Round"]);
                     string strNickName = row2["ClubInfoA"].ToString().Trim();
-                    string str4 = row2["ClubInfoB"].ToString().Trim();
+                    string str9 = row2["ClubInfoB"].ToString().Trim();
                     string[] strArray = strNickName.Split(new char[] { '|' });
                     int intUserID = Convert.ToInt32(strArray[0]);
                     strNickName = strArray[1].Trim();
-                    string str9 = strArray[3].Trim();
-                    string[] strArray2 = str4.Split(new char[] { '|' });
+                    string str10 = strArray[3].Trim();
+                    string[] strArray2 = str9.Split(new char[] { '|' });
                     int num10 = Convert.ToInt32(strArray2[0]);
-                    str4 = strArray2[1].Trim();
-                    string str10 = strArray2[3].Trim();
-                    if ((str9 != "") && (str9 != null))
-                    {
-                        strNickName = str9 + "-" + strNickName;
-                    }
+                    str9 = strArray2[1].Trim();
+                    string str11 = strArray2[3].Trim();
                     if ((str10 != "") && (str10 != null))
                     {
-                        str4 = str10 + "-" + str4;
+                        strNickName = str10 + "-" + strNickName;
+                    }
+                    if ((str11 != "") && (str11 != null))
+                    {
+                        str9 = str11 + "-" + str9;
                     }
                     strNickName = AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 0x10);
-                    str4 = AccountItem.GetNickNameInfo(num10, str4, "Right", 0x10);
-                    if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
+                    str9 = AccountItem.GetNickNameInfo(num10, str9, "Right", 0x10);
+                    if (((num5 != 0) && (num7 != 0)) && ((num6 != 0) || (num8 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num4, "&A=", num5, "&B=", num7, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num4, "&A=", num5, "&B=", num7, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else
                     {
                         str2 = "";
-                        /*暂时关闭该功能*/
-                        if ((num == intRound) || (num == (intRound + 1)))
+                        if ((num3 == intRound) || (num3 == (intRound + 1)))
                         {
-                            string str11 = row2["ArrangeA"].ToString().Trim();
-                            string str12 = row2["ArrangeH"].ToString().Trim();
-                            if (this.IsMatchH(num3))
+                            string str12 = row2["ArrangeA"].ToString().Trim();
+                            string str13 = row2["ArrangeH"].ToString().Trim();
+                            if (this.IsMatchH(num5))
                             {
-                                if (str12 != "NO")
+                                if (str13 == "NO")
                                 {
-                                    //str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='管理预设战术' src='", SessionItem.GetImageURL(), "Tactics_e.gif' border='0' width='12' height='16'>" });
                                 }
-                                else
-                                {
-                                    //str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='启用预设战术' src='", SessionItem.GetImageURL(), "Tactics.gif' border='0' width='12' height='16'>" });
-                                }
-                            }
-                            else if (str11 != "NO")
-                            {
-                                //str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='管理预设战术' src='", SessionItem.GetImageURL(), "Tactics_e.gif' border='0' width='12' height='16'>" });
                             }
                             else
                             {
-                                //str = string.Concat(new object[] { "<img onclick=\"javascript:window.location='SecretaryPage.aspx?Type=PREARRANGEXBA&Tag=", num2, "';\" style=\"cursor:pointer;\" alt='启用预设战术' src='", SessionItem.GetImageURL(), "Tactics.gif' border='0' width='12' height='16'>" });
+                                bool flag1 = str12 != "NO";
                             }
                             str = "";
                         }
@@ -999,28 +979,28 @@
                             str = "";
                         }
                     }
-                    str7 = str + "&nbsp;&nbsp;" + str2;
-                    if ((num4 == 0) && (num6 == 0))
+                    str5 = str + "&nbsp;&nbsp;" + str2;
+                    if ((num6 == 0) && (num8 == 0))
                     {
-                        str8 = "--";
+                        str7 = "--";
                     }
                     else
                     {
-                        str8 = string.Concat(new object[] { "<font color='40'>", num4, ":", num6, "</font>" });
+                        str7 = string.Concat(new object[] { "<font color='40'>", num6, ":", num8, "</font>" });
                     }
-                    string str13 = "";
-                    string str14 = "#FBE2D4";
-                    string str15 = "BarContent border";
-                    if (intRound == num)
+                    string str14 = "";
+                    string str15 = "#FBE2D4";
+                    string str16 = "BarContent border";
+                    if (intRound == num3)
                     {
-                        str13 = "#FBE2D4";
-                        str14 = "";
-                        str15 = "BarContent1 border;background-color:#FBE2D4";
+                        str14 = "#FBE2D4";
+                        str15 = "";
+                        str16 = "BarContent1 border;background-color:#FBE2D4";
                     }
                     object strMatchList = this.strMatchList;
                     this.strMatchList = string.Concat(new object[] { 
-                        strMatchList, "<tr class='", str15, "' onmouseover=\"this.style.backgroundColor='", str14, "'\" onmouseout=\"this.style.backgroundColor='", str13, "'\"><td width=\"50\" height=\"24\" align=\"left\" style=\"padding-left:20px\" ><font color='#7B1F76'>", num, "</font></td><td width=\"120\" align=\"right\" >", strNickName, "</td><td width=\"80\" align=\"center\" ><font color='40'>", str8, "</font></td><td width=\"120\" align=\"left\" >", str4, "</td><td >&nbsp;</td><td width=\"90\" align=\"left\" >", 
-                        str7, "</td></tr>"
+                        strMatchList, "<tr class='", str16, "' onmouseover=\"this.style.backgroundColor='", str15, "'\" onmouseout=\"this.style.backgroundColor='", str14, "'\"><td width=\"50\" height=\"24\" align=\"left\" style=\"padding-left:20px\" ><font color='#7B1F76'>", num3, "</font></td><td width=\"120\" align=\"right\" >", strNickName, "</td><td width=\"80\" align=\"center\" ><font color='40'>", str7, "</font></td><td width=\"120\" align=\"left\" >", str9, "</td><td >&nbsp;</td><td width=\"90\" align=\"left\" >", 
+                        str5, "</td></tr>"
                      });
                     this.strMatchList = this.strMatchList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
                 }
@@ -1033,66 +1013,66 @@
                 {
                     foreach (DataRow row3 in table2.Rows)
                     {
-                        num = (byte) row3["Round"];
-                        num2 = (int) row3["XGroupMatchID"];
-                        num3 = (int) row3["ClubAID"];
-                        num5 = (int) row3["ClubBID"];
-                        num4 = (int) row3["ClubAScore"];
-                        num6 = (int) row3["ClubBScore"];
-                        string str16 = row3["ClubInfoA"].ToString().Trim();
-                        string str17 = row3["ClubInfoB"].ToString().Trim();
-                        if (str16.Length > 1)
-                        {
-                            string[] strArray3 = str16.Split(new char[] { '|' });
-                            int num11 = Convert.ToInt32(strArray3[0]);
-                            str5 = strArray3[1].Trim();
-                            string str18 = strArray3[3].Trim();
-                            if (str18 != "")
-                            {
-                                str5 = str18 + "-" + str5;
-                            }
-                            str5 = AccountItem.GetNickNameInfo(num11, str5, "Right", 12);
-                        }
-                        else
-                        {
-                            str5 = "轮空";
-                        }
+                        num3 = (byte) row3["Round"];
+                        num4 = (int) row3["XGroupMatchID"];
+                        num5 = (int) row3["ClubAID"];
+                        num7 = (int) row3["ClubBID"];
+                        num6 = (int) row3["ClubAScore"];
+                        num8 = (int) row3["ClubBScore"];
+                        string str17 = row3["ClubInfoA"].ToString().Trim();
+                        string str18 = row3["ClubInfoB"].ToString().Trim();
                         if (str17.Length > 1)
                         {
-                            string[] strArray4 = str17.Split(new char[] { '|' });
-                            int num12 = Convert.ToInt32(strArray4[0]);
-                            str6 = strArray4[1].Trim();
-                            string str19 = strArray4[3].Trim();
+                            string[] strArray3 = str17.Split(new char[] { '|' });
+                            int num11 = Convert.ToInt32(strArray3[0]);
+                            str3 = strArray3[1].Trim();
+                            string str19 = strArray3[3].Trim();
                             if (str19 != "")
                             {
-                                str6 = str19 + "-" + str6;
+                                str3 = str19 + "-" + str3;
                             }
-                            str6 = AccountItem.GetNickNameInfo(num12, str6, "Right", 12);
+                            str3 = AccountItem.GetNickNameInfo(num11, str3, "Right", 12);
                         }
                         else
                         {
-                            str6 = "轮空";
+                            str3 = "轮空";
                         }
-                        if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
+                        if (str18.Length > 1)
                         {
-                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                            string[] strArray4 = str18.Split(new char[] { '|' });
+                            int num12 = Convert.ToInt32(strArray4[0]);
+                            str4 = strArray4[1].Trim();
+                            string str20 = strArray4[3].Trim();
+                            if (str20 != "")
+                            {
+                                str4 = str20 + "-" + str4;
+                            }
+                            str4 = AccountItem.GetNickNameInfo(num12, str4, "Right", 12);
+                        }
+                        else
+                        {
+                            str4 = "轮空";
+                        }
+                        if (((num5 != 0) && (num7 != 0)) && ((num6 != 0) || (num8 != 0)))
+                        {
+                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num4, "&A=", num5, "&B=", num7, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num4, "&A=", num5, "&B=", num7, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                         }
                         else
                         {
                             str = "";
                             str2 = "";
                         }
-                        if ((num4 == 0) && (num6 == 0))
+                        if ((num6 == 0) && (num8 == 0))
                         {
-                            str7 = "<td width='20' align='center' cospan='3'>--</td>";
+                            str5 = "<td width='20' align='center' cospan='3'>--</td>";
                         }
                         else
                         {
-                            str7 = string.Concat(new object[] { "<td width='20' align='right'>", num4, "</td><td width='10' align='center'>:</td><td width='20' align='left'>", num6, "</td>" });
+                            str5 = string.Concat(new object[] { "<td width='20' align='right'>", num6, "</td><td width='10' align='center'>:</td><td width='20' align='left'>", num8, "</td>" });
                         }
                         strUPList = this.strUPList;
-                        this.strUPList = strUPList + "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' width='90' align='right'>" + str5 + "</td>" + str7 + "<td width='90' align='left'>" + str6 + "</td><td width='40'>" + str + "&nbsp;" + str2 + "</td></tr>";
+                        this.strUPList = strUPList + "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' width='90' align='right'>" + str3 + "</td>" + str5 + "<td width='90' align='left'>" + str4 + "</td><td width='40'>" + str + "&nbsp;" + str2 + "</td></tr>";
                         this.strUPList = this.strUPList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
                     }
                 }
@@ -1105,66 +1085,66 @@
                 {
                     foreach (DataRow row4 in table2.Rows)
                     {
-                        num = (byte) row4["Round"];
-                        num2 = (int) row4["XGroupMatchID"];
-                        num3 = (int) row4["ClubAID"];
-                        num5 = (int) row4["ClubBID"];
-                        num4 = (int) row4["ClubAScore"];
-                        num6 = (int) row4["ClubBScore"];
-                        string str20 = row4["ClubInfoA"].ToString().Trim();
-                        string str21 = row4["ClubInfoB"].ToString().Trim();
-                        if (str20.Length > 1)
-                        {
-                            string[] strArray5 = str20.Split(new char[] { '|' });
-                            int num13 = Convert.ToInt32(strArray5[0]);
-                            str5 = strArray5[1].Trim();
-                            string str22 = strArray5[3].Trim();
-                            if (str22 != "")
-                            {
-                                str5 = str22 + "-" + str5;
-                            }
-                            str5 = AccountItem.GetNickNameInfo(num13, str5, "Right", 12);
-                        }
-                        else
-                        {
-                            str5 = "轮空";
-                        }
+                        num3 = (byte) row4["Round"];
+                        num4 = (int) row4["XGroupMatchID"];
+                        num5 = (int) row4["ClubAID"];
+                        num7 = (int) row4["ClubBID"];
+                        num6 = (int) row4["ClubAScore"];
+                        num8 = (int) row4["ClubBScore"];
+                        string str21 = row4["ClubInfoA"].ToString().Trim();
+                        string str22 = row4["ClubInfoB"].ToString().Trim();
                         if (str21.Length > 1)
                         {
-                            string[] strArray6 = str21.Split(new char[] { '|' });
-                            int num14 = Convert.ToInt32(strArray6[0]);
-                            str6 = strArray6[1].Trim();
-                            string str23 = strArray6[3].Trim();
+                            string[] strArray5 = str21.Split(new char[] { '|' });
+                            int num13 = Convert.ToInt32(strArray5[0]);
+                            str3 = strArray5[1].Trim();
+                            string str23 = strArray5[3].Trim();
                             if (str23 != "")
                             {
-                                str6 = str23 + "-" + str6;
+                                str3 = str23 + "-" + str3;
                             }
-                            str6 = AccountItem.GetNickNameInfo(num14, str6, "Right", 12);
+                            str3 = AccountItem.GetNickNameInfo(num13, str3, "Right", 12);
                         }
                         else
                         {
-                            str6 = "轮空";
+                            str3 = "轮空";
                         }
-                        if (((num3 != 0) && (num5 != 0)) && ((num4 != 0) || (num6 != 0)))
+                        if (str22.Length > 1)
                         {
-                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num2, "&A=", num3, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                            string[] strArray6 = str22.Split(new char[] { '|' });
+                            int num14 = Convert.ToInt32(strArray6[0]);
+                            str4 = strArray6[1].Trim();
+                            string str24 = strArray6[3].Trim();
+                            if (str24 != "")
+                            {
+                                str4 = str24 + "-" + str4;
+                            }
+                            str4 = AccountItem.GetNickNameInfo(num14, str4, "Right", 12);
+                        }
+                        else
+                        {
+                            str4 = "轮空";
+                        }
+                        if (((num5 != 0) && (num7 != 0)) && ((num6 != 0) || (num8 != 0)))
+                        {
+                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=4&Tag=", num4, "&A=", num5, "&B=", num7, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=4&Tag=", num4, "&A=", num5, "&B=", num7, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                         }
                         else
                         {
                             str = "";
                             str2 = "";
                         }
-                        if ((num4 == 0) && (num6 == 0))
+                        if ((num6 == 0) && (num8 == 0))
                         {
-                            str7 = "<td width='20' align='center' cospan='3'>--</td>";
+                            str5 = "<td width='20' align='center' cospan='3'>--</td>";
                         }
                         else
                         {
-                            str7 = string.Concat(new object[] { "<td width='20' align='right'>", num4, "</td><td width='10' align='center'>:</td><td width='20' align='left'>", num6, "</td>" });
+                            str5 = string.Concat(new object[] { "<td width='20' align='right'>", num6, "</td><td width='10' align='center'>:</td><td width='20' align='left'>", num8, "</td>" });
                         }
                         strUPList = this.strDownList;
-                        this.strDownList = strUPList + "<tr class='BarContent' bgColor='#FBE2D4' onmouseover=\"this.style.backgroundColor='#fcf1eb'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' width='90' align='right'>" + str5 + "</td>" + str7 + "<td width='90' align='left'>" + str6 + "</td><td >&nbsp;</td><td width='40'>" + str + "&nbsp;" + str2 + "</td></tr>";
+                        this.strDownList = strUPList + "<tr class='BarContent' bgColor='#FBE2D4' onmouseover=\"this.style.backgroundColor='#fcf1eb'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' width='90' align='right'>" + str3 + "</td>" + str5 + "<td width='90' align='left'>" + str4 + "</td><td >&nbsp;</td><td width='40'>" + str + "&nbsp;" + str2 + "</td></tr>";
                         this.strDownList = this.strDownList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
                     }
                 }
@@ -1173,7 +1153,7 @@
 
         private void SetTryoutTop()
         {
-            int request = (int) SessionItem.GetRequest("Index", 0);
+            int request = SessionItem.GetRequest("Index", 0);
             if (request == 0)
             {
                 DataRow groupTeamRowByCID = BTPXGroupTeamManager.GetGroupTeamRowByCID(this.intClubID5);
@@ -1202,7 +1182,7 @@
                 this.strList = this.strList + "<tr><td height=\"25\" align='center' width=\"88\">排名</td>\t\t<td align='left' width=\"150\">球队</td>\t\t\t<td align='center' width=\"80\">胜</td>\t\t\t<td align='center' width=\"80\">负</td>\t\t\t<td align='center' width=\"80\">净胜</td>\t\t\t<td ></td></tr>";
                 foreach (DataRow row2 in groupTeamByCG.Rows)
                 {
-                    string str3;
+                    string str;
                     int count = groupTeamByCG.Rows.Count;
                     int num3 = (int) row2["Win"];
                     int num4 = (int) row2["Lose"];
@@ -1211,10 +1191,10 @@
                     string strNickName = row2["ClubName"].ToString().Trim();
                     int intUserID = (int) row2["UserID"];
                     int num8 = (int) row2["UnionID"];
-                    string str2 = row2["ShortName"].ToString().Trim();
+                    string str3 = row2["ShortName"].ToString().Trim();
                     if (num8 > 0)
                     {
-                        strNickName = str2 + "-" + strNickName;
+                        strNickName = str3 + "-" + strNickName;
                     }
                     if (num6 == 0)
                     {
@@ -1222,14 +1202,14 @@
                     }
                     if (num2 < 3)
                     {
-                        str3 = "#fce5d2";
+                        str = "#fce5d2";
                     }
                     else
                     {
-                        str3 = "";
+                        str = "";
                     }
                     object strList = this.strList;
-                    this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' bgColor='", str3, "' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' align='center' width=\"88\"><font color='#660066'>", num2, "</font></td><td  align='left' width=\"150\">", AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20), "</td><td align='center' width=\"80\">", num3, "</td><td align='center' width=\"80\">", num4, "</td><td align='center' width=\"80\">", num5, "</td><td></td></tr>" });
+                    this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' bgColor='", str, "' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' align='center' width=\"88\"><font color='#660066'>", num2, "</font></td><td  align='left' width=\"150\">", AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20), "</td><td align='center' width=\"80\">", num3, "</td><td align='center' width=\"80\">", num4, "</td><td align='center' width=\"80\">", num5, "</td><td></td></tr>" });
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
                     num2++;
                 }
@@ -1240,8 +1220,8 @@
         {
             string str = "";
             string str2 = "";
-            int num6 = 1;
-            int request = (int) SessionItem.GetRequest("CID", 0);
+            int num = 1;
+            int request = SessionItem.GetRequest("CID", 0);
             bool flag = false;
             bool flag2 = false;
             this.btnFindMatch.ImageUrl = SessionItem.GetImageURL() + "button_34.gif";
@@ -1257,29 +1237,29 @@
             DataTable xCupMatchByClubID = BTPXCupMatchManager.GetXCupMatchByClubID(request);
             if (xCupMatchByClubID != null)
             {
-                foreach (DataRow dataRow in xCupMatchByClubID.Rows)
+                foreach (DataRow row in xCupMatchByClubID.Rows)
                 {
                     string str3;
                     string str4;
-                    string str9;
-                    int num = (int) dataRow["XCupMatchID"];
-                    int num2 = (int) dataRow["ClubAID"];
-                    int num4 = (int) dataRow["ClubBID"];
-                    int num3 = (int) dataRow["ScoreA"];
-                    int num5 = (int) dataRow["ScoreB"];
-                    string str5 = dataRow["ClubInfoA"].ToString().Trim();
-                    string str6 = dataRow["ClubInfoB"].ToString().Trim();
-                    int num8 = (int) dataRow["ClubOA"];
-                    int num9 = (int) dataRow["ClubOB"];
-                    if (str5.Length > 1)
+                    string str5;
+                    int num3 = (int) row["XCupMatchID"];
+                    int num4 = (int) row["ClubAID"];
+                    int num5 = (int) row["ClubBID"];
+                    int num6 = (int) row["ScoreA"];
+                    int num7 = (int) row["ScoreB"];
+                    string str6 = row["ClubInfoA"].ToString().Trim();
+                    string str7 = row["ClubInfoB"].ToString().Trim();
+                    int num8 = (int) row["ClubOA"];
+                    int num9 = (int) row["ClubOB"];
+                    if (str6.Length > 1)
                     {
-                        string[] strArray = str5.Split(new char[] { '|' });
+                        string[] strArray = str6.Split(new char[] { '|' });
                         int intUserID = Convert.ToInt32(strArray[0]);
                         str3 = strArray[1].Trim();
-                        string str7 = strArray[3].Trim();
-                        if (str7 != "")
+                        string str8 = strArray[3].Trim();
+                        if (str8 != "")
                         {
-                            str3 = str7 + "-" + str3;
+                            str3 = str8 + "-" + str3;
                         }
                         str3 = AccountItem.GetNickNameInfo(intUserID, str3, "Right", 12);
                     }
@@ -1287,15 +1267,15 @@
                     {
                         str3 = "轮空";
                     }
-                    if (str6.Length > 1)
+                    if (str7.Length > 1)
                     {
-                        string[] strArray2 = str6.Split(new char[] { '|' });
+                        string[] strArray2 = str7.Split(new char[] { '|' });
                         int num11 = Convert.ToInt32(strArray2[0]);
                         str4 = strArray2[1].Trim();
-                        string str8 = strArray2[3].Trim();
-                        if (str8 != "")
+                        string str9 = strArray2[3].Trim();
+                        if (str9 != "")
                         {
-                            str4 = str8 + "-" + str4;
+                            str4 = str9 + "-" + str4;
                         }
                         str4 = AccountItem.GetNickNameInfo(num11, str4, "Right", 12);
                     }
@@ -1306,12 +1286,12 @@
                     if ((num8 > 0) && (num9 > 0))
                     {
                         flag2 = true;
-                        int num12 = (int) dataRow["OScoreA"];
-                        int num1 = (int) dataRow["OScoreB"];
+                        int num12 = (int) row["OScoreA"];
+                        int num1 = (int) row["OScoreB"];
                         if ((num12 > 0) && (num12 > 0))
                         {
-                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=5&Tag=", num, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo2.gif' border='0' width='13' height='13'></a>" });
-                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=5&Tag=", num, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo2.gif' border='0' width='13' height='13'></a>" });
+                            str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=5&Tag=", num3, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo2.gif' border='0' width='13' height='13'></a>" });
+                            str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=5&Tag=", num3, "&A=", num8, "&B=", num9, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo2.gif' border='0' width='13' height='13'></a>" });
                         }
                         else
                         {
@@ -1320,41 +1300,40 @@
                         }
                         if (flag)
                         {
-                            DataRow row = BTPXGameManager.GetLastGameRowByCategory(5);
-                            if (row != null)
+                            DataRow row2 = BTPXGameManager.GetLastGameRowByCategory(5);
+                            if (row2 != null)
                             {
-                                int num13 = (byte) row["Round"];
+                                int num13 = (byte) row2["Round"];
                                 this.strMyMsg = "恭喜您通过淘汰赛第" + (num13 - 1) + "轮，您可以点击下轮对手后方的图标查看他上一轮的战报，也可以在下方输入球队名称查看该球队的历史赛程。查看淘汰赛的全部请点击右下角的全部赛程按钮。";
                             }
                         }
                     }
-                    else if (((num2 != 0) && (num4 != 0)) && ((num3 != 0) || (num5 != 0)))
+                    else if (((num4 != 0) && (num5 != 0)) && ((num6 != 0) || (num7 != 0)))
                     {
-                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=5&Tag=", num, "&A=", num2, "&B=", num4, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
-                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=5&Tag=", num, "&A=", num2, "&B=", num4, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
+                        str = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=5&Tag=", num3, "&A=", num4, "&B=", num5, "' target='_blank'><img alt='战报' src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
+                        str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VStas.aspx?Type=5&Tag=", num3, "&A=", num4, "&B=", num5, "' target='_blank'><img alt='统计' src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>" });
                     }
                     else
                     {
                         str = "";
                         str2 = "";
                     }
-                    if ((num3 == 0) && (num5 == 0))
+                    if ((num6 == 0) && (num7 == 0))
                     {
-                        str9 = "--";
+                        str5 = "--";
                     }
                     else
                     {
-                        str9 = string.Concat(new object[] { "<font color='40'>", num3, ":", num5, "</font>" });
+                        str5 = string.Concat(new object[] { "<font color='40'>", num6, ":", num7, "</font>" });
                     }
                     object strMatchList = this.strMatchList;
                     this.strMatchList = string.Concat(new object[] { 
-                        strMatchList, "<tr class='BarContent1 border;background-color:#FBE2D4' onmouseover=\"this.style.backgroundColor='FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td width=\"50\" height=\"24\" align=\"left\" style=\"padding-left:20px\" ><font color='#7B1F76'>", num6, "</font><a name=\"", num6, "\" id=\"", num6, "\"></a></td><td width=\"120\" align=\"right\" >", str3, "</td><td width=\"80\" align=\"center\" ><font color='40'>", str9, "</font></td><td width=\"120\" align=\"left\" >", str4, "</td><td >&nbsp;</td><td width=\"90\" align=\"left\" >", str, str2, 
+                        strMatchList, "<tr class='BarContent1 border;background-color:#FBE2D4' onmouseover=\"this.style.backgroundColor='FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td width=\"50\" height=\"24\" align=\"left\" style=\"padding-left:20px\" ><font color='#7B1F76'>", num, "</font><a name=\"", num, "\" id=\"", num, "\"></a></td><td width=\"120\" align=\"right\" >", str3, "</td><td width=\"80\" align=\"center\" ><font color='40'>", str5, "</font></td><td width=\"120\" align=\"left\" >", str4, "</td><td >&nbsp;</td><td width=\"90\" align=\"left\" >", str, str2, 
                         "</td></tr>"
                      });
                     this.strMatchList = this.strMatchList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
-                    num6++;
+                    num++;
                 }
-                //xCupMatchByClubID.Close();
                 if (!flag2 && (this.intClubID5 == request))
                 {
                     DataRow xCupRegRowByClubID = BTPXCupRegManager.GetXCupRegRowByClubID(this.intClubID5);
@@ -1371,16 +1350,16 @@
                             line = Config.GetDomain() + line;
                         }
                         this.strXML = line;
-                        byte num17 = (byte) xCupRegRowByClubID["Round"];
-                        TagReader reader2 = new TagReader();
-                        IEnumerator enumerator = reader2.GetItems(line, "<Reward>", "</Reward>").GetEnumerator();
+                        byte num16 = (byte) xCupRegRowByClubID["Round"];
+                        TagReader reader = new TagReader();
+                        IEnumerator enumerator = reader.GetItems(line, "<Reward>", "</Reward>").GetEnumerator();
                         while (enumerator.MoveNext())
                         {
                             string current = (string) enumerator.Current;
-                            if (Convert.ToInt32(reader2.GetTagline(current, "<Round>", "</Round>")) == num14)
+                            if (Convert.ToInt32(reader.GetTagline(current, "<Round>", "</Round>")) == num14)
                             {
-                                str10 = reader2.GetTagline(current, "<Money>", "</Money>");
-                                str11 = reader2.GetTagline(current, "<Reputation>", "</Reputation>");
+                                str10 = reader.GetTagline(current, "<Money>", "</Money>");
+                                str11 = reader.GetTagline(current, "<Reputation>", "</Reputation>");
                             }
                         }
                         if (num14 == 100)
@@ -1406,8 +1385,8 @@
             if (lastGameRowByCategory != null)
             {
                 string str14 = lastGameRowByCategory["LadderURL"].ToString().Trim();
-                int num16 = (byte) lastGameRowByCategory["Status"];
-                if (((num16 > 0) && (str14 != "")) && (str14.ToLower().IndexOf("http://match") == -1))
+                int num15 = (byte) lastGameRowByCategory["Status"];
+                if (((num15 > 0) && (str14 != "")) && (str14.ToLower().IndexOf("http://match") == -1))
                 {
                     str14 = Config.GetDomain() + str14;
                 }

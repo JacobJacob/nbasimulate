@@ -165,26 +165,28 @@
             }
             if (!flag)
             {
-                string str3;
+                string str;
                 string strFace = "0|0|0|0|0|0|0|0|0";
                 string path = "NetDisk/" + StringItem.FormatDate(DateTime.Now, "yyyyMM") + "/";
                 if (base.Request.Cookies["FromURL"] != null)
                 {
                     base.Request.Cookies["FromURL"].Value.ToString();
-                    HttpCookie cookie = new HttpCookie("FromURL");
-                    cookie.Value = "";
+                    HttpCookie cookie = new HttpCookie("FromURL") {
+                        Value = ""
+                    };
                     base.Response.Cookies.Add(cookie);
                 }
                 if (base.Request.Cookies["UserCookies"] != null)
                 {
-                    str3 = base.Request.Cookies["UserCookies"].Value.ToString();
+                    str = base.Request.Cookies["UserCookies"].Value.ToString();
                 }
                 else
                 {
-                    str3 = StringItem.FormatDate(DateTime.Now, "yyyyMMddhhmmss").ToString() + RandomItem.rnd.Next(100, 0x3e7).ToString();
-                    HttpCookie cookie2 = new HttpCookie("UserCookies");
-                    cookie2.Value = str3;
-                    cookie2.Expires = DateTime.Now.AddYears(50);
+                    str = StringItem.FormatDate(DateTime.Now, "yyyyMMddhhmmss").ToString() + RandomItem.rnd.Next(100, 0x3e7).ToString();
+                    HttpCookie cookie2 = new HttpCookie("UserCookies") {
+                        Value = str,
+                        Expires = DateTime.Now.AddYears(50)
+                    };
                     base.Response.Cookies.Add(cookie2);
                 }
                 int intUserID = ROOTUserManager.Add51eduUser40(this.strUserName, this.strPassword, this.strNickName, this.strEmail, Convert.ToInt32(this.blnSex), "1981-1-1", this.strPrv, this.strCity, this.strIntroNickName, "", "");

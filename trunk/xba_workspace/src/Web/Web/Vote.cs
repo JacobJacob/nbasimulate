@@ -28,9 +28,9 @@
             }
             else
             {
-                this.strParameter = (string) SessionItem.GetRequest("Parameter", 1);
-                this.strBoardID = (string) SessionItem.GetRequest("BoardID", 1);
-                this.intTopicID = (int) SessionItem.GetRequest("TopicID", 0);
+                this.strParameter = SessionItem.GetRequest("Parameter", 1);
+                this.strBoardID = SessionItem.GetRequest("BoardID", 1);
+                this.intTopicID = SessionItem.GetRequest("TopicID", 0);
                 this.InitializeComponent();
                 base.OnInit(e);
             }
@@ -54,27 +54,27 @@
                 for (int i = 0; i < items.Count; i++)
                 {
                     strContent = strContent + "<Vote>";
-                    string str2 = (string) items[i];
-                    TagReader reader2 = new TagReader(str2);
-                    string str3 = (string) reader2.GetItems("Title")[0];
+                    string str3 = (string) items[i];
+                    TagReader reader2 = new TagReader(str3);
+                    string str4 = (string) reader2.GetItems("Title")[0];
                     object obj2 = line;
-                    line = string.Concat(new object[] { obj2, "<b>", i + 1, ". ", str3, "</b><br>" });
+                    line = string.Concat(new object[] { obj2, "<b>", i + 1, ". ", str4, "</b><br>" });
                     ArrayList list2 = reader2.GetItems("Item");
-                    strContent = strContent + "<Title>" + str3 + "</Title>";
+                    strContent = strContent + "<Title>" + str4 + "</Title>";
                     for (int j = 0; j < list2.Count; j++)
                     {
                         strContent = strContent + "<Item>";
                         string str5 = (string) list2[j];
                         TagReader reader3 = new TagReader(str5);
-                        string str4 = (string) reader3.GetItems("Content")[0];
-                        strContent = strContent + "<Content>" + str4 + "</Content>";
-                        int num = Convert.ToInt32(reader3.GetItems("VoteCount")[0]);
+                        string str6 = (string) reader3.GetItems("Content")[0];
+                        strContent = strContent + "<Content>" + str6 + "</Content>";
+                        int num3 = Convert.ToInt32(reader3.GetItems("VoteCount")[0]);
                         if (cuter.GetCuter(i) == BoardItem.GetRadioID(i, j))
                         {
-                            num++;
+                            num3++;
                         }
                         obj2 = strContent;
-                        strContent = string.Concat(new object[] { obj2, "<VoteCount>", num, "</VoteCount>" }) + "</Item>";
+                        strContent = string.Concat(new object[] { obj2, "<VoteCount>", num3, "</VoteCount>" }) + "</Item>";
                     }
                     strContent = strContent + "</Vote>";
                 }

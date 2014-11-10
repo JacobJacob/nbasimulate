@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -42,12 +41,12 @@
             {
                 switch (ROOTUserManager.AddFlack(this.intUserID, strFlackURL))
                 {
-                    case 1:
-                        base.Response.Redirect("Report.aspx?Parameter=404");
-                        return;
-
                     case 0:
                         base.Response.Redirect("Report.aspx?Parameter=405");
+                        return;
+
+                    case 1:
+                        base.Response.Redirect("Report.aspx?Parameter=404");
                         return;
 
                     case 2:
@@ -86,7 +85,7 @@
         private void GetViewFlack()
         {
             string strCurrentURL = "AccountManage.aspx?Type=VIEWFLACK&";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 10;
             if (this.intPage == 0)
             {
@@ -104,38 +103,38 @@
             {
                 foreach (DataRow row in table.Rows)
                 {
-                    string str3;
-                    string str2 = row["FlackURL"].ToString().Trim();
+                    string str2;
+                    string str3 = row["FlackURL"].ToString().Trim();
                     DateTime datIn = (DateTime) row["CreateTime"];
-                    int num4 = (byte) row["CoinGain"];
+                    int num3 = (byte) row["CoinGain"];
                     row["CoinGain"].ToString().Trim();
-                    int num3 = (byte) row["Status"];
-                    if (num3 == 0)
+                    int num4 = (byte) row["Status"];
+                    if (num4 == 0)
                     {
-                        str3 = "等待审核";
+                        str2 = "等待审核";
                     }
-                    else if ((num3 == 2) && (num4 == 1))
+                    else if ((num4 == 2) && (num3 == 1))
                     {
-                        str3 = "奖励1金币";
+                        str2 = "奖励1金币";
                     }
-                    else if ((num3 == 2) && (num4 == 2))
+                    else if ((num4 == 2) && (num3 == 2))
                     {
-                        str3 = "奖励2金币";
+                        str2 = "奖励2金币";
                     }
-                    else if ((num3 == 2) && (num4 == 3))
+                    else if ((num4 == 2) && (num3 == 3))
                     {
-                        str3 = "奖励3金币";
+                        str2 = "奖励3金币";
                     }
-                    else if ((num3 == 2) && (num4 == 5))
+                    else if ((num4 == 2) && (num3 == 5))
                     {
-                        str3 = "奖励5金币";
+                        str2 = "奖励5金币";
                     }
                     else
                     {
-                        str3 = "未通过审核";
+                        str2 = "未通过审核";
                     }
                     string strList = this.strList;
-                    this.strList = strList + "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color=\"#af1a2e\"> " + StringItem.FormatDate(datIn, "yy-MM-dd hh:mm:ss") + "</font></td><td><a href='" + str2 + "' target='_blank'><font color=\"#af1a2e\"> " + str2 + "</font></a></td><td align='center'><font color=\"#af1a2e\"> " + str3 + "</font></td></tr>";
+                    this.strList = strList + "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'><font color=\"#af1a2e\"> " + StringItem.FormatDate(datIn, "yy-MM-dd hh:mm:ss") + "</font></td><td><a href='" + str3 + "' target='_blank'><font color=\"#af1a2e\"> " + str3 + "</font></a></td><td align='center'><font color=\"#af1a2e\"> " + str2 + "</font></td></tr>";
                 }
                 this.strList = this.strList + "<tr><td height='25' align='right' colspan='5'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
             }
@@ -154,51 +153,45 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", total, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", total, "个记录 跳转", str3 });
         }
 
         private void GetWealthList()
         {
             string strCurrentURL = "XBAFinance.aspx?Type=WEALTH&";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 11;
             if (this.intPage == 0)
             {
@@ -207,10 +200,10 @@
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<table width='432' border='2' cellpadding='0' cellspacing='0' bordercolor='#FFFFFF'><tr><td width='65' height='26' align='center' valign='middle' bgcolor='#AE1100'><strong>收入</strong></td><td width='65' align='center' valign='middle' bgcolor='#AE1100'><strong>支出</strong></td><td width='112' align='center' valign='middle' bgcolor='#AE1100'><strong>时间</strong></td><td width='179' align='center' bgcolor='#AE1100'><strong>事件</strong></td><td width='68' align='center' bgcolor='#AE1100'><strong>备注</strong></td></tr>";
-            DataTable reader = ROOTWealthManager.GetWealthTableNew(this.intUserID, this.intPage, this.intPerPage, true);
-            if (reader != null)
+            DataTable table = ROOTWealthManager.GetWealthTableNew(this.intUserID, this.intPage, this.intPerPage, true);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     string str2 = row["Event"].ToString();
                     int num = (int) row["Income"];
@@ -226,7 +219,6 @@
             {
                 this.strList = this.strList + "<tr><td height='25' align='center' colspan='5' style='color:#9E0F00'>暂无消费记录。</td></tr>";
             }
-            //reader.Close();
             this.strList = this.strList + "</table>";
         }
 
@@ -247,7 +239,7 @@
             }
             else
             {
-                string str3;
+                string str;
                 DataRow userInfoByID = ROOTUserManager.GetUserInfoByID(this.intUserID);
                 this.strNickName = userInfoByID["NickName"].ToString().Trim();
                 this.intCoin = (int) userInfoByID["Coin"];
@@ -260,7 +252,7 @@
                 this.tblFlack.Visible = false;
                 this.tbXbaAD.Visible = false;
                 this.strType = SessionItem.GetRequest("TYPE", 1).ToString().Trim();
-                if (((str3 = this.strType) != null) && (string.IsInterned(str3) == "FLACK"))
+                if (((str = this.strType) != null) && (string.IsInterned(str) == "FLACK"))
                 {
                     this.tblFlack.Visible = true;
                     this.tblViewFlack.Visible = true;

@@ -1,39 +1,24 @@
-using System;
-using System.Text;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-
-namespace Web.Helper
+锘縩amespace Web.Helper
 {
-	class IniUtil
-	{
+    using System;
+    using System.IO;
+    using System.Runtime.InteropServices;
+    using System.Text;
 
-        #region API函数声明
-
-        [DllImport("kernel32")]//返回取得字符串缓冲区的长度
-        private static extern long GetPrivateProfileString(string section,string key,
-            string def,StringBuilder retVal,int size,string filePath);
-
-
-        #endregion
-
-        #region 读Ini文件
-
-        public static string ReadIniData(string Section,string Key,string NoText,string iniFilePath)
+    internal class IniUtil
+    {
+        [DllImport("kernel32")]
+        private static extern long GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+        public static string ReadIniData(string Section, string Key, string NoText, string iniFilePath)
         {
-            if(File.Exists(iniFilePath))
+            if (File.Exists(iniFilePath))
             {
-                StringBuilder temp = new StringBuilder(1024);
-                GetPrivateProfileString(Section,Key,NoText,temp,1024,iniFilePath);
-                return temp.ToString();
+                StringBuilder retVal = new StringBuilder(0x400);
+                GetPrivateProfileString(Section, Key, NoText, retVal, 0x400, iniFilePath);
+                return retVal.ToString();
             }
-            else
-            {
-                return String.Empty;
-            }
+            return string.Empty;
         }
-
-        #endregion
-	}
+    }
 }
+

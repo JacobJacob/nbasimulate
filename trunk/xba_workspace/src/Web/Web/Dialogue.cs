@@ -72,7 +72,7 @@
                 int num2 = (int) onlineRowByUserID["ClubID3"];
                 bool blnSex = (bool) onlineRowByUserID["Sex"];
                 SecretaryItem si = new SecretaryItem(this.intUserID, blnSex);
-                this.longPlayerID = (long) SessionItem.GetRequest("PlayerID", 3);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
                 this.strDialogueType = SessionItem.GetRequest("Type", 1).ToString().Trim();
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
                 this.strPlayerName = playerRowByPlayerID["Name"].ToString().Trim();
@@ -122,7 +122,7 @@
                     }
                     this.strSay = PlayerItem.GetPlayerSay(longPlayerID, this.strPlayerName, intAge, strClubName, this.strNickName, si, blnSex, intStatus, flag2, intHappy, intPower);
                     this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
-                    if (!(this.strDialogueType == "AwarenessDone"))
+                    if (this.strDialogueType != "AwarenessDone")
                     {
                         if ((intHappy >= 60) && (intStatus == 1))
                         {

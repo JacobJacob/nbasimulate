@@ -30,29 +30,29 @@
             {
                 strClubName = "暂无联盟";
             }
-            string strSex = "";
-            string strPayType = "";
+            string str4 = "";
+            string str5 = "";
             if (blnSex)
             {
-                strSex = "MM";
+                str4 = "MM";
             }
             else
             {
-                strSex = "GG";
+                str4 = "GG";
             }
-
             if (intPayType == 1)
             {
-                strPayType = "尊贵会员";
+                str5 = "尊贵会员";
             }
             else
             {
-                strPayType = "普通玩家";
+                str5 = "普通玩家";
             }
-
-            string strTitle = string.Concat(new object[] { "经 理 名：", strNickName, "&#10;性　　别：", strSex, "&#10;年　　龄：", intAge, "&#10;省　　份：", strProvince, "&#10;城　　市：", strCity, "&#10;联赛等级：", strDevLev, "&#10;所在联盟：", strClubName, "&#10;最后登录：", StringItem.FormatDate(dtActiveTime, "yyyy-MM-dd"), "&#10;王者积分：", lngOnlyPoint, "&#10玩家类型：", strPayType});
-
-            return string.Concat(new object[] {"<img id='NickCard'src='Images/NickCard.gif' alt='", strTitle, "' border='0' width=12 hight=12>"});
+            string str6 = string.Concat(new object[] { 
+                "经 理 名：", strNickName, "&#10;性　　别：", str4, "&#10;年　　龄：", intAge, "&#10;省　　份：", strProvince, "&#10;城　　市：", strCity, "&#10;联赛等级：", strDevLev, "&#10;所在联盟：", strClubName, "&#10;最后登录：", StringItem.FormatDate(dtActiveTime, "yyyy-MM-dd"), 
+                "&#10;王者积分：", lngOnlyPoint, "&#10玩家类型：", str5
+             });
+            return string.Concat(new object[] { "<img id='NickCard'src='Images/NickCard.gif' alt='", str6, "' border='0' width=12 hight=12>" });
         }
 
         public static string GetNickLogoCard(string strNickName, bool blnSex, int intAge, string strCity, string strProvince, string strDevLev, DateTime dtActiveTime, int intPayType, string strClubName, string strClubLogo, long lngOnlyPoint)
@@ -151,15 +151,15 @@
                 {
                     return "<font color='#0070DD'>[富人]</font>";
                 }
-                if ((intWealth >= 0x3e8) && (intWealth < 30000))
+                if ((intWealth >= 0x3e8) && (intWealth < 0x7530))
                 {
                     return "<font color='#A335EE'>[富翁]</font>";
                 }
-                if ((intWealth >= 30000) && (intWealth < 100000))
+                if ((intWealth >= 0x7530) && (intWealth < 0x186a0))
                 {
                     return "<font color='#FF8000'>[富豪]</font>";
                 }
-                if (intWealth > 100000)
+                if (intWealth > 0x186a0)
                 {
                     return "<font color='#FF0000'>[土豪]</font>";
                 }

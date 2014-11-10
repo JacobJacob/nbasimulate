@@ -23,7 +23,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            this.intUserID = (int) SessionItem.GetRequest("UserID", 0);
+            this.intUserID = SessionItem.GetRequest("UserID", 0);
             if (HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim().Equals("218.108.237.11") && (this.intUserID > 0))
             {
                 string strUserName = ROOTUserManager.GetUserTableRowByUserID(this.intUserID)["UserName"].ToString();

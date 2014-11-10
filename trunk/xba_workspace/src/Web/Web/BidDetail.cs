@@ -33,8 +33,8 @@
         protected override void OnInit(EventArgs e)
         {
             this.strCategory = ServerParameter.intGameCategory.ToString().Trim();
-            this.longPlayerID = (long) SessionItem.GetRequest("PlayerID", 3);
-            this.intType = (int) SessionItem.GetRequest("Type", 0);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            this.intType = SessionItem.GetRequest("Type", 0);
             if (this.intType == 3)
             {
                 this.drPlayer = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
@@ -139,7 +139,7 @@
 
         private void SetInfo()
         {
-            int num2;
+            int num;
             object strInfo;
             string str = this.drPlayer["Name"].ToString().Trim();
             this.strFace = this.drPlayer["Face"].ToString().Trim();
@@ -147,15 +147,15 @@
             DataRow clubRowByClubID = BTPClubManager.GetClubRowByClubID(intClubID);
             if (clubRowByClubID == null)
             {
-                num2 = 1;
+                num = 1;
             }
             else
             {
-                num2 = (byte) clubRowByClubID["Shirt"];
+                num = (byte) clubRowByClubID["Shirt"];
             }
             int num3 = (byte) this.drPlayer["Number"];
-            this.strShirt = (0x4e20 + num2) + "";
-            if (num2 > 15)
+            this.strShirt = (0x4e20 + num) + "";
+            if (num > 15)
             {
                 this.strNumber = (0x526c + num3) + "";
             }

@@ -1,6 +1,5 @@
 ﻿namespace Web
 {
-    using LoginParameter;
     using System;
     using System.Collections;
     using System.Data;
@@ -15,6 +14,7 @@
     public class Union : Page
     {
         protected ImageButton btnAdd;
+        protected ImageButton btnBuyRep;
         protected ImageButton btnCreate;
         protected ImageButton btnDemise;
         protected ImageButton btnDonate;
@@ -23,7 +23,6 @@
         protected ImageButton btnModify;
         protected ImageButton btnO;
         protected ImageButton btnOK;
-        protected ImageButton btnBuyRep;
         protected ImageButton btnOKA;
         protected ImageButton btnPicOK;
         protected ImageButton btnSearch;
@@ -59,7 +58,7 @@
         private int intUnionCategory;
         private int intUnionID;
         private int intUnionIDS;
-        public int intUnionWealthAll = 0;
+        public int intUnionWealthAll;
         private int intUserID;
         public int intWealthCost;
         public int intXRoundA;
@@ -138,6 +137,7 @@
         protected TextBox tbIntro;
         protected TextBox tbIntroM;
         protected TextBox tbInviter;
+        protected HtmlTable tblBuyRep;
         protected HtmlTable tblCreateDevCup;
         protected HtmlTable tblCreateSociety;
         protected HtmlTable tblCupManage;
@@ -166,7 +166,6 @@
         protected HtmlTable tblWealthFinance;
         protected HtmlTable tblXCupIntro;
         protected HtmlTable tblXResult;
-        protected HtmlTable tblBuyRep;
         protected TextBox tbMessage;
         protected TextBox tbName;
         protected TextBox tbNickNameA;
@@ -180,6 +179,7 @@
         protected TextBox tbPass;
         protected TextBox tbPasswordM;
         protected TextBox tbRegPassword;
+        protected TextBox tbRep;
         protected TextBox tbShort;
         protected TextBox tbSize;
         protected TextBox tbUBBS;
@@ -189,7 +189,6 @@
         protected TextBox tbUQQ;
         protected TextBox tbUQQM;
         protected TextBox tbWealth;
-        protected TextBox tbRep;
         protected HtmlTableRow trXCupReg;
 
         private void Assign()
@@ -229,32 +228,66 @@
             base.Response.Redirect("Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=UNIONER&Page=1&NickName=" + str);
         }
 
+        private void btnBuyRep_Click(object sender, ImageClickEventArgs e)
+        {
+            int num = 0;
+            string str = this.tbRep.Text.ToString();
+            if (StringItem.IsNumber(str))
+            {
+                int intRep = Convert.ToInt32(str);
+                if (intRep <= 0)
+                {
+                    intRep *= -1;
+                }
+                num = BTPUnionManager.BuyUnionRep(this.intUserID, this.intUnionIDS, intRep);
+            }
+            else
+            {
+                base.Response.Redirect("Report.aspx?Parameter=BURE03");
+                return;
+            }
+            switch (num)
+            {
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=BURE01");
+                    return;
+
+                case 2:
+                    base.Response.Redirect("Report.aspx?Parameter=BURE02");
+                    return;
+
+                case 3:
+                    base.Response.Redirect("Report.aspx?Parameter=BURS01!Type.MYUNION^Kind.WEALTHFINANCE^Page.1");
+                    return;
+            }
+        }
+
         private void btnCreate_Click(object sender, ImageClickEventArgs e)
         {
             DateTime time;
+            int num;
+            int num2;
+            int num3;
+            int num4;
+            string str;
+            int num5;
             int num6;
             int num7;
-            int num8;
-            int num9;
-            string str4;
-            int num10;
-            int num11;
-            int num12;
-            string str5;
-            string str = this.hidMedal.Value.ToString().Trim();
+            string str2;
+            string str3 = this.hidMedal.Value.ToString().Trim();
             string validWords = StringItem.GetValidWords(this.tbCupName.Text.ToString().Trim());
             if (!StringItem.IsValidName(validWords, 1, 12))
             {
                 this.strErrMsg = "请正确填写杯赛名称。";
                 return;
             }
-            int num = (int) BTPGameManager.GetGameRow()["DevLevelSum"];
-            int num2 = Convert.ToInt32(this.ddlClubLevel.SelectedItem.Value.ToString());
-            if ((num2 > num) || (num2 < 0))
+            int num8 = (int) BTPGameManager.GetGameRow()["DevLevelSum"];
+            int num9 = Convert.ToInt32(this.ddlClubLevel.SelectedItem.Value.ToString());
+            if ((num9 > num8) || (num9 < 0))
             {
-                num2 = 0;
+                num9 = 0;
             }
-            int intRegCharge = 0;//Convert.ToInt32(this.ddlRegCharge.SelectedValue.ToString());
+            int intRegCharge = 0;
             if (intRegCharge < 0)
             {
                 intRegCharge = 0;
@@ -263,8 +296,8 @@
             {
                 intRegCharge = 0x7d0;
             }
-            string str3 = this.tbRegPassword.Text.ToString().Trim();
-            if ((str3 != "") && (!StringItem.IsNumber(str3) || (StringItem.GetStrLength(str3) != 4)))
+            string str5 = this.tbRegPassword.Text.ToString().Trim();
+            if ((str5 != "") && (!StringItem.IsNumber(str5) || (StringItem.GetStrLength(str5) != 4)))
             {
                 this.strErrMsg = "请正确填写密码。";
                 return;
@@ -280,175 +313,174 @@
                 this.strErrMsg = "请按照正确格式填写报名截止时间。";
                 return;
             }
-            if (time <= DateTime.Now.AddDays(5.0))
+            if (time > DateTime.Now.AddDays(5.0))
             {
-                if (time < DateTime.Now.AddDays(1.0))
-                {
-                    this.strErrMsg = "报名截止时间最少1天后。";
-                    return;
-                }
+                this.strErrMsg = "报名截止时间只能设置在5天以内。";
+                return;
+            }
+            if (time >= DateTime.Now.AddDays(1.0))
+            {
                 if (time.Hour < 10)
                 {
                     this.strErrMsg = "截止时间必须在每日的10点之后。";
                     return;
                 }
-                num6 = Convert.ToInt32(this.ddlHortation.SelectedValue.ToString());
-                num7 = Convert.ToInt32(this.ddlHortation1.SelectedValue.ToString());
-                num8 = Convert.ToInt32(this.ddlHortation2.SelectedValue.ToString());
-                num9 = Convert.ToInt32(this.ddlHortation3.SelectedValue.ToString());
-                str4 = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbDevCupIntro.Text.ToString().Trim()));
-                if (!StringItem.IsValidContent(str4, 1, 400))
+                num = Convert.ToInt32(this.ddlHortation.SelectedValue.ToString());
+                num2 = Convert.ToInt32(this.ddlHortation1.SelectedValue.ToString());
+                num3 = Convert.ToInt32(this.ddlHortation2.SelectedValue.ToString());
+                num4 = Convert.ToInt32(this.ddlHortation3.SelectedValue.ToString());
+                str = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbDevCupIntro.Text.ToString().Trim()));
+                if (!StringItem.IsValidContent(str, 1, 400))
                 {
                     this.strErrMsg = "请正确填写杯赛介绍，要求1至200汉字之间。";
                     return;
                 }
-                switch (str)
+                switch (str3)
                 {
                     case "1":
                     case "2":
                     case "3":
                     case "4":
-                        num10 = 32;
-                        num12 = 100;
-                        if (str == "1")
+                        num5 = 0x20;
+                        num7 = 100;
+                        if (str3 == "1")
                         {
-                            num11 = 0;
+                            num6 = 0;
                         }
-                        else if (str == "2")
+                        else if (str3 == "2")
                         {
-                            num11 = 100;
+                            num6 = 100;
                         }
-                        else if (str == "3")
+                        else if (str3 == "3")
                         {
-                            num11 = 200;
+                            num6 = 200;
                         }
-                        else if (str == "4")
+                        else if (str3 == "4")
                         {
-                            num11 = 400;
+                            num6 = 400;
                         }
                         else
                         {
-                            str = "1";
-                            num11 = 0;
+                            str3 = "1";
+                            num6 = 0;
                         }
-                        goto Label_0518;
+                        goto Label_057D;
 
                     case "5":
                     case "6":
                     case "7":
                     case "8":
-                        num10 = 64;
-                        num12 = 200;
-                        if (str == "5")
+                        num5 = 0x40;
+                        num7 = 200;
+                        if (str3 == "5")
                         {
-                            num11 = 75;
+                            num6 = 0x4b;
                         }
-                        else if (str == "6")
+                        else if (str3 == "6")
                         {
-                            num11 = 150;
+                            num6 = 150;
                         }
-                        else if (str == "7")
+                        else if (str3 == "7")
                         {
-                            num11 = 300;
+                            num6 = 300;
                         }
-                        else if (str == "8")
+                        else if (str3 == "8")
                         {
-                            num11 = 600;
+                            num6 = 600;
                         }
                         else
                         {
-                            str = "1";
-                            num11 = 0;
+                            str3 = "1";
+                            num6 = 0;
                         }
-                        goto Label_0518;
+                        goto Label_057D;
 
                     case "9":
                     case "10":
                     case "11":
                     case "12":
-                        num10 = 128;
-                        num12 = 400;
-                        if (str == "9")
+                        num5 = 0x80;
+                        num7 = 400;
+                        if (str3 == "9")
                         {
-                            num11 = 100;
+                            num6 = 100;
                         }
-                        else if (str == "10")
+                        else if (str3 == "10")
                         {
-                            num11 = 200;
+                            num6 = 200;
                         }
-                        else if (str == "11")
+                        else if (str3 == "11")
                         {
-                            num11 = 400;
+                            num6 = 400;
                         }
-                        else if (str == "12")
+                        else if (str3 == "12")
                         {
-                            num11 = 800;
+                            num6 = 800;
                         }
                         else
                         {
-                            str = "1";
-                            num11 = 0;
+                            str3 = "1";
+                            num6 = 0;
                         }
-                        goto Label_0518;
+                        goto Label_057D;
 
                     case "13":
                     case "14":
                     case "15":
                     case "16":
-                        num10 = 256;
-                        num12 = 800;
-                        if (str == "13")
+                        num5 = 0x100;
+                        num7 = 800;
+                        if (str3 == "13")
                         {
-                            num11 = 125;
+                            num6 = 0x7d;
                         }
-                        else if (str == "14")
+                        else if (str3 == "14")
                         {
-                            num11 = 250;
+                            num6 = 250;
                         }
-                        else if (str == "15")
+                        else if (str3 == "15")
                         {
-                            num11 = 500;
+                            num6 = 500;
                         }
-                        else if (str == "16")
+                        else if (str3 == "16")
                         {
-                            num11 = 1000;
+                            num6 = 0x3e8;
                         }
                         else
                         {
-                            str = "1";
-                            num11 = 100;
+                            str3 = "1";
+                            num6 = 100;
                         }
-                        goto Label_0518;
+                        goto Label_057D;
                 }
-                num10 = 0x20;
-                str = "1";
-                num11 = 100;
-                num12 = 100;
+                num5 = 0x20;
+                str3 = "1";
+                num6 = 100;
+                num7 = 100;
             }
             else
             {
-                this.strErrMsg = "报名截止时间只能设置在5天以内。";
+                this.strErrMsg = "报名截止时间最少1天后。";
                 return;
             }
-        Label_0518:
-            //num11 = num11 / 2;
-            num12 = 0;
+        Label_057D:
+            num7 = 0;
             if (intRegClub == 1)
             {
-                str5 = "<UnionID>" + intUnionIDS + "</UnionID>";
+                str2 = "<UnionID>" + intUnionIDS + "</UnionID>";
             }
             else
             {
-                str5 = "";
+                str2 = "";
             }
-            object obj2 = str5;
-            str5 = string.Concat(new object[] { obj2, "<DevLvl>", num2, "</DevLvl>" });
-            string strRewardXML = string.Concat(new object[] { "<Reward><Place>1</Place><Wealth>", num6, "</Wealth></Reward><Reward><Place>2</Place><Wealth>", num7, "</Wealth></Reward><Reward><Place>3</Place><Wealth>", num8, "</Wealth></Reward><Reward><Place>4</Place><Wealth>", num9, "</Wealth></Reward>" });
-            string strLogo = str + ".gif";
-            int intHortationAll = ((num6 + num7) + (num8 * 2)) + (num9 * 4);
+            object obj2 = str2;
+            str2 = string.Concat(new object[] { obj2, "<DevLvl>", num9, "</DevLvl>" });
+            string strRewardXML = string.Concat(new object[] { "<Reward><Place>1</Place><Wealth>", num, "</Wealth></Reward><Reward><Place>2</Place><Wealth>", num2, "</Wealth></Reward><Reward><Place>3</Place><Wealth>", num3, "</Wealth></Reward><Reward><Place>4</Place><Wealth>", num4, "</Wealth></Reward>" });
+            string strLogo = str3 + ".gif";
+            int intHortationAll = ((num + num2) + (num3 * 2)) + (num4 * 4);
             string str8 = StringItem.FormatDate(DateTime.Now, "yyyyMM");
             string strCupLadder = Config.GetDomain() + "DevCupLadder/" + str8 + "/";
-            DevCupData data = new DevCupData(intUnionIDS, intRegClub, validWords, str3, str4, intRegCharge, strLogo, str5, strRewardXML, num10, time, num12, num11, intHortationAll, strCupLadder);
+            DevCupData data = new DevCupData(intUnionIDS, intRegClub, validWords, str5, str, intRegCharge, strLogo, str2, strRewardXML, num5, time, num7, num6, intHortationAll, strCupLadder);
             this.Session["DevCup" + intUnionIDS] = data;
             base.Response.Redirect("SecretaryPage.aspx?Type=CREATEDEVCUP");
         }
@@ -506,7 +538,7 @@
 
         private void btnDonate_Click(object sender, ImageClickEventArgs e)
         {
-            int num2 = 0;
+            int num = 0;
             string strIn = this.tbMessage.Text.ToString();
             string str2 = this.tbWealth.Text.ToString();
             if (StringItem.IsNumber(str2))
@@ -516,7 +548,7 @@
                 {
                     int intWealth = Convert.ToInt32(str2);
                     strIn = StringItem.GetHtmlEncode(strIn);
-                    num2 = BTPUnionManager.SetUWealthByID(this.intUserID, this.intUnionIDS, 1, 2, 1, intWealth, strIn);
+                    num = BTPUnionManager.SetUWealthByID(this.intUserID, this.intUnionIDS, 1, 2, 1, intWealth, strIn);
                 }
             }
             else
@@ -524,8 +556,12 @@
                 base.Response.Redirect("Report.aspx?Parameter=487");
                 return;
             }
-            switch (num2)
+            switch (num)
             {
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=521!Type.MYUNION^Kind.WEALTHFINANCE^Page.1");
+                    return;
+
                 case 2:
                     base.Response.Redirect("Report.aspx?Parameter=536");
                     return;
@@ -533,44 +569,6 @@
                 case 3:
                     base.Response.Redirect("Report.aspx?Parameter=520");
                     return;
-
-                case 1:
-                    base.Response.Redirect("Report.aspx?Parameter=521!Type.MYUNION^Kind.WEALTHFINANCE^Page.1");
-                    break;
-            }
-        }
-
-        private void btnBuyRep_Click(object sender, ImageClickEventArgs e)
-        {
-            int intResult = 0;
-            string strRep = this.tbRep.Text.ToString();
-            if (StringItem.IsNumber(strRep))
-            {
-                int intRep = Convert.ToInt32(strRep);
-                if (intRep<=0)
-                {
-                    intRep = intRep * -1;   
-                }
-                intResult = BTPUnionManager.BuyUnionRep(this.intUserID, this.intUnionIDS, intRep);
-            }
-            else
-            {
-                base.Response.Redirect("Report.aspx?Parameter=BURE03");
-                return;
-            }
-            switch (intResult)
-            {
-                case 1:
-                    base.Response.Redirect("Report.aspx?Parameter=BURE01");
-                    return;
-
-                case 2:
-                    base.Response.Redirect("Report.aspx?Parameter=BURE02");
-                    return;
-
-                case 3:
-                    base.Response.Redirect("Report.aspx?Parameter=BURS01!Type.MYUNION^Kind.WEALTHFINANCE^Page.1");
-                    break;
             }
         }
 
@@ -600,63 +598,60 @@
             {
                 base.Response.Redirect("Report.aspx?Parameter=420a");
             }
-            else if (BTPAccountManager.GetAccountRowByNickName(strIn.Trim()) != null)
+            else if (BTPAccountManager.GetAccountRowByNickName(strIn.Trim()) == null)
             {
-                if (BTPUnionManager.GetUnionUserCountByID(this.intUnionIDS) > 0x257)
-                {
-                    base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=428!Type.", this.strType, "^Kind.UNIONINFO^UnionID.", this.intUnionIDS, "^Page.1" }));
-                }
-                else
-                {
-                    switch (BTPUnionManager.InviteUser(intUnionID, strIn, this.intUserID))
-                    {
-                        case 1:
-                            base.Response.Redirect("Report.aspx?Parameter=412");
-                            return;
-
-                        case 2:
-                            base.Response.Redirect("Report.aspx?Parameter=420");
-                            return;
-
-                        case -1:
-                            base.Response.Redirect("Report.aspx?Parameter=420b");
-                            return;
-
-                        case -2:
-                            base.Response.Redirect("Report.aspx?Parameter=420c");
-                            return;
-                    }
-                    base.Response.Redirect("Report.aspx?Parameter=413");
-                }
+                base.Response.Redirect("Report.aspx?Parameter=420d");
+            }
+            else if (BTPUnionManager.GetUnionUserCountByID(this.intUnionIDS) > 0x257)
+            {
+                base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=428!Type.", this.strType, "^Kind.UNIONINFO^UnionID.", this.intUnionIDS, "^Page.1" }));
             }
             else
             {
-                base.Response.Redirect("Report.aspx?Parameter=420d");
+                switch (BTPUnionManager.InviteUser(intUnionID, strIn, this.intUserID))
+                {
+                    case -2:
+                        base.Response.Redirect("Report.aspx?Parameter=420c");
+                        return;
+
+                    case -1:
+                        base.Response.Redirect("Report.aspx?Parameter=420b");
+                        return;
+
+                    case 1:
+                        base.Response.Redirect("Report.aspx?Parameter=412");
+                        return;
+
+                    case 2:
+                        base.Response.Redirect("Report.aspx?Parameter=420");
+                        return;
+                }
+                base.Response.Redirect("Report.aspx?Parameter=413");
             }
         }
 
         private void btnModify_Click(object sender, ImageClickEventArgs e)
         {
             int num;
-            string str3;
+            string str;
             string line = BTPDevCupManager.GetDevCupRowByDevCupID(this.intDevCupID)["RequirementXML"].ToString().Trim();
             TagReader reader = new TagReader();
-            string str2 = reader.GetTagline(line, "<DevLvl>", "</DevLvl>").ToString().Trim();
+            string str3 = reader.GetTagline(line, "<DevLvl>", "</DevLvl>").ToString().Trim();
             reader.GetTagline(line, "<UnionID>", "</UnionID>").ToString().Trim();
             if (this.rbIsSelfUnion.Checked)
             {
                 num = 1;
-                str3 = string.Concat(new object[] { "<UnionID>", this.intUnionIDS, "</UnionID><DevLvl>", str2, "</DevLvl>" });
+                str = string.Concat(new object[] { "<UnionID>", this.intUnionIDS, "</UnionID><DevLvl>", str3, "</DevLvl>" });
             }
             else if (this.rbIsNotSelfUnion.Checked)
             {
                 num = 0;
-                str3 = "<DevLvl>" + str2 + "</DevLvl>";
+                str = "<DevLvl>" + str3 + "</DevLvl>";
             }
             else
             {
                 num = 1;
-                str3 = string.Concat(new object[] { "<UnionID>", this.intUnionIDS, "</UnionID><DevLvl>", str2, "</DevLvl>" });
+                str = string.Concat(new object[] { "<UnionID>", this.intUnionIDS, "</UnionID><DevLvl>", str3, "</DevLvl>" });
             }
             string str4 = this.tbPasswordM.Text.ToString().Trim();
             if ((str4 != "") && (!StringItem.IsNumber(str4) || (StringItem.GetStrLength(str4) != 4)))
@@ -672,7 +667,7 @@
                 }
                 else
                 {
-                    int num2 = BTPDevCupManager.ModifyDevCup(this.intUserID, this.intDevCupID, num, str4, validWords, str3);
+                    int num2 = BTPDevCupManager.ModifyDevCup(this.intUserID, this.intDevCupID, num, str4, validWords, str);
                     switch (num2)
                     {
                         case 0:
@@ -832,24 +827,23 @@
                     strIn = StringItem.GetValidWords(strIn);
                     validWords = StringItem.GetValidWords(validWords);
                     str3 = StringItem.GetValidWords(str3);
-                    if (!StringItem.IsValidContent(validWords, 0, 50))
+                    if (StringItem.IsValidContent(validWords, 0, 50))
                     {
-                        this.strMsg = "<font color='Red'>联盟QQ中含有非法字符，或长度不符合要求。</font>";
+                        if (!StringItem.IsValidContent(str3, 0, 200))
+                        {
+                            this.strMsg = "<font color='Red'>联盟论坛中含有非法字符，或长度不符合要求。</font>";
+                            return;
+                        }
+                        if (!StringItem.IsValidContent(strIn, 1, 300))
+                        {
+                            this.strMsg = "<font color='Red'>联盟介绍中含有非法字符，或长度不符合要求。</font>";
+                            return;
+                        }
+                        BTPUnionManager.SetUnionRemark(this.intUnionID, strIn, validWords, str3);
+                        this.strMsg = "<font color='Red'>联盟介绍修改成功。</font>";
                         return;
                     }
-                    if (!StringItem.IsValidContent(str3, 0, 200))
-                    {
-                        this.strMsg = "<font color='Red'>联盟论坛中含有非法字符，或长度不符合要求。</font>";
-                        return;
-                    }
-                    if (!StringItem.IsValidContent(strIn, 1, 300))
-                    {
-                        this.strMsg = "<font color='Red'>联盟介绍中含有非法字符，或长度不符合要求。</font>";
-                        return;
-                    }
-                   // strIn = strIn;
-                    BTPUnionManager.SetUnionRemark(this.intUnionID, strIn, validWords, str3);
-                    this.strMsg = "<font color='Red'>联盟介绍修改成功。</font>";
+                    this.strMsg = "<font color='Red'>联盟QQ中含有非法字符，或长度不符合要求。</font>";
                     return;
             }
             base.Response.Redirect("Report.aspx?Parameter=415");
@@ -857,18 +851,18 @@
 
         private void CupManage()
         {
-            string str5;
-            string str3 = "";
+            string str;
+            string str2 = "";
             if (this.intUnionCategory == 1)
             {
-                str5 = "Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&";
+                str = "Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&";
             }
             else
             {
-                str5 = "Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&";
+                str = "Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&";
             }
-            this.strScript = this.GetScript(str5);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.strScript = this.GetScript(str);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 4;
             this.sbDevCupManageList.Append("<table width=\"536\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
             this.sbDevCupManageList.Append("<tr class=\"BarHead\">");
@@ -885,15 +879,15 @@
             {
                 while (reader.Read())
                 {
-                    string str4;
-                    string str = reader["Name"].ToString().Trim();
+                    string str3;
+                    string str4 = reader["Name"].ToString().Trim();
                     bool flag = (bool) reader["IsSelfUnion"];
                     int num = (int) reader["RegCount"];
                     int num2 = (int) reader["Capacity"];
                     int num3 = (byte) reader["Status"];
                     int num4 = (int) reader["WealthCost"];
                     int num5 = (int) reader["DevCupID"];
-                    string str2 = reader["BigLogo"].ToString().Trim();
+                    string str5 = reader["BigLogo"].ToString().Trim();
                     int num6 = (byte) reader["Round"];
                     int num7 = (int) reader["UserID"];
                     if (flag)
@@ -903,48 +897,48 @@
                     switch (num3)
                     {
                         case 0:
-                            str3 = "报名中";
+                            str2 = "报名中";
                             break;
 
                         case 1:
-                            str3 = "比赛中<br>[<font color='green'>" + num6 + "</font>轮]";
+                            str2 = "比赛中<br>[<font color='green'>" + num6 + "</font>轮]";
                             break;
 
                         case 2:
-                            str3 = "比赛结束";
+                            str2 = "比赛结束";
                             break;
 
                         case 3:
-                            str3 = "奖励结束";
+                            str2 = "奖励结束";
                             break;
                     }
                     if (num3 == 0)
                     {
                         if (this.intUnionCategory == 1)
                         {
-                            str4 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=", this.strKind, "&Status=MODIFYDEVCUP&DevCupID=", num5, "'>设置</a> | <a href='Union.aspx?Type=", this.strType, "&Kind=", this.strKind, "&Status=CUPREGMANAGE&DevCupID=", num5, "'>管理</a> | <a href='SecretaryPage.aspx?Type=DELDEVCUP&DevCupID=", num5, "'>删除</a>" });
+                            str3 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=", this.strKind, "&Status=MODIFYDEVCUP&DevCupID=", num5, "'>设置</a> | <a href='Union.aspx?Type=", this.strType, "&Kind=", this.strKind, "&Status=CUPREGMANAGE&DevCupID=", num5, "'>管理</a> | <a href='SecretaryPage.aspx?Type=DELDEVCUP&DevCupID=", num5, "'>删除</a>" });
                         }
                         else if (num7 == this.intUserID)
                         {
-                            str4 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=MODIFYDEVCUP&DevCupID=", num5, "'>设置</a> | <a href='Union.aspx?Type=", this.strType, "&Kind=CUPREGMANAGE&DevCupID=", num5, "'>管理</a> | <a href='SecretaryPage.aspx?Type=DELDEVCUP&DevCupID=", num5, "'>删除</a>" });
+                            str3 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=MODIFYDEVCUP&DevCupID=", num5, "'>设置</a> | <a href='Union.aspx?Type=", this.strType, "&Kind=CUPREGMANAGE&DevCupID=", num5, "'>管理</a> | <a href='SecretaryPage.aspx?Type=DELDEVCUP&DevCupID=", num5, "'>删除</a>" });
                         }
                         else
                         {
-                            str4 = "-- | -- | --";
+                            str3 = "-- | -- | --";
                         }
                     }
                     else
                     {
-                        str4 = "-- | -- | --";
+                        str3 = "-- | -- | --";
                     }
                     this.sbDevCupManageList.Append("<tr align=\"center\" onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbDevCupManageList.Append("<td height=\"55\"><img src=\"Images/DevMedal/" + str2 + "\" height=\"50\" width=\"40\" border=\"0\"></td>");
-                    this.sbDevCupManageList.Append("<td align='left' style='padding-left:4px'>" + str + "</td>");
+                    this.sbDevCupManageList.Append("<td height=\"55\"><img src=\"Images/DevMedal/" + str5 + "\" height=\"50\" width=\"40\" border=\"0\"></td>");
+                    this.sbDevCupManageList.Append("<td align='left' style='padding-left:4px'>" + str4 + "</td>");
                     this.sbDevCupManageList.Append("<td></td>");
                     this.sbDevCupManageList.Append(string.Concat(new object[] { "<td>", num, "/", num2, "</td>" }));
                     this.sbDevCupManageList.Append("<td>" + num4 + "</td>");
+                    this.sbDevCupManageList.Append("<td>" + str2 + "</td>");
                     this.sbDevCupManageList.Append("<td>" + str3 + "</td>");
-                    this.sbDevCupManageList.Append("<td>" + str4 + "</td>");
                     this.sbDevCupManageList.Append("</tr>");
                     this.sbDevCupManageList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
@@ -957,7 +951,7 @@
             }
             reader.Close();
             this.sbDevCupManageList.Append("<tr>");
-            this.sbDevCupManageList.Append("<td height=\"25\" colspan=\"7\" align=\"right\" style=\"padding-right:5px\">" + this.GetViewPage(str5) + "</td>");
+            this.sbDevCupManageList.Append("<td height=\"25\" colspan=\"7\" align=\"right\" style=\"padding-right:5px\">" + this.GetViewPage(str) + "</td>");
             this.sbDevCupManageList.Append("</tr>");
             this.sbDevCupManageList.Append("</table>");
         }
@@ -966,8 +960,8 @@
         {
             string str;
             this.intPerPage = 10;
-            int request = (int) SessionItem.GetRequest("DevCupID", 0);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            int request = SessionItem.GetRequest("DevCupID", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -1005,10 +999,10 @@
 
         private void GetCheckList()
         {
-            this.intCupID = (int) SessionItem.GetRequest("CupID", 0);
+            this.intCupID = SessionItem.GetRequest("CupID", 0);
             string strCurrentURL = "Union.aspx?Type=MYUNION&Kind=UNIONCUPCHECK&CupID=" + this.intCupID + "&";
             this.intPerPage = 5;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<tr class='BarHead'><td height='25' width='50'>队标</td><td width='200'>球队名称</td><td width='100'>经理名</td><td width='86'>等级</td><td width='100'>积分</td></tr>";
@@ -1041,10 +1035,10 @@
 
         private void GetImperialCheckList()
         {
-            this.intCupID = (int) SessionItem.GetRequest("CupID", 0);
+            this.intCupID = SessionItem.GetRequest("CupID", 0);
             string strCurrentURL = "Union.aspx?Type=UNIONCUP&Kind=IMPERIALCUPCHECK&CupID=" + this.intCupID + "&";
             this.intPerPage = 5;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<tr class='BarHead'><td height='25' width='50'>队标</td><td width='200'>球队名称</td><td width='100'>经理名</td><td width='86'>等级</td><td width='100'>积分</td></tr>";
@@ -1077,7 +1071,7 @@
 
         private void GetRegTrueList()
         {
-            this.intCupID = (int) SessionItem.GetRequest("CupID", 0);
+            this.intCupID = SessionItem.GetRequest("CupID", 0);
             DataRow cupRowByCupID = BTPCupManager.GetCupRowByCupID(this.intCupID);
             string str = cupRowByCupID["BigLogo"].ToString().Trim();
             string str2 = cupRowByCupID["Name"].ToString().Trim();
@@ -1159,7 +1153,7 @@
             }
             if (this.strKind == "REPUTATION")
             {
-                int request = (int) SessionItem.GetRequest("UID", 0);
+                int request = SessionItem.GetRequest("UID", 0);
                 if (request < 1)
                 {
                     return BTPUnionManager.GetReputationByUnionCount(this.intUnionID);
@@ -1186,11 +1180,11 @@
             {
                 return BTPDevCupManager.GetDevCupCountByUID(this.intUserID);
             }
-            if (!(this.strStatus == "CUPREGMANAGE") && !(this.strKind == "CUPREGMANAGE"))
+            if ((this.strStatus != "CUPREGMANAGE") && (this.strKind != "CUPREGMANAGE"))
             {
                 return num;
             }
-            this.intDevCupID = (int) SessionItem.GetRequest("DevCupID", 0);
+            this.intDevCupID = SessionItem.GetRequest("DevCupID", 0);
             return BTPDevCupRegManager.GetDevCupUserCount(this.intDevCupID);
         }
 
@@ -1208,35 +1202,25 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.strKind == "WEALTHFINANCE")
             {
-                str2 = "<span style='margin-right:30px' algin='left'><a href='Union.aspx?Type=MYUNION&Kind=DONATEWEALTH&Page=1'>捐赠游戏币</a></span>";
-
-
-                DataRow allInfoByUnionID = BTPUnionManager.GetAllInfoByUnionID(this.intUnionID);
-                int intUserID = (int)allInfoByUnionID["Creater"];
-                if (intUserID == this.intUserID)
+                str = "<span style='margin-right:30px' algin='left'><a href='Union.aspx?Type=MYUNION&Kind=DONATEWEALTH&Page=1'>捐赠游戏币</a></span>";
+                int num3 = (int) BTPUnionManager.GetAllInfoByUnionID(this.intUnionID)["Creater"];
+                if (num3 == this.intUserID)
                 {
-                    str2 = str2 + "<span style='margin-right:30px' algin='left'><a href='Union.aspx?Type=MYUNION&Kind=BUYREP&Page=1'>购买联盟威望</a></span>";
+                    str = str + "<span style='margin-right:30px' algin='left'><a href='Union.aspx?Type=MYUNION&Kind=BUYREP&Page=1'>购买联盟威望</a></span>";
                 }
             }
             if (this.intPage == 1)
             {
-                str2 = str2 + "上一页";
+                str = str + "上一页";
             }
             else
             {
-                string str5 = str2;
-                strArray = new string[6];
-                strArray[0] = str5;
-                strArray[1] = "<a href='";
-                strArray[2] = strCurrentURL;
-                strArray[3] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[4] = num4.ToString();
-                strArray[5] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                string str2 = str;
+                strArray = new string[] { str2, "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
             string str3 = "";
             if (this.intPage == num2)
@@ -1260,63 +1244,63 @@
                 str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
             str4 = str4 + "</select>";
-            string str = str2 + " " + str3 + " ";
+            string str5 = str + " " + str3 + " ";
             if (this.strKind == "VIEWUNION")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "联盟总数:", total, " 跳转", str4 });
             }
             if (this.strKind == "VIEWSOCIETY")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "球会总数:", total, " 跳转", str4 });
             }
             if (this.strStatus == "UNIONER")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "盟员总数:", total, " 跳转", str4 });
             }
             if (this.strKind == "UNIONCUPCHECK")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "总人数:", total, "跳转", str4 });
             }
             if (this.strKind == "UNIONCUP")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
             }
             if (this.strKind == "REPUTATION")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
             }
             if (this.strKind == "UNIONCUPINDEX")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
             }
             if (this.strKind == "KEMP")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
             }
             if (this.strKind == "WEALTHFINANCE")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
             }
             if (this.strStatus == "CUPMANAGE")
             {
-                obj2 = str;
+                obj2 = str5;
                 return string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
             }
             if (this.strStatus == "CUPREGMANAGE")
             {
-                obj2 = str;
-                str = string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
+                obj2 = str5;
+                str5 = string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
             }
-            return str;
+            return str5;
         }
 
         private void InitializeComponent()
@@ -1339,7 +1323,7 @@
 
         private void ModifyDevCup()
         {
-            this.intDevCupID = (int) SessionItem.GetRequest("DevCupID", 0);
+            this.intDevCupID = SessionItem.GetRequest("DevCupID", 0);
             TagReader reader = new TagReader();
             if (!base.IsPostBack)
             {
@@ -1360,8 +1344,8 @@
                     int num2 = (int) devCupRowByDevCupID["WealthCost"];
                     bool flag = (bool) devCupRowByDevCupID["IsSelfUnion"];
                     DateTime time = (DateTime) devCupRowByDevCupID["MatchTime"];
-                    int num4 = (int) devCupRowByDevCupID["UserID"];
-                    if ((this.intUnionCategory != 1) && (num4 != this.intUserID))
+                    int num3 = (int) devCupRowByDevCupID["UserID"];
+                    if ((this.intUnionCategory != 1) && (num3 != this.intUserID))
                     {
                         base.Response.Redirect("Report.aspx?Parameter=422b");
                     }
@@ -1496,101 +1480,101 @@
         private void SetImperialCupList()
         {
             int num;
+            string str;
             string str2;
             string str3;
-            string str4;
             DateTime time;
-            string str5;
+            string str4;
+            int num2;
             int num3;
             int num4;
-            int num5;
+            string str5;
             string str6;
-            string str7;
             string strCurrentURL = "Union.aspx?Type=UNIONCUP&Kind=UNIONCUPINDEX&";
             this.intPerPage = 6;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<tr class='BarHead'><td height='25' width='50'>奖杯</td><td width='100'>杯赛名称</td><td width='70'>轮次</td><td width='100'>报名/名额</td><td width='120'>时间</td><td width='96'>操作</td></tr>";
             SqlDataReader imperialCupListNew = BTPCupManager.GetImperialCupListNew(this.intPage, this.intPerPage);
             if (imperialCupListNew.HasRows)
             {
-                goto Label_0441;
+                goto Label_0229;
             }
             this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='7'>暂时没有联盟至尊杯赛。</td></tr>";
             return;
-        Label_029E:
-            switch (num5)
+        Label_007A:
+            switch (num4)
             {
+                case 0:
+                    str4 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    break;
+
                 case 2:
-                    str5 = "等待发奖";
+                    str4 = "等待发奖";
                     break;
 
                 case 3:
-                    str5 = "已结束";
-                    break;
-
-                case 0:
-                    str5 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "已结束";
                     break;
 
                 default:
-                    str5 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
                     break;
             }
-            if (num5 == 0)
+            if (num4 == 0)
             {
-                str4 = string.Concat(new object[] { "<a href='Union.aspx?Type=UNIONCUP&Kind=IMPERIALCUPCHECK&Page=1&CupID=", num, "'>查看</a> | <a href='Union.aspx?Type=UNIONCUP&Kind=VIEWIMPERIALCUP&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='Union.aspx?Type=UNIONCUP&Kind=IMPERIALCUPCHECK&Page=1&CupID=", num, "'>查看</a> | <a href='Union.aspx?Type=UNIONCUP&Kind=VIEWIMPERIALCUP&CupID=", num, "'>介绍</a>" });
             }
             else
             {
-                str4 = string.Concat(new object[] { "<a href='", str6, "'>赛程</a> | <a href='Union.aspx?Type=UNIONCUP&Kind=VIEWIMPERIALCUP&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='", str5, "'>赛程</a> | <a href='Union.aspx?Type=UNIONCUP&Kind=VIEWIMPERIALCUP&CupID=", num, "'>介绍</a>" });
             }
             object strList = this.strList;
-            this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='50'><img src='Images/Cup/", str2, "'></td><td>", str3, "</td><td>", str7, "</td><td>", num3, "/", num4, "</td><td>", str5, "</td><td>", str4, "</td></tr>" });
+            this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='50'><img src='Images/Cup/", str, "'></td><td>", str2, "</td><td>", str6, "</td><td>", num2, "/", num3, "</td><td>", str4, "</td><td>", str3, "</td></tr>" });
             this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>";
-        Label_0441:
+        Label_0229:
             if (imperialCupListNew.Read())
             {
                 num = (int) imperialCupListNew["CupID"];
                 int deadRound = BTPCupRegManager.GetDeadRound(num, this.intClubID);
-                str2 = imperialCupListNew["BigLogo"].ToString().Trim();
-                str3 = imperialCupListNew["Name"].ToString().Trim();
+                str = imperialCupListNew["BigLogo"].ToString().Trim();
+                str2 = imperialCupListNew["Name"].ToString().Trim();
                 byte num1 = (byte) imperialCupListNew["Levels"];
-                int num2 = (byte) imperialCupListNew["Round"];
+                int num6 = (byte) imperialCupListNew["Round"];
                 time = (DateTime) imperialCupListNew["MatchTime"];
                 DataRow cupRowByCupID = BTPCupManager.GetCupRowByCupID(num);
-                num3 = (int) cupRowByCupID["RegCount"];
-                num4 = (int) cupRowByCupID["Capacity"];
-                num5 = (byte) cupRowByCupID["Status"];
-                str6 = cupRowByCupID["LadderURL"].ToString().Trim();
+                num2 = (int) cupRowByCupID["RegCount"];
+                num3 = (int) cupRowByCupID["Capacity"];
+                num4 = (byte) cupRowByCupID["Status"];
+                str5 = cupRowByCupID["LadderURL"].ToString().Trim();
                 if (deadRound == 100)
                 {
-                    deadRound = num2;
+                    deadRound = num6;
                 }
-                if (deadRound < num2)
+                if (deadRound < num6)
                 {
-                    switch (num5)
+                    switch (num4)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num2, "</a></font>" });
-                            goto Label_029E;
+                            str6 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num6, "</a></font>" });
+                            goto Label_007A;
                     }
-                    str7 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num2, "</a></font>" });
+                    str6 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num6, "</a></font>" });
                 }
                 else
                 {
-                    switch (num5)
+                    switch (num4)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num2, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num2, "</a></font>" });
-                            goto Label_029E;
+                            str6 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num6, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num6, "</a></font>" });
+                            goto Label_007A;
                     }
-                    str7 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num2, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num2, "</a></font>" });
+                    str6 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num6, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num6, "</a></font>" });
                 }
-                goto Label_029E;
+                goto Label_007A;
             }
             imperialCupListNew.Close();
             this.strList = this.strList + "<tr><td height='25' align='right' colspan='7'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
@@ -1660,52 +1644,53 @@
                     return;
 
                 case "CREATESOCIETY":
-                    if (((int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionID"]) == 0)
+                    if (((int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionID"]) != 0)
                     {
-                        this.strPageIntro1 = "<a href='Union.aspx?Type=" + this.strType + "&Kind=VIEWUNION&Page=1'>联盟列表</a>&nbsp;|&nbsp;<font color='red'>组建联盟</font>";
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<font color='red'>请给盟主留言，以获得加入联盟邀请。（加入联盟具体要求见右侧说明！）</font>";
-                        this.tblCreateSociety.Visible = true;
-                        this.SetSociety();
+                        base.Response.Redirect("Report.aspx?Parameter=408!Type.UNION^Kind.VIEWUNION^Page.1");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=408!Type.UNION^Kind.VIEWUNION^Page.1");
+                    this.strPageIntro1 = "<a href='Union.aspx?Type=" + this.strType + "&Kind=VIEWUNION&Page=1'>联盟列表</a>&nbsp;|&nbsp;<font color='red'>组建联盟</font>";
+                    this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<font color='red'>请给盟主留言，以获得加入联盟邀请。（加入联盟具体要求见右侧说明！）</font>";
+                    this.tblCreateSociety.Visible = true;
+                    this.SetSociety();
                     return;
 
                 case "UNIONINFO":
                     this.strPageIntro1 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;" + this.strUBBSU.Replace("＆", "&").ToString().Trim() + "<a href='Union.aspx?Type=" + this.strType + "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>";
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
+                    {
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                    }
+                    else
                     {
                         str = this.strPageIntro1;
                         this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
-                        break;
                     }
-                    this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
-                    break;
+                    this.tblUnionIntro.Visible = true;
+                    this.SetUnionIntro();
+                    return;
 
                 case "UNIONBBS":
                     this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;<font color='red'>联盟论坛</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
-                    if (this.intUnionCategory != 1)
-                    {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
-                    }
-                    else
+                    if (this.intUnionCategory == 1)
                     {
                         this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        break;
                     }
-                    this.tblUnionBBS.Visible = true;
-                    return;
+                    str = this.strPageIntro1;
+                    this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                    break;
 
                 case "INVITE":
                     this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<font color='red'>联盟邀请</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     if (BTPUnionManager.GetUnionUserCountByID(this.intUnionIDS) > 0x257)
                     {
@@ -1721,24 +1706,24 @@
                         "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
                         "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a><font color='red'>&nbsp;|&nbsp;联盟管理</font>"
                      });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=1");
+                        this.tblUnionManage.Visible = true;
                         return;
                     }
-                    this.tblUnionManage.Visible = true;
+                    base.Response.Redirect("Report.aspx?Parameter=1");
                     return;
 
                 case "UNIONCUP":
                     this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblUnionCup.Visible = true;
                     this.SetUnionCupList();
@@ -1746,14 +1731,14 @@
 
                 case "UNIONCUPCHECK":
                     this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblUnionCup.Visible = true;
                     this.GetCheckList();
@@ -1761,14 +1746,14 @@
 
                 case "VIEWUNIONCUP":
                     this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<font color='red'>联盟杯</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblViewUnionCup.Visible = true;
                     this.GetRegTrueList();
@@ -1776,14 +1761,14 @@
 
                 case "UNIONCUPLIST":
                     this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<font color='red'>联盟冠军榜</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblUnionCupList.Visible = true;
                     return;
@@ -1808,14 +1793,14 @@
 
                 case "REPUTATION":
                     this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<font color='red'>功勋榜</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>" });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblReputation.Visible = true;
                     this.SetReputation();
@@ -1828,14 +1813,14 @@
                     accountRowByUserID = BTPUnionManager.GetUnionRowByID(this.intUnionID);
                     this.intUnionWealthAll = (int) accountRowByUserID["Wealth"];
                     this.strPageIntro1 = string.Concat(new object[] { "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<font color='red'>游戏币财政</font>" });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblWealthFinance.Visible = true;
                     this.SetWealthList();
@@ -1846,14 +1831,14 @@
                         "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
                         "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblDonateWealth.Visible = true;
                     return;
@@ -1863,14 +1848,14 @@
                         "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
                         "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblBuyRep.Visible = true;
                     return;
@@ -1880,13 +1865,13 @@
                         "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
                         "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;创建杯赛&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;创建杯赛&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     if (!base.IsPostBack)
                     {
@@ -1910,14 +1895,14 @@
                         "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
                         "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblUnionManage.Visible = true;
                     this.tblCupManage.Visible = true;
@@ -1929,14 +1914,14 @@
                         "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
                         "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblUnionManage.Visible = true;
                     this.tblModifyDevCup.Visible = true;
@@ -1948,14 +1933,14 @@
                         "<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINFO&UnionID=", this.intUnionIDS, "&Page=1'>联盟主页</a>&nbsp;|&nbsp;", this.strUBBSU.Replace("＆", "&").ToString().Trim(), "<a href='Union.aspx?Type=", this.strType, "&Kind=INVITE&Page=1'>联盟邀请</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUP&Page=1'>联盟杯</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=UNIONCUPLIST&Page=1'>联盟冠军榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, "&Kind=REPUTATION&Page=1'>功勋榜</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=", this.strType, 
                         "&Kind=WEALTHFINANCE&Page=1'>游戏币财政</a>"
                      });
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        str = this.strPageIntro1;
-                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
+                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
                     }
                     else
                     {
-                        this.strPageIntro1 = this.strPageIntro1 + "&nbsp;|&nbsp;<a href='Union.aspx?Type=MYUNION&Kind=UNIONMANAGE&Status=INTRO'>联盟管理</a>";
+                        str = this.strPageIntro1;
+                        this.strPageIntro1 = str + "&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CREATECUP&Page=1'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=CUPMANAGE&Page=1'>杯赛管理</a>";
                     }
                     this.tblUnionManage.Visible = true;
                     this.tblCupRegManager.Visible = true;
@@ -1973,8 +1958,7 @@
                     this.SetUnionList();
                     return;
             }
-            this.tblUnionIntro.Visible = true;
-            this.SetUnionIntro();
+            this.tblUnionBBS.Visible = true;
         }
 
         private void SetIntro2()
@@ -2029,45 +2013,45 @@
 
                 case "CUPMANAGE":
                     this.strPageIntro2 = "<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=INTRO'>联盟主页</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=1");
+                        this.tblCupManage.Visible = true;
+                        this.CupManage();
                         return;
                     }
-                    this.tblCupManage.Visible = true;
-                    this.CupManage();
+                    base.Response.Redirect("Report.aspx?Parameter=1");
                     return;
 
                 case "MODIFYDEVCUP":
                     this.strPageIntro2 = "<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=INTRO'>联盟主页</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=1");
+                        this.tblModifyDevCup.Visible = true;
+                        this.ModifyDevCup();
                         return;
                     }
-                    this.tblModifyDevCup.Visible = true;
-                    this.ModifyDevCup();
+                    base.Response.Redirect("Report.aspx?Parameter=1");
                     return;
 
                 case "CUPREGMANAGE":
                     this.strPageIntro2 = "<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=INTRO'>联盟主页</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=1");
+                        this.tblCupRegManager.Visible = true;
+                        this.CupRegManage();
                         return;
                     }
-                    this.tblCupRegManager.Visible = true;
-                    this.CupRegManage();
+                    base.Response.Redirect("Report.aspx?Parameter=1");
                     return;
 
                 case "DEMISE":
                     this.strPageIntro2 = "<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=INTRO'>联盟主页</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<font color='red'>禅让盟主</font>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&Page=1'>杯赛管理</a>";
-                    if (this.intUnionCategory != 1)
+                    if (this.intUnionCategory == 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=1");
+                        this.tblDemise.Visible = true;
                         return;
                     }
-                    this.tblDemise.Visible = true;
+                    base.Response.Redirect("Report.aspx?Parameter=1");
                     return;
             }
             this.strPageIntro2 = "<font color='red'>联盟主页</font>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=PIC'>联盟标志</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=SETBBS'>论坛设置</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=UNIONER&Page=1'>盟员管理</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=UNIONMANAGE&Status=DEMISE&Page=1'>禅让盟主</a>&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=UNLAY'>解散联盟</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CREATECUP'>创建杯赛</a>&nbsp;|&nbsp;<a href='Union.aspx?Type=" + this.strType + "&Kind=" + this.strKind + "&Status=CUPMANAGE&Page=1'>杯赛管理</a>";
@@ -2142,12 +2126,12 @@
         private void SetReputation()
         {
             this.intPerPage = 10;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
             }
-            int request = (int) SessionItem.GetRequest("UID", 0);
+            int request = SessionItem.GetRequest("UID", 0);
             if (request > 0)
             {
                 this.SetReputationMy(request);
@@ -2194,7 +2178,7 @@
         private void SetReputationMy(int intUserID)
         {
             object strList;
-            int request = (int) SessionItem.GetRequest("P", 0);
+            int request = SessionItem.GetRequest("P", 0);
             this.strList = "<tr class='BarHead'><td height='25' align='left' style='padding-left:5px'>经理名</td><td >功勋</td><td >事件</td><td >时间</td></tr>";
             SqlDataReader reader = BTPUnionManager.GetReputationByUserID(intUserID, this.intPage, this.intPerPage);
             if (reader.HasRows)
@@ -2233,7 +2217,7 @@
         private void SetSocietyList()
         {
             string strCurrentURL = "Union.aspx?Type=" + this.strType + "&Kind=VIEWSOCIETY&";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 6;
             int intCount = this.intPerPage * this.intPage;
             this.intTotal = this.GetTotal();
@@ -2249,13 +2233,13 @@
             {
                 foreach (DataRow row in table.Rows)
                 {
-                    string str = row["Name"].ToString().Trim();
+                    string str2 = row["Name"].ToString().Trim();
                     int intUserID = (int) row["Creater"];
                     string str3 = row["ShortName"].ToString().Trim();
                     int num1 = (int) row["Reputation"];
                     int intUnionID = (int) row["UnionID"];
-                    int num3 = (int) row["StreetCupNum"];
-                    int num4 = (int) row["DevCupNum"];
+                    int num4 = (int) row["StreetCupNum"];
+                    int num5 = (int) row["DevCupNum"];
                     DateTime datIn = (DateTime) row["CreateTime"];
                     int unionUserCount = BTPAccountManager.GetUnionUserCount(intUnionID);
                     string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
@@ -2265,16 +2249,16 @@
                     {
                         int num7 = (int) unionBoardRowByUnionID["TopicCount"];
                     }
-                    if (num3 != 0)
-                    {
-                        string text1 = "<img src='Images/Cup/StreetCup/StreetCup_" + num3 + ".gif' height='50' width='67' border='0'>";
-                    }
                     if (num4 != 0)
                     {
-                        string text2 = "<img src='Images/Cup/DevisionCup/DevisionCup_" + num4 + ".gif' height='50' width='67' border='0'>";
+                        string text1 = "<img src='Images/Cup/StreetCup/StreetCup_" + num4 + ".gif' height='50' width='67' border='0'>";
+                    }
+                    if (num5 != 0)
+                    {
+                        string text2 = "<img src='Images/Cup/DevisionCup/DevisionCup_" + num5 + ".gif' height='50' width='67' border='0'>";
                     }
                     object strList = this.strList;
-                    this.strList = string.Concat(new object[] { strList, "<tr onmouseover='this.style.backgroundColor='#FBE2D4'' onmouseout='this.style.backgroundColor='''><td height='55'><img src='Images/UnionLogo/", str5, ".gif' height='46' width='46' border='0'></td><td><font style='line-height:130%'><strong>球会：</strong>", str, "[", str3, "]<br><strong>会长：</strong>", nickNameByUserID, "</font></td><td><font style='line-height:130%'><strong>创建：</strong>", StringItem.FormatDate(datIn, "yy-MM-dd"), "<br><strong>主题：</strong>69</font></td><td valign='middle'><font style='line-height:130%'><br><strong>会员：</strong>", unionUserCount, "</font></td><td align='center'><font style='line-height:130%'><a href='UnionBoard.aspx?Type=MYUNION&UnionID=", intUnionID, "&Page=1>论坛</a> | 介绍<br>会员列表</font></td></tr>" });
+                    this.strList = string.Concat(new object[] { strList, "<tr onmouseover='this.style.backgroundColor='#FBE2D4'' onmouseout='this.style.backgroundColor='''><td height='55'><img src='Images/UnionLogo/", str5, ".gif' height='46' width='46' border='0'></td><td><font style='line-height:130%'><strong>球会：</strong>", str2, "[", str3, "]<br><strong>会长：</strong>", nickNameByUserID, "</font></td><td><font style='line-height:130%'><strong>创建：</strong>", StringItem.FormatDate(datIn, "yy-MM-dd"), "<br><strong>主题：</strong>69</font></td><td valign='middle'><font style='line-height:130%'><br><strong>会员：</strong>", unionUserCount, "</font></td><td align='center'><font style='line-height:130%'><a href='UnionBoard.aspx?Type=MYUNION&UnionID=", intUnionID, "&Page=1>论坛</a> | 介绍<br>会员列表</font></td></tr>" });
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>";
                 }
                 this.strList = this.strList + "<tr><td height='5' colspan='6'></td></tr><tr height='25'><td align='right' colspan='6'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
@@ -2284,127 +2268,125 @@
         private void SetUnionCupList()
         {
             int num;
+            string str;
             string str2;
             string str3;
-            string str4;
             DateTime time;
-            string str5;
+            string str4;
+            int num2;
             int num3;
             int num4;
-            int num5;
+            string str5;
             string str6;
-            string str7;
             string strCurrentURL = "Union.aspx?Type=MYUNION&Kind=UNIONCUP&";
             this.intPerPage = 6;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "<tr class='BarHead'><td height='25' width='50'>奖杯</td><td width='100'>杯赛名称</td><td width='70'>轮次</td><td width='100'>报名/名额</td><td width='120'>时间</td><td width='96'>操作</td></tr>";
             SqlDataReader reader = BTPCupManager.GetUnionCupListByUserIDNew(this.intUserID, 3, this.intPage, this.intPerPage);
             if (reader.HasRows)
             {
-                goto Label_042C;
+                goto Label_0214;
             }
             this.strList = this.strList + "<tr class='BarContent'><td height='25' colspan='7'>暂时没有联盟杯赛。</td></tr>";
-            goto Label_0438;
-        Label_02A9:
-            switch (num5)
+            goto Label_045C;
+        Label_0085:
+            switch (num4)
             {
+                case 0:
+                    str4 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    break;
+
                 case 2:
-                    str5 = "等待发奖";
+                    str4 = "等待发奖";
                     break;
 
                 case 3:
-                    str5 = "已结束";
-                    break;
-
-                case 0:
-                    str5 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "已结束";
                     break;
 
                 default:
-                    str5 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
                     break;
             }
-            if (num5 == 0)
+            if (num4 == 0)
             {
-                str4 = string.Concat(new object[] { "<a href='Union.aspx?Type=MYUNION&Kind=UNIONCUPCHECK&Page=1&CupID=", num, "'>查看</a> | <a href='Union.aspx?Type=MYUNION&Kind=VIEWUNIONCUP&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='Union.aspx?Type=MYUNION&Kind=UNIONCUPCHECK&Page=1&CupID=", num, "'>查看</a> | <a href='Union.aspx?Type=MYUNION&Kind=VIEWUNIONCUP&CupID=", num, "'>介绍</a>" });
             }
             else
             {
-                str4 = string.Concat(new object[] { "<a href='", str6, "'>赛程</a> | <a href='Union.aspx?Type=MYUNION&Kind=VIEWUNIONCUP&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='", str5, "'>赛程</a> | <a href='Union.aspx?Type=MYUNION&Kind=VIEWUNIONCUP&CupID=", num, "'>介绍</a>" });
             }
             object strList = this.strList;
-            this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='50'><img src='Images/Cup/", str2, "'></td><td>", str3, "</td><td>", str7, "</td><td>", num3, "/", num4, "</td><td>", str5, "</td><td>", str4, "</td></tr>" });
-        Label_042C:
+            this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='50'><img src='Images/Cup/", str, "'></td><td>", str2, "</td><td>", str6, "</td><td>", num2, "/", num3, "</td><td>", str4, "</td><td>", str3, "</td></tr>" });
+        Label_0214:
             if (reader.Read())
             {
                 num = (int) reader["CupID"];
                 int deadRound = BTPCupRegManager.GetDeadRound(num, this.intClubID);
-                str2 = reader["BigLogo"].ToString().Trim();
-                str3 = reader["Name"].ToString().Trim();
+                str = reader["BigLogo"].ToString().Trim();
+                str2 = reader["Name"].ToString().Trim();
                 byte num1 = (byte) reader["Levels"];
-                int num2 = (byte) reader["Round"];
+                int num6 = (byte) reader["Round"];
                 time = (DateTime) reader["MatchTime"];
                 DataRow cupRowByCupID = BTPCupManager.GetCupRowByCupID(num);
-                num3 = (int) cupRowByCupID["RegCount"];
-                num4 = (int) cupRowByCupID["Capacity"];
-                num5 = (byte) cupRowByCupID["Status"];
-                str6 = cupRowByCupID["LadderURL"].ToString().Trim();
+                num2 = (int) cupRowByCupID["RegCount"];
+                num3 = (int) cupRowByCupID["Capacity"];
+                num4 = (byte) cupRowByCupID["Status"];
+                str5 = cupRowByCupID["LadderURL"].ToString().Trim();
                 if (deadRound == 100)
                 {
-                    deadRound = num2;
+                    deadRound = num6;
                 }
-                if (deadRound < num2)
+                if (deadRound < num6)
                 {
-                    switch (num5)
+                    switch (num4)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='red'>", deadRound, "</font> / <font color='red'>", num2, "</font>" });
-                            goto Label_02A9;
+                            str6 = string.Concat(new object[] { "<font color='red'>", deadRound, "</font> / <font color='red'>", num6, "</font>" });
+                            goto Label_0085;
                     }
-                    str7 = string.Concat(new object[] { "<font color='red'>", deadRound, "</font> / <font color='green'>", num2, "</font>" });
+                    str6 = string.Concat(new object[] { "<font color='red'>", deadRound, "</font> / <font color='green'>", num6, "</font>" });
                 }
                 else
                 {
-                    switch (num5)
+                    switch (num4)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='green'>", num2, "</font> / <font color='red'>", num2, "</font>" });
-                            goto Label_02A9;
+                            str6 = string.Concat(new object[] { "<font color='green'>", num6, "</font> / <font color='red'>", num6, "</font>" });
+                            goto Label_0085;
                     }
-                    str7 = string.Concat(new object[] { "<font color='green'>", num2, "</font> / <font color='green'>", num2, "</font>" });
+                    str6 = string.Concat(new object[] { "<font color='green'>", num6, "</font> / <font color='green'>", num6, "</font>" });
                 }
-                goto Label_02A9;
+                goto Label_0085;
             }
-        Label_0438:
+        Label_045C:
             reader.Close();
             this.strList = this.strList + "<tr><td height='25' align='right' colspan='7'>" + this.GetViewPage(strCurrentURL) + "</td></tr>";
         }
 
         private void SetUnionIntro()
         {
-
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            this.intUnionID = (int)accountRowByUserID["UnionID"];
-            
             object obj2;
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            this.intUnionID = (int) accountRowByUserID["UnionID"];
             this.divUnionIntro.Visible = true;
-            int request = (int) SessionItem.GetRequest("UnionID", 0);
+            int request = SessionItem.GetRequest("UnionID", 0);
             DataRow allInfoByUnionID = BTPUnionManager.GetAllInfoByUnionID(request);
             int intUserID = (int) allInfoByUnionID["Creater"];
-            int num2 = (int) allInfoByUnionID["Reputation"];
-            int num3 = (int) allInfoByUnionID["UCount"];
+            int num3 = (int) allInfoByUnionID["Reputation"];
+            int num4 = (int) allInfoByUnionID["UCount"];
             int num1 = (int) allInfoByUnionID["TopicCount"];
             string[] strArray = allInfoByUnionID["NameInfo"].ToString().Trim().Split(new char[] { '|' });
-            string str4 = AccountItem.GetNickNameInfo(intUserID, strArray[0].Trim(), "Right", 20);
+            string str = AccountItem.GetNickNameInfo(intUserID, strArray[0].Trim(), "Right", 20);
             string str2 = allInfoByUnionID["Name"].ToString().Trim();
             intUserID = (int) allInfoByUnionID["Creater"];
             string str3 = allInfoByUnionID["ShortName"].ToString().Trim();
-            num2 = (int) allInfoByUnionID["Reputation"];
-            string str = allInfoByUnionID["BigLogo"].ToString().Trim();
+            num3 = (int) allInfoByUnionID["Reputation"];
+            string str4 = allInfoByUnionID["BigLogo"].ToString().Trim();
             string str5 = allInfoByUnionID["Remark"].ToString().Trim();
             DateTime datIn = (DateTime) allInfoByUnionID["RemarkTime"];
             string str6 = allInfoByUnionID["UQQ"].ToString().Trim();
@@ -2412,20 +2394,18 @@
             string str8 = allInfoByUnionID["UBBS"].ToString().Trim();
             if (this.intUnionID == request)
             {
-                DataRow unionPolityRow = BTPUnionPolity.GetDelMasterRow(this.intUnionID);
-                if (unionPolityRow == null)
+                if (BTPUnionPolity.GetDelMasterRow(this.intUnionID) == null)
                 {
                     if (this.intUserID != intUserID)
                     {
-                        str4 = str4 + "<a href='Temp_Right.aspx?Type=DELATEMASTER' target=\"Right\"><font color=red>[弹劾]</font></a>";
+                        str = str + "<a href='Temp_Right.aspx?Type=DELATEMASTER' target=\"Right\"><font color=red>[弹劾]</font></a>";
                     }
                 }
                 else
                 {
-                    str4 = str4 + "<a href='UnionPolity.aspx?Type=DELMASTER' ><font color=red>[投票]</font></a>";
+                    str = str + "<a href='UnionPolity.aspx?Type=DELMASTER' ><font color=red>[投票]</font></a>";
                 }
             }
-            
             if (str8.IndexOf("UnionBoard.aspx?Type=UNIONBBS") != -1)
             {
                 str7 = "<a href=\"UnionBoard.aspx?Type=UNIONBBS&UnionID=" + request + "&Page=1\">论坛</a>";
@@ -2440,10 +2420,9 @@
             }
             string str9 = "<a target=\"Right\" href='Temp_Right.aspx?Type=UNIONMSGSEND&UID=" + request + "'>短信群发</a>";
             this.strList = string.Concat(new object[] { 
-                "<tr><td><table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td height='60'><img src='Images/UnionLogo/", str, ".gif' height='46' width='46' border='0'></td><td><font style='line-height:130%'><strong>联盟：</strong><a href='UnionList.aspx?UnionID=", request, "&Page=1' target='Right'>", str2, "[", str3, "]</a><br><strong>盟主：</strong>", str4, "</font></td><td><font style='line-height:130%'><strong>威望：</strong>", num2, "<br><strong>盟员：</strong><a href='UnionList.aspx?UnionID=", request, "&Page=1' target='Right'>", num3, 
+                "<tr><td><table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td height='60'><img src='Images/UnionLogo/", str4, ".gif' height='46' width='46' border='0'></td><td><font style='line-height:130%'><strong>联盟：</strong><a href='UnionList.aspx?UnionID=", request, "&Page=1' target='Right'>", str2, "[", str3, "]</a><br><strong>盟主：</strong>", str, "</font></td><td><font style='line-height:130%'><strong>威望：</strong>", num3, "<br><strong>盟员：</strong><a href='UnionList.aspx?UnionID=", request, "&Page=1' target='Right'>", num4, 
                 "</a></font></td><td cospan='2'><font style='line-height:130%'>", str9, "<br> ", str7
              });
-               
             int num5 = (int) accountRowByUserID["UnionID"];
             int num6 = (byte) accountRowByUserID["UnionCategory"];
             if ((num5 == request) && (num6 != 1))
@@ -2451,7 +2430,7 @@
                 obj2 = this.strList;
                 this.strList = string.Concat(new object[] { obj2, "&nbsp;|&nbsp;<a href='SecretaryPage.aspx?Type=OUT&UserID=", this.intUserID, "'>退出联盟</a>" });
             }
-            if ((num2 < 1) && (request != this.intUnionID))
+            if ((num3 < 1) && (request != this.intUnionID))
             {
                 this.strList = this.strList + "&nbsp;|&nbsp;竞技场";
             }
@@ -2465,10 +2444,10 @@
             DataTable uManagerTable = BTPUnionManager.GetUManagerTable(request);
             if (uManagerTable != null)
             {
-                foreach (DataRow row3 in uManagerTable.Rows)
+                foreach (DataRow row4 in uManagerTable.Rows)
                 {
-                    int num7 = (int) row3["UserID"];
-                    string strNickName = row3["NickName"].ToString().Trim();
+                    int num7 = (int) row4["UserID"];
+                    string strNickName = row4["NickName"].ToString().Trim();
                     this.strList = this.strList + AccountItem.GetNickNameInfo(num7, strNickName, "Right", 20) + " ";
                 }
             }
@@ -2485,12 +2464,12 @@
                 {
                     while (reader.Read())
                     {
-                        string str11 = reader["NickName"].ToString().Trim();
+                        string str12 = reader["NickName"].ToString().Trim();
                         int num8 = (int) reader["UserID"];
-                        string str12 = reader["Message"].ToString().Trim();
+                        string str13 = reader["Message"].ToString().Trim();
                         DateTime time2 = (DateTime) reader["CreateTime"];
                         strList = this.strList;
-                        this.strList = strList + "<tr style=\"text-align:center;color:#AF1F30;background-color:#fbe2d4;\"><td height='25' width='100'><font color='#660066'>" + AccountItem.GetNickNameInfo(num8, str11, "Right", 10) + "</font></td><td width='260' align='left' style='padding-left:5px'>" + StringItem.FormatDate(time2, "yyyy-MM-dd hh:mm:ss") + "</td><td width='170'></td></tr><tr class='BarContent' onmouseover=\"this.style.backgroundColor='#ffebdf'\" onmouseout=\"this.style.backgroundColor=''\" style='padding:4px;table-layout:fixed;word-break:break-all;'><td height='40' colspan='3' align='left' valign='middle'>" + str12 + "</td></tr>";
+                        this.strList = strList + "<tr style=\"text-align:center;color:#AF1F30;background-color:#fbe2d4;\"><td height='25' width='100'><font color='#660066'>" + AccountItem.GetNickNameInfo(num8, str12, "Right", 10) + "</font></td><td width='260' align='left' style='padding-left:5px'>" + StringItem.FormatDate(time2, "yyyy-MM-dd hh:mm:ss") + "</td><td width='170'></td></tr><tr class='BarContent' onmouseover=\"this.style.backgroundColor='#ffebdf'\" onmouseout=\"this.style.backgroundColor=''\" style='padding:4px;table-layout:fixed;word-break:break-all;'><td height='40' colspan='3' align='left' valign='middle'>" + str13 + "</td></tr>";
                     }
                 }
                 else
@@ -2504,14 +2483,14 @@
 
         private void SetUnionList()
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 12;
             this.intTotal = this.GetTotal();
             this.strList = "";
             BTPUnionManager.GetAllUnionUserCount();
-            string str4 = "";
-            string str5 = "";
-            string str6 = "";
+            string str = "";
+            string str2 = "";
+            string str3 = "";
             string strName = SessionItem.GetRequest("UName", 1).ToString().Trim();
             string strCurrentURL = "Union.aspx?Type=" + this.strType + "&Kind=VIEWUNION&UName=" + strName + "&";
             this.strScript = this.GetScript(strCurrentURL);
@@ -2520,70 +2499,70 @@
             {
                 while (reader.Read())
                 {
-                    int num7;
-                    string str8;
+                    int num;
+                    string str6;
                     strName = reader["Name"].ToString().Trim();
                     int intUserID = (int) reader["Creater"];
-                    string str3 = reader["ShortName"].ToString().Trim();
-                    int num = (int) reader["Reputation"];
+                    string str7 = reader["ShortName"].ToString().Trim();
+                    int num3 = (int) reader["Reputation"];
                     int intUnionID = (int) reader["UnionID"];
-                    int num4 = (int) reader["StreetCupNum"];
-                    int num5 = (int) reader["DevCupNum"];
+                    int num5 = (int) reader["StreetCupNum"];
+                    int num6 = (int) reader["DevCupNum"];
                     int unionUserCount = BTPAccountManager.GetUnionUserCount(intUnionID);
                     reader["BigLogo"].ToString().Trim();
                     string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
                     nickNameByUserID = AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right", 20);
                     reader["UQQ"].ToString().Trim();
-                    str4 = reader["UBBS"].ToString().Trim();
+                    str = reader["UBBS"].ToString().Trim();
                     DateTime time = (DateTime) reader["CreateTime"];
                     DataRow unionBoardRowByUnionID = BTPUnionBBSManager.GetUnionBoardRowByUnionID(intUnionID);
                     if (unionBoardRowByUnionID != null)
                     {
                         int num1 = (int) unionBoardRowByUnionID["TopicCount"];
-                        num7 = (byte) unionBoardRowByUnionID["Category"];
+                        num = (byte) unionBoardRowByUnionID["Category"];
                     }
                     else
                     {
-                        num7 = 1;
+                        num = 1;
                     }
-                    if (str4.IndexOf("UnionBoard.aspx?Type=UNIONBBS") != -1)
+                    if (str.IndexOf("UnionBoard.aspx?Type=UNIONBBS") != -1)
                     {
-                        if (num7 == 1)
+                        if (num == 1)
                         {
                             string text1 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
                         }
-                        str5 = string.Concat(new object[] { "UnionBoard.aspx?Type=", this.strType, "&UnionID=", intUnionID, "&Page=1" });
-                        str6 = "";
+                        str2 = string.Concat(new object[] { "UnionBoard.aspx?Type=", this.strType, "&UnionID=", intUnionID, "&Page=1" });
+                        str3 = "";
                     }
                     else
                     {
-                        str5 = str4;
-                        str6 = "target=\"_blank\"";
+                        str2 = str;
+                        str3 = "target=\"_blank\"";
                     }
-                    if (str5 != "")
+                    if (str2 != "")
                     {
-                        string text2 = "<a href='" + str5.Replace("＆", "&").ToString().Trim() + "' " + str6 + ">论坛</a>";
-                    }
-                    if (num4 != 0)
-                    {
-                        string text3 = "<img src='Images/Cup/StreetCup/StreetCup_" + num4 + ".gif' height='50' width='85' border='0'>";
+                        string text2 = "<a href='" + str2.Replace("＆", "&").ToString().Trim() + "' " + str3 + ">论坛</a>";
                     }
                     if (num5 != 0)
                     {
-                        string text4 = "<img src='Images/Cup/DevisionCup/DevisionCup_" + num5 + ".gif' height='50' width='85' border='0'>";
+                        string text3 = "<img src='Images/Cup/StreetCup/StreetCup_" + num5 + ".gif' height='50' width='85' border='0'>";
                     }
-                    if ((num < 1) || (time >= DateTime.Now.AddDays(-15.0)))
+                    if (num6 != 0)
                     {
-                        str8 = "竞技场";
+                        string text4 = "<img src='Images/Cup/DevisionCup/DevisionCup_" + num6 + ".gif' height='50' width='85' border='0'>";
+                    }
+                    if ((num3 < 1) || (time >= DateTime.Now.AddDays(-15.0)))
+                    {
+                        str6 = "竞技场";
                     }
                     else
                     {
-                        str8 = string.Concat(new object[] { "<a href='UnionField.aspx?Back=", this.intPage, "&Type=FIELDLIST&UID=", intUnionID, "'>竞技场</a>" });
+                        str6 = string.Concat(new object[] { "<a href='UnionField.aspx?Back=", this.intPage, "&Type=FIELDLIST&UID=", intUnionID, "'>竞技场</a>" });
                     }
                     object strList = this.strList;
                     this.strList = string.Concat(new object[] { 
-                        strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"25\" style=\"padding-left:5px\" align=\"left\" ><a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINTRO&UnionID=", intUnionID, "&Page=1'>[", str3, "]</a></td><td height=\"25\" align=\"left\" ><a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINTRO&UnionID=", intUnionID, "&Page=1'>", strName, "</a></td><td align=\"left\" >", nickNameByUserID, "</td><td align=\"center\" >", 
-                        num, "</td><td align=\"center\" ><a href='UnionList.aspx?UnionID=", intUnionID, "&Page=1' target='Right'>", unionUserCount, "</a></td><td align=\"right\" width=\"10\"></td><td align=\"left\"  >", str8, "</td></tr>"
+                        strList, "<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"25\" style=\"padding-left:5px\" align=\"left\" ><a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINTRO&UnionID=", intUnionID, "&Page=1'>[", str7, "]</a></td><td height=\"25\" align=\"left\" ><a href='Union.aspx?Type=", this.strType, "&Kind=UNIONINTRO&UnionID=", intUnionID, "&Page=1'>", strName, "</a></td><td align=\"left\" >", nickNameByUserID, "</td><td align=\"center\" >", 
+                        num3, "</td><td align=\"center\" ><a href='UnionList.aspx?UnionID=", intUnionID, "&Page=1' target='Right'>", unionUserCount, "</a></td><td align=\"right\" width=\"10\"></td><td align=\"left\"  >", str6, "</td></tr>"
                      });
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>";
                 }
@@ -2607,12 +2586,12 @@
         {
             SqlDataReader unionUserByNickName;
             this.intPerPage = 9;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
             }
-            int request = (int) SessionItem.GetRequest("Category", 0);
+            int request = SessionItem.GetRequest("Category", 0);
             string strCurrentURL = string.Concat(new object[] { "Union.aspx?Category=", request, "&Type=", this.strType, "&Kind=", this.strKind, "&Status=UNIONER&" });
             this.strUnionMember = string.Concat(new object[] { "Union.aspx?Category=1&Type=", this.strType, "&Kind=", this.strKind, "&Status=UNIONER&Page=", this.intPage });
             this.strScript = this.GetScript(strCurrentURL);
@@ -2620,12 +2599,12 @@
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
             this.intUnionID = (int) accountRowByUserID["UnionID"];
             this.GetTotal();
-            string str6 = "";
-            int num4 = (int) BTPGameManager.GetGameRow()["Turn"];
-            int num5 = 0;
+            string str2 = "";
+            int num2 = (int) BTPGameManager.GetGameRow()["Turn"];
+            int num3 = 0;
             if (accountRowByUserID != null)
             {
-                num5 = (byte) accountRowByUserID["UnionCategory"];
+                num3 = (byte) accountRowByUserID["UnionCategory"];
             }
             string strNickName = SessionItem.GetRequest("NickName", 1).ToString();
             if (strNickName.Trim() != "")
@@ -2643,16 +2622,16 @@
                 {
                     string str4;
                     int intUserID = (int) unionUserByNickName["UserID"];
-                    string str2 = unionUserByNickName["NickName"].ToString().Trim();
-                    string str3 = unionUserByNickName["ClubName"].ToString().Trim();
-                    int num3 = (byte) unionUserByNickName["UnionCategory"];
-                    string str5 = unionUserByNickName["UnionPosition"].ToString().Trim();
+                    string str5 = unionUserByNickName["NickName"].ToString().Trim();
+                    string str6 = unionUserByNickName["ClubName"].ToString().Trim();
+                    int num5 = (byte) unionUserByNickName["UnionCategory"];
+                    string str7 = unionUserByNickName["UnionPosition"].ToString().Trim();
                     string str8 = unionUserByNickName["UnionReputation"].ToString().Trim();
-                    if (str3 == "")
+                    if (str6 == "")
                     {
-                        str3 = "无";
+                        str6 = "无";
                     }
-                    switch (num3)
+                    switch (num5)
                     {
                         case 1:
                             str4 = "<font color='red'>[盟主]</font>";
@@ -2666,51 +2645,46 @@
                             str4 = "";
                             break;
                     }
-                    if (str5 == "")
+                    if (str7 == "")
                     {
-                        str5 = "暂无";
+                        str7 = "暂无";
                     }
-                    str5 = "<strong>" + str5 + "</strong>" + str4 + "";
-                    if (num5 == 1)
+                    str7 = "<strong>" + str7 + "</strong>" + str4 + "";
+                    if (num3 == 1)
                     {
-                        if ((num3 != 1) && (num3 != 2))
+                        if ((num5 != 1) && (num5 != 2))
                         {
-                            str6 = string.Concat(new object[] { "<a title='踢出' href='SecretaryPage.aspx?Type=KICKOUT&UserID=", intUserID, "'>踢</a>|<a title='任命' href='SecretaryPage.aspx?Type=ORDAIN&UserID=", intUserID, "'>任</a>|<a title='封号' href='SecretaryPage.aspx?Type=POSITION&UserID=", intUserID, "'>封</a>" });
+                            str2 = string.Concat(new object[] { "<a title='踢出' href='SecretaryPage.aspx?Type=KICKOUT&UserID=", intUserID, "'>踢</a>|<a title='任命' href='SecretaryPage.aspx?Type=ORDAIN&UserID=", intUserID, "'>任</a>|<a title='封号' href='SecretaryPage.aspx?Type=POSITION&UserID=", intUserID, "'>封</a>" });
                         }
-                        else if (num3 == 2)
+                        else if (num5 == 2)
                         {
-                            str6 = string.Concat(new object[] { "<a title='踢出' href='SecretaryPage.aspx?Type=KICKOUT&UserID=", intUserID, "'>踢</a>|<a title='解任' href='SecretaryPage.aspx?Type=UNCHAIN&UserID=", intUserID, "'>解</a>|<a title='封号' href='SecretaryPage.aspx?Type=POSITION&UserID=", intUserID, "'>封</a>" });
+                            str2 = string.Concat(new object[] { "<a title='踢出' href='SecretaryPage.aspx?Type=KICKOUT&UserID=", intUserID, "'>踢</a>|<a title='解任' href='SecretaryPage.aspx?Type=UNCHAIN&UserID=", intUserID, "'>解</a>|<a title='封号' href='SecretaryPage.aspx?Type=POSITION&UserID=", intUserID, "'>封</a>" });
                         }
-                        else if (num3 == 1)
+                        else if (num5 == 1)
                         {
-                            str6 = "<a title='封号' href='SecretaryPage.aspx?Type=POSITION&UserID=" + intUserID + "'>封</a>";
+                            str2 = "<a title='封号' href='SecretaryPage.aspx?Type=POSITION&UserID=" + intUserID + "'>封</a>";
                         }
-                        object obj2 = str6;
+                        object obj2 = str2;
                         obj2 = string.Concat(new object[] { obj2, "|<a title='奖励' target=\"Right\" href='Temp_Right.aspx?Type=SENDWEALTH&UserID=", intUserID, "'>奖</a>" });
-                        str6 = string.Concat(new object[] { obj2, "|<a title='盟战可支配威望' href='Temp_Right.aspx?Type=SETUREPUTATION&Tag=", intUserID, "' target=\"Right\">战</a>" });
-                        if (num4 < 4)
+                        str2 = string.Concat(new object[] { obj2, "|<a title='盟战可支配威望' href='Temp_Right.aspx?Type=SETUREPUTATION&Tag=", intUserID, "' target=\"Right\">战</a>" });
+                        if (num2 < 4)
                         {
-                            obj2 = str6;
-                            str6 = string.Concat(new object[] { obj2, "|<a title='邀请参加冠军杯' target=\"Right\" href='Temp_Right.aspx?Type=CHAMPIONCUP&UserID=", intUserID, "'>邀</a>" });
+                            obj2 = str2;
+                            str2 = string.Concat(new object[] { obj2, "|<a title='邀请参加冠军杯' target=\"Right\" href='Temp_Right.aspx?Type=CHAMPIONCUP&UserID=", intUserID, "'>邀</a>" });
                         }
-
-                        if(true)
-                        {
-                            obj2 = str6;
-                            str6 = string.Concat(new object[] { obj2, "|<a title='邀请参加联盟争霸赛' target=\"Right\" href='Temp_Right.aspx?Type=UNIONCUPSEND&UserID=", intUserID, "'>霸</a>" });
-                        }
-
+                        obj2 = str2;
+                        str2 = string.Concat(new object[] { obj2, "|<a title='邀请参加联盟争霸赛' target=\"Right\" href='Temp_Right.aspx?Type=UNIONCUPSEND&UserID=", intUserID, "'>霸</a>" });
                     }
-                    else if (((num5 == 2) && (num3 != 2)) && (num3 != 1))
+                    else if (((num3 == 2) && (num5 != 2)) && (num5 != 1))
                     {
-                        str6 = "<a href='SecretaryPage.aspx?Type=KICKOUT&UserID=" + intUserID + "'>踢出</a>";
+                        str2 = "<a href='SecretaryPage.aspx?Type=KICKOUT&UserID=" + intUserID + "'>踢出</a>";
                     }
                     else
                     {
-                        str6 = "--";
+                        str2 = "--";
                     }
                     string strList = this.strList;
-                    this.strList = strList + "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>" + AccountItem.GetNickNameInfo(intUserID, str2, "Right") + "</td><td>" + AccountItem.GetNickNameInfo(intUserID, str3, "Right") + "</td><td>" + str5 + "</td><td>" + str8 + "</td><td>" + str6 + "</td></tr>";
+                    this.strList = strList + "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>" + AccountItem.GetNickNameInfo(intUserID, str5, "Right") + "</td><td>" + AccountItem.GetNickNameInfo(intUserID, str6, "Right") + "</td><td>" + str7 + "</td><td>" + str8 + "</td><td>" + str2 + "</td></tr>";
                     this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>";
                 }
                 unionUserByNickName.Close();
@@ -2720,7 +2694,7 @@
 
         private void SetWealthList()
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;

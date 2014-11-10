@@ -188,7 +188,7 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            this.intTag = (int) SessionItem.GetRequest("Tag", 0);
+            this.intTag = SessionItem.GetRequest("Tag", 0);
             BTPGameManager.GetTurn();
             DataRow devMRowByDevMatchID = BTPDevMatchManager.GetDevMRowByDevMatchID(this.intTag);
             if (devMRowByDevMatchID != null)

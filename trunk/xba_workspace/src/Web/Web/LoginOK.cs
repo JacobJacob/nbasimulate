@@ -28,7 +28,6 @@
             }
             else
             {
-                //userRowByUserNamePWD.Close();
                 base.Response.Redirect("Report.aspx?Parameter=10a");
             }
             this.InitializeComponent();

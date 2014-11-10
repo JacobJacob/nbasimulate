@@ -1,10 +1,8 @@
 ﻿namespace Web
 {
-    using LoginParameter;
     using System;
     using System.Collections;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -30,7 +28,7 @@
         private int intClubID;
         public int intDevCupID;
         public int intGrade;
-        public int intPage = 0;
+        public int intPage;
         public int intPrePage = 5;
         private int intUnionID;
         private int intUserID;
@@ -239,20 +237,20 @@
 
         private bool CanRegDevCup(string strRequirementXML, int intUnionID, string strDevCode, int intWealth, int intSetID)
         {
-            int num2;
+            int num;
             TagReader reader = new TagReader();
             string str = reader.GetTagline(strRequirementXML, "<DevLvl>", "</DevLvl>").ToString().Trim();
             string str2 = reader.GetTagline(strRequirementXML, "<UnionID>", "</UnionID>").ToString().Trim();
-            int num = 0;
+            int num2 = 0;
             if (str.IndexOf("|") >= 0)
             {
                 string[] strArray = new string[] { str.Substring(0, str.IndexOf("|")), str.Substring(str.IndexOf("|") + 1) };
-                num = Convert.ToInt32(strArray[0]);
-                num2 = Convert.ToInt32(strArray[1]);
+                num2 = Convert.ToInt32(strArray[0]);
+                num = Convert.ToInt32(strArray[1]);
             }
             else
             {
-                num2 = Convert.ToInt32(str);
+                num = Convert.ToInt32(str);
             }
             int level = DevCalculator.GetLevel(strDevCode);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
@@ -273,16 +271,16 @@
                 base.Response.Redirect("Report.aspx?Parameter=622");
                 return false;
             }
-            if (num == 0)
+            if (num2 == 0)
             {
-                if (num2 > level)
+                if (num > level)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=609");
                     return false;
                 }
                 return true;
             }
-            if ((level >= num) && (level <= num2))
+            if ((level >= num2) && (level <= num))
             {
                 return true;
             }
@@ -293,8 +291,8 @@
         private void CupRegManager()
         {
             this.intPrePage = 10;
-            int request = (int) SessionItem.GetRequest("DevCupID", 0);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            int request = SessionItem.GetRequest("DevCupID", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -302,15 +300,15 @@
             string strCurrentURL = "DevCup.aspx?Type=CREATEDEVCUP&Status=CUPREGMANAGE&DevCupID=" + request + "&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbCupRegManagePage.Append(this.GetViewPage(strCurrentURL));
-            DataTable reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request, true);
-            if (reader != null)
+            DataTable table = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request, true);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int intUserID = (int)row["UserID"];
+                    int intUserID = (int) row["UserID"];
                     string strNickName = row["NickName"].ToString().Trim();
                     string str3 = row["ClubName"].ToString().Trim();
-                    bool blnSex = (bool)row["Sex"];
+                    bool blnSex = (bool) row["Sex"];
                     string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(intUserID));
                     this.sbCupRegManager.Append("<tr><td height=\"25\" style=\"padding-left:4px\" algin=\"align\" >" + AccountItem.GetNickNameInfo(intUserID, str3, "Right") + "</td>");
                     this.sbCupRegManager.Append("<td style=\"padding-left:4px\" align=\"left\">" + AccountItem.GetNickNameInfoA(intUserID, strNickName, "Right", blnSex) + "</td>");
@@ -319,7 +317,6 @@
                     this.sbCupRegManager.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='4'></td></tr>");
                 }
             }
-            //reader.Close();
             if ((this.sbCupRegManager.ToString().Trim() == "") || (this.sbCupRegManager == null))
             {
                 this.sbCupRegManager.Append("<tr><td height=\"25\" align=\"center\" style=\"padding-left:4px\" colspan=\"4\">暂无人员报名</td></tr>");
@@ -328,7 +325,7 @@
 
         private void DevCupChampionList()
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -336,42 +333,41 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPCHAMPION&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbDevCupChampionPage.Append(this.GetViewPage(strCurrentURL));
-            DataTable reader = BTPDevCupManager.GetDevCupTableByPage(0, this.intPage, this.intPrePage, 3);
-            if (reader != null)
+            DataTable table = BTPDevCupManager.GetDevCupTableByPage(0, this.intPage, this.intPrePage, 3);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string str5;
-                    int num1 = (int)row["DevCupID"];
-                    int num = (int)row["RegCount"];
-                    int num2 = (int)row["Capacity"];
-                    num = (int)row["RegCount"];
-                    string str2 = row["ChampionClubName"].ToString().Trim();
-                    string str3 = row["Name"].ToString().Trim();
-                    bool flag = (bool)row["IsSelfUnion"];
-                    DateTime datIn = (DateTime)row["MatchTime"];
-                    int num3 = (int)row["ChampionUserID"];
-                    string str6 = row["LadderURL"].ToString().Trim();
-                    string str4 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "'>";
+                    string str2;
+                    int num1 = (int) row["DevCupID"];
+                    int num = (int) row["RegCount"];
+                    int num2 = (int) row["Capacity"];
+                    num = (int) row["RegCount"];
+                    string str3 = row["ChampionClubName"].ToString().Trim();
+                    string str4 = row["Name"].ToString().Trim();
+                    bool flag = (bool) row["IsSelfUnion"];
+                    DateTime datIn = (DateTime) row["MatchTime"];
+                    int num3 = (int) row["ChampionUserID"];
+                    string str5 = row["LadderURL"].ToString().Trim();
+                    string str6 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "'>";
                     if (flag)
                     {
-                        str5 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
+                        str2 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
                     }
                     else
                     {
-                        str5 = "";
+                        str2 = "";
                     }
-                    this.sbDevCupChampion.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\" width=\"50\">" + str4 + "</td>");
-                    this.sbDevCupChampion.Append("<td width=\"107\" align=\"left\" style='padding-left:4px'><font color=#3333>" + str3 + "</font></td>");
-                    this.sbDevCupChampion.Append("<td width=20>" + str5 + "</td>");
+                    this.sbDevCupChampion.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\" width=\"50\">" + str6 + "</td>");
+                    this.sbDevCupChampion.Append("<td width=\"107\" align=\"left\" style='padding-left:4px'><font color=#3333>" + str4 + "</font></td>");
+                    this.sbDevCupChampion.Append("<td width=20>" + str2 + "</td>");
                     this.sbDevCupChampion.Append(string.Concat(new object[] { "<td width=\"90\" align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
                     this.sbDevCupChampion.Append("<td  align=\"center\" width=\"80\">" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</td>");
-                    this.sbDevCupChampion.Append("<td align=\"center\" width=\"50\"><a href='" + str6 + "'>赛程</a></td>");
-                    this.sbDevCupChampion.Append("<td align=\"left\" style='padding-left:4px' width=\"136\"><font color='#fc5402'>" + str2 + "</font></td></tr>");
+                    this.sbDevCupChampion.Append("<td align=\"center\" width=\"50\"><a href='" + str5 + "'>赛程</a></td>");
+                    this.sbDevCupChampion.Append("<td align=\"left\" style='padding-left:4px' width=\"136\"><font color='#fc5402'>" + str3 + "</font></td></tr>");
                     this.sbDevCupChampion.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
             }
-            //reader.Close();
             if (this.sbDevCupChampion.ToString().Trim() == "")
             {
                 this.sbDevCupChampion.Append("<tr><td colspan=7 align=\"center\" height=\"25\">没有自定义冠军榜</td></tr>");
@@ -381,7 +377,7 @@
 
         private void DevCupList()
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -389,59 +385,54 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPREG&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbWealthPage.Append(this.GetViewPage(strCurrentURL));
-            DataTable reader = BTPDevCupManager.GetDevCupTableByPage(0, this.intPage, this.intPrePage, 0);
+            DataTable table = BTPDevCupManager.GetDevCupTableByPage(0, this.intPage, this.intPrePage, 0);
             string str2 = BTPAccountManager.GetAccountRowByUserID(this.intUserID)["DevCupIDs"].ToString();
-            if (reader != null)
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string str5;
-                    int num4 = (int)row["DevCupID"];
-                    int num = (int)row["RegCount"];
-                    int num2 = (int)row["Capacity"];
-                    num = (int)row["RegCount"];
-                    int num1 = (int)row["UnionID"];
-                    int num3 = (int)row["WealthCost"];
-                    bool flag = (bool)row["IsSelfUnion"];
-                    string str3 = row["Name"].ToString().Trim();
-                    string str4 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "' height='50' width='40' border='0'>";
+                    string str3;
+                    int num = (int) row["DevCupID"];
+                    int num2 = (int) row["RegCount"];
+                    int num3 = (int) row["Capacity"];
+                    num2 = (int) row["RegCount"];
+                    int num1 = (int) row["UnionID"];
+                    int num4 = (int) row["WealthCost"];
+                    bool flag = (bool) row["IsSelfUnion"];
+                    string str4 = row["Name"].ToString().Trim();
+                    string str5 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "' height='50' width='40' border='0'>";
                     if (flag)
                     {
-                        str5 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='9' width='10' border='0'>";
+                        str3 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='9' width='10' border='0'>";
                     }
                     else
                     {
-                        str5 = "";
+                        str3 = "";
                     }
                     string str6 = row["UnionName"].ToString().Trim();
                     string str7 = row["ShortName"].ToString().Trim();
-                    int num5 = (int)row["UserID"];
-                    if (num5 > 0)
-                    {
-                        //str6 = str6;
-                    }
-                    else
+                    int num5 = (int) row["UserID"];
+                    if (num5 <= 0)
                     {
                         str6 = str6 + "[" + str7 + "]";
                     }
-                    this.sbDevCupList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\">" + str4 + "</td>");
-                    this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"left\" style='padding-left:4px'><a href='DevCup.aspx?Type=", this.strType, "&Grade=3&DevCupID=", num4, "'><font color=#3333>", str3, "</font></a></td>" }));
-                    this.sbDevCupList.Append("<td>" + str5 + "</td>");
-                    this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
+                    this.sbDevCupList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\">" + str5 + "</td>");
+                    this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"left\" style='padding-left:4px'><a href='DevCup.aspx?Type=", this.strType, "&Grade=3&DevCupID=", num, "'><font color=#3333>", str4, "</font></a></td>" }));
+                    this.sbDevCupList.Append("<td>" + str3 + "</td>");
+                    this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"center\"><font color=#3333>", num2, "/", num3, "</font></td>" }));
                     this.sbDevCupList.Append("<td align=\"center\"><font color=#3333>" + str6 + "</font></td>");
-                    this.sbDevCupList.Append("<td align=\"center\"><font color=#3333>" + num3 + "</font></td>");
-                    if (str2.IndexOf(num4.ToString()) < 0)
+                    this.sbDevCupList.Append("<td align=\"center\"><font color=#3333>" + num4 + "</font></td>");
+                    if (str2.IndexOf(num.ToString()) < 0)
                     {
-                        this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"center\"><a href='DevCup.aspx?Type=DEVCUPREG&Grade=1&DevCupID=", num4, "'>报名</a>| <a href='DevCup.aspx?Type=DEVCUPREG&Grade=2&DevCupID=", num4, "'>查看</a></td></tr>" }));
+                        this.sbDevCupList.Append(string.Concat(new object[] { "<td align=\"center\"><a href='DevCup.aspx?Type=DEVCUPREG&Grade=1&DevCupID=", num, "'>报名</a>| <a href='DevCup.aspx?Type=DEVCUPREG&Grade=2&DevCupID=", num, "'>查看</a></td></tr>" }));
                     }
                     else
                     {
-                        this.sbDevCupList.Append("<td align=\"center\"><font color=#3333 >报名</font>| <a href='DevCup.aspx?Type=DEVCUPREG&Grade=2&DevCupID=" + num4 + "'>查看</a></td></tr>");
+                        this.sbDevCupList.Append("<td align=\"center\"><font color=#3333 >报名</font>| <a href='DevCup.aspx?Type=DEVCUPREG&Grade=2&DevCupID=" + num + "'>查看</a></td></tr>");
                     }
                     this.sbDevCupList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
             }
-            //reader.Close();
             if (this.sbDevCupList.ToString().Trim() == "")
             {
                 this.sbDevCupList.Append("<tr><td colspan=7 align=\"center\" height=\"25\">没有自定义杯赛</td></tr>");
@@ -451,8 +442,8 @@
 
         private void DevCupLookList()
         {
-            int request = (int) SessionItem.GetRequest("DevCupID", 0);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            int request = SessionItem.GetRequest("DevCupID", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -461,12 +452,12 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPSTATS&Grade=1&DevCupID=" + request + "&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbLookListPage.Append(this.GetViewPage(strCurrentURL));
-            DataTable reader = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request, true);
-            if (reader != null)
+            DataTable table = BTPDevCupRegManager.GetDevCupTableByDevCupID(0, this.intPage, this.intPrePage, request, true);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int intUserID = (int)row["UserID"];
+                    int intUserID = (int) row["UserID"];
                     string strNickName = row["NickName"].ToString().Trim();
                     string str3 = row["ClubName"].ToString().Trim();
                     row["ShortName"].ToString().Trim();
@@ -476,7 +467,6 @@
                     this.sbLookList.Append("<td align=\"center\">" + dev + "</td></tr>");
                 }
             }
-            //reader.Close();
             if (this.sbLookList.ToString().Trim() == "")
             {
                 this.sbLookList.Append("<tr><td colspan=7 align=\"center\" height=\"25\">暂时没有经理报名</td></tr>");
@@ -486,7 +476,7 @@
 
         private void DevCupStatsList()
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -494,64 +484,64 @@
             string strCurrentURL = "DevCup.aspx?Type=DEVCUPSTATS&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbDevCupStatshPage.Append(this.GetViewPage(strCurrentURL));
-            DataTable reader = BTPDevCupManager.GetDevCupTableByUserID(0, this.intPage, this.intPrePage, this.intUserID);
-            if (reader != null)
+            DataTable table = BTPDevCupManager.GetDevCupTableByUserID(0, this.intPage, this.intPrePage, this.intUserID);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string str4;
-                    int intDevCupID = (int)row["DevCupID"];
-                    int num = (int)row["RegCount"];
-                    int num2 = (int)row["Capacity"];
-                    int num1 = (int)row["UnionID"];
+                    string str2;
+                    int intDevCupID = (int) row["DevCupID"];
+                    int num2 = (int) row["RegCount"];
+                    int num3 = (int) row["Capacity"];
+                    int num1 = (int) row["UnionID"];
                     int num4 = Convert.ToInt32(row["Round"]);
-                    int num6 = Convert.ToInt32(row["Status"]);
-                    DateTime datIn = (DateTime)row["MatchTime"];
-                    bool flag = (bool)row["IsSelfUnion"];
-                    string str2 = row["Name"].ToString().Trim();
-                    string str3 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "'>";
+                    int num5 = Convert.ToInt32(row["Status"]);
+                    DateTime datIn = (DateTime) row["MatchTime"];
+                    bool flag = (bool) row["IsSelfUnion"];
+                    string str3 = row["Name"].ToString().Trim();
+                    string str4 = "<IMG src='" + SessionItem.GetImageURL() + "DevMedal/" + row["BigLogo"].ToString().Trim() + "'>";
                     if (flag)
                     {
-                        str4 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
+                        str2 = "<img src='" + SessionItem.GetImageURL() + "UnionLogo/Lock.gif' alt='仅本盟经理可报名' height='10' width='9' border='0'>";
                     }
                     else
                     {
-                        str4 = "";
+                        str2 = "";
                     }
                     string str5 = row["LadderURL"].ToString().Trim();
-                    int num5 = Convert.ToInt32(BTPDevCupRegManager.GetRegRowByDevCupIDUserID(intDevCupID, this.intUserID)["DeadRound"]);
-                    this.sbDevCupStats.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\" width=\"50\">" + str3 + "</td>");
-                    this.sbDevCupStats.Append("<td width=\"75\" align=\"left\" style='padding-left:4px'><font color=#3333>" + str2 + "</font></td>");
-                    this.sbDevCupStats.Append("<td width=20>" + str4 + "</td>");
-                    this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"90\" align=\"center\"><font color=#3333>", num, "/", num2, "</font></td>" }));
-                    if (num5 == 100)
+                    int num6 = Convert.ToInt32(BTPDevCupRegManager.GetRegRowByDevCupIDUserID(intDevCupID, this.intUserID)["DeadRound"]);
+                    this.sbDevCupStats.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=\"60\" width=\"50\">" + str4 + "</td>");
+                    this.sbDevCupStats.Append("<td width=\"75\" align=\"left\" style='padding-left:4px'><font color=#3333>" + str3 + "</font></td>");
+                    this.sbDevCupStats.Append("<td width=20>" + str2 + "</td>");
+                    this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"90\" align=\"center\"><font color=#3333>", num2, "/", num3, "</font></td>" }));
+                    if (num6 == 100)
                     {
-                        num5 = num4;
+                        num6 = num4;
                     }
-                    if (num5 < num4)
+                    if (num6 < num4)
                     {
-                        switch (num6)
+                        switch (num5)
                         {
                             case 2:
                             case 3:
-                                this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='red'><a title='淘汰轮数' style='cursor:hand;'>", num5, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
-                                goto Label_03CD;
+                                this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='red'><a title='淘汰轮数' style='cursor:hand;'>", num6, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
+                                goto Label_03F9;
                         }
-                        this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='red'><a title='淘汰轮数' style='cursor:hand;'>", num5, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
+                        this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='red'><a title='淘汰轮数' style='cursor:hand;'>", num6, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
                     }
                     else
                     {
-                        switch (num6)
+                        switch (num5)
                         {
                             case 2:
                             case 3:
                                 this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='green'><a title='参赛轮数' style='cursor:hand;'>", num4, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
-                                goto Label_03CD;
+                                goto Label_03F9;
                         }
                         this.sbDevCupStats.Append(string.Concat(new object[] { "<td width=\"120\" align=\"center\"><font color='green'><a title='参赛轮数' style='cursor:hand;'>", num4, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num4, "</a></font></td>" }));
                     }
-                Label_03CD:
-                    switch (num6)
+                Label_03F9:
+                    switch (num5)
                     {
                         case 0:
                             this.sbDevCupStats.Append("<td width=\"80\" align=\"center\"><a title='报名截止时间' style='CURSOR: hand'><font color=#3333>" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</a></font></td>");
@@ -565,7 +555,7 @@
                             this.sbDevCupStats.Append("<td width=\"80\" align=\"center\"><font color=#3333>已结束</font></td>");
                             break;
                     }
-                    if (num6 == 0)
+                    if (num5 == 0)
                     {
                         this.sbDevCupStats.Append(string.Concat(new object[] { "<td align=\"center\"><a href='DevCup.aspx?Type=DEVCUPSTATS&Grade=1&DevCupID=", intDevCupID, "'>查看</a> | <a href='DevCup.aspx?Type=DEVCUPSTATS&Grade=2&DevCupID=", intDevCupID, "'>介绍</a></td></tr>" }));
                     }
@@ -576,7 +566,6 @@
                     this.sbDevCupStats.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
             }
-            //reader.Close();
             if (this.sbDevCupStats.ToString().Trim() == "")
             {
                 this.sbDevCupStats.Append("<tr><td colspan=7 align=\"center\" height=\"25\">没有报名的自定义杯赛</td></tr>");
@@ -586,12 +575,12 @@
 
         private void GetCupList()
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
             }
-            string str3 = "";
+            string str = "";
             string strCurrentURL = "DevCup.aspx?Type=CREATEDEVCUP&Status=MANAGER&";
             this.sbScript.Append(this.GetScript(strCurrentURL));
             this.sbDevCupManageList.Append("<table width=\"536\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
@@ -604,20 +593,20 @@
             this.sbDevCupManageList.Append("<td width=\"70\">状态</td>");
             this.sbDevCupManageList.Append("<td width=\"130\">操作</td>");
             this.sbDevCupManageList.Append("</tr>");
-            DataTable reader = BTPDevCupManager.GetUserDevCupTable(this.intUserID, this.intPage, this.intPrePage, 0);
-            if (reader != null)
+            DataTable table = BTPDevCupManager.GetUserDevCupTable(this.intUserID, this.intPage, this.intPrePage, 0);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string str4;
-                    string str = row["Name"].ToString().Trim();
+                    string str3;
+                    string str4 = row["Name"].ToString().Trim();
                     bool flag = (bool) row["IsSelfUnion"];
                     int num = (int) row["RegCount"];
                     int num2 = (int) row["Capacity"];
                     int num3 = (byte) row["Status"];
                     int num4 = (int) row["WealthCost"];
                     int num5 = (int) row["DevCupID"];
-                    string str2 = row["BigLogo"].ToString().Trim();
+                    string str5 = row["BigLogo"].ToString().Trim();
                     int num6 = (byte) row["Round"];
                     if (flag)
                     {
@@ -626,37 +615,37 @@
                     switch (num3)
                     {
                         case 0:
-                            str3 = "报名中";
+                            str = "报名中";
                             break;
 
                         case 1:
-                            str3 = "比赛中<br>[<font color='green'>" + num6 + "</font>轮]";
+                            str = "比赛中<br>[<font color='green'>" + num6 + "</font>轮]";
                             break;
 
                         case 2:
-                            str3 = "比赛结束";
+                            str = "比赛结束";
                             break;
 
                         case 3:
-                            str3 = "奖励结束";
+                            str = "奖励结束";
                             break;
                     }
                     if (num3 == 0)
                     {
-                        str4 = string.Concat(new object[] { "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=MODIFYDEVCUP&DevCupID=", num5, "'>修改</a> | <a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CUPREGMANAGE&DevCupID=", num5, "'>人员</a> | <a href='SecretaryPage.aspx?Type=DELUSERDEVCUP&DevCupID=", num5, "'>删除</a>" });
+                        str3 = string.Concat(new object[] { "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=MODIFYDEVCUP&DevCupID=", num5, "'>修改</a> | <a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CUPREGMANAGE&DevCupID=", num5, "'>人员</a> | <a href='SecretaryPage.aspx?Type=DELUSERDEVCUP&DevCupID=", num5, "'>删除</a>" });
                     }
                     else
                     {
-                        str4 = "-- | -- | --";
+                        str3 = "-- | -- | --";
                     }
                     this.sbDevCupManageList.Append("<tr align=\"center\" onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbDevCupManageList.Append("<td height=\"55\"><img src=\"Images/DevMedal/" + str2 + "\" height=\"50\" width=\"40\" border=\"0\"></td>");
-                    this.sbDevCupManageList.Append("<td align='left' style='padding-left:4px'>" + str + "</td>");
+                    this.sbDevCupManageList.Append("<td height=\"55\"><img src=\"Images/DevMedal/" + str5 + "\" height=\"50\" width=\"40\" border=\"0\"></td>");
+                    this.sbDevCupManageList.Append("<td align='left' style='padding-left:4px'>" + str4 + "</td>");
                     this.sbDevCupManageList.Append("<td></td>");
                     this.sbDevCupManageList.Append(string.Concat(new object[] { "<td>", num, "/", num2, "</td>" }));
                     this.sbDevCupManageList.Append("<td>" + num4 + "</td>");
+                    this.sbDevCupManageList.Append("<td>" + str + "</td>");
                     this.sbDevCupManageList.Append("<td>" + str3 + "</td>");
-                    this.sbDevCupManageList.Append("<td>" + str4 + "</td>");
                     this.sbDevCupManageList.Append("</tr>");
                     this.sbDevCupManageList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                 }
@@ -667,7 +656,6 @@
                 this.sbDevCupManageList.Append("<td height=\"55\" colspan=\"7\">暂无自定义杯赛</td>");
                 this.sbDevCupManageList.Append("</tr>");
             }
-            //reader.Close();
             this.sbDevCupManageList.Append("<tr>");
             this.sbDevCupManageList.Append("<td height=\"25\" colspan=\"7\" align=\"right\" style=\"padding-right:5px\">" + this.GetViewPage(strCurrentURL) + "</td>");
             this.sbDevCupManageList.Append("</tr>");
@@ -681,14 +669,14 @@
 
         private int GetTotal()
         {
-            int request = (int) SessionItem.GetRequest("Grade", 0);
+            int request = SessionItem.GetRequest("Grade", 0);
             int devCupCount = 0;
             if (this.strType == "DEVCUPREG")
             {
                 devCupCount = BTPDevCupManager.GetDevCupCount(0);
                 if (request == 2)
                 {
-                    int intDevCupID = (int) SessionItem.GetRequest("DevCupID", 0);
+                    int intDevCupID = SessionItem.GetRequest("DevCupID", 0);
                     devCupCount = BTPDevCupRegManager.GetDevCupUserCount(intDevCupID);
                 }
                 return devCupCount;
@@ -699,7 +687,7 @@
                 {
                     return BTPDevCupManager.GetDevCupAccountByUserID(this.intUserID);
                 }
-                int num4 = (int) SessionItem.GetRequest("DevCupID", 0);
+                int num4 = SessionItem.GetRequest("DevCupID", 0);
                 return BTPDevCupRegManager.GetDevCupUserCount(num4);
             }
             if (this.strType != "DEVCUPCHAMPION")
@@ -710,7 +698,7 @@
                 }
                 if (this.strStatus == "CUPREGMANAGE")
                 {
-                    int num5 = (int) SessionItem.GetRequest("DevCupID", 0);
+                    int num5 = SessionItem.GetRequest("DevCupID", 0);
                     return BTPDevCupRegManager.GetDevCupUserCount(num5);
                 }
             }
@@ -731,51 +719,45 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            obj2 = str2 + " " + str3 + " ";
-            return string.Concat(new object[] { obj2, "总数:", total, "  跳转 ", str4 });
+            str3 = str3 + "</select>";
+            obj2 = str + " " + str2 + " ";
+            return string.Concat(new object[] { obj2, "总数:", total, "  跳转 ", str3 });
         }
 
         private void IBtnAddUMatch_Click(object sender, ImageClickEventArgs e)
         {
-            int request = (int) SessionItem.GetRequest("DevCupID", 0);
+            int request = SessionItem.GetRequest("DevCupID", 0);
             DataRow devCupRowByDevCupID = BTPDevCupManager.GetDevCupRowByDevCupID(request);
             string line = devCupRowByDevCupID["RequirementXML"].ToString().Trim();
             int intWealth = (int) devCupRowByDevCupID["WealthCost"];
@@ -793,8 +775,7 @@
                 }
                 else if (request > 0)
                 {
-                    int result = BTPDevCupRegManager.AddDevCupReg(request, this.intUserID, this.intClubID, this.strClubName, this.strShortName, this.strDevCode, this.strClubLogo, intRank, level, strPassWord);
-                    switch (result)
+                    switch (BTPDevCupRegManager.AddDevCupReg(request, this.intUserID, this.intClubID, this.strClubName, this.strShortName, this.strDevCode, this.strClubLogo, intRank, level, strPassWord))
                     {
                         case 1:
                             base.Response.Redirect("Report.aspx?Parameter=522!Type.DEVCUPREG");
@@ -827,6 +808,7 @@
                         case 8:
                             base.Response.Redirect("Report.aspx?Parameter=535");
                             return;
+
                         case 9:
                             base.Response.Redirect("Report.aspx?Parameter=535b");
                             return;
@@ -850,16 +832,14 @@
             this.IBtnBreak.Click += new ImageClickEventHandler(this.IBtnBreak_Click);
             this.btnCreate.Click += new ImageClickEventHandler(this.btnCreate_Click);
             this.btnModify.Click += new ImageClickEventHandler(this.btnModify_Click);
-
             this.IBtnAddUMatch.ImageUrl = SessionItem.GetImageURL() + "button_47.gif";
             this.IBtnBreak.ImageUrl = SessionItem.GetImageURL() + "button_48.gif";
-
             base.Load += new EventHandler(this.Page_Load);
         }
 
         private void ModifyDevCup()
         {
-            this.intDevCupID = (int) SessionItem.GetRequest("DevCupID", 0);
+            this.intDevCupID = SessionItem.GetRequest("DevCupID", 0);
             TagReader reader = new TagReader();
             if (!base.IsPostBack)
             {
@@ -967,7 +947,7 @@
 
         private void SetDevCupAdd()
         {
-            int request = (int) SessionItem.GetRequest("DevCupID", 0);
+            int request = SessionItem.GetRequest("DevCupID", 0);
             DevCalculator.GetLevel(this.strDevCode);
             TagReader reader = new TagReader();
             string str = "0";
@@ -1065,7 +1045,7 @@
             switch (this.strType)
             {
                 case "DEVCUPREG":
-                    this.intGrade = (int) SessionItem.GetRequest("Grade", 0);
+                    this.intGrade = SessionItem.GetRequest("Grade", 0);
                     if (this.intGrade < 1)
                     {
                         this.tblUMatchList.Visible = true;
@@ -1092,7 +1072,7 @@
                     break;
 
                 case "DEVCUPSTATS":
-                    this.intGrade = (int) SessionItem.GetRequest("Grade", 0);
+                    this.intGrade = SessionItem.GetRequest("Grade", 0);
                     if (this.intGrade < 1)
                     {
                         this.tbDevCupStats.Visible = true;
@@ -1112,7 +1092,7 @@
                     break;
 
                 case "DEVCUPCHAMPION":
-                    this.intGrade = (int) SessionItem.GetRequest("Grade", 0);
+                    this.intGrade = SessionItem.GetRequest("Grade", 0);
                     if (this.intGrade < 1)
                     {
                         this.tbDevCupChampion.Visible = true;
@@ -1127,7 +1107,7 @@
                     break;
 
                 default:
-                    this.intGrade = (int) SessionItem.GetRequest("Grade", 0);
+                    this.intGrade = SessionItem.GetRequest("Grade", 0);
                     if (this.intGrade < 1)
                     {
                         this.tblUMatchList.Visible = true;
@@ -1141,49 +1121,7 @@
                     this.strPageIntro = "<ul><li class='qian1'>杯赛报名</li><li class='qian2a'><a href='DevCup.aspx?Type=DEVCUPSTATS'>杯赛成绩</a></li><li class='qian2a'><a href='DevCup.aspx?Type=DEVCUPCHAMPION'>冠军榜</a></li></ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>";
                     break;
             }
-            //switch (this.strStatus)
-            //{
-            //    case "CREATE":
-            //        this.strPageIntro1 = "<font color='red'>创建杯赛</font>&nbsp;|&nbsp;<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=MANAGER'>杯赛管理</a>";
-            //        if (!base.IsPostBack)
-            //        {
-            //            DataView view = new DataView(DDLItem.GetDevLevelItem());
-            //            this.ddlClubLevel.DataSource = view;
-            //            this.ddlClubLevel.DataTextField = "Name";
-            //            this.ddlClubLevel.DataValueField = "Category";
-            //            this.ddlClubLevel.DataBind();
-            //        }
-            //        this.tblCreateDevCup.Visible = true;
-            //        this.strModalTime = StringItem.FormatDate(DateTime.Today.AddHours(63.0), "yyyy-MM-dd hh:mm");
-            //        return;
-
-            //    case "MANAGER":
-            //        this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-            //        this.tblManager.Visible = true;
-            //        this.GetCupList();
-            //        return;
-
-            //    case "MODIFYDEVCUP":
-            //        this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-            //        this.tblModifyDevCup.Visible = true;
-            //        this.ModifyDevCup();
-            //        return;
-
-            //    case "CUPREGMANAGE":
-            //        this.strPageIntro1 = "<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=CREATE'>创建杯赛</a>&nbsp;|&nbsp;<font color='red'>杯赛管理</font>";
-            //        this.tblCupRegManager.Visible = true;
-            //        this.CupRegManager();
-            //        return;
-            //}
             this.strPageIntro1 = "<font color='red'>创建杯赛</font>&nbsp;|&nbsp;<a href='DevCup.aspx?Type=CREATEDEVCUP&Status=MANAGER'>杯赛管理</a>";
-            //if (!base.IsPostBack)
-            //{
-            //    DataView view2 = new DataView(DDLItem.GetDevLevelItem());
-            //    this.ddlClubLevel.DataSource = view2;
-            //    this.ddlClubLevel.DataTextField = "Name";
-            //    this.ddlClubLevel.DataValueField = "Category";
-            //    this.ddlClubLevel.DataBind();
-            //}
             this.tblCreateDevCup.Visible = true;
             this.strModalTime = StringItem.FormatDate(DateTime.Today.AddHours(63.0), "yyyy-MM-dd hh:mm");
         }

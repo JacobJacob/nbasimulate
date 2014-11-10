@@ -48,6 +48,29 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "AddDevInCome", commandParameters);
         }
 
+        public static void AddFullAccount(int intUserID, string strUserName, string strNickName, string strPassword, bool blnSex, int intPayType, string strDiskURL, string strBirth, string strProvince, string strCity, string strQQ, string strEmail)
+        {
+            string name = new NameGenerator().GetName();
+            string str2 = RandomItem.rnd.Next(1, 9).ToString();
+            string commandText = "Exec NewBTP.dbo.AddFullAccountNew @UserID,@UserName,@NickName,@SecName,@SecFace,@Password,@Sex,@PayType,@DiskURL,@Birth,@Province,@City,@QQ,@Email";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@SecName", SqlDbType.NVarChar, 20), new SqlParameter("@SecFace", SqlDbType.NVarChar, 20), new SqlParameter("@Password", SqlDbType.NChar, 20), new SqlParameter("@Sex", SqlDbType.Bit, 1), new SqlParameter("@PayType", SqlDbType.TinyInt, 1), new SqlParameter("@DiskURL", SqlDbType.NVarChar, 50), new SqlParameter("@Birth", SqlDbType.NChar, 10), new SqlParameter("@Province", SqlDbType.NChar, 20), new SqlParameter("@City", SqlDbType.NChar, 20), new SqlParameter("@QQ", SqlDbType.NChar, 20), new SqlParameter("@Email", SqlDbType.NVarChar, 50) };
+            commandParameters[0].Value = intUserID;
+            commandParameters[1].Value = strUserName;
+            commandParameters[2].Value = strNickName;
+            commandParameters[3].Value = name;
+            commandParameters[4].Value = str2;
+            commandParameters[5].Value = strPassword;
+            commandParameters[6].Value = blnSex;
+            commandParameters[7].Value = intPayType;
+            commandParameters[8].Value = strDiskURL;
+            commandParameters[9].Value = strBirth;
+            commandParameters[10].Value = strProvince;
+            commandParameters[11].Value = strCity;
+            commandParameters[12].Value = strQQ;
+            commandParameters[13].Value = strEmail;
+            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        }
+
         public static void AddFullAccount(int intUserID, string strUserName, string strNickName, string strPassword, bool blnSex, int intPayType, string strDiskURL, string strBirth, string strProvince, string strCity, string strQQ, int intRecomUserID, string strEmail)
         {
             string name = new NameGenerator().GetName();
@@ -69,29 +92,6 @@
             commandParameters[12].Value = strQQ;
             commandParameters[13].Value = intRecomUserID;
             commandParameters[14].Value = strEmail;
-            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
-        }
-
-        public static void AddFullAccount(int intUserID, string strUserName, string strNickName, string strPassword, bool blnSex, int intPayType, string strDiskURL, string strBirth, string strProvince, string strCity, string strQQ, string strEmail)
-        {
-            string name = new NameGenerator().GetName();
-            string str2 = RandomItem.rnd.Next(1, 9).ToString();
-            string commandText = "Exec NewBTP.dbo.AddFullAccountNew @UserID,@UserName,@NickName,@SecName,@SecFace,@Password,@Sex,@PayType,@DiskURL,@Birth,@Province,@City,@QQ,@Email";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserID", SqlDbType.Int, 4), new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@SecName", SqlDbType.NVarChar, 20), new SqlParameter("@SecFace", SqlDbType.NVarChar, 20), new SqlParameter("@Password", SqlDbType.NChar, 20), new SqlParameter("@Sex", SqlDbType.Bit, 1), new SqlParameter("@PayType", SqlDbType.TinyInt, 1), new SqlParameter("@DiskURL", SqlDbType.NVarChar, 50), new SqlParameter("@Birth", SqlDbType.NChar, 10), new SqlParameter("@Province", SqlDbType.NChar, 20), new SqlParameter("@City", SqlDbType.NChar, 20), new SqlParameter("@QQ", SqlDbType.NChar, 20), new SqlParameter("@Email", SqlDbType.NVarChar, 50) };
-            commandParameters[0].Value = intUserID;
-            commandParameters[1].Value = strUserName;
-            commandParameters[2].Value = strNickName;
-            commandParameters[3].Value = name;
-            commandParameters[4].Value = str2;
-            commandParameters[5].Value = strPassword;
-            commandParameters[6].Value = blnSex;
-            commandParameters[7].Value = intPayType;
-            commandParameters[8].Value = strDiskURL;
-            commandParameters[9].Value = strBirth;
-            commandParameters[10].Value = strProvince;
-            commandParameters[11].Value = strCity;
-            commandParameters[12].Value = strQQ;
-            commandParameters[13].Value = strEmail;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
@@ -214,6 +214,22 @@
             SqlHelper.ExecuteNonQuery(strConn, CommandType.Text, commandText);
         }
 
+        public static bool CheckInviteCode(string strInviteCode)
+        {
+            string commandText = string.Concat(new object[] { "SELECT TOP 1 Code FROM BTP_InviteCode WHERE Code = '", strInviteCode, "' AND Status = 2 " });
+            return (SqlHelper.ExecuteStringReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText) != null);
+        }
+
+        public static int CheckRegisterInfo(string strUserName, string strNickName, string strEmail)
+        {
+            string commandText = "Exec NewBTP.dbo.CheckRegisterInfo @UserName,@NickName,@Email";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@Email", SqlDbType.NVarChar, 50) };
+            commandParameters[0].Value = strUserName;
+            commandParameters[1].Value = strNickName;
+            commandParameters[2].Value = strEmail;
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        }
+
         public static bool CheckUserActiveTime(int intUserID)
         {
             string commandText = "Exec NewBTP.dbo.CheckUserActiveTime @UserID";
@@ -245,25 +261,21 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "DeleteUnion", commandParameters);
         }
 
-        public static int ExchangeWealth(int intUserID, int intWealth)
-        {
-            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangeWealth ", intUserID, ",", intWealth });
-            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-        }
-
         public static int ExchangeOnlyPoint(int intUserID, int intAmount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangeOnlyPoint ", intUserID, ",", intAmount });
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        /**
-         *推广积分换游戏币 
-         */
-
         public static int ExchangePromotionPoint(int intUserID, int intAmount)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangePromotionPoint ", intUserID, ",", intAmount });
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static int ExchangeWealth(int intUserID, int intWealth)
+        {
+            string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.ExchangeWealth ", intUserID, ",", intWealth });
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
@@ -353,8 +365,9 @@
 
         public static void GetBoxByWinner(int intUserID)
         {
-            SqlParameter parameter = new SqlParameter("@UserID", SqlDbType.Int, 4);
-            parameter.Value = intUserID;
+            SqlParameter parameter = new SqlParameter("@UserID", SqlDbType.Int, 4) {
+                Value = intUserID
+            };
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "GetBoxByWinner", new SqlParameter[] { parameter });
         }
 
@@ -425,6 +438,12 @@
         {
             string commandText = "Exec NewBTP.dbo.GetMaxLevels";
             return SqlHelper.ExecuteTinyIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
+        public static int GetMaxUserID()
+        {
+            string commandText = "Exec NewBTP.dbo.[GetMaxUserID] ";
+            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
         public static string GetNickNameByUserID(int intUserID)
@@ -881,6 +900,21 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
+        public static void UpdateEmail(int intUserID, string strEmail)
+        {
+            string commandText = "Exec NewBTP.dbo.UpdateEmail @intUserID,@strEmail";
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@strEmail", SqlDbType.NChar, 50) };
+            commandParameters[0].Value = intUserID;
+            commandParameters[1].Value = strEmail;
+            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
+        }
+
+        public static void UpdateInviteCodeUsed(string strInviteCode)
+        {
+            string commandText = string.Concat(new object[] { "UPDATE BTP_InviteCode SET Status = 3 WHERE Code = '", strInviteCode, "'" });
+            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
         public static void UpdateLockTime()
         {
             try
@@ -904,70 +938,16 @@
                 string commandText = "SELECT UserID,ContinuePay,MemberExpireTime,PayType FROM BTP_Account WHERE (PayType=1 OR ContinuePay=1) AND MemberExpireTime<=GETDATE()";
                 DataTable table = SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                 DataRow toolRowByID = BTPToolManager.GetToolRowByID(0x1c);
-                int intCoin = (int) toolRowByID["CoinCost"];
-                string str2 = toolRowByID["ToolName"].ToString().Trim();
+                int num1 = (int) toolRowByID["CoinCost"];
+                toolRowByID["ToolName"].ToString().Trim();
                 if (table != null)
                 {
                     foreach (DataRow row2 in table.Rows)
                     {
                         int intUserID = (int) row2["UserID"];
-                        bool flag = (bool) row2["ContinuePay"];
-                        DateTime time = (DateTime) row2["MemberExpireTime"];
-                        int num3 = Convert.ToInt32(row2["PayType"]);
-                        /*if (flag)
-                        {
-                            if (ROOTUserManager.SpendCoin40Return(intUserID, intCoin, "购买1个" + str2, "") == 1)
-                            {
-                                BTPToolLinkManager.BuyVIPCard(intUserID, DateTime.Now.AddMonths(1));
-                                string str3 = DateTime.Now.AddMonths(1).ToString();
-                                commandText = string.Concat(new object[] { "UPDATE BTP_Account SET PayType=1,ContinuePay=1,MemberExpireTime='", str3, "' WHERE UserID=", intUserID });
-                                SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-                                commandText = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", str3, "' WHERE UserID=", intUserID });
-                                SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("main40"), CommandType.Text, commandText);
-                                DataTable giftTable = BTPGiftManager.GetGiftTable();
-                                if (giftTable != null)
-                                {
-                                    string str4 = "会员自动续费成功！";
-                                    foreach (DataRow row in giftTable.Rows)
-                                    {
-                                        int intToolID = (int)row["ToolID"];
-                                        int intWealth = (int)row["Amount"];
-                                        int intType = (byte)row["Type"];
-                                        if (intType == 3)
-                                        {
-                                            AddWealthByFinance(intUserID, intWealth, 1, "购买会员卡赠送！");
-                                            object obj2 = str4;
-                                            str4 = string.Concat(new object[] { obj2, "获赠", intWealth, "枚游戏币！" });
-                                        }
-                                        else
-                                        {
-                                            if ((intToolID == 0x21) && (intType == 1))
-                                            {
-                                                BTPToolLinkManager.BuyDoubleExperience(intToolID, intUserID, intWealth);
-                                                continue;
-                                            }
-                                            BTPToolLinkManager.GiftTool(intUserID, intToolID, intWealth, intType);
-                                            if (str4.IndexOf("游戏币道具") == -1)
-                                            {
-                                                str4 = str4 + "并获赠超值游戏币道具！";
-                                            }
-                                        }
-                                    }
-                                    BTPMessageManager.AddMessage(intUserID, 2, 0, "秘书报告", str4);
-                                    //giftTable.Close();
-                                    continue;
-                                }
-                               
-                            }
-                            if ((time > DateTime.Now.AddDays(-3.0)) || (num3 == 1))
-                            {
-                                commandText = "UPDATE BTP_Account SET PayType=0 WHERE UserID=" + intUserID;
-                                SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-                                string str5 = "会员自动续费失败！您将失去会员资格，请手动购买会员卡，继续享受超值会员特权。";
-                                BTPMessageManager.AddMessage(intUserID, 2, 0, "秘书报告", str5);
-                            }
-                            continue;
-                        }*/
+                        bool flag1 = (bool) row2["ContinuePay"];
+                        DateTime time1 = (DateTime) row2["MemberExpireTime"];
+                        Convert.ToInt32(row2["PayType"]);
                         commandText = "UPDATE BTP_Account SET PayType=0 WHERE UserID=" + intUserID;
                         SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                         string strContent = "您已失去会员资格，请手动购买会员卡，继续享受超值会员特权。";
@@ -980,11 +960,11 @@
                 Console.WriteLine(exception.ToString());
                 Console.WriteLine("Three ms later...\n");
                 Thread.Sleep(0x2bf20);
-                string str7 = exception.ToString();
+                string str3 = exception.ToString();
                 try
                 {
-                    string str8 = "INSERT INTO BTP_UpdateLog (LogName,LogContent)VALUES('UpdatePayType','" + str7 + "')";
-                    SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, str8);
+                    string str4 = "INSERT INTO BTP_UpdateLog (LogName,LogContent)VALUES('UpdatePayType','" + str3 + "')";
+                    SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, str4);
                 }
                 catch
                 {
@@ -1001,75 +981,6 @@
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
         }
 
-        public static void UpdateEmail(int intUserID, string strEmail)
-        {
-            string commandText = "Exec NewBTP.dbo.UpdateEmail @intUserID,@strEmail";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@intUserID", SqlDbType.Int, 4), new SqlParameter("@strEmail", SqlDbType.NChar, 50) };
-            commandParameters[0].Value = intUserID;
-            commandParameters[1].Value = strEmail;
-            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
-        }
-
-        public static int CheckRegisterInfo(string strUserName, string strNickName, string strEmail)
-        {
-            string commandText = "Exec NewBTP.dbo.CheckRegisterInfo @UserName,@NickName,@Email";
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@UserName", SqlDbType.NChar, 20), new SqlParameter("@NickName", SqlDbType.NChar, 20), new SqlParameter("@Email", SqlDbType.NVarChar, 50) };
-            commandParameters[0].Value = strUserName;
-            commandParameters[1].Value = strNickName;
-            commandParameters[2].Value = strEmail;
-            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText, commandParameters);
-        }
-
-        public static int GetMaxUserID()
-        {
-            string commandText = "Exec NewBTP.dbo.[GetMaxUserID] ";
-            return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-        }
-
-        public static bool CheckInviteCode(string strInviteCode)
-        {
-            string commandText = string.Concat(new Object[] {"SELECT TOP 1 Code FROM BTP_InviteCode WHERE Code = '", strInviteCode, "' AND Status = 2 " });
-            string code = SqlHelper.ExecuteStringReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-            if (code != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static void UpdateInviteCodeUsed(string strInviteCode)
-        {
-            string commandText = string.Concat(new Object[] { "UPDATE BTP_InviteCode SET Status = 3 WHERE Code = '", strInviteCode, "'" });
-            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-           
-        }
-
-        /// <summary>
-        /// 微博登录
-        /// </summary>
-        /// <param name="weiboId"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static DataRow WeiboLogin(string weiboId, int type)
-        {
-            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@WeiboId", SqlDbType.NChar, 50), new SqlParameter("@Type", SqlDbType.Int, 4) };
-            commandParameters[0].Value = weiboId;
-            commandParameters[1].Value = type;
-            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "WeiboLogin", commandParameters);
-        }
-
-
-        /// <summary>
-        /// 微博帐号绑定
-        /// </summary>
-        /// <param name="weiboId"></param>
-        /// <param name="type"></param>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
         public static int WeiboBid(string weiboId, int type, string username, string password)
         {
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@WeiboId", SqlDbType.NChar, 50), new SqlParameter("@Type", SqlDbType.Int, 4), new SqlParameter("@Username", SqlDbType.NChar, 50), new SqlParameter("@Password", SqlDbType.NChar, 50) };
@@ -1080,7 +991,13 @@
             return SqlHelper.ExecuteIntDataField(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "WeiboBid", commandParameters);
         }
 
-
+        public static DataRow WeiboLogin(string weiboId, int type)
+        {
+            SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@WeiboId", SqlDbType.NChar, 50), new SqlParameter("@Type", SqlDbType.Int, 4) };
+            commandParameters[0].Value = weiboId;
+            commandParameters[1].Value = type;
+            return SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.StoredProcedure, "WeiboLogin", commandParameters);
+        }
     }
 }
 

@@ -23,27 +23,28 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
+            string str4;
             string str = base.Request.QueryString["Parameter"];
-            switch (str)
+            if (((str4 = str) == null) || (str4 == ""))
             {
-                case null:
-                case "":
-                    str = "1";
-                    return;
+                str = "1";
             }
-            string str2 = str;
-            string str3 = "";
-            if (str.IndexOf("!") >= 0)
+            else
             {
-                string[] strArray = str.Split(new char[] { '!' });
-                str2 = strArray[0];
-                str3 = strArray[1];
-                str3 = "?" + str3.Replace("^", "&").Replace(".", "=");
+                string str2 = str;
+                string str3 = "";
+                if (str.IndexOf("!") >= 0)
+                {
+                    string[] strArray = str.Split(new char[] { '!' });
+                    str2 = strArray[0];
+                    str3 = strArray[1];
+                    str3 = "?" + str3.Replace("^", "&").Replace(".", "=");
+                }
+                Error error = (Error) Global.htError[str2];
+                this.strErrMsg = error.strErrorMessage;
+                this.strURL = error.strURL + str3;
+                this.strTarget = error.strTarget;
             }
-            Error error = (Error) Global.htError[str2];
-            this.strErrMsg = error.strErrorMessage;
-            this.strURL = error.strURL + str3;
-            this.strTarget = error.strTarget;
         }
     }
 }

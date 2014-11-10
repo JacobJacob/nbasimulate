@@ -86,25 +86,22 @@
                         str7 = "<br>";
                         break;
 
+                    case -1:
+                        str6 = "<span style=\"color:#333333;\">";
+                        str2 = "<br>";
+                        str3 = "<br>";
+                        str4 = "<br>";
+                        str5 = "<br>";
+                        str7 = "</span><br>";
+                        break;
+
                     default:
-                        if (index == -1)
-                        {
-                            str6 = "<span style=\"color:#333333;\">";
-                            str2 = "<br>";
-                            str3 = "<br>";
-                            str4 = "<br>";
-                            str5 = "<br>";
-                            str7 = "</span><br>";
-                        }
-                        else
-                        {
-                            str6 = "<span style=\"color:#333333;\">";
-                            str2 = "<br>";
-                            str3 = "<br>";
-                            str4 = "<br>";
-                            str5 = "<br>";
-                            str7 = "</span><br>";
-                        }
+                        str6 = "<span style=\"color:#333333;\">";
+                        str2 = "<br>";
+                        str3 = "<br>";
+                        str4 = "<br>";
+                        str5 = "<br>";
+                        str7 = "</span><br>";
                         break;
                 }
                 this.strMissionList = str6 + "任务一：运筹帷幄，决胜千里" + str2 + "任务二：纸上谈兵，空口无凭" + str3 + "任务三：用人不疑，疑人不用" + str4 + "任务四：忠臣良将，各司其职" + str5 + "任务五：康复理疗，振奋士气" + str7;

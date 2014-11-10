@@ -27,7 +27,7 @@
                 {
                     if (parameterValues[index] is IDbDataParameter)
                     {
-                        IDbDataParameter parameter = (IDbDataParameter) parameterValues[index];
+                        IDbDataParameter parameter = parameterValues[index];
                         if (parameter.Value == null)
                         {
                             commandParameters[index].Value = DBNull.Value;
@@ -102,8 +102,9 @@
             {
                 throw new ArgumentNullException("spName");
             }
-            SqlCommand command = new SqlCommand(spName, connection);
-            command.CommandType = CommandType.StoredProcedure;
+            SqlCommand command = new SqlCommand(spName, connection) {
+                CommandType = CommandType.StoredProcedure
+            };
             if ((sourceColumns != null) && (sourceColumns.Length > 0))
             {
                 SqlParameter[] spParameterSet = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
@@ -114,6 +115,11 @@
                 AttachParameters(command, spParameterSet);
             }
             return command;
+        }
+
+        public static SqlParameter CreateOutParam(string ParamName, SqlDbType sqlType, int size)
+        {
+            return new SqlParameter { ParameterName = ParamName, SqlDbType = sqlType, Size = size, Direction = ParameterDirection.Output };
         }
 
         public static bool ExecuteBoolDataField(string connectionString, CommandType commandType, string commandText)
@@ -274,8 +280,9 @@
             {
                 throw new ArgumentNullException("connection");
             }
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             bool mustCloseConnection = false;
             PrepareCommand(command, connection, null, commandType, commandText, commandParameters, out mustCloseConnection);
             using (SqlDataAdapter adapter = new SqlDataAdapter(command))
@@ -301,8 +308,9 @@
             {
                 throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
             }
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             bool mustCloseConnection = false;
             PrepareCommand(command, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
             using (SqlDataAdapter adapter = new SqlDataAdapter(command))
@@ -316,6 +324,7 @@
 
         public static DataSet ExecuteDataset(string connectionString, CommandType commandType, string commandText, params SqlParameter[] commandParameters)
         {
+            DataSet set2;
             if ((connectionString == null) || (connectionString.Length == 0))
             {
                 throw new ArgumentNullException("connectionString");
@@ -325,14 +334,14 @@
                 try
                 {
                     connection.Open();
-                    DataSet dataSet = ExecuteDataset(connection, commandType, commandText, commandParameters);
-                    return dataSet;
+                    set2 = ExecuteDataset(connection, commandType, commandText, commandParameters);
                 }
                 finally
                 {
                     connection.Close();
                 }
             }
+            return set2;
         }
 
         public static DataSet ExecuteDatasetTypedParams(SqlConnection connection, string spName, DataRow dataRow)
@@ -590,8 +599,9 @@
             {
                 throw new ArgumentNullException("connection");
             }
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             bool mustCloseConnection = false;
             PrepareCommand(command, connection, null, commandType, commandText, commandParameters, out mustCloseConnection);
             int num = command.ExecuteNonQuery();
@@ -613,8 +623,9 @@
             {
                 throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
             }
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             bool mustCloseConnection = false;
             PrepareCommand(command, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
             int num = command.ExecuteNonQuery();
@@ -624,6 +635,7 @@
 
         public static int ExecuteNonQuery(string connectionString, CommandType commandType, string commandText, params SqlParameter[] commandParameters)
         {
+            int num;
             if ((connectionString == null) || (connectionString.Length == 0))
             {
                 throw new ArgumentNullException("connectionString");
@@ -633,13 +645,14 @@
                 try
                 {
                     connection.Open();
-                    return ExecuteNonQuery(connection, commandType, commandText, commandParameters);
+                    num = ExecuteNonQuery(connection, commandType, commandText, commandParameters);
                 }
                 finally
                 {
                     connection.Close();
-                } 
+                }
             }
+            return num;
         }
 
         public static int ExecuteNonQueryTypedParams(SqlConnection connection, string spName, DataRow dataRow)
@@ -824,25 +837,26 @@
 
         private static SqlDataReader ExecuteReader(SqlConnection connection, SqlTransaction transaction, CommandType commandType, string commandText, SqlParameter[] commandParameters, SqlConnectionOwnership connectionOwnership)
         {
-            SqlDataReader reader2;
+            SqlDataReader reader;
             if (connection == null)
             {
                 throw new ArgumentNullException("connection");
             }
             bool mustCloseConnection = false;
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             try
             {
-                SqlDataReader reader;
+                SqlDataReader reader2;
                 PrepareCommand(command, connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
                 if (connectionOwnership == SqlConnectionOwnership.External)
                 {
-                    reader = command.ExecuteReader();
+                    reader2 = command.ExecuteReader();
                 }
                 else
                 {
-                    reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    reader2 = command.ExecuteReader(CommandBehavior.CloseConnection);
                 }
                 bool flag2 = true;
                 foreach (SqlParameter parameter in command.Parameters)
@@ -856,7 +870,7 @@
                 {
                     command.Parameters.Clear();
                 }
-                reader2 = reader;
+                reader = reader2;
             }
             catch
             {
@@ -866,7 +880,7 @@
                 }
                 throw;
             }
-            return reader2;
+            return reader;
         }
 
         public static SqlDataReader ExecuteReaderTypedParams(SqlConnection connection, string spName, DataRow dataRow)
@@ -1012,8 +1026,9 @@
             {
                 throw new ArgumentNullException("connection");
             }
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             bool mustCloseConnection = false;
             PrepareCommand(command, connection, null, commandType, commandText, commandParameters, out mustCloseConnection);
             object obj2 = command.ExecuteScalar();
@@ -1035,8 +1050,9 @@
             {
                 throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
             }
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             bool mustCloseConnection = false;
             PrepareCommand(command, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
             object obj2 = command.ExecuteScalar();
@@ -1046,6 +1062,7 @@
 
         public static object ExecuteScalar(string connectionString, CommandType commandType, string commandText, params SqlParameter[] commandParameters)
         {
+            object obj2;
             if ((connectionString == null) || (connectionString.Length == 0))
             {
                 throw new ArgumentNullException("connectionString");
@@ -1055,14 +1072,14 @@
                 try
                 {
                     connection.Open();
-                    return ExecuteScalar(connection, commandType, commandText, commandParameters);
+                    obj2 = ExecuteScalar(connection, commandType, commandText, commandParameters);
                 }
                 finally
                 {
                     connection.Close();
                 }
-
             }
+            return obj2;
         }
 
         public static object ExecuteScalarTypedParams(SqlConnection connection, string spName, DataRow dataRow)
@@ -1248,20 +1265,21 @@
 
         public static XmlReader ExecuteXmlReader(SqlConnection connection, CommandType commandType, string commandText, params SqlParameter[] commandParameters)
         {
-            XmlReader reader2;
+            XmlReader reader;
             if (connection == null)
             {
                 throw new ArgumentNullException("connection");
             }
             bool mustCloseConnection = false;
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             try
             {
                 PrepareCommand(command, connection, null, commandType, commandText, commandParameters, out mustCloseConnection);
-                XmlReader reader = command.ExecuteXmlReader();
+                XmlReader reader2 = command.ExecuteXmlReader();
                 command.Parameters.Clear();
-                reader2 = reader;
+                reader = reader2;
             }
             catch
             {
@@ -1271,7 +1289,7 @@
                 }
                 throw;
             }
-            return reader2;
+            return reader;
         }
 
         public static XmlReader ExecuteXmlReader(SqlTransaction transaction, CommandType commandType, string commandText, params SqlParameter[] commandParameters)
@@ -1284,8 +1302,9 @@
             {
                 throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
             }
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             bool mustCloseConnection = false;
             PrepareCommand(command, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
             XmlReader reader = command.ExecuteXmlReader();
@@ -1417,7 +1436,6 @@
                 {
                     connection.Open();
                     FillDataset(connection, commandType, commandText, dataSet, tableNames);
-
                 }
                 finally
                 {
@@ -1494,8 +1512,9 @@
             {
                 throw new ArgumentNullException("dataSet");
             }
-            SqlCommand command = new SqlCommand();
-            command.CommandTimeout = BTPGameManager.GetConnTime();
+            SqlCommand command = new SqlCommand {
+                CommandTimeout = BTPGameManager.GetConnTime()
+            };
             bool mustCloseConnection = false;
             PrepareCommand(command, connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
             using (SqlDataAdapter adapter = new SqlDataAdapter(command))
@@ -1520,6 +1539,15 @@
             {
                 connection.Close();
             }
+        }
+
+        public static int GetIntValue(SqlParameter parameter, int defaultValue)
+        {
+            if (parameter.Value != DBNull.Value)
+            {
+                return Convert.ToInt32(parameter.Value);
+            }
+            return defaultValue;
         }
 
         private static void PrepareCommand(SqlCommand command, SqlConnection connection, SqlTransaction transaction, CommandType commandType, string commandText, SqlParameter[] commandParameters, out bool mustCloseConnection)

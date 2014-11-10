@@ -55,6 +55,10 @@
                 Cuter cuter = new Cuter(str);
                 switch (cuter.GetIndex("0"))
                 {
+                    case -1:
+                        base.Response.Write("<script>window.top.location='Main.aspx';</script>");
+                        break;
+
                     case 0:
                         this.strMissionName = "<strong>任务一：运筹帷幄，决胜千里</strong>";
                         this.strMissionIntro = "<table width=\"400\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\"><tr><td align=\"left\" style=\"text-indent:25px; line-height:150%;\">要想成为一支百战百胜的球队，不能只知道球员的能力，合理的安排战术也是很重要的一环。</td></tr><tr><td align=\"left\"><strong>新任务描述：</strong></td></tr><tr><td align=\"left\" style=\"text-indent:25px;\">请您尝试更换一套战术。</td></tr><tr><td align=\"left\"><strong>任务要求：</strong></td></tr><tr><td align=\"left\" style=\"padding-left:30px; font-family:simsun; line-height:150%;\">1、点击<strong><font color='blue'>战术设定 -> 街球战术 -> </font><font color='red'>阵容战术一</font></strong>，更换您的战术。<br />2、完成后请<strong><font color='red'>点击首页</font></strong>。</td></tr><tr><td align=\"left\"><strong>任务奖励：</strong> [ <font color=\"#FF0000\">10000资金</font> ] </td></tr></table>";
@@ -89,10 +93,6 @@
                         this.strMissionName = "<strong>全部任务完成！</strong>";
                         this.strMissionIntro = "<table width=\"400\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\"><tr><td align=\"left\" style=\"text-indent:25px; height:25px;\"></td></tr><tr><td align=\"left\"></td></tr><tr><td align=\"left\" style=\"text-indent:25px; line-height:150%\">真的没想到这么快您就完成了所有的任务！我从没有见过任何人像您如此的出色过！董事会决定再拨给你<strong><font color='red'>130000</font></strong>的球队资金！我现在可以很放心的把一支职业球队交给您管理了！现在就去<strong><font color='blue'>购买一支职业球队并加入职业联赛</font></strong>吧！我很期待您在联赛中的优异表现！</td></tr><tr><td align=\"left\"></td></tr><tr><td align=\"left\" style=\"padding-left:30px;\"></td></tr><tr><td align=\"left\"></td></tr></table>";
                         this.btnFinish.Visible = true;
-                        break;
-
-                    case -1:
-                        base.Response.Write("<script>window.top.location='Main.aspx';</script>");
                         break;
 
                     default:

@@ -38,14 +38,14 @@
                 {
                     if (longIDs[i] == longPlayerID)
                     {
-                        long id = BTPPlayer3Manager.GetCanPlay3ID(longIDs, intClubID);
-                        if (fouce && id <= 0)
+                        long num3 = BTPPlayer3Manager.GetCanPlay3ID(longIDs, intClubID);
+                        if (fouce && (num3 <= 0L))
                         {
                             BTPPlayer3Manager.CreateFillPlayer3(intClubID);
-                            id = BTPPlayer3Manager.GetCanPlay3ID(longIDs, intClubID);
-                        } 
+                            num3 = BTPPlayer3Manager.GetCanPlay3ID(longIDs, intClubID);
+                        }
                         flag = true;
-                        longIDs[i] = id;
+                        longIDs[i] = num3;
                     }
                 }
                 if (flag)
@@ -67,21 +67,21 @@
             bool flag = false;
             foreach (DataRow row in arrTableByClubID.Rows)
             {
-                int intArrangeID = (int)row["Arrange5ID"];
-                long[] longIDs = new long[] { (long)row["CID"], (long)row["PFID"], (long)row["SFID"], (long)row["SGID"], (long)row["PGID"] };
+                int intArrangeID = (int) row["Arrange5ID"];
+                long[] longIDs = new long[] { (long) row["CID"], (long) row["PFID"], (long) row["SFID"], (long) row["SGID"], (long) row["PGID"] };
                 for (int i = 0; i < longIDs.Length; i++)
                 {
                     if (longIDs[i] == longPlayerID)
                     {
                         Console.WriteLine("remove " + longPlayerID + " from arrange");
-                        long id = BTPPlayer5Manager.GetCanPlay5ID(longIDs, intClubID);
-                        if (fouce && id <= 0)
+                        long num3 = BTPPlayer5Manager.GetCanPlay5ID(longIDs, intClubID);
+                        if (fouce && (num3 <= 0L))
                         {
                             BTPPlayer5Manager.CreateFillPlayer5(intClubID);
-                            id = BTPPlayer5Manager.GetCanPlay5ID(longIDs, intClubID);
-                            Console.WriteLine("reget playerid is:" + id);
-                        } 
-                        longIDs[i] = id;
+                            num3 = BTPPlayer5Manager.GetCanPlay5ID(longIDs, intClubID);
+                            Console.WriteLine("reget playerid is:" + num3);
+                        }
+                        longIDs[i] = num3;
                         flag = true;
                     }
                 }
@@ -140,33 +140,33 @@
         {
             TimeSpan span = dtBidTime.Subtract(dtNow);
             string str = span.ToString();
-            if (str.IndexOf("-") == -1)
+            if (str.IndexOf("-") != -1)
             {
-                try
-                {
-                    if (span.Days > 0)
-                    {
-                        str = str.Replace(".", "天");
-                        return (str.Substring(0, str.IndexOf(":")) + "时");
-                    }
-                    if (span.Hours > 0)
-                    {
-                        string str3 = str.Substring(0, str.IndexOf(":"));
-                        string str4 = str.Substring(str.IndexOf(":") + 1, 2);
-                        return (str3 + "时" + str4 + "分");
-                    }
-                    string str5 = str.Substring(str.IndexOf(":") + 1, 2);
-                    string str6 = str.Substring(str.LastIndexOf(":") + 1, 2);
-                    str = str5 + "分" + str6 + "秒";
-                }
-                catch (Exception exception)
-                {
-                    exception.ToString();
-                    GetBidLeftTime(dtNow, dtBidTime);
-                }
-                return str;
+                return "已截止";
             }
-            return "已截止";
+            try
+            {
+                if (span.Days > 0)
+                {
+                    str = str.Replace(".", "天");
+                    return (str.Substring(0, str.IndexOf(":")) + "时");
+                }
+                if (span.Hours > 0)
+                {
+                    string str2 = str.Substring(0, str.IndexOf(":"));
+                    string str3 = str.Substring(str.IndexOf(":") + 1, 2);
+                    return (str2 + "时" + str3 + "分");
+                }
+                string str4 = str.Substring(str.IndexOf(":") + 1, 2);
+                string str5 = str.Substring(str.LastIndexOf(":") + 1, 2);
+                str = str4 + "分" + str5 + "秒";
+            }
+            catch (Exception exception)
+            {
+                exception.ToString();
+                GetBidLeftTime(dtNow, dtBidTime);
+            }
+            return str;
         }
 
         public static DataTable GetEndBidTime()
@@ -202,7 +202,6 @@
             DataTable table = BTPPlayer3Manager.GetPlayer3NumByClubID(intClubID);
             int num = 0;
             bool flag = false;
-        Label_007A:
             while (!flag)
             {
                 num = RandomItem.rnd.Next(0, 50);
@@ -212,7 +211,7 @@
                     if (num == num2)
                     {
                         flag = false;
-                        goto Label_007A;
+                        continue;
                     }
                     flag = true;
                 }
@@ -229,24 +228,23 @@
             DataTable table = BTPPlayer5Manager.GetPlayer5NumByClubID(intClubID);
             int num = 0;
             bool flag = false;
-            if (table == null)
+            if (table != null)
             {
-                return num;
-            }
-        Label_007E:
-            while (!flag)
-            {
-                num = RandomItem.rnd.Next(0, 50);
-                foreach (DataRow row in table.Rows)
+                while (!flag)
                 {
-                    int num2 = (byte) row["Number"];
-                    if (num == num2)
+                    num = RandomItem.rnd.Next(0, 50);
+                    foreach (DataRow row in table.Rows)
                     {
-                        flag = false;
-                        goto Label_007E;
+                        int num2 = (byte) row["Number"];
+                        if (num == num2)
+                        {
+                            flag = false;
+                            break;
+                        }
+                        flag = true;
                     }
-                    flag = true;
                 }
+                return num;
             }
             return num;
         }
@@ -712,21 +710,21 @@
 
         public static string GetPlayerStatus(int intStatus, string strEvent, int intSuspend)
         {
-            string str2;
+            string str;
             if ((intStatus > 1) && (intSuspend > 0))
             {
                 if (intStatus == 2)
                 {
-                    str2 = "需" + intSuspend + "轮恢复";
+                    str = "需" + intSuspend + "轮恢复";
                 }
                 else
                 {
-                    str2 = "停赛" + intSuspend + "轮";
+                    str = "停赛" + intSuspend + "轮";
                 }
             }
             else
             {
-                str2 = "";
+                str = "";
             }
             switch (intStatus)
             {
@@ -734,10 +732,10 @@
                     return ("<img src=\"" + SessionItem.GetImageURL() + "Player/Event/1.gif\" alt=\"正常\">");
 
                 case 2:
-                    return ("<img src=\"" + SessionItem.GetImageURL() + "Player/Event/2.gif\" alt=\"受伤: " + strEvent + "，" + str2 + "\">");
+                    return ("<img src=\"" + SessionItem.GetImageURL() + "Player/Event/2.gif\" alt=\"受伤: " + strEvent + "，" + str + "\">");
 
                 case 3:
-                    return ("<img src=\"" + SessionItem.GetImageURL() + "Player/Event/3.gif\" alt=\"事件: " + strEvent + "，" + str2 + "\">");
+                    return ("<img src=\"" + SessionItem.GetImageURL() + "Player/Event/3.gif\" alt=\"事件: " + strEvent + "，" + str + "\">");
             }
             return "事件";
         }

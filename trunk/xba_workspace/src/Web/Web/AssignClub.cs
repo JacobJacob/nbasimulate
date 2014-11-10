@@ -56,8 +56,8 @@
                     BTPPlayer3Manager.ArrangeNumber(numArray[j], numArray2[j]);
                 }
                 BTPArrange3Manager.AddArrange(this.intClubID3, numArray[0], numArray[1], numArray[2], 1, 1, 100, 100);
-                int num5 = (int) BTPArrange3Manager.GetArrByCategory(this.intClubID3, 1)["Arrange3ID"];
-                BTPClubManager.AssignArrange(this.intClubID3, num5);
+                int num4 = (int) BTPArrange3Manager.GetArrByCategory(this.intClubID3, 1)["Arrange3ID"];
+                BTPClubManager.AssignArrange(this.intClubID3, num4);
                 BTPArrangeLvlManager.AddArrangeLvl(this.intUserID);
                 BTPAccountManager.SetAccountCategory(this.intUserID, 1);
                 BTPToolLinkManager.AddTool(this.intUserID, 1, 6, 40, 20);
@@ -92,12 +92,12 @@
                 int num6 = (byte) row["Weight"];
                 int intAbility = (int) row["Ability"];
                 float single1 = ((float) ((int) row["Ability"])) / 10f;
-                int num7 = (int) row["Value"];
+                int num8 = (int) row["Value"];
                 object strList = this.strList;
                 this.strList = string.Concat(new object[] { 
                     strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, 3, 0, 1), "</td><td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif\"</td><td>", num3, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(intPosition), "</a></td><td>", num5, "</td><td>", 
-                    num6, "</td><td>", PlayerItem.GetAbilityColor(intAbility), "</td><td><font color='#660066'>", num7, "</font></td><td><input type='checkbox' id='cb", longPlayerID, "' name='cb", longPlayerID, "' onclick='CBChange(this,this.checked)' value='", longPlayerID, "'><input type='hidden' id='PlayerID_", longPlayerID, "' name='PlayerID_", longPlayerID, "' value='", 
-                    num7, "'></td></tr>"
+                    num6, "</td><td>", PlayerItem.GetAbilityColor(intAbility), "</td><td><font color='#660066'>", num8, "</font></td><td><input type='checkbox' id='cb", longPlayerID, "' name='cb", longPlayerID, "' onclick='CBChange(this,this.checked)' value='", longPlayerID, "'><input type='hidden' id='PlayerID_", longPlayerID, "' name='PlayerID_", longPlayerID, "' value='", 
+                    num8, "'></td></tr>"
                  });
             }
         }

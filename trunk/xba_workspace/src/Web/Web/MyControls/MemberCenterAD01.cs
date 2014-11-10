@@ -2,7 +2,6 @@
 {
     using System;
     using System.Text;
-    using System.Data;
     using System.Web.UI;
     using Web.DBConnection;
 
@@ -27,7 +26,7 @@
         {
             StringBuilder builder = new StringBuilder();
             string commandText = "SELECT * FROM Main_Index";
-            string str2 = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText)["MemberAD02"].ToString();
+            string str2 = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), 1, commandText)["MemberAD02"].ToString();
             builder.Append(str2);
             output.Write(builder.ToString());
         }

@@ -71,36 +71,36 @@
                 }
                 else
                 {
-                    int num4;
-                    int num3 = (byte) orderRowByOID["OrderCategory"];
+                    int num3;
+                    int num4 = (byte) orderRowByOID["OrderCategory"];
                     this.strUserName = orderRowByOID["UserName"].ToString().Trim();
-                    switch (num3)
+                    switch (num4)
                     {
                         case 1:
-                            num4 = 20;
+                            num3 = 20;
                             break;
 
                         case 2:
-                            num4 = 40;
+                            num3 = 40;
                             break;
 
                         case 3:
-                            num4 = 100;
+                            num3 = 100;
                             break;
 
                         case 4:
-                            num4 = 250;
+                            num3 = 250;
                             break;
 
                         case 5:
-                            num4 = 0xbb8;
+                            num3 = 0xbb8;
                             break;
 
                         default:
                             this.strMsg = "error";
                             return;
                     }
-                    ROOTUserManager.AddCoinReceive(this.strUserName, num4, this.v_oid);
+                    ROOTUserManager.AddCoinReceive(this.strUserName, num3, this.v_oid);
                     this.strMsg = "ok";
                 }
             }

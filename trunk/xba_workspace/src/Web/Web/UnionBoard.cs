@@ -44,46 +44,40 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            obj2 = str2 + " " + str3 + " ";
-            return string.Concat(new object[] { obj2, "帖子总数:", total, " 跳转", str4 });
+            str3 = str3 + "</select>";
+            obj2 = str + " " + str2 + " ";
+            return string.Concat(new object[] { obj2, "帖子总数:", total, " 跳转", str3 });
         }
 
         private void InitializeComponent()
@@ -103,8 +97,8 @@
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
                 this.intMyUnionID = (int) onlineRowByUserID["UnionID"];
-                this.intUnionID = (int) SessionItem.GetRequest("UnionID", 0);
-                this.intPage = (int) SessionItem.GetRequest("Page", 0);
+                this.intUnionID = SessionItem.GetRequest("UnionID", 0);
+                this.intPage = SessionItem.GetRequest("Page", 0);
                 DataRow unionBoardRowByUnionID = BTPUnionBBSManager.GetUnionBoardRowByUnionID(this.intUnionID);
                 if (unionBoardRowByUnionID == null)
                 {

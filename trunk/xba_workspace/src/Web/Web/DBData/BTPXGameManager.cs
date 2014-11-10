@@ -84,6 +84,18 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
+        public static int GetXGameRound()
+        {
+            string commandText = "SELECT TOP 1 Round FROM BTP_XGame Order By XGameID Desc";
+            DataRow row = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+            int num = 0;
+            if (row != null)
+            {
+                num = Convert.ToInt32(row["Round"]);
+            }
+            return num;
+        }
+
         public static DataRow GetXGameRowByCategory(int intCategory)
         {
             string commandText = "Exec NewBTP.dbo.GetXGameRowByCategory " + intCategory;
@@ -152,18 +164,6 @@
         {
             string commandText = "UPDATE BTP_XGame SET MatchTime=DATEADD(Day,1,MatchTime) WHERE XGameID=" + intXGameID;
             SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-        }
-
-        public static int GetXGameRound()
-        {
-            string commandText = "SELECT TOP 1 Round FROM BTP_XGame Order By XGameID Desc";
-            DataRow dataRow = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
-            int intRound = 0;
-            if (dataRow != null)
-            {
-                intRound = Convert.ToInt32(dataRow["Round"]);
-            }
-            return intRound;
         }
     }
 }

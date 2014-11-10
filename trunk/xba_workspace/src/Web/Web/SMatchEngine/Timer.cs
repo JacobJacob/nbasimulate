@@ -4,8 +4,8 @@
 
     public class Timer
     {
-        private int intMinute = 0;
-        private int intSecond = 0;
+        private int intMinute;
+        private int intSecond;
         private Random rnd = new Random(DateTime.Now.Millisecond);
 
         public Timer(int intMinute)

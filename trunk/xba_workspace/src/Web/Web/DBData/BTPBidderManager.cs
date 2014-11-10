@@ -8,6 +8,12 @@
 
     public class BTPBidderManager
     {
+        public static void BidBlockRecord(int intUserID)
+        {
+            string commandText = "Exec NewBTP.dbo.Bid_BlockRecord " + intUserID;
+            SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
+        }
+
         public static int BidQuickBuyByUserID(int intUserID, long lngPlayerID, string strIP)
         {
             string commandText = "Exec NewBTP.dbo.Bid_PreQuickBuy @lngPlayerID,@intUserID,@BidIP";

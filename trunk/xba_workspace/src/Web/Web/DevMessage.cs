@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -74,29 +73,30 @@
         private void btnSendUnionMsg_Click(object sender, ImageClickEventArgs e)
         {
             string strIn = this.tbUnionMsg.Text.Trim();
-            if (StringItem.IsValidContent(strIn, 2, 200))
+            if (!StringItem.IsValidContent(strIn, 2, 200))
+            {
+                this.strErrList = "<tr><td height=\"25\" align=\"center\" style=\"color:red\" colspan=\"3\">您输入留言非法，请输入（2-200）个合法字符！</td></tr>";
+            }
+            else
             {
                 switch (BTPUnionManager.AddMessageByUserID(this.intUserID, strIn))
                 {
-                    case 1:
-                    {
-                        int request = (int) SessionItem.GetRequest("Page", 0);
-                        base.Response.Redirect("DevMessage.aspx?Type=UNIONMSG&Page=" + request);
+                    case -2:
+                        this.strErrList = "<tr><td height=\"25\" align=\"center\" style=\"color:red\" colspan=\"3\">您不能重复发言！</td></tr>";
                         return;
-                    }
+
                     case -1:
                         this.strErrList = "<tr><td height=\"25\" align=\"center\" style=\"color:red\" colspan=\"3\">您还没有加入联盟！</td></tr>";
                         return;
 
-                    case -2:
-                        this.strErrList = "<tr><td height=\"25\" align=\"center\" style=\"color:red\" colspan=\"3\">您不能重复发言！</td></tr>";
+                    case 1:
+                    {
+                        int request = SessionItem.GetRequest("Page", 0);
+                        base.Response.Redirect("DevMessage.aspx?Type=UNIONMSG&Page=" + request);
                         return;
+                    }
                 }
                 this.strErrList = "<tr><td height=\"25\" align=\"center\" style=\"color:red\" colspan=\"3\">发言时出现错误请重试！</td></tr>";
-            }
-            else
-            {
-                this.strErrList = "<tr><td height=\"25\" align=\"center\" style=\"color:red\" colspan=\"3\">您输入留言非法，请输入（2-200）个合法字符！</td></tr>";
             }
         }
 
@@ -107,7 +107,7 @@
 
         private int GetMsgTotal()
         {
-            this.strType = (string) SessionItem.GetRequest("Type", 1);
+            this.strType = SessionItem.GetRequest("Type", 1);
             if ((this.strType != "VIEW") && (this.strType == "UNIONMSG"))
             {
                 int intUnionID = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionID"];
@@ -129,50 +129,44 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            string str = "";
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
             }
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", msgTotal, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", msgTotal, "个记录 跳转", str3 });
         }
 
         private void getUnionMsg()
@@ -180,22 +174,22 @@
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
             int intUnionID = (int) accountRowByUserID["UnionID"];
             int num2 = (byte) accountRowByUserID["UnionCategory"];
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 5;
             if (this.intPage < 1)
             {
                 this.intPage = 1;
             }
-            DataTable reader = BTPUnionManager.GetMessageByUnionID(intUnionID, this.intPage, this.intPerPage, false, true);
-            if (reader != null)
+            DataTable table = BTPUnionManager.GetMessageByUnionID(intUnionID, this.intPage, this.intPerPage, false, true);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row2 in table.Rows)
                 {
-                    int intUserID = (int) row["UserID"];
-                    string str = row["Message"].ToString().Trim();
-                    string strNickName = row["NickName"].ToString().Trim();
-                    DateTime datIn = (DateTime) row["CreateTime"];
-                    int num4 = (int) row["UnionMessageID"];
+                    int intUserID = (int) row2["UserID"];
+                    string str = row2["Message"].ToString().Trim();
+                    string strNickName = row2["NickName"].ToString().Trim();
+                    DateTime datIn = (DateTime) row2["CreateTime"];
+                    int num4 = (int) row2["UnionMessageID"];
                     string str3 = "";
                     if (num2 == 1)
                     {
@@ -204,7 +198,6 @@
                     string strList = this.strList;
                     this.strList = strList + "<tr class='BarHead'><td height='25' width='100'><font color='#660066'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", 20) + "</font></td><td width='260' align='left' style='padding-left:5px'>" + StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss") + "</td><td width='170'>" + str3 + "</td></tr><tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\" style='padding:4px;table-layout:fixed;word-break:break-all;'><td height='40' colspan='3' align='left' valign='middle'>" + str + "</td></tr>";
                 }
-                //reader.Close();
                 string strCurrentURL = "DevMessage.aspx?Type=UNIONMSG&";
                 this.strScript = this.GetMsgScript(strCurrentURL);
                 this.strList = this.strList + "<tr><td height='25' align='right' colspan='3'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>";
@@ -262,7 +255,7 @@
         {
             string strCurrentURL = "DevMessage.aspx?Type=VIEW&";
             this.intPerPage = 4;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             int intCount = this.intPerPage * this.intPage;
             int msgTotal = this.GetMsgTotal();
             this.strScript = this.GetMsgScript(strCurrentURL);
@@ -273,10 +266,10 @@
                 {
                     string strNickName = row["NickName"].ToString().Trim();
                     DateTime datIn = (DateTime) row["CreateTime"];
-                    string str2 = StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss");
-                    string str3 = row["Content"].ToString();
+                    string str3 = StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm:ss");
+                    string str4 = row["Content"].ToString();
                     string strList = this.strList;
-                    this.strList = strList + "<tr class='BarHead'><td height='25' width='100'><font color='#660066'>" + MessageItem.GetNameInfo(strNickName) + "</font></td><td width='260' align='left' style='padding-left:5px'>" + str2 + "</td><td width='170'></td></tr><tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\" style='padding:4px;table-layout:fixed;word-break:break-all;'><td height='40' colspan='3' align='left' valign='middle'>" + str3 + "</td></tr>";
+                    this.strList = strList + "<tr class='BarHead'><td height='25' width='100'><font color='#660066'>" + MessageItem.GetNameInfo(strNickName) + "</font></td><td width='260' align='left' style='padding-left:5px'>" + str3 + "</td><td width='170'></td></tr><tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\" style='padding:4px;table-layout:fixed;word-break:break-all;'><td height='40' colspan='3' align='left' valign='middle'>" + str4 + "</td></tr>";
                 }
                 BTPDevManager.UpdateHasNewMsg(this.intClubID5);
                 this.strList = this.strList + "<tr><td height='25' align='right' colspan='3'>" + this.GetMsgViewPage(strCurrentURL) + "</td></tr>";
@@ -302,7 +295,7 @@
                 this.tblMessage.Visible = false;
                 this.tblSendMsg.Visible = false;
                 this.tblUnionMsg.Visible = false;
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
+                this.strType = SessionItem.GetRequest("Type", 1);
                 this.strDevCode = BTPDevManager.GetDevCodeByUserID(this.intUserID);
                 this.InitializeComponent();
                 base.OnInit(e);

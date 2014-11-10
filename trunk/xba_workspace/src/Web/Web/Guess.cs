@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -41,7 +40,7 @@
         private void AddGuess()
         {
             this.tbMoney.Attributes["onkeyup"] = " getMoney();";
-            this.intGuessID = (int) SessionItem.GetRequest("GuessID", 0);
+            this.intGuessID = SessionItem.GetRequest("GuessID", 0);
             DataRow useGuessRowByGuessID = BTPGuessManager.GetUseGuessRowByGuessID(this.intGuessID);
             if (useGuessRowByGuessID == null)
             {
@@ -94,22 +93,22 @@
             }
             else
             {
-                string str3;
-                string str2 = this.tbMoney.Text.ToString();
-                if (StringItem.IsNumber(str2))
+                string str2;
+                string str3 = this.tbMoney.Text.ToString();
+                if (StringItem.IsNumber(str3))
                 {
-                    long num2 = Convert.ToInt64(str2);
-                    if (flag)
+                    long num2 = Convert.ToInt64(str3);
+                    if (!flag)
                     {
-                        if ((num2 < 10L) || (num2 > 0x2710L))
+                        if ((num2 < 0x2710L) || (num2 > 0x989680L))
                         {
-                            base.Response.Redirect("Report.aspx?Parameter=818");
+                            base.Response.Redirect("Report.aspx?Parameter=817");
                             return;
                         }
                     }
-                    else if ((num2 < 0x2710L) || (num2 > 0x989680L))
+                    else if ((num2 < 10L) || (num2 > 0x2710L))
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=817");
+                        base.Response.Redirect("Report.aspx?Parameter=818");
                         return;
                     }
                 }
@@ -120,13 +119,13 @@
                 }
                 if (this.rbCheckA.Checked)
                 {
-                    str3 = "0";
+                    str2 = "0";
                 }
                 else
                 {
-                    str3 = "1";
+                    str2 = "1";
                 }
-                base.Response.Redirect(string.Concat(new object[] { "SecretaryPage.aspx?Type=ADDGUESSRECORD&GuessID=", this.intGuessID, "&Money=", str2, "&ResultType=", str3 }));
+                base.Response.Redirect(string.Concat(new object[] { "SecretaryPage.aspx?Type=ADDGUESSRECORD&GuessID=", this.intGuessID, "&Money=", str3, "&ResultType=", str2 }));
             }
         }
 
@@ -163,46 +162,40 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            obj2 = str2 + " " + str3 + " ";
-            return string.Concat(new object[] { obj2, "总数:", total, "  跳转 ", str4 });
+            str3 = str3 + "</select>";
+            obj2 = str + " " + str2 + " ";
+            return string.Concat(new object[] { obj2, "总数:", total, "  跳转 ", str3 });
         }
 
         private void Imagebutton1_Click(object sender, ImageClickEventArgs e)
@@ -214,10 +207,8 @@
         {
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
             this.Imagebutton1.Click += new ImageClickEventHandler(this.Imagebutton1_Click);
-
             this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.GIF";
             this.Imagebutton1.ImageUrl = SessionItem.GetImageURL() + "button_13.GIF";
-
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -232,8 +223,8 @@
             {
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
-                this.intPage = (int) SessionItem.GetRequest("Page", 0);
+                this.strType = SessionItem.GetRequest("Type", 1);
+                this.intPage = SessionItem.GetRequest("Page", 0);
                 this.tblGuess.Visible = false;
                 this.tblMyGuess.Visible = false;
                 this.tblCalendar.Visible = false;
@@ -292,102 +283,99 @@
 
         private void SetGuess()
         {
-            this.intPrePage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPrePage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
             }
             this.intPrePage = 8;
-            string str4 = "";
-            string str5 = "";
-            string str8 = "";
-            DataTable reader = BTPGuessManager.GetUseGuessTableByHasResult(0, 0, this.intPage, 0x2710);
-            if (reader != null)
+            string str = "";
+            string str2 = "";
+            string str3 = "";
+            DataTable table = BTPGuessManager.GetUseGuessTableByHasResult(0, 0, this.intPage, 0x2710);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string str6;
-                    string str7;
-                    string str = row["Type"].ToString().Trim();
-                    string str2 = row["NameA"].ToString().Trim();
-                    string str3 = row["NameB"].ToString().Trim();
+                    string str4;
+                    string str5;
+                    string str6 = row["Type"].ToString().Trim();
+                    string str7 = row["NameA"].ToString().Trim();
+                    string str8 = row["NameB"].ToString().Trim();
                     long num = (long) row["NameAMoney"];
                     long num2 = (long) row["NameBMoney"];
-                    int num4 = Convert.ToInt32(row["MoneyType"]);
-                    int num5 = (int) row["GuessID"];
+                    int num3 = Convert.ToInt32(row["MoneyType"]);
+                    int num4 = (int) row["GuessID"];
                     bool flag = Convert.ToBoolean(row["Hot"]);
                     DateTime datIn = Convert.ToDateTime(row["EndTime"]);
                     if (flag)
                     {
-                        str = "<font color=red>荐</font>" + str;
+                        str6 = "<font color=red>荐</font>" + str6;
                     }
-                    if (num4 == 0)
+                    if (num3 == 0)
                     {
-                        str4 = "资";
-                    }
-                    else
-                    {
-                        str4 = "币";
-                    }
-                    str5 = "<a href='Guess.aspx?Type=ADDGUESS&GuessID=" + num5 + "'>竞猜</a>";
-                    if (num4 == 0)
-                    {
-                        str6 = (num / 0x2710L) + "万";
-                        str7 = (num2 / 0x2710L) + "万";
+                        str = "资";
                     }
                     else
                     {
-                        str6 = num.ToString();
-                        str7 = num2.ToString();
+                        str = "币";
+                    }
+                    str2 = "<a href='Guess.aspx?Type=ADDGUESS&GuessID=" + num4 + "'>竞猜</a>";
+                    if (num3 == 0)
+                    {
+                        str4 = (num / 0x2710L) + "万";
+                        str5 = (num2 / 0x2710L) + "万";
+                    }
+                    else
+                    {
+                        str4 = num.ToString();
+                        str5 = num2.ToString();
                     }
                     if (num == num2)
                     {
-                        str8 = str8 = "<font color=red size=1>1</font>";
+                        str3 = str3 = "<font color=red size=1>1</font>";
                     }
                     else
                     {
-                        double num3;
+                        double num5;
                         if (num > num2)
                         {
                             if (num2 != 0L)
                             {
-                                num3 = ((double) num) / ((double) num2);
-                                num3 = StringItem.getFloat(num3, 2);
-                                str8 = "<font color=red size=1>" + num3 + "</font>";
+                                num5 = ((double) num) / ((double) num2);
+                                num5 = StringItem.getFloat(num5, 2);
+                                str3 = "<font color=red size=1>" + num5 + "</font>";
                             }
                             else
                             {
-                                str8 = "<font color=red>暂无</font>";
+                                str3 = "<font color=red>暂无</font>";
                             }
-                            str7 = "<font color=3333ff>" + str7 + "</font>";
+                            str5 = "<font color=3333ff>" + str5 + "</font>";
                         }
                         else
                         {
                             if (num != 0L)
                             {
-                                num3 = ((double) num2) / ((double) num);
-                                num3 = StringItem.getFloat(num3, 2);
-                                str8 = "<font color=red size=1>" + num3 + "</font>";
+                                num5 = ((double) num2) / ((double) num);
+                                num5 = StringItem.getFloat(num5, 2);
+                                str3 = "<font color=red size=1>" + num5 + "</font>";
                             }
                             else
                             {
-                                str8 = "<font color=red>暂无</font>";
+                                str3 = "<font color=red>暂无</font>";
                             }
-                            str6 = "<font color=#3333ff >" + str6 + "</font>";
+                            str4 = "<font color=#3333ff >" + str4 + "</font>";
                         }
                     }
                     if (DateTime.Now <= datIn)
                     {
                         this.sbGuess.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                        this.sbGuess.Append("<td align=center>" + str + "</td><td width=143 align=center>" + str2 + "<br><font color='#ff6600'>[" + str6 + "]</font></td><td width=50 align=center>VS<br>" + str8 + "</td>");
-                        this.sbGuess.Append("<td width=143 align=center>" + str3 + "<br><font color='#ff6600'>[" + str7 + "]</font></td><td align=center>" + str4 + "</td>");
-                        //this.sbGuess.Append("<td width=143 align=center>" + str3 + "<br><font color='#ff6600'>[" + str7 + "]</font></td>");
-                        this.sbGuess.Append("<td align=center>" + StringItem.FormatDate(datIn, "MM-dd<br>hh:mm") + "</td><td align=center>" + str5 + "</td></tr>");
+                        this.sbGuess.Append("<td align=center>" + str6 + "</td><td width=143 align=center>" + str7 + "<br><font color='#ff6600'>[" + str4 + "]</font></td><td width=50 align=center>VS<br>" + str3 + "</td>");
+                        this.sbGuess.Append("<td width=143 align=center>" + str8 + "<br><font color='#ff6600'>[" + str5 + "]</font></td><td align=center>" + str + "</td>");
+                        this.sbGuess.Append("<td align=center>" + StringItem.FormatDate(datIn, "MM-dd<br>hh:mm") + "</td><td align=center>" + str2 + "</td></tr>");
                         this.sbGuess.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
                     }
                 }
-               
-                //reader.Close();
             }
             else
             {
@@ -397,134 +385,132 @@
 
         private void SetMyGuess()
         {
-            this.intPrePage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPrePage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
             }
             this.intPrePage = 8;
+            string str = "";
+            string str2 = "";
+            string str3 = "";
+            string str4 = "";
             string str5 = "";
-            string str6 = "";
-            string str7 = "";
-            string str8 = "";
-            string str9 = "";
-            DataTable reader = BTPGuessManager.GetGuessRecordTableByUserID(this.intUserID, 0, this.intPage, this.intPrePage);
-            if (reader != null)
+            DataTable table = BTPGuessManager.GetGuessRecordTableByUserID(this.intUserID, 0, this.intPage, this.intPrePage);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string str;
+                    string str6;
                     int intGuessID = (int) row["GuessID"];
-                    long num = (long) row["MyMoney"];
+                    long num2 = (long) row["MyMoney"];
                     bool flag = (bool) row["ResultType"];
                     DataRow guessRowByGuessID = BTPGuessManager.GetGuessRowByGuessID(intGuessID);
-                    string str2 = guessRowByGuessID["Type"].ToString().Trim();
-                    string str3 = guessRowByGuessID["NameA"].ToString().Trim();
-                    string str4 = guessRowByGuessID["NameB"].ToString().Trim();
-                    long num2 = (long) guessRowByGuessID["NameAMoney"];
-                    long num3 = (long) guessRowByGuessID["NameBMoney"];
+                    string str7 = guessRowByGuessID["Type"].ToString().Trim();
+                    string str8 = guessRowByGuessID["NameA"].ToString().Trim();
+                    string str9 = guessRowByGuessID["NameB"].ToString().Trim();
+                    long num3 = (long) guessRowByGuessID["NameAMoney"];
+                    long num4 = (long) guessRowByGuessID["NameBMoney"];
                     int num5 = Convert.ToInt32(guessRowByGuessID["MoneyType"]);
-                    int num7 = Convert.ToInt32(guessRowByGuessID["HasResult"]);
+                    int num6 = Convert.ToInt32(guessRowByGuessID["HasResult"]);
                     DateTime datIn = Convert.ToDateTime(guessRowByGuessID["EndTime"]);
-                    str6 = guessRowByGuessID["ResultText"].ToString().Trim();
+                    str2 = guessRowByGuessID["ResultText"].ToString().Trim();
                     bool flag2 = Convert.ToBoolean(guessRowByGuessID["Hot"]);
                     if (num5 == 0)
                     {
-                        str8 = (num2 / 0x2710L) + "万";
-                        str9 = (num3 / 0x2710L) + "万";
+                        str4 = (num3 / 0x2710L) + "万";
+                        str5 = (num4 / 0x2710L) + "万";
                     }
                     else
                     {
-                        str8 = num2.ToString();
-                        str9 = num3.ToString();
+                        str4 = num3.ToString();
+                        str5 = num4.ToString();
                     }
                     if (num5 == 0)
                     {
-                        str5 = "资";
+                        str = "资";
                     }
                     else
                     {
-                        str5 = "币";
+                        str = "币";
                     }
                     if (flag2)
                     {
-                        str2 = "<font color=red>荐</font>" + str2;
+                        str7 = "<font color=red>荐</font>" + str7;
                     }
-                    if ((num == 0L) && (num7 < 3))
+                    if ((num2 == 0L) && (num6 < 3))
                     {
-                        if ((DateTime.Now > datIn) && (num7 > 0))
+                        if ((DateTime.Now > datIn) && (num6 > 0))
                         {
-                            str7 = "<font color=#999999>结算中</font>";
+                            str3 = "<font color=#999999>结算中</font>";
                         }
                         else
                         {
-                            str7 = "<font color=#999999>未平盘</font>";
+                            str3 = "<font color=#999999>未平盘</font>";
                         }
                     }
-                    else if (num > 0L)
+                    else if (num2 > 0L)
                     {
-                        str7 = "<font color=green>+" + num + "</font>";
+                        str3 = "<font color=green>+" + num2 + "</font>";
                     }
-                    else if (num < 0L)
+                    else if (num2 < 0L)
                     {
-                        str7 = "<font color=red>" + num + "</font>";
+                        str3 = "<font color=red>" + num2 + "</font>";
                     }
-                    else if ((num == 0L) && (num7 == 3))
+                    else if ((num2 == 0L) && (num6 == 3))
                     {
-                        str7 = "<font color=green>+" + 0 + "</font>";
+                        str3 = "<font color=green>+" + 0 + "</font>";
                     }
                     if (!flag)
                     {
-                        str3 = "<font color=green>" + str3 + "</font>";
+                        str8 = "<font color=green>" + str8 + "</font>";
                     }
                     else
                     {
-                        str4 = "<font color=green>" + str4 + "</font>";
+                        str9 = "<font color=green>" + str9 + "</font>";
                     }
-                    if (num2 == num3)
+                    if (num3 == num4)
                     {
-                        str = str = "<font color=red size=1>1</font>";
+                        str6 = str6 = "<font color=red size=1>1</font>";
                     }
                     else
                     {
-                        double num4;
-                        if (num2 > num3)
+                        double num7;
+                        if (num3 > num4)
                         {
-                            if (num3 != 0L)
+                            if (num4 != 0L)
                             {
-                                num4 = ((double) num2) / ((double) num3);
-                                num4 = StringItem.getFloat(num4, 2);
-                                str = "<font color=red size=1>" + num4 + "</font>";
+                                num7 = ((double) num3) / ((double) num4);
+                                num7 = StringItem.getFloat(num7, 2);
+                                str6 = "<font color=red size=1>" + num7 + "</font>";
                             }
                             else
                             {
-                                str = "<font color=red>暂无</font>";
+                                str6 = "<font color=red>暂无</font>";
                             }
-                            str9 = "<font color=3333ff>" + str9 + "</font>";
+                            str5 = "<font color=3333ff>" + str5 + "</font>";
                         }
                         else
                         {
-                            if (num2 != 0L)
+                            if (num3 != 0L)
                             {
-                                num4 = ((double) num3) / ((double) num2);
-                                num4 = StringItem.getFloat(num4, 2);
-                                str = "<font color=red size=1>" + num4 + "</font>";
+                                num7 = ((double) num4) / ((double) num3);
+                                num7 = StringItem.getFloat(num7, 2);
+                                str6 = "<font color=red size=1>" + num7 + "</font>";
                             }
                             else
                             {
-                                str = "<font color=red>暂无</font>";
+                                str6 = "<font color=red>暂无</font>";
                             }
-                            str8 = "<font color=#3333ff >" + str8 + "</font>";
+                            str4 = "<font color=#3333ff >" + str4 + "</font>";
                         }
                     }
                     this.sbGuess.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbGuess.Append("<td align=center>" + str2 + "</td><td width=103 align=center>" + str3 + "<br><font color='#ff6600'>[" + str8 + "]</font></td><td width=50 align=center>VS<br>" + str + "</td>");
-                    this.sbGuess.Append("<td width=103 align=center>" + str4 + "<br><font color='#ff6600'>[" + str9 + "]</font></td><td align=center width=80 >" + str7 + "</td><td align=center>" + str5 + "</td>");
-                    //this.sbGuess.Append("<td width=103 align=center>" + str4 + "<br><font color='#ff6600'>[" + str9 + "]</font></td><td align=center width=80 >" + str7 + "</td>");
-                    this.sbGuess.Append("<td align=center>" + StringItem.FormatDate(datIn, "MM-dd<br>hh:mm") + "</td><td align=center>" + str6 + "</td></tr>");
+                    this.sbGuess.Append("<td align=center>" + str7 + "</td><td width=103 align=center>" + str8 + "<br><font color='#ff6600'>[" + str4 + "]</font></td><td width=50 align=center>VS<br>" + str6 + "</td>");
+                    this.sbGuess.Append("<td width=103 align=center>" + str9 + "<br><font color='#ff6600'>[" + str5 + "]</font></td><td align=center width=80 >" + str3 + "</td><td align=center>" + str + "</td>");
+                    this.sbGuess.Append("<td align=center>" + StringItem.FormatDate(datIn, "MM-dd<br>hh:mm") + "</td><td align=center>" + str2 + "</td></tr>");
                     this.sbGuess.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='8'></td></tr>");
                 }
-                //reader.Close();
             }
             else
             {

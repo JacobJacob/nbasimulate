@@ -7,17 +7,17 @@
 
     public class Arrange
     {
-        public int intDefAbility = 0;
+        public int intDefAbility;
         public int intDefAdd;
         public int intDefense;
         public int intDefHard;
-        public int intDRebAbility = 0;
-        public int intOffAbility = 0;
+        public int intDRebAbility;
+        public int intOffAbility;
         public int intOffAdd;
         public int intOffense;
         public int intOffHard;
         public int intOffMethod;
-        public int intORebAbility = 0;
+        public int intORebAbility;
         public Player pACP;
         public Player pBBP;
         public Player pC;
@@ -83,36 +83,36 @@
                     intAstAbility = this.pF.intAstAbility;
                     num3 = (this.pG.intAstAbility * 120) / 100;
                     num4 = intAstAbility + num3;
-                    if (this.rnd.Next(0, num4) >= intAstAbility)
+                    if (this.rnd.Next(0, num4) < intAstAbility)
                     {
-                        this.pACP = this.pG;
+                        this.pACP = this.pF;
                         return;
                     }
-                    this.pACP = this.pF;
+                    this.pACP = this.pG;
                     return;
 
                 case 3:
                     num = this.pC.intAstAbility;
                     num3 = (this.pG.intAstAbility * 120) / 100;
                     num4 = num + num3;
-                    if (this.rnd.Next(0, num4) >= num)
+                    if (this.rnd.Next(0, num4) < num)
                     {
-                        this.pACP = this.pG;
+                        this.pACP = this.pC;
                         return;
                     }
-                    this.pACP = this.pC;
+                    this.pACP = this.pG;
                     return;
 
                 case 5:
                     num = this.pC.intAstAbility;
                     intAstAbility = (this.pF.intAstAbility * 110) / 100;
                     num4 = num + intAstAbility;
-                    if (this.rnd.Next(0, num4) >= num)
+                    if (this.rnd.Next(0, num4) < num)
                     {
-                        this.pACP = this.pF;
+                        this.pACP = this.pC;
                         return;
                     }
-                    this.pACP = this.pC;
+                    this.pACP = this.pF;
                     return;
             }
             this.pACP = this.pG;
@@ -179,38 +179,38 @@
 
         public int GetDefAbility(Player pOCP, int intOffMethod)
         {
+            int num;
             int num2;
             int num3;
-            int num4;
             int intPos = pOCP.intPos;
             switch (this.intDefense)
             {
                 case 1:
-                    num2 = (this.pC.intDefAbility * 120) / 100;
-                    num3 = (this.pF.intDefAbility * 120) / 100;
-                    num4 = (this.pG.intDefAbility * 120) / 100;
-                    this.GetDCP(intPos, intOffMethod, num2, num3, num4);
+                    num = (this.pC.intDefAbility * 120) / 100;
+                    num2 = (this.pF.intDefAbility * 120) / 100;
+                    num3 = (this.pG.intDefAbility * 120) / 100;
+                    this.GetDCP(intPos, intOffMethod, num, num2, num3);
                     break;
 
                 case 2:
-                    num2 = (this.pC.intDefAbility * 130) / 100;
-                    num3 = (this.pF.intDefAbility * 120) / 100;
-                    num4 = (this.pG.intDefAbility * 110) / 100;
-                    this.GetDCP(intPos, intOffMethod, num2, num3, num4);
+                    num = (this.pC.intDefAbility * 130) / 100;
+                    num2 = (this.pF.intDefAbility * 120) / 100;
+                    num3 = (this.pG.intDefAbility * 110) / 100;
+                    this.GetDCP(intPos, intOffMethod, num, num2, num3);
                     break;
 
                 case 3:
-                    num2 = (this.pC.intDefAbility * 110) / 100;
-                    num3 = (this.pF.intDefAbility * 120) / 100;
-                    num4 = (this.pG.intDefAbility * 130) / 100;
-                    this.GetDCP(intPos, intOffMethod, num2, num3, num4);
+                    num = (this.pC.intDefAbility * 110) / 100;
+                    num2 = (this.pF.intDefAbility * 120) / 100;
+                    num3 = (this.pG.intDefAbility * 130) / 100;
+                    this.GetDCP(intPos, intOffMethod, num, num2, num3);
                     break;
 
                 default:
-                    num2 = (this.pC.intDefAbility * 120) / 100;
-                    num3 = (this.pF.intDefAbility * 120) / 100;
-                    num4 = (this.pG.intDefAbility * 120) / 100;
-                    this.GetDCP(intPos, intOffMethod, num2, num3, num4);
+                    num = (this.pC.intDefAbility * 120) / 100;
+                    num2 = (this.pF.intDefAbility * 120) / 100;
+                    num3 = (this.pG.intDefAbility * 120) / 100;
+                    this.GetDCP(intPos, intOffMethod, num, num2, num3);
                     break;
             }
             this.intDefAbility = ((this.intDefAbility * this.intDefHard) * (100 + this.intDefAdd)) / 0x2710;
@@ -293,36 +293,37 @@
 
         public int GetOffAbility()
         {
+            int num;
             int num2;
-            int num3;
             int intOffAbility;
-            int num = this.rnd.Next(0, 100);
+            int num4 = this.rnd.Next(0, 100);
             switch (this.intOffense)
             {
                 case 1:
-                    if (num >= 0x20)
+                    if (num4 < 0x20)
                     {
-                        if ((num >= 0x20) && (num < 0x3a))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 0x3a) && (num < 0x41))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num4 < 0x20) || (num4 >= 0x3a))
+                    {
+                        if ((num4 >= 0x3a) && (num4 < 0x41))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x41) && (num < 0x48))
+                        else if ((num4 >= 0x41) && (num4 < 0x48))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x48) && (num < 0x4b))
+                        else if ((num4 >= 0x48) && (num4 < 0x4b))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 0x4b) && (num < 0x54))
+                        else if ((num4 >= 0x4b) && (num4 < 0x54))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x54) && (num < 0x5d))
+                        else if ((num4 >= 0x54) && (num4 < 0x5d))
                         {
                             this.intOffMethod = 7;
                         }
@@ -332,33 +333,34 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
 
                 case 2:
-                    if (num >= 10)
+                    if (num4 < 10)
                     {
-                        if ((num >= 10) && (num < 0x2a))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 0x2a) && (num < 0x2f))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num4 < 10) || (num4 >= 0x2a))
+                    {
+                        if ((num4 >= 0x2a) && (num4 < 0x2f))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x2f) && (num < 0x3e))
+                        else if ((num4 >= 0x2f) && (num4 < 0x3e))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x3e) && (num < 0x45))
+                        else if ((num4 >= 0x3e) && (num4 < 0x45))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 0x45) && (num < 0x4a))
+                        else if ((num4 >= 0x45) && (num4 < 0x4a))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x4a) && (num < 90))
+                        else if ((num4 >= 0x4a) && (num4 < 90))
                         {
                             this.intOffMethod = 7;
                         }
@@ -368,33 +370,34 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
 
                 case 3:
-                    if (num >= 3)
+                    if (num4 < 3)
                     {
-                        if ((num >= 3) && (num < 8))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 8) && (num < 0x17))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num4 < 3) || (num4 >= 8))
+                    {
+                        if ((num4 >= 8) && (num4 < 0x17))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x17) && (num < 0x2e))
+                        else if ((num4 >= 0x17) && (num4 < 0x2e))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x2e) && (num < 70))
+                        else if ((num4 >= 0x2e) && (num4 < 70))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 70) && (num < 80))
+                        else if ((num4 >= 70) && (num4 < 80))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 80) && (num < 90))
+                        else if ((num4 >= 80) && (num4 < 90))
                         {
                             this.intOffMethod = 7;
                         }
@@ -404,33 +407,34 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
 
                 case 4:
-                    if (num >= 4)
+                    if (num4 < 4)
                     {
-                        if ((num >= 4) && (num < 0x17))
-                        {
-                            this.intOffMethod = 2;
-                        }
-                        else if ((num >= 0x17) && (num < 0x1c))
+                        this.intOffMethod = 1;
+                        break;
+                    }
+                    if ((num4 < 4) || (num4 >= 0x17))
+                    {
+                        if ((num4 >= 0x17) && (num4 < 0x1c))
                         {
                             this.intOffMethod = 3;
                         }
-                        else if ((num >= 0x1c) && (num < 0x2f))
+                        else if ((num4 >= 0x1c) && (num4 < 0x2f))
                         {
                             this.intOffMethod = 4;
                         }
-                        else if ((num >= 0x2f) && (num < 60))
+                        else if ((num4 >= 0x2f) && (num4 < 60))
                         {
                             this.intOffMethod = 5;
                         }
-                        else if ((num >= 60) && (num < 0x42))
+                        else if ((num4 >= 60) && (num4 < 0x42))
                         {
                             this.intOffMethod = 6;
                         }
-                        else if ((num >= 0x42) && (num < 0x53))
+                        else if ((num4 >= 0x42) && (num4 < 0x53))
                         {
                             this.intOffMethod = 7;
                         }
@@ -440,73 +444,73 @@
                         }
                         break;
                     }
-                    this.intOffMethod = 1;
+                    this.intOffMethod = 2;
                     break;
             }
             switch (this.intOffMethod)
             {
                 case 1:
-                    num2 = (this.pC.intOffAbility * 130) / 100;
-                    num3 = (this.pF.intOffAbility * 130) / 100;
+                    num = (this.pC.intOffAbility * 130) / 100;
+                    num2 = (this.pF.intOffAbility * 130) / 100;
                     intOffAbility = this.pG.intOffAbility;
-                    this.intOffAbility = (num2 + num3) + intOffAbility;
-                    this.GetOCP(num2, num3, intOffAbility);
+                    this.intOffAbility = (num + num2) + intOffAbility;
+                    this.GetOCP(num, num2, intOffAbility);
                     break;
 
                 case 2:
-                    num2 = ((this.pC.intOffAbility * 120) / 100) + ((this.pG.intOffAbility * 20) / 100);
-                    num3 = ((this.pF.intOffAbility * 120) / 100) + ((this.pG.intOffAbility * 10) / 100);
+                    num = ((this.pC.intOffAbility * 120) / 100) + ((this.pG.intOffAbility * 20) / 100);
+                    num2 = ((this.pF.intOffAbility * 120) / 100) + ((this.pG.intOffAbility * 10) / 100);
                     intOffAbility = this.pG.intOffAbility;
-                    this.intOffAbility = (num2 + num3) + intOffAbility;
-                    this.GetOCP(num2, num3, intOffAbility);
+                    this.intOffAbility = (num + num2) + intOffAbility;
+                    this.GetOCP(num, num2, intOffAbility);
                     break;
 
                 case 3:
-                    num2 = this.pC.intOffAbility;
-                    num3 = (this.pF.intOffAbility * 0x7d) / 100;
+                    num = this.pC.intOffAbility;
+                    num2 = (this.pF.intOffAbility * 0x7d) / 100;
                     intOffAbility = (this.pG.intOffAbility * 0x87) / 100;
-                    this.intOffAbility = (num2 + num3) + intOffAbility;
-                    this.GetOCP(num2, num3, intOffAbility);
+                    this.intOffAbility = (num + num2) + intOffAbility;
+                    this.GetOCP(num, num2, intOffAbility);
                     break;
 
                 case 4:
-                    num2 = this.pC.intOffAbility;
-                    num3 = ((this.pF.intOffAbility * 120) / 100) + ((this.pG.intOffAbility * 10) / 100);
+                    num = this.pC.intOffAbility;
+                    num2 = ((this.pF.intOffAbility * 120) / 100) + ((this.pG.intOffAbility * 10) / 100);
                     intOffAbility = (this.pG.intOffAbility * 140) / 100;
-                    this.intOffAbility = (num2 + num3) + intOffAbility;
-                    this.GetOCP(num2, num3, intOffAbility);
+                    this.intOffAbility = (num + num2) + intOffAbility;
+                    this.GetOCP(num, num2, intOffAbility);
                     break;
 
                 case 5:
-                    num2 = this.pC.intOffAbility;
-                    num3 = (this.pF.intOffAbility * 120) / 100;
+                    num = this.pC.intOffAbility;
+                    num2 = (this.pF.intOffAbility * 120) / 100;
                     intOffAbility = (this.pG.intOffAbility * 130) / 100;
-                    this.intOffAbility = (num2 + num3) + intOffAbility;
-                    this.GetOCP(num2, num3, intOffAbility);
+                    this.intOffAbility = (num + num2) + intOffAbility;
+                    this.GetOCP(num, num2, intOffAbility);
                     break;
 
                 case 6:
-                    num2 = this.pC.intOffAbility;
-                    num3 = (this.pF.intOffAbility * 130) / 100;
+                    num = this.pC.intOffAbility;
+                    num2 = (this.pF.intOffAbility * 130) / 100;
                     intOffAbility = (this.pG.intOffAbility * 130) / 100;
-                    this.intOffAbility = (num2 + num3) + intOffAbility;
-                    this.GetOCP(num2, num3, intOffAbility);
+                    this.intOffAbility = (num + num2) + intOffAbility;
+                    this.GetOCP(num, num2, intOffAbility);
                     break;
 
                 case 7:
-                    num2 = this.pC.intOffAbility;
-                    num3 = ((this.pF.intOffAbility * 120) / 100) + ((this.pC.intOffAbility * 120) / 100);
+                    num = this.pC.intOffAbility;
+                    num2 = ((this.pF.intOffAbility * 120) / 100) + ((this.pC.intOffAbility * 120) / 100);
                     intOffAbility = ((this.pG.intOffAbility * 120) / 100) + ((this.pC.intOffAbility * 110) / 100);
-                    this.intOffAbility = (num2 + num3) + intOffAbility;
-                    this.GetOCP(num2, num3, intOffAbility);
+                    this.intOffAbility = (num + num2) + intOffAbility;
+                    this.GetOCP(num, num2, intOffAbility);
                     break;
 
                 default:
-                    num2 = this.pC.intOffAbility;
-                    num3 = ((this.pF.intOffAbility * 120) / 100) + ((this.pG.intOffAbility * 20) / 100);
+                    num = this.pC.intOffAbility;
+                    num2 = ((this.pF.intOffAbility * 120) / 100) + ((this.pG.intOffAbility * 20) / 100);
                     intOffAbility = (this.pG.intOffAbility * 130) / 100;
-                    this.intOffAbility = (num2 + num3) + intOffAbility;
-                    this.GetOCP(num2, num3, intOffAbility);
+                    this.intOffAbility = (num + num2) + intOffAbility;
+                    this.GetOCP(num, num2, intOffAbility);
                     break;
             }
             this.GetACP(this.pOCP.intPos);

@@ -7,7 +7,7 @@
 
     public class BTPParameterManager
     {
-        private static string BAD_WORD = null;
+        private static string BAD_WORD;
 
         public static string GetBadWord()
         {
@@ -16,9 +16,7 @@
                 string commandText = "SELECT TOP 1 BadWord FROM BTP_Parameter";
                 BAD_WORD = SqlHelper.ExecuteStringReader(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
             }
-
-            return BAD_WORD; 
-        
+            return BAD_WORD;
         }
 
         public static DataRow GetParameterRow()

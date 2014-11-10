@@ -25,28 +25,28 @@
                     return "Main.gif";
 
                 case 1:
-                    if (!flag)
+                    if (flag)
                     {
-                        return "server_01.gif";
+                        return "server_01_full.gif";
                     }
-                    return "server_01_full.gif";
+                    return "server_01.gif";
 
                 case 2:
-                    if (!flag)
+                    if (flag)
                     {
-                        return "server_02.gif";
+                        return "server_02_full.gif";
                     }
-                    return "server_02_full.gif";
+                    return "server_02.gif";
 
                 case 3:
-                    if (!flag)
+                    if (flag)
                     {
-                        return "server_03.gif";
+                        return "server_03_full.gif";
                     }
-                    return "server_03_full.gif";
+                    return "server_03.gif";
 
                 case 4:
-                    if (!flag)
+                    if (flag)
                     {
                         return "server_51edu.gif";
                     }

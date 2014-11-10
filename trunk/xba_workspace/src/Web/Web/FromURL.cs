@@ -21,13 +21,14 @@
 
         protected override void OnInit(EventArgs e)
         {
-            this.strFromURL = (string) SessionItem.GetRequest("FromURL", 1);
-            this.intFromID = (int) SessionItem.GetRequest("FromID", 0);
-            this.strJumpToURL = (string) SessionItem.GetRequest("JumpToURL", 1);
+            this.strFromURL = SessionItem.GetRequest("FromURL", 1);
+            this.intFromID = SessionItem.GetRequest("FromID", 0);
+            this.strJumpToURL = SessionItem.GetRequest("JumpToURL", 1);
             if (this.strFromURL != "")
             {
-                HttpCookie cookie = new HttpCookie("FromURL");
-                cookie.Value = this.strFromURL;
+                HttpCookie cookie = new HttpCookie("FromURL") {
+                    Value = this.strFromURL
+                };
                 base.Response.Cookies.Add(cookie);
             }
             if (this.strJumpToURL == "")
@@ -45,9 +46,9 @@
                 {
                     this.strFromName = "";
                 }
-                //userRowByUserID.Close();
-                HttpCookie cookie2 = new HttpCookie("FromName");
-                cookie2.Value = this.strFromName;
+                HttpCookie cookie2 = new HttpCookie("FromName") {
+                    Value = this.strFromName
+                };
                 base.Response.Cookies.Add(cookie2);
             }
             base.Response.Redirect(this.strJumpToURL);

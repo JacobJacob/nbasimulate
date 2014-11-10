@@ -31,17 +31,24 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            switch (SessionItem.GetRequest("Type", 1).ToString().Trim())
+            string str = SessionItem.GetRequest("Type", 1).ToString().Trim();
+            if (str != null)
             {
-                case "ASSIGNDEVCLUB":
+                if (str != "ASSIGNDEVCLUB")
+                {
+                    if (str != "ASSIGNCLUB")
+                    {
+                        return;
+                    }
+                }
+                else
+                {
                     this.strLeftURL = "RookieAssignDevClub.aspx";
                     this.strRightURL = "Intro/PlayerCenter.aspx?Type=NEWPLAYER";
-                    break;
-
-                case "ASSIGNCLUB":
-                    this.strLeftURL = "RookieAssignClub.aspx";
-                    this.strRightURL = "Intro/PlayerCenter.aspx?Type=NEWPLAYER";
-                    break;
+                    return;
+                }
+                this.strLeftURL = "RookieAssignClub.aspx";
+                this.strRightURL = "Intro/PlayerCenter.aspx?Type=NEWPLAYER";
             }
         }
     }

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -142,43 +141,43 @@
                         break;
                 }
             }
-            int num24 = 200;
-            int num25 = 20;
+            int num5 = 200;
+            int num6 = 20;
             foreach (DataRow row2 in BTPPlayer3Manager.GetArrPlayerTable(this.intClubID).Rows)
             {
-                long num5 = (long) row2["PlayerID"];
-                int num11 = (byte) row2["Age"];
+                long num7 = (long) row2["PlayerID"];
+                int num8 = (byte) row2["Age"];
                 string str2 = row2["Name"].ToString().Trim();
                 int intPosition = (byte) row2["Pos"];
                 string playerChsPosition = PlayerItem.GetPlayerChsPosition(intPosition);
-                int num7 = (byte) row2["Number"];
-                int num8 = (byte) row2["Power"];
+                int num10 = (byte) row2["Number"];
+                int num11 = (byte) row2["Power"];
                 float num12 = ((float) ((int) row2["Ability"])) / 10f;
-                int num9 = (byte) row2["Height"];
-                int num10 = (byte) row2["Weight"];
-                float num13 = ((float) ((int) row2["Speed"])) / 10f;
-                float num14 = ((float) ((int) row2["Jump"])) / 10f;
-                float num15 = ((float) ((int) row2["Strength"])) / 10f;
-                float num16 = ((float) ((int) row2["Stamina"])) / 10f;
-                float num17 = ((float) ((int) row2["Shot"])) / 10f;
-                float num18 = ((float) ((int) row2["Point3"])) / 10f;
-                float num19 = ((float) ((int) row2["Dribble"])) / 10f;
-                float num20 = ((float) ((int) row2["Pass"])) / 10f;
-                float num21 = ((float) ((int) row2["Rebound"])) / 10f;
-                float num22 = ((float) ((int) row2["Steal"])) / 10f;
-                float num23 = ((float) ((int) row2["Block"])) / 10f;
+                int num13 = (byte) row2["Height"];
+                int num14 = (byte) row2["Weight"];
+                float num15 = ((float) ((int) row2["Speed"])) / 10f;
+                float num16 = ((float) ((int) row2["Jump"])) / 10f;
+                float num17 = ((float) ((int) row2["Strength"])) / 10f;
+                float num18 = ((float) ((int) row2["Stamina"])) / 10f;
+                float num19 = ((float) ((int) row2["Shot"])) / 10f;
+                float num20 = ((float) ((int) row2["Point3"])) / 10f;
+                float num21 = ((float) ((int) row2["Dribble"])) / 10f;
+                float num22 = ((float) ((int) row2["Pass"])) / 10f;
+                float num23 = ((float) ((int) row2["Rebound"])) / 10f;
+                float num24 = ((float) ((int) row2["Steal"])) / 10f;
+                float num25 = ((float) ((int) row2["Block"])) / 10f;
                 float single1 = ((float) ((int) row2["Attack"])) / 10f;
                 float single2 = ((float) ((int) row2["Defense"])) / 10f;
                 float single3 = ((float) ((int) row2["Team"])) / 10f;
                 object strPlayerList = this.strPlayerList;
                 this.strPlayerList = string.Concat(new object[] { 
-                    strPlayerList, "<DIV onmouseup=putdown(this);down=false; onmousedown=logpos(this); id='", num5, "' style='Z-INDEX:100;LEFT:", num25, "px;CURSOR:hand;POSITION:absolute;TOP:", num24, "px;HEIGHT:30px;WEIGHT:28px' ><DIV title='姓名：", str2, "[", num11, "]<br>位置：", playerChsPosition, "<br>身高：", num9, "CM<br>体重：", 
-                    num10, "KG<br>体力：", num8, "<br>综合：", num12, "<br><br>速度：", num13, "<br>弹跳：", num14, "<br>强壮：", num15, "<br>耐力：", num16, "<br>投篮：", num17, "<br>三分：", 
-                    num18, "<br>运球：", num19, "<br>传球：", num20, "<br>篮板：", num21, "<br>抢断：", num22, "<br>封盖：", num23, "' style='Z-INDEX: 1; BACKGROUND: url(", SessionItem.GetImageURL(), "Player/Number/", num7, ".gif); WIDTH: 16px; CURSOR: hand; COLOR: white; HEIGHT: 19px' align='center'></DIV></DIV>"
+                    strPlayerList, "<DIV onmouseup=putdown(this);down=false; onmousedown=logpos(this); id='", num7, "' style='Z-INDEX:100;LEFT:", num6, "px;CURSOR:hand;POSITION:absolute;TOP:", num5, "px;HEIGHT:30px;WEIGHT:28px' ><DIV title='姓名：", str2, "[", num8, "]<br>位置：", playerChsPosition, "<br>身高：", num13, "CM<br>体重：", 
+                    num14, "KG<br>体力：", num11, "<br>综合：", num12, "<br><br>速度：", num15, "<br>弹跳：", num16, "<br>强壮：", num17, "<br>耐力：", num18, "<br>投篮：", num19, "<br>三分：", 
+                    num20, "<br>运球：", num21, "<br>传球：", num22, "<br>篮板：", num23, "<br>抢断：", num24, "<br>封盖：", num25, "' style='Z-INDEX: 1; BACKGROUND: url(", SessionItem.GetImageURL(), "Player/Number/", num10, ".gif); WIDTH: 16px; CURSOR: hand; COLOR: white; HEIGHT: 19px' align='center'></DIV></DIV>"
                  });
-                num25 += 30;
+                num6 += 30;
                 strPlayerList = this.strPlayerPosArray;
-                this.strPlayerPosArray = string.Concat(new object[] { strPlayerList, "player_pos[\"", num5, "\"] = getpos(document.getElementById(\"", num5, "\"));" });
+                this.strPlayerPosArray = string.Concat(new object[] { strPlayerList, "player_pos[\"", num7, "\"] = getpos(document.getElementById(\"", num7, "\"));" });
             }
         }
 
@@ -229,48 +228,48 @@
                 string validWords = StringItem.GetValidWords(this.tbName.Text);
                 if (StringItem.IsValidContent(validWords, 2, 20))
                 {
-                    int num4;
-                    int num5;
+                    int num;
+                    int num2;
                     long longCID = Convert.ToInt64(this.form_c.Value);
                     long longFID = Convert.ToInt64(this.form_f.Value);
                     long longGID = Convert.ToInt64(this.form_g.Value);
                     if (this.rbOff1.Checked)
                     {
-                        num4 = 1;
+                        num = 1;
                     }
                     else if (this.rbOff2.Checked)
                     {
-                        num4 = 2;
+                        num = 2;
                     }
                     else if (this.rbOff3.Checked)
                     {
-                        num4 = 3;
+                        num = 3;
                     }
                     else
                     {
-                        num4 = 4;
+                        num = 4;
                     }
                     if (this.rbDef1.Checked)
                     {
-                        num5 = 1;
+                        num2 = 1;
                     }
                     else if (this.rbDef2.Checked)
                     {
-                        num5 = 2;
+                        num2 = 2;
                     }
                     else if (this.rbDef3.Checked)
                     {
-                        num5 = 3;
+                        num2 = 3;
                     }
                     else
                     {
-                        num5 = 4;
+                        num2 = 4;
                     }
                     int intOffHard = Convert.ToInt16(this.sOffHard.SelectedItem.Value);
                     int intDefHard = Convert.ToInt16(this.sDefHard.SelectedItem.Value);
-                    BTPArrange3Manager.SetArrange(this.intClubID, validWords, this.intType, longCID, longFID, longGID, intOffHard, intDefHard, num4, num5);
+                    BTPArrange3Manager.SetArrange(this.intClubID, validWords, this.intType, longCID, longFID, longGID, intOffHard, intDefHard, num, num2);
                     Cuter cuter = new Cuter(Convert.ToString(this.Session["Advance" + this.intUserID]));
-                    if ((cuter.GetIndex("0") == 0) && ((this.intOffMis != num4) || (this.intDefMis != num5)))
+                    if ((cuter.GetIndex("0") == 0) && ((this.intOffMis != num) || (this.intDefMis != num2)))
                     {
                         cuter.SetCuter(0, "1");
                         string strAdvanceOp = cuter.GetCuter();
@@ -314,43 +313,42 @@
         private void MatchLev(int intUserIDA, int intClubIDA)
         {
             this.strList = "";
-            intUserIDA = (int) SessionItem.GetRequest("UserID", 0);
-            intClubIDA = (int) SessionItem.GetRequest("ClubID", 0);
-            DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, intClubIDA, 3);
+            intUserIDA = SessionItem.GetRequest("UserID", 0);
+            intClubIDA = SessionItem.GetRequest("ClubID", 0);
+            DataTable table = BTPToolLinkManager.CheckClubLink(this.intUserID, intClubIDA, 3);
             bool flag = false;
-            if (reader != null)
+            if (table != null)
             {
-                foreach (DataRow dataRow in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int num = (byte)dataRow["Category"];
+                    int num = (byte) row["Category"];
                     if (num == 1)
                     {
                         flag = true;
                     }
                 }
             }
-            //reader.Close();
             if (flag)
             {
                 this.intUserID = intUserIDA;
             }
-            DataRow row = BTPArrangeLvlManager.GetArrange3(this.intUserID);
-            int intLevel = (byte) row["SOInside"];
-            int num3 = (byte) row["SOCHelp"];
-            int num4 = (byte) row["SOOutside"];
-            int num5 = (byte) row["SOAll"];
-            int num6 = (byte) row["SDOneInside"];
-            int num7 = (byte) row["SDOneOutside"];
-            int num8 = (byte) row["SDOne"];
-            int num9 = (byte) row["SDArea"];
-            int num10 = (int) row["SOInsideP"];
-            int num11 = (int) row["SOCHelpP"];
-            int num12 = (int) row["SOOutsideP"];
-            int num13 = (int) row["SOAllP"];
-            int num14 = (int) row["SDOneInsideP"];
-            int num15 = (int) row["SDOneOutsideP"];
-            int num16 = (int) row["SDOneP"];
-            int num17 = (int) row["SDAreaP"];
+            DataRow row2 = BTPArrangeLvlManager.GetArrange3(this.intUserID);
+            int intLevel = (byte) row2["SOInside"];
+            int num3 = (byte) row2["SOCHelp"];
+            int num4 = (byte) row2["SOOutside"];
+            int num5 = (byte) row2["SOAll"];
+            int num6 = (byte) row2["SDOneInside"];
+            int num7 = (byte) row2["SDOneOutside"];
+            int num8 = (byte) row2["SDOne"];
+            int num9 = (byte) row2["SDArea"];
+            int num10 = (int) row2["SOInsideP"];
+            int num11 = (int) row2["SOCHelpP"];
+            int num12 = (int) row2["SOOutsideP"];
+            int num13 = (int) row2["SOAllP"];
+            int num14 = (int) row2["SDOneInsideP"];
+            int num15 = (int) row2["SDOneOutsideP"];
+            int num16 = (int) row2["SDOneP"];
+            int num17 = (int) row2["SDAreaP"];
             object strList = this.strList;
             this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td></td><td height='25'><font color='#00cc00'>进攻</font></td><td>内线强攻</td><td>", intLevel, "</td><td>", num10, "/", BTPArrangeLvlManager.Get3ArrangeNeed(intLevel), "</td><td></td></tr>" });
             strList = this.strList;
@@ -381,7 +379,7 @@
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
                 this.intClubID = (int) onlineRowByUserID["ClubID3"];
-                this.intType = (int) SessionItem.GetRequest("Type", 0);
+                this.intType = SessionItem.GetRequest("Type", 0);
                 this.tblSelectArrange.Visible = false;
                 this.tblSetArrange.Visible = false;
                 this.tblArrangeLvl.Visible = false;
@@ -428,8 +426,8 @@
                     case 5:
                     {
                         this.strPageIntro = "<img src='Images/MenuCard/SArrange/SArrange_06.GIF' border='0' height='24' width='75'><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>";
-                        int request = (int) SessionItem.GetRequest("UserID", 0);
-                        int intClubIDA = (int) SessionItem.GetRequest("ClubID", 0);
+                        int request = SessionItem.GetRequest("UserID", 0);
+                        int intClubIDA = SessionItem.GetRequest("ClubID", 0);
                         if ((request > 0) && (intClubIDA > 0))
                         {
                             this.tblArrangeLvl.Visible = true;

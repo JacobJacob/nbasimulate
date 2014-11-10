@@ -13,7 +13,7 @@
         protected ImageButton btnDel;
         private DateTime dtUnionTime;
         private int intClubID5;
-        private int intPolityID = 0;
+        private int intPolityID;
         private int intUnionID;
         private int intUserID;
         protected RadioButton rbA;
@@ -57,20 +57,20 @@
                 {
                     switch (num)
                     {
-                        case -1:
-                            this.strMsg = "您没有加入此联盟不能进行投票";
-                            return;
-
-                        case -2:
-                            this.strMsg = "您加入盟时间小于7天，不能时行投票";
+                        case -4:
+                            this.strMsg = "此次弹劾已结束";
                             return;
 
                         case -3:
                             this.strMsg = "您已经投过票了";
                             return;
 
-                        case -4:
-                            this.strMsg = "此次弹劾已结束";
+                        case -2:
+                            this.strMsg = "您加入盟时间小于7天，不能时行投票";
+                            return;
+
+                        case -1:
+                            this.strMsg = "您没有加入此联盟不能进行投票";
                             return;
                     }
                     this.strMsg = "系统错误请重试";
@@ -92,15 +92,15 @@
             {
                 return 10;
             }
-            int num3 = (int) accountRowByUserID["ScoreA"];
-            int num4 = (int) accountRowByUserID["ScoreB"];
+            int num2 = (int) accountRowByUserID["ScoreA"];
+            int num3 = (int) accountRowByUserID["ScoreB"];
             DateTime time = (DateTime) accountRowByUserID["EndTime"];
             if (time > DateTime.Now)
             {
                 TimeSpan span = (TimeSpan) (time - DateTime.Now);
                 return Convert.ToInt32(span.TotalSeconds);
             }
-            if (num3 > num4)
+            if (num2 > num3)
             {
                 return -1;
             }
@@ -119,7 +119,6 @@
                 this.SetDelMaster();
             }
             base.Load += new EventHandler(this.Page_Load);
-
             this.btnDel.Click += new ImageClickEventHandler(this.btnDel_Click);
         }
 
@@ -197,15 +196,15 @@
                 {
                     case 1:
                         this.strMsg = "您投赞成票成功！";
-                        goto Label_0216;
+                        goto Label_0221;
 
                     case 2:
                         this.strMsg = "您投反对票成功！";
-                        goto Label_0216;
+                        goto Label_0221;
                 }
                 this.strMsg = "您已经投过票了！";
             }
-        Label_0216:
+        Label_0221:
             if (this.dtUnionTime > DateTime.Now.AddDays(-7.0))
             {
                 this.btnDel.Visible = false;
@@ -214,13 +213,9 @@
             switch (num)
             {
                 case 1:
+                {
                     this.intPolityID = num5;
-                    if (time > DateTime.Now)
-                    {
-                        TimeSpan span = (TimeSpan) (time - DateTime.Now);
-                        this.strScript = "BeginRunTime(" + Convert.ToInt32(span.TotalSeconds) + ")";
-                    }
-                    else
+                    if (time <= DateTime.Now)
                     {
                         this.btnDel.Visible = false;
                         this.strTime = "已结束";
@@ -232,26 +227,31 @@
                         {
                             this.strMsg = AccountItem.GetNickNameInfo(intUserID, this.strCreateName, "Right", 0x12) + "经理弹劾失败，老盟主继续执政！";
                         }
+                        break;
                     }
-                    this.strCreateName = AccountItem.GetNickNameInfo(intUserID, this.strCreateName, "Right", 0x10);
-                    delMasterRow = BTPUnionManager.GetUnionRowByID(this.intUnionID);
-                    if (delMasterRow != null)
-                    {
-                        this.strUnionName = delMasterRow["Name"].ToString().Trim();
-                        return;
-                    }
-                    return;
-
+                    TimeSpan span = (TimeSpan) (time - DateTime.Now);
+                    this.strScript = "BeginRunTime(" + Convert.ToInt32(span.TotalSeconds) + ")";
+                    break;
+                }
                 case 2:
                     this.btnDel.Visible = false;
                     this.strTime = "已结束";
-                    if (num3 > num4)
+                    if (num3 <= num4)
                     {
-                        this.strMsg = AccountItem.GetNickNameInfo(intUserID, this.strCreateName, "Right", 0x12) + "经理成功弹劾了老盟主，接任盟主！";
+                        this.strMsg = AccountItem.GetNickNameInfo(intUserID, this.strCreateName, "Right", 0x12) + "经理弹劾失败，老盟主继续执政！";
                         return;
                     }
-                    this.strMsg = AccountItem.GetNickNameInfo(intUserID, this.strCreateName, "Right", 0x12) + "经理弹劾失败，老盟主继续执政！";
-                    break;
+                    this.strMsg = AccountItem.GetNickNameInfo(intUserID, this.strCreateName, "Right", 0x12) + "经理成功弹劾了老盟主，接任盟主！";
+                    return;
+
+                default:
+                    return;
+            }
+            this.strCreateName = AccountItem.GetNickNameInfo(intUserID, this.strCreateName, "Right", 0x10);
+            delMasterRow = BTPUnionManager.GetUnionRowByID(this.intUnionID);
+            if (delMasterRow != null)
+            {
+                this.strUnionName = delMasterRow["Name"].ToString().Trim();
             }
         }
     }

@@ -137,35 +137,35 @@
             strURL = strURL.Substring(index + 1);
             if (str.ToLower().IndexOf("bbs.xba.com.cn") >= 0)
             {
-                int num3 = 0;
+                int num2 = 0;
                 string[] strArray = new string[10];
                 string[] strArray2 = new string[10];
                 while (strURL != "")
                 {
                     int length = strURL.IndexOf("=");
-                    strArray[num3] = strURL.Substring(0, length);
+                    strArray[num2] = strURL.Substring(0, length);
                     strURL = strURL.Substring(length + 1);
                     length = strURL.IndexOf("&");
                     if (length > 0)
                     {
-                        strArray2[num3] = strURL.Substring(0, length);
+                        strArray2[num2] = strURL.Substring(0, length);
                         strURL = strURL.Substring(length + 1);
                     }
                     else
                     {
-                        strArray2[num3] = strURL;
+                        strArray2[num2] = strURL;
                         strURL = "";
                     }
-                    num3++;
+                    num2++;
                 }
-                num3--;
-                strURL = "Logout.aspx?GameCategory=-1&Type=OnlyJump&JumpURL=Topic.aspx!" + strArray[num3] + "." + strArray2[num3];
-                num3--;
-                while (num3 >= 0)
+                num2--;
+                strURL = "Logout.aspx?GameCategory=-1&Type=OnlyJump&JumpURL=Topic.aspx!" + strArray[num2] + "." + strArray2[num2];
+                num2--;
+                while (num2 >= 0)
                 {
-                    strURL = strURL + "^" + strArray[num3];
-                    strURL = strURL + "." + strArray2[num3];
-                    num3--;
+                    strURL = strURL + "^" + strArray[num2];
+                    strURL = strURL + "." + strArray2[num2];
+                    num2--;
                 }
                 return strURL;
             }
@@ -199,6 +199,11 @@
                 return "Images/";
             }
             return current.Request.Cookies["ImageURL"].Value;
+        }
+
+        public static string GetMainUrl()
+        {
+            return Config.GetDomain();
         }
 
         public static object GetRequest(string strIndex, int intType)
@@ -288,7 +293,7 @@
 
         public static void JumpToTargetPage()
         {
-            string request = (string) GetRequest("JumpPage", 1);
+            string request = GetRequest("JumpPage", 1);
             if (request.IndexOf("!") != -1)
             {
                 Cuter cuter = new Cuter(request.Replace("!", ","));
@@ -312,9 +317,10 @@
                 str = "LoginG";
             }
             HttpContext current = HttpContext.Current;
-            HttpCookie cookie = new HttpCookie(str);
-            cookie.Expires = DateTime.Now.AddHours((double) intExpireSec);
-            cookie.Value = intUserID.ToString();
+            HttpCookie cookie = new HttpCookie(str) {
+                Expires = DateTime.Now.AddHours((double) intExpireSec),
+                Value = intUserID.ToString()
+            };
             current.Response.Cookies.Add(cookie);
             cookie = null;
             current = null;
@@ -358,33 +364,32 @@
                     int num3 = (byte) dr["LockTime"];
                     if (num3 > 0)
                     {
-                        //dr.Close();
                         current.Response.Redirect("Report.aspx?Parameter=19a");
-                        return;
                     }
-                    bool blnSex = (bool) dr["Gender"];
-                    string strDiskURL = dr["DiskURL"].ToString().Trim();
-                    int intCategory = 0;
-                    int num5 = 0;
-                    int num6 = 0;
-                    string str5 = "";
-                    string str6 = "";
-                    string strClubLogo = "";
-                    int intMsgFlag = 0;
-                    int intLevel = 0;
-                    int intUnionID = 0;
-                    string strShortName = "";
-                    string strGuideCode = "";
-                    string strQQ = dr["QQ"].ToString().Trim();
-                    int intWealth = (int) dr["Wealth"];
-                    int intIschild = 8;
-                    SetOnlineInfo(current, intUserID, ServerParameter.intGameCategory, intCategory, intPayType, blnSex, strDiskURL, strUserName, strPassword, strNickName, num5, num6, str5, str6, strClubLogo, intMsgFlag, intLevel, intUnionID, strShortName, strGuideCode, strQQ, blnNeedCheck, "无", intWealth, intIschild);
+                    else
+                    {
+                        bool blnSex = (bool) dr["Gender"];
+                        string strDiskURL = dr["DiskURL"].ToString().Trim();
+                        int intCategory = 0;
+                        int num5 = 0;
+                        int num6 = 0;
+                        string str5 = "";
+                        string str6 = "";
+                        string strClubLogo = "";
+                        int intMsgFlag = 0;
+                        int intLevel = 0;
+                        int intUnionID = 0;
+                        string strShortName = "";
+                        string strGuideCode = "";
+                        string strQQ = dr["QQ"].ToString().Trim();
+                        int intWealth = (int) dr["Wealth"];
+                        int intIschild = 8;
+                        SetOnlineInfo(current, intUserID, ServerParameter.intGameCategory, intCategory, intPayType, blnSex, strDiskURL, strUserName, strPassword, strNickName, num5, num6, str5, str6, strClubLogo, intMsgFlag, intLevel, intUnionID, strShortName, strGuideCode, strQQ, blnNeedCheck, "无", intWealth, intIschild);
+                    }
                 }
-                //dr.Close();
             }
             else
             {
-                //dr.Close();
                 current.Response.Redirect("Report.aspx?Parameter=10");
             }
         }
@@ -462,8 +467,9 @@
                 }
             }
             string str = StringItem.MD5Encrypt(intUserID.ToString(), Global.strMainMD5Key);
-            HttpCookie cookie = new HttpCookie(Global.strSessionName);
-            cookie.Value = str;
+            HttpCookie cookie = new HttpCookie(Global.strSessionName) {
+                Value = str
+            };
             hc.Response.Cookies.Add(cookie);
             cookie = null;
             hc = null;
@@ -481,9 +487,9 @@
                 if (rowArray.Length > 0)
                 {
                     int num3 = 0;
-                    foreach (DataRow row2 in rowArray)
+                    foreach (DataRow row in rowArray)
                     {
-                        num3 = (int) row2["UserID"];
+                        num3 = (int) row["UserID"];
                         DTOnlineManager.DeleteOnlineRow(num3);
                     }
                 }
@@ -492,71 +498,72 @@
 
         public static int SetSelfLogin(string strUserName, string strPassword, bool blnNeedCheck)
         {
-            int num;
             strUserName = StringItem.MD5Decrypt(strUserName, Global.strMD5Key);
             strPassword = StringItem.MD5Decrypt(strPassword, Global.strMD5Key);
             HttpContext current = HttpContext.Current;
             DataTable infoByUserNamePassword = BTPAccountManager.GetInfoByUserNamePassword(strUserName, strPassword);
-            if(infoByUserNamePassword!=null){
-                num = -1;
+            if (infoByUserNamePassword != null)
+            {
+                int intUserID = -1;
                 foreach (DataRow row in infoByUserNamePassword.Rows)
                 {
-                    num = (int)row["UserID"];
-                    if (num > 0)
+                    intUserID = (int) row["UserID"];
+                    if (intUserID > 0)
                     {
                         string strNickName = row["NickName"].ToString().Trim();
-                        int intPayType = (byte)row["PayType"];
+                        int intPayType = (byte) row["PayType"];
                         if ((DTOnlineManager.GetOnlineCount() >= Global.intOnlineLimit) && (intPayType != 1))
                         {
                             current.Response.Redirect("Report.aspx?Parameter=10121");
                             return -3;
                         }
-                        bool blnSex = (bool)row["Sex"];
+                        bool blnSex = (bool) row["Sex"];
                         string strDiskURL = row["DiskURL"].ToString().Trim();
-                        int intCategory = (byte)row["Category"];
-                        int num5 = (byte)row["LockTime"];
-                        int num6 = (int)row["ClubID3"];
-                        int num7 = (int)row["ClubID5"];
+                        int intCategory = (byte) row["Category"];
+                        int num4 = (byte) row["LockTime"];
+                        int num5 = (int) row["ClubID3"];
+                        int num6 = (int) row["ClubID5"];
                         string str3 = row["ClubName3"].ToString().Trim();
                         string str4 = row["ClubName5"].ToString().Trim();
                         string strClubLogo = row["ClubLogo"].ToString().Trim();
-                        int intMsgFlag = (int)row["MsgFlag"];
-                        int intLevel = (int)row["Levels"];
-                        int intUnionID = (int)row["UnionID"];
+                        int intMsgFlag = (int) row["MsgFlag"];
+                        int intLevel = (int) row["Levels"];
+                        int intUnionID = (int) row["UnionID"];
                         string strShortName = row["ShortName"].ToString().Trim();
                         string strGuideCode = row["GuideCode"].ToString().Trim();
                         string strQQ = row["QQ"].ToString().Trim();
-                        string devCodeByUserID = BTPDevManager.GetDevCodeByUserID(num);
-                        int intWealth = (int)row["Wealth"];
-                        int intIschild = (byte)row["Ischild"];
-                        DateTime dtActiveTime = (DateTime)row["ActiveTime"];
-                        DateTime dtOldTime = (DateTime)Global.drParameter["OldTime"];
+                        string devCodeByUserID = BTPDevManager.GetDevCodeByUserID(intUserID);
+                        int intWealth = (int) row["Wealth"];
+                        int intIschild = (byte) row["Ischild"];
+                        DateTime dtActiveTime = (DateTime) row["ActiveTime"];
+                        DateTime dtOldTime = (DateTime) Global.drParameter["OldTime"];
                         intIschild = 8;
-                        if ((intIschild == 1) && (BTPAccountManager.IschildLogin(num, dtActiveTime) == 0))
+                        if ((intIschild == 1) && (BTPAccountManager.IschildLogin(intUserID, dtActiveTime) == 0))
                         {
                             current.Response.Redirect("Report.aspx?Parameter=19c");
                             return 0;
                         }
                         if (dtActiveTime < dtOldTime)
                         {
-                            BTPAccountManager.OldUserLogin(num, dtActiveTime, dtOldTime);
+                            BTPAccountManager.OldUserLogin(intUserID, dtActiveTime, dtOldTime);
                         }
-                        if (num5 > 0)
+                        if (num4 > 0)
                         {
                             current.Response.Redirect("Report.aspx?Parameter=19");
                             return 0;
                         }
-                        BTPAccountManager.AddLoginIP(num, current.Request.ServerVariables["REMOTE_ADDR"]);
-                        SetOnlineInfo(current, num, ServerParameter.intGameCategory, intCategory, intPayType, blnSex, strDiskURL, strUserName, strPassword, strNickName, num6, num7, str3, str4, strClubLogo, intMsgFlag, intLevel, intUnionID, strShortName, strGuideCode, strQQ, blnNeedCheck, devCodeByUserID, intWealth, intIschild);
+                        string str10 = current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                        if (string.IsNullOrEmpty(str10))
+                        {
+                            str10 = current.Request.ServerVariables["REMOTE_ADDR"];
+                        }
+                        BTPAccountManager.AddLoginIP(intUserID, str10);
+                        SetOnlineInfo(current, intUserID, ServerParameter.intGameCategory, intCategory, intPayType, blnSex, strDiskURL, strUserName, strPassword, strNickName, num5, num6, str3, str4, strClubLogo, intMsgFlag, intLevel, intUnionID, strShortName, strGuideCode, strQQ, blnNeedCheck, devCodeByUserID, intWealth, intIschild);
                     }
                 }
+                return intUserID;
             }
-            else
-            {
-                num = -1;
-            }
-            //infoByUserNamePassword.Close();
-            return num;
+            return -1;
         }
 
         public static int SetSomebodyGameLogin(int intUserID)
@@ -575,7 +582,6 @@
                 SetMainLogin(dr, false);
                 return intUserID;
             }
-            //dr.Close();
             current.Response.Redirect("Report.aspx?Parameter=12");
             return -1;
         }
@@ -604,12 +610,6 @@
             {
                 status = HttpValidationStatus.Valid;
             }
-        }
-
-        public static string GetMainUrl()
-        {
-            return Config.GetDomain();
-
         }
     }
 }

@@ -3,7 +3,6 @@
     using LoginParameter;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using Web.DBData;
     using Web.Helper;
@@ -27,7 +26,7 @@
             }
             else
             {
-                this.intGameCategory = (int) SessionItem.GetRequest("GameCategory", 0);
+                this.intGameCategory = SessionItem.GetRequest("GameCategory", 0);
                 DataRow userRowByUserID = ROOTUserManager.GetUserRowByUserID(this.intUserID);
                 if (userRowByUserID != null)
                 {
@@ -42,12 +41,10 @@
                     string strFacePath = base.Server.MapPath("Images/Face/" + str3 + "/");
                     path = base.Server.MapPath(path);
                     FaceItem.CreateFace(strFacePath, path, strFace);
-                    //userRowByUserID.Close();
                     base.Response.Redirect(DBLogin.URLString(this.intGameCategory) + "AlterOtherInfo.aspx?Type=SEXFACE&Kind=YES");
                 }
                 else
                 {
-                    //userRowByUserID.Close();
                     base.Response.Redirect("Report.aspx?Parameter=3");
                 }
                 this.InitializeComponent();

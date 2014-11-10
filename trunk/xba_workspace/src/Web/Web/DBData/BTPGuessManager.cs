@@ -88,8 +88,6 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-
-        //获取我的竞猜记录
         public static DataTable GetGuessRecordTableByUserID(int intUserID, int intDoCount, int intPageIndex, int intPageSize)
         {
             string commandText = string.Concat(new object[] { "Exec NewBTP.dbo.GetGuessRecordTableByUserID ", intUserID, ",", intDoCount, ",", intPageIndex, ",", intPageSize });
@@ -138,7 +136,6 @@
             return SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
         }
 
-        //竞猜平盘
         public static int GuessBegin(int intGuessID)
         {
             string commandText = "Exec NewBTP.dbo.GuessBegin " + intGuessID;
@@ -195,48 +192,45 @@
             {
                 foreach (DataRow row in guessRowByDel.Rows)
                 {
-                    int intGuessID = (int)row["GuessID"];
+                    int intGuessID = (int) row["GuessID"];
                     if (OurDelGuess(intGuessID) != 1)
                     {
                         Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
                     }
                 }
             }
-            //guessRowByDel.Close();
         }
 
         public static void SetGuessBegin()
         {
-            DataTable reader = GetGuessTableByHasResult(1, 0, 1, 100);
-            if (reader != null)
+            DataTable table = GetGuessTableByHasResult(1, 0, 1, 100);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int intGuessID = (int)row["GuessID"];
+                    int intGuessID = (int) row["GuessID"];
                     if (GuessBegin(intGuessID) != 1)
                     {
                         Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
                     }
                 }
             }
-            //reader.Close();
         }
 
         public static void SetGuessBegin2()
         {
-            DataTable reader = GetGuessTableByHasResult(1, 0, 1, 100);
-            if (reader != null)
+            DataTable table = GetGuessTableByHasResult(1, 0, 1, 100);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int intGuessID = (int)row["GuessID"];
+                    int intGuessID = (int) row["GuessID"];
                     if (GuessBegin(intGuessID) != 1)
                     {
                         Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
                     }
                 }
             }
-            //reader.Close();
         }
 
         public static void SetOurBackGuess()
@@ -246,14 +240,13 @@
             {
                 foreach (DataRow row in guessRowByDel.Rows)
                 {
-                    int intGuessID = (int)row["GuessID"];
+                    int intGuessID = (int) row["GuessID"];
                     if (OurBackGuess(intGuessID) != 1)
                     {
                         Console.WriteLine("GuessID=" + intGuessID + "的竞猜单为非法单！");
                     }
                 }
             }
-            //guessRowByDel.Close();
         }
     }
 }

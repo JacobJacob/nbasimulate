@@ -24,7 +24,7 @@
             }
             else
             {
-                this.intFriendID = (int) SessionItem.GetRequest("UserID", 0);
+                this.intFriendID = SessionItem.GetRequest("UserID", 0);
                 this.InitializeComponent();
                 base.OnInit(e);
             }

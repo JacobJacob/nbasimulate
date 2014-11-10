@@ -46,19 +46,18 @@
 
         private string GetOldPlayerList(DataTable dt)
         {
-            if (dt == null)
+            if (dt != null)
             {
-                return "";
-            }
-            int num2 = 0;
-            foreach (DataRow row in dt.Rows)
-            {
-                long num = (long) row["PlayerID"];
-                if (num2 == 0)
+                int num = 0;
+                foreach (DataRow row in dt.Rows)
                 {
-                    this.longFirstPlayerID = num;
+                    long num2 = (long) row["PlayerID"];
+                    if (num == 0)
+                    {
+                        this.longFirstPlayerID = num2;
+                    }
+                    num++;
                 }
-                num2++;
             }
             return "";
         }
@@ -70,23 +69,23 @@
             {
                 return "";
             }
-            int num13 = 0;
+            int num = 0;
             foreach (DataRow row in dt.Rows)
             {
+                string str2;
                 string str3;
-                string str5;
                 long longPlayerID = (long) row["PlayerID"];
-                if (num13 == 0)
+                if (num == 0)
                 {
                     this.longFirstPlayerID = longPlayerID;
                 }
                 string strName = row["Name"].ToString();
-                int num2 = (byte) row["Number"];
-                int num3 = (byte) row["Age"];
+                int num3 = (byte) row["Number"];
+                int num4 = (byte) row["Age"];
                 int intPosition = (byte) row["Pos"];
                 int intPower = (byte) row["Power"];
-                int num6 = (byte) row["Height"];
-                int num7 = (byte) row["Weight"];
+                int num7 = (byte) row["Height"];
+                int num8 = (byte) row["Weight"];
                 float single1 = ((float) ((int) row["Ability"])) / 10f;
                 int intStatus = (byte) row["Status"];
                 byte num1 = (byte) row["Category"];
@@ -109,30 +108,30 @@
                 string strEvent = row["Event"].ToString();
                 int intAbility = (int) row["Ability"];
                 int intSuspend = (byte) row["Suspend"];
-                string str4 = "<td>" + num10 + "</td>";
+                string str6 = "<td>" + num10 + "</td>";
                 if (intStatus == 1)
                 {
-                    str5 = "<td><a href='#' onclick='ChangeTrain(" + longPlayerID + ")'>训练</a></td>";
+                    str3 = "<td><a href='#' onclick='ChangeTrain(" + longPlayerID + ")'>训练</a></td>";
                 }
                 else
                 {
-                    str5 = "<td align='center'>--</td>";
+                    str3 = "<td align='center'>--</td>";
                 }
                 if (intStatus == 1)
                 {
-                    str3 = PlayerItem.GetTrainSelect(intTrainType, longPlayerID, this.intType);
+                    str2 = PlayerItem.GetTrainSelect(intTrainType, longPlayerID, this.intType);
                 }
                 else
                 {
-                    str3 = PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend);
+                    str2 = PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend);
                 }
                 object obj2 = str;
                 str = string.Concat(new object[] { 
-                    obj2, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, this.intType, 1, 1), "</td><td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif\"></td><td>", num3, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(intPosition), "</td><td>", PlayerItem.GetPowerColor(intPower), "</td><td>", 
-                    num6, "</td><td>", num7, "</td><td>", PlayerItem.GetAbilityColor(intAbility), "</td>", str4, "<td>", str3, "</td>", str5, "</tr>"
+                    obj2, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25' align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, this.intType, 1, 1), "</td><td><img src=\"", SessionItem.GetImageURL(), "Player/Number/", num3, ".gif\"></td><td>", num4, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(intPosition), "</td><td>", PlayerItem.GetPowerColor(intPower), "</td><td>", 
+                    num7, "</td><td>", num8, "</td><td>", PlayerItem.GetAbilityColor(intAbility), "</td>", str6, "<td>", str2, "</td>", str3, "</tr>"
                  });
                 str = str + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='10'></td></tr>";
-                num13++;
+                num++;
             }
             return str;
         }

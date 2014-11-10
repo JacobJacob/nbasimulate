@@ -19,8 +19,8 @@
 
         protected override void OnInit(EventArgs e)
         {
-            this.strUserName = (string) SessionItem.GetRequest("ue3tu23ce3vdmbv", 1);
-            this.strPassword = (string) SessionItem.GetRequest("stey86yi2jfdace", 1);
+            this.strUserName = SessionItem.GetRequest("ue3tu23ce3vdmbv", 1);
+            this.strPassword = SessionItem.GetRequest("stey86yi2jfdace", 1);
             this.strUserName = StringItem.MD5Decrypt(this.strUserName, Global.strMD5Key);
             this.strPassword = StringItem.MD5Decrypt(this.strPassword, Global.strMD5Key);
             DataRow userRowByUserNamePWD = ROOTUserManager.GetUserRowByUserNamePWD(this.strUserName, this.strPassword);

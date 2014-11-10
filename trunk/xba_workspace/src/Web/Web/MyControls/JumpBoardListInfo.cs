@@ -58,35 +58,33 @@
             }
             else
             {
-                string str3;
+                string str2;
                 switch (((byte) boardRowByBoardID["Category"]))
                 {
                     case 1:
-                        if ((this.intUserID > -1) && (num >= 0))
+                        if ((this.intUserID <= -1) || (num < 0))
                         {
-                            if (!BoardItem.IsBoardMaster(this.intUserID, strMaster))
-                            {
-                                flag = false;
-                            }
+                            flag = false;
+                            break;
                         }
-                        else
+                        if (!BoardItem.IsBoardMaster(this.intUserID, strMaster))
                         {
                             flag = false;
                         }
                         break;
 
                     case 2:
-                        if ((this.intUserID <= -1) || (num < 0))
+                        if ((this.intUserID > -1) && (num >= 0))
                         {
-                            base.Response.Redirect("Report.aspx?Parameter=4004F");
-                            return;
+                            if (!BoardItem.CanView(this.intUserID, this.strBoardID))
+                            {
+                                base.Response.Redirect("Report.aspx?Parameter=4004F");
+                                return;
+                            }
+                            break;
                         }
-                        if (!BoardItem.CanView(this.intUserID, this.strBoardID))
-                        {
-                            base.Response.Redirect("Report.aspx?Parameter=4004F");
-                            return;
-                        }
-                        break;
+                        base.Response.Redirect("Report.aspx?Parameter=4004F");
+                        return;
 
                     case 3:
                         base.Response.Redirect("Report.aspx?Parameter=4003F");
@@ -96,16 +94,16 @@
                 DataRow newsByBoardID = ROOTBoardManager.GetNewsByBoardID();
                 if (newsByBoardID == null)
                 {
-                    str3 = "暂时没有新贴。";
+                    str2 = "暂时没有新贴。";
                 }
                 else
                 {
-                    int num3 = (int) newsByBoardID["TopicID"];
-                    string str2 = newsByBoardID["Title"].ToString().Trim();
-                    str3 = string.Concat(new object[] { "<a href='FrameTopic.aspx?TopicID=", num3, "&BoardID=001001&Page=1'>", str2, "</a>" });
+                    int num2 = (int) newsByBoardID["TopicID"];
+                    string str3 = newsByBoardID["Title"].ToString().Trim();
+                    str2 = string.Concat(new object[] { "<a href='FrameTopic.aspx?TopicID=", num2, "&BoardID=001001&Page=1'>", str3, "</a>" });
                 }
                 string strLogo = "face1.gif";
-                this.strBoardInfo = "<table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td width='70%'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='35'>版主：<font class='ForumTime'>" + BoardItem.GetMasterNickName(strMaster) + "</font></td></tr><tr><td>" + BoardItem.GetForumLogo(strLogo) + str3 + "</td></tr></table></td><td width='30%'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='50'>";
+                this.strBoardInfo = "<table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td width='70%'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='35'>版主：<font class='ForumTime'>" + BoardItem.GetMasterNickName(strMaster) + "</font></td></tr><tr><td>" + BoardItem.GetForumLogo(strLogo) + str2 + "</td></tr></table></td><td width='30%'><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='50'>";
                 if (flag)
                 {
                     string strBoardInfo = this.strBoardInfo;

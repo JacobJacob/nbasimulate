@@ -13,46 +13,45 @@
         protected DropDownList ddlMonth;
         protected DropDownList ddlProvince;
         protected DropDownList ddlYear;
+        public int intRecomUserID;
         protected RadioButton rbFemale;
         protected RadioButton rbMale;
         public string strErrCity;
         public string strErrEmail;
         public string strErrIntroNickName;
+        public string strErrInviteCode;
         public string strErrNickName;
         public string strErrPassword;
         public string strErrSay;
         public string strErrUserName;
-        public string strErrInviteCode;
         public string strMsg;
         public string strPageIntro;
-        public int intRecomUserID;
         protected TextBox tbCity;
         protected TextBox tbEmail;
         protected TextBox tbIntroNickName;
+        protected TextBox tbInviteCode;
         protected TextBox tbNickName;
         protected TextBox tbPassword;
         protected TextBox tbRePassword;
         protected TextBox tbSay;
         protected TextBox tbUserName;
-        protected TextBox tbInviteCode;
 
         private void btnNext_Click(object sender, ImageClickEventArgs e)
         {
             string text = this.tbUserName.Text;
             string strIn = this.tbPassword.Text;
-            string str3 = strIn;// this.tbRePassword.Text;
+            string str3 = strIn;
             string htmlEncode = StringItem.SetValidWord(this.tbNickName.Text.Trim());
-            string str5 = "北京"; //StringItem.SetValidWord(this.tbCity.Text);
-            string str6 = this.tbEmail.Text;
+            string str5 = "北京";
+            string strEmail = this.tbEmail.Text;
             string str7 = this.tbIntroNickName.Text;
-            string strFace = "0|0|0|0|0|0|0|0|0";
             bool blnSex = this.rbFemale.Checked;
             string selectedValue = this.ddlYear.SelectedValue;
-            string strMonth = this.ddlMonth.SelectedValue;
+            string text2 = this.ddlMonth.SelectedValue;
             string strProvince = this.ddlProvince.SelectedValue;
-            string str12 = "无道篮球"; StringItem.SetValidWord(this.tbSay.Text);
-            //string strInviteCode = this.tbInviteCode.Text;
-            if(str7 != null)
+            string str9 = "无道篮球";
+            StringItem.SetValidWord(this.tbSay.Text);
+            if (str7 != null)
             {
                 str7 = str7.Trim();
             }
@@ -77,41 +76,21 @@
                 this.strErrCity = "<font color='#FF0000'>*城市填写错误！</font>";
                 flag2 = true;
             }
-            /*else if (!StringItem.IsValidEmail(str6))
-            {
-                this.strErrEmail = "<font color='#FF0000'>*Email填写错误！</font>";
-                flag2 = true;
-            }*/
             else if ((str7.Length > 0) && !StringItem.IsValidName(str7, 2, 0x10))
             {
                 this.strErrIntroNickName = "<font color='#FF0000'>*介绍人填写错误！</font>";
                 flag2 = true;
             }
-            else if (!StringItem.IsValidName(str12, 2, 200))
+            else if (!StringItem.IsValidName(str9, 2, 200))
             {
                 this.strErrSay = "<font color='#FF0000'>*宣言填写错误！</font>";
                 flag2 = true;
             }
-            /*else if (!StringItem.IsValidInviteCode(strInviteCode))
-            {
-                this.strErrInviteCode = "<font color='#FF0000'>*邀请码填写错误！</font>";
-                flag2 = true;
-            }*/
             text = StringItem.GetHtmlEncode(text);
             htmlEncode = StringItem.GetHtmlEncode(htmlEncode);
             str5 = StringItem.GetHtmlEncode(str5);
             str7 = StringItem.GetHtmlEncode(str7);
-            str12 = StringItem.GetHtmlEncode(str12);
-
-           /* if (!flag2)
-            {
-                if(!BTPAccountManager.CheckInviteCode(strInviteCode)){
-                     this.strErrInviteCode = "<font color='#FF0000'>*邀请码无效，请联系客服！</font>";
-                    flag2 = true;
-                }
-            }*/
-
-
+            str9 = StringItem.GetHtmlEncode(str9);
             if (!flag2)
             {
                 switch (BTPAccountManager.CheckRegisterInfo(text, htmlEncode, "11@11.com"))
@@ -156,41 +135,30 @@
                         flag2 = true;
                         break;
                 }
-                if ((str7 != ""))
+                if (str7 != "")
                 {
-                    DataRow recomUserRow = BTPAccountManager.GetAccountRowByNickName(str7.Trim());
-                    if (recomUserRow == null)
+                    DataRow accountRowByNickName = BTPAccountManager.GetAccountRowByNickName(str7.Trim());
+                    if (accountRowByNickName == null)
                     {
                         this.strErrIntroNickName = "<font color='#FF0000'>*您输入的介绍人并不存在，请重新输入或留空！</font>";
                         flag2 = true;
                     }
                     else
                     {
-                        this.intRecomUserID = Convert.ToInt32(recomUserRow["UserID"]);
+                        this.intRecomUserID = Convert.ToInt32(accountRowByNickName["UserID"]);
                     }
                 }
-                //if (DateTime.Now.AddMinutes(-60.0) < ROOTUserManager.GetLatestRegTimeByIP(base.Request.ServerVariables["REMOTE_ADDR"]))
-                //{
-                //    this.strMsg = "<font color='#FF0000'>使用同一IP注册间隔时间必须在60分钟以上。</font>";
-                //}
                 if (!flag2)
                 {
                     bool flag3;
-                    string str14;
                     string strDiskURL = "NetDisk/" + StringItem.FormatDate(DateTime.Now, "yyyyMM") + "/";
                     if (base.Request.Cookies["FromURL"] != null)
                     {
-                        str14 = base.Request.Cookies["FromURL"].Value.ToString();
-                    }
-                    else
-                    {
-                        str14 = "";
+                        base.Request.Cookies["FromURL"].Value.ToString();
                     }
                     try
                     {
-                        int userId = BTPAccountManager.GetMaxUserID();
-                        BTPAccountManager.AddFullAccount(userId, text, htmlEncode, strIn, blnSex, 0, strDiskURL, "", strProvince, str5, "", this.intRecomUserID, str6);
-                        //BTPAccountManager.UpdateInviteCodeUsed(strInviteCode);
+                        BTPAccountManager.AddFullAccount(BTPAccountManager.GetMaxUserID(), text, htmlEncode, strIn, blnSex, 0, strDiskURL, "", strProvince, str5, "", this.intRecomUserID, strEmail);
                         flag3 = true;
                     }
                     catch (Exception exception)
@@ -202,9 +170,9 @@
                     {
                         base.Response.Redirect("Report.aspx?Parameter=10114");
                     }
-                    string username = StringItem.MD5Encrypt(text, Global.strMD5Key);
-                    string password = StringItem.MD5Encrypt(strIn, Global.strMD5Key);
-                    if (SessionItem.SetSelfLogin(username, password, true) > 0)
+                    string strUserName = StringItem.MD5Encrypt(text, Global.strMD5Key);
+                    string strPassword = StringItem.MD5Encrypt(strIn, Global.strMD5Key);
+                    if (SessionItem.SetSelfLogin(strUserName, strPassword, true) > 0)
                     {
                         base.Response.Redirect("Login.aspx");
                     }
@@ -240,18 +208,15 @@
                 this.strMsg = "请严格按照注释填写下列各项。";
             }
             this.btnNext.ImageUrl = SessionItem.GetImageURL() + "button_11.GIF";
-
-            int recomUserID = (int)SessionItem.GetRequest("u", 0);
-            if (recomUserID > 0)
+            int request = SessionItem.GetRequest("u", 0);
+            if (request > 0)
             {
-                DataRow recomUser = BTPAccountManager.GetAccountRowByUserID(recomUserID);
-                if (recomUser != null)
+                DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(request);
+                if (accountRowByUserID != null)
                 {
-                    this.tbIntroNickName.Text = Convert.ToString(recomUser["NickName"]);
+                    this.tbIntroNickName.Text = Convert.ToString(accountRowByUserID["NickName"]);
                 }
-
             }
-
         }
 
         private void Page_Load(object sender, EventArgs e)

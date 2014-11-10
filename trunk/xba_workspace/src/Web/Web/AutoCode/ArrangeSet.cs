@@ -32,10 +32,10 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
+            int num;
             int num2;
             int num3;
             int num4;
-            int num5;
             object strMsg;
             string commandText = "SELECT * FROM Arrange_Set WHERE Category=5 ORDER BY SetID";
             DataTable table = SqlHelper.ExecuteDataTable(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
@@ -43,18 +43,18 @@
             int count = table.Rows.Count;
             for (int i = 0; i < count; i++)
             {
-                num2 = (int) table.Rows[i]["Defense1"];
-                num3 = (int) table.Rows[i]["Defense2"];
-                num4 = (int) table.Rows[i]["Defense3"];
-                num5 = (int) table.Rows[i]["Defense4"];
-                int num6 = (int) table.Rows[i]["Defense5"];
-                int num7 = (int) table.Rows[i]["Defense6"];
+                num = (int) table.Rows[i]["Defense1"];
+                num2 = (int) table.Rows[i]["Defense2"];
+                num3 = (int) table.Rows[i]["Defense3"];
+                num4 = (int) table.Rows[i]["Defense4"];
+                int num7 = (int) table.Rows[i]["Defense5"];
+                int num8 = (int) table.Rows[i]["Defense6"];
                 if (i > 0)
                 {
                     this.strMsg = this.strMsg + ",";
                 }
                 strMsg = this.strMsg;
-                this.strMsg = string.Concat(new object[] { strMsg, "{", num2, ",", num3, ",", num4, ",", num5, ",", num6, ",", num7, "}" });
+                this.strMsg = string.Concat(new object[] { strMsg, "{", num, ",", num2, ",", num3, ",", num4, ",", num7, ",", num8, "}" });
                 if (i < (count - 1))
                 {
                     this.strMsg = this.strMsg + "<br>";
@@ -67,16 +67,16 @@
             count = table.Rows.Count;
             for (int j = 0; j < count; j++)
             {
-                num2 = (int) table.Rows[j]["Defense1"];
-                num3 = (int) table.Rows[j]["Defense2"];
-                num4 = (int) table.Rows[j]["Defense3"];
-                num5 = (int) table.Rows[j]["Defense4"];
+                num = (int) table.Rows[j]["Defense1"];
+                num2 = (int) table.Rows[j]["Defense2"];
+                num3 = (int) table.Rows[j]["Defense3"];
+                num4 = (int) table.Rows[j]["Defense4"];
                 if (j > 0)
                 {
                     this.strMsg = this.strMsg + ",";
                 }
                 strMsg = this.strMsg;
-                this.strMsg = string.Concat(new object[] { strMsg, "{", num2, ",", num3, ",", num4, ",", num5, "}" });
+                this.strMsg = string.Concat(new object[] { strMsg, "{", num, ",", num2, ",", num3, ",", num4, "}" });
                 if (j < (count - 1))
                 {
                     this.strMsg = this.strMsg + "<br>";

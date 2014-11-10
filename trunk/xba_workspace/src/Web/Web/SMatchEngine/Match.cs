@@ -14,19 +14,19 @@
         private Arrange[] aHomes = new Arrange[5];
         private bool blnCanPlay;
         private bool blnPower;
-        private int intAbilitySumA = 0;
-        private int intAbilitySumH = 0;
+        private int intAbilitySumA;
+        private int intAbilitySumH;
         private int[] intADefs = new int[4];
         private int[] intAOffs = new int[4];
         private int[] intHDefs = new int[4];
         private int[] intHOffs = new int[4];
         private int intLoseAbility;
-        public int intMaxAbilityValue = 0;
-        public int intMVPValue = 0;
-        private int intPlayedCountA = 0;
-        private int intPlayedCountH = 0;
+        public int intMaxAbilityValue;
+        public int intMVPValue;
+        private int intPlayedCountA;
+        private int intPlayedCountH;
         private int intTag;
-        public int intTempMVPValue = 0;
+        public int intTempMVPValue;
         private int intType;
         private int intWinAbility;
         public Player pMVP = new Player();
@@ -193,9 +193,7 @@
             }
             bool flag2 = false;
             bool flag3 = false;
-
             int trainPointMultiple = Config.GetTrainPointMultiple();
-
             if (((this.intType == 3) || (this.intType == 2)) || (this.intType == 5))
             {
                 if (BTPToolLinkManager.HasTool(this.tHome.intUserID, 1, 9, 0) || BTPToolLinkManager.HasTool(this.tHome.intUserID, 1, 10, 0))
@@ -310,9 +308,7 @@
                     {
                         intTrainPoint *= 2;
                     }
-            
                     intTrainPoint *= trainPointMultiple;
-
                     int intStatus = 1;
                     int intSuspend = 0;
                     string strEvent = "";
@@ -444,26 +440,24 @@
                     {
                         player.intHappy = 1;
                     }
-                    int num4 = ((((((this.rnd.Next(15, 20) + player.intScore) + player.intAst) + (player.intOReb * 3)) + (player.intDReb * 2)) + (player.intBlk * 4)) + (player.intStl * 4)) * 20;
+                    int num5 = ((((((this.rnd.Next(15, 20) + player.intScore) + player.intAst) + (player.intOReb * 3)) + (player.intDReb * 2)) + (player.intBlk * 4)) + (player.intStl * 4)) * 20;
                     if (flag3)
                     {
-                        num4 *= 2;
+                        num5 *= 2;
                     }
-
-                    num4 *= trainPointMultiple;
-
-                    int num5 = 1;
-                    int num6 = 0;
+                    num5 *= trainPointMultiple;
+                    int num6 = 1;
+                    int num7 = 0;
                     string str2 = "";
                     if (player.blnInjured)
                     {
                         InjuryGenerator generator2 = new InjuryGenerator(player.intPower);
                         generator2.SetEvent();
-                        num5 = 2;
-                        num6 = generator2.intSuspend;
+                        num6 = 2;
+                        num7 = generator2.intSuspend;
                         str2 = generator2.strEvent;
                     }
-                    BTPPlayer3Manager.UpdatePlayerStas(player.longPlayerID, player.intScore, player.intOReb + player.intDReb, player.intAst, player.intBlk, player.intStl, player.blnPlayed, player.intHappy, player.intPower, num4, num5, str2, num6);
+                    BTPPlayer3Manager.UpdatePlayerStas(player.longPlayerID, player.intScore, player.intOReb + player.intDReb, player.intAst, player.intBlk, player.intStl, player.blnPlayed, player.intHappy, player.intPower, num5, num6, str2, num7);
                 }
                 if (!flag)
                 {
@@ -494,41 +488,41 @@
             this.sbStasXml.Append(this.sbPlayer.ToString());
             this.sbIntro.Append("<Intro><Intro>");
             Quarter quarter = new Quarter();
-            int num7 = (quarter.GetMethodAddForMatch(this.aAways[0].intOffense, this.aHomes[0].intDefense) + quarter.GetMethodAddForMatch(this.aAways[1].intOffense, this.aHomes[1].intDefense)) + quarter.GetMethodAddForMatch(this.aAways[2].intOffense, this.aHomes[2].intDefense);
-            int num8 = (quarter.GetMethodAddForMatch(this.aHomes[0].intOffense, this.aAways[0].intDefense) + quarter.GetMethodAddForMatch(this.aHomes[1].intOffense, this.aAways[1].intDefense)) + quarter.GetMethodAddForMatch(this.aHomes[2].intOffense, this.aAways[2].intDefense);
+            int num8 = (quarter.GetMethodAddForMatch(this.aAways[0].intOffense, this.aHomes[0].intDefense) + quarter.GetMethodAddForMatch(this.aAways[1].intOffense, this.aHomes[1].intDefense)) + quarter.GetMethodAddForMatch(this.aAways[2].intOffense, this.aHomes[2].intDefense);
+            int num9 = (quarter.GetMethodAddForMatch(this.aHomes[0].intOffense, this.aAways[0].intDefense) + quarter.GetMethodAddForMatch(this.aHomes[1].intOffense, this.aAways[1].intDefense)) + quarter.GetMethodAddForMatch(this.aHomes[2].intOffense, this.aAways[2].intDefense);
             if (flag)
             {
                 this.intWinAbility = this.intAbilitySumH / this.intPlayedCountH;
                 this.intLoseAbility = this.intAbilitySumA / this.intPlayedCountA;
-                if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num7 >= num8))
+                if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num8 >= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("本场比赛简直是压倒性的胜利,毫无悬念可言!" + this.pMVP.strName + "成为MVP也是理所当然."));
                 }
-                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num7 <= num8))
+                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num8 <= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("有了实力战术只是次要的!本场比赛完全靠球员自身的强大能力获得胜利,这场比赛成为了" + this.pMVP.strName + "的个人秀."));
                 }
-                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num7 >= num8))
+                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num8 >= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("这场比赛验证了战术的重要性,合理的战术造就了" + this.pMVP.strName + "成为本场MVP,虽然他不是最强的."));
                 }
-                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num7 >= num8))
+                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num8 >= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("只要有破敌之策和一名勇将,胜利就不是问题!" + this.pMVP.strName + "和他的经理给我们上了生动的一课!"));
                 }
-                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num7 <= num8))
+                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num8 <= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("在球员强大的能力下,战术已经显得没那么重要,胜利才使关键!但是大家对于" + this.pMVP.strName + "的表现颇感惊讶."));
                 }
-                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num7 <= num8))
+                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num8 <= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed(this.pMVP.strName + "凭借个人能力力挽狂澜,创造了本场的一个奇迹!他无愧成为本场的MVP!连对手也啧啧称赞!"));
                 }
-                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num7 >= num8))
+                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num8 >= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("本场比赛告诉我们什么叫运筹帷幄之中,制胜千里之外,合理的战术决定了本场比赛的胜利!" + this.pMVP.strName + "应当把MVP的荣誉赠与他们优秀的经理!"));
                 }
-                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num7 <= num8))
+                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num8 <= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("如果拼劲全力,就算实力弱,就算战术没有优势,胜利也不是毫无希望的!" + this.pMVP.strName + "拿着MVP的奖章流出了胜利的眼泪!"));
                 }
@@ -539,35 +533,35 @@
                 this.intLoseAbility = this.intAbilitySumH / this.intPlayedCountH;
                 this.intWinAbility = this.intAbilitySumH / this.intPlayedCountH;
                 this.intLoseAbility = this.intAbilitySumA / this.intPlayedCountA;
-                if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num7 <= num8))
+                if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num8 <= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("本场比赛简直是压倒性的胜利,毫无悬念可言!" + this.pMVP.strName + "成为MVP也是理所当然."));
                 }
-                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num7 >= num8))
+                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num8 >= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("有了实力战术只是次要的!本场比赛完全靠球员自身的强大能力获得胜利,这场比赛成为了" + this.pMVP.strName + "的个人秀."));
                 }
-                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num7 <= num8))
+                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num8 <= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("这场比赛验证了战术的重要性,合理的战术造就了" + this.pMVP.strName + "成为本场MVP,虽然他不是最强的."));
                 }
-                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num7 <= num8))
+                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num8 <= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("只要有破敌之策和一名勇将,胜利就不是问题!" + this.pMVP.strName + "和他的经理给我们上了生动的一课!"));
                 }
-                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num7 >= num8))
+                else if (((this.intWinAbility > this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num8 >= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("在球员强大的能力下,战术已经显得没那么重要,胜利才使关键!但是大家对于" + this.pMVP.strName + "的表现颇感惊讶."));
                 }
-                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num7 >= num8))
+                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility == this.intMaxAbilityValue)) && (num8 >= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed(this.pMVP.strName + "凭借个人能力力挽狂澜,创造了本场的一个奇迹!他无愧成为本场的MVP!连对手也啧啧称赞!"));
                 }
-                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num7 <= num8))
+                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num8 <= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("本场比赛告诉我们什么叫运筹帷幄之中,制胜千里之外,合理的战术决定了本场比赛的胜利!" + this.pMVP.strName + "应当把MVP的荣誉赠与他们优秀的经理!"));
                 }
-                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num7 >= num8))
+                else if (((this.intWinAbility < this.intLoseAbility) && (this.pMVP.intAbility < this.intMaxAbilityValue)) && (num8 >= num9))
                 {
                     this.sbIntro.Append(Language.HighLightRed("如果拼劲全力,就算实力弱,就算战术没有优势,胜利也不是毫无希望的!" + this.pMVP.strName + "拿着MVP的奖章流出了胜利的眼泪!"));
                 }
@@ -578,12 +572,12 @@
             if (this.intType < 3)
             {
                 string str3 = StringItem.FormatDate(DateTime.Now, "yyyyMMdd");
-                string path = Path.GetFullPath(@"" + MatchItem.GetMatchPath() + @"\MatchXML\SRep\") + str3 + @"\";
+                string path = Path.GetFullPath("" + MatchItem.GetMatchPath() + @"\MatchXML\SRep\") + str3 + @"\";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
-                string str6 = string.Concat(new object[] { path, "Rep", this.tHome.intClubID, "_", this.tAway.intClubID, "_", this.intType, "_", this.intTag, ".xml" });
+                string str5 = string.Concat(new object[] { path, "Rep", this.tHome.intClubID, "_", this.tAway.intClubID, "_", this.intType, "_", this.intTag, ".xml" });
                 this.sbRepURL.Append("MatchXML/SRep/");
                 this.sbRepURL.Append(str3);
                 this.sbRepURL.Append("/Rep");
@@ -595,20 +589,20 @@
                 this.sbRepURL.Append("_");
                 this.sbRepURL.Append(this.intTag);
                 this.sbRepURL.Append(".xml");
-                if (File.Exists(str6))
+                if (File.Exists(str5))
                 {
-                    File.Delete(str6);
+                    File.Delete(str5);
                 }
-                using (StreamWriter writer = File.CreateText(str6))
+                using (StreamWriter writer = File.CreateText(str5))
                 {
                     writer.Write(this.sbRepXml.ToString());
                 }
-                path = Path.GetFullPath(@"" + MatchItem.GetMatchPath() + @"\MatchXML\SStas\") + str3 + @"\";
+                path = Path.GetFullPath("" + MatchItem.GetMatchPath() + @"\MatchXML\SStas\") + str3 + @"\";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
-                str6 = string.Concat(new object[] { path, "Stas", this.tHome.intClubID, "_", this.tAway.intClubID, "_", this.intType, "_", this.intTag, ".xml" });
+                str5 = string.Concat(new object[] { path, "Stas", this.tHome.intClubID, "_", this.tAway.intClubID, "_", this.intType, "_", this.intTag, ".xml" });
                 this.sbStasURL.Append("MatchXML/SStas/");
                 this.sbStasURL.Append(str3);
                 this.sbStasURL.Append("/Stas");
@@ -620,11 +614,11 @@
                 this.sbStasURL.Append("_");
                 this.sbStasURL.Append(this.intTag);
                 this.sbStasURL.Append(".xml");
-                if (File.Exists(str6))
+                if (File.Exists(str5))
                 {
-                    File.Delete(str6);
+                    File.Delete(str5);
                 }
-                using (StreamWriter writer2 = File.CreateText(str6))
+                using (StreamWriter writer2 = File.CreateText(str5))
                 {
                     writer2.Write(this.sbStasXml.ToString());
                 }

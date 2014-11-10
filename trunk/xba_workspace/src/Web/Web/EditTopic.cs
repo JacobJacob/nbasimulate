@@ -43,103 +43,101 @@
             if (topicRowByID == null)
             {
                 base.Response.Redirect("Report.aspx?Parameter=3");
+                return;
             }
-            else
+            int num = (int) topicRowByID["UserID"];
+            if (this.intUserID != num)
             {
-                int num = (int) topicRowByID["UserID"];
-                if (this.intUserID != num)
+                base.Response.Redirect("Report.aspx?Parameter=3");
+                return;
+            }
+            string str = topicRowByID["Title"].ToString();
+            string str2 = topicRowByID["Keyword"].ToString().Trim();
+            string str3 = topicRowByID["Logo"].ToString().Trim();
+            string str4 = topicRowByID["Content"].ToString();
+            this.intReplyTopicID = (int) topicRowByID["ReplyID"];
+            if (this.intReplyTopicID == 0)
+            {
+                this.intReplyTopicID = this.intTopicID;
+            }
+            this.Session["ReplyTopicID"] = this.intReplyTopicID;
+            switch (str3)
+            {
+                case "TopicPic10.gif":
+                    this.rbLogo10.Checked = true;
+                    break;
+
+                case "TopicPic11.gif":
+                    this.rbLogo11.Checked = true;
+                    break;
+
+                case "TopicPic12.gif":
+                    this.rbLogo12.Checked = true;
+                    break;
+
+                case "TopicPic13.gif":
+                    this.rbLogo13.Checked = true;
+                    break;
+
+                case "TopicPic14.gif":
+                    this.rbLogo14.Checked = true;
+                    break;
+
+                case "TopicPic15.gif":
+                    this.rbLogo15.Checked = true;
+                    break;
+
+                case "TopicPic16.gif":
+                    this.rbLogo16.Checked = true;
+                    break;
+
+                case "TopicPic17.gif":
+                    this.rbLogo17.Checked = true;
+                    break;
+
+                case "TopicPic18.gif":
+                    this.rbLogo18.Checked = true;
+                    break;
+
+                case "TopicPic19.gif":
+                    this.rbLogo19.Checked = true;
+                    break;
+
+                default:
+                    this.rbLogo10.Checked = true;
+                    break;
+            }
+            string str6 = str2;
+            if (str6 != null)
+            {
+                switch (str6)
                 {
-                    base.Response.Redirect("Report.aspx?Parameter=3");
-                }
-                else
-                {
-                    string str = topicRowByID["Title"].ToString();
-                    string str2 = topicRowByID["Keyword"].ToString().Trim();
-                    string str3 = topicRowByID["Logo"].ToString().Trim();
-                    string str4 = topicRowByID["Content"].ToString();
-                    this.intReplyTopicID = (int) topicRowByID["ReplyID"];
-                    if (this.intReplyTopicID == 0)
-                    {
-                        this.intReplyTopicID = this.intTopicID;
-                    }
-                    this.Session["ReplyTopicID"] = this.intReplyTopicID;
-                    switch (str3)
-                    {
-                        case "TopicPic10.gif":
-                            this.rbLogo10.Checked = true;
-                            break;
+                    case "":
+                        this.ddlKeyword.SelectedIndex = 0;
+                        goto Label_02E5;
 
-                        case "TopicPic11.gif":
-                            this.rbLogo11.Checked = true;
-                            break;
+                    case "新闻":
+                        this.ddlKeyword.SelectedIndex = 1;
+                        goto Label_02E5;
 
-                        case "TopicPic12.gif":
-                            this.rbLogo12.Checked = true;
-                            break;
+                    case "开发":
+                        this.ddlKeyword.SelectedIndex = 2;
+                        goto Label_02E5;
 
-                        case "TopicPic13.gif":
-                            this.rbLogo13.Checked = true;
-                            break;
-
-                        case "TopicPic14.gif":
-                            this.rbLogo14.Checked = true;
-                            break;
-
-                        case "TopicPic15.gif":
-                            this.rbLogo15.Checked = true;
-                            break;
-
-                        case "TopicPic16.gif":
-                            this.rbLogo16.Checked = true;
-                            break;
-
-                        case "TopicPic17.gif":
-                            this.rbLogo17.Checked = true;
-                            break;
-
-                        case "TopicPic18.gif":
-                            this.rbLogo18.Checked = true;
-                            break;
-
-                        case "TopicPic19.gif":
-                            this.rbLogo19.Checked = true;
-                            break;
-
-                        default:
-                            this.rbLogo10.Checked = true;
-                            break;
-                    }
-                    switch (str2)
-                    {
-                        case "":
-                            this.ddlKeyword.SelectedIndex = 0;
-                            break;
-
-                        case "新闻":
-                            this.ddlKeyword.SelectedIndex = 1;
-                            break;
-
-                        case "开发":
-                            this.ddlKeyword.SelectedIndex = 2;
-                            break;
-
-                        case "活动":
-                            this.ddlKeyword.SelectedIndex = 3;
-                            break;
-
-                        default:
-                            this.ddlKeyword.SelectedIndex = 0;
-                            break;
-                    }
-                    this.tbTitle.Text = str;
-                    this.ebContent.Text = str4;
+                    case "活动":
+                        this.ddlKeyword.SelectedIndex = 3;
+                        goto Label_02E5;
                 }
             }
+            this.ddlKeyword.SelectedIndex = 0;
+        Label_02E5:
+            this.tbTitle.Text = str;
+            this.ebContent.Text = str4;
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            string str2;
+            string str;
             string strKeyword = "";
             if (BoardItem.IsMainMaster(this.intUserID))
             {
@@ -147,43 +145,43 @@
             }
             if (this.rbLogo10.Checked)
             {
-                str2 = "TopicPic10.gif";
+                str = "TopicPic10.gif";
             }
             else if (this.rbLogo11.Checked)
             {
-                str2 = "TopicPic11.gif";
+                str = "TopicPic11.gif";
             }
             else if (this.rbLogo12.Checked)
             {
-                str2 = "TopicPic12.gif";
+                str = "TopicPic12.gif";
             }
             else if (this.rbLogo13.Checked)
             {
-                str2 = "TopicPic13.gif";
+                str = "TopicPic13.gif";
             }
             else if (this.rbLogo14.Checked)
             {
-                str2 = "TopicPic14.gif";
+                str = "TopicPic14.gif";
             }
             else if (this.rbLogo15.Checked)
             {
-                str2 = "TopicPic15.gif";
+                str = "TopicPic15.gif";
             }
             else if (this.rbLogo16.Checked)
             {
-                str2 = "TopicPic16.gif";
+                str = "TopicPic16.gif";
             }
             else if (this.rbLogo17.Checked)
             {
-                str2 = "TopicPic17.gif";
+                str = "TopicPic17.gif";
             }
             else if (this.rbLogo18.Checked)
             {
-                str2 = "TopicPic18.gif";
+                str = "TopicPic18.gif";
             }
             else
             {
-                str2 = "TopicPic19.gif";
+                str = "TopicPic19.gif";
             }
             string validWords = StringItem.GetValidWords(StringItem.SetValidWord(this.tbTitle.Text.ToString().Trim()));
             if (!StringItem.IsValidName(validWords, 2, 100))
@@ -204,7 +202,7 @@
                     this.intReplyTopicID = (int) this.Session["ReplyTopicID"];
                     try
                     {
-                        ROOTTopicManager.EditTopic(this.intTopicID, this.strNickName, strKeyword, str2, strIn, validWords);
+                        ROOTTopicManager.EditTopic(this.intTopicID, this.strNickName, strKeyword, str, strIn, validWords);
                         str5 = string.Concat(new object[] { "Report.aspx?Parameter=4002!BoardID.", this.strBoardID, "^TopicID.", this.intReplyTopicID, "^Page.", this.intPage });
                     }
                     catch
@@ -235,9 +233,9 @@
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
                 this.strUserName = onlineRowByUserID["UserName"].ToString().Trim();
                 this.strPassword = onlineRowByUserID["Password"].ToString().Trim();
-                this.intTopicID = (int) SessionItem.GetRequest("TopicID", 0);
-                this.strBoardID = (string) SessionItem.GetRequest("BoardID", 1);
-                this.intPage = (int) SessionItem.GetRequest("Page", 0);
+                this.intTopicID = SessionItem.GetRequest("TopicID", 0);
+                this.strBoardID = SessionItem.GetRequest("BoardID", 1);
+                this.intPage = SessionItem.GetRequest("Page", 0);
                 this.trKeyword.Visible = false;
                 this.tbTitle.Enabled = false;
                 if (BoardItem.IsMainMaster(this.intUserID))

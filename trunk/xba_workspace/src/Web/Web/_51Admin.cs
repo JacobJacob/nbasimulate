@@ -21,9 +21,10 @@
             if ((str == "Admin") && (str2 == "Admin51edu"))
             {
                 this.Session[Global.strSessionName] = num;
-                HttpCookie cookie = new HttpCookie(Global.strSessionName);
-                cookie.Expires = DateTime.Now.AddHours(6.0);
-                cookie.Value = num.ToString();
+                HttpCookie cookie = new HttpCookie(Global.strSessionName) {
+                    Expires = DateTime.Now.AddHours(6.0),
+                    Value = num.ToString()
+                };
                 base.Response.Cookies.Add(cookie);
                 base.Response.Redirect("51AdminMain.aspx");
             }

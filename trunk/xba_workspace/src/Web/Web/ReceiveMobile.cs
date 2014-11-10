@@ -12,7 +12,7 @@
     public class ReceiveMobile : Page
     {
         public string inputStr;
-        private int intOrderCategory = 0;
+        private int intOrderCategory;
         private int intUserID = -1;
         public string Result = "ok";
         private string strMO_MESSAGE_ID;
@@ -84,7 +84,7 @@
                             this.strUserName = str6.Trim().Substring(1, str6.Length - 1);
                             if (str4 == "1")
                             {
-                                int num2;
+                                int num;
                                 this.intUserID = ROOTUserManager.GetUserIDByUserName(this.strUserName);
                                 if (this.intUserID < 1)
                                 {
@@ -95,17 +95,17 @@
                                     return str;
                                 }
                                 DateTime today = DateTime.Today;
-                                int num = -today.Day + 1;
-                                today = today.AddDays((double) num);
+                                int num2 = -today.Day + 1;
+                                today = today.AddDays((double) num2);
                                 if ((this.strMoveBillNumber.Substring(0, 3).Equals("130") || this.strMoveBillNumber.Substring(0, 3).Equals("131")) || ((this.strMoveBillNumber.Substring(0, 3).Equals("132") || this.strMoveBillNumber.Substring(0, 3).Equals("133")) || this.strMoveBillNumber.Substring(0, 3).Equals("153")))
                                 {
-                                    num2 = 0;
+                                    num = 0;
                                 }
                                 else
                                 {
-                                    num2 = ROOTUserManager.CheckPayOrderByDate(strMoveBillPhone, this.intUserID, today, DateTime.Today);
+                                    num = ROOTUserManager.CheckPayOrderByDate(strMoveBillPhone, this.intUserID, today, DateTime.Today);
                                 }
-                                if (num2 == 1)
+                                if (num == 1)
                                 {
                                     this.intOrderCategory = 1;
                                     ROOTUserManager.AddPayOrderByMoveBill(this.intUserID, this.strUserName, 3, strOID, "3枚金币", this.intOrderCategory, 1, 2, strMoveBillPhone, DateTime.Today);
@@ -116,7 +116,7 @@
                                 }
                                 this.intOrderCategory = 0;
                                 string str10 = "";
-                                switch (num2)
+                                switch (num)
                                 {
                                     case 2:
                                         str10 = this.strUserName + "，今天您的点播数已经超过七条，敬请明天再点播。谢谢您对XBA的支持！本条免费。";

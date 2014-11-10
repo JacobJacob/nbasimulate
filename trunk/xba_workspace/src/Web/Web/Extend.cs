@@ -73,23 +73,23 @@
             }
             else
             {
-                this.longPlayerID = (long) SessionItem.GetRequest("PlayerID", 3);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                int intClubId = BTPClubManager.GetClubIDByUserID(this.intUserID);
+                int clubIDByUserID = BTPClubManager.GetClubIDByUserID(this.intUserID);
                 string str = playerRowByPlayerID["Name"].ToString().Trim();
-                int num = (int) playerRowByPlayerID["PV"];
-                int intFromClubID = Convert.ToInt32(playerRowByPlayerID["FromClubID"]);
-                int intPlayedYear = Convert.ToInt32(playerRowByPlayerID["PlayedYear"]);
-                int num2 = (byte) playerRowByPlayerID["Contract"];
-                int age = Convert.ToInt32(playerRowByPlayerID["Age"]);
+                int num2 = (int) playerRowByPlayerID["PV"];
+                int num3 = Convert.ToInt32(playerRowByPlayerID["FromClubID"]);
+                int num4 = Convert.ToInt32(playerRowByPlayerID["PlayedYear"]);
+                int num5 = (byte) playerRowByPlayerID["Contract"];
+                int num6 = Convert.ToInt32(playerRowByPlayerID["Age"]);
                 this.blnContractType = (bool) playerRowByPlayerID["ContractType"];
-                if (num2 > 10)
+                if (num5 > 10)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=494");
                 }
                 else
                 {
-                    this.intSalary = Convert.ToInt32((long) ((num * (80L + (30L - (this.longPlayerID % 30L)))) / 100L));
+                    this.intSalary = Convert.ToInt32((long) ((num2 * (80L + (30L - (this.longPlayerID % 30L)))) / 100L));
                     this.intSalary = (this.intSalary * 80) / 100;
                     if (this.intSalary < 500)
                     {
@@ -99,17 +99,14 @@
                     {
                         this.intSalary = 0xc350;
                     }
-
-                    if (intFromClubID == intClubId && intPlayedYear <= 1 && this.intSalary > 20000)
+                    if (((num3 == clubIDByUserID) && (num4 <= 1)) && (this.intSalary > 0x4e20))
                     {
-                        this.intSalary = 20000;
+                        this.intSalary = 0x4e20;
                     }
-
-                    if (age >= 32 && this.intSalary > 20000)
+                    if ((num6 >= 0x20) && (this.intSalary > 0x4e20))
                     {
-                        this.intSalary = 20000;
+                        this.intSalary = 0x4e20;
                     }
-
                     playerRowByPlayerID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
                     if (playerRowByPlayerID != null)
                     {

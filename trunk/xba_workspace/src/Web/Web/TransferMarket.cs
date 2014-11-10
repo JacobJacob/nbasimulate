@@ -35,19 +35,19 @@
         private void DevChooseList()
         {
             string str;
-            string str3;
+            string str2;
             int num;
             int num2;
             int num3;
             int num4;
             int num5;
             int num6;
-            long price;
+            long num7;
             DateTime time;
-            long num10;
+            long num8;
             bool flag;
             DataRow row;
-            string str4 = "";
+            string str3 = "";
             this.intPerPage = 9;
             this.sb = new StringBuilder();
             this.sb.Append("<table width='100%'  border='0' cellspacing='0' cellpadding='0'>");
@@ -69,33 +69,33 @@
             SqlDataReader reader = BTPTransferManager.GetDevChooseListNew(this.intUserID, this.intPos, this.intOrder, zoneCode, this.intPage, this.intPerPage);
             if (reader.HasRows)
             {
-                goto Label_06DA;
+                goto Label_052D;
             }
             this.sb.Append("<tr align='center'><td height='25' colspan='11' class='BarContent'>暂时没有选秀中的球员！</td></tr>");
-            goto Label_06E6;
-        Label_03F7:
-            row = BTPPlayer5Manager.GetPlayerRowByPlayerID(num10);
+            goto Label_078C;
+        Label_024C:
+            row = BTPPlayer5Manager.GetPlayerRowByPlayerID(num8);
             if (row != null)
             {
                 int intUserID = (int) row["BidderID"];
-                price = Convert.ToInt64(row["BidPrice"]);
+                num7 = Convert.ToInt64(row["BidPrice"]);
                 if (intUserID != 0)
                 {
                     string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
-                    str3 = string.Concat(new object[] { "<a title='选秀顺位' style='CURSOR:hand'>", price, "</a><br>", AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right") });
+                    str2 = string.Concat(new object[] { "<a title='选秀顺位' style='CURSOR:hand'>", num7, "</a><br>", AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right") });
                 }
                 else
                 {
-                    str3 = "<a title='选秀顺位' style='CURSOR:hand'>" + price + "</a><br>--";
+                    str2 = "<a title='选秀顺位' style='CURSOR:hand'>" + num7 + "</a><br>--";
                 }
             }
             else
             {
-                price = Convert.ToInt64(reader["BidPrice"]);
-                str3 = "<a title='选秀顺位' style='CURSOR:hand'>" + price + "</a><br>--";
+                num7 = Convert.ToInt64(reader["BidPrice"]);
+                str2 = "<a title='选秀顺位' style='CURSOR:hand'>" + num7 + "</a><br>--";
             }
             this.sb.Append("<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-            this.sb.Append("<td height='34' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(num10, str, 5, 0, 0) + "</td>");
+            this.sb.Append("<td height='34' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(num8, str, 5, 0, 0) + "</td>");
             if (flag)
             {
                 this.sb.Append(string.Concat(new object[] { "<td><a title='球龄：", num5, "</br>球员将在赛季结束后退役' style='CURSOR: hand;color:red'>", num, "!</td>" }));
@@ -108,12 +108,12 @@
             this.sb.Append("<td>" + num3 + "</td>");
             this.sb.Append("<td>" + PlayerItem.GetAbilityColor(num4) + "</td>");
             this.sb.Append("<td>" + num6 + "</td>");
-            this.sb.Append("<td>" + str3 + "</td>");
+            this.sb.Append("<td>" + str2 + "</td>");
             this.sb.Append("<td><a title='" + StringItem.FormatDate(time, "MM-dd hh:mm:ss") + "截止' style='CURSOR: hand'>" + PlayerItem.GetBidLeftTime(DateTime.Now, time) + "</a></td>");
-            this.sb.Append("<td>" + str4 + "</td>");
+            this.sb.Append("<td>" + str3 + "</td>");
             this.sb.Append("</tr>");
             this.sb.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>");
-        Label_06DA:
+        Label_052D:
             if (reader.Read())
             {
                 str = reader["Name"].ToString().Trim();
@@ -121,52 +121,41 @@
                 Convert.ToInt32(reader["Pos"]);
                 num2 = Convert.ToInt32(reader["Height"]);
                 num3 = Convert.ToInt32(reader["Weight"]);
-                num4 = 999;//(int) reader["Ability"];
+                num4 = 0x3e7;
                 time = (DateTime) reader["EndBidTime"];
-                num10 = (long) reader["PlayerID"];
+                num8 = (long) reader["PlayerID"];
                 float single1 = ((float) num4) / 10f;
                 num5 = Convert.ToInt32(reader["PlayedYear"]);
                 num6 = (int) reader["BidCount"];
-                int num9 = (byte) reader["BidStatus"];
+                int num10 = (byte) reader["BidStatus"];
                 flag = (bool) reader["IsRetire"];
-                int clubID = Convert.ToInt32(reader["ClubID"]);
-                int bidderID = Convert.ToInt32(reader["BidderID"]);
+                int num11 = Convert.ToInt32(reader["ClubID"]);
+                Convert.ToInt32(reader["BidderID"]);
                 if (DateTime.Now >= time)
                 {
-                    switch (num9)
+                    switch (num10)
                     {
                         case 0:
-                            str4 = "结算中";
-                            goto Label_03F7;
+                            str3 = "结算中";
+                            goto Label_024C;
 
                         case 1:
-                            str4 = "<a href='BidDetail.aspx?Type=5&PlayerID=" + num10 + "' target='Right'>成交详情</a>";
-                            goto Label_03F7;
+                            str3 = "<a href='BidDetail.aspx?Type=5&PlayerID=" + num8 + "' target='Right'>成交详情</a>";
+                            goto Label_024C;
                     }
-                    str4 = "无成交";
+                    str3 = "无成交";
+                }
+                else if (num11 > 0)
+                {
+                    str3 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num8, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
                 }
                 else
                 {
-                    if (clubID > 0)
-                    {
-                        str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
-                    }
-                    else
-                    {
-                        //if (bidderID > 0)
-                        //{
-                        //    str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
-                        //}
-                        //else
-                        //{
-                            str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=SETTRIAL&PlayerID=", num10, "&Market=5'>试训</a><a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num10, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
-                        //}
-                    }
-                   
+                    str3 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=SETTRIAL&PlayerID=", num8, "&Market=5'>试训</a><a href='SecretaryPage.aspx?Type=DEVCHOOSE&PlayerID=", num8, "&Market=5'><img src='", SessionItem.GetImageURL(), "xuanxiu.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=5&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
                 }
-                goto Label_03F7;
+                goto Label_024C;
             }
-        Label_06E6:
+        Label_078C:
             reader.Close();
             string msgViewPage = this.GetMsgViewPage(strCurrentURL);
             this.sb.Append("<tr><td align='left' colspan='4' style=\"padding-left:10px\">" + this.strHref + "</td><td height='25' align='right' colspan='5'>" + msgViewPage + "</td></tr></table>");
@@ -183,7 +172,7 @@
             int num5;
             int num6;
             DateTime time;
-            long num8;
+            long num7;
             bool flag;
             string str2 = "";
             this.sb = new StringBuilder();
@@ -205,13 +194,13 @@
             SqlDataReader reader = BTPTransferManager.GetDevStreetNew(this.intPos, this.intOrder, this.intPage, this.intPerPage);
             if (reader.HasRows)
             {
-                goto Label_05D5;
+                goto Label_0430;
             }
             this.sb.Append("<tr align='center'><td height='25' colspan='11' class='BarContent'>暂时没有拍卖中的球员！</td></tr>");
-            goto Label_05E1;
-        Label_03C7:
+            goto Label_05EE;
+        Label_0222:
             this.sb.Append("<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-            this.sb.Append("<td height='25' align='left' style='padding-left:10px'>" + PlayerItem.GetPlayerNameInfo(num8, str, 3, 0, 0) + "</td>");
+            this.sb.Append("<td height='25' align='left' style='padding-left:10px'>" + PlayerItem.GetPlayerNameInfo(num7, str, 3, 0, 0) + "</td>");
             if (flag)
             {
                 this.sb.Append(string.Concat(new object[] { "<td><a title='球龄：", num5, "</br>球员将在赛季结束后退役' style='CURSOR: hand;color:red'>", num, "!</a></td>" }));
@@ -229,7 +218,7 @@
             this.sb.Append("<td>" + str2 + "</td>");
             this.sb.Append("</tr>");
             this.sb.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>");
-        Label_05D5:
+        Label_0430:
             if (reader.Read())
             {
                 str = reader["Name"].ToString().Trim();
@@ -239,33 +228,33 @@
                 num3 = Convert.ToInt32(reader["Weight"]);
                 num4 = (int) reader["Ability"];
                 time = (DateTime) reader["EndBidTime"];
-                num8 = (long) reader["PlayerID"];
+                num7 = (long) reader["PlayerID"];
                 float single1 = ((float) num4) / 10f;
                 num5 = Convert.ToInt32(reader["PlayedYear"]);
                 num6 = (int) reader["BidCount"];
-                int num7 = (byte) reader["BidStatus"];
+                int num8 = (byte) reader["BidStatus"];
                 flag = (bool) reader["IsRetire"];
                 if (DateTime.Now >= time)
                 {
-                    switch (num7)
+                    switch (num8)
                     {
                         case 0:
                             str2 = "结算中";
-                            goto Label_03C7;
+                            goto Label_0222;
 
                         case 1:
-                            str2 = "<a href='BidDetail.aspx?Type=3&PlayerID=" + num8 + "' target='Right'>成交详情</a>";
-                            goto Label_03C7;
+                            str2 = "<a href='BidDetail.aspx?Type=3&PlayerID=" + num7 + "' target='Right'>成交详情</a>";
+                            goto Label_0222;
                     }
                     str2 = "无成交";
                 }
                 else
                 {
-                    str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVSTREET&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=1&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVSTREET&PlayerID=", num7, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=1&PlayerID=", num7, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
                 }
-                goto Label_03C7;
+                goto Label_0222;
             }
-        Label_05E1:
+        Label_05EE:
             reader.Close();
             string msgViewPage = this.GetMsgViewPage(strCurrentURL);
             this.sb.Append("<tr><td align='left'colspan='4' style=\"padding-left:10px\">" + this.strHref + "</td><td height='25' align='right' colspan='5'>" + msgViewPage + "</td></tr></table>");
@@ -296,46 +285,38 @@
             {
                 num = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                objArray = new object[7];
-                objArray[0] = "<a href='";
-                objArray[1] = strCurrentURL;
-                objArray[2] = "Order=";
-                objArray[3] = this.intOrder;
-                objArray[4] = "&Page=";
-                int num3 = this.intPage - 1;
-                objArray[5] = num3.ToString();
-                objArray[6] = "'>上一页</a>";
-                str2 = string.Concat(objArray);
+                objArray = new object[] { "<a href='", strCurrentURL, "Order=", this.intOrder, "&Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(objArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 objArray = new object[] { "<a href='", strCurrentURL, "Order=", this.intOrder, "&Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(objArray);
+                str2 = string.Concat(objArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
+            str3 = str3 + "</select>";
             if (this.intOrder == 0)
             {
                 this.strHref = "<a href='" + strCurrentURL + "Order=4&Page=1' >按照综合能力排序</a>";
@@ -344,7 +325,7 @@
             {
                 this.strHref = "<a href='" + strCurrentURL + "Order=0&Page=1' >按照截止时间排序</a>";
             }
-            return string.Concat(new object[] { str2, " ", str3, " 共", this.intTotal, "个记录 跳转", str4 });
+            return string.Concat(new object[] { str, " ", str2, " 共", this.intTotal, "个记录 跳转", str3 });
         }
 
         private void InitializeComponent()
@@ -372,14 +353,14 @@
             {
                 this.strIsStreet = "Tommydef";
             }
-            this.strType = (string) SessionItem.GetRequest("Type", 1);
-            this.intPos = (int) SessionItem.GetRequest("Pos", 0);
+            this.strType = SessionItem.GetRequest("Type", 1);
+            this.intPos = SessionItem.GetRequest("Pos", 0);
             if ((this.intPos > 5) || (this.intPos < 1))
             {
                 this.intPos = 1;
             }
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
-            this.intOrder = (int) SessionItem.GetRequest("Order", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
+            this.intOrder = SessionItem.GetRequest("Order", 0);
             this.intPerPage = 12;
             StringBuilder builder = new StringBuilder();
             if (this.intCategory == 5)
@@ -402,19 +383,13 @@
                     this.PageIntrosb.Append("<li class='qian2'>街头自由</li>");
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
                     this.PageIntrosb.Append(builder.ToString());
-
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
-               
-                    
-                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    if (this.intCategory == 5)
-                    {
-                        this.DevStreetList();
-                    }
-                    else
+                    if (this.intCategory != 5)
                     {
                         this.StreetFreeList();
+                        break;
                     }
+                    this.DevStreetList();
                     break;
 
                 case "STREETUTMOST":
@@ -422,14 +397,9 @@
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a>" }));
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
                     this.PageIntrosb.Append(builder.ToString());
-
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2'>街头极限</li>" }));
-               
-
-                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.StreetFreeList();
                     break;
-
 
                 case "STREETCHOOSE":
                     this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=MYFOCUSPLAYER&Pos=0&Order=4&Page=1'>关注球员</a></li>");
@@ -437,64 +407,56 @@
                     this.PageIntrosb.Append("<li class='qian2'>街头选秀</li>");
                     this.PageIntrosb.Append(builder.ToString());
                     this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
-               
-                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.StreetChooseList();
                     break;
 
                 case "TRANSFER":
-                    if (this.intCategory != 5)
+                    if (this.intCategory == 5)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=90");
-                        return;
+                        this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=MYFOCUSPLAYER&Pos=0&Order=4&Page=1'>关注球员</a></li>");
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
+                        this.PageIntrosb.Append("<li class='qian2'>职业转会</li>");
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='拥有选秀卡就可在这里获得球员，选秀卡轮次靠前者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=DEVCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=DEVCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>职业选秀</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='较好的球员，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=UTMOST\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=UTMOST&Pos=", this.intPos, "&Order=4&Page=1'>极限球员</a></li>" }));
+                        this.TransferList();
+                        break;
                     }
-                    this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=MYFOCUSPLAYER&Pos=0&Order=4&Page=1'>关注球员</a></li>");
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a></li>" }));
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
-                    this.PageIntrosb.Append("<li class='qian2'>职业转会</li>");
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='拥有选秀卡就可在这里获得球员，选秀卡轮次靠前者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=DEVCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=DEVCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>职业选秀</a></li>" }));
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
-               
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='较好的球员，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=UTMOST\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=UTMOST&Pos=", this.intPos, "&Order=4&Page=1'>极限球员</a></li>" }));
-                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.TransferList();
-                    break;
+                    base.Response.Redirect("Report.aspx?Parameter=90");
+                    return;
 
                 case "DEVCHOOSE":
-                    if (this.intCategory != 5)
+                    if (this.intCategory == 5)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=90");
-                        return;
+                        this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=MYFOCUSPLAYER&Pos=0&Order=4&Page=1'>关注球员</a></li>");
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='购买其他球队卖出的球员，直接进入职业队，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=TRANSFER\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=TRANSFER&Pos=", this.intPos, "&Order=4&Page=1'>职业转会</a></li>" }));
+                        this.PageIntrosb.Append("<li class='qian2'>职业选秀</li>");
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='较好的球员，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=UTMOST\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=UTMOST&Pos=", this.intPos, "&Order=4&Page=1'>极限球员</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
+                        this.DevChooseList();
+                        break;
                     }
-                    this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=MYFOCUSPLAYER&Pos=0&Order=4&Page=1'>关注球员</a></li>");
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a></li>" }));
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='购买其他球队卖出的球员，直接进入职业队，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=TRANSFER\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=TRANSFER&Pos=", this.intPos, "&Order=4&Page=1'>职业转会</a></li>" }));
-                    this.PageIntrosb.Append("<li class='qian2'>职业选秀</li>");
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='较好的球员，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=UTMOST\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=UTMOST&Pos=", this.intPos, "&Order=4&Page=1'>极限球员</a></li>" }));
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
-                
-                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.DevChooseList();
-                    break;
+                    base.Response.Redirect("Report.aspx?Parameter=90");
+                    return;
 
                 case "UTMOST":
-                    if (this.intCategory != 5)
+                    if (this.intCategory == 5)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=90");
-                        return;
+                        this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=MYFOCUSPLAYER&Pos=0&Order=4&Page=1'>关注球员</a></li>");
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='购买其他球队卖出的球员，直接进入职业队，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=TRANSFER\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=TRANSFER&Pos=", this.intPos, "&Order=4&Page=1'>职业转会</a></li>" }));
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='拥有选秀卡就可在这里获得球员，选秀卡轮次靠前者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=DEVCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=DEVCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>职业选秀</a></li>" }));
+                        this.PageIntrosb.Append("<li class='qian2'>极限球员</li>");
+                        this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
+                        this.TransferList();
+                        break;
                     }
-                    this.PageIntrosb.Append("<ul><li class='qian1a'><a title='您所拍下的或者关注的球员都会在这里显示，方便您的监控。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=FOCUS\"' href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=MYFOCUSPLAYER&Pos=0&Order=4&Page=1'>关注球员</a></li>");
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETFREE&Pos=", this.intPos, "&Order=4&Page=1'>街头自由</a></li>" }));
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从街头选秀来的球员可以进入职业球队。价格适当获得球员。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>街头选秀</a></li>" }));
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='购买其他球队卖出的球员，直接进入职业队，价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=TRANSFER\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=TRANSFER&Pos=", this.intPos, "&Order=4&Page=1'>职业转会</a></li>" }));
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='拥有选秀卡就可在这里获得球员，选秀卡轮次靠前者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=DEVCHOOSE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=DEVCHOOSE&Pos=", this.intPos, "&Order=4&Page=1'>职业选秀</a></li>" }));
-                    this.PageIntrosb.Append("<li class='qian2'>极限球员</li>");
-                    this.PageIntrosb.Append(string.Concat(new object[] { "<li class='qian2a'><a title='从这里购买的球员可以进入街球队，年轻球员的培养潜力很大。价高者得。' onclick='javascript:window.top.Main.Right.location=\"Intro/TransferMarket.aspx?Type=STREETFREE\"' href='TransferMarket.aspx?Tommy=", this.strIsStreet, "&Type=STREETUTMOST&Pos=", this.intPos, "&Order=4&Page=1'>街头极限</a></li>" }));
-               
-                    //this.PageIntrosb.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.TransferList();
-                    break;
+                    base.Response.Redirect("Report.aspx?Parameter=90");
+                    return;
 
                 default:
                     base.Response.Redirect("MyFocus.aspx?Tommy=" + this.strIsStreet);
@@ -511,7 +473,7 @@
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=3&Order=4&Page=1'>小前锋 SF</a>");
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=4&Order=4&Page=1'>得分后卫 SG</a>");
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=5&Order=4&Page=1'>组织后卫 PG</a>");
-                        goto Label_10B0;
+                        goto Label_132D;
 
                     case 2:
                         this.PageIntro1sb.Append("<a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=1&Order=4&Page=1'>中锋 C</a>");
@@ -519,7 +481,7 @@
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=3&Order=4&Page=1'>小前锋 SF</a>");
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=4&Order=4&Page=1'>得分后卫 SG</a>");
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=5&Order=4&Page=1'>组织后卫 PG</a>");
-                        goto Label_10B0;
+                        goto Label_132D;
 
                     case 3:
                         this.PageIntro1sb.Append("<a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=1&Order=4&Page=1'>中锋 C</a>");
@@ -527,7 +489,7 @@
                         this.PageIntro1sb.Append(" | <font color='#FF0000'>小前锋 SF</font>");
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=4&Order=4&Page=1'>得分后卫 SG</a>");
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=5&Order=4&Page=1'>组织后卫 PG</a>");
-                        goto Label_10B0;
+                        goto Label_132D;
 
                     case 4:
                         this.PageIntro1sb.Append("<a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=1&Order=4&Page=1'>中锋 C</a>");
@@ -535,7 +497,7 @@
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=3&Order=4&Page=1'>小前锋 SF</a>");
                         this.PageIntro1sb.Append(" | <font color='#FF0000'>得分后卫 SG</font>");
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=5&Order=4&Page=1'>组织后卫 PG</a>");
-                        goto Label_10B0;
+                        goto Label_132D;
 
                     case 5:
                         this.PageIntro1sb.Append("<a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=1&Order=4&Page=1'>中锋 C</a>");
@@ -543,7 +505,7 @@
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=3&Order=4&Page=1'>小前锋 SF</a>");
                         this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=4&Order=4&Page=1'>得分后卫 SG</a>");
                         this.PageIntro1sb.Append(" | <font color='#FF0000'>组织后卫 PG</font>");
-                        goto Label_10B0;
+                        goto Label_132D;
                 }
                 this.PageIntro1sb.Append("<font color='#FF0000'>中锋 C</font>");
                 this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=2&Order=4&Page=1'>大前锋 PF</a>");
@@ -551,7 +513,7 @@
                 this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=4&Order=4&Page=1'>得分后卫 SG</a>");
                 this.PageIntro1sb.Append(" | <a href='TransferMarket.aspx?Tommy=" + this.strIsStreet + "&Type=" + this.strType + "&Pos=5&Order=4&Page=1'>组织后卫 PG</a>");
             }
-        Label_10B0:
+        Label_132D:
             this.InitializeComponent();
             base.OnInit(e);
         }
@@ -578,7 +540,7 @@
             int num5;
             int num6;
             DateTime time;
-            long num8;
+            long num7;
             bool flag;
             string str2 = "";
             this.sb = new StringBuilder();
@@ -600,13 +562,13 @@
             SqlDataReader reader = BTPTransferManager.GetTranStreetChooseNew(this.intPos, this.intOrder, this.intPage, this.intPerPage);
             if (reader.HasRows)
             {
-                goto Label_0605;
+                goto Label_0430;
             }
             this.sb.Append("<tr align='center'><td height='25' colspan='11' class='BarContent'>暂时没有拍卖中的球员！</td></tr>");
-            goto Label_0611;
-        Label_03F7:
+            goto Label_0618;
+        Label_0222:
             this.sb.Append("<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-            this.sb.Append("<td height='25' align='left' style='padding-left:10px'>" + PlayerItem.GetPlayerNameInfo(num8, str, 3, 1, 0) + "</td>");
+            this.sb.Append("<td height='25' align='left' style='padding-left:10px'>" + PlayerItem.GetPlayerNameInfo(num7, str, 3, 1, 0) + "</td>");
             if (flag)
             {
                 this.sb.Append(string.Concat(new object[] { "<td><a title='球龄：", num5, "</br>球员将在赛季结束后退役' style='CURSOR: hand;color:red'>", num, "!</td>" }));
@@ -624,7 +586,7 @@
             this.sb.Append("<td>" + str2 + "</td>");
             this.sb.Append("</tr>");
             this.sb.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>");
-        Label_0605:
+        Label_0430:
             if (reader.Read())
             {
                 str = reader["Name"].ToString().Trim();
@@ -634,34 +596,33 @@
                 num3 = Convert.ToInt32(reader["Weight"]);
                 num4 = (int) reader["Ability"];
                 time = (DateTime) reader["EndBidTime"];
-                num8 = (long) reader["PlayerID"];
+                num7 = (long) reader["PlayerID"];
                 float single1 = ((float) num4) / 10f;
                 num5 = Convert.ToInt32(reader["PlayedYear"]);
                 num6 = (int) reader["BidCount"];
-                int num7 = (byte) reader["BidStatus"];
+                int num8 = (byte) reader["BidStatus"];
                 flag = (bool) reader["IsRetire"];
                 if (DateTime.Now >= time)
                 {
-                    switch (num7)
+                    switch (num8)
                     {
                         case 0:
                             str2 = "结算中";
-                            goto Label_03F7;
+                            goto Label_0222;
 
                         case 1:
-                            str2 = "<a href='BidDetail.aspx?Type=3&PlayerID=" + num8 + "' target='Right'>成交详情</a>";
-                            goto Label_03F7;
+                            str2 = "<a href='BidDetail.aspx?Type=3&PlayerID=" + num7 + "' target='Right'>成交详情</a>";
+                            goto Label_0222;
                     }
                     str2 = "无成交";
                 }
                 else
                 {
-                    str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=QUICKBUY&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "yikoujia.gif' border='0' width='33' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=2&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
-                    //str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=2&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETCHOOSE&PlayerID=", num7, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=QUICKBUY&PlayerID=", num7, "'><img src='", SessionItem.GetImageURL(), "yikoujia.gif' border='0' width='33' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=2&PlayerID=", num7, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
                 }
-                goto Label_03F7;
+                goto Label_0222;
             }
-        Label_0611:
+        Label_0618:
             reader.Close();
             string msgViewPage = this.GetMsgViewPage(strCurrentURL);
             this.sb.Append("<tr><td align='left' colspan='5' style=\"padding-left:10px\">" + this.strHref + "</td><td height='25' align='right' colspan='4'>" + msgViewPage + "</td></tr></table>");
@@ -700,11 +661,11 @@
             SqlDataReader reader = BTPTransferManager.GetTranStreetFreeNew(this.intPos, this.intOrder, this.intPage, this.intPerPage);
             if (reader.HasRows)
             {
-                goto Label_05D5;
+                goto Label_0430;
             }
             this.sb.Append("<tr align='center'><td height='25' colspan='11' class='BarContent'>暂时没有拍卖中的球员！</td></tr>");
-            goto Label_05E1;
-        Label_03C7:
+            goto Label_05EE;
+        Label_0222:
             this.sb.Append("<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
             this.sb.Append("<td height='25' align='left' style='padding-left:10px'>" + PlayerItem.GetPlayerNameInfo(num5, str, 3, 0, 0) + "</td>");
             if (flag)
@@ -724,7 +685,7 @@
             this.sb.Append("<td>" + str2 + "</td>");
             this.sb.Append("</tr>");
             this.sb.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='9'></td></tr>");
-        Label_05D5:
+        Label_0430:
             if (reader.Read())
             {
                 str = reader["Name"].ToString().Trim();
@@ -746,23 +707,21 @@
                     {
                         case 0:
                             str2 = "结算中";
-                            goto Label_03C7;
+                            goto Label_0222;
 
                         case 1:
                             str2 = "<a href='BidDetail.aspx?Type=3&PlayerID=" + num5 + "' target='Right'>成交详情</a>";
-                            goto Label_03C7;
+                            goto Label_0222;
                     }
                     str2 = "无成交";
                 }
                 else
                 {
-                    //str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=STREETFREE&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=1&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
                     str2 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVSTREET&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=3&Status=1&PlayerID=", num5, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
-                
                 }
-                goto Label_03C7;
+                goto Label_0222;
             }
-        Label_05E1:
+        Label_05EE:
             reader.Close();
             string msgViewPage = this.GetMsgViewPage(strCurrentURL);
             this.sb.Append("<tr><td align='left' colspan='4' style=\"padding-left:10px\">" + this.strHref + "</td><td height='25' align='right' colspan='5'>" + msgViewPage + "</td></tr></table>");
@@ -772,21 +731,20 @@
         private void TransferList()
         {
             string str;
-            string str3;
+            string str2;
             int num;
             int num2;
             int num3;
             int num4;
             int num5;
             int num6;
-            long price;
             DateTime time;
             bool flag;
-            long num10;
+            long num8;
             SqlDataReader reader;
             bool flag2;
             SqlDataReader reader2;
-            string str4 = "";
+            string str3 = "";
             this.intPerPage = 9;
             this.sb = new StringBuilder();
             this.sb.Append("<table width='100%'  border='0' cellspacing='0' cellpadding='0'>");
@@ -822,26 +780,25 @@
             }
             if (reader.HasRows)
             {
-                goto Label_0844;
+                goto Label_05E8;
             }
             this.sb.Append("<tr align='center'><td height='25' colspan='11' class='BarContent'>暂时没有拍卖中的球员！</td></tr>");
-            goto Label_0850;
-        Label_050C:
-            reader2 = BTPTransferManager.GetDevTranTopUser(num10);
+            goto Label_084D;
+        Label_02BA:
+            reader2 = BTPTransferManager.GetDevTranTopUser(num8);
             if (reader2.Read())
             {
                 int intUserID = (int) reader2["UserID"];
-                price = Convert.ToInt64(reader2["Price"]);
+                long num7 = Convert.ToInt64(reader2["Price"]);
                 string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
-                str3 = price + "<br>" + AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right");
+                str2 = num7 + "<br>" + AccountItem.GetNickNameInfo(intUserID, nickNameByUserID, "Right");
             }
             else
             {
-                price = Convert.ToInt64(reader["BidPrice"]);
-                str3 = price + "<br>--";
+                str2 = Convert.ToInt64(reader["BidPrice"]) + "<br>--";
             }
             reader2.Close();
-            string strDevCode = BTPPlayer5Manager.GetPlayerRowByPlayerID(num10)["MarketCode"].ToString();
+            string strDevCode = BTPPlayer5Manager.GetPlayerRowByPlayerID(num8)["MarketCode"].ToString();
             if (DevCalculator.GetLevel(strDevCode) < 9)
             {
                 if (strDevCode.Trim() == "AAA")
@@ -863,7 +820,7 @@
             }
             this.sb.Append("<tr align='center' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
             this.sb.Append("<td height='34'>" + strDevCode + "</td>");
-            this.sb.Append("<td height='34' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(num10, str, 5, 0, 0, flag) + "</td>");
+            this.sb.Append("<td height='34' align='left' style='padding-left:3px'>" + PlayerItem.GetPlayerNameInfo(num8, str, 5, 0, 0, flag) + "</td>");
             if (flag2)
             {
                 this.sb.Append(string.Concat(new object[] { "<td><a title='球龄：", num5, "</br>球员将在赛季结束后退役' style='CURSOR: hand;color:red'>", num, "!</td>" }));
@@ -876,12 +833,12 @@
             this.sb.Append("<td>" + num3 + "</td>");
             this.sb.Append("<td>" + PlayerItem.GetAbilityColor(num4) + "</td>");
             this.sb.Append("<td>" + num6 + "</td>");
-            this.sb.Append("<td>" + str3 + "</td>");
+            this.sb.Append("<td>" + str2 + "</td>");
             this.sb.Append("<td><a title='" + StringItem.FormatDate(time, "MM-dd hh:mm:ss") + "截止' style='CURSOR: hand'>" + PlayerItem.GetBidLeftTime(DateTime.Now, time) + "</a></td>");
-            this.sb.Append("<td>" + str4 + "</td>");
+            this.sb.Append("<td>" + str3 + "</td>");
             this.sb.Append("</tr>");
             this.sb.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='10'></td></tr>");
-        Label_0844:
+        Label_05E8:
             if (reader.Read())
             {
                 str = reader["Name"].ToString().Trim();
@@ -891,38 +848,38 @@
                 num3 = Convert.ToInt32(reader["Weight"]);
                 num4 = (int) reader["Ability"];
                 time = (DateTime) reader["EndBidTime"];
-                num10 = (long) reader["PlayerID"];
+                num8 = (long) reader["PlayerID"];
                 float single1 = ((float) num4) / 10f;
                 num5 = Convert.ToInt32(reader["PlayedYear"]);
                 num6 = (int) reader["BidCount"];
-                int num9 = (byte) reader["BidStatus"];
+                int num10 = (byte) reader["BidStatus"];
                 flag = (bool) reader["SellAss"];
                 flag2 = (bool) reader["IsRetire"];
                 if (DateTime.Now >= time)
                 {
-                    switch (num9)
+                    switch (num10)
                     {
                         case 0:
-                            str4 = "结算中";
-                            goto Label_050C;
+                            str3 = "结算中";
+                            goto Label_02BA;
 
                         case 1:
-                            str4 = "<a href='BidDetail.aspx?Type=5&PlayerID=" + num10 + "' target='Right'>成交详情</a>";
-                            goto Label_050C;
+                            str3 = "<a href='BidDetail.aspx?Type=5&PlayerID=" + num8 + "' target='Right'>成交详情</a>";
+                            goto Label_02BA;
                     }
-                    str4 = "无成交";
+                    str3 = "无成交";
                 }
                 else if (this.strType == "TRANSFER")
                 {
-                    str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVISION&PlayerID=", num10, "&Market=4'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=3&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    str3 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVISION&PlayerID=", num8, "&Market=4'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=3&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
                 }
                 else if (this.strType == "UTMOST")
                 {
-                    str4 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVISION&PlayerID=", num10, "&Market=6'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=4&PlayerID=", num10, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
+                    str3 = string.Concat(new object[] { "<a href='SecretaryPage.aspx?Type=DEVISION&PlayerID=", num8, "&Market=6'><img src='", SessionItem.GetImageURL(), "chujia.gif' border='0' width='24' height='9'></a><a href='SecretaryPage.aspx?Type=SETFOCUS&Category=5&Status=4&PlayerID=", num8, "'><img src='", SessionItem.GetImageURL(), "gz.gif' border='0' width='24' height='9'></a>" });
                 }
-                goto Label_050C;
+                goto Label_02BA;
             }
-        Label_0850:
+        Label_084D:
             reader.Close();
             string msgViewPage = this.GetMsgViewPage(strCurrentURL);
             this.sb.Append("<tr><td align='left' colspan='5' style=\"padding-left:10px\">" + this.strHref + "</td><td height='25' align='right' colspan='5'>" + msgViewPage + "</td></tr></table>");

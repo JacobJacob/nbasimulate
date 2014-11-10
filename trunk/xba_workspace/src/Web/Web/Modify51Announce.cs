@@ -52,7 +52,7 @@
             }
             else
             {
-                this.intAnnounceID = (int) SessionItem.GetRequest("ID", 0);
+                this.intAnnounceID = SessionItem.GetRequest("ID", 0);
                 string commandText = "SELECT * FROM BTP_Announce WHERE AnnounceID=" + this.intAnnounceID;
                 DataRow row = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                 if (row != null)

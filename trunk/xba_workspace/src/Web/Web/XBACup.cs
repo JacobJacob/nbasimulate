@@ -99,9 +99,15 @@
                     base.Response.Redirect("Report.aspx?Parameter=438");
                     return;
 
+                case 0:
+                    break;
+
                 case 1:
                     base.Response.Redirect("Report.aspx?Parameter=442");
                     break;
+
+                default:
+                    return;
             }
         }
 
@@ -139,7 +145,7 @@
                 this.intGroupCategory = 2;
                 this.strGroupTeam = "B";
             }
-            this.intGroupIndex = (int) SessionItem.GetRequest("Index", 0);
+            this.intGroupIndex = SessionItem.GetRequest("Index", 0);
             if (this.intGroupIndex <= 0)
             {
                 this.intGroupIndex = BTPXGroupTeamManager.GetGroupIndexByClubID(this.intClubID5, this.intGroupCategory);
@@ -186,53 +192,47 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            obj2 = str2 + " " + str3 + " ";
-            return string.Concat(new object[] { obj2, "总数:", total, "跳转", str4 });
+            str3 = str3 + "</select>";
+            obj2 = str + " " + str2 + " ";
+            return string.Concat(new object[] { obj2, "总数:", total, "跳转", str3 });
         }
 
         private void GetXBAMatchList(DataTable dt, int intC)
         {
             string str = "";
             string str2 = "";
-            string str5 = "";
+            string str3 = "";
             if (dt == null)
             {
                 this.strList = "<tr><td height='25' align='center'>暂时没有赛程</td></tr>";
@@ -240,13 +240,13 @@
             else
             {
                 int count = dt.Rows.Count;
-                int num10 = count % intC;
-                int num11 = count / intC;
-                if (num10 > 0)
+                int num2 = count % intC;
+                int num3 = count / intC;
+                if (num2 > 0)
                 {
-                    num11++;
+                    num3++;
                 }
-                for (int i = 0; i < num11; i++)
+                for (int i = 0; i < num3; i++)
                 {
                     switch (i)
                     {
@@ -272,174 +272,171 @@
                     }
                     for (int j = 1; j <= intC; j++)
                     {
-                        int num;
-                        int num2;
-                        int num3;
-                        int num4;
-                        int num5;
-                        int num6;
-                        int num7;
-                        int num8;
-                        string str3;
-                        string str4;
-                        DataRow row;
-                        object obj2;
-                        int num12 = (i * intC) + (j - 1);
-                        if ((j % 3) != 0)
+                        object strList;
+                        string str6;
+                        int num14 = (i * intC) + (j - 1);
+                        if ((j % 3) == 0)
                         {
-                            if (num12 < count)
-                            {
-                                row = dt.Rows[num12];
-                                num2 = (int) row["XGroupMatchID"];
-                                num = (byte) row["Category"];
-                                int num1 = (int) row["GroupIndex"];
-                                num3 = (int) row["ClubAID"];
-                                num4 = (int) row["ClubBID"];
-                                num5 = (int) row["ClubAScore"];
-                                num6 = (int) row["ClubBScore"];
-                                num7 = (byte) row["TeamAIndex"];
-                                num8 = (byte) row["TeamBIndex"];
-                                str3 = row["RepURL"].ToString().Trim();
-                                str4 = row["StasURL"].ToString().Trim();
-                                byte num15 = (byte) row["Round"];
-                                switch (num)
+                            goto Label_0486;
+                        }
+                        if (num14 >= count)
+                        {
+                            goto Label_046B;
+                        }
+                        DataRow row = dt.Rows[num14];
+                        int num7 = (int) row["XGroupMatchID"];
+                        int num6 = (byte) row["Category"];
+                        int num1 = (int) row["GroupIndex"];
+                        int num8 = (int) row["ClubAID"];
+                        int num9 = (int) row["ClubBID"];
+                        int num10 = (int) row["ClubAScore"];
+                        int num11 = (int) row["ClubBScore"];
+                        int num12 = (byte) row["TeamAIndex"];
+                        int num13 = (byte) row["TeamBIndex"];
+                        string str4 = row["RepURL"].ToString().Trim();
+                        string str5 = row["StasURL"].ToString().Trim();
+                        byte num18 = (byte) row["Round"];
+                        switch (num6)
+                        {
+                            case 1:
+                                str = "A" + Convert.ToString(num12);
+                                str2 = "A" + Convert.ToString(num13);
+                                if (num8 == 0)
                                 {
-                                    case 1:
-                                        str = "A" + Convert.ToString(num7);
-                                        str2 = "A" + Convert.ToString(num8);
-                                        if (num3 == 0)
-                                        {
-                                            str = "轮空";
-                                        }
-                                        if (num4 == 0)
-                                        {
-                                            str2 = "轮空";
-                                        }
-                                        if ((num3 == 0) || (num4 == 0))
-                                        {
-                                            str5 = "--";
-                                        }
-                                        else
-                                        {
-                                            str5 = num5 + ":" + num6;
-                                        }
-                                        break;
-
-                                    case 2:
-                                        str = "B" + Convert.ToString(num7);
-                                        str2 = "B" + Convert.ToString(num8);
-                                        if (num3 == 0)
-                                        {
-                                            str = "轮空";
-                                        }
-                                        if (num4 == 0)
-                                        {
-                                            str2 = "轮空";
-                                        }
-                                        if ((num3 == 0) || (num4 == 0))
-                                        {
-                                            str5 = "--";
-                                        }
-                                        else
-                                        {
-                                            str5 = num5 + ":" + num6;
-                                        }
-                                        break;
+                                    str = "轮空";
                                 }
-                                string strList = this.strList;
-                                this.strList = strList + "<td width='140' align='center'><strong>" + str + "</strong> " + str5 + " <strong>" + str2 + "</strong>";
-                                if ((str3 != "") && (str4 != ""))
+                                if (num9 == 0)
                                 {
-                                    obj2 = this.strList;
-                                    this.strList = string.Concat(new object[] { 
-                                        obj2, " <a href='", Config.GetDomain(), "VRep.aspx?Tag=", num2, "&Type=4&A=", num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a> <a href='", Config.GetDomain(), "VStas.aspx?Tag=", num2, "&Type=4&A=", 
-                                        num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
-                                     });
+                                    str2 = "轮空";
                                 }
-                                this.strList = this.strList + "</td>";
-                            }
-                            else
-                            {
-                                this.strList = this.strList + "<td width='140'></td>";
-                            }
-                        }
-                        else if (num12 < count)
-                        {
-                            row = dt.Rows[num12];
-                            num2 = (int) row["XGroupMatchID"];
-                            num = (byte) row["Category"];
-                            int num16 = (int) row["GroupIndex"];
-                            num3 = (int) row["ClubAID"];
-                            num4 = (int) row["ClubBID"];
-                            num5 = (int) row["ClubAScore"];
-                            num6 = (int) row["ClubBScore"];
-                            num7 = (byte) row["TeamAIndex"];
-                            num8 = (byte) row["TeamBIndex"];
-                            str3 = row["RepURL"].ToString().Trim();
-                            str4 = row["StasURL"].ToString().Trim();
-                            byte num17 = (byte) row["Round"];
-                            DateTime datIn = (DateTime) row["MatchTime"];
-                            switch (num)
-                            {
-                                case 1:
-                                    str = "A" + Convert.ToString(num7);
-                                    str2 = "A" + Convert.ToString(num8);
-                                    if (num3 == 0)
-                                    {
-                                        str = "轮空";
-                                    }
-                                    if (num4 == 0)
-                                    {
-                                        str2 = "轮空";
-                                    }
-                                    if ((num3 == 0) || (num4 == 0))
-                                    {
-                                        str5 = "--";
-                                    }
-                                    else
-                                    {
-                                        str5 = num5 + ":" + num6;
-                                    }
+                                if ((num8 != 0) && (num9 != 0))
+                                {
                                     break;
+                                }
+                                str3 = "--";
+                                goto Label_02DE;
 
-                                case 2:
-                                    str = "B" + Convert.ToString(num7);
-                                    str2 = "B" + Convert.ToString(num8);
-                                    if (num3 == 0)
-                                    {
-                                        str = "轮空";
-                                    }
-                                    if (num4 == 0)
-                                    {
-                                        str2 = "轮空";
-                                    }
-                                    if ((num3 == 0) || (num4 == 0))
-                                    {
-                                        str5 = "--";
-                                    }
-                                    else
-                                    {
-                                        str5 = num5 + ":" + num6;
-                                    }
-                                    break;
-                            }
-                            obj2 = this.strList;
-                            this.strList = string.Concat(new object[] { obj2, "<td width='140' align='center'><strong>", str, "</strong> ", num5, ":", num6, " <strong>", str2, "</strong>" });
-                            if ((str3 != "") && (str4 != ""))
-                            {
-                                obj2 = this.strList;
-                                this.strList = string.Concat(new object[] { 
-                                    obj2, " <a href='", Config.GetDomain(), "VRep.aspx?Tag=", num2, "&Type=4&A=", num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a> <a href='", Config.GetDomain(), "VStas.aspx?Tag=", num2, "&Type=4&A=", 
-                                    num3, "&B=", num4, "' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
-                                 });
-                            }
-                            this.strList = this.strList + "</td><td width='140' align='center'><a title='比赛时间' style='cursor:hand;'>" + StringItem.FormatDate(datIn, "MM-dd hh:mm") + "</a></td></tr>";
-                            this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>";
+                            case 2:
+                                str = "B" + Convert.ToString(num12);
+                                str2 = "B" + Convert.ToString(num13);
+                                if (num8 == 0)
+                                {
+                                    str = "轮空";
+                                }
+                                if (num9 == 0)
+                                {
+                                    str2 = "轮空";
+                                }
+                                if ((num8 != 0) && (num9 != 0))
+                                {
+                                    goto Label_02C5;
+                                }
+                                str3 = "--";
+                                goto Label_02DE;
+
+                            default:
+                                goto Label_02DE;
                         }
-                        else
+                        str3 = num10 + ":" + num11;
+                        goto Label_02DE;
+                    Label_02C5:
+                        str3 = num10 + ":" + num11;
+                    Label_02DE:
+                        str6 = this.strList;
+                        this.strList = str6 + "<td width='140' align='center'><strong>" + str + "</strong> " + str3 + " <strong>" + str2 + "</strong>";
+                        if ((str4 != "") && (str5 != ""))
                         {
-                            this.strList = this.strList + "<td width='140'></td>";
+                            strList = this.strList;
+                            this.strList = string.Concat(new object[] { 
+                                strList, " <a href='", Config.GetDomain(), "VRep.aspx?Tag=", num7, "&Type=4&A=", num8, "&B=", num9, "' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a> <a href='", Config.GetDomain(), "VStas.aspx?Tag=", num7, "&Type=4&A=", 
+                                num8, "&B=", num9, "' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
+                             });
                         }
+                        this.strList = this.strList + "</td>";
+                        continue;
+                    Label_046B:
+                        this.strList = this.strList + "<td width='140'></td>";
+                        continue;
+                    Label_0486:
+                        if (num14 >= count)
+                        {
+                            goto Label_0851;
+                        }
+                        row = dt.Rows[num14];
+                        num7 = (int) row["XGroupMatchID"];
+                        num6 = (byte) row["Category"];
+                        int num19 = (int) row["GroupIndex"];
+                        num8 = (int) row["ClubAID"];
+                        num9 = (int) row["ClubBID"];
+                        num10 = (int) row["ClubAScore"];
+                        num11 = (int) row["ClubBScore"];
+                        num12 = (byte) row["TeamAIndex"];
+                        num13 = (byte) row["TeamBIndex"];
+                        str4 = row["RepURL"].ToString().Trim();
+                        str5 = row["StasURL"].ToString().Trim();
+                        byte num20 = (byte) row["Round"];
+                        DateTime datIn = (DateTime) row["MatchTime"];
+                        switch (num6)
+                        {
+                            case 1:
+                                str = "A" + Convert.ToString(num12);
+                                str2 = "A" + Convert.ToString(num13);
+                                if (num8 == 0)
+                                {
+                                    str = "轮空";
+                                }
+                                if (num9 == 0)
+                                {
+                                    str2 = "轮空";
+                                }
+                                if ((num8 != 0) && (num9 != 0))
+                                {
+                                    break;
+                                }
+                                str3 = "--";
+                                goto Label_067A;
+
+                            case 2:
+                                str = "B" + Convert.ToString(num12);
+                                str2 = "B" + Convert.ToString(num13);
+                                if (num8 == 0)
+                                {
+                                    str = "轮空";
+                                }
+                                if (num9 == 0)
+                                {
+                                    str2 = "轮空";
+                                }
+                                if ((num8 != 0) && (num9 != 0))
+                                {
+                                    goto Label_0661;
+                                }
+                                str3 = "--";
+                                goto Label_067A;
+
+                            default:
+                                goto Label_067A;
+                        }
+                        str3 = num10 + ":" + num11;
+                        goto Label_067A;
+                    Label_0661:
+                        str3 = num10 + ":" + num11;
+                    Label_067A:
+                        strList = this.strList;
+                        this.strList = string.Concat(new object[] { strList, "<td width='140' align='center'><strong>", str, "</strong> ", num10, ":", num11, " <strong>", str2, "</strong>" });
+                        if ((str4 != "") && (str5 != ""))
+                        {
+                            strList = this.strList;
+                            this.strList = string.Concat(new object[] { 
+                                strList, " <a href='", Config.GetDomain(), "VRep.aspx?Tag=", num7, "&Type=4&A=", num8, "&B=", num9, "' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a> <a href='", Config.GetDomain(), "VStas.aspx?Tag=", num7, "&Type=4&A=", 
+                                num8, "&B=", num9, "' target='_blank'><img src='", SessionItem.GetImageURL(), "StasLogo.gif' border='0' width='13' height='13'></a>"
+                             });
+                        }
+                        this.strList = this.strList + "</td><td width='140' align='center'><a title='比赛时间' style='cursor:hand;'>" + StringItem.FormatDate(datIn, "MM-dd hh:mm") + "</a></td></tr>";
+                        this.strList = this.strList + "<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='5'></td></tr>";
+                        continue;
+                    Label_0851:
+                        this.strList = this.strList + "<td width='140'></td>";
                     }
                     this.strList = this.strList + "</tr>";
                 }
@@ -460,9 +457,9 @@
                     string str2;
                     int num = (byte) row["Category"];
                     int num2 = (byte) row["TeamIndex"];
-                    int num4 = (int) row["Win"];
-                    int num5 = (int) row["Lose"];
-                    int num6 = (int) row["Score"];
+                    int num3 = (int) row["Win"];
+                    int num4 = (int) row["Lose"];
+                    int num5 = (int) row["Score"];
                     int intClubID = (int) row["ClubID"];
                     if (intClubID == 0)
                     {
@@ -483,7 +480,7 @@
                             break;
                     }
                     object strTeamList = this.strTeamList;
-                    this.strTeamList = string.Concat(new object[] { strTeamList, "<tr align='center' onmouseover=\"this.style.backgroundColor='#fcf1eb'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>", str, "</td><td align='left'>", str2, "</td><td>", num4, "</td><td>", num5, "</td><td>", num6, "</td></tr>" });
+                    this.strTeamList = string.Concat(new object[] { strTeamList, "<tr align='center' onmouseover=\"this.style.backgroundColor='#fcf1eb'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>", str, "</td><td align='left'>", str2, "</td><td>", num3, "</td><td>", num4, "</td><td>", num5, "</td></tr>" });
                 }
             }
         }
@@ -548,32 +545,32 @@
 
         public void GetXResultList()
         {
-            int num2;
-            int request = (int) SessionItem.GetRequest("XGameID", 0);
+            int num;
+            int request = SessionItem.GetRequest("XGameID", 0);
             DataRow gameRowByGameID = BTPXGameManager.GetGameRowByGameID(request);
             if (gameRowByGameID != null)
             {
-                num2 = (byte) gameRowByGameID["Round"];
+                num = (byte) gameRowByGameID["Round"];
             }
             else
             {
                 base.Response.Redirect("Report.aspx?Parameter=3");
                 return;
             }
-            if (num2 == 1)
+            if (num == 1)
             {
                 this.strXRoundA = "本轮结果 比赛尚未开始";
             }
             else
             {
-                this.strXRoundA = "本轮结果 第" + (num2 - 1) + "轮";
+                this.strXRoundA = "本轮结果 第" + (num - 1) + "轮";
             }
             DataTable regTableByCupID = BTPXCupRegManager.GetRegTableByCupID(request);
-            if ((regTableByCupID != null) && (num2 > 1))
+            if ((regTableByCupID != null) && (num > 1))
             {
                 DataRow row2 = regTableByCupID.Rows[0];
-                int length = row2["BaseCode"].ToString().Length - (num2 - 1);
-                int num4 = (int) Math.Pow(2.0, (double) length);
+                int length = row2["BaseCode"].ToString().Length - (num - 1);
+                int num4 = Math.Pow(2.0, (double) length);
                 for (int i = 0; i < num4; i++)
                 {
                     string strGainCode = Binary.FrontFillUp(Binary.DecToBinary(i), length, "0");
@@ -581,17 +578,17 @@
                     int num1 = (int) xResultRow["XCupMatchID"];
                     int num10 = (int) xResultRow["XGameID"];
                     int intClubID = (int) xResultRow["ClubAID"];
-                    int num6 = (int) xResultRow["ClubBID"];
-                    int num7 = (int) xResultRow["ScoreA"];
-                    int num8 = (int) xResultRow["ScoreB"];
+                    int num7 = (int) xResultRow["ClubBID"];
+                    int num8 = (int) xResultRow["ScoreA"];
+                    int num9 = (int) xResultRow["ScoreB"];
                     string str2 = xResultRow["RepURL"].ToString().Trim();
                     string str3 = xResultRow["StasURL"].ToString().Trim();
                     xResultRow["GainCode"].ToString().Trim();
                     DateTime datIn = (DateTime) xResultRow["CreateTime"];
                     string str4 = BTPClubManager.GetClubNameByClubID(intClubID, 5, "Right", 10);
-                    string str5 = BTPClubManager.GetClubNameByClubID(num6, 5, "Right", 10);
+                    string str5 = BTPClubManager.GetClubNameByClubID(num7, 5, "Right", 10);
                     object strXResultList = this.strXResultList;
-                    this.strXResultList = string.Concat(new object[] { strXResultList, "<tr><td height='25' align='center'>", str4, "</td><td align='center'>", num7, ":", num8, "</td><td align='center'>", str5, "</td><td align='center'>", StringItem.FormatDate(datIn, "MM-dd hh:mm"), "</td><td align='center'><a href='", str2, "'>战报</a> | <a href='", str3, "'>统计</a></td></tr>" });
+                    this.strXResultList = string.Concat(new object[] { strXResultList, "<tr><td height='25' align='center'>", str4, "</td><td align='center'>", num8, ":", num9, "</td><td align='center'>", str5, "</td><td align='center'>", StringItem.FormatDate(datIn, "MM-dd hh:mm"), "</td><td align='center'><a href='", str2, "'>战报</a> | <a href='", str3, "'>统计</a></td></tr>" });
                 }
             }
             else
@@ -602,33 +599,33 @@
 
         public void GetXScheduleList()
         {
+            int num;
             int num2;
             int num3;
-            int num4;
-            int request = (int) SessionItem.GetRequest("XGameID", 0);
+            int request = SessionItem.GetRequest("XGameID", 0);
             string str = "";
             string str2 = "";
-            int num6 = 0;
+            int num5 = 0;
             DataRow gameRowByGameID = BTPXGameManager.GetGameRowByGameID(request);
             if (gameRowByGameID != null)
             {
-                num2 = (byte) gameRowByGameID["Round"];
+                num = (byte) gameRowByGameID["Round"];
                 switch (((int) gameRowByGameID["Capacity"]))
                 {
-                    case 0x100:
-                        num6 = 9;
-                        goto Label_00A6;
-
-                    case 0x200:
-                        num6 = 10;
-                        goto Label_00A6;
-
                     case 0x400:
-                        num6 = 11;
-                        goto Label_00A6;
+                        num5 = 11;
+                        break;
 
                     case 0x800:
-                        num6 = 12;
+                        num5 = 12;
+                        break;
+
+                    case 0x100:
+                        num5 = 9;
+                        break;
+
+                    case 0x200:
+                        num5 = 10;
                         break;
                 }
             }
@@ -637,30 +634,29 @@
                 base.Response.Redirect("Report.aspx?Parameter=3");
                 return;
             }
-        Label_00A6:
-            if (num2 == num6)
+            if (num == num5)
             {
                 this.strXRoundA = "下轮对阵 比赛已结束";
             }
             else
             {
-                this.strXRoundA = "下轮对阵 第" + num2 + "轮";
+                this.strXRoundA = "下轮对阵 第" + num + "轮";
             }
             DataTable regTableByCupID = BTPXCupRegManager.GetRegTableByCupID(request);
             if (regTableByCupID != null)
             {
                 DataRow row2 = regTableByCupID.Rows[0];
-                num3 = row2["BaseCode"].ToString().Length - num2;
-                num4 = (int) Math.Pow(2.0, (double) num3);
+                num2 = row2["BaseCode"].ToString().Length - num;
+                num3 = Math.Pow(2.0, (double) num2);
             }
             else
             {
+                num2 = 0;
+                num2 = 0;
                 num3 = 0;
-                num3 = 0;
-                num4 = 0;
             }
             DataTable aliveRegTableByCupID = BTPXCupRegManager.GetAliveRegTableByCupID(request);
-            if ((aliveRegTableByCupID != null) && (num2 < num6))
+            if ((aliveRegTableByCupID != null) && (num < num5))
             {
                 string strXResultList;
                 if ((aliveRegTableByCupID.Rows.Count == 2) || (aliveRegTableByCupID.Rows.Count == 1))
@@ -668,9 +664,9 @@
                     if (aliveRegTableByCupID.Rows.Count == 2)
                     {
                         int intClubID = (int) aliveRegTableByCupID.Rows[0]["ClubID"];
-                        int num8 = (int) aliveRegTableByCupID.Rows[1]["ClubID"];
+                        int num7 = (int) aliveRegTableByCupID.Rows[1]["ClubID"];
                         str = BTPClubManager.GetClubNameByClubID(intClubID, 5, "Right", 10);
-                        str2 = BTPClubManager.GetClubNameByClubID(num8, 5, "Right", 10);
+                        str2 = BTPClubManager.GetClubNameByClubID(num7, 5, "Right", 10);
                         strXResultList = this.strXResultList;
                         this.strXResultList = strXResultList + "<tr><td height='25' align='center'>" + str + "</td><td align='center'>--:--</td><td align='center'>" + str2 + "</td><td align='center'>-- --</td><td align='center'>战报 | 统计</td></tr>";
                     }
@@ -681,26 +677,26 @@
                 }
                 else
                 {
-                    for (int i = 0; i < num4; i++)
+                    for (int i = 0; i < num3; i++)
                     {
-                        string str4 = Binary.FrontFillUp(Binary.DecToBinary(i), num3, "0");
+                        string str4 = Binary.FrontFillUp(Binary.DecToBinary(i), num2, "0");
+                        int num9 = 0;
                         int num10 = 0;
-                        int num11 = 0;
                         foreach (DataRow row3 in aliveRegTableByCupID.Rows)
                         {
-                            int num12 = (int) row3["ClubID"];
+                            int num11 = (int) row3["ClubID"];
                             string str5 = row3["BaseCode"].ToString();
-                            if ((str5.Length == (str4.Length + num2)) && (str5.IndexOf(str4) == 0))
+                            if ((str5.Length == (str4.Length + num)) && (str5.IndexOf(str4) == 0))
                             {
-                                if (num10 == 0)
+                                if (num9 == 0)
                                 {
-                                    num10 = num12;
-                                    str = BTPClubManager.GetClubNameByClubID(num10, 5, "Right", 10);
+                                    num9 = num11;
+                                    str = BTPClubManager.GetClubNameByClubID(num9, 5, "Right", 10);
                                 }
                                 else
                                 {
-                                    num11 = num12;
-                                    str2 = BTPClubManager.GetClubNameByClubID(num11, 5, "Right", 10);
+                                    num10 = num11;
+                                    str2 = BTPClubManager.GetClubNameByClubID(num10, 5, "Right", 10);
                                 }
                                 if ((str != "") && (str2 != ""))
                                 {
@@ -887,7 +883,7 @@
         {
             string strCurrentURL = "XBACup.aspx?Kind=KEMP&";
             this.intPerPage = 5;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             int intCount = this.intPerPage * this.intPage;
             this.intTotal = this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
@@ -902,9 +898,9 @@
                     string str4 = row["RewardXML"].ToString().Trim();
                     string str5 = row["ChampionClubName"].ToString().Trim();
                     byte num1 = (byte) row["Category"];
-                    byte num4 = (byte) row["Status"];
-                    byte num5 = (byte) row["Round"];
-                    int num6 = (int) row["Capacity"];
+                    byte num3 = (byte) row["Status"];
+                    byte num4 = (byte) row["Round"];
+                    int num5 = (int) row["Capacity"];
                     int intUserID = (int) row["ChampionUserID"];
                     DateTime datIn = (DateTime) row["CreateTime"];
                     str5 = BTPClubManager.GetClubNameByClubID(BTPClubManager.GetClubIDByUserID(intUserID), 5, "Right", 0x11);

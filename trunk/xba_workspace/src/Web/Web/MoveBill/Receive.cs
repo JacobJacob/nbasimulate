@@ -30,64 +30,72 @@
                 XmlDocument document = new XmlDocument();
                 document.LoadXml(input);
                 string localName = document.DocumentElement.LocalName;
-                if (localName.Equals("SBMP_MO_MESSAGE"))
+                if (!localName.Equals("SBMP_MO_MESSAGE"))
                 {
-                    XmlNode node = document.SelectSingleNode("SBMP_MO_MESSAGE");
-                    Console.WriteLine(node.ChildNodes[0].InnerText);
-                    string innerText = node.ChildNodes[1].InnerText;
-                    Console.WriteLine(innerText);
-                    Console.WriteLine(node.ChildNodes[2].InnerText);
-                    Console.WriteLine(node.ChildNodes[3].InnerText);
-                    Console.WriteLine(node.ChildNodes[4].InnerText);
-                    string str8 = node.ChildNodes[5].InnerText;
-                    Console.WriteLine(str8);
-                    Console.WriteLine(node.ChildNodes[6].InnerText);
-                    Console.WriteLine(node.ChildNodes[7].InnerText);
-                    Console.WriteLine(node.ChildNodes[8].InnerText);
-                    Console.WriteLine(node.ChildNodes[9].InnerText);
-                    Console.WriteLine(node.ChildNodes[10].InnerText);
-                    Console.WriteLine(node.ChildNodes[11].InnerText);
-                    string str15 = node.ChildNodes[12].InnerText;
-                    Console.WriteLine(str15);
-                    Console.WriteLine(node.ChildNodes[13].InnerText);
-                    string str17 = node.ChildNodes[14].InnerText;
-                    Console.WriteLine(str17);
-                    string str18 = node.ChildNodes[15].InnerText;
-                    Console.WriteLine(str18);
-                    Console.WriteLine(node.ChildNodes[0x10].InnerText);
-                    int intType = 0;
-                    int intMessageCount = 0;
-                    if (str18 == "2706")
-                    {
-                        intType = 0;
-                        intMessageCount = 1;
-                        this.strUserName = str17.Trim();
-                        if (!ROOTUserManager.HasNickName(this.strUserName))
-                        {
-                            return "NoUserName";
-                        }
-                    }
-                    else
-                    {
-                        switch (str17)
-                        {
-                            case "KBF":
-                                intType = 1;
-                                intMessageCount = 10;
-                                break;
-
-                            case "QXKBF":
-                                intType = 2;
-                                intMessageCount = 0;
-                                break;
-                        }
-                    }
-                    if (str8 == "1")
-                    {
-                        ROOTMoveBillManager.AddMoveBill(innerText, str15, this.intUserID, this.strUserName, intType, 0, intMessageCount);
-                    }
-                    return str;
+                    goto Label_026E;
                 }
+                XmlNode node = document.SelectSingleNode("SBMP_MO_MESSAGE");
+                Console.WriteLine(node.ChildNodes[0].InnerText);
+                string innerText = node.ChildNodes[1].InnerText;
+                Console.WriteLine(innerText);
+                Console.WriteLine(node.ChildNodes[2].InnerText);
+                Console.WriteLine(node.ChildNodes[3].InnerText);
+                Console.WriteLine(node.ChildNodes[4].InnerText);
+                string str4 = node.ChildNodes[5].InnerText;
+                Console.WriteLine(str4);
+                Console.WriteLine(node.ChildNodes[6].InnerText);
+                Console.WriteLine(node.ChildNodes[7].InnerText);
+                Console.WriteLine(node.ChildNodes[8].InnerText);
+                Console.WriteLine(node.ChildNodes[9].InnerText);
+                Console.WriteLine(node.ChildNodes[10].InnerText);
+                Console.WriteLine(node.ChildNodes[11].InnerText);
+                string str5 = node.ChildNodes[12].InnerText;
+                Console.WriteLine(str5);
+                Console.WriteLine(node.ChildNodes[13].InnerText);
+                string str6 = node.ChildNodes[14].InnerText;
+                Console.WriteLine(str6);
+                string str7 = node.ChildNodes[15].InnerText;
+                Console.WriteLine(str7);
+                Console.WriteLine(node.ChildNodes[0x10].InnerText);
+                int intType = 0;
+                int intMessageCount = 0;
+                if (str7 == "2706")
+                {
+                    intType = 0;
+                    intMessageCount = 1;
+                    this.strUserName = str6.Trim();
+                    if (!ROOTUserManager.HasNickName(this.strUserName))
+                    {
+                        return "NoUserName";
+                    }
+                }
+                else
+                {
+                    string str9 = str6;
+                    if (str9 != null)
+                    {
+                        if (str9 == "KBF")
+                        {
+                            intType = 1;
+                            intMessageCount = 10;
+                        }
+                        else if (str9 == "QXKBF")
+                        {
+                            goto Label_023B;
+                        }
+                    }
+                }
+                goto Label_0241;
+            Label_023B:
+                intType = 2;
+                intMessageCount = 0;
+            Label_0241:
+                if (str4 == "1")
+                {
+                    ROOTMoveBillManager.AddMoveBill(innerText, str5, this.intUserID, this.strUserName, intType, 0, intMessageCount);
+                }
+                return str;
+            Label_026E:
                 localName.Equals("SBMP_REPORT_MESSAGE");
             }
             catch (Exception exception)

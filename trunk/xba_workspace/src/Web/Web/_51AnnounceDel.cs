@@ -30,7 +30,7 @@
             }
             else
             {
-                int request = (int) SessionItem.GetRequest("ID", 0);
+                int request = SessionItem.GetRequest("ID", 0);
                 string commandText = "DELETE * FROM BTP_Announce WHERE AnnounceID=" + request;
                 SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("btp01"), CommandType.Text, commandText);
                 base.Response.Redirect("Report.aspx?Parameter=702");

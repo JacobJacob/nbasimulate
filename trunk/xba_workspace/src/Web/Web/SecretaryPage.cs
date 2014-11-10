@@ -3,7 +3,6 @@
     using LoginParameter;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -13,7 +12,8 @@
 
     public class SecretaryPage : Page
     {
-        public bool blIsPresent = false;
+        private int arenaID;
+        public bool blIsPresent;
         private bool blnIsHonor;
         private bool blnRefashionSafe;
         private bool blnSex;
@@ -54,8 +54,7 @@
         private int intMarket;
         private int intMarketLevel = 8;
         private int intPayType;
-        private int intXGuessID;
-        public int intPayWealth = 0;
+        public int intPayWealth;
         private int intPlayer5Number;
         private int intPlayerCategory;
         private int intPV;
@@ -64,16 +63,17 @@
         private int intSalary;
         private int intScore;
         private int intStaffID;
+        private int intStockUserID;
         private int intTag;
         private int intTrainType;
         private int intType;
         private int intUnionID;
         private int intUserID;
-        private int intStockUserID;
         private int intWealth;
+        private int intXGuessID;
         private long lgMoney;
-        public long longPlayerID;
         public long longNpcID;
+        public long longPlayerID;
         public long longSearchPlayerID;
         private SecretaryItem si;
         public string strBidMsg;
@@ -97,8 +97,8 @@
         protected TextBox tbBCount;
         protected TextBox tbBidPrice;
         protected TextBox tbBidPrice5;
+        protected TextBox tbBLock;
         protected TextBox tbBuyCount;
-        protected TextBox tbXGuessAmount;
         protected HtmlTable tbBuyOrder;
         protected TextBox tbBuyPrice;
         protected HtmlTable tbChooseClub;
@@ -118,6 +118,7 @@
         protected HtmlTable tblStaff1;
         protected HtmlTable tblTicketPrice;
         protected HtmlTable tblTool;
+        protected HtmlTable tblXGuess;
         protected TextBox tbMaxPrice;
         protected TextBox tbOldPlayer;
         protected TextBox tbPosistion;
@@ -126,28 +127,27 @@
         protected TextBox tbPrice;
         protected HtmlTable tbSay;
         protected HtmlTable tbWealthOrder;
+        protected TextBox tbXGuessAmount;
         protected HtmlTableRow tr1;
-        //protected HtmlTableRow Tr1;
         protected HtmlTableRow tr2;
         protected HtmlTableRow tr3;
         protected HtmlTableRow trOther;
         protected HtmlTableRow trPresent;
         protected HtmlTableRow trRefashion;
         protected HtmlTableRow trSafe;
-        protected HtmlTable tblXGuess;
 
         private void AddADLink()
         {
-            this.intADID = (int)SessionItem.GetRequest("ADID", 0);
+            this.intADID = SessionItem.GetRequest("ADID", 0);
             DataRow aDRowByADID = BTPADManager.GetADRowByADID(this.intADID);
-            int num = (byte)aDRowByADID["Turns"];
-            int num2 = (int)aDRowByADID["Pay"];
+            int num = (byte) aDRowByADID["Turns"];
+            int num2 = (int) aDRowByADID["Pay"];
             string str = aDRowByADID["ADName"].ToString().Trim();
-            int num1 = (int)aDRowByADID["Order"];
+            int num1 = (int) aDRowByADID["Order"];
             aDRowByADID = BTPStadiumManager.GetStadiumRowByClubID(this.intClubID5);
-            int num3 = (int)aDRowByADID["FansR"];
-            int num4 = (int)aDRowByADID["FansT"];
-            int num5 = (int)BTPParameterManager.GetParameterRow()["ADPercent"];
+            int num3 = (int) aDRowByADID["FansR"];
+            int num4 = (int) aDRowByADID["FansT"];
+            int num5 = (int) BTPParameterManager.GetParameterRow()["ADPercent"];
             int num6 = num3 + num4;
             num2 = (((100 - num5) * num2) + (((((num2 / 100) * num6) / 10) * num5) / 8)) / 100;
             int num7 = 0x3e8 + ((num3 + num4) / 4);
@@ -176,10 +176,9 @@
             }
             else
             {
-                this.intWealth = (int)accountRowByUserID["Wealth"];
-                int num = (int)BTPParameterManager.GetParameterRow()["AddArrangeLvlWealth"];
-                int num2 = num;
-                int request = (int)SessionItem.GetRequest("DevMatchID", 0);
+                this.intWealth = (int) accountRowByUserID["Wealth"];
+                int num2 = (int) BTPParameterManager.GetParameterRow()["AddArrangeLvlWealth"];
+                int request = SessionItem.GetRequest("DevMatchID", 0);
                 accountRowByUserID = BTPDevMatchManager.GetDevMRowByDevMatchID(request);
                 if (accountRowByUserID == null)
                 {
@@ -187,10 +186,10 @@
                 }
                 else
                 {
-                    int num4 = (int)accountRowByUserID["ClubHID"];
-                    int num5 = (int)accountRowByUserID["ClubAID"];
-                    bool flag1 = (bool)accountRowByUserID["UseStaffH"];
-                    bool flag2 = (bool)accountRowByUserID["UseStaffA"];
+                    int num4 = (int) accountRowByUserID["ClubHID"];
+                    int num5 = (int) accountRowByUserID["ClubAID"];
+                    bool flag1 = (bool) accountRowByUserID["UseStaffH"];
+                    bool flag2 = (bool) accountRowByUserID["UseStaffA"];
                     if ((num4 == this.intClubID5) || (num5 == this.intClubID5))
                     {
                         if (this.intWealth < num2)
@@ -224,17 +223,17 @@
             else
             {
                 string str;
-                this.intWealth = (int)accountRowByUserID["Wealth"];
+                this.intWealth = (int) accountRowByUserID["Wealth"];
                 int num = 0;
-                int request = (int)SessionItem.GetRequest("Category", 0);
-                long longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-                int num4 = (int)SessionItem.GetRequest("PlayerType", 0);
+                int request = SessionItem.GetRequest("Category", 0);
+                long longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+                int num4 = SessionItem.GetRequest("PlayerType", 0);
                 accountRowByUserID = BTPParameterManager.GetParameterRow();
-                int num5 = (int)accountRowByUserID["AddPowerWealth"];
-                int num6 = (int)accountRowByUserID["AddHappyWealth"];
-                int num7 = (int)accountRowByUserID["MinusAgeWealth"];
-                int num8 = (int)accountRowByUserID["AddStatusWealth"];
-                int num9 = (int)accountRowByUserID["AddMaxWealth"];
+                int num5 = (int) accountRowByUserID["AddPowerWealth"];
+                int num6 = (int) accountRowByUserID["AddHappyWealth"];
+                int num7 = (int) accountRowByUserID["MinusAgeWealth"];
+                int num8 = (int) accountRowByUserID["AddStatusWealth"];
+                int num9 = (int) accountRowByUserID["AddMaxWealth"];
                 switch (request)
                 {
                     case 1:
@@ -269,11 +268,11 @@
                         this.strSay = "无此球员！";
                         return;
                     }
-                    int num11 = (int)accountRowByUserID["ClubID"];
-                    byte num12 = (byte)accountRowByUserID["Category"];
-                    byte num13 = (byte)accountRowByUserID["Power"];
-                    byte num14 = (byte)accountRowByUserID["Happy"];
-                    num10 = (int)accountRowByUserID["Ability"];
+                    int num11 = (int) accountRowByUserID["ClubID"];
+                    byte num12 = (byte) accountRowByUserID["Category"];
+                    byte num13 = (byte) accountRowByUserID["Power"];
+                    byte num14 = (byte) accountRowByUserID["Happy"];
+                    num10 = (int) accountRowByUserID["Ability"];
                     str = accountRowByUserID["Name"].ToString().Trim();
                     if ((num11 != this.intClubID3) || (num12 != 1))
                     {
@@ -299,15 +298,15 @@
                         this.strSay = "无此球员！";
                         return;
                     }
-                    num10 = (int)accountRowByUserID["Ability"];
-                    byte num15 = (byte)accountRowByUserID["Power"];
+                    num10 = (int) accountRowByUserID["Ability"];
+                    byte num15 = (byte) accountRowByUserID["Power"];
                     if ((num15 == 100) && (request == 1))
                     {
                         this.strSay = this.strNickName + "此球员体力已充沛，不需要再进行恢复了！";
                         return;
                     }
-                    int num16 = (int)accountRowByUserID["ClubID"];
-                    byte num17 = (byte)accountRowByUserID["Category"];
+                    int num16 = (int) accountRowByUserID["ClubID"];
+                    byte num17 = (byte) accountRowByUserID["Category"];
                     str = accountRowByUserID["Name"].ToString().Trim();
                     if ((num16 != this.intClubID5) || (num17 != 1))
                     {
@@ -409,8 +408,8 @@
         private void AddGuessRecord()
         {
             this.tbSay.Visible = true;
-            this.intUnionID = (int)SessionItem.GetRequest("GuessID", 0);
-            this.intType = (int)SessionItem.GetRequest("ResultType", 0);
+            this.intUnionID = SessionItem.GetRequest("GuessID", 0);
+            this.intType = SessionItem.GetRequest("ResultType", 0);
             if (this.intType != 0)
             {
                 this.intType = 1;
@@ -436,67 +435,66 @@
 
         private void AddPlayerAll()
         {
-            int num3;
-            int num4;
+            int num;
+            int num2;
             this.tbSay.Visible = true;
             this.tblShowSkill.Visible = true;
-            this.intType = (int)SessionItem.GetRequest("PlayerType", 0);
+            this.intType = SessionItem.GetRequest("PlayerType", 0);
             DataRow parameterRow = BTPParameterManager.GetParameterRow();
-            int num = (int)parameterRow["AddPowerWealth"];
-            int num2 = (int)parameterRow["AddHappyWealth"];
+            int num3 = (int) parameterRow["AddPowerWealth"];
+            int num4 = (int) parameterRow["AddHappyWealth"];
             parameterRow = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            this.intWealth = (int)parameterRow["Wealth"];
-            this.intCategory = (int)SessionItem.GetRequest("Category", 0);
+            this.intWealth = (int) parameterRow["Wealth"];
+            this.intCategory = SessionItem.GetRequest("Category", 0);
             if (this.intType == 3)
             {
                 if (this.intCategory == 1)
                 {
-                    num3 = BTPPlayer3Manager.GetPlayer3PowerNotFullCount(this.intClubID3);
-                    num4 = num;
+                    num = BTPPlayer3Manager.GetPlayer3PowerNotFullCount(this.intClubID3);
+                    num2 = num3;
                 }
                 else
                 {
-                    num3 = BTPPlayer3Manager.GetPlayer3HappyNotFullCount(this.intClubID3);
-                    num4 = num2;
+                    num = BTPPlayer3Manager.GetPlayer3HappyNotFullCount(this.intClubID3);
+                    num2 = num4;
                 }
             }
             else if (this.intCategory == 1)
             {
-                num3 = BTPPlayer5Manager.GetPlayer5PowerNotFullCount(this.intClubID5);
-                num4 = num;
+                num = BTPPlayer5Manager.GetPlayer5PowerNotFullCount(this.intClubID5);
+                num2 = num3;
             }
             else
             {
-                num3 = BTPPlayer5Manager.GetPlayer5HappyNotFullCount(this.intClubID5);
-                num4 = num2;
+                num = BTPPlayer5Manager.GetPlayer5HappyNotFullCount(this.intClubID5);
+                num2 = num4;
             }
-            num4 = ((num4 * num3) * 90) / 100;
-            if (num3 > 0)
+            num2 = ((num2 * num) * 90) / 100;
+            if (num > 0)
             {
-                if (this.intWealth > num4)
+                if (this.intWealth > num2)
                 {
                     if (this.intType == 3)
                     {
                         if (this.intCategory == 1)
                         {
-                            this.strSay = "通常情况下，每轮（夜间更新）过后球员的体力都会有所恢复。想要立即恢复全体球员的体力的话，则需要花费 " + num4 + " 游戏币。确认立即恢复体力吗？";
+                            this.strSay = "通常情况下，每轮（夜间更新）过后球员的体力都会有所恢复。想要立即恢复全体球员的体力的话，则需要花费 " + num2 + " 游戏币。确认立即恢复体力吗？";
                         }
                         else
                         {
-                            this.strSay = "通常情况下，每轮（夜间更新）过后球员的心情都会有所恢复。想要立即恢复全体球员的心情的话，则需要花费 " + num4 + " 游戏币。确认立即恢复心情吗？";
+                            this.strSay = "通常情况下，每轮（夜间更新）过后球员的心情都会有所恢复。想要立即恢复全体球员的心情的话，则需要花费 " + num2 + " 游戏币。确认立即恢复心情吗？";
                         }
                     }
                     else
                     {
-                        this.strSay = "通常，经过一夜的休息，球员将在下一轮联赛开始前恢复一部分体力。想要立即恢复全体球员的体力的话，则需要花费 " + num4 + " 游戏币。确认立即恢复体力吗？";
+                        this.strSay = "通常，经过一夜的休息，球员将在下一轮联赛开始前恢复一部分体力。想要立即恢复全体球员的体力的话，则需要花费 " + num2 + " 游戏币。确认立即恢复体力吗？";
                     }
                     this.btnOK.Visible = true;
                     this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_AddPlayerAll);
                 }
                 else
                 {
-                    //this.strSay = "<p align='left'>您的游戏币不足 " + num4 + " 无法恢复！</p><p align='center' style=\"color:red;\">购买“<a href=\"ManagerTool.aspx?Type=STORE&Page=1\">纪念章</a>”可获赠游戏币！</p>";
-                    this.strSay = "<p align='left'>您的游戏币不足 " + num4 + " 无法恢复！</p>";
+                    this.strSay = "<p align='left'>您的游戏币不足 " + num2 + " 无法恢复！</p>";
                     this.btnOK.Visible = false;
                 }
             }
@@ -517,11 +515,11 @@
         private void AddPower()
         {
             DataRow playerRowByPlayerID;
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             this.tblShowSkill.Visible = true;
-            this.intType = (int)SessionItem.GetRequest("PlayerType", 0);
-            this.intCheckType = (int)SessionItem.GetRequest("CheckType", 0);
-            this.intCheck = (int)SessionItem.GetRequest("Check", 0);
+            this.intType = SessionItem.GetRequest("PlayerType", 0);
+            this.intCheckType = SessionItem.GetRequest("CheckType", 0);
+            this.intCheck = SessionItem.GetRequest("Check", 0);
             if (this.intType == 3)
             {
                 playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
@@ -530,9 +528,9 @@
             {
                 playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
             }
-            this.intPlayerCategory = (byte)playerRowByPlayerID["Category"];
-            byte num1 = (byte)playerRowByPlayerID["Power"];
-            int num = (int)playerRowByPlayerID["ClubID"];
+            this.intPlayerCategory = (byte) playerRowByPlayerID["Category"];
+            byte num1 = (byte) playerRowByPlayerID["Power"];
+            int num = (int) playerRowByPlayerID["ClubID"];
             if (((this.intType == 3) && (num != this.intClubID3)) && (this.intPlayerCategory == 1))
             {
                 this.strToolMsg = "<p align='left'>此球员不在我们的球队中效力，无法对其使用理疗卡。</p>";
@@ -569,55 +567,63 @@
         private void AfreshArrange()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Status", 0);
+            int request = SessionItem.GetRequest("Status", 0);
             this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"VArrange.aspx?Type=5\";'>";
             switch (request)
             {
-                case 1:
-                    this.strSay = "您的职业战术等级设置成功！";
+                case -4:
+                    this.strSay = "您只可以免费洗点一次！";
                     return;
+
+                case -3:
+                {
+                    DataRow parameterRow = BTPParameterManager.GetParameterRow();
+                    int num2 = (int) parameterRow["AfreshArrangeWealth"];
+                    int num3 = (int) parameterRow["AfreshArrangeLowWealth"];
+                    if (num3 < num2)
+                    {
+                        num2 = num3;
+                    }
+                    this.strSay = "您没有足够的游戏币，战术等级洗点需要 " + num2 + " 游戏币！";
+                    return;
+                }
+                case -2:
+                    this.strSay = "您现在没有战术熟练度，无需洗点！";
+                    break;
 
                 case -1:
                     this.strSay = "熟练度设置有误，请重新设置！";
                     return;
-                case -4:
-                    this.strSay = "您只可以免费洗点一次！";
-                    return;
-                case -3:
-                    {
-                        DataRow parameterRow = BTPParameterManager.GetParameterRow();
-                        int num2 = (int)parameterRow["AfreshArrangeWealth"];
-                        int num3 = (int)parameterRow["AfreshArrangeLowWealth"];
-                        if (num3 < num2)
-                        {
-                            num2 = num3;
-                        }
-                        this.strSay = "您没有足够的游戏币，战术等级洗点需要 " + num2 + " 游戏币！";
-                        return;
-                    }
-                case -2:
-                    this.strSay = "您现在没有战术熟练度，无需洗点！";
+
+                case 0:
                     break;
+
+                case 1:
+                    this.strSay = "您的职业战术等级设置成功！";
+                    return;
+
+                default:
+                    return;
             }
         }
 
         private void AgreeUnion()
         {
-            int request = (int)SessionItem.GetRequest("UnionID", 0);
-            int num2 = (int)SessionItem.GetRequest("UserID", 0);
-            int num1 = (int)SessionItem.GetRequest("MessageID", 0);
+            int request = SessionItem.GetRequest("UnionID", 0);
+            int num2 = SessionItem.GetRequest("UserID", 0);
+            int num1 = SessionItem.GetRequest("MessageID", 0);
             int unionUserCountByID = BTPUnionManager.GetUnionUserCountByID(request);
             int num4 = 0;
             int num5 = 0;
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
             if (accountRowByUserID != null)
             {
-                num5 = (int)accountRowByUserID["UnionID"];
+                num5 = (int) accountRowByUserID["UnionID"];
             }
             accountRowByUserID = BTPUnionManager.GetUnionRowByID(request);
             if (accountRowByUserID != null)
             {
-                num4 = (int)accountRowByUserID["Reputation"];
+                num4 = (int) accountRowByUserID["Reputation"];
             }
             if (num4 < 1)
             {
@@ -643,6 +649,76 @@
             }
         }
 
+        private void ArenaMemberReg()
+        {
+            this.arenaID = SessionItem.GetRequest("ArenaID", 0);
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            if (accountRowByUserID == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else
+            {
+                this.intUnionID = Convert.ToInt32(accountRowByUserID["UnionID"]);
+                DataRow arenaRow = BTPArenaManager.GetArenaRow(this.arenaID);
+                string str = Convert.ToString(arenaRow["ArenaName"]);
+                int num = Convert.ToInt32(arenaRow["OwnerUnionID"]);
+                int num2 = Convert.ToInt32(arenaRow["AttackUnionID"]);
+                if (this.intUnionID == num)
+                {
+                    this.strSay = "你确定要报名参加" + str + "的保卫战吗？";
+                }
+                else if (this.intUnionID == num2)
+                {
+                    this.strSay = "你确定要报名参加" + str + "的抢夺战吗？";
+                }
+                else
+                {
+                    this.strSay = "你不符合报名的条件";
+                    return;
+                }
+                this.btnOK.Visible = true;
+                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_ArenaMemberReg);
+            }
+        }
+
+        private void ArenaUnionReg()
+        {
+            this.arenaID = SessionItem.GetRequest("ArenaID", 0);
+            if (BTPAccountManager.GetAccountRowByUserID(this.intUserID) == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else
+            {
+                string str = Convert.ToString(BTPArenaManager.GetArenaRow(this.arenaID)["ArenaName"]);
+                this.strSay = "你确定要报名抢夺" + str + "吗？";
+                this.strSay = this.strSay + "这将花费联盟10威望";
+                this.btnOK.Visible = true;
+                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_ArenaUnionReg);
+            }
+        }
+
+        private void BetXGuess()
+        {
+            this.intXGuessID = SessionItem.GetRequest("GuessID", 0);
+            if (BTPAccountManager.GetAccountRowByUserID(this.intUserID) == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else if (BTPXGameManager.GetXGameRound() > 1)
+            {
+                this.strSay = "冠军杯决赛阶段已经开始，不能再竞猜";
+            }
+            else
+            {
+                this.tblXGuess.Visible = true;
+                this.strSay = "请输入下注金额(大于10W小于100W)";
+                this.btnOK.Visible = true;
+                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BETXGUESS);
+            }
+        }
+
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
         }
@@ -651,10 +727,10 @@
         {
             int clubIDByUserID = BTPClubManager.GetClubIDByUserID(this.intUserID);
             int aDLCountByClubID = BTPADLinkManager.GetADLCountByClubID(clubIDByUserID);
-            int num3 = (byte)BTPStadiumManager.GetStadiumRowByUserID(this.intUserID)["Levels"];
+            int num3 = (byte) BTPStadiumManager.GetStadiumRowByUserID(this.intUserID)["Levels"];
             DataRow stadiumRowByClubID = BTPStadiumManager.GetStadiumRowByClubID(this.intClubID5);
-            int num4 = (int)stadiumRowByClubID["FansR"];
-            int num5 = (int)stadiumRowByClubID["FansT"];
+            int num4 = (int) stadiumRowByClubID["FansR"];
+            int num5 = (int) stadiumRowByClubID["FansT"];
             int num6 = 0x3e8 + ((num4 + num5) / 4);
             int num7 = num6 / 0x3e8;
             int num8 = BTPADLinkManager.GetADLCountByClubID(this.intClubID5);
@@ -682,8 +758,7 @@
             DataRow parameterRow = BTPParameterManager.GetParameterRow();
             if (parameterRow != null)
             {
-                int num2 = (int)parameterRow["AddArrangeLvlWealth"];
-                num = num2;
+                num = (int) parameterRow["AddArrangeLvlWealth"];
                 this.btnOK.Visible = false;
             }
             else
@@ -697,12 +772,25 @@
             }
             else
             {
-                int request = (int)SessionItem.GetRequest("DevMatchID", 0);
+                int request = SessionItem.GetRequest("DevMatchID", 0);
                 int num4 = BTPDevMatchManager.AddArrangeLvlByDevMatchID(this.intUserID, request);
-                int num5 = (int)SessionItem.GetRequest("Pos", 0);
-                if (num4 == 1)
+                int num5 = SessionItem.GetRequest("Pos", 0);
+                if (num4 != 1)
                 {
-                    int num6 = (int)SessionItem.GetRequest("Ref", 0);
+                    switch (num4)
+                    {
+                        case -2:
+                            this.strSay = this.strNickName + "经理，您好，您的球队没有参加这场职业联赛！";
+                            return;
+
+                        case -1:
+                            this.strSay = this.strNickName + "经理，您好，您没有足够的游戏币！";
+                            return;
+                    }
+                }
+                else
+                {
+                    int num6 = SessionItem.GetRequest("Ref", 0);
                     switch (num5)
                     {
                         case 1:
@@ -715,103 +803,94 @@
                     }
                     base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=904!UserID.", this.intUserID, "^Devision.", this.strDevCode, "^Page.1" }));
                 }
-                else
-                {
-                    switch (num4)
-                    {
-                        case -1:
-                            this.strSay = this.strNickName + "经理，您好，您没有足够的游戏币！";
-                            return;
-
-                        case -2:
-                            this.strSay = this.strNickName + "经理，您好，您的球队没有参加这场职业联赛！";
-                            break;
-                    }
-                }
             }
         }
 
         private void btnOK_Click_ADDDATAONLY(object sender, ImageClickEventArgs e)
         {
-            int num12;
-            int num = 0;
+            int num;
             int num2 = 0;
-            int request = (int)SessionItem.GetRequest("Category", 0);
-            long longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-            int intType = (int)SessionItem.GetRequest("PlayerType", 0);
-            if ((request == 3) || (request == 5))
+            int num3 = 0;
+            int request = SessionItem.GetRequest("Category", 0);
+            long longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            int intType = SessionItem.GetRequest("PlayerType", 0);
+            switch (request)
             {
-                this.strBtnCancel = "";
-                this.btnOK.Visible = true;
-                int num6 = 0x1b;
-                if (request == 3)
+                case 3:
+                case 5:
                 {
-                    if (intType == 5)
+                    this.strBtnCancel = "";
+                    this.btnOK.Visible = true;
+                    int num7 = 0x1b;
+                    if (request == 3)
                     {
-                        DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(longPlayerID);
-                        if (playerRowByPlayerID != null)
+                        if (intType == 5)
                         {
-                            num6 = Convert.ToInt32(playerRowByPlayerID["Age"]);
-                            num = (int)playerRowByPlayerID["Ability"];
+                            DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(longPlayerID);
+                            if (playerRowByPlayerID != null)
+                            {
+                                num7 = Convert.ToInt32(playerRowByPlayerID["Age"]);
+                                num2 = (int) playerRowByPlayerID["Ability"];
+                            }
+                        }
+                        else
+                        {
+                            DataRow row2 = BTPPlayer3Manager.GetPlayerRowByPlayerID(longPlayerID);
+                            if (row2 != null)
+                            {
+                                num7 = Convert.ToInt32(row2["Age"]);
+                                num2 = (int) row2["Ability"];
+                            }
+                        }
+                        if (num7 > 0x1b)
+                        {
+                            this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_ag.GIF";
+                        }
+                        else
+                        {
+                            this.btnOK.Visible = false;
                         }
                     }
                     else
-                    {
-                        DataRow row2 = BTPPlayer3Manager.GetPlayerRowByPlayerID(longPlayerID);
-                        if (row2 != null)
-                        {
-                            num6 = Convert.ToInt32(row2["Age"]);
-                            num = (int)row2["Ability"];
-                        }
-                    }
-                    if (num6 > 0x1b)
                     {
                         this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_ag.GIF";
+                        this.btnOK.Visible = true;
                     }
-                    else
-                    {
-                        this.btnOK.Visible = false;
-                    }
+                    this.btnOK.Width = 70;
+                    this.strBtnCancel = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?PlayerType=", intType, "&Type=9&PlayerID=", longPlayerID, "\";'>" });
+                    break;
                 }
-                else
-                {
-                    this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_ag.GIF";
-                    this.btnOK.Visible = true;
-                }
-                this.btnOK.Width = 70;
-                this.strBtnCancel = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?PlayerType=", intType, "&Type=9&PlayerID=", longPlayerID, "\";'>" });
-            }
-            else
-            {
-                this.btnOK.Visible = false;
-                this.strBtnCancel = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?PlayerType=", intType, "&Type=9&PlayerID=", longPlayerID, "\";'>" });
+                default:
+                    this.btnOK.Visible = false;
+                    this.strBtnCancel = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?PlayerType=", intType, "&Type=9&PlayerID=", longPlayerID, "\";'>" });
+                    break;
             }
             DataRow parameterRow = BTPParameterManager.GetParameterRow();
-            int num7 = (int)parameterRow["AddPowerWealth"];
-            int num8 = (int)parameterRow["AddHappyWealth"];
-            int num9 = (int)parameterRow["MinusAgeWealth"];
-            int num10 = (int)parameterRow["AddStatusWealth"];
-            int num11 = (int)parameterRow["AddMaxWealth"];
+            int num8 = (int) parameterRow["AddPowerWealth"];
+            int num9 = (int) parameterRow["AddHappyWealth"];
+            int num10 = (int) parameterRow["MinusAgeWealth"];
+            int num11 = (int) parameterRow["AddStatusWealth"];
+            int num12 = (int) parameterRow["AddMaxWealth"];
             switch (request)
             {
                 case 1:
-                    num2 = num7;
+                    num3 = num8;
                     break;
 
                 case 2:
-                    num2 = num8;
+                    num3 = num9;
                     break;
 
                 case 3:
-                    num2 = num9;
+                    num3 = num10;
                     break;
 
                 case 4:
-                    num2 = num10;
+                    num3 = num11;
                     break;
 
                 case 5:
-                    num2 = num11;
+                    num3 = num12;
                     break;
 
                 default:
@@ -819,41 +898,55 @@
             }
             if (intType == 3)
             {
-                num12 = this.intClubID3;
+                num = this.intClubID3;
             }
             else
             {
-                num12 = this.intClubID5;
+                num = this.intClubID5;
             }
             if (request == 3)
             {
-                if ((num - 650) > 0)
+                if ((num2 - 650) > 0)
                 {
-                    num2 += (num - 650) * 10;
+                    num3 += (num2 - 650) * 10;
                 }
                 else
                 {
-                    num2 += (num - 650) * 5;
+                    num3 += (num2 - 650) * 5;
                 }
-                if (num2 < 500)
+                if (num3 < 500)
                 {
-                    num2 = 500;
+                    num3 = 500;
                 }
             }
-            if (this.intWealth < num2)
+            if (this.intWealth < num3)
             {
                 this.strSay = this.strNickName + "经理，您好！您没有足够游戏币。";
             }
             else
             {
-                parameterRow = BTPToolLinkManager.AddDataOnly(longPlayerID, intType, num12, request, 0);
+                parameterRow = BTPToolLinkManager.AddDataOnly(longPlayerID, intType, num, request, 0);
                 int num13 = Convert.ToInt32(parameterRow["State"]);
                 int intAddType = Convert.ToInt32(parameterRow["AddType"]);
                 switch (num13)
                 {
-                    case 1:
-                        base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=", intType, "&Kind=1&Check=1&PlayerID=", longPlayerID, "\";</script>" }));
-                        this.ReturnOkSay(request, intAddType);
+                    case -5:
+                        this.btnOK.Visible = false;
+                        this.strSay = "对不起，您还没有魔鬼训练的门票，拥有之后训练的效果将更好。门票只能从疯狂豆腐获得，赶紧去<a onclick='javascript:window.location=\"ManagerTool.aspx?Type=STORE&Page=1\";' style='color:blue;cursor:pointer' >买几块</a>咬咬吧！";
+                        break;
+
+                    case -4:
+                        this.btnOK.Visible = false;
+                        this.strSay = this.strNickName + "您的球员已经很累了，现在还让他进行魔鬼训练您可真是魔鬼啊！";
+                        return;
+
+                    case -3:
+                    case 0:
+                        break;
+
+                    case -2:
+                        this.btnOK.Visible = false;
+                        this.strSay = this.strNickName + "经理，您好，您没有足够游戏币！";
                         return;
 
                     case -1:
@@ -861,67 +954,58 @@
                         this.strSay = this.strNickName + "经理，您好，此球员没在您球队中效力！";
                         return;
 
-                    case -2:
-                        this.btnOK.Visible = false;
-                        this.strSay = this.strNickName + "经理，您好，您没有足够游戏币！";
+                    case 1:
+                        base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=", intType, "&Kind=1&Check=1&PlayerID=", longPlayerID, "\";</script>" }));
+                        this.ReturnOkSay(request, intAddType);
                         return;
 
-                    case -4:
-                        this.btnOK.Visible = false;
-                        this.strSay = this.strNickName + "您的球员已经很累了，现在还让他进行魔鬼训练您可真是魔鬼啊！";
+                    default:
                         return;
-
-                    case -5:
-                        this.btnOK.Visible = false;
-                        this.strSay = "对不起，您还没有魔鬼训练的门票，拥有之后训练的效果将更好。门票只能从疯狂豆腐获得，赶紧去<a onclick='javascript:window.location=\"ManagerTool.aspx?Type=STORE&Page=1\";' style='color:blue;cursor:pointer' >买几块</a>咬咬吧！";
-                        break;
                 }
             }
         }
 
         private void btnOK_Click_AddGuessRecord(object sender, ImageClickEventArgs e)
         {
-            long request = (long)SessionItem.GetRequest("Money", 3);
-            if (((int)SessionItem.GetRequest("ResultType", 0)) != 0)
-            {
-            }
+            long request = SessionItem.GetRequest("Money", 3);
+            int num1 = SessionItem.GetRequest("ResultType", 0);
             switch (BTPGuessManager.AddGuessRecord(this.intUserID, this.intUnionID, request, this.intType))
             {
-                case 0:
-                    base.Response.Redirect("Report.aspx?Parameter=811");
-                    return;
-
-                case -1:
-                    base.Response.Redirect("Report.aspx?Parameter=812");
-                    return;
-
-                case -2:
-                    base.Response.Redirect("Report.aspx?Parameter=813");
-                    return;
-
-                case -3:
-                    base.Response.Redirect("Report.aspx?Parameter=814");
-                    return;
-
-                case -4:
-                    base.Response.Redirect("Report.aspx?Parameter=819");
-                    return;
-
-                case -5:
-                    base.Response.Redirect("Report.aspx?Parameter=817");
+                case -7:
+                    base.Response.Redirect("Report.aspx?Parameter=820");
                     return;
 
                 case -6:
                     base.Response.Redirect("Report.aspx?Parameter=818");
                     return;
 
-                case -7:
-                    base.Response.Redirect("Report.aspx?Parameter=820");
+                case -5:
+                    base.Response.Redirect("Report.aspx?Parameter=817");
+                    return;
+
+                case -4:
+                    base.Response.Redirect("Report.aspx?Parameter=819");
+                    return;
+
+                case -3:
+                    base.Response.Redirect("Report.aspx?Parameter=814");
+                    return;
+
+                case -2:
+                    base.Response.Redirect("Report.aspx?Parameter=813");
+                    return;
+
+                case -1:
+                    base.Response.Redirect("Report.aspx?Parameter=812");
+                    return;
+
+                case 0:
+                    base.Response.Redirect("Report.aspx?Parameter=811");
                     return;
 
                 case 1:
                     base.Response.Redirect("Report.aspx?Parameter=815!Type.GUESS");
-                    break;
+                    return;
             }
         }
 
@@ -959,11 +1043,11 @@
 
         private void btnOK_Click_AgreeUnion(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("UnionID", 0);
-            int intUserID = (int)SessionItem.GetRequest("UserID", 0);
-            int intMessageID = (int)SessionItem.GetRequest("MessageID", 0);
+            int request = SessionItem.GetRequest("UnionID", 0);
+            int intUserID = SessionItem.GetRequest("UserID", 0);
+            int intMessageID = SessionItem.GetRequest("MessageID", 0);
             int unionUserCountByID = BTPUnionManager.GetUnionUserCountByID(request);
-            if (((((int)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionID"]) == 0) && (intUserID == this.intUserID)) && (unionUserCountByID < 600))
+            if (((((int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionID"]) == 0) && (intUserID == this.intUserID)) && (unionUserCountByID < 600))
             {
                 BTPUnionManager.IntoUnion(intUserID, request, intMessageID);
                 DTOnlineManager.ChangeUnionIDByUserID(this.intUserID, request);
@@ -975,10 +1059,117 @@
             }
         }
 
+        private void btnOK_Click_ArenaMemberReg(object sender, ImageClickEventArgs e)
+        {
+            int num = BTPArenaManager.ArenaMemberReg(this.intUserID, this.arenaID);
+            base.Response.Redirect("Report.aspx?Parameter=ARENAREG" + num);
+        }
+
+        private void btnOK_Click_ArenaUnionReg(object sender, ImageClickEventArgs e)
+        {
+            int num = BTPArenaManager.ArenaUnionReg(this.intUserID, this.arenaID);
+            base.Response.Redirect("Report.aspx?Parameter=ARENA" + num);
+        }
+
+        private void btnOK_Click_BETXGUESS(object sender, ImageClickEventArgs e)
+        {
+            int intAmount = 0;
+            try
+            {
+                intAmount = Convert.ToInt32(this.tbXGuessAmount.Text);
+            }
+            catch (Exception exception)
+            {
+                intAmount = 0;
+                exception.ToString();
+                this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
+                return;
+            }
+            if (intAmount >= 0x186a0)
+            {
+                if (intAmount > 0xf4240)
+                {
+                    this.strSay = this.strNickName + "经理，单次最大只能竞猜1000000资金。";
+                }
+                else
+                {
+                    switch (BTPXGuessManager.BetXGuess(this.intUserID, this.intXGuessID, intAmount))
+                    {
+                        case -4:
+                            base.Response.Redirect("Report.aspx?Parameter=XGE04");
+                            return;
+
+                        case -3:
+                            base.Response.Redirect("Report.aspx?Parameter=XGE03");
+                            return;
+
+                        case -2:
+                            base.Response.Redirect("Report.aspx?Parameter=XGE02");
+                            return;
+
+                        case -1:
+                            this.strSay = this.strNickName + "经理，咱们俱乐部可没这么多资金啊。";
+                            return;
+
+                        case 0:
+                            return;
+
+                        case 1:
+                            base.Response.Redirect("Report.aspx?Parameter=XGS01");
+                            return;
+                    }
+                }
+            }
+            else
+            {
+                this.strSay = this.strNickName + "经理，您最少要下注100000资金。";
+            }
+        }
+
+        private void btnOK_Click_BUYSTOCK(object sender, ImageClickEventArgs e)
+        {
+            switch (BTPStockManager.BuyStock(this.intUserID, this.intStockUserID))
+            {
+                case -6:
+                    base.Response.Redirect("Report.aspx?Parameter=SE06");
+                    return;
+
+                case -5:
+                    base.Response.Redirect("Report.aspx?Parameter=SE05");
+                    return;
+
+                case -4:
+                    base.Response.Redirect("Report.aspx?Parameter=SE04");
+                    return;
+
+                case -3:
+                    base.Response.Redirect("Report.aspx?Parameter=SE03");
+                    return;
+
+                case -2:
+                    base.Response.Redirect("Report.aspx?Parameter=SE02");
+                    return;
+
+                case -1:
+                    base.Response.Redirect("Report.aspx?Parameter=SE01");
+                    return;
+
+                case 0:
+                    break;
+
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=SS01");
+                    break;
+
+                default:
+                    return;
+            }
+        }
+
         private void btnOK_Click_BuyTool(object sender, ImageClickEventArgs e)
         {
-            int num13;
-            int num14;
+            int num;
+            int num11;
             string strNickName = this.tbPresentText.Text.Trim();
             string str2 = this.tbCount.Text.Trim();
             int intCount = 1;
@@ -990,13 +1181,13 @@
                     base.Response.Redirect("Report.aspx?Parameter=207!Type.TOOLS^Page.1");
                 }
             }
-            int request = (int)SessionItem.GetRequest("ToolID", 0);
+            int request = SessionItem.GetRequest("ToolID", 0);
             DataRow toolRowByID = BTPToolManager.GetToolRowByID(request);
-            int intCoin = (int)toolRowByID["CoinCost"];
+            int intWealth = (int) toolRowByID["CoinCost"];
             string str3 = toolRowByID["ToolName"].ToString().Trim();
-            int num4 = (int)toolRowByID["AmountInStock"];
-            int intCategory = (byte)toolRowByID["Category"];
-            int intTicketCategory = (byte)toolRowByID["TicketCategory"];
+            int num6 = (int) toolRowByID["AmountInStock"];
+            int intCategory = (byte) toolRowByID["Category"];
+            int intTicketCategory = (byte) toolRowByID["TicketCategory"];
             if (strNickName != "")
             {
                 if (!BTPAccountManager.HasNickName(strNickName))
@@ -1005,443 +1196,406 @@
                     return;
                 }
                 DataRow accountRowByNickName = BTPAccountManager.GetAccountRowByNickName(strNickName);
-                this.intLookUserID = (int)accountRowByNickName["UserID"];
+                this.intLookUserID = (int) accountRowByNickName["UserID"];
             }
-            //DataRow row3 = ROOTUserManager.GetUserInfoByID40(this.intUserID);
-            //int num7 = Convert.ToInt32(row3["Coin"]);
-            int num7 = this.intWealth;
-            //this.blnSex = (bool) row3["Gender"];
-            if (num7 < (intCoin * intCount))
+            int num9 = this.intWealth;
+            if (num9 < (intWealth * intCount))
             {
                 base.Response.Redirect("Report.aspx?Parameter=203!Type.TOOLS^Page.1");
                 return;
             }
-            if (num4 <= 0)
+            if (num6 <= 0)
             {
                 base.Response.Redirect("Report.aspx?Parameter=204!Type.TOOLS^Page.1");
                 return;
             }
-            if (intCategory == 16)//购买礼包
+            switch (intCategory)
             {
-                int intResult = BTPToolLinkManager.BuyNewerToolBox(request, this.intUserID);
-                switch (intResult)
+                case 7:
                 {
-                    case -1:
-                        base.Response.Redirect("Report.aspx?Parameter=BNE01!Type.TOOLS^Page.1");
-                        break;
-                    case -2:
-                        base.Response.Redirect("Report.aspx?Parameter=BNE02!Type.TOOLS^Page.1");
-                        break;
-                    default:
-                        BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin, 2, string.Concat(new object[] { "购买新人大礼包" }));
-                        base.Response.Redirect("Report.aspx?Parameter=BNS01!Type.TOOLS^Page.1");
-                        break;
-                }
-
-                return;
-
-            }
-            else if (intCategory != 7)
-            {
-
-                if (intCategory != 8)
-                {
-                    if (intCategory != 11)
+                    bool flag;
+                    if (num9 < intWealth)
                     {
-                        switch (intCategory)
+                        base.Response.Redirect("Report.aspx?Parameter=203!Type.TOOLS^Page.1");
+                        return;
+                    }
+                    if (strNickName != "")
+                    {
+                        toolRowByID = BTPAccountManager.GetAccountRowByUserID(this.intLookUserID);
+                    }
+                    else
+                    {
+                        toolRowByID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                    }
+                    int num12 = (byte) toolRowByID["PayType"];
+                    DateTime datMemberExpireTime = (DateTime) toolRowByID["MemberExpireTime"];
+                    if ((num12 == 0) && (datMemberExpireTime < DateTime.Now))
+                    {
+                        datMemberExpireTime = DateTime.Now.AddMonths(1);
+                    }
+                    else
+                    {
+                        datMemberExpireTime = datMemberExpireTime.AddMonths(1);
+                    }
+                    if (!DBLogin.CanConn(40))
+                    {
+                        flag = false;
+                    }
+                    else
+                    {
+                        BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth * intCount, 2, "购买1个" + str3);
+                        if (strNickName != "")
                         {
-                            case 9:
-                            case 10:
-                                int num15;
-                                if (intCategory == 9)
-                                {
-                                    intCount = 1;
-                                }
-                                if (strNickName == "")
-                                {
-                                    //ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, string.Concat(new object[] { "购买", intCount, "个", str3 }), "");
-                                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, string.Concat(new object[] { "购买", intCount, "个", str3 }));
-                                    num15 = BTPToolLinkManager.BuyDoubleExperience(request, this.intUserID, intCount);
-                                }
-                                else
-                                {
-                                    //ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }), "");
-                                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }));
-                                    num15 = BTPToolLinkManager.BuyDoubleExperience(request, this.intLookUserID, intCount);
-                                    BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", string.Concat(new object[] { AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex), "赠送给您", str3, " ", intCount, "个。" }));
-                                    BTPMessageManager.SetHasMsg(strNickName);
-                                }
-                                if (num15 == 2)
-                                {
-                                    base.Response.Redirect("Report.aspx?Parameter=561");
-                                }
-                                goto Label_0A68;
-                            case 201:
-
-                                if (strNickName == "")
-                                {
-
-                                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, string.Concat(new object[] { "购买", intCount, "个", str3 }));
-                                    num15 = BTPToolLinkManager.BuyLocationCard(request, this.intUserID, intCount);
-                                }
-                                else
-                                {
-                                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }));
-                                    BTPToolLinkManager.BuyLocationCard(request, this.intLookUserID, intCount);
-                                    BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", string.Concat(new object[] { AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex), "赠送给您", str3, " ", intCount, "个。" }));
-                                    BTPMessageManager.SetHasMsg(strNickName);
-                                }
-                                goto Label_0A68;
-                        }
-                        if (strNickName == "")
-                        {
-                            if (intCategory == 2)
-                            {
-                                intCount = 1;
-                            }
-                            //ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, "购买1个" + str3, "");
-                            BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, "购买1个" + str3);
-                            if (BTPToolLinkManager.BuyTool(request, this.intUserID, DateTime.Now.AddDays(20.0), intCount) == -1)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=208!Type.TOOLS^Page.1");
-                                return;
-                            }
+                            BTPToolLinkManager.BuyVIPCard(this.intLookUserID, datMemberExpireTime);
                         }
                         else
                         {
-                            ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, "赠送给" + strNickName + str3 + "1个", "");
-                            BTPToolLinkManager.BuyTool(request, this.intLookUserID, DateTime.Now.AddDays(20.0), intCount);
-                            BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", string.Concat(new object[] { AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex), "赠送给您", str3, intCount, "个。" }));
+                            BTPToolLinkManager.BuyVIPCard(this.intUserID, datMemberExpireTime);
+                        }
+                        DataTable giftTable = BTPGiftManager.GetGiftTable();
+                        string strContent = "购买会员卡";
+                        int intUserID = 0;
+                        if (strNickName != "")
+                        {
+                            intUserID = this.intUserID;
+                            this.intUserID = this.intLookUserID;
+                        }
+                        if (giftTable != null)
+                        {
+                            foreach (DataRow row3 in giftTable.Rows)
+                            {
+                                int intToolID = (int) row3["ToolID"];
+                                int num15 = (int) row3["Amount"];
+                                int intType = (byte) row3["Type"];
+                                if (intType == 3)
+                                {
+                                    BTPAccountManager.AddWealthByFinance(this.intUserID, num15, 1, "购买会员卡赠送！");
+                                    object obj2 = strContent;
+                                    strContent = string.Concat(new object[] { obj2, "获赠", num15, "枚游戏币！" });
+                                }
+                                else if ((intToolID == 0x21) && (intType == 1))
+                                {
+                                    this.intType = BTPToolLinkManager.BuyDoubleExperience(intToolID, this.intUserID, num15);
+                                }
+                                else
+                                {
+                                    BTPToolLinkManager.GiftTool(this.intUserID, intToolID, num15, intType);
+                                    if (strContent.IndexOf("游戏币道具") == -1)
+                                    {
+                                        strContent = strContent + "获赠超值游戏币道具！";
+                                    }
+                                }
+                            }
+                        }
+                        if (strNickName != "")
+                        {
+                            string text1 = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", datMemberExpireTime.ToString(), "' WHERE UserID=", this.intLookUserID });
+                            this.intUserID = intUserID;
+                            BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex) + "赠送给你会员卡<br><br>请您重新登录享受会员特惠！");
+                            BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", "您赠送给" + strNickName + "会员卡成功！");
+                            BTPMessageManager.SetHasMsg(this.strNickName);
                             BTPMessageManager.SetHasMsg(strNickName);
                         }
-                        goto Label_0A68;
+                        else
+                        {
+                            BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", strContent);
+                            BTPMessageManager.SetHasMsg(this.strNickName);
+                            string text2 = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", datMemberExpireTime.ToString(), "' WHERE UserID=", this.intUserID });
+                        }
+                        flag = true;
                     }
-                    num14 = 0;
+                    if (flag)
+                    {
+                        DTOnlineManager.ChangePayTypeByUserID(this.intUserID, 1);
+                        if (strNickName != "")
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=206!Type.TOOLS^Page.1");
+                        }
+                        else
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=402");
+                        }
+                    }
+                    else
+                    {
+                        base.Response.Redirect("Report.aspx?Parameter=205!Type.TOOLS^Page.1");
+                    }
+                    goto Label_0BFE;
+                }
+                case 8:
+                    num = 0;
                     switch (intTicketCategory)
                     {
                         case 1:
-                            num14 = 0x1e8480;
-                            goto Label_075C;
+                            num = 200;
+                            goto Label_0A13;
 
                         case 2:
-                            num14 = 0xe4e1c0;
-                            goto Label_075C;
+                            num = 500;
+                            goto Label_0A13;
+
+                        case 3:
+                            num = 0x640;
+                            goto Label_0A13;
                     }
-                    goto Label_075C;
-                }
-                num13 = 0;
-                switch (intTicketCategory)
-                {
-                    case 1:
-                        num13 = 200;
-                        goto Label_05B2;
+                    break;
 
-                    case 2:
-                        num13 = 500;
-                        goto Label_05B2;
-
-                    case 3:
-                        num13 = 0x640;
-                        goto Label_05B2;
-                }
-            }
-            else
-            {
-                bool flag;
-                /*int num8 = Convert.ToInt32(row3["IsMember"]);
-                DateTime time = (DateTime) row3["MemberExpireTime"];
-                if (time < DateTime.Now)
+                case 11:
                 {
-                    time = DateTime.Now.AddMonths(1);
-                }
-                else
-                {
-                    time = time.AddMonths(1);
-                }*/
-                if (num7 < intCoin)
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=203!Type.TOOLS^Page.1");
-                    return;
-                }
-                if (strNickName != "")
-                {
-                    toolRowByID = BTPAccountManager.GetAccountRowByUserID(this.intLookUserID);
-                }
-                else
-                {
-                    toolRowByID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                }
-                int num8 = (byte)toolRowByID["PayType"];
-                DateTime datMemberExpireTime = (DateTime)toolRowByID["MemberExpireTime"];
-                if ((num8 == 0) && (datMemberExpireTime < DateTime.Now))
-                {
-                    datMemberExpireTime = DateTime.Now.AddMonths(1);
-                }
-                else
-                {
-                    datMemberExpireTime = datMemberExpireTime.AddMonths(1);
-                }
-                if (!DBLogin.CanConn(40))
-                {
-                    flag = false;
-                }
-                else
-                {
-                    string str4;
-                    //ROOTUserManager.SpendCoin40(this.intUserID, intCoin, "购买1个" + str3, "");
-                    BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, "购买1个" + str3);
-                    if (strNickName != "")
+                    int num2 = 0;
+                    switch (intTicketCategory)
                     {
-                        BTPToolLinkManager.BuyVIPCard(this.intLookUserID, datMemberExpireTime);
+                        case 1:
+                            num2 = 0x1e8480;
+                            break;
+
+                        case 2:
+                            num2 = 0xe4e1c0;
+                            break;
+                    }
+                    if (strNickName == "")
+                    {
+                        BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth * intCount, 2, "购买" + (num2 * intCount) + "游戏资金");
+                        BTPAccountManager.AddMoneyWithFinance(num2 * intCount, this.intUserID, 3, "购买" + (num2 * intCount) + "游戏资金", intCategory, intTicketCategory, intCount);
+                    }
+                    goto Label_0BFE;
+                }
+                case 0x10:
+                    switch (BTPToolLinkManager.BuyNewerToolBox(request, this.intUserID))
+                    {
+                        case -2:
+                            base.Response.Redirect("Report.aspx?Parameter=BNE02!Type.TOOLS^Page.1");
+                            return;
+
+                        case -1:
+                            base.Response.Redirect("Report.aspx?Parameter=BNE01!Type.TOOLS^Page.1");
+                            return;
+                    }
+                    BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth, 2, string.Concat(new object[] { "购买新人大礼包" }));
+                    base.Response.Redirect("Report.aspx?Parameter=BNS01!Type.TOOLS^Page.1");
+                    return;
+
+                case 9:
+                case 10:
+                    if (intCategory == 9)
+                    {
+                        intCount = 1;
+                    }
+                    if (strNickName == "")
+                    {
+                        BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth * intCount, 2, string.Concat(new object[] { "购买", intCount, "个", str3 }));
+                        num11 = BTPToolLinkManager.BuyDoubleExperience(request, this.intUserID, intCount);
                     }
                     else
                     {
-                        BTPToolLinkManager.BuyVIPCard(this.intUserID, datMemberExpireTime);
-                    }
-                    DataTable giftTable = BTPGiftManager.GetGiftTable();
-                    string strContent = "购买会员卡";
-                    int intUserID = 0;
-                    if (strNickName != "")
-                    {
-                        intUserID = this.intUserID;
-                        this.intUserID = this.intLookUserID;
-                    }
-                    if (giftTable != null)
-                    {
-                        foreach (DataRow row in giftTable.Rows)
-                        {
-                            int intToolID = (int)row["ToolID"];
-                            int intWealth = (int)row["Amount"];
-                            int intType = (byte)row["Type"];
-                            if (intType == 3)
-                            {
-                                BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth, 1, "购买会员卡赠送！");
-                                object obj2 = strContent;
-                                strContent = string.Concat(new object[] { obj2, "获赠", intWealth, "枚游戏币！" });
-                            }
-                            else
-                            {
-                                if ((intToolID == 0x21) && (intType == 1))
-                                {
-                                    this.intType = BTPToolLinkManager.BuyDoubleExperience(intToolID, this.intUserID, intWealth);
-                                    continue;
-                                }
-                                BTPToolLinkManager.GiftTool(this.intUserID, intToolID, intWealth, intType);
-                                if (strContent.IndexOf("游戏币道具") == -1)
-                                {
-                                    strContent = strContent + "获赠超值游戏币道具！";
-                                }
-                            }
-                        }
-                    }
-                    //giftTable.Close();
-                    if (strNickName != "")
-                    {
-                        str4 = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", datMemberExpireTime.ToString(), "' WHERE UserID=", this.intLookUserID });
-                        this.intUserID = intUserID;
-                        BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex) + "赠送给你会员卡<br><br>请您重新登录享受会员特惠！");
-                        BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", "您赠送给" + strNickName + "会员卡成功！");
-                        BTPMessageManager.SetHasMsg(this.strNickName);
+                        BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth * intCount, 2, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }));
+                        num11 = BTPToolLinkManager.BuyDoubleExperience(request, this.intLookUserID, intCount);
+                        BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", string.Concat(new object[] { AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex), "赠送给您", str3, " ", intCount, "个。" }));
                         BTPMessageManager.SetHasMsg(strNickName);
                     }
-                    else
+                    if (num11 == 2)
                     {
-                        BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", strContent);
-                        BTPMessageManager.SetHasMsg(this.strNickName);
-                        str4 = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", datMemberExpireTime.ToString(), "' WHERE UserID=", this.intUserID });
+                        base.Response.Redirect("Report.aspx?Parameter=561");
                     }
-                    //SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("main40"), CommandType.Text, str4);
-                    flag = true;
-                }
-                if (flag)
-                {
-                    DTOnlineManager.ChangePayTypeByUserID(this.intUserID, 1);
-                    if (strNickName != "")
+                    goto Label_0BFE;
+
+                case 0xc9:
+                    if (strNickName == "")
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=206!Type.TOOLS^Page.1");
+                        BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth * intCount, 2, string.Concat(new object[] { "购买", intCount, "个", str3 }));
+                        num11 = BTPToolLinkManager.BuyLocationCard(request, this.intUserID, intCount);
                     }
                     else
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=402");
+                        BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth * intCount, 2, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }));
+                        BTPToolLinkManager.BuyLocationCard(request, this.intLookUserID, intCount);
+                        BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", string.Concat(new object[] { AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex), "赠送给您", str3, " ", intCount, "个。" }));
+                        BTPMessageManager.SetHasMsg(strNickName);
                     }
-                }
-                else
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=205!Type.TOOLS^Page.1");
-                }
-                goto Label_0A68;
+                    goto Label_0BFE;
+
+                default:
+                    if (strNickName == "")
+                    {
+                        if (intCategory == 2)
+                        {
+                            intCount = 1;
+                        }
+                        BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth * intCount, 2, "购买1个" + str3);
+                        if (BTPToolLinkManager.BuyTool(request, this.intUserID, DateTime.Now.AddDays(20.0), intCount) == -1)
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=208!Type.TOOLS^Page.1");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        ROOTUserManager.SpendCoin40(this.intUserID, intWealth * intCount, "赠送给" + strNickName + str3 + "1个", "");
+                        BTPToolLinkManager.BuyTool(request, this.intLookUserID, DateTime.Now.AddDays(20.0), intCount);
+                        BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", string.Concat(new object[] { AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex), "赠送给您", str3, intCount, "个。" }));
+                        BTPMessageManager.SetHasMsg(strNickName);
+                    }
+                    goto Label_0BFE;
             }
-        Label_05B2:
+        Label_0A13:
             if (strNickName == "")
             {
-                ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, "购买" + num13 + "游戏币", "");
-                BTPAccountManager.AddWealth(this.intUserID, num13 * intCount, string.Concat(new object[] { "成功购买", intCount, "个", str3, "，获得", num13 * intCount, "游戏币。" }), 8, intTicketCategory, intCount);
+                ROOTUserManager.SpendCoin40(this.intUserID, intWealth * intCount, "购买" + num + "游戏币", "");
+                BTPAccountManager.AddWealth(this.intUserID, num * intCount, string.Concat(new object[] { "成功购买", intCount, "个", str3, "，获得", num * intCount, "游戏币。" }), 8, intTicketCategory, intCount);
             }
             else
             {
-                ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }), "");
-                BTPAccountManager.AddWealth(this.intLookUserID, num13 * intCount, string.Concat(new object[] { this.strNickName, "赠送给您", str3, intCount, "个。" }), 8, intTicketCategory, intCount);
+                ROOTUserManager.SpendCoin40(this.intUserID, intWealth * intCount, string.Concat(new object[] { "赠送给", strNickName, str3, intCount, "个" }), "");
+                BTPAccountManager.AddWealth(this.intLookUserID, num * intCount, string.Concat(new object[] { this.strNickName, "赠送给您", str3, intCount, "个。" }), 8, intTicketCategory, intCount);
                 BTPMessageManager.AddMessage(this.intLookUserID, 2, 0, "秘书报告", AccountItem.GetNickNameInfoA(this.intUserID, this.strNickName, "Right", this.blnSex) + "赠送给您" + str3 + "1个。");
                 BTPMessageManager.SetHasMsg(strNickName);
             }
-            goto Label_0A68;
-        Label_075C:
-            if (strNickName == "")
-            {
-                //ROOTUserManager.SpendCoin40(this.intUserID, intCoin * intCount, "购买" + (num14 * intCount) + "游戏资金", "");
-                BTPAccountManager.AddWealthByFinance(this.intUserID, intCoin * intCount, 2, "购买" + (num14 * intCount) + "游戏资金");
-                BTPAccountManager.AddMoneyWithFinance(num14 * intCount, this.intUserID, 3, "购买" + (num14 * intCount) + "游戏资金", intCategory, intTicketCategory, intCount);
-            }
-        Label_0A68:
+        Label_0BFE:
             base.Response.Redirect("Report.aspx?Parameter=202!Type.TOOLS^Page.1");
         }
 
         private void btnOK_Click_BUYWEALTHPLAYER(object sender, ImageClickEventArgs e)
         {
             DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-            int num = (byte)playerRowByPlayerID["Category"];
+            int num = (byte) playerRowByPlayerID["Category"];
             string str = playerRowByPlayerID["Name"].ToString().Trim();
-            if (((bool)playerRowByPlayerID["SellAss"]) && (this.intPayType != 1))
+            if (((bool) playerRowByPlayerID["SellAss"]) && (this.intPayType != 1))
             {
                 this.strSay = this.strNickName + "经理，您好！球员" + str + "只对会员出售，请加入会员获得更多服务！";
             }
             else
             {
                 int num2;
+                long num3;
                 switch (num)
                 {
-                    case 4:
-                        num2 = 4;
+                    case 2:
+                        num2 = 3;
                         break;
 
                     case 3:
                         num2 = 5;
                         break;
 
-                    case 2:
-                        num2 = 3;
+                    case 4:
+                        num2 = 4;
                         break;
 
                     default:
                         num2 = 0;
                         return;
                 }
-                switch (this.CheckCanBid(5, 8))
+                long num12 = this.CheckCanBid(5, 8);
+                if ((num12 <= -3L) && (num12 >= -12L))
                 {
-                    case -3:
-                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                        return;
+                    switch (((int) (num12 - -12L)))
+                    {
+                        case 0:
+                            this.strSay = this.strNickName + "经理，咱们俱乐部工资总和已经达到或超过工资帽了不能再购买球员了！";
+                            return;
 
-                    case -4:
-                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                        return;
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！此球员无法跨等级进行转会！";
+                            return;
 
-                    case -5:
-                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                        return;
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员已经不在拍卖中！";
+                            return;
 
-                    case -6:
-                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                        return;
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                            return;
 
-                    case -7:
-                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                        return;
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
 
-                    case -8:
-                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                        return;
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
 
-                    case -9:
-                        this.strSay = this.strNickName + "经理，您好！这名球员已经不在拍卖中！";
-                        return;
+                        case 7:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
 
-                    case -10:
-                        this.strSay = this.strNickName + "经理，您好！此球员无法跨等级进行转会！";
-                        return;
+                        case 8:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
 
-                    case -12:
-                        this.strSay = this.strNickName + "经理，咱们俱乐部工资总和已经达到或超过工资帽了不能再购买球员了！";
-                        return;
-
-                    default:
+                        case 9:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                            return;
+                    }
+                }
+                try
+                {
+                    num3 = Convert.ToInt64(this.tbFreeBidPrice.Text);
+                }
+                catch (Exception exception)
+                {
+                    num3 = 0L;
+                    exception.ToString();
+                    this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
+                    return;
+                }
+                DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                int num4 = (int) accountRowByUserID["Wealth"];
+                accountRowByUserID["DevCode"].ToString().Trim();
+                int num1 = (int) accountRowByUserID["ClubID5"];
+                if (num4 >= num3)
+                {
+                    string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
+                    string strCreateTime = DateTime.Now.ToString();
+                    DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID, true);
+                    if (devTranTopUser != null)
+                    {
+                        int num5 = (int) devTranTopUser["UserID"];
+                        long num6 = (int) devTranTopUser["Price"];
+                        long num7 = (num6 * 0x66L) / 100L;
+                        long num8 = (num6 * 13L) / 10L;
+                        if (num5 == this.intUserID)
                         {
-                            long price;
-                            try
-                            {
-                                price = Convert.ToInt64(this.tbFreeBidPrice.Text);
-                            }
-                            catch (Exception exception)
-                            {
-                                price = 0;
-                                exception.ToString();
-                                this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
-                                break;
-                            }
-                            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                            int num5 = (int)accountRowByUserID["Wealth"];
-                            accountRowByUserID["DevCode"].ToString().Trim();
-                            int num1 = (int)accountRowByUserID["ClubID5"];
-                            if (num5 >= price)
-                            {
-                                string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
-                                string strCreateTime = DateTime.Now.ToString();
-                                DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID, true);
-                                if (devTranTopUser != null)
-                                {
-                                    int num6 = (int)devTranTopUser["UserID"];
-                                    long num7 = (int)devTranTopUser["Price"];
-                                    long num8 = (num7 * 0x66) / 100;
-                                    long num9 = (num7 * 13) / 10;
-                                    if (num6 == this.intUserID)
-                                    {
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=692!Type.TRANSFER^Pos.1^Order.0^Page.1");
-                                    }
-                                    else if ((num8 > price) || (num9 < price))
-                                    {
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=693");
-                                    }
-                                    else
-                                    {
-                                        DateTime time = (DateTime)BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
-                                        if (time < DateTime.Now.AddMinutes(1.0))
-                                        {
-                                            BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
-                                        }
-                                        BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, price, strCreateTime, strIP, num2);
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
-                                    }
-                                }
-                                else
-                                {
-                                    DataRow row4 = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                                    long num10 = Convert.ToInt64(row4["BidPrice"]);
-                                    long num11 = (num10 * 13) / 10;
-                                    if ((num10 > price) || (num11 < price))
-                                    {
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=693");
-                                    }
-                                    else
-                                    {
-                                        DateTime time2 = (DateTime)row4["EndBidTime"];
-                                        if (time2 < DateTime.Now.AddMinutes(1.0))
-                                        {
-                                            BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
-                                        }
-                                        BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, price, strCreateTime, strIP, num2);
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
-                                    }
-                                }
-                                return;
-                            }
-                            this.strSay = this.strNickName + "经理，咱这么出价会被人笑话的，起码高于1000吧？";
-                            break;
+                            base.Response.Redirect("Report.aspx?Parameter=692!Type.TRANSFER^Pos.1^Order.0^Page.1");
                         }
+                        else if ((num7 > num3) || (num8 < num3))
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=693");
+                        }
+                        else
+                        {
+                            DateTime time = (DateTime) BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
+                            if (time < DateTime.Now.AddMinutes(1.0))
+                            {
+                                BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
+                            }
+                            BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, num3, strCreateTime, strIP, num2);
+                            base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                        }
+                    }
+                    else
+                    {
+                        DataRow row4 = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
+                        long num9 = Convert.ToInt64(row4["BidPrice"]);
+                        long num10 = (num9 * 13L) / 10L;
+                        if ((num9 > num3) || (num10 < num3))
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=693");
+                        }
+                        else
+                        {
+                            DateTime time2 = (DateTime) row4["EndBidTime"];
+                            if (time2 < DateTime.Now.AddMinutes(1.0))
+                            {
+                                BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
+                            }
+                            BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, num3, strCreateTime, strIP, num2);
+                            base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                        }
+                    }
+                }
+                else
+                {
+                    this.strSay = this.strNickName + "经理，咱这么出价会被人笑话的，起码高于1000吧？";
                 }
             }
         }
@@ -1459,14 +1613,14 @@
                     base.Response.Redirect("Report.aspx?Parameter=207!Type.TOOLS^Page.1");
                 }
             }
-            int request = (int)SessionItem.GetRequest("ToolID", 0);
+            int request = SessionItem.GetRequest("ToolID", 0);
             DataRow wealthToolRowByID = BTPWealthToolManager.GetWealthToolRowByID(request);
-            int num3 = (int)wealthToolRowByID["WealthCost"];
-            int num4 = (int)wealthToolRowByID["PayCost"];
+            int num3 = (int) wealthToolRowByID["WealthCost"];
+            int num4 = (int) wealthToolRowByID["PayCost"];
             wealthToolRowByID["ToolName"].ToString().Trim();
-            int num5 = (int)wealthToolRowByID["AmountInStock"];
-            int num6 = (byte)wealthToolRowByID["Category"];
-            byte num1 = (byte)wealthToolRowByID["TicketCategory"];
+            int num5 = (int) wealthToolRowByID["AmountInStock"];
+            int num6 = (byte) wealthToolRowByID["Category"];
+            byte num1 = (byte) wealthToolRowByID["TicketCategory"];
             string str3 = "";
             if (this.intPayType == 1)
             {
@@ -1479,9 +1633,9 @@
                     if (num6 == 7)
                     {
                         wealthToolRowByID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                        int num7 = (byte)wealthToolRowByID["PayType"];
-                        DateTime datMemberExpireTime = (DateTime)wealthToolRowByID["MemberExpireTime"];
-                        int num8 = (int)wealthToolRowByID["Wealth"];
+                        int num7 = (byte) wealthToolRowByID["PayType"];
+                        DateTime datMemberExpireTime = (DateTime) wealthToolRowByID["MemberExpireTime"];
+                        int num8 = (int) wealthToolRowByID["Wealth"];
                         str3 = wealthToolRowByID["NickName"].ToString().Trim();
                         if (strNickName != "")
                         {
@@ -1490,10 +1644,10 @@
                                 base.Response.Redirect("Report.aspx?Parameter=557!Type.BUYWEALTHTOOL^ToolID." + request);
                                 return;
                             }
-                            int intUserID = (int)BTPAccountManager.GetAccountRowByNickName(strNickName)["UserID"];
+                            int intUserID = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["UserID"];
                             wealthToolRowByID = BTPAccountManager.GetAccountRowByUserID(intUserID);
-                            num7 = (byte)wealthToolRowByID["PayType"];
-                            datMemberExpireTime = (DateTime)wealthToolRowByID["MemberExpireTime"];
+                            num7 = (byte) wealthToolRowByID["PayType"];
+                            datMemberExpireTime = (DateTime) wealthToolRowByID["MemberExpireTime"];
                             str3 = wealthToolRowByID["NickName"].ToString().Trim();
                         }
                         if (num8 < (num3 * intCount))
@@ -1520,7 +1674,7 @@
                                 }
                                 BTPToolLinkManager.BuyWealthVIPCard(this.intUserID, datMemberExpireTime, strNickName, 2);
                                 BTPMessageManager.SetHasMsg(str3);
-                                int num10 = (int)BTPAccountManager.GetAccountRowByNickName(this.tbPresentText.Text.Trim())["UserID"];
+                                int num10 = (int) BTPAccountManager.GetAccountRowByNickName(this.tbPresentText.Text.Trim())["UserID"];
                                 str4 = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", datMemberExpireTime.ToString(), "' WHERE UserID=", num10 });
                             }
                             else
@@ -1572,15 +1726,15 @@
 
         private void btnOK_Click_CANCELFOCUS(object sender, ImageClickEventArgs e)
         {
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
-            int intCategory = (int)SessionItem.GetRequest("Category", 0);
+            long request = SessionItem.GetRequest("PlayerID", 3);
+            int intCategory = SessionItem.GetRequest("Category", 0);
             BTPBidFocusManager.CancelFocus(this.intUserID, request, intCategory);
             base.Response.Redirect("MyFocus.aspx");
         }
 
         private void btnOK_Click_CancelOrder(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("OrderID", 0);
+            int request = SessionItem.GetRequest("OrderID", 0);
             switch (BTPOrderManager.CancelOrder(request, this.intUserID))
             {
                 case -2:
@@ -1591,35 +1745,41 @@
                     base.Response.Redirect("Report.aspx?Parameter=805");
                     return;
 
+                case 0:
+                    break;
+
                 case 1:
                     base.Response.Redirect("Report.aspx?Parameter=807!Type.WEALTHWEALLTH");
                     break;
+
+                default:
+                    return;
             }
         }
 
         private void btnOK_Click_CancelPrearrange(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             base.Response.Redirect("SecretaryPage.aspx?Type=CANCELPREARR&Tag=" + request + "");
         }
 
         private void btnOK_Click_CancelPrearrangeA(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             BTPDevMatchManager.CancelPrearrange(this.intClubID5, request);
             base.Response.Redirect(string.Concat(new object[] { "DevisionView.aspx?UserID=", this.intUserID, "&Devision=", this.strDevCode, "&Page=1" }));
         }
 
         private void btnOK_Click_CancelPrearrangeAXBA(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             BTPXGroupMatchManager.CancelChampionArrange(this.intClubID5, request);
             base.Response.Redirect("ChampionCup.aspx?Kind=TRYOUT&Index=" + (request + 2));
         }
 
         private void btnOK_Click_CancelPrearrangeXBA(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             base.Response.Redirect("SecretaryPage.aspx?Type=CANCELPREARRXBA&Tag=" + request + "");
         }
 
@@ -1629,7 +1789,7 @@
             DataRow row = BTPToolLinkManager.GetToolByUserIDTCategory(this.intUserID, 6, 0);
             if (row != null)
             {
-                num = (int)row["Amount"];
+                num = (int) row["Amount"];
             }
             if (num <= 0)
             {
@@ -1700,8 +1860,8 @@
             int intMedalCharge;
             int intHortationAll;
             DateTime datEndTime;
-            int num8 = (byte)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionCategory"];
-            DevCupData data = (DevCupData)this.Session["DevCup" + this.intUnionID];
+            int num8 = (byte) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionCategory"];
+            DevCupData data = (DevCupData) this.Session["DevCup" + this.intUnionID];
             if (data != null)
             {
                 strCupName = data.strCupName;
@@ -1808,7 +1968,7 @@
             int intMedalCharge;
             int intHortationAll;
             DateTime datEndTime;
-            DevCupData data = (DevCupData)this.Session["DevCup" + this.intUserID];
+            DevCupData data = (DevCupData) this.Session["DevCup" + this.intUserID];
             if (data != null)
             {
                 strCupName = data.strCupName;
@@ -1884,12 +2044,16 @@
             else
             {
                 DataRow row = BTPOrderManager.AddWealthOrder(this.intUserID, num, num2, num3, 0);
-                int num4 = (int)row["Count"];
-                long num5 = (long)row["AllMoney"];
+                int num4 = (int) row["Count"];
+                long num5 = (long) row["AllMoney"];
                 switch (num4)
                 {
                     case -6:
                         base.Response.Redirect("Report.aspx?Parameter=810");
+                        return;
+
+                    case -5:
+                        base.Response.Redirect("Report.aspx?Parameter=802");
                         return;
 
                     case -4:
@@ -1908,10 +2072,6 @@
                         base.Response.Redirect("Report.aspx?Parameter=801");
                         return;
 
-                    case -5:
-                        base.Response.Redirect("Report.aspx?Parameter=802");
-                        return;
-
                     case 0:
                         base.Response.Redirect(string.Concat(new object[] { "SecretaryPage.aspx?Type=ORDERSAY&Category=", num, "&Price=", num2, "&Wealth=", num3 }));
                         return;
@@ -1926,52 +2086,52 @@
         private void btnOK_Click_DeleteDevCup(object sender, ImageClickEventArgs e)
         {
             int num = BTPDevCupManager.DeleteDevCup(this.intUserID, this.intDevCupID);
-            byte num2 = (byte)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionCategory"];
+            byte num2 = (byte) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionCategory"];
             switch (num)
             {
                 case 0:
-                    if (num2 == 1)
+                    if (num2 != 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=600!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
+                        base.Response.Redirect("Report.aspx?Parameter=600!Type.MYUNION^Kind.CUPMANAGE^Page.1");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=600!Type.MYUNION^Kind.CUPMANAGE^Page.1");
+                    base.Response.Redirect("Report.aspx?Parameter=600!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
                     return;
 
                 case 1:
-                    if (num2 == 1)
+                    if (num2 != 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=601!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
+                        base.Response.Redirect("Report.aspx?Parameter=601!Type.MYUNION^Kind.CUPMANAGE^Page.1");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=601!Type.MYUNION^Kind.CUPMANAGE^Page.1");
+                    base.Response.Redirect("Report.aspx?Parameter=601!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
                     return;
 
                 case 2:
-                    if (num2 == 1)
+                    if (num2 != 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=602!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
+                        base.Response.Redirect("Report.aspx?Parameter=602!Type.MYUNION^Kind.CUPMANAGE^Page.1");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=602!Type.MYUNION^Kind.CUPMANAGE^Page.1");
-                    return;
-
-                case 4:
-                    if (num2 == 1)
-                    {
-                        base.Response.Redirect("Report.aspx?Parameter=604!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
-                        return;
-                    }
-                    base.Response.Redirect("Report.aspx?Parameter=604!Type.MYUNION^Kind.CUPMANAGE^Page.1");
+                    base.Response.Redirect("Report.aspx?Parameter=602!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
                     return;
 
                 case 3:
-                    if (num2 == 1)
+                    if (num2 != 1)
                     {
-                        base.Response.Redirect("Report.aspx?Parameter=603!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
+                        base.Response.Redirect("Report.aspx?Parameter=603!Type.MYUNION^Kind.CUPMANAGE^Page.1");
                         return;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=603!Type.MYUNION^Kind.CUPMANAGE^Page.1");
+                    base.Response.Redirect("Report.aspx?Parameter=603!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
+                    return;
+
+                case 4:
+                    if (num2 != 1)
+                    {
+                        base.Response.Redirect("Report.aspx?Parameter=604!Type.MYUNION^Kind.CUPMANAGE^Page.1");
+                        return;
+                    }
+                    base.Response.Redirect("Report.aspx?Parameter=604!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPMANAGE^Page.1");
                     return;
             }
             base.Response.Redirect("Report.aspx?Parameter=3");
@@ -1989,12 +2149,12 @@
                     base.Response.Redirect("Report.aspx?Parameter=629!Type.CREATEDEVCUP^Status.MANAGER^Page.1");
                     return;
 
-                case 4:
-                    base.Response.Redirect("Report.aspx?Parameter=630!Type.CREATEDEVCUP^Status.MANAGER^Page.1");
-                    return;
-
                 case 3:
                     base.Response.Redirect("Report.aspx?Parameter=631!Type.CREATEDEVCUP^Status.MANAGER^Page.1");
+                    return;
+
+                case 4:
+                    base.Response.Redirect("Report.aspx?Parameter=630!Type.CREATEDEVCUP^Status.MANAGER^Page.1");
                     return;
             }
             base.Response.Redirect("Report.aspx?Parameter=3");
@@ -2002,9 +2162,8 @@
 
         private void btnOK_Click_DEVBIDHELPER(object sender, ImageClickEventArgs e)
         {
-            //int num = this.CanUseBidAuto(false);
             long num = this.CheckCanBid(5, 10);
-            if (this.intPayType == 1 && num > 0)
+            if ((this.intPayType == 1) && (num > 0L))
             {
                 int num2;
                 try
@@ -2017,7 +2176,7 @@
                     this.strBidMsg = "最高价格填写错误！";
                     return;
                 }
-                if (num2 >= ((num / 10) * 15))
+                if (num2 >= ((num / 10L) * 15L))
                 {
                     if (!BTPAccountManager.HasEnoughMoney(this.intUserID, num2))
                     {
@@ -2046,9 +2205,9 @@
             {
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
                 playerRowByPlayerID["Name"].ToString().Trim();
-                DateTime time = (DateTime)playerRowByPlayerID["EndBidTime"];
-                int num2 = (int)playerRowByPlayerID["BidderID"];
-                if ((time <= DateTime.Now.AddHours(3.0)) && (num2 > 0))
+                DateTime time = (DateTime) playerRowByPlayerID["EndBidTime"];
+                int num = (int) playerRowByPlayerID["BidderID"];
+                if ((time <= DateTime.Now.AddHours(3.0)) && (num > 0))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=6994!Type.DEVCHOOSE^Pos.1^Order.0^Page.1");
                 }
@@ -2084,229 +2243,224 @@
         private void btnOK_Click_DEVISION(object sender, ImageClickEventArgs e)
         {
             DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-            int num = (byte)playerRowByPlayerID["Category"];
+            int num = (byte) playerRowByPlayerID["Category"];
             string str = playerRowByPlayerID["Name"].ToString().Trim();
-            if (((bool)playerRowByPlayerID["SellAss"]) && (this.intPayType != 1))
+            if (((bool) playerRowByPlayerID["SellAss"]) && (this.intPayType != 1))
             {
                 this.strSay = this.strNickName + "经理，您好！球员" + str + "只对会员出售，请加入会员获得更多服务！";
             }
             else
             {
                 int num2;
+                long num3;
                 switch (num)
                 {
-                    case 4:
-                        num2 = 4;
+                    case 2:
+                        num2 = 3;
                         break;
 
                     case 3:
                         num2 = 5;
                         break;
 
-                    case 2:
-                        num2 = 3;
+                    case 4:
+                        num2 = 4;
                         break;
 
                     default:
                         num2 = 0;
                         return;
                 }
-                switch (this.CheckCanBid(5, 4))
+                long num10 = this.CheckCanBid(5, 4);
+                if ((num10 <= -3L) && (num10 >= -12L))
                 {
-                    case -3:
-                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                        return;
+                    switch (((int) (num10 - -12L)))
+                    {
+                        case 0:
+                            this.strSay = this.strNickName + "经理，咱们俱乐部工资总和已经达到或超过工资帽了不能再购买球员了！";
+                            return;
 
-                    case -4:
-                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                        return;
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！此球员无法跨等级进行转会！";
+                            return;
 
-                    case -5:
-                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                        return;
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员已经不在拍卖中！";
+                            return;
 
-                    case -6:
-                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                        return;
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                            return;
 
-                    case -7:
-                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                        return;
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
 
-                    case -8:
-                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                        return;
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
 
-                    case -9:
-                        this.strSay = this.strNickName + "经理，您好！这名球员已经不在拍卖中！";
-                        return;
+                        case 7:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
 
-                    case -10:
-                        this.strSay = this.strNickName + "经理，您好！此球员无法跨等级进行转会！";
-                        return;
+                        case 8:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
 
-                    case -12:
-                        this.strSay = this.strNickName + "经理，咱们俱乐部工资总和已经达到或超过工资帽了不能再购买球员了！";
-                        return;
-
-                    default:
+                        case 9:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                            return;
+                    }
+                }
+                try
+                {
+                    num3 = Convert.ToInt64(this.tbFreeBidPrice.Text);
+                }
+                catch (Exception exception)
+                {
+                    num3 = 0L;
+                    exception.ToString();
+                    this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
+                    return;
+                }
+                DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                long num4 = (long) accountRowByUserID["Money"];
+                accountRowByUserID["DevCode"].ToString().Trim();
+                int num1 = (int) accountRowByUserID["ClubID5"];
+                if (num4 >= num3)
+                {
+                    string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
+                    string strCreateTime = DateTime.Now.ToString();
+                    DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID, true);
+                    if (devTranTopUser != null)
+                    {
+                        int num5 = (int) devTranTopUser["UserID"];
+                        long num7 = (Convert.ToInt64(devTranTopUser["Price"]) / 100L) * 0x66L;
+                        if (num5 == this.intUserID)
                         {
-                            long price;
-                            try
-                            {
-                                price = Convert.ToInt64(this.tbFreeBidPrice.Text);
-                            }
-                            catch (Exception exception)
-                            {
-                                price = 0;
-                                exception.ToString();
-                                this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
-                                break;
-                            }
-                            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                            long num5 = (long)accountRowByUserID["Money"];
-                            accountRowByUserID["DevCode"].ToString().Trim();
-                            int num1 = (int)accountRowByUserID["ClubID5"];
-                            if (num5 >= price)
-                            {
-                                string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
-                                string strCreateTime = DateTime.Now.ToString();
-                                DataRow devTranTopUser = BTPTransferManager.GetDevTranTopUser(this.longPlayerID, true);
-                                if (devTranTopUser != null)
-                                {
-                                    int topPriceUserID = (int)devTranTopUser["UserID"];
-                                    long topPricetemp = Convert.ToInt64(devTranTopUser["Price"]);
-                                    long topPrice = (topPricetemp / 100) * 0x66;
-                                    if (topPriceUserID == this.intUserID)
-                                    {
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=692!Type.TRANSFER^Pos.1^Order.0^Page.1");
-                                    }
-                                    else if (topPrice > price)
-                                    {
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=693");
-                                    }
-                                    else
-                                    {
-                                        DateTime time = (DateTime)BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
-                                        if (time < DateTime.Now.AddMinutes(2.0))
-                                        {
-                                            BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(2.0));
-                                        }
-                                        BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, price, strCreateTime, strIP, num2);
-                                        // devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
-                                    }
-                                }
-                                else
-                                {
-                                    DataRow row4 = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                                    long bidPrice = Convert.ToInt64(row4["BidPrice"]);
-                                    if (bidPrice > price)
-                                    {
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=693");
-                                    }
-                                    else
-                                    {
-                                        DateTime time2 = (DateTime)row4["EndBidTime"];
-                                        if (time2 < DateTime.Now.AddMinutes(2.0))
-                                        {
-                                            BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(2.0));
-                                        }
-                                        BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, price, strCreateTime, strIP, num2);
-                                        //devTranTopUser.Close();
-                                        base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
-                                    }
-                                }
-                                return;
-                            }
-                            this.strSay = this.strNickName + "经理，咱没有足够多的资金对该球员进行出价。";
-                            break;
+                            base.Response.Redirect("Report.aspx?Parameter=692!Type.TRANSFER^Pos.1^Order.0^Page.1");
                         }
+                        else if (num7 > num3)
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=693");
+                        }
+                        else
+                        {
+                            DateTime time = (DateTime) BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
+                            if (time < DateTime.Now.AddMinutes(2.0))
+                            {
+                                BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(2.0));
+                            }
+                            BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, num3, strCreateTime, strIP, num2);
+                            base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                        }
+                    }
+                    else
+                    {
+                        DataRow row4 = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
+                        if (Convert.ToInt64(row4["BidPrice"]) > num3)
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=693");
+                        }
+                        else
+                        {
+                            DateTime time2 = (DateTime) row4["EndBidTime"];
+                            if (time2 < DateTime.Now.AddMinutes(2.0))
+                            {
+                                BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(2.0));
+                            }
+                            BTPTransferManager.SetDevisionTran(this.longPlayerID, this.intUserID, num3, strCreateTime, strIP, num2);
+                            base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                        }
+                    }
+                }
+                else
+                {
+                    this.strSay = this.strNickName + "经理，咱没有足够多的资金对该球员进行出价。";
                 }
             }
         }
 
         private void btnOK_Click_DEVSTREETBID(object sender, ImageClickEventArgs e)
         {
-            int num = (byte)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Category"];
+            int num = (byte) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Category"];
             if (num != 5)
             {
                 this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
             }
             else
             {
-                switch (this.CheckCanBid(3, 2))
+                int num2;
+                long num5 = this.CheckCanBid(3, 2);
+                if ((num5 <= -3L) && (num5 >= -9L))
                 {
-                    case -3:
-                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                        return;
+                    switch (((int) (num5 - -9L)))
+                    {
+                        case 0:
+                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                            return;
 
-                    case -4:
-                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                        return;
+                        case 1:
+                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                            return;
 
-                    case -5:
-                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                        return;
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
 
-                    case -6:
-                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                        return;
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
 
-                    case -7:
-                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                        return;
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
 
-                    case -8:
-                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                        return;
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
 
-                    case -9:
-                        this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                        return;
-
-                    default:
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                            return;
+                    }
+                }
+                try
+                {
+                    num2 = Convert.ToInt32(this.tbFreeBidPrice.Text);
+                }
+                catch (Exception exception)
+                {
+                    num2 = 0;
+                    exception.ToString();
+                    this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
+                    return;
+                }
+                long num3 = (long) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Money"];
+                int num4 = Convert.ToInt32(this.tbFreeBidPrice.Text);
+                if (num4 >= 0x3e8)
+                {
+                    if (num3 < num4)
+                    {
+                        this.strSay = this.strNickName + "经理，咱们俱乐部已经没有太多的资金了，怎么能出这么高的价钱呢？";
+                    }
+                    else
+                    {
+                        DateTime time = (DateTime) BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
+                        if (time < DateTime.Now.AddMinutes(1.0))
                         {
-                            int num3;
-                            try
-                            {
-                                num3 = Convert.ToInt32(this.tbFreeBidPrice.Text);
-                            }
-                            catch (Exception exception)
-                            {
-                                num3 = 0;
-                                exception.ToString();
-                                this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
-                                break;
-                            }
-                            long num4 = (long)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Money"];
-                            int num5 = Convert.ToInt32(this.tbFreeBidPrice.Text);
-                            if (num5 >= 0x3e8)
-                            {
-                                if (num4 < num5)
-                                {
-                                    this.strSay = this.strNickName + "经理，咱们俱乐部已经没有太多的资金了，怎么能出这么高的价钱呢？";
-                                }
-                                else
-                                {
-                                    DateTime time = (DateTime)BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
-                                    if (time < DateTime.Now.AddMinutes(1.0))
-                                    {
-                                        BTPPlayer3Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
-                                    }
-                                    string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
-                                    string strCreateTime = DateTime.Now.ToString();
-                                    BTPTransferManager.SetFreeBid(this.intUserID, this.longPlayerID, 3, 2, num3, strCreateTime, strIP);
-                                    base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
-                                }
-                                return;
-                            }
-                            this.strSay = this.strNickName + "经理，您就这么小气，起码要超过1000元吧？";
-                            break;
+                            BTPPlayer3Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
                         }
+                        string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
+                        string strCreateTime = DateTime.Now.ToString();
+                        BTPTransferManager.SetFreeBid(this.intUserID, this.longPlayerID, 3, 2, num2, strCreateTime, strIP);
+                        base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                    }
+                }
+                else
+                {
+                    this.strSay = this.strNickName + "经理，您就这么小气，起码要超过1000元吧？";
                 }
             }
         }
@@ -2362,29 +2516,29 @@
         {
             this.tbSay.Visible = true;
             this.btnOK.Visible = false;
-            int request = (int)SessionItem.GetRequest("CID", 0);
+            int request = SessionItem.GetRequest("CID", 0);
             this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"UnionField.aspx?Type=FIELDLIST&Page=1\";'>";
             switch (BTPUnionFieldManager.UnionFieldDef(this.intUserID, request))
             {
-                case 1:
-                    this.strSay = "您已接受本次挑战，比赛将于24小时后正式开始！";
-                    this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"UnionField.aspx?Type=FIELDMY\";'>";
-                    return;
-
-                case -1:
-                    this.strSay = "您不是此盟的盟员！";
-                    return;
-
-                case -2:
-                    this.strSay = "对不起，您的可支配联盟威望点不足！";
+                case -4:
+                    this.strSay = "您没有职业队！";
                     return;
 
                 case -3:
                     this.strSay = "您已经参加过一场盟战比赛！";
                     return;
 
-                case -4:
-                    this.strSay = "您没有职业队！";
+                case -2:
+                    this.strSay = "对不起，您的可支配联盟威望点不足！";
+                    return;
+
+                case -1:
+                    this.strSay = "您不是此盟的盟员！";
+                    return;
+
+                case 1:
+                    this.strSay = "您已接受本次挑战，比赛将于24小时后正式开始！";
+                    this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"UnionField.aspx?Type=FIELDMY\";'>";
                     return;
             }
             this.strSay = "系统错误请重试！";
@@ -2394,14 +2548,14 @@
         {
             this.tbSay.Visible = true;
             this.btnOK.Visible = false;
-            int request = (int)SessionItem.GetRequest("UID", 0);
-            int intReputation = (int)SessionItem.GetRequest("RT", 0);
+            int request = SessionItem.GetRequest("UID", 0);
+            int intReputation = SessionItem.GetRequest("RT", 0);
             this.strBtnCancel = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"UnionField.aspx?Type=FIELDLIST&Page=1&UID=", request, "\";'>" });
             DataRow row = BTPUnionFieldManager.UnionFieldReg(this.intUserID, request, intReputation);
             if (row != null)
             {
-                int num3 = (int)row["Type"];
-                int num4 = (int)row["UnionReputationA"];
+                int num3 = (int) row["Type"];
+                int num4 = (int) row["UnionReputationA"];
                 string str = "";
                 if (num4 > 0)
                 {
@@ -2409,6 +2563,54 @@
                 }
                 switch (num3)
                 {
+                    case -12:
+                        this.strSay = "本次挑战最少要押10威望！" + str;
+                        return;
+
+                    case -11:
+                        this.strSay = "您的联盟没有足够的可用威望！" + str;
+                        return;
+
+                    case -10:
+                        this.strSay = "你没有职业队不能发起挑战！" + str;
+                        return;
+
+                    case -9:
+                        this.strSay = "您的联盟不符合挑战条件！" + str;
+                        return;
+
+                    case -8:
+                        this.strSay = "对方联盟参加盟战的人数超过限制！" + str;
+                        return;
+
+                    case -7:
+                        this.strSay = "对方联盟的联盟威望不足！" + str;
+                        return;
+
+                    case -6:
+                        this.strSay = "输入的威望抵押不在有效范围内！" + str;
+                        return;
+
+                    case -5:
+                        this.strSay = "对方联盟不符合挑战条件！" + str;
+                        return;
+
+                    case -4:
+                        this.strSay = "您有一场盟战比赛正在进行！" + str;
+                        return;
+
+                    case -3:
+                        this.strSay = "您所在的联盟参加盟战的人数超过限制！" + str;
+                        return;
+
+                    case -2:
+                        this.strSay = "对不起，您不能挑战自己的联盟！" + str;
+                        return;
+
+                    case -1:
+                        this.strSay = "您不在任何一个联盟内！" + str;
+                        return;
+
                     case 1:
                         this.strSay = "挑战成功，请注意查看！" + str;
                         this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"UnionField.aspx?Type=FIELDMY\";'>";
@@ -2417,53 +2619,6 @@
                     case 2:
                         this.strSay = string.Concat(new object[] { "挑战成功，您所在的联盟威望已降低，您发起的挑战威望为", num4, "！", str });
                         this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"UnionField.aspx?Type=FIELDMY\";'>";
-                        return;
-
-                    case -1:
-                        this.strSay = "您不在任何一个联盟内！" + str;
-                        return;
-
-                    case -2:
-                        this.strSay = "对不起，您不能挑战自己的联盟！" + str;
-                        return;
-
-                    case -3:
-                        this.strSay = "您所在的联盟参加盟战的人数超过限制！" + str;
-                        return;
-
-                    case -4:
-                        this.strSay = "您有一场盟战比赛正在进行！" + str;
-                        return;
-
-                    case -9:
-                        this.strSay = "您的联盟不符合挑战条件！" + str;
-                        return;
-
-                    case -6:
-                        this.strSay = "输入的威望抵押不在有效范围内！" + str;
-                        return;
-
-                    case -7:
-                        this.strSay = "对方联盟的联盟威望不足！" + str;
-                        return;
-
-                    case -8:
-                        this.strSay = "对方联盟参加盟战的人数超过限制！" + str;
-                        return;
-
-                    case -5:
-                        this.strSay = "对方联盟不符合挑战条件！" + str;
-                        return;
-
-                    case -10:
-                        this.strSay = "你没有职业队不能发起挑战！" + str;
-                        return;
-
-                    case -11:
-                        this.strSay = "您的联盟没有足够的可用威望！" + str;
-                        return;
-                    case -12:
-                        this.strSay = "本次挑战最少要押10威望！" + str;
                         return;
                 }
                 this.strSay = "系统错误请重试！";
@@ -2479,36 +2634,18 @@
             if (num > 0)
             {
                 DataRow freeBoxByUserID = BTPBoxManager.GetFreeBoxByUserID(this.intUserID);
-                switch (((int)freeBoxByUserID["Status"]))
+                switch (((int) freeBoxByUserID["Status"]))
                 {
                     case 1:
-                        {
-                            string str = freeBoxByUserID["Name"].ToString().Trim();
-                            this.strSay = "恭喜您抽到了新的奖品：" + str + " ，请注意查收！";
-                            return;
-                        }
+                    {
+                        string str = freeBoxByUserID["Name"].ToString().Trim();
+                        this.strSay = "恭喜您抽到了新的奖品：" + str + " ，请注意查收！";
+                        return;
+                    }
                     case 2:
-                        {
-                            /*int addDate = (int) freeBoxByUserID["AddDate"];
-                            //string commandText = string.Concat(new object[] { "UPDATE Main_User SET IsMember=1,MemberExpireTime='", DateTime.Now.AddDays((double) num3).ToString(), "' WHERE UserID=", this.intUserID });
-                            //SqlHelper.ExecuteNonQuery(DBSelector.GetConnection("main40"), CommandType.Text, commandText);
-                            /*DataRow toolRowByID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                            int num8 = (byte) toolRowByID["PayType"];
-                            DateTime datMemberExpireTime = (DateTime) toolRowByID["MemberExpireTime"];
-                            if ((num8 == 0) && (datMemberExpireTime < DateTime.Now))
-                            {
-                                datMemberExpireTime = DateTime.Now.AddDays((double)addDate);
-                            }
-                            else
-                            {
-                                datMemberExpireTime = datMemberExpireTime.AddDays((double)addDate);
-                            }
-                            BTPToolLinkManager.BuyVIPCard(this.intUserID, datMemberExpireTime);*/
-
-                            DTOnlineManager.ChangePayTypeByUserID(this.intUserID, 1);
-                            base.Response.Redirect("Report.aspx?Parameter=402");
-                            return;
-                        }
+                        DTOnlineManager.ChangePayTypeByUserID(this.intUserID, 1);
+                        base.Response.Redirect("Report.aspx?Parameter=402");
+                        return;
                 }
                 this.strSay = "您还没有使用过！";
             }
@@ -2604,46 +2741,40 @@
             this.btnInTeam.Visible = false;
             this.btnOK.Visible = false;
             this.btnSearchCancel.Visible = false;
-            this.longSearchPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longSearchPlayerID = SessionItem.GetRequest("PlayerID", 3);
             if (BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longSearchPlayerID) != null)
             {
                 DataTable table = BTPPlayer3Manager.GetPlayer3TableByCIDCat(this.intClubID3, 0x58);
                 if (table != null)
                 {
-                    int intPlayer3MaxCount = 0;
-                    bool hasLocationCard = BTPToolLinkManager.HasTool(this.intUserID, 1, 201, 0);
-                    if (hasLocationCard)
+                    int num = 0;
+                    if (BTPToolLinkManager.HasTool(this.intUserID, 1, 0xc9, 0))
                     {
-                        intPlayer3MaxCount = 9;
+                        num = 9;
                     }
                     else
                     {
-                        intPlayer3MaxCount = 8;
+                        num = 8;
                     }
-
                     if (table.Rows.Count != 8)
                     {
                         this.strSay = "您尚未雇佣球探，请先雇佣球探。";
                         this.strBtnCancel = string.Concat(new object[] { "<a href='PlayerCenter.aspx?Type=3&UserID=", this.intUserID, "'><img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' border='0'></a>" });
                     }
-                    else if (BTPPlayer3Manager.GetPlayer3CountByCID(this.intClubID3) < intPlayer3MaxCount)
+                    else if (BTPPlayer3Manager.GetPlayer3CountByCID(this.intClubID3) < num)
                     {
-                        int intWealth = (int)BTPParameterManager.GetParameterRow()["SearchPlayer"];
-                        if (BTPAccountManager.HasEnoughWealth(this.intUserID, intWealth) == 1)
+                        int intWealth = (int) BTPParameterManager.GetParameterRow()["SearchPlayer"];
+                        if (Convert.ToInt32(BTPAccountManager.GetAccountRowByUserID(this.intUserID)["ActivePoint"]) >= intWealth)
                         {
-                            DataRow row3 = BTPPlayer3Manager.SearchPlayerInTeamNew(this.intUserID, this.intClubID3, this.longSearchPlayerID);
+                            BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth, 3, "录用球探找到的球员花费。");
+                            DataRow row2 = BTPPlayer3Manager.SearchPlayerInTeamNew(this.intUserID, this.intClubID3, this.longSearchPlayerID);
                             int num4 = -1;
-                            if (row3 != null)
+                            if (row2 != null)
                             {
-                                num4 = (int)row3["Status"];
+                                num4 = (int) row2["Status"];
                             }
-                            BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth, 2, "录用球探找到的球员花费。");
                             switch (num4)
                             {
-                                case 0:
-                                    base.Response.Redirect(string.Concat(new object[] { "PlayerCenter.aspx?Type=8&UserID=", this.intUserID, "&INID=", this.longSearchPlayerID }));
-                                    return;
-
                                 case -2:
                                     this.strSay = "对不起，您的游戏币不足" + intWealth + "，不能录用该球员。";
                                     this.strBtnCancel = string.Concat(new object[] { "<a href='PlayerCenter.aspx?Type=3&UserID=", this.intUserID, "'><img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' border='0'></a>" });
@@ -2652,6 +2783,36 @@
                                 case -1:
                                     this.strSay = "该球员不是球探为您找到的球员，无法与其签约。";
                                     this.strBtnCancel = string.Concat(new object[] { "<a href='PlayerCenter.aspx?Type=3&UserID=", this.intUserID, "'><img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' border='0'></a>" });
+                                    return;
+
+                                case 0:
+                                    base.Response.Redirect(string.Concat(new object[] { "PlayerCenter.aspx?Type=8&UserID=", this.intUserID, "&INID=", this.longSearchPlayerID }));
+                                    return;
+                            }
+                        }
+                        else if (BTPAccountManager.HasEnoughWealth(this.intUserID, intWealth) == 1)
+                        {
+                            DataRow row3 = BTPPlayer3Manager.SearchPlayerInTeamNew(this.intUserID, this.intClubID3, this.longSearchPlayerID);
+                            int num5 = -1;
+                            if (row3 != null)
+                            {
+                                num5 = (int) row3["Status"];
+                            }
+                            BTPAccountManager.AddWealthByFinance(this.intUserID, intWealth, 2, "录用球探找到的球员花费。");
+                            switch (num5)
+                            {
+                                case -2:
+                                    this.strSay = "对不起，您的游戏币不足" + intWealth + "，不能录用该球员。";
+                                    this.strBtnCancel = string.Concat(new object[] { "<a href='PlayerCenter.aspx?Type=3&UserID=", this.intUserID, "'><img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' border='0'></a>" });
+                                    return;
+
+                                case -1:
+                                    this.strSay = "该球员不是球探为您找到的球员，无法与其签约。";
+                                    this.strBtnCancel = string.Concat(new object[] { "<a href='PlayerCenter.aspx?Type=3&UserID=", this.intUserID, "'><img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' border='0'></a>" });
+                                    return;
+
+                                case 0:
+                                    base.Response.Redirect(string.Concat(new object[] { "PlayerCenter.aspx?Type=8&UserID=", this.intUserID, "&INID=", this.longSearchPlayerID }));
                                     return;
                             }
                             base.Response.Redirect("Report.aspx?Parameter=3");
@@ -2683,13 +2844,13 @@
 
         private void btnOK_Click_KickOut(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int num2 = (int)accountRowByUserID["UnionID"];
-            int num3 = (byte)accountRowByUserID["UnionCategory"];
+            int num2 = (int) accountRowByUserID["UnionID"];
+            int num3 = (byte) accountRowByUserID["UnionCategory"];
             DataRow row2 = BTPAccountManager.GetAccountRowByUserID(request);
-            int num4 = (int)row2["UnionID"];
-            int num5 = (byte)row2["UnionCategory"];
+            int num4 = (int) row2["UnionID"];
+            int num5 = (byte) row2["UnionCategory"];
             row2["NickName"].ToString().Trim();
             if ((num3 != 1) && (num3 != 2))
             {
@@ -2740,12 +2901,12 @@
             }
             else
             {
-                int request = (int)SessionItem.GetRequest("DevMatchID", 0);
+                int request = SessionItem.GetRequest("DevMatchID", 0);
                 int num3 = BTPDevMatchManager.SetMangerSay(this.intUserID, request);
                 if (num3 == 1)
                 {
-                    int num4 = (int)SessionItem.GetRequest("Ref", 0);
-                    switch (((int)SessionItem.GetRequest("Pos", 0)))
+                    int num4 = SessionItem.GetRequest("Ref", 0);
+                    switch (((int) SessionItem.GetRequest("Pos", 0)))
                     {
                         case 1:
                             base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=901!UserID.", this.intUserID, "^Devision.", this.strDevCode, "^Page.1" }));
@@ -2761,13 +2922,13 @@
                 {
                     switch (num3)
                     {
+                        case -2:
+                            this.strSay = this.strNickName + "经理，您好，您的球队没有参加这场职业联赛！";
+                            return;
+
                         case -1:
                             this.strSay = string.Concat(new object[] { this.strNickName, "经理，您好！您的资金不足，对球员进行奖励需要花费您 ", num / 0x2710, " 万资金！" });
                             return;
-
-                        case -2:
-                            this.strSay = this.strNickName + "经理，您好，您的球队没有参加这场职业联赛！";
-                            break;
                     }
                 }
             }
@@ -2775,9 +2936,9 @@
 
         private void btnOK_Click_MATCHLEV(object sender, ImageClickEventArgs e)
         {
-            this.intType = (int)SessionItem.GetRequest("ClubType", 0);
-            this.intLookUserID = (int)SessionItem.GetRequest("UserID", 0);
-            this.intClubID = (int)SessionItem.GetRequest("ClubID", 0);
+            this.intType = SessionItem.GetRequest("ClubType", 0);
+            this.intLookUserID = SessionItem.GetRequest("UserID", 0);
+            this.intClubID = SessionItem.GetRequest("ClubID", 0);
             if ((this.CanUseMatchLev() == 1) || (this.intPayType == 1))
             {
                 BTPToolLinkManager.UseMatchLev(this.intUserID, this.intClubID, this.intType);
@@ -2800,13 +2961,33 @@
         {
             switch (BTPToolLinkManager.UseMatchLook(this.intUserID, this.intTag, this.intPayType))
             {
+                case 1:
+                    base.Response.Write(string.Concat(new object[] { "<script>window.location=\"DevisionView.aspx?Type=MATCHLOOK&UserID=", this.intLookUserID, "&Devision=", this.strDevCode, "&Status=1&Page=1\";</script>" }));
+                    return;
+
                 case 2:
                     base.Response.Redirect("Report.aspx?Parameter=550");
                     return;
+            }
+        }
 
-                case 1:
-                    base.Response.Write(string.Concat(new object[] { "<script>window.location=\"DevisionView.aspx?Type=MATCHLOOK&UserID=", this.intLookUserID, "&Devision=", this.strDevCode, "&Status=1&Page=1\";</script>" }));
-                    break;
+        private void btnOK_Click_MAX(object sender, ImageClickEventArgs e)
+        {
+            if (this.CanUseMax() == 1)
+            {
+                BTPToolLinkManager.UseMax(this.intUserID, this.longPlayerID, this.intCheckType, 3, this.intType);
+                if (this.intPlayerCategory != 1)
+                {
+                    base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Show=MAX&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "\";window.location=\"MyFocus.aspx\";</script>" }));
+                }
+                else
+                {
+                    base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Show=MAX&Type=", this.intType, "&Kind=1&Check=", this.intCheck, "&PlayerID=", this.longPlayerID, "\";window.location=\"PlayerCenter.aspx?Type=", this.intType, "&UserID=", this.intUserID, "\";</script>" }));
+                }
+            }
+            else
+            {
+                base.Response.Write("<script>window.history.back();</script>");
             }
         }
 
@@ -2828,25 +3009,31 @@
             this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=1\";'>";
             switch (BTPOnlyOneCenterReg.OnlyOneMatchOut(this.intUserID))
             {
+                case -1:
+                    this.strSay = "对不起，你还不能退出胜者为王赛场！";
+                    break;
+
+                case 0:
+                    break;
+
                 case 1:
                     base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
                     return;
 
-                case -1:
-                    this.strSay = "对不起，你还不能退出胜者为王赛场！";
-                    break;
+                default:
+                    return;
             }
         }
 
         private void btnOK_Click_Ordain(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int intUnionID = (int)accountRowByUserID["UnionID"];
-            int num3 = (byte)accountRowByUserID["UnionCategory"];
+            int intUnionID = (int) accountRowByUserID["UnionID"];
+            int num3 = (byte) accountRowByUserID["UnionCategory"];
             DataRow row2 = BTPAccountManager.GetAccountRowByUserID(request);
-            int num4 = (int)row2["UnionID"];
-            int num5 = (byte)row2["UnionCategory"];
+            int num4 = (int) row2["UnionID"];
+            int num5 = (byte) row2["UnionCategory"];
             row2["NickName"].ToString().Trim();
             if (BTPUnionManager.GetUManagerCount(intUnionID) > 7)
             {
@@ -2873,7 +3060,7 @@
 
         private void btnOK_Click_Out(object sender, ImageClickEventArgs e)
         {
-            if (((int)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionID"]) != 0)
+            if (((int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionID"]) != 0)
             {
                 BTPUnionManager.OutUnion(this.intUserID);
                 DTOnlineManager.ChangeUnionIDByUserID(this.intUserID, 0);
@@ -2893,9 +3080,22 @@
             }
             int intBidPrice = PlayerItem.GetPlayerValue(this.intPV, this.intAbility, this.intHeight);
             int num2 = Convert.ToInt16(this.ddlEndBidTime.SelectedValue);
-            this.datEndBidTime = DateTime.Now.AddHours((double)num2);
-            BTPPlayer3Manager.SetPlayer3Bid(this.longPlayerID, intBidPrice, this.datEndBidTime);
-            base.Response.Redirect("Report.aspx?Parameter=P104!Type.3");
+            string text = this.tbBLock.Text;
+            this.datEndBidTime = DateTime.Now.AddHours((double) num2);
+            switch (BTPPlayer3Manager.SetPlayer3Bid(this.longPlayerID, intBidPrice, this.datEndBidTime, text))
+            {
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=P104!Type.3");
+                    return;
+
+                case 2:
+                    base.Response.Redirect("Report.aspx?Parameter=P105!Type.3");
+                    return;
+
+                case 3:
+                    base.Response.Redirect("Report.aspx?Parameter=P106!Type.3");
+                    break;
+            }
         }
 
         private void btnOK_Click_PLAYER3FIRE(object sender, ImageClickEventArgs e)
@@ -2914,11 +3114,11 @@
             string strMarketCode = "AAA";
             Convert.ToInt16(this.ddlEndBidTime5.SelectedValue);
             this.datEndBidTime = DateTime.Today.AddDays(2.0);
-            this.datEndBidTime = this.datEndBidTime.AddHours((double)RandomItem.rnd.Next(8, 0x18));
+            this.datEndBidTime = this.datEndBidTime.AddHours((double) RandomItem.rnd.Next(8, 0x18));
             long intBidPrice = BTPPlayer5Manager.GetSellMoneyPlayer5(this.intUserID, this.longPlayerID);
             string strEvent = string.Concat(new object[] { "您将", this.intPlayer5Number, "号球员", this.strPlayer5Name, "卖出得到", intBidPrice });
             int num2 = 2;
-            if (intBidPrice > 0)
+            if (intBidPrice > 0L)
             {
                 num2 = BTPPlayer5Manager.NewSellPlayer5(this.intUserID, this.longPlayerID, strMarketCode, intBidPrice, this.datEndBidTime, strEvent);
             }
@@ -2956,8 +3156,8 @@
         {
             this.tbSay.Visible = true;
             this.btnOK.Visible = false;
-            long request = (long)SessionItem.GetRequest("PID", 3);
-            switch (((int)SessionItem.GetRequest("Status", 0)))
+            long request = SessionItem.GetRequest("PID", 3);
+            switch (((int) SessionItem.GetRequest("Status", 0)))
             {
                 case 1:
                     BTPPlayer5Manager.UpdateContractByPlayerID(request, 13, 1);
@@ -2979,12 +3179,12 @@
 
         private void btnOK_Click_POSITION(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int num2 = (int)accountRowByUserID["UnionID"];
-            int num3 = (byte)accountRowByUserID["UnionCategory"];
+            int num2 = (int) accountRowByUserID["UnionID"];
+            int num3 = (byte) accountRowByUserID["UnionCategory"];
             DataRow row2 = BTPAccountManager.GetAccountRowByUserID(request);
-            int num4 = (int)row2["UnionID"];
+            int num4 = (int) row2["UnionID"];
             string str = row2["NickName"].ToString().Trim();
             if ((num2 == num4) && (num3 == 1))
             {
@@ -3007,26 +3207,26 @@
 
         private void btnOK_Click_PrearrangeManage(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             base.Response.Redirect("VArrangeDev.aspx?Tag=" + request);
         }
 
         private void btnOK_Click_PrearrangeManageXBA(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             base.Response.Redirect("VArrangeChampion.aspx?Tag=" + request);
         }
 
         private void btnOK_Click_PrearrangeOpen(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             BTPDevMatchManager.PrearrangeOpenbyCIDMID(this.intClubID5, request);
             base.Response.Redirect("VArrangeDev.aspx?Tag=" + request);
         }
 
         private void btnOK_Click_PrearrangeOpenXBA(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             BTPXGroupMatchManager.ChampionOpenbyCIDMID(this.intClubID5, request);
             base.Response.Redirect("VArrangeChampion.aspx?Tag=" + request);
         }
@@ -3049,59 +3249,67 @@
             this.btnOK.Visible = false;
             this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"TransferMarket.aspx?Type=MYFOCUSPLAYER&Pos=1&Order=1&Page=1;\"'>";
             DataRow bidderByUserID = BTPBidderManager.GetBidderByUserID(this.intUserID);
-            if ((bidderByUserID != null) && ((bool)bidderByUserID["TopPrice"]))
+            if ((bidderByUserID != null) && ((bool) bidderByUserID["TopPrice"]))
             {
                 this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
             }
             else
             {
-                switch (this.CheckCanBid(3, 3))
+                long num3 = this.CheckCanBid(3, 3);
+                if ((num3 <= -3L) && (num3 >= -9L))
                 {
-                    case -3:
-                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                        return;
+                    switch (((int) (num3 - -9L)))
+                    {
+                        case 0:
+                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                            return;
 
-                    case -4:
-                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                        return;
+                        case 1:
+                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                            return;
 
-                    case -5:
-                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                        return;
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
 
-                    case -6:
-                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                        return;
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
 
-                    case -7:
-                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                        return;
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
 
-                    case -8:
-                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                        return;
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
 
-                    case -9:
-                        this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                        return;
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                            return;
+                    }
                 }
                 DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                long num2 = (int)playerRowByPlayerID["PV"];
-                long num3 = (long)playerRowByPlayerID["QuickBuy"];
-                if (num3 > 0L)
+                long num = (int) playerRowByPlayerID["PV"];
+                long num2 = (long) playerRowByPlayerID["QuickBuy"];
+                if (num2 > 0L)
                 {
                     this.strSay = this.strNickName + "经理，您好！这名球员已被其它经理购买！";
                 }
                 else
                 {
-                    num2 *= 15000 + (this.longPlayerID % 50L);
-                    if (this.lgMoney >= num2)
+                    num *= 0x3a98L + (this.longPlayerID % 50L);
+                    if (this.lgMoney < num)
+                    {
+                        this.strSay = "您没有足够的资金！";
+                    }
+                    else
                     {
                         string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
                         switch (BTPBidderManager.BidQuickBuyByUserID(this.intUserID, this.longPlayerID, strIP))
                         {
-                            case 1:
-                                base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                            case -4:
+                                this.strSay = this.strNickName + "经理，您好！系统检测到你过多使用外挂，你将被禁止一口价球员！";
                                 return;
 
                             case -3:
@@ -3111,12 +3319,12 @@
                             case -1:
                                 this.strSay = this.strNickName + "经理，您好！您现在职业队中人数过多无法再购买球员了！";
                                 return;
+
+                            case 1:
+                                base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                                return;
                         }
                         this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                    }
-                    else
-                    {
-                        this.strSay = "您没有足够的资金！";
                     }
                 }
             }
@@ -3151,20 +3359,19 @@
             string str9;
             string str10;
             string str11;
-            DataRow reader;
-            int num23 = -1;
+            DataRow row;
+            int num12 = -1;
             this.blnRefashionSafe = this.cbRefashionSafe.Checked;
             if (!this.blnRefashionSafe)
             {
-                reader = BTPAccountManager.RefashionPlayerSkill(this.intUserID, this.longPlayerID, this.intType);
+                row = BTPAccountManager.RefashionPlayerSkill(this.intUserID, this.longPlayerID, this.intType);
             }
             else
             {
-                reader = BTPAccountManager.RefashionSafePlayerSkill(this.intUserID, this.longPlayerID, this.intType);
+                row = BTPAccountManager.RefashionSafePlayerSkill(this.intUserID, this.longPlayerID, this.intType);
             }
-            if (reader != null)
+            if (row != null)
             {
-                int num12;
                 int num13;
                 int num14;
                 int num15;
@@ -3175,24 +3382,24 @@
                 int num20;
                 int num21;
                 int num22;
-                num23 = (int)reader["Status"];
-                if (num23 == 0)
+                int num23;
+                num12 = (int) row["Status"];
+                if (num12 == 0)
                 {
-                    num12 = (int)reader["SpeedDifference"];
-                    num13 = (int)reader["JumpDifference"];
-                    num14 = (int)reader["StrengthDifference"];
-                    num15 = (int)reader["StaminaDifference"];
-                    num16 = (int)reader["ShotDifference"];
-                    num17 = (int)reader["Point3Difference"];
-                    num18 = (int)reader["DribbleDifference"];
-                    num19 = (int)reader["PassDifference"];
-                    num20 = (int)reader["ReboundDifference"];
-                    num21 = (int)reader["StealDifference"];
-                    num22 = (int)reader["BlockDifference"];
+                    num13 = (int) row["SpeedDifference"];
+                    num14 = (int) row["JumpDifference"];
+                    num15 = (int) row["StrengthDifference"];
+                    num16 = (int) row["StaminaDifference"];
+                    num17 = (int) row["ShotDifference"];
+                    num18 = (int) row["Point3Difference"];
+                    num19 = (int) row["DribbleDifference"];
+                    num20 = (int) row["PassDifference"];
+                    num21 = (int) row["ReboundDifference"];
+                    num22 = (int) row["StealDifference"];
+                    num23 = (int) row["BlockDifference"];
                 }
                 else
                 {
-                    num12 = 0;
                     num13 = 0;
                     num14 = 0;
                     num15 = 0;
@@ -3203,19 +3410,20 @@
                     num20 = 0;
                     num21 = 0;
                     num22 = 0;
+                    num23 = 0;
                 }
-                num = ((float)num12) / 10f;
-                num2 = ((float)num13) / 10f;
-                num3 = ((float)num14) / 10f;
-                num4 = ((float)num15) / 10f;
-                num5 = ((float)num16) / 10f;
-                num6 = ((float)num17) / 10f;
-                num7 = ((float)num18) / 10f;
-                num8 = ((float)num19) / 10f;
-                num9 = ((float)num20) / 10f;
-                num10 = ((float)num21) / 10f;
-                num11 = ((float)num22) / 10f;
-                if (num12 > 0)
+                num = ((float) num13) / 10f;
+                num2 = ((float) num14) / 10f;
+                num3 = ((float) num15) / 10f;
+                num4 = ((float) num16) / 10f;
+                num5 = ((float) num17) / 10f;
+                num6 = ((float) num18) / 10f;
+                num7 = ((float) num19) / 10f;
+                num8 = ((float) num20) / 10f;
+                num9 = ((float) num21) / 10f;
+                num10 = ((float) num22) / 10f;
+                num11 = ((float) num23) / 10f;
+                if (num13 > 0)
                 {
                     str = "<font color='red'>+" + num + "</font>";
                 }
@@ -3223,7 +3431,7 @@
                 {
                     str = "<font color='green'>" + num + "</font>";
                 }
-                if (num13 > 0)
+                if (num14 > 0)
                 {
                     str2 = "<font color='red'>+" + num2 + "</font>";
                 }
@@ -3231,7 +3439,7 @@
                 {
                     str2 = "<font color='green'>" + num2 + "</font>";
                 }
-                if (num14 > 0)
+                if (num15 > 0)
                 {
                     str3 = "<font color='red'>+" + num3 + "</font>";
                 }
@@ -3239,7 +3447,7 @@
                 {
                     str3 = "<font color='green'>" + num3 + "</font>";
                 }
-                if (num15 > 0)
+                if (num16 > 0)
                 {
                     str4 = "<font color='red'>+" + num4 + "</font>";
                 }
@@ -3247,7 +3455,7 @@
                 {
                     str4 = "<font color='green'>" + num4 + "</font>";
                 }
-                if (num16 > 0)
+                if (num17 > 0)
                 {
                     str5 = "<font color='red'>+" + num5 + "</font>";
                 }
@@ -3255,7 +3463,7 @@
                 {
                     str5 = "<font color='green'>" + num5 + "</font>";
                 }
-                if (num17 > 0)
+                if (num18 > 0)
                 {
                     str6 = "<font color='red'>+" + num6 + "</font>";
                 }
@@ -3263,7 +3471,7 @@
                 {
                     str6 = "<font color='green'>" + num6 + "</font>";
                 }
-                if (num18 > 0)
+                if (num19 > 0)
                 {
                     str7 = "<font color='red'>+" + num7 + "</font>";
                 }
@@ -3271,7 +3479,7 @@
                 {
                     str7 = "<font color='green'>" + num7 + "</font>";
                 }
-                if (num19 > 0)
+                if (num20 > 0)
                 {
                     str8 = "<font color='red'>+" + num8 + "</font>";
                 }
@@ -3279,7 +3487,7 @@
                 {
                     str8 = "<font color='green'>" + num8 + "</font>";
                 }
-                if (num20 > 0)
+                if (num21 > 0)
                 {
                     str9 = "<font color='red'>+" + num9 + "</font>";
                 }
@@ -3287,7 +3495,7 @@
                 {
                     str9 = "<font color='green'>" + num9 + "</font>";
                 }
-                if (num21 > 0)
+                if (num22 > 0)
                 {
                     str10 = "<font color='red'>+" + num10 + "</font>";
                 }
@@ -3295,7 +3503,7 @@
                 {
                     str10 = "<font color='green'>" + num10 + "</font>";
                 }
-                if (num22 > 0)
+                if (num23 > 0)
                 {
                     str11 = "<font color='red'>+" + num11 + "</font>";
                 }
@@ -3306,7 +3514,7 @@
             }
             else
             {
-                num23 = -1;
+                num12 = -1;
                 num = 0f;
                 num2 = 0f;
                 num3 = 0f;
@@ -3330,8 +3538,7 @@
                 str10 = "0";
                 str11 = "0";
             }
-            //reader.Close();
-            switch (num23)
+            switch (num12)
             {
                 case 0:
                     base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=1&PlayerID=", this.longPlayerID, "\";</script>" }));
@@ -3352,12 +3559,12 @@
                     return;
 
                 case 1:
-                    if (this.blnRefashionSafe)
+                    if (!this.blnRefashionSafe)
                     {
-                        base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=1&PlayerID=", this.longPlayerID, "\";window.location=\"Report.aspx?Parameter=708a!UserID.", this.intUserID, "^Type.", this.intType, "\";</script>" }));
+                        base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=1&PlayerID=", this.longPlayerID, "\";window.location=\"Report.aspx?Parameter=708!UserID.", this.intUserID, "^Type.", this.intType, "\";</script>" }));
                         return;
                     }
-                    base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=1&PlayerID=", this.longPlayerID, "\";window.location=\"Report.aspx?Parameter=708!UserID.", this.intUserID, "^Type.", this.intType, "\";</script>" }));
+                    base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=", this.intType, "&Kind=1&Check=1&PlayerID=", this.longPlayerID, "\";window.location=\"Report.aspx?Parameter=708a!UserID.", this.intUserID, "^Type.", this.intType, "\";</script>" }));
                     return;
 
                 case 2:
@@ -3377,9 +3584,9 @@
 
         private void btnOK_Click_RefuseUnion(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("UnionID", 0);
-            int intUserID = (int)SessionItem.GetRequest("UserID", 0);
-            int intMessageID = (int)SessionItem.GetRequest("MessageID", 0);
+            int request = SessionItem.GetRequest("UnionID", 0);
+            int intUserID = SessionItem.GetRequest("UserID", 0);
+            int intMessageID = SessionItem.GetRequest("MessageID", 0);
             if (intUserID == this.intUserID)
             {
                 BTPUnionManager.RefuseUnion(intUserID, request, intMessageID);
@@ -3394,23 +3601,23 @@
         private void btnOK_Click_REGCUP(object sender, ImageClickEventArgs e)
         {
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            this.intLevel = (byte)accountRowByUserID["Levels"];
-            this.intScore = (int)accountRowByUserID["Score"];
+            this.intLevel = (byte) accountRowByUserID["Levels"];
+            this.intScore = (int) accountRowByUserID["Score"];
             this.intRank = this.intScore;
             int num = Convert.ToInt32(ROOTUserManager.GetUserRowByUIDName40(this.strNickName, this.intUserID)["Coin"]);
             DataRow cupRowByCupID = BTPCupManager.GetCupRowByCupID(this.intCupID);
-            byte num1 = (byte)cupRowByCupID["Category"];
-            int intTicketCategory = (byte)cupRowByCupID["TicketCategory"];
+            byte num1 = (byte) cupRowByCupID["Category"];
+            int intTicketCategory = (byte) cupRowByCupID["TicketCategory"];
             if ((intTicketCategory > 0) && !BTPToolLinkManager.HasTicket(this.intUserID, 1, intTicketCategory))
             {
                 base.Response.Redirect("Report.aspx?Parameter=98");
             }
             else
             {
-                int intCoin = (byte)cupRowByCupID["Coin"];
+                int intCoin = (byte) cupRowByCupID["Coin"];
                 string str = cupRowByCupID["Name"].ToString().Trim();
-                int num4 = (int)cupRowByCupID["RegCount"];
-                int num5 = (int)cupRowByCupID["Capacity"];
+                int num4 = (int) cupRowByCupID["RegCount"];
+                int num5 = (int) cupRowByCupID["Capacity"];
                 if (num4 >= num5)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=97");
@@ -3437,28 +3644,28 @@
                 else
                 {
                     DataTable setIDsTable = BTPCupManager.GetSetIDsTable(accountRowByUserID["CupIDs"].ToString().Trim().Replace("|", ","));
-                    int num9 = 0;
+                    int num6 = 0;
                     if (setIDsTable != null)
                     {
                         for (int i = 0; i < setIDsTable.Rows.Count; i++)
                         {
-                            DataRow row4 = setIDsTable.Rows[i];
-                            int num7 = (int)row4["SetID"];
-                            int num8 = (int)BTPCupManager.GetCupRowByCupID(this.intCupID)["SetID"];
-                            if (num8 == num7)
+                            DataRow row3 = setIDsTable.Rows[i];
+                            int num8 = (int) row3["SetID"];
+                            int num9 = (int) BTPCupManager.GetCupRowByCupID(this.intCupID)["SetID"];
+                            if (num9 == num8)
                             {
-                                num9 = 1;
+                                num6 = 1;
                             }
                         }
                     }
-                    if (num9 == 1)
+                    if (num6 == 1)
                     {
                         base.Response.Redirect("Report.aspx?Parameter=94");
                     }
                     else
                     {
-                        int num11 = BTPCupRegManager.SetCupReg(this.intUserID, this.intCupID, this.intClubID3, this.strClubName3, this.strNickName, this.intLevel, this.strClubLogo, this.intScore, this.intRank, "");
-                        if (num11 == 1)
+                        int num10 = BTPCupRegManager.SetCupReg(this.intUserID, this.intCupID, this.intClubID3, this.strClubName3, this.strNickName, this.intLevel, this.strClubLogo, this.intScore, this.intRank, "");
+                        if (num10 == 1)
                         {
                             if (intCoin > 0)
                             {
@@ -3466,7 +3673,7 @@
                             }
                             base.Response.Redirect("Report.aspx?Parameter=93");
                         }
-                        else if (num11 == 2)
+                        else if (num10 == 2)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=95");
                         }
@@ -3479,11 +3686,25 @@
             }
         }
 
+        private void btnOK_Click_RegPoint3Match(object sender, ImageClickEventArgs e)
+        {
+            int request = SessionItem.GetRequest("PlayerID", 0);
+            int intFlg = SessionItem.GetRequest("Flg", 0);
+            if (BTPPoint3Manager.RegPoint3Match(request, intFlg) == 1)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=P3S01");
+            }
+            else
+            {
+                base.Response.Redirect("Report.aspx?Parameter=P3E01");
+            }
+        }
+
         private void btnOK_Click_RETURNOKSAY(object sender, ImageClickEventArgs e)
         {
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
-            int num2 = (int)SessionItem.GetRequest("PlayerType", 0);
-            int num1 = (int)SessionItem.GetRequest("Category", 0);
+            long request = SessionItem.GetRequest("PlayerID", 3);
+            int num2 = SessionItem.GetRequest("PlayerType", 0);
+            int num1 = SessionItem.GetRequest("Category", 0);
             base.Response.Write(string.Concat(new object[] { "<script>window.location=\"PlayerCenter.aspx?PlayerType=", num2, "&Type=9&PlayerID=", request, "\";</script>" }));
         }
 
@@ -3495,13 +3716,21 @@
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
             if (accountRowByUserID != null)
             {
-                int num1 = (int)accountRowByUserID["ClubID3"];
-                int num = (int)accountRowByUserID["Wealth"];
-                if (num >= 100)
+                int num1 = (int) accountRowByUserID["ClubID3"];
+                int num = (int) accountRowByUserID["Wealth"];
+                int num2 = (int) accountRowByUserID["ActivePoint"];
+                if (num2 >= 100)
+                {
+                    BTPAccountManager.AddWealthByFinance(this.intUserID, 100, 3, "搜人经费，花费100枚游戏币");
+                    BTPPlayer3Manager.DeletePlayer3ByCIDCat(this.intClubID3, 0x58);
+                    BTPPlayer3Manager.SearchPlayer3New(this.intClubID3, 0x58, DateTime.Now.ToString().Trim(), 120, 0x69);
+                    base.Response.Redirect("PlayerCenter.aspx?UserID=" + this.intUserID + "&Type=7");
+                }
+                else if (num >= 100)
                 {
                     BTPAccountManager.AddWealthByFinance(this.intUserID, 100, 2, "搜人经费，花费100枚游戏币");
                     BTPPlayer3Manager.DeletePlayer3ByCIDCat(this.intClubID3, 0x58);
-                    BTPPlayer3Manager.SearchPlayer3New(this.intClubID3, 0x58, DateTime.Now.ToString().Trim(), 120, 105);
+                    BTPPlayer3Manager.SearchPlayer3New(this.intClubID3, 0x58, DateTime.Now.ToString().Trim(), 120, 0x69);
                     base.Response.Redirect("PlayerCenter.aspx?UserID=" + this.intUserID + "&Type=7");
                 }
                 else
@@ -3521,8 +3750,8 @@
 
         private void btnOK_Click_SETAUTOTRAIN(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Hours", 0);
-            int intDevHours = (int)SessionItem.GetRequest("DevH", 0);
+            int request = SessionItem.GetRequest("Hours", 0);
+            int intDevHours = SessionItem.GetRequest("DevH", 0);
             if ((request < 1) && (intDevHours < 1))
             {
                 this.strSay = "请设置正确的训练时间！";
@@ -3578,15 +3807,10 @@
             base.Response.Redirect("MyFocus.aspx");
         }
 
-        private void btnOK_Click_SETTRIAL(object sender, ImageClickEventArgs e)
-        {
-            base.Response.Redirect("PlayerCenter.aspx?UserID=" + this.intUserID + "&Type=5");
-        }
-
         private void btnOK_Click_SETHONOR(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Category", 0);
-            long longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            int request = SessionItem.GetRequest("Category", 0);
+            long longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             int intCategory = 1;
             switch (request)
             {
@@ -3639,6 +3863,39 @@
             }
         }
 
+        private void btnOK_Click_SETNPC(object sender, ImageClickEventArgs e)
+        {
+            switch (BTPNPCManager.AddNPCMatch(this.intUserID, (int) this.longNpcID, Config.DayNpcFreeTimes()))
+            {
+                case -3:
+                    base.Response.Redirect("Report.aspx?Parameter=SNE03");
+                    return;
+
+                case -2:
+                    base.Response.Redirect("Report.aspx?Parameter=SNE02");
+                    return;
+
+                case -1:
+                    base.Response.Redirect("Report.aspx?Parameter=SNE01");
+                    return;
+
+                case 0:
+                    break;
+
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=SNS01");
+                    break;
+
+                default:
+                    return;
+            }
+        }
+
+        private void btnOK_Click_SETTRIAL(object sender, ImageClickEventArgs e)
+        {
+            base.Response.Redirect("PlayerCenter.aspx?UserID=" + this.intUserID + "&Type=5");
+        }
+
         private void btnOK_Click_SHOWSKILL(object sender, ImageClickEventArgs e)
         {
             DataRow playerRowByPlayerID;
@@ -3650,7 +3907,7 @@
             {
                 playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
             }
-            DateTime time = (DateTime)playerRowByPlayerID["EndBidTime"];
+            DateTime time = (DateTime) playerRowByPlayerID["EndBidTime"];
             if (time < DateTime.Now.AddMinutes(30.0))
             {
                 this.strToolMsg = "在距截止时间不足30分钟时，不能使用潜力公告。";
@@ -3663,176 +3920,206 @@
             }
         }
 
+        private void btnOK_Click_STARVOTE(object sender, ImageClickEventArgs e)
+        {
+            switch (BTPStarMatchManager.VoteStarPlayer(this.intUserID, this.longPlayerID))
+            {
+                case -3:
+                    base.Response.Redirect("Report.aspx?Parameter=SVE03");
+                    return;
+
+                case -2:
+                    base.Response.Redirect("Report.aspx?Parameter=SVE02");
+                    return;
+
+                case -1:
+                    base.Response.Redirect("Report.aspx?Parameter=SVE01");
+                    return;
+
+                case 0:
+                    break;
+
+                case 1:
+                    base.Response.Redirect("Report.aspx?Parameter=SVS01");
+                    break;
+
+                default:
+                    return;
+            }
+        }
+
         private void btnOK_Click_STREETCHOOSEBID(object sender, ImageClickEventArgs e)
         {
             DataRow bidderByUserID = BTPBidderManager.GetBidderByUserID(this.intUserID);
-            if ((bidderByUserID != null) && ((bool)bidderByUserID["TopPrice"]))
+            if ((bidderByUserID != null) && ((bool) bidderByUserID["TopPrice"]))
             {
                 this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
             }
             else
             {
-                switch (this.CheckCanBid(3, 3))
+                int num;
+                long num4 = this.CheckCanBid(3, 3);
+                if ((num4 <= -3L) && (num4 >= -9L))
                 {
-                    case -3:
-                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                        return;
+                    switch (((int) (num4 - -9L)))
+                    {
+                        case 0:
+                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                            return;
 
-                    case -4:
-                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                        return;
+                        case 1:
+                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                            return;
 
-                    case -5:
-                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                        return;
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
 
-                    case -6:
-                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                        return;
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
 
-                    case -7:
-                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                        return;
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
 
-                    case -8:
-                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                        return;
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
 
-                    case -9:
-                        this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                        return;
-
-                    default:
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                            return;
+                    }
+                }
+                try
+                {
+                    num = Convert.ToInt32(this.tbFreeBidPrice.Text);
+                }
+                catch (Exception exception)
+                {
+                    num = 0;
+                    exception.ToString();
+                    this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
+                    return;
+                }
+                long num2 = (long) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Money"];
+                int num3 = Convert.ToInt32(this.tbFreeBidPrice.Text);
+                if (num3 >= 0x3e8)
+                {
+                    if (num2 < num3)
+                    {
+                        this.strSay = this.strNickName + "经理，咱们俱乐部已经没有太多的资金了，您千万不要意气用事啊！";
+                    }
+                    else
+                    {
+                        string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
+                        string strCreateTime = DateTime.Now.ToString();
+                        BTPTransferManager.SetChooseBid(this.intUserID, this.longPlayerID, 3, 1, num, strCreateTime, strIP);
+                        DateTime time = (DateTime) BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
+                        if (time < DateTime.Now.AddMinutes(1.0))
                         {
-                            int num2;
-                            try
-                            {
-                                num2 = Convert.ToInt32(this.tbFreeBidPrice.Text);
-                            }
-                            catch (Exception exception)
-                            {
-                                num2 = 0;
-                                exception.ToString();
-                                this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
-                                break;
-                            }
-                            long num3 = (long)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Money"];
-                            int num4 = Convert.ToInt32(this.tbFreeBidPrice.Text);
-                            if (num4 >= 0x3e8)
-                            {
-                                if (num3 < num4)
-                                {
-                                    this.strSay = this.strNickName + "经理，咱们俱乐部已经没有太多的资金了，您千万不要意气用事啊！";
-                                }
-                                else
-                                {
-                                    string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
-                                    string strCreateTime = DateTime.Now.ToString();
-                                    BTPTransferManager.SetChooseBid(this.intUserID, this.longPlayerID, 3, 1, num2, strCreateTime, strIP);
-                                    DateTime time = (DateTime)BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
-                                    if (time < DateTime.Now.AddMinutes(1.0))
-                                    {
-                                        BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
-                                    }
-                                    base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
-                                }
-                                return;
-                            }
-                            this.strSay = this.strNickName + "经理，您就这么小气，起码要超过1000元吧？";
-                            break;
+                            BTPPlayer5Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
                         }
+                        base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                    }
+                }
+                else
+                {
+                    this.strSay = this.strNickName + "经理，您就这么小气，起码要超过1000元吧？";
                 }
             }
         }
 
         private void btnOK_Click_STREETFREEBID(object sender, ImageClickEventArgs e)
         {
-            int num = (byte)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Category"];
+            int num = (byte) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Category"];
             if ((num != 1) && (num != 2))
             {
                 this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
             }
             else
             {
-                switch (this.CheckCanBid(3, 1))
+                int num2;
+                long num6 = this.CheckCanBid(3, 1);
+                if ((num6 <= -3L) && (num6 >= -9L))
                 {
-                    case -3:
-                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                        return;
+                    switch (((int) (num6 - -9L)))
+                    {
+                        case 0:
+                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                            return;
 
-                    case -4:
-                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                        return;
+                        case 1:
+                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                            return;
 
-                    case -5:
-                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                        return;
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
 
-                    case -6:
-                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                        return;
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
 
-                    case -7:
-                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                        return;
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
 
-                    case -8:
-                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                        return;
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
 
-                    case -9:
-                        this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                        return;
-
-                    default:
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                            return;
+                    }
+                }
+                try
+                {
+                    num2 = Convert.ToInt32(this.tbFreeBidPrice.Text);
+                }
+                catch (Exception exception)
+                {
+                    num2 = 0;
+                    exception.ToString();
+                    this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
+                    return;
+                }
+                DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                int num3 = (int) accountRowByUserID["Wealth"];
+                long num4 = (long) accountRowByUserID["Money"];
+                int num5 = Convert.ToInt32(this.tbFreeBidPrice.Text);
+                if (num3 >= this.intPayWealth)
+                {
+                    if (num5 < 0x3e8)
+                    {
+                        this.strSay = this.strNickName + "经理，您就这么小气，起码要超过1000元吧？";
+                    }
+                    else if (num4 < num5)
+                    {
+                        this.strSay = this.strNickName + "经理，咱们俱乐部已经没有太多的资金了，怎么能出这么高的价钱呢？";
+                    }
+                    else
+                    {
+                        DateTime time = (DateTime) BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
+                        if (time < DateTime.Now.AddMinutes(1.0))
                         {
-                            int num3;
-                            try
-                            {
-                                num3 = Convert.ToInt32(this.tbFreeBidPrice.Text);
-                            }
-                            catch (Exception exception)
-                            {
-                                num3 = 0;
-                                exception.ToString();
-                                this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
-                                break;
-                            }
-                            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                            int num4 = (int)accountRowByUserID["Wealth"];
-                            long num5 = (long)accountRowByUserID["Money"];
-                            int num6 = Convert.ToInt32(this.tbFreeBidPrice.Text);
-                            if (num4 >= this.intPayWealth)
-                            {
-                                if (num6 < 0x3e8)
-                                {
-                                    this.strSay = this.strNickName + "经理，您就这么小气，起码要超过1000元吧？";
-                                }
-                                else if (num5 < num6)
-                                {
-                                    this.strSay = this.strNickName + "经理，咱们俱乐部已经没有太多的资金了，怎么能出这么高的价钱呢？";
-                                }
-                                else
-                                {
-                                    DateTime time = (DateTime)BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID)["EndBidTime"];
-                                    if (time < DateTime.Now.AddMinutes(1.0))
-                                    {
-                                        BTPPlayer3Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
-                                    }
-                                    string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
-                                    string strCreateTime = DateTime.Now.ToString();
-                                    BTPTransferManager.SetFreeBid(this.intUserID, this.longPlayerID, 3, 2, num3, strCreateTime, strIP);
-                                    if ((bool)Global.drParameter["MarketPay"])
-                                    {
-                                        BTPAccountManager.AddWealthByFinance(this.intUserID, this.intPayWealth, 2, "街头自由转会市场出价");
-                                    }
-                                    base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
-                                }
-                                return;
-                            }
-                            this.strSay = this.strNickName + "经理，您没有足够的游戏币，请从游戏币管理中提出游戏币。";
-                            break;
+                            BTPPlayer3Manager.UpdateEndBidTime(this.longPlayerID, DateTime.Now.AddMinutes(1.0));
                         }
+                        string strIP = base.Request.ServerVariables["REMOTE_ADDR"].ToString().Trim();
+                        string strCreateTime = DateTime.Now.ToString();
+                        BTPTransferManager.SetFreeBid(this.intUserID, this.longPlayerID, 3, 2, num2, strCreateTime, strIP);
+                        if ((bool) Global.drParameter["MarketPay"])
+                        {
+                            BTPAccountManager.AddWealthByFinance(this.intUserID, this.intPayWealth, 2, "街头自由转会市场出价");
+                        }
+                        base.Response.Redirect("Report.aspx?Parameter=691!Type.MYFOCUSPLAYER^Pos.1^Order.0^Page.1");
+                    }
+                }
+                else
+                {
+                    this.strSay = this.strNickName + "经理，您没有足够的游戏币，请从游戏币管理中提出游戏币。";
                 }
             }
         }
@@ -3841,10 +4128,10 @@
         {
             this.tbSay.Visible = true;
             this.btnOK.Visible = false;
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
-            int num2 = (int)BTPParameterManager.GetParameterRow()["TimeHouseWealth"];
+            long request = SessionItem.GetRequest("PlayerID", 3);
+            int num2 = (int) BTPParameterManager.GetParameterRow()["TimeHouseWealth"];
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            this.intWealth = (int)accountRowByUserID["Wealth"];
+            this.intWealth = (int) accountRowByUserID["Wealth"];
             if (this.intWealth < num2)
             {
                 this.strSay = "您没有足够的游戏币，进入神之领域需要 " + num2 + " 游戏币！";
@@ -3852,13 +4139,13 @@
             else
             {
                 accountRowByUserID = BTPPlayer3Manager.AddPlayerMaxByPlayerID(request, this.intUserID);
-                int num3 = (int)accountRowByUserID["Type"];
+                int num3 = (int) accountRowByUserID["Type"];
                 if (num3 == 1)
                 {
                     object strSay;
                     double num4 = Convert.ToDouble(accountRowByUserID["AbilityAdd"]) / 10.0;
-                    int num5 = (int)accountRowByUserID["HeightAdd"];
-                    int num6 = (int)accountRowByUserID["WeightAdd"];
+                    int num5 = (int) accountRowByUserID["HeightAdd"];
+                    int num6 = (int) accountRowByUserID["WeightAdd"];
                     this.strSay = "您的球员从神之领域中走出来，成长了一岁，增加了 " + num4 + " 的综合潜力";
                     if (num5 > 0)
                     {
@@ -3878,12 +4165,12 @@
                 {
                     switch (num3)
                     {
-                        case -1:
-                            this.strSay = "您的球员年龄太大了进不了神之领域！";
-                            return;
-
                         case -2:
                             this.strSay = "您没有足够的游戏币，进入神之领域需要 " + num2 + " 游戏币！";
+                            return;
+
+                        case -1:
+                            this.strSay = "您的球员年龄太大了进不了神之领域！";
                             return;
                     }
                     this.strSay = "这个球员没有在您球队效力，不要在他身上浪费游戏币！";
@@ -3893,27 +4180,27 @@
 
         private void btnOK_Click_TRAINPLAYER3(object sender, ImageClickEventArgs e)
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-            this.intTrainType = (int)SessionItem.GetRequest("TrainType", 0);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            this.intTrainType = SessionItem.GetRequest("TrainType", 0);
             base.Response.Write(string.Concat(new object[] { "<script>window.location=\"SecretaryPage.aspx?Type=TRAINPLAYER3&PlayerID=", this.longPlayerID, "&TrainType=", this.intTrainType, "\";</script>" }));
         }
 
         private void btnOK_Click_TRAINPLAYER5(object sender, ImageClickEventArgs e)
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-            this.intTrainType = (int)SessionItem.GetRequest("TrainType", 0);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            this.intTrainType = SessionItem.GetRequest("TrainType", 0);
             base.Response.Write(string.Concat(new object[] { "<script>window.location=\"SecretaryPage.aspx?Type=TRAINPLAYER5&PlayerID=", this.longPlayerID, "&TrainType=", this.intTrainType, "\";</script>" }));
         }
 
         private void btnOK_Click_Unchain(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int num2 = (int)accountRowByUserID["UnionID"];
-            int num3 = (byte)accountRowByUserID["UnionCategory"];
+            int num2 = (int) accountRowByUserID["UnionID"];
+            int num3 = (byte) accountRowByUserID["UnionCategory"];
             DataRow row2 = BTPAccountManager.GetAccountRowByUserID(request);
-            int num4 = (int)row2["UnionID"];
-            int num5 = (byte)row2["UnionCategory"];
+            int num4 = (int) row2["UnionID"];
+            int num5 = (byte) row2["UnionCategory"];
             row2["NickName"].ToString().Trim();
             if (((num5 == 2) && (num3 == 1)) && (num2 == num4))
             {
@@ -3929,12 +4216,12 @@
         private void btnOK_Click_UNLAY(object sender, ImageClickEventArgs e)
         {
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int intUnionID = (int)accountRowByUserID["UnionID"];
-            int num2 = (byte)accountRowByUserID["UnionCategory"];
+            int intUnionID = (int) accountRowByUserID["UnionID"];
+            int num2 = (byte) accountRowByUserID["UnionCategory"];
             if ((BTPUnionManager.GetUnionUserCountByID(intUnionID) == 1) && (num2 == 1))
             {
-                int num4 = BTPUnionManager.UnlayUnion(this.intUserID);
-                switch (num4)
+                int num3 = BTPUnionManager.UnlayUnion(this.intUserID);
+                switch (num3)
                 {
                     case 0:
                         base.Response.Redirect("Report.aspx?Parameter=424!Type.UNION^Kind.VIEWUNION^Page.1");
@@ -3953,7 +4240,7 @@
                         base.Response.Redirect("Report.aspx?Parameter=425a!Type.UNION^Kind.VIEWUNION^Page.1");
                         return;
                 }
-                if (num4 == 3)
+                if (num3 == 3)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=425b!Type.UNION^Kind.VIEWUNION^Page.1");
                 }
@@ -3966,7 +4253,7 @@
 
         private void btnOK_Click_UPDATEPRICE(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("ClubID", 0);
+            int request = SessionItem.GetRequest("ClubID", 0);
             if (BTPClubManager.GetClubRowByUIDCate(this.intUserID, 5) != null)
             {
                 base.Response.Redirect("Report.aspx?Parameter=698");
@@ -3978,72 +4265,69 @@
                 {
                     base.Response.Redirect("Report.aspx?Parameter=1");
                 }
-                else if (!BTPClubManager.HasBuyClub(this.intUserID))
+                else if (BTPClubManager.HasBuyClub(this.intUserID))
                 {
-                    DateTime time1 = (DateTime)clubRowByID["EndBidTime"];
+                    base.Response.Redirect("Report.aspx?Parameter=695!Type.DEVNEW^Page.1");
+                }
+                else
+                {
+                    DateTime time1 = (DateTime) clubRowByID["EndBidTime"];
                     switch (BTPClubManager.BuyClub5(this.intUserID, request))
                     {
                         case 0:
                             base.Response.Redirect("Report.aspx?Parameter=693a!Type.NEW^Page.1");
                             return;
 
+                        case 1:
+                        {
+                            int intMoney = (int) Global.drParameter["RegPMatchMoney"];
+                            DTOnlineManager.ChangeCategoryByUserID(this.intUserID, 2);
+                            int devCount = BTPDevManager.GetDevCount();
+                            BTPDevManager.GetDevTotal();
+                            if (BTPDevManager.GetDevBlank() <= 0)
+                            {
+                                base.Response.Redirect("Report.aspx?Parameter=67!Type.DEVNEW^Page.1");
+                                return;
+                            }
+                            if (!BTPAccountManager.HasEnoughMoney(this.intUserID, intMoney))
+                            {
+                                base.Response.Redirect("Report.aspx?Parameter=101");
+                                return;
+                            }
+                            switch (BTPDevManager.SetFinanlDevByUserID(this.intUserID))
+                            {
+                                case 0:
+                                    base.Response.Redirect("Report.aspx?Parameter=101");
+                                    return;
+
+                                case 1:
+                                    DTOnlineManager.ChangeCategoryByUserID(this.intUserID, 5);
+                                    base.Response.Redirect("Report.aspx?Parameter=102");
+                                    return;
+
+                                case 2:
+                                    base.Response.Redirect("Report.aspx?Parameter=103");
+                                    return;
+                            }
+                            base.Response.Redirect("Report.aspx?Parameter=106");
+                            return;
+                        }
                         case 2:
                             base.Response.Redirect("Report.aspx?Parameter=694");
                             return;
 
-                        case 1:
-                            {
-                                int intMoney = (int)Global.drParameter["RegPMatchMoney"];
-                                DTOnlineManager.ChangeCategoryByUserID(this.intUserID, 2);
-                                int devCount = BTPDevManager.GetDevCount();
-                                if (BTPDevManager.GetDevTotal() < devCount)
-                                {
-                                    int num5 = devCount;
-                                }
-                                if (BTPDevManager.GetDevBlank() > 0)
-                                {
-                                    if (BTPAccountManager.HasEnoughMoney(this.intUserID, intMoney))
-                                    {
-                                        switch (BTPDevManager.SetFinanlDevByUserID(this.intUserID))
-                                        {
-                                            case 0:
-                                                base.Response.Redirect("Report.aspx?Parameter=101");
-                                                return;
-
-                                            case 1:
-                                                DTOnlineManager.ChangeCategoryByUserID(this.intUserID, 5);
-                                                base.Response.Redirect("Report.aspx?Parameter=102");
-                                                return;
-
-                                            case 2:
-                                                base.Response.Redirect("Report.aspx?Parameter=103");
-                                                return;
-                                        }
-                                        base.Response.Redirect("Report.aspx?Parameter=106");
-                                        return;
-                                    }
-                                    base.Response.Redirect("Report.aspx?Parameter=101");
-                                    return;
-                                }
-                                base.Response.Redirect("Report.aspx?Parameter=67!Type.DEVNEW^Page.1");
-                                return;
-                            }
                         case 5:
                             base.Response.Redirect("Report.aspx?Parameter=699!Type.NEW^Page.1");
                             return;
                     }
                     base.Response.Redirect("Report.aspx?Parameter=1");
                 }
-                else
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=695!Type.DEVNEW^Page.1");
-                }
             }
         }
 
         private void btnOK_Click_UPDATESTADIUM(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("StadiumID", 0);
+            int request = SessionItem.GetRequest("StadiumID", 0);
             switch (BTPStadiumManager.SetStadiumUpdate(this.intUserID, request))
             {
                 case 0:
@@ -4083,10 +4367,14 @@
             this.tbSay.Visible = true;
             this.btnOK.Visible = false;
             this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=1\";'>";
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             switch (BTPOnlyOneCenterReg.SetTopWealth(this.intUserID, request))
             {
-                case 1:
+                case -3:
+                    this.strSay = "您没有足够的游戏币！";
+                    break;
+
+                case -2:
                     base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
                     return;
 
@@ -4094,20 +4382,21 @@
                     this.strSay = "对不起，对手已经开始比赛！";
                     return;
 
-                case -2:
+                case 0:
+                    break;
+
+                case 1:
                     base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
                     return;
 
-                case -3:
-                    this.strSay = "您没有足够的游戏币！";
-                    break;
+                default:
+                    return;
             }
         }
 
         private void btnOK_Click_USESTAFF(object sender, ImageClickEventArgs e)
         {
-            int num = (int)BTPParameterManager.GetParameterRow()["UseStaffWealth"];
-            int num2 = num;
+            int num2 = (int) BTPParameterManager.GetParameterRow()["UseStaffWealth"];
             this.btnOK.Visible = false;
             if (this.intWealth < num2)
             {
@@ -4115,12 +4404,12 @@
             }
             else
             {
-                int request = (int)SessionItem.GetRequest("DevMatchID", 0);
+                int request = SessionItem.GetRequest("DevMatchID", 0);
                 int num4 = BTPDevMatchManager.SetUseStaff(this.intUserID, request);
-                int num5 = (int)SessionItem.GetRequest("Pos", 0);
+                int num5 = SessionItem.GetRequest("Pos", 0);
                 if (num4 == 1)
                 {
-                    int num6 = (int)SessionItem.GetRequest("Ref", 0);
+                    int num6 = SessionItem.GetRequest("Ref", 0);
                     if (this.blnIsHonor)
                     {
                         if (num5 == 1)
@@ -4145,13 +4434,13 @@
                 {
                     switch (num4)
                     {
+                        case -2:
+                            this.strSay = this.strNickName + "经理，您好，您的球队没有参加这场职业联赛！";
+                            return;
+
                         case -1:
                             this.strSay = this.strNickName + "经理，您好，您没有足够的游戏币！";
                             return;
-
-                        case -2:
-                            this.strSay = this.strNickName + "经理，您好，您的球队没有参加这场职业联赛！";
-                            break;
                     }
                 }
             }
@@ -4159,13 +4448,17 @@
 
         private void btnOrderOK_Click_CreateWealthOrder(object sender, ImageClickEventArgs e)
         {
-            int request = (int)SessionItem.GetRequest("Price", 0);
-            int intWealth = (int)SessionItem.GetRequest("Wealth", 0);
+            int request = SessionItem.GetRequest("Price", 0);
+            int intWealth = SessionItem.GetRequest("Wealth", 0);
             DataRow row = BTPOrderManager.AddWealthOrder(this.intUserID, this.intType, request, intWealth, 1);
-            int num3 = (int)row["Count"];
-            long num4 = (long)row["AllMoney"];
+            int num3 = (int) row["Count"];
+            long num4 = (long) row["AllMoney"];
             switch (num3)
             {
+                case -5:
+                    base.Response.Redirect("Report.aspx?Parameter=802");
+                    return;
+
                 case -3:
                     base.Response.Redirect("Report.aspx?Parameter=804");
                     return;
@@ -4178,10 +4471,6 @@
                     base.Response.Redirect("Report.aspx?Parameter=801");
                     return;
 
-                case -5:
-                    base.Response.Redirect("Report.aspx?Parameter=802");
-                    return;
-
                 case 0:
                     base.Response.Redirect("Report.aspx?Parameter=803!Type.WEALTHWEALLTH");
                     return;
@@ -4192,119 +4481,160 @@
             }
         }
 
+        private void BuyStock()
+        {
+            this.intStockUserID = SessionItem.GetRequest("StockUserID", 0);
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intStockUserID);
+            DataRow row2 = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            if (row2 == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else
+            {
+                this.lgMoney = (long) row2["Money"];
+            }
+            if ((this.intStockUserID <= 0) || (accountRowByUserID == null))
+            {
+                this.strSay = this.strNickName + "经理，您好！请确认要购入的股票！";
+            }
+            else
+            {
+                string str = (string) accountRowByUserID["NickName"];
+                int num = Convert.ToInt32(accountRowByUserID["PayType"]);
+                int stockTeamDay = BTPStockManager.GetStockTeamDay(this.intUserID, this.intStockUserID);
+                int userStockPrice = BTPStockManager.GetUserStockPrice(this.intStockUserID);
+                int num4 = userStockPrice / 20;
+                if (stockTeamDay > 0)
+                {
+                    this.strSay = this.strNickName + "经理您好，您已经拥有" + str + "经理的股份，不可以再购入";
+                }
+                else if (num == 0)
+                {
+                    this.strSay = this.strNickName + "经理您好，" + str + "经理不是会员，你不可以购入他的股票";
+                }
+                else if (userStockPrice < 0x1e8480)
+                {
+                    this.strSay = this.strNickName + "经理您好，" + str + "经理市值小于200万，你不可以购入他的股票";
+                }
+                else if (this.lgMoney < num4)
+                {
+                    this.strSay = this.strNickName + "经理您好，您的资金不足以购买该股票" + this.lgMoney;
+                }
+                else
+                {
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，购入", str, "经理的股票将花费你资金:", num4, "，您确定要购入吗？" });
+                    this.btnOK.Visible = true;
+                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BUYSTOCK);
+                }
+            }
+        }
+
         private void BuyTool()
         {
-            int num9;
-            int request = (int)SessionItem.GetRequest("ToolID", 0);
+            int request = SessionItem.GetRequest("ToolID", 0);
             DataRow toolRowByID = BTPToolManager.GetToolRowByID(request);
-            int num2 = (int)toolRowByID["CoinCost"];
+            int num3 = (int) toolRowByID["CoinCost"];
             string str = toolRowByID["ToolName"].ToString().Trim();
-            int num3 = (int)toolRowByID["AmountInStock"];
-            int num4 = (byte)toolRowByID["Category"];
+            int num4 = (int) toolRowByID["AmountInStock"];
+            int num5 = (byte) toolRowByID["Category"];
             this.tbPresent.Visible = true;
-            //if (Convert.ToInt32(ROOTUserManager.GetUserInfoByID40(this.intUserID)["Coin"]) < num2)
-            this.intWealth = (int)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
-            if (this.intWealth < num2)
+            this.intWealth = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
+            if (this.intWealth < num3)
             {
-                //this.strSay = this.strNickName + "经理，你的金币不足，无法购买该道具。";
                 this.strSay = this.strNickName + "经理，你的游戏币不足，无法购买该道具。";
-
                 this.tbPresent.Visible = false;
                 return;
             }
-            if (num3 <= 0)
+            if (num4 <= 0)
             {
                 this.strSay = this.strNickName + "经理，该物品存货不足，无法购买。";
                 return;
             }
-            if (num4 == 7)
+            switch (num5)
             {
-                this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong><br>持有会员卡，您将会获得会员相应的功能。" });
-                this.tbCount.Enabled = false;
-                goto Label_02BA;
-            }
-            if (num4 != 8)
-            {
-                if (num4 != 11)
+                case 7:
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num3, "</font>游戏币。</strong><br>持有会员卡，您将会获得会员相应的功能。" });
+                    this.tbCount.Enabled = false;
+                    goto Label_0337;
+
+                case 8:
                 {
-                    switch (num4)
+                    int num7 = (byte) toolRowByID["TicketCategory"];
+                    int num8 = 0;
+                    switch (num7)
                     {
-                        case 9:
-                        case 2:
-                            this.tbCount.Enabled = false;
-                            this.cbPresent.Visible = false;
+                        case 1:
+                            num8 = 200;
                             break;
-                        case 16:
-                            this.tbCount.Enabled = false;
-                            this.cbPresent.Visible = false;
+
+                        case 2:
+                            num8 = 500;
+                            break;
+
+                        case 3:
+                            num8 = 0x640;
                             break;
                     }
-                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong>" });
-                    goto Label_02BA;
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num3, "</font>游戏币。</strong><br>并使您获得", num8, "的游戏币。" });
+                    goto Label_0337;
                 }
-                this.tbPosistion.Visible = false;
-                int num8 = (byte)toolRowByID["TicketCategory"];
-                num9 = 0;
-                switch (num8)
+                case 11:
                 {
-                    case 1:
-                        num9 = 0x1e8480;
-                        goto Label_01EF;
+                    this.tbPosistion.Visible = false;
+                    int num6 = (byte) toolRowByID["TicketCategory"];
+                    int num = 0;
+                    switch (num6)
+                    {
+                        case 1:
+                            num = 0x1e8480;
+                            break;
 
-                    case 2:
-                        num9 = 0xe4e1c0;
-                        goto Label_01EF;
+                        case 2:
+                            num = 0xe4e1c0;
+                            break;
+                    }
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num3, "</font>游戏币。</strong><br>并使您获得", num, "的游戏资金。" });
+                    goto Label_0337;
                 }
-            }
-            else
-            {
-                int num6 = (byte)toolRowByID["TicketCategory"];
-                int num7 = 0;
-                switch (num6)
-                {
-                    case 1:
-                        num7 = 200;
-                        break;
+                case 2:
+                case 9:
+                    this.tbCount.Enabled = false;
+                    this.cbPresent.Visible = false;
+                    break;
 
-                    case 2:
-                        num7 = 500;
-                        break;
-
-                    case 3:
-                        num7 = 0x640;
-                        break;
-                }
-                this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong><br>并使您获得", num7, "的游戏币。" });
-                goto Label_02BA;
+                case 0x10:
+                    this.tbCount.Enabled = false;
+                    this.cbPresent.Visible = false;
+                    break;
             }
-        Label_01EF: ;
-            this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong><br>并使您获得", num9, "的游戏资金。" });
-        Label_02BA:
+            this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num3, "</font>游戏币。</strong>" });
+        Label_0337:
             this.btnOK.Visible = true;
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BuyTool);
         }
 
         private void BuyWealthTool()
         {
-            string str2;
-            this.intWealth = (int)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
-            int request = (int)SessionItem.GetRequest("ToolID", 0);
+            string str;
+            this.intWealth = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
+            int request = SessionItem.GetRequest("ToolID", 0);
             DataRow wealthToolRowByID = BTPWealthToolManager.GetWealthToolRowByID(request);
-            int num2 = (int)wealthToolRowByID["WealthCost"];
-            int num3 = (int)wealthToolRowByID["PayCost"];
-            string str = wealthToolRowByID["ToolName"].ToString().Trim();
-            int num4 = (int)wealthToolRowByID["AmountInStock"];
-            int num5 = (byte)wealthToolRowByID["Category"];
+            int num2 = (int) wealthToolRowByID["WealthCost"];
+            int num3 = (int) wealthToolRowByID["PayCost"];
+            string str2 = wealthToolRowByID["ToolName"].ToString().Trim();
+            int num4 = (int) wealthToolRowByID["AmountInStock"];
+            int num5 = (byte) wealthToolRowByID["Category"];
             int num6 = num2;
             this.tbPresent.Visible = true;
             if (this.intPayType == 1)
             {
-                str2 = "您已经加入了会员，只需要付<font color='red' size='5'>" + num3 + "</font>枚游戏币！";
+                str = "您已经加入了会员，只需要付<font color='red' size='5'>" + num3 + "</font>枚游戏币！";
                 num6 = num3;
             }
             else
             {
-                str2 = "加入会员您只需要付<font color='red' size='5'>" + num3 + "</font>枚游戏币！";
+                str = "加入会员您只需要付<font color='red' size='5'>" + num3 + "</font>枚游戏币！";
             }
             if (this.intWealth >= num6)
             {
@@ -4312,12 +4642,12 @@
                 {
                     if (num5 == 7)
                     {
-                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong><br>持有会员卡，您将会获得会员相应的功能。", str2 });
+                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str2, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong><br>持有会员卡，您将会获得会员相应的功能。", str });
                         this.tbCount.Enabled = false;
                     }
                     else
                     {
-                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong>", str2 });
+                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定要购买", str2, "么？<br><strong>这将花费您<font color='red' size='5'>", num2, "</font>游戏币。</strong>", str });
                     }
                     this.btnOK.Visible = true;
                     this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BuyWealthTool);
@@ -4352,12 +4682,12 @@
         private void CancelPrearrange()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             DataRow devMRowByDevMatchID = BTPDevMatchManager.GetDevMRowByDevMatchID(request);
             if (devMRowByDevMatchID != null)
             {
-                int num2 = (int)devMRowByDevMatchID["ClubAID"];
-                int num3 = (int)devMRowByDevMatchID["ClubHID"];
+                int num2 = (int) devMRowByDevMatchID["ClubAID"];
+                int num3 = (int) devMRowByDevMatchID["ClubHID"];
                 devMRowByDevMatchID["ArrangeH"].ToString().Trim();
                 devMRowByDevMatchID["ArrangeA"].ToString().Trim();
                 if ((num2 == this.intClubID5) || (num3 == this.intClubID5))
@@ -4376,12 +4706,12 @@
         private void CancelPrearrangeXBA()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             DataRow xGroupMatchRowByID = BTPXGroupMatchManager.GetXGroupMatchRowByID(request);
             if (xGroupMatchRowByID != null)
             {
-                int num2 = (int)xGroupMatchRowByID["ClubBID"];
-                int num3 = (int)xGroupMatchRowByID["ClubAID"];
+                int num2 = (int) xGroupMatchRowByID["ClubBID"];
+                int num3 = (int) xGroupMatchRowByID["ClubAID"];
                 xGroupMatchRowByID["ArrangeH"].ToString().Trim();
                 xGroupMatchRowByID["ArrangeA"].ToString().Trim();
                 if ((num2 == this.intClubID5) || (num3 == this.intClubID5))
@@ -4410,24 +4740,30 @@
         {
             if (ToolItem.HasTool(this.intUserID, 2, 0) < 1)
             {
-                return -2;
+                return -2L;
             }
             if (blnOnlyHas)
             {
-                return 1;
+                return 1L;
             }
             return this.CheckCanBid(5, 10);
         }
 
         private int CanUseHide()
         {
-            int intWealth = (int)Global.drParameter["HideSkill"];
+            int intWealth = (int) Global.drParameter["HideSkill"];
             return BTPAccountManager.HasEnoughWealth(this.intUserID, intWealth);
         }
 
         private int CanUseMatchLev()
         {
-            int intWealth = (int)Global.drParameter["MatchLev"];
+            int intWealth = (int) Global.drParameter["MatchLev"];
+            return BTPAccountManager.HasEnoughWealth(this.intUserID, intWealth);
+        }
+
+        private int CanUseMax()
+        {
+            int intWealth = (int) Global.drParameter["MaxSkill"];
             return BTPAccountManager.HasEnoughWealth(this.intUserID, intWealth);
         }
 
@@ -4442,7 +4778,7 @@
 
         private int CanUsePrivateSkill()
         {
-            int intWealth = (int)Global.drParameter["PrivateSkill"];
+            int intWealth = (int) Global.drParameter["PrivateSkill"];
             return BTPAccountManager.HasEnoughWealth(this.intUserID, intWealth);
         }
 
@@ -4458,7 +4794,6 @@
         private void CanUseTool(int intCheckType)
         {
             object strToolMsg;
-            //this.tblTool.Visible = true;
             this.strToolMsg = "";
             if ((intCheckType == 4) || (intCheckType == 6))
             {
@@ -4466,7 +4801,6 @@
                 this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=DEVBIDHELPER&PlayerID=", this.longPlayerID, "&Market=", this.intMarket, "'><img alt='拍卖委托' src='", SessionItem.GetImageURL(), "BidAuto.gif' height='16' width='16' border='0'></a>&nbsp;&nbsp;" });
             }
             strToolMsg = this.strToolMsg;
-            //this.strToolMsg = string.Concat(new object[] { strToolMsg, "<a href='SecretaryPage.aspx?Type=SHOWSKILL&PlayerID=", this.longPlayerID, "&CheckType=", intCheckType, "'><img alt='潜力公告' src='", SessionItem.GetImageURL(), "ShowSkill.gif' height='16' width='16' border='0'></a>" });
         }
 
         private long CheckCanBid(int intClubType, int intCheckType)
@@ -4475,10 +4809,10 @@
             int num2;
             int num3;
             DataRow playerRowByPlayerID;
-            int num9;
+            int num4;
             if (BTPBidAutoManager.GetAutoBidRowByUserID(this.intUserID) != null)
             {
-                return -8;
+                return -8L;
             }
             if (intCheckType == 5)
             {
@@ -4496,9 +4830,7 @@
             else
             {
                 num = BTPPlayer3Manager.GetPlayer3CountByCID(this.intClubID3);
-                //是否有位置卡
-                bool hasLocationCard = BTPToolLinkManager.HasTool(this.intUserID, 1, 201, 0);
-                if (hasLocationCard)
+                if (BTPToolLinkManager.HasTool(this.intUserID, 1, 0xc9, 0))
                 {
                     num2 = 9;
                 }
@@ -4509,7 +4841,7 @@
             }
             if (num >= num2)
             {
-                return -3;
+                return -3L;
             }
             if (intClubType == 3)
             {
@@ -4519,105 +4851,93 @@
             {
                 playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
             }
-            int intClubID = (int)playerRowByPlayerID["ClubID"];
-            int num5 = (byte)playerRowByPlayerID["Category"];
+            int intClubID = (int) playerRowByPlayerID["ClubID"];
+            int num6 = (byte) playerRowByPlayerID["Category"];
             BTPClubManager.GetUserIDByClubID(intClubID);
-            int num6 = 0;
+            int num7 = 0;
             if ((intCheckType == 4) || (intCheckType == 10))
             {
                 string devCodeByUserID = BTPDevManager.GetDevCodeByUserID(this.intUserID);
                 string strDevCode = playerRowByPlayerID["MarketCode"].ToString().Trim();
                 int level = DevCalculator.GetLevel(strDevCode);
-                int num8 = DevCalculator.GetLevel(devCodeByUserID);
-                if ((((level > this.intMarketLevel) || (num8 > this.intMarketLevel)) && ((level <= this.intMarketLevel) || (num8 <= this.intMarketLevel))) && !(strDevCode == "AAA"))
+                int num9 = DevCalculator.GetLevel(devCodeByUserID);
+                if ((((level > this.intMarketLevel) || (num9 > this.intMarketLevel)) && ((level <= this.intMarketLevel) || (num9 <= this.intMarketLevel))) && (strDevCode != "AAA"))
                 {
-                    return -10;
+                    return -10L;
                 }
             }
             if (intClubType == 3)
             {
-                /*if (((num5 == 3) && (this.intCategory != 1)) && (this.intCategory != 2))
+                if ((num6 == 6) && (this.intCategory != 5))
                 {
-                    return -4;
-                }*/
-                if ((num5 == 6) && (this.intCategory != 5))
-                {
-                    return -4;
+                    return -4L;
                 }
-                if (((num5 == 4) && (this.intCategory != 2)) && (this.intCategory != 5))
+                if (((num6 == 4) && (this.intCategory != 2)) && (this.intCategory != 5))
                 {
-                    return -4;
+                    return -4L;
                 }
             }
             if (intClubType == 5)
             {
-                if ((num5 == 2) && (this.intCategory != 5))
+                if ((num6 == 2) && (this.intCategory != 5))
                 {
-                    return -4;
+                    return -4L;
                 }
-                if ((num5 == 3) && (this.intCategory != 5))
+                if ((num6 == 3) && (this.intCategory != 5))
                 {
-                    return -4;
+                    return -4L;
                 }
-                if ((num5 == 4) && (this.intCategory != 5))
+                if ((num6 == 4) && (this.intCategory != 5))
                 {
-                    return -4;
+                    return -4L;
                 }
             }
-            if (num6 > 100)
+            if (num7 > 100)
             {
-                return -4;
+                return -4L;
             }
-            if (num5 == 1)
+            if (num6 == 1)
             {
-                return -9;
+                return -9L;
             }
             DataRow bidderByUserID = BTPBidderManager.GetBidderByUserID(this.intUserID);
-            if ((bidderByUserID != null) && ((bool)bidderByUserID["TopPrice"]))
+            if ((bidderByUserID != null) && ((bool) bidderByUserID["TopPrice"]))
             {
-                return -5;
+                return -5L;
             }
             playerRowByPlayerID["Name"].ToString();
-            DateTime time = (DateTime)playerRowByPlayerID["EndBidTime"];
-            if (DateTime.Now.AddMinutes((double)num3) > time)
+            DateTime time = (DateTime) playerRowByPlayerID["EndBidTime"];
+            if (DateTime.Now.AddMinutes((double) num3) > time)
             {
-                return -6;
+                return -6L;
             }
             if (intCheckType > 3)
             {
-                num9 = this.intClubID5;
+                num4 = this.intClubID5;
             }
             else
             {
-                num9 = this.intClubID3;
+                num4 = this.intClubID3;
             }
-            if (intClubID == num9)
+            if (intClubID == num4)
             {
-                return -7;
+                return -7L;
             }
-            long bidPrice = Convert.ToInt64(playerRowByPlayerID["BidPrice"]);
-            //int num1 = bidPrice / 10;
-            int num11 = (int)playerRowByPlayerID["BidCount"];
-            //if (num11 > 0)
-            //{
-            //    num10 = num10;
-            //}
+            long num10 = Convert.ToInt64(playerRowByPlayerID["BidPrice"]);
+            int num1 = (int) playerRowByPlayerID["BidCount"];
             if (intCheckType == 8)
             {
-                bidPrice = (int)playerRowByPlayerID["BidWealth"];
+                num10 = (int) playerRowByPlayerID["BidWealth"];
             }
             if (intCheckType < 4)
             {
-                bidPrice = Convert.ToInt32(BTPPlayer3Manager.GetPlayer3Cost(this.longPlayerID));
+                num10 = Convert.ToInt32(BTPPlayer3Manager.GetPlayer3Cost(this.longPlayerID));
             }
-
-            ///不标价
-            if (intClubType == 3 && num5 == 3)
+            if ((intClubType == 3) && (num6 == 3))
             {
-                return 100000;
+                return 0x186a0L;
             }
-
-            return bidPrice;
+            return num10;
         }
 
         private void Choose()
@@ -4626,7 +4946,7 @@
             DataRow row = BTPToolLinkManager.GetToolByUserIDTCategory(this.intUserID, 6, 0);
             if (row != null)
             {
-                num = (int)row["Amount"];
+                num = (int) row["Amount"];
             }
             if (num <= 0)
             {
@@ -4634,14 +4954,14 @@
             }
             else
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
                 DataRow row2 = BTPArrange3Manager.GetCheckArrange3(this.intClubID3, this.longPlayerID);
                 DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                this.intCategory = (byte)playerRowByPlayerID["Category"];
+                this.intCategory = (byte) playerRowByPlayerID["Category"];
                 DataRow row4 = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
                 string str = row4["Name"].ToString().Trim();
                 this.strPlayer5Name = str;
-                int num2 = (byte)row4["Age"];
+                int num2 = (byte) row4["Age"];
                 int num3 = BTPPlayer3Manager.GetPlayer3CountByClubID(this.intClubID3);
                 int num4 = BTPPlayer5Manager.GetSellClub5PCount(this.intClubID5);
                 if ((BTPBidderManager.GetBidderCountByUserID(this.intUserID) > 0) && (num4 > 12))
@@ -4687,8 +5007,8 @@
         private void ChooseClub()
         {
             this.tbChooseClub.Visible = true;
-            this.intLookUserID = (int)SessionItem.GetRequest("UserID", 0);
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            this.intLookUserID = SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             if (request == 1)
             {
                 this.strToolMsg = "您输入的俱乐部名有重复（不符合规定）";
@@ -4705,7 +5025,7 @@
         {
             string strCupName;
             int num;
-            DevCupData data = (DevCupData)this.Session["DevCup" + this.intUnionID];
+            DevCupData data = (DevCupData) this.Session["DevCup" + this.intUnionID];
             if (data != null)
             {
                 strCupName = data.strCupName;
@@ -4720,8 +5040,8 @@
                 return;
             }
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int num5 = (byte)accountRowByUserID["UnionCategory"];
-            int num6 = (int)accountRowByUserID["Wealth"];
+            int num5 = (byte) accountRowByUserID["UnionCategory"];
+            int num6 = (int) accountRowByUserID["Wealth"];
             this.strSay = string.Concat(new object[] { this.strNickName, "经理，建立杯赛", strCupName, "将花费联盟", num, "游戏币，是否创建？" });
             if (num5 != 1)
             {
@@ -4742,7 +5062,7 @@
         {
             string strCupName;
             int num;
-            DevCupData data = (DevCupData)this.Session["DevCup" + this.intUserID];
+            DevCupData data = (DevCupData) this.Session["DevCup" + this.intUserID];
             if (data != null)
             {
                 strCupName = data.strCupName;
@@ -4763,7 +5083,7 @@
 
         private void CreateWealthOrder()
         {
-            this.intType = (int)SessionItem.GetRequest("State", 0);
+            this.intType = SessionItem.GetRequest("State", 0);
             DataRow orderParameter = BTPOrderManager.GetOrderParameter();
             this.strBuyOne = orderParameter["BuyOne"].ToString();
             this.strSaleOne = orderParameter["SaleOne"].ToString();
@@ -4795,7 +5115,7 @@
 
         private void DeleteDevCup()
         {
-            this.intDevCupID = (int)SessionItem.GetRequest("DevCupID", 0);
+            this.intDevCupID = SessionItem.GetRequest("DevCupID", 0);
             string str = "";
             DataRow devCupRowByDevCupID = BTPDevCupManager.GetDevCupRowByDevCupID(this.intDevCupID);
             if (devCupRowByDevCupID != null)
@@ -4814,7 +5134,7 @@
 
         private void DeleteUserDevCup()
         {
-            this.intDevCupID = (int)SessionItem.GetRequest("DevCupID", 0);
+            this.intDevCupID = SessionItem.GetRequest("DevCupID", 0);
             string str = "";
             DataRow devCupRowByDevCupID = BTPDevCupManager.GetDevCupRowByDevCupID(this.intDevCupID);
             if (devCupRowByDevCupID != null)
@@ -4833,75 +5153,81 @@
 
         private void DevBidHelper()
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-            this.intMarket = (int)SessionItem.GetRequest("Market", 0);
-
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            this.intMarket = SessionItem.GetRequest("Market", 0);
             if (this.intPayType != 1)
             {
                 this.strSay = "您该功能只对会员开放。";
-                return;
-            }
-
-            long num = this.CheckCanBid(5, 10);
-            this.tblTool.Visible = false;
-
-            if (num > 0)
-            {
-                this.tblDevBidHelper.Visible = true;
-                this.strSay = "只要告诉我您能接受的最高价，我就可以使用拍卖委托帮助您出价，此球员我建议您最好出价高于" + ((num / 10) * 15) + "，我会尽全力帮您拍到球员，但有时也会流拍。";
-                this.btnOK.Visible = true;
-                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_DEVBIDHELPER);
             }
             else
             {
-                switch (num)
+                long num = this.CheckCanBid(5, 10);
+                this.tblTool.Visible = false;
+                if (num > 0L)
                 {
-                    case -2:
-                        this.strSay = "您已经没有拍卖委托了，我无法帮您进行出价，请到游戏币商店购买更多的拍卖委托。";
-                        return;
+                    this.tblDevBidHelper.Visible = true;
+                    this.strSay = "只要告诉我您能接受的最高价，我就可以使用拍卖委托帮助您出价，此球员我建议您最好出价高于" + ((num / 10L) * 15L) + "，我会尽全力帮您拍到球员，但有时也会流拍。";
+                    this.btnOK.Visible = true;
+                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_DEVBIDHELPER);
+                }
+                else
+                {
+                    long num2 = num;
+                    if ((num2 <= -2L) && (num2 >= -12L))
+                    {
+                        switch (((int) (num2 - -12L)))
+                        {
+                            case 0:
+                                this.strSay = "经理，咱们俱乐部工资总和已经达到或超过工资帽了不能再购买球员了！";
+                                return;
 
-                    case -3:
-                        this.strSay = "咱们球队中的球员已经足够多了，我们不能再引进更多的球员了。";
-                        return;
+                            case 1:
+                                return;
 
-                    case -4:
-                        this.strSay = "咱们不被允许对此球员进行出价，请选择其他的球员。";
-                        return;
+                            case 2:
+                                this.strSay = "这名球员不能进行跨级转会啊！";
+                                return;
 
-                    case -5:
-                        this.strSay = "您是否在此段时间已经有过出价？我还不能在此段时间使用拍卖委托。";
-                        return;
+                            case 3:
+                                this.strSay = "这名球员并不在拍卖中，您看看是否是搞错了？";
+                                return;
 
-                    case -6:
-                        this.strSay = "这个球员的截止时间已经接近了，您没有必要使用拍卖委托了。";
-                        return;
+                            case 4:
+                                this.strSay = "一次只能使用一个拍卖委托，不然我照顾不过来啊！";
+                                return;
 
-                    case -7:
-                        this.strSay = "这是咱们球队中的球员啊。";
-                        return;
+                            case 5:
+                                this.strSay = "这是咱们球队中的球员啊。";
+                                return;
 
-                    case -8:
-                        this.strSay = "一次只能使用一个拍卖委托，不然我照顾不过来啊！";
-                        return;
+                            case 6:
+                                this.strSay = "这个球员的截止时间已经接近了，您没有必要使用拍卖委托了。";
+                                return;
 
-                    case -9:
-                        this.strSay = "这名球员并不在拍卖中，您看看是否是搞错了？";
-                        return;
+                            case 7:
+                                this.strSay = "您是否在此段时间已经有过出价？我还不能在此段时间使用拍卖委托。";
+                                return;
 
-                    case -10:
-                        this.strSay = "这名球员不能进行跨级转会啊！";
-                        return;
+                            case 8:
+                                this.strSay = "咱们不被允许对此球员进行出价，请选择其他的球员。";
+                                return;
 
-                    case -12:
-                        this.strSay = "经理，咱们俱乐部工资总和已经达到或超过工资帽了不能再购买球员了！";
-                        break;
+                            case 9:
+                                this.strSay = "咱们球队中的球员已经足够多了，我们不能再引进更多的球员了。";
+                                return;
+
+                            case 10:
+                                this.strSay = "您已经没有拍卖委托了，我无法帮您进行出价，请到游戏币商店购买更多的拍卖委托。";
+                                return;
+                        }
+                    }
                 }
             }
         }
 
         private void DevChoose()
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             if (BTPPlayer5Manager.GetSellClub5PCount(this.intClubID5) > 13)
             {
                 this.strSay = this.strNickName + "经理您好，您的职业队球员过多，无法进行选秀。";
@@ -4909,30 +5235,26 @@
             else
             {
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                int clubID = Convert.ToInt32(playerRowByPlayerID["ClubID"]);
-                int bidderID = (int)playerRowByPlayerID["BidderID"];
-                /*if (clubID > 0)
-                {
-                    this.strSay = this.strNickName + "目前在其它队中试训，你无法对其进行选秀";
-                    return;
-                }*/
-                if (bidderID > 0 && this.intPayType == 0)
+                Convert.ToInt32(playerRowByPlayerID["ClubID"]);
+                int num = (int) playerRowByPlayerID["BidderID"];
+                if ((num > 0) && (this.intPayType == 0))
                 {
                     this.strSay = this.strNickName + "只有会员才可以对已被选球员进行选秀";
-                    return;
-                }
-
-                string str = playerRowByPlayerID["Name"].ToString().Trim();
-                DateTime time = (DateTime)playerRowByPlayerID["EndBidTime"];
-                if (time > DateTime.Now)
-                {
-                    this.strSay = this.strNickName + "经理，您确定要对球员" + str + "进行选秀么？";
-                    this.btnOK.Visible = true;
-                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_DEVCHOOSE);
                 }
                 else
                 {
-                    this.strSay = this.strNickName + "经理，球员" + str + "的允许选秀时间已经结束，无法再对其进行选秀了。";
+                    string str = playerRowByPlayerID["Name"].ToString().Trim();
+                    DateTime time = (DateTime) playerRowByPlayerID["EndBidTime"];
+                    if (time > DateTime.Now)
+                    {
+                        this.strSay = this.strNickName + "经理，您确定要对球员" + str + "进行选秀么？";
+                        this.btnOK.Visible = true;
+                        this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_DEVCHOOSE);
+                    }
+                    else
+                    {
+                        this.strSay = this.strNickName + "经理，球员" + str + "的允许选秀时间已经结束，无法再对其进行选秀了。";
+                    }
                 }
             }
         }
@@ -4951,20 +5273,21 @@
             }
             else
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-                this.intMarket = (int)SessionItem.GetRequest("Market", 0);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+                this.intMarket = SessionItem.GetRequest("Market", 0);
                 this.CanUseTool(this.intMarket);
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
                 if ((this.intMarket == 4) || (this.intMarket == 6))
                 {
-                    DateTime time = (DateTime)playerRowByPlayerID["EndBidTime"];
+                    DateTime time = (DateTime) playerRowByPlayerID["EndBidTime"];
                     int day = DateTime.Now.Day;
                     int num2 = time.Day;
-                    if ((day >= num2) && ((DateTime.Now.Hour - time.Hour) >= 5))
+                    if (day >= num2)
                     {
+                        int num1 = DateTime.Now.Hour - time.Hour;
                     }
                 }
-                bool flag = (bool)playerRowByPlayerID["SellAss"];
+                bool flag = (bool) playerRowByPlayerID["SellAss"];
                 string str = playerRowByPlayerID["Name"].ToString().Trim();
                 if (flag && (this.intPayType != 1))
                 {
@@ -4973,50 +5296,54 @@
                 else
                 {
                     long num3 = this.CheckCanBid(5, 4);
-                    switch (num3)
+                    long num6 = num3;
+                    if ((num6 <= -3L) && (num6 >= -12L))
                     {
-                        case -3:
-                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                            return;
+                        switch (((int) (num6 - -12L)))
+                        {
+                            case 0:
+                                this.strSay = this.strNickName + "经理，咱们俱乐部工资总和已经达到或超过工资帽了不能再购买球员了！";
+                                return;
 
-                        case -4:
-                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                            return;
+                            case 2:
+                                this.strSay = this.strNickName + "经理，您好！此球员无法跨等级进行转会！";
+                                return;
 
-                        case -5:
-                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                            return;
+                            case 3:
+                                this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                                return;
 
-                        case -6:
-                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                            return;
+                            case 4:
+                                this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                                return;
 
-                        case -7:
-                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                            return;
+                            case 5:
+                                this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                                return;
 
-                        case -8:
-                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                            return;
+                            case 6:
+                                this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                                return;
 
-                        case -9:
-                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                            return;
+                            case 7:
+                                this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                                return;
 
-                        case -10:
-                            this.strSay = this.strNickName + "经理，您好！此球员无法跨等级进行转会！";
-                            return;
+                            case 8:
+                                this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                                return;
 
-                        case -12:
-                            this.strSay = this.strNickName + "经理，咱们俱乐部工资总和已经达到或超过工资帽了不能再购买球员了！";
-                            return;
+                            case 9:
+                                this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                                return;
+                        }
                     }
                     this.tblFreeBid.Visible = true;
                     this.tbBidPrice.Visible = false;
                     this.strBidMsg = "采用明拍方式";
-                    long num4 = (num3 / 100) * 0x66;
+                    long num4 = (num3 / 100L) * 0x66L;
                     this.strSay = string.Concat(new object[] { this.strNickName, "经理，此次竞拍您至少需要出价", num4, "。" });
-                    int num5 = (byte)Global.drParameter["Duty"];
+                    int num5 = (byte) Global.drParameter["Duty"];
                     if (num5 > 0)
                     {
                         object strSay = this.strSay;
@@ -5031,57 +5358,61 @@
 
         private void DevStreetBid()
         {
-            int num = (byte)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Category"];
+            int num = (byte) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Category"];
             if (num != 5)
             {
                 base.Response.Redirect("Report.aspx?Parameter=2");
             }
             else
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
                 this.CanUseTool(2);
                 long num2 = this.CheckCanBid(3, 2);
                 int num3 = 0;
                 int num4 = 0;
-                switch (num2)
+                long num6 = num2;
+                if ((num6 <= -3L) && (num6 >= -9L))
                 {
-                    case -3:
-                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                        return;
+                    switch (((int) (num6 - -9L)))
+                    {
+                        case 0:
+                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                            return;
 
-                    case -4:
-                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                        return;
+                        case 1:
+                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                            return;
 
-                    case -5:
-                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                        return;
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
 
-                    case -6:
-                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                        return;
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
 
-                    case -7:
-                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                        return;
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
 
-                    case -8:
-                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                        return;
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
 
-                    case -9:
-                        this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                        return;
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                            return;
+                    }
                 }
                 this.tblFreeBid.Visible = true;
                 this.tbBidPrice.Visible = false;
                 this.strBidMsg = "采用暗拍方式";
                 long num5 = num2;
-                num5 = ((num5 * 3) / 2) + 0x1388;
-                num5 /= 0x2710;
-                if (num5 < 1)
+                num5 = ((num5 * 3L) / 2L) + 0x1388L;
+                num5 /= 0x2710L;
+                if (num5 < 1L)
                 {
-                    num5 = 1;
+                    num5 = 1L;
                 }
                 if ((num3 == 0) && (num4 == 0))
                 {
@@ -5106,15 +5437,15 @@
         {
             if (this.intPayType == 1)
             {
-                this.intStaffID = (int)SessionItem.GetRequest("StaffID", 0);
+                this.intStaffID = SessionItem.GetRequest("StaffID", 0);
                 BTPStaffManager.SetStaffSalary(this.intStaffID);
                 DataRow staffRowByID = BTPStaffManager.GetStaffRowByID(this.intStaffID);
                 string str = staffRowByID["Name"].ToString().Trim();
                 this.intType = Convert.ToInt32(staffRowByID["Type"]);
                 string staffChsPosition = PlayerItem.GetStaffChsPosition(this.intType);
-                this.intSalary = (int)staffRowByID["Salary"];
+                this.intSalary = (int) staffRowByID["Salary"];
                 this.intSalary = (this.intSalary * (100 + (10 + (this.intStaffID % 8)))) / 100;
-                this.intClubIDS = (int)staffRowByID["ClubID"];
+                this.intClubIDS = (int) staffRowByID["ClubID"];
                 this.strSay = string.Concat(new object[] { "您将以每轮", this.intSalary, "的资金，与", staffChsPosition, str, "续约，续约期限为5轮。您愿一次性支付", this.intSalary * 5, "的资金与其续约吗？" });
                 this.btnOK.Visible = true;
                 this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_EXTENDSTAFF);
@@ -5128,8 +5459,8 @@
         private void FieldDef()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("CID", 0);
-            int intUserID = (int)SessionItem.GetRequest("UID", 0);
+            int request = SessionItem.GetRequest("CID", 0);
+            int intUserID = SessionItem.GetRequest("UID", 0);
             if (this.intClubID5 < 1)
             {
                 this.strSay = "您没有职业队！";
@@ -5146,7 +5477,7 @@
                     DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(intUserID);
                     if (accountRowByUserID != null)
                     {
-                        this.intUnionID = (int)accountRowByUserID["UnionID"];
+                        this.intUnionID = (int) accountRowByUserID["UnionID"];
                         if (this.intUnionID >= 1)
                         {
                             string str = accountRowByUserID["NickName"].ToString().Trim();
@@ -5174,8 +5505,8 @@
         private void FieldReg()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("UID", 0);
-            int num2 = (int)SessionItem.GetRequest("RT", 0);
+            int request = SessionItem.GetRequest("UID", 0);
+            int num2 = SessionItem.GetRequest("RT", 0);
             DataRow unionRowByID = BTPUnionManager.GetUnionRowByID(request);
             if (this.intClubID5 < 1)
             {
@@ -5204,9 +5535,9 @@
 
         private void FireStaff()
         {
-            this.intStaffID = (int)SessionItem.GetRequest("StaffID", 0);
+            this.intStaffID = SessionItem.GetRequest("StaffID", 0);
             DataRow staffRowByID = BTPStaffManager.GetStaffRowByID(this.intStaffID);
-            int num = (int)staffRowByID["ClubID"];
+            int num = (int) staffRowByID["ClubID"];
             string str = staffRowByID["Name"].ToString();
             if ((num != this.intClubID3) && (num != this.intClubID5))
             {
@@ -5214,7 +5545,7 @@
             }
             else
             {
-                byte intPosition = (byte)staffRowByID["Type"];
+                byte intPosition = (byte) staffRowByID["Type"];
                 this.strSay = this.strNickName + "经理，" + str + "在" + this.strClubName3 + "中担任" + PlayerItem.GetStaffChsPosition(intPosition) + "。您确定要将其解雇吗？";
                 this.btnOK.Visible = true;
                 this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_FRIESTAFF);
@@ -5241,8 +5572,8 @@
         private void GetNoBox()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Status", 0);
-            int num2 = (int)BTPParameterManager.GetParameterRow()["BoxWealth"];
+            int request = SessionItem.GetRequest("Status", 0);
+            int num2 = (int) BTPParameterManager.GetParameterRow()["BoxWealth"];
             this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='cursor:pointer' onclick='javascript:window.location=\"ManagerTool.aspx?Type=USEBOX&Page=1\";'>";
             this.strSay = "您已经没有豆腐了";
         }
@@ -5256,27 +5587,28 @@
         private void GetPayBox()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Status", 0);
-            int num2 = (int)BTPParameterManager.GetParameterRow()["BoxWealth"];
+            int request = SessionItem.GetRequest("Status", 0);
+            int num2 = (int) BTPParameterManager.GetParameterRow()["BoxWealth"];
             this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='cursor:pointer' onclick='javascript:window.location=\"ManagerTool.aspx?Type=USEBOX&Page=1\";'>";
             switch (request)
             {
-                case 1:
-                    {
-                        string str = SessionItem.GetRequest("Name", 1).ToString().Trim();
-                        this.strSay = "您已经成功领取了您的奖品 " + str + " ，请注意查收！";
-                        return;
-                    }
                 case -4:
                     this.strSay = "您的游戏币不足 " + num2 + " 请到金币商店购买<a style='cursor:pointer' href='ManagerTool.aspx?Type=STORE&Page=1'>纪念章！</a>";
                     return;
+
+                case 1:
+                {
+                    string str = SessionItem.GetRequest("Name", 1).ToString().Trim();
+                    this.strSay = "您已经成功领取了您的奖品 " + str + " ，请注意查收！";
+                    return;
+                }
             }
             this.strSay = "您没有领取奖品的资格！";
         }
 
         private void GetStaff()
         {
-            this.intStaffID = (int)SessionItem.GetRequest("StaffID", 0);
+            this.intStaffID = SessionItem.GetRequest("StaffID", 0);
             DataRow staffRowByID = BTPStaffManager.GetStaffRowByID(this.intStaffID);
             string str = "";
             string staffChsPosition = "";
@@ -5285,8 +5617,8 @@
                 str = staffRowByID["Name"].ToString().Trim();
                 this.intType = Convert.ToInt32(staffRowByID["Type"]);
                 staffChsPosition = PlayerItem.GetStaffChsPosition(this.intType);
-                this.intSalary = (int)staffRowByID["Salary"];
-                this.intContract = (byte)staffRowByID["Contract"];
+                this.intSalary = (int) staffRowByID["Salary"];
+                this.intContract = (byte) staffRowByID["Contract"];
             }
             this.strSay = string.Concat(new object[] { "您将花费", this.intSalary * this.intContract, "资金，雇佣", staffChsPosition, "：", str, "。请选择球队" });
             if ((this.intCategory == 5) || (this.intCategory == 2))
@@ -5304,11 +5636,11 @@
         private void Hide()
         {
             DataRow playerRowByPlayerID;
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             this.tblShowSkill.Visible = true;
-            this.intType = (int)SessionItem.GetRequest("PlayerType", 0);
-            this.intCheckType = (int)SessionItem.GetRequest("CheckType", 0);
-            this.intCheck = (int)SessionItem.GetRequest("Check", 0);
+            this.intType = SessionItem.GetRequest("PlayerType", 0);
+            this.intCheckType = SessionItem.GetRequest("CheckType", 0);
+            this.intCheck = SessionItem.GetRequest("Check", 0);
             if (this.intType == 3)
             {
                 playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
@@ -5317,20 +5649,20 @@
             {
                 playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
             }
-            int num2 = (int)playerRowByPlayerID["TeamDay"];
-            int num = (int)playerRowByPlayerID["ClubID"];
-            this.intPlayerCategory = (byte)playerRowByPlayerID["Category"];
-            if (((this.intType == 3) && (num != this.intClubID3)) && (this.intPlayerCategory == 1))
+            int num = (int) playerRowByPlayerID["TeamDay"];
+            int num2 = (int) playerRowByPlayerID["ClubID"];
+            this.intPlayerCategory = (byte) playerRowByPlayerID["Category"];
+            if (((this.intType == 3) && (num2 != this.intClubID3)) && (this.intPlayerCategory == 1))
             {
                 this.strToolMsg = "<p align='left' style=\"line-height:20px;\">此球员不在我们的球队中效力，无法了解他的意识水平。</p>";
             }
-            else if (((this.intType == 5) && (num != this.intClubID5)) && (this.intPlayerCategory == 1))
+            else if (((this.intType == 5) && (num2 != this.intClubID5)) && (this.intPlayerCategory == 1))
             {
                 this.strToolMsg = "<p align='left' style=\"line-height:20px;\">此球员不在我们的球队中效力，无法了解他的意识水平。</p>";
             }
             else if (this.CanUseHide() == 1)
             {
-                if ((this.intPlayerCategory == 1) && (num2 < 5))
+                if ((this.intPlayerCategory == 1) && (num < 5))
                 {
                     this.strToolMsg = "<p align='left' style=\"line-height:20px;\">您的球员为您效力的时间太短，你还不能了解他的意识水平！</p>";
                     this.btnOK.Visible = false;
@@ -5352,8 +5684,8 @@
         private void HirePlayer()
         {
             this.tbSay.Visible = true;
-            int num = (int)BTPParameterManager.GetParameterRow()["SearchPlayer"];
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
+            int num = (int) BTPParameterManager.GetParameterRow()["SearchPlayer"];
+            long request = SessionItem.GetRequest("PlayerID", 3);
             this.btnOK.Visible = false;
             if (BTPPlayer3Manager.GetPlayerRowByPlayerID(request) != null)
             {
@@ -5362,7 +5694,7 @@
                 {
                     if (table.Rows.Count == 8)
                     {
-                        this.strSay = "您确定录用该球员吗？<br />（需花费" + num + "枚游戏币）";
+                        this.strSay = "您确定录用该球员吗？<br />（需花费" + num + "枚游戏币）<br />(优先使用活跃积分)";
                         this.btnOK.Visible = true;
                         this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_HirePlayer);
                     }
@@ -5396,17 +5728,17 @@
             else
             {
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
-                this.intCategory = (int)onlineRowByUserID["Category"];
-                this.intClubID3 = (int)onlineRowByUserID["ClubID3"];
-                this.intClubID5 = (int)onlineRowByUserID["ClubID5"];
+                this.intCategory = (int) onlineRowByUserID["Category"];
+                this.intClubID3 = (int) onlineRowByUserID["ClubID3"];
+                this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
                 this.strClubName3 = onlineRowByUserID["ClubName3"].ToString();
                 this.strClubName5 = onlineRowByUserID["ClubName5"].ToString();
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
                 this.strClubLogo = onlineRowByUserID["ClubLogo"].ToString().Trim();
-                this.blnSex = (bool)onlineRowByUserID["Sex"];
-                this.intPayType = (int)onlineRowByUserID["PayType"];
-                this.intWealth = (int)onlineRowByUserID["Wealth"];
-                this.intUnionID = (int)onlineRowByUserID["UnionID"];
+                this.blnSex = (bool) onlineRowByUserID["Sex"];
+                this.intPayType = (int) onlineRowByUserID["PayType"];
+                this.intWealth = (int) onlineRowByUserID["Wealth"];
+                this.intUnionID = (int) onlineRowByUserID["UnionID"];
                 this.strDevCode = onlineRowByUserID["DevCode"].ToString();
                 this.si = new SecretaryItem(this.intUserID, this.blnSex);
                 this.strSecFace = this.si.GetImgFace();
@@ -5435,7 +5767,7 @@
                 this.tblXGuess.Visible = false;
                 this.btnSearchCancel.Visible = false;
                 this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.history.back();'>";
-                this.strType = (string)SessionItem.GetRequest("Type", 1);
+                this.strType = SessionItem.GetRequest("Type", 1);
                 if (this.strType != "")
                 {
                     switch (this.strType)
@@ -5640,6 +5972,10 @@
                             this.Hide();
                             break;
 
+                        case "MAX":
+                            this.Max();
+                            break;
+
                         case "ADDPOWER":
                             this.AddPower();
                             break;
@@ -5791,17 +6127,25 @@
                         case "XGUESS":
                             this.BetXGuess();
                             break;
+
                         case "STARVOTE":
                             this.StarVote();
                             break;
+
                         case "SETNPC":
                             this.SetNPC();
                             break;
-                        case "SETARENA":
-                            this.SetArena();
-                            break;
+
                         case "POINT3MATCHREG":
-                            this.RegPoint3Match(); 
+                            this.RegPoint3Match();
+                            break;
+
+                        case "ARENAREG1":
+                            this.ArenaUnionReg();
+                            break;
+
+                        case "ARENAREG2":
+                            this.ArenaMemberReg();
                             break;
                     }
                 }
@@ -5811,9 +6155,9 @@
 
         private void IntroTool()
         {
-            int request = (int)SessionItem.GetRequest("ToolID", 0);
+            int request = SessionItem.GetRequest("ToolID", 0);
             DataRow toolRowByID = BTPToolManager.GetToolRowByID(request);
-            int num2 = (int)toolRowByID["CoinCost"];
+            int num2 = (int) toolRowByID["CoinCost"];
             string str = toolRowByID["ToolName"].ToString().Trim();
             string str2 = toolRowByID["ToolIntroduction"].ToString().Trim();
             this.strSay = string.Concat(new object[] { "名称：", str, "<br>价值：", num2, "枚金币<br>说明：", str2 });
@@ -5821,9 +6165,9 @@
 
         private void IntroWealthTool()
         {
-            int request = (int)SessionItem.GetRequest("ToolID", 0);
+            int request = SessionItem.GetRequest("ToolID", 0);
             DataRow wealthToolRowByID = BTPWealthToolManager.GetWealthToolRowByID(request);
-            int num2 = (int)wealthToolRowByID["WealthCost"];
+            int num2 = (int) wealthToolRowByID["WealthCost"];
             string str = wealthToolRowByID["ToolName"].ToString().Trim();
             string str2 = wealthToolRowByID["ToolIntroduction"].ToString().Trim();
             this.strSay = string.Concat(new object[] { "名称：", str, "<br>价值：", num2, "游戏币<br>说明：", str2 });
@@ -5831,13 +6175,13 @@
 
         private void KickOut()
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int num2 = (int)accountRowByUserID["UnionID"];
-            int num3 = (byte)accountRowByUserID["UnionCategory"];
+            int num2 = (int) accountRowByUserID["UnionID"];
+            int num3 = (byte) accountRowByUserID["UnionCategory"];
             DataRow row2 = BTPAccountManager.GetAccountRowByUserID(request);
-            int num4 = (int)row2["UnionID"];
-            int num5 = (byte)row2["UnionCategory"];
+            int num4 = (int) row2["UnionID"];
+            int num5 = (byte) row2["UnionCategory"];
             string str = row2["NickName"].ToString().Trim();
             row2 = BTPUnionFieldManager.GegUnionFieldRowByUserID(request);
             int num6 = 9;
@@ -5845,7 +6189,7 @@
             accountRowByUserID = BTPUnionPolity.GetDelMasterRow(this.intUnionID);
             if (accountRowByUserID != null)
             {
-                num7 = (byte)accountRowByUserID["Status"];
+                num7 = (byte) accountRowByUserID["Status"];
             }
             if (num7 == 1)
             {
@@ -5855,14 +6199,14 @@
             {
                 if (row2 != null)
                 {
-                    num6 = (byte)row2["Status"];
+                    num6 = (byte) row2["Status"];
                 }
                 if (num6 < 2)
                 {
                     int num8 = 0;
-                    int num9 = (byte)row2["OprationH"];
-                    int num10 = (byte)row2["OprationA"];
-                    int num11 = (int)row2["UserIDH"];
+                    int num9 = (byte) row2["OprationH"];
+                    int num10 = (byte) row2["OprationA"];
+                    int num11 = (int) row2["UserIDH"];
                     if (num11 == request)
                     {
                         num8 = num9;
@@ -5873,14 +6217,14 @@
                     }
                     switch (num8)
                     {
-                        case 1:
-                            this.strSay = this.strNickName + "经理，" + str + "已被您设置为踢出状态，他将在盟战结束后被踢出您的联盟。";
-                            return;
-
                         case 0:
                             this.strSay = this.strNickName + "经理，" + str + "有一场盟战正在进行，你将标记踢出此经理，此经理将在盟战结束后被踢出！";
                             this.btnOK.Visible = true;
                             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_KickOut);
+                            return;
+
+                        case 1:
+                            this.strSay = this.strNickName + "经理，" + str + "已被您设置为踢出状态，他将在盟战结束后被踢出您的联盟。";
                             return;
                     }
                     this.strSay = "系统错误请重试！";
@@ -5916,54 +6260,53 @@
 
         private void KickOutDevCup()
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
-            int intDevCupID = (int)SessionItem.GetRequest("DevCupID", 0);
-            byte num4 = (byte)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionCategory"];
+            int request = SessionItem.GetRequest("UserID", 0);
+            int intDevCupID = SessionItem.GetRequest("DevCupID", 0);
+            byte num3 = (byte) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["UnionCategory"];
             if (request > 0)
             {
                 switch (BTPDevCupRegManager.DelDevCupReg(request, intDevCupID, this.intUserID))
                 {
                     case 1:
                         BTPDevCupRegManager.SetDevCupDeadRound(intDevCupID, request, 0);
-                        if (num4 == 1)
-                        {
-                            base.Response.Redirect("Report.aspx?Parameter=531!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPREGMANAGE^DevCupID." + intDevCupID);
-                        }
-                        else
+                        if (num3 != 1)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=531!Type.MYUNION^Kind.CUPREGMANAGE^DevCupID." + intDevCupID);
+                            return;
                         }
-                        break;
+                        base.Response.Redirect("Report.aspx?Parameter=531!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPREGMANAGE^DevCupID." + intDevCupID);
+                        return;
 
                     case 2:
                         BTPDevCupRegManager.SetDevCupDeadRound(intDevCupID, request, 0);
-                        if (num4 == 1)
-                        {
-                            base.Response.Redirect("Report.aspx?Parameter=533!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPREGMANAGE^DevCupID." + intDevCupID);
-                        }
-                        else
+                        if (num3 != 1)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=533!Type.MYUNION^Kind.CUPREGMANAGE^DevCupID." + intDevCupID);
+                            return;
                         }
-                        break;
+                        base.Response.Redirect("Report.aspx?Parameter=533!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPREGMANAGE^DevCupID." + intDevCupID);
+                        return;
 
                     case 3:
                         BTPDevCupRegManager.SetDevCupDeadRound(intDevCupID, request, 0);
-                        if (num4 == 1)
+                        if (num3 != 1)
                         {
-                            base.Response.Redirect("Report.aspx?Parameter=534!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPREGMANAGE^DevCupID." + intDevCupID);
-                            return;
+                            base.Response.Redirect("Report.aspx?Parameter=534!Type.MYUNION^Kind.CUPREGMANAGE^DevCupID." + intDevCupID);
+                            break;
                         }
-                        base.Response.Redirect("Report.aspx?Parameter=534!Type.MYUNION^Kind.CUPREGMANAGE^DevCupID." + intDevCupID);
-                        break;
+                        base.Response.Redirect("Report.aspx?Parameter=534!Type.MYUNION^Kind.UNIONMANAGE^Status.CUPREGMANAGE^DevCupID." + intDevCupID);
+                        return;
+
+                    default:
+                        return;
                 }
             }
         }
 
         private void KickOutUserDevCup()
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
-            int intDevCupID = (int)SessionItem.GetRequest("DevCupID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
+            int intDevCupID = SessionItem.GetRequest("DevCupID", 0);
             if (request > 0)
             {
                 switch (BTPDevCupRegManager.DelUserDevCupReg(request, intDevCupID, this.intUserID))
@@ -5971,16 +6314,19 @@
                     case 1:
                         BTPDevCupRegManager.SetDevCupDeadRound(intDevCupID, request, 0);
                         base.Response.Redirect("Report.aspx?Parameter=632!Type.CREATEDEVCUP^Status.CUPREGMANAGE^DevCupID." + intDevCupID);
-                        break;
+                        return;
 
                     case 2:
                         BTPDevCupRegManager.SetDevCupDeadRound(intDevCupID, request, 0);
                         base.Response.Redirect("Report.aspx?Parameter=633!Type.CREATEDEVCUP^Status.CUPREGMANAGE^DevCupID." + intDevCupID);
-                        break;
+                        return;
 
                     case 3:
                         BTPDevCupRegManager.SetDevCupDeadRound(intDevCupID, request, 0);
                         base.Response.Redirect("Report.aspx?Parameter=634!Type.CREATEDEVCUP^Status.MANAGER");
+                        break;
+
+                    default:
                         return;
                 }
             }
@@ -5997,7 +6343,7 @@
             }
             else
             {
-                this.lgMoney = (long)accountRowByUserID["Money"];
+                this.lgMoney = (long) accountRowByUserID["Money"];
                 this.intLevel = Convert.ToInt32(accountRowByUserID["DevLvl"]);
                 int num = 0;
                 if ((this.intLevel != 1) && (this.intLevel < 10))
@@ -6028,11 +6374,11 @@
 
         private void MatchLev()
         {
-            this.intType = (int)SessionItem.GetRequest("ClubType", 0);
+            this.intType = SessionItem.GetRequest("ClubType", 0);
             this.tblShowSkill.Visible = true;
-            this.intLookUserID = (int)SessionItem.GetRequest("UserID", 0);
+            this.intLookUserID = SessionItem.GetRequest("UserID", 0);
             int num = this.CanUseMatchLev();
-            this.intClubID = (int)SessionItem.GetRequest("ClubID", 0);
+            this.intClubID = SessionItem.GetRequest("ClubID", 0);
             if (this.intLookUserID == this.intUserID)
             {
                 base.Response.Redirect("Report.aspx?Parameter=552");
@@ -6065,13 +6411,13 @@
 
         private void MatchLook()
         {
-            string request = (string)SessionItem.GetRequest("Tag", 1);
+            string request = SessionItem.GetRequest("Tag", 1);
             this.intTag = Convert.ToInt32(StringItem.MD5Decrypt(request, Global.strMD5Key));
             this.tblShowSkill.Visible = true;
-            this.strDevCode = (string)SessionItem.GetRequest("DevCode", 1);
-            this.intClubAID = (int)SessionItem.GetRequest("A", 0);
-            this.intClubBID = (int)SessionItem.GetRequest("B", 0);
-            this.intLookUserID = (int)SessionItem.GetRequest("UserID", 0);
+            this.strDevCode = SessionItem.GetRequest("DevCode", 1);
+            this.intClubAID = SessionItem.GetRequest("A", 0);
+            this.intClubBID = SessionItem.GetRequest("B", 0);
+            this.intLookUserID = SessionItem.GetRequest("UserID", 0);
             if (this.intPayType == 1)
             {
                 string str2 = string.Concat(new object[] { "<a href='", Config.GetDomain(), "VRep.aspx?Type=2&Tag=", this.intTag, "&A=", this.intClubAID, "&B=", this.intClubBID, "' title='战报' target='_blank'><img src='", SessionItem.GetImageURL(), "RepLogo.gif' border='0' width='13' height='13'></a>" });
@@ -6094,14 +6440,14 @@
             }
         }
 
-        private void MinusAge()
+        private void Max()
         {
             DataRow playerRowByPlayerID;
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             this.tblShowSkill.Visible = true;
-            this.intType = (int)SessionItem.GetRequest("PlayerType", 0);
-            this.intCheckType = (int)SessionItem.GetRequest("CheckType", 0);
-            this.intCheck = (int)SessionItem.GetRequest("Check", 0);
+            this.intType = SessionItem.GetRequest("PlayerType", 0);
+            this.intCheckType = SessionItem.GetRequest("CheckType", 0);
+            this.intCheck = SessionItem.GetRequest("Check", 0);
             if (this.intType == 3)
             {
                 playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
@@ -6110,9 +6456,49 @@
             {
                 playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
             }
-            this.intPlayerCategory = (byte)playerRowByPlayerID["Category"];
-            byte num1 = (byte)playerRowByPlayerID["Power"];
-            int num = (int)playerRowByPlayerID["ClubID"];
+            int num1 = (int) playerRowByPlayerID["TeamDay"];
+            int num = (int) playerRowByPlayerID["ClubID"];
+            this.intPlayerCategory = (byte) playerRowByPlayerID["Category"];
+            if (((this.intType == 3) && (num != this.intClubID3)) && (this.intPlayerCategory == 1))
+            {
+                this.strToolMsg = "<p align='left' style=\"line-height:20px;\">此球员不在我们的球队中效力，无法了解他的最终能力。</p>";
+            }
+            else if (((this.intType == 5) && (num != this.intClubID5)) && (this.intPlayerCategory == 1))
+            {
+                this.strToolMsg = "<p align='left' style=\"line-height:20px;\">此球员不在我们的球队中效力，无法了解他的最终能力。</p>";
+            }
+            else if (this.CanUseMax() == 1)
+            {
+                this.strToolMsg = "<p align='left' style=\"line-height:20px;\">您确定要对此球员使用最终能力评估报告吗？使用后您就能看到此球员的最终能力！这将花费您 " + Global.drParameter["MaxSkill"].ToString().Trim() + " 枚游戏币。</p>";
+                this.btnOK.Visible = true;
+                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_MAX);
+            }
+            else
+            {
+                this.strToolMsg = "<p align='left' style=\"line-height:20px;\">您的游戏币不足" + Global.drParameter["MaxSkill"].ToString().Trim() + "，无法使用最终能力评估报告。</p>";
+                this.btnOK.Visible = false;
+            }
+        }
+
+        private void MinusAge()
+        {
+            DataRow playerRowByPlayerID;
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            this.tblShowSkill.Visible = true;
+            this.intType = SessionItem.GetRequest("PlayerType", 0);
+            this.intCheckType = SessionItem.GetRequest("CheckType", 0);
+            this.intCheck = SessionItem.GetRequest("Check", 0);
+            if (this.intType == 3)
+            {
+                playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
+            }
+            else
+            {
+                playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
+            }
+            this.intPlayerCategory = (byte) playerRowByPlayerID["Category"];
+            byte num1 = (byte) playerRowByPlayerID["Power"];
+            int num = (int) playerRowByPlayerID["ClubID"];
             int num2 = Convert.ToInt32(playerRowByPlayerID["Age"]);
             if (((this.intType == 3) && (num != this.intClubID3)) && (this.intPlayerCategory == 1))
             {
@@ -6145,39 +6531,39 @@
         {
             if (!base.IsPostBack)
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-                this.intTrainType = (int)SessionItem.GetRequest("TrainType", 0);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+                this.intTrainType = SessionItem.GetRequest("TrainType", 0);
                 DataRow row = BTPPlayer3Manager.TrainPlayer3(this.longPlayerID, this.intTrainType);
-                int num = (int)row["IsTrain"];
+                int num = (int) row["IsTrain"];
                 DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                int num2 = (int)playerRowByPlayerID["Speed"];
-                int num3 = (int)playerRowByPlayerID["Jump"];
-                int num4 = (int)playerRowByPlayerID["Strength"];
-                int num5 = (int)playerRowByPlayerID["Stamina"];
-                int num6 = (int)playerRowByPlayerID["Shot"];
-                int num7 = (int)playerRowByPlayerID["Point3"];
-                int num8 = (int)playerRowByPlayerID["Dribble"];
-                int num9 = (int)playerRowByPlayerID["Pass"];
-                int num10 = (int)playerRowByPlayerID["Rebound"];
-                int num11 = (int)playerRowByPlayerID["Steal"];
-                int num12 = (int)playerRowByPlayerID["Block"];
-                int num13 = (int)playerRowByPlayerID["Attack"];
-                int num14 = (int)playerRowByPlayerID["Defense"];
-                int num15 = (int)playerRowByPlayerID["Team"];
-                int num16 = (int)playerRowByPlayerID["SpeedMax"];
-                int num17 = (int)playerRowByPlayerID["JumpMax"];
-                int num18 = (int)playerRowByPlayerID["StrengthMax"];
-                int num19 = (int)playerRowByPlayerID["StaminaMax"];
-                int num20 = (int)playerRowByPlayerID["ShotMax"];
-                int num21 = (int)playerRowByPlayerID["Point3Max"];
-                int num22 = (int)playerRowByPlayerID["DribbleMax"];
-                int num23 = (int)playerRowByPlayerID["PassMax"];
-                int num24 = (int)playerRowByPlayerID["ReboundMax"];
-                int num25 = (int)playerRowByPlayerID["StealMax"];
-                int num26 = (int)playerRowByPlayerID["BlockMax"];
-                int num27 = (int)playerRowByPlayerID["AttackMax"];
-                int num28 = (int)playerRowByPlayerID["DefenseMax"];
-                int num29 = (int)playerRowByPlayerID["TeamMax"];
+                int num2 = (int) playerRowByPlayerID["Speed"];
+                int num3 = (int) playerRowByPlayerID["Jump"];
+                int num4 = (int) playerRowByPlayerID["Strength"];
+                int num5 = (int) playerRowByPlayerID["Stamina"];
+                int num6 = (int) playerRowByPlayerID["Shot"];
+                int num7 = (int) playerRowByPlayerID["Point3"];
+                int num8 = (int) playerRowByPlayerID["Dribble"];
+                int num9 = (int) playerRowByPlayerID["Pass"];
+                int num10 = (int) playerRowByPlayerID["Rebound"];
+                int num11 = (int) playerRowByPlayerID["Steal"];
+                int num12 = (int) playerRowByPlayerID["Block"];
+                int num13 = (int) playerRowByPlayerID["Attack"];
+                int num14 = (int) playerRowByPlayerID["Defense"];
+                int num15 = (int) playerRowByPlayerID["Team"];
+                int num16 = (int) playerRowByPlayerID["SpeedMax"];
+                int num17 = (int) playerRowByPlayerID["JumpMax"];
+                int num18 = (int) playerRowByPlayerID["StrengthMax"];
+                int num19 = (int) playerRowByPlayerID["StaminaMax"];
+                int num20 = (int) playerRowByPlayerID["ShotMax"];
+                int num21 = (int) playerRowByPlayerID["Point3Max"];
+                int num22 = (int) playerRowByPlayerID["DribbleMax"];
+                int num23 = (int) playerRowByPlayerID["PassMax"];
+                int num24 = (int) playerRowByPlayerID["ReboundMax"];
+                int num25 = (int) playerRowByPlayerID["StealMax"];
+                int num26 = (int) playerRowByPlayerID["BlockMax"];
+                int num27 = (int) playerRowByPlayerID["AttackMax"];
+                int num28 = (int) playerRowByPlayerID["DefenseMax"];
+                int num29 = (int) playerRowByPlayerID["TeamMax"];
                 switch (num)
                 {
                     case -1:
@@ -6185,15 +6571,15 @@
                         return;
 
                     case 1:
-                        {
-                            string str = row["PlayerName"].ToString().Trim();
-                            int num30 = (int)row["SpendPoint"];
-                            int num31 = (int)row["TrainAdd"];
-                            float num32 = ((float)num31) / 10f;
-                            int num33 = (int)row["PowerCut"];
-                            this.strSay = string.Concat(new object[] { "球员", str, "训练完毕，花费", num30, "点训练点数，提高", num32, "点", PlayerItem.GetPlayerChsTrainType(this.intTrainType), "能力值，消耗", num33, "体力！" });
-                            goto Label_0496;
-                        }
+                    {
+                        string str = row["PlayerName"].ToString().Trim();
+                        int num30 = (int) row["SpendPoint"];
+                        int num31 = (int) row["TrainAdd"];
+                        float num32 = ((float) num31) / 10f;
+                        int num33 = (int) row["PowerCut"];
+                        this.strSay = string.Concat(new object[] { "球员", str, "训练完毕，花费", num30, "点训练点数，提高", num32, "点", PlayerItem.GetPlayerChsTrainType(this.intTrainType), "能力值，消耗", num33, "体力！" });
+                        goto Label_0486;
+                    }
                 }
                 if ((((((num2 >= num16) && (this.intTrainType == 1)) || ((num3 >= num17) && (this.intTrainType == 2))) || (((num4 >= num18) && (this.intTrainType == 3)) || ((num5 >= num19) && (this.intTrainType == 4)))) || ((((num6 >= num20) && (this.intTrainType == 5)) || ((num7 >= num21) && (this.intTrainType == 6))) || (((num8 >= num22) && (this.intTrainType == 7)) || ((num9 >= num23) && (this.intTrainType == 8))))) || (((((num10 >= num24) && (this.intTrainType == 9)) || ((num11 >= num25) && (this.intTrainType == 10))) || (((num12 >= num26) && (this.intTrainType == 11)) || ((num13 >= num27) && (this.intTrainType == 12)))) || (((num14 >= num28) && (this.intTrainType == 13)) || ((num15 >= num29) && (this.intTrainType == 14)))))
                 {
@@ -6204,12 +6590,12 @@
                     this.strSay = this.strNickName + "经理，此球员的训练点数不够！";
                 }
             }
-        Label_0496:
+        Label_0486:
             this.btnOK.Visible = true;
             this.strBtnCancel = "";
-            if (((this.Session["PlayerNew"] == null) || (((long)this.Session["PlayerNew"]) != this.longPlayerID)) & (this.longPlayerID != 0L))
+            if (((this.Session["PlayerNew"] == null) || (((long) this.Session["PlayerNew"]) != this.longPlayerID)) & (this.longPlayerID != 0L))
             {
-                this.Session["TrainNew"] = ((int)this.Session["TrainNew"]) + 1;
+                this.Session["TrainNew"] = ((int) this.Session["TrainNew"]) + 1;
                 this.Session["PlayerNew"] = this.longPlayerID;
             }
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_NEWTRAINPLAYER3);
@@ -6227,7 +6613,7 @@
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
             if (accountRowByUserID != null)
             {
-                int num = (byte)accountRowByUserID["OldUser"];
+                int num = (byte) accountRowByUserID["OldUser"];
                 if (num == 1)
                 {
                     BTPAccountManager.GiveOldUserGift(this.intUserID);
@@ -6249,29 +6635,88 @@
         private void OnlyOneMatch()
         {
             this.tbSay.Visible = true;
-            string request = (string)SessionItem.GetRequest("PageType", 1);
-            if (!(request == "MATCHREG"))
+            string request = SessionItem.GetRequest("PageType", 1);
+            if (request == "MATCHREG")
             {
-                switch (request)
+                switch (((int) SessionItem.GetRequest("Status", 0)))
                 {
-                    case "MATCHGONO":
+                    case -8:
+                        this.strSay = "胜者为王赛场的开放时间为：10：00-24：00 请在开放时间内进行比赛。";
+                        break;
+
+                    case -7:
+                        this.strSay = "您的职业队中的可上场球员人数小于5名！";
+                        break;
+
+                    case -6:
+                        this.strSay = "报名额度应为 10-10000 游戏币！";
+                        break;
+
+                    case -5:
+                        this.strSay = "报名额度应为 10-10000 游戏币";
+                        break;
+
+                    case -4:
+                        this.strSay = "您有一场比赛正在进行中，无法进入胜者为王赛场！";
+                        break;
+
+                    case -3:
+                        this.strSay = "您还没有职业队，不能进入胜者为王赛场！";
+                        break;
+
+                    case -2:
+                        this.strSay = "您没有足够的游戏币来预支比赛奖金！";
+                        break;
+
+                    case -1:
+                        this.strSay = "报名额度应为 10-10000 游戏币！";
+                        break;
+
+                    case 1:
+                        this.strSay = "您已成功进入胜者为王赛场，系统将为您找到适合的对手！";
+                        break;
+
+                    case 2:
+                        this.strSay = "您已报名进入奖金赛场，请根据球队实力自行选择比赛对手！";
+                        break;
+                }
+                this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=1\";'>";
+            }
+            else
+            {
+                string str5 = request;
+                if (str5 != null)
+                {
+                    if (str5 == "MATCHGONO")
+                    {
+                        if (DateTime.Now.Hour < 10)
                         {
-                            if (DateTime.Now.Hour < 10)
-                            {
-                                this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=2\";'>";
-                                this.strSay = "胜者为王赛场的开放时间为：10：00-24：00 请在开放时间内进行比赛。";
-                                return;
-                            }
+                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=2\";'>";
+                            this.strSay = "胜者为王赛场的开放时间为：10：00-24：00 请在开放时间内进行比赛。";
+                        }
+                        else
+                        {
                             DataRow onlyOneMatchRow = BTPOnlyOneCenterReg.GetOnlyOneMatchRow(this.intUserID);
-                            if (onlyOneMatchRow != null)
+                            if (onlyOneMatchRow == null)
                             {
-                                byte num2 = (byte)onlyOneMatchRow["Status"];
-                                if (num2 == 5)
+                                this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=3\";'>";
+                                this.strSay = "对不起，您还没有在胜者为王赛场报名！";
+                            }
+                            else
+                            {
+                                byte num = (byte) onlyOneMatchRow["Status"];
+                                if (num != 5)
+                                {
+                                    this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=3\";'>";
+                                    this.strSay = "对不起，你还不能继续打下一场胜者为王比赛！";
+                                }
+                                else
                                 {
                                     switch (BTPOnlyOneCenterReg.OnlyOneMatchGoOn(this.intUserID))
                                     {
-                                        case 1:
-                                            base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
+                                        case -2:
+                                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=3\";'>";
+                                            this.strSay = "恭喜您，已经连胜9场了，不能再继续下一场比赛了，请退出赛场！";
                                             return;
 
                                         case -1:
@@ -6279,258 +6724,211 @@
                                             this.strSay = "对不起，你还不能继续打下一场胜者为王比赛！";
                                             return;
 
-                                        case -2:
-                                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=3\";'>";
-                                            this.strSay = "恭喜您，已经连胜9场了，不能再继续下一场比赛了，请退出赛场！";
+                                        case 1:
+                                            base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
                                             return;
                                     }
                                     this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=3\";'>";
                                     this.strSay = "对不起，你还不能继续打下一场胜者为王比赛！";
-                                    return;
                                 }
-                                this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=3\";'>";
-                                this.strSay = "对不起，你还不能继续打下一场胜者为王比赛！";
-                                return;
                             }
-                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=3\";'>";
-                            this.strSay = "对不起，您还没有在胜者为王赛场报名！";
-                            return;
                         }
-                    case "MATCHOUT":
+                    }
+                    else if (str5 == "MATCHOUT")
+                    {
+                        DataRow row2 = BTPOnlyOneCenterReg.GetOnlyOneMatchRow(this.intUserID);
+                        if (row2 == null)
                         {
-                            DataRow row2 = BTPOnlyOneCenterReg.GetOnlyOneMatchRow(this.intUserID);
-                            if (row2 != null)
+                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=4\";'>";
+                            this.strSay = "对不起，您还没有在胜者为王赛场报名！";
+                        }
+                        else
+                        {
+                            byte num2 = (byte) row2["Status"];
+                            DateTime time = (DateTime) row2["StatusTime"];
+                            if (((num2 != 6) && (num2 != 5)) && ((num2 != 0) || (time.AddMinutes(3.0) >= DateTime.Now)))
                             {
-                                byte num4 = (byte)row2["Status"];
-                                DateTime time = (DateTime)row2["StatusTime"];
-                                if (((num4 == 6) || (num4 == 5)) || ((num4 == 0) && (time.AddMinutes(3.0) < DateTime.Now)))
+                                this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=4\";'>";
+                                this.strSay = "对不起，你还不能退出胜者为王赛场！";
+                            }
+                            else
+                            {
+                                int num3 = (int) row2["Win"];
+                                int num4 = (int) row2["Box"];
+                                int num5 = (int) row2["Point"];
+                                int num6 = (int) row2["Reputation"];
+                                int num7 = (int) row2["Wealth"];
+                                int num8 = (int) row2["TopWealth"];
+                                int num9 = (int) row2["BackWealth"];
+                                bool flag = (bool) row2["OnlyPay"];
+                                this.btnOK.Visible = true;
+                                int num10 = 0;
+                                if ((num5 > 0) && ((num2 == 5) || ((num2 == 0) && (time.AddMinutes(3.0) < DateTime.Now))))
                                 {
-                                    int num5 = (int)row2["Win"];
-                                    int num6 = (int)row2["Box"];
-                                    int num7 = (int)row2["Point"];
-                                    int num8 = (int)row2["Reputation"];
-                                    int num9 = (int)row2["Wealth"];
-                                    int num10 = (int)row2["TopWealth"];
-                                    int num11 = (int)row2["BackWealth"];
-                                    bool flag = (bool)row2["OnlyPay"];
-                                    this.btnOK.Visible = true;
-                                    int num12 = 0;
-                                    if ((num7 > 0) && ((num4 == 5) || ((num4 == 0) && (time.AddMinutes(3.0) < DateTime.Now))))
+                                    object strSay;
+                                    if ((((num3 == 3) || (num3 == 6)) || (num3 == 9)) || (((num2 == 0) && (time.AddMinutes(3.0) < DateTime.Now)) && !flag))
                                     {
-                                        object strSay;
-                                        if ((((num5 == 3) || (num5 == 6)) || (num5 == 9)) || (((num4 == 0) && (time.AddMinutes(3.0) < DateTime.Now)) && !flag))
+                                        string str2 = "";
+                                        if (!flag)
                                         {
-                                            string str2 = "";
-                                            if (!flag)
+                                            str2 = "，您获得<font color=\"green\" style=\"font-size:16px\"><strong>+" + num5 + "</strong></font>积分";
+                                        }
+                                        if (flag)
+                                        {
+                                            num5 = 0;
+                                        }
+                                        if ((num2 == 0) && (time.AddMinutes(3.0) < DateTime.Now))
+                                        {
+                                            num10 = num7 + num8;
+                                            this.strSay = "系统无法帮您找到合适的对手" + str2;
+                                            strSay = this.strSay;
+                                            this.strSay = string.Concat(new object[] { strSay, "，奖金<font color=\"green\" style=\"font-size:16px\"><strong>+", num10, "</strong></font>游戏币" });
+                                            if (num6 > 0)
                                             {
-                                                str2 = "，您获得<font color=\"green\" style=\"font-size:16px\"><strong>+" + num7 + "</strong></font>积分";
-                                            }
-                                            if (flag)
-                                            {
-                                                num7 = 0;
-                                            }
-                                            if ((num4 == 0) && (time.AddMinutes(3.0) < DateTime.Now))
-                                            {
-                                                num12 = num9 + num10;
-                                                this.strSay = "系统无法帮您找到合适的对手" + str2;
                                                 strSay = this.strSay;
-                                                this.strSay = string.Concat(new object[] { strSay, "，奖金<font color=\"green\" style=\"font-size:16px\"><strong>+", num12, "</strong></font>游戏币" });
-                                                if (num8 > 0)
-                                                {
-                                                    strSay = this.strSay;
-                                                    this.strSay = string.Concat(new object[] { strSay, "，联盟威望<font color=\"green\" style=\"font-size:16px\"><strong>+", num8, "</strong></font>" });
-                                                }
-                                                strSay = this.strSay;
-                                                this.strSay = string.Concat(new object[] { strSay, "，疯狂豆腐<font color=\"green\" style=\"font-size:16px\"><strong>+", num6, "</strong></font>块" });
-                                                this.strSay = this.strSay + "！";
+                                                this.strSay = string.Concat(new object[] { strSay, "，联盟威望<font color=\"green\" style=\"font-size:16px\"><strong>+", num6, "</strong></font>" });
                                             }
-                                            else
-                                            {
-                                                num12 = num9 + num10;
-                                                this.strSay = string.Concat(new object[] { "恭喜您连胜了", num5, "场比赛", str2 });
-                                                strSay = this.strSay;
-                                                this.strSay = string.Concat(new object[] { strSay, "，奖金<font color=\"green\" style=\"font-size:16px\"><strong>+", num12, "</strong></font>游戏币" });
-                                                if (num8 > 0)
-                                                {
-                                                    strSay = this.strSay;
-                                                    this.strSay = string.Concat(new object[] { strSay, "，联盟威望<font color=\"green\" style=\"font-size:16px\"><strong>+", num8, "</strong></font>" });
-                                                }
-                                                strSay = this.strSay;
-                                                this.strSay = string.Concat(new object[] { strSay, "，疯狂豆腐<font color=\"green\" style=\"font-size:16px\"><strong>+", num6, "</strong></font>块" });
-                                                this.strSay = this.strSay + "！";
-                                            }
+                                            strSay = this.strSay;
+                                            this.strSay = string.Concat(new object[] { strSay, "，疯狂豆腐<font color=\"green\" style=\"font-size:16px\"><strong>+", num4, "</strong></font>块" });
+                                            this.strSay = this.strSay + "！";
                                         }
                                         else
                                         {
-                                            string str3 = "";
-                                            if (!flag)
-                                            {
-                                                str3 = "<font color=\"green\" style=\"font-size:16px\"><strong>+" + num7 + "</strong></font>积分，";
-                                            }
-                                            int num13 = (int)BTPParameterManager.GetParameterRow()["OnlyOnePercent"];
-                                            num12 = ((num9 * num13) / 100) + num10;
-                                            this.strSay = "您现在已经获得" + str3;
+                                            num10 = num7 + num8;
+                                            this.strSay = string.Concat(new object[] { "恭喜您连胜了", num3, "场比赛", str2 });
                                             strSay = this.strSay;
-                                            this.strSay = string.Concat(new object[] { strSay, "<font color=\"green\" style=\"font-size:16px\"><strong>+", num9 + num10, "</strong></font>奖金" });
-                                            if (num8 > 0)
+                                            this.strSay = string.Concat(new object[] { strSay, "，奖金<font color=\"green\" style=\"font-size:16px\"><strong>+", num10, "</strong></font>游戏币" });
+                                            if (num6 > 0)
                                             {
                                                 strSay = this.strSay;
-                                                this.strSay = string.Concat(new object[] { strSay, "，联盟威望<font color=\"green\" style=\"font-size:16px\"><strong>+", num8, "</strong></font>" });
+                                                this.strSay = string.Concat(new object[] { strSay, "，联盟威望<font color=\"green\" style=\"font-size:16px\"><strong>+", num6, "</strong></font>" });
                                             }
-                                            if (num12 < 1)
-                                            {
-                                                strSay = this.strSay;
-                                                this.strSay = string.Concat(new object[] { strSay, "，<font color=\"green\" style=\"font-size:16px\"><strong>+", num6, "</strong></font>块疯狂豆腐，如果现在退出赛场，您将一无所获！" });
-                                            }
-                                            else
-                                            {
-                                                strSay = this.strSay;
-                                                this.strSay = string.Concat(new object[] { strSay, "，<font color=\"green\" style=\"font-size:16px\"><strong>+", num6, "</strong></font>块疯狂豆腐，如果现在退出赛场，您只能获得", num12, "游戏币！" });
-                                            }
+                                            strSay = this.strSay;
+                                            this.strSay = string.Concat(new object[] { strSay, "，疯狂豆腐<font color=\"green\" style=\"font-size:16px\"><strong>+", num4, "</strong></font>块" });
+                                            this.strSay = this.strSay + "！";
                                         }
-                                    }
-                                    else if ((num4 == 0) && ((num7 == 0) || flag))
-                                    {
-                                        this.strSay = "系统未找到对手，您确定要退出吗？";
                                     }
                                     else
                                     {
-                                        string str4 = "";
-                                        if (num11 > 0)
+                                        string str3 = "";
+                                        if (!flag)
                                         {
-                                            str4 = "，损失" + num11 + "游戏币";
+                                            str3 = "<font color=\"green\" style=\"font-size:16px\"><strong>+" + num5 + "</strong></font>积分，";
                                         }
-                                        this.strSay = "您输掉了胜者为王的比赛" + str4 + "，确定退出吗？";
-                                        int num14 = BTPOnlyOneCenterReg.OnlyOneMatchOut(this.intUserID);
-                                        this.btnOK.Visible = false;
-                                        this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=1\";'>";
-                                        switch (num14)
+                                        int num11 = (int) BTPParameterManager.GetParameterRow()["OnlyOnePercent"];
+                                        num10 = ((num7 * num11) / 100) + num8;
+                                        this.strSay = "您现在已经获得" + str3;
+                                        strSay = this.strSay;
+                                        this.strSay = string.Concat(new object[] { strSay, "<font color=\"green\" style=\"font-size:16px\"><strong>+", num7 + num8, "</strong></font>奖金" });
+                                        if (num6 > 0)
                                         {
-                                            case 1:
-                                                base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
-                                                return;
-
-                                            case -1:
-                                                this.strSay = "对不起，你还不能退出胜者为王赛场！";
-                                                return;
+                                            strSay = this.strSay;
+                                            this.strSay = string.Concat(new object[] { strSay, "，联盟威望<font color=\"green\" style=\"font-size:16px\"><strong>+", num6, "</strong></font>" });
+                                        }
+                                        if (num10 < 1)
+                                        {
+                                            strSay = this.strSay;
+                                            this.strSay = string.Concat(new object[] { strSay, "，<font color=\"green\" style=\"font-size:16px\"><strong>+", num4, "</strong></font>块疯狂豆腐，如果现在退出赛场，您将一无所获！" });
+                                        }
+                                        else
+                                        {
+                                            strSay = this.strSay;
+                                            this.strSay = string.Concat(new object[] { strSay, "，<font color=\"green\" style=\"font-size:16px\"><strong>+", num4, "</strong></font>块疯狂豆腐，如果现在退出赛场，您只能获得", num10, "游戏币！" });
                                         }
                                     }
-                                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_ONLYMATCHOUT);
+                                }
+                                else if ((num2 == 0) && ((num5 == 0) || flag))
+                                {
+                                    this.strSay = "系统未找到对手，您确定要退出吗？";
+                                }
+                                else
+                                {
+                                    string str4 = "";
+                                    if (num9 > 0)
+                                    {
+                                        str4 = "，损失" + num9 + "游戏币";
+                                    }
+                                    this.strSay = "您输掉了胜者为王的比赛" + str4 + "，确定退出吗？";
+                                    int num12 = BTPOnlyOneCenterReg.OnlyOneMatchOut(this.intUserID);
+                                    this.btnOK.Visible = false;
+                                    this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=1\";'>";
+                                    switch (num12)
+                                    {
+                                        case -1:
+                                            this.strSay = "对不起，你还不能退出胜者为王赛场！";
+                                            return;
+
+                                        case 1:
+                                            base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
+                                            return;
+                                    }
+                                }
+                                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_ONLYMATCHOUT);
+                            }
+                        }
+                    }
+                    else if (str5 == "MATCHERROR")
+                    {
+                        this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=4\";'>";
+                        int num13 = SessionItem.GetRequest("Status", 0);
+                        if (num13 == 1)
+                        {
+                            this.strSay = "您在胜者为王中停留时间过长，系统已帮您自动退出！";
+                        }
+                        else
+                        {
+                            this.strSay = "您在胜者为王赛场等待时间过长，系统将为您重新分配对手！";
+                        }
+                    }
+                    else if (str5 == "ONLYPAYMATCH")
+                    {
+                        this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG\";'>";
+                        int intUserIDB = SessionItem.GetRequest("UserID", 0);
+                        switch (BTPOnlyOneCenterReg.SetOnlyPayMatch(this.intUserID, intUserIDB))
+                        {
+                            case -3:
+                                this.strSay = "您没有足够的游戏币！";
+                                return;
+
+                            case -2:
+                            {
+                                DataRow row3 = BTPOnlyOneCenterReg.GetOnlyOneMatchRow(intUserIDB);
+                                if (row3 == null)
+                                {
+                                    this.strSay = "对手没有在胜者为王赛场报名！";
                                     return;
                                 }
-                                this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=4\";'>";
-                                this.strSay = "对不起，你还不能退出胜者为王赛场！";
+                                int num15 = (int) row3["TopWealth"];
+                                this.strSay = "要挑战此对手，您的奖金额度将提高到 " + num15 + " 游戏币，确定要发起挑战吗？";
+                                this.btnOK.Visible = true;
+                                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_UPDATETOPWEALTH);
                                 return;
                             }
-                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=4\";'>";
-                            this.strSay = "对不起，您还没有在胜者为王赛场报名！";
-                            return;
-                        }
-                    case "MATCHERROR":
-                        {
-                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=4\";'>";
-                            int num15 = (int)SessionItem.GetRequest("Status", 0);
-                            if (num15 == 1)
-                            {
-                                this.strSay = "您在胜者为王中停留时间过长，系统已帮您自动退出！";
+                            case -1:
+                                this.strSay = "对方已经开始比赛，请选择其它对手！";
                                 return;
-                            }
-                            this.strSay = "您在胜者为王赛场等待时间过长，系统将为您重新分配对手！";
-                            return;
+
+                            case 0:
+                                return;
+
+                            case 1:
+                                base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
+                                return;
                         }
-                    case "ONLYPAYMATCH":
-                        {
-                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG\";'>";
-                            int intUserIDB = (int)SessionItem.GetRequest("UserID", 0);
-                            switch (BTPOnlyOneCenterReg.SetOnlyPayMatch(this.intUserID, intUserIDB))
-                            {
-                                case 1:
-                                    base.Response.Redirect("OnlyOneCenter.aspx?Type=MATCHREG");
-                                    return;
-
-                                case -1:
-                                    this.strSay = "对方已经开始比赛，请选择其它对手！";
-                                    return;
-
-                                case -2:
-                                    {
-                                        DataRow row3 = BTPOnlyOneCenterReg.GetOnlyOneMatchRow(intUserIDB);
-                                        if (row3 != null)
-                                        {
-                                            int num18 = (int)row3["TopWealth"];
-                                            this.strSay = "要挑战此对手，您的奖金额度将提高到 " + num18 + " 游戏币，确定要发起挑战吗？";
-                                            this.btnOK.Visible = true;
-                                            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_UPDATETOPWEALTH);
-                                            return;
-                                        }
-                                        this.strSay = "对手没有在胜者为王赛场报名！";
-                                        return;
-                                    }
-                                case -3:
-                                    this.strSay = "您没有足够的游戏币！";
-                                    return;
-                            }
-                            return;
-                        }
+                    }
                 }
-            }
-            else
-            {
-                switch (((int)SessionItem.GetRequest("Status", 0)))
-                {
-                    case 2:
-                        this.strSay = "您已报名进入奖金赛场，请根据球队实力自行选择比赛对手！";
-                        break;
-
-                    case 1:
-                        this.strSay = "您已成功进入胜者为王赛场，系统将为您找到适合的对手！";
-                        break;
-
-                    case -1:
-                        this.strSay = "报名额度应为 10-10000 游戏币！";
-                        break;
-
-                    case -2:
-                        this.strSay = "您没有足够的游戏币来预支比赛奖金！";
-                        break;
-
-                    case -3:
-                        this.strSay = "您还没有职业队，不能进入胜者为王赛场！";
-                        break;
-
-                    case -4:
-                        this.strSay = "您有一场比赛正在进行中，无法进入胜者为王赛场！";
-                        break;
-
-                    case -5:
-                        this.strSay = "报名额度应为 10-10000 游戏币";
-                        break;
-
-                    case -6:
-                        this.strSay = "报名额度应为 10-10000 游戏币！";
-                        break;
-
-                    case -7:
-                        this.strSay = "您的职业队中的可上场球员人数小于5名！";
-                        break;
-
-                    case -8:
-                        this.strSay = "胜者为王赛场的开放时间为：10：00-24：00 请在开放时间内进行比赛。";
-                        break;
-                }
-                this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"OnlyOneCenter.aspx?Type=MATCHREG&Status=1\";'>";
             }
         }
 
         private void Ordain()
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int intUnionID = (int)accountRowByUserID["UnionID"];
-            int num3 = (byte)accountRowByUserID["UnionCategory"];
+            int intUnionID = (int) accountRowByUserID["UnionID"];
+            int num3 = (byte) accountRowByUserID["UnionCategory"];
             DataRow row2 = BTPAccountManager.GetAccountRowByUserID(request);
-            int num4 = (int)row2["UnionID"];
-            int num5 = (byte)row2["UnionCategory"];
+            int num4 = (int) row2["UnionID"];
+            int num5 = (byte) row2["UnionCategory"];
             string str = row2["NickName"].ToString().Trim();
             if (BTPUnionManager.GetUManagerCount(intUnionID) > 7)
             {
@@ -6558,10 +6956,10 @@
 
         private void OrderSay()
         {
-            this.intType = (int)SessionItem.GetRequest("Category", 0);
-            this.intWealth = (int)SessionItem.GetRequest("Count", 0);
-            this.lgMoney = (long)SessionItem.GetRequest("Money", 3);
-            int request = (int)SessionItem.GetRequest("Wealth", 0);
+            this.intType = SessionItem.GetRequest("Category", 0);
+            this.intWealth = SessionItem.GetRequest("Count", 0);
+            this.lgMoney = SessionItem.GetRequest("Money", 3);
+            int request = SessionItem.GetRequest("Wealth", 0);
             if (this.intType == 1)
             {
                 if (this.intWealth < 1)
@@ -6611,15 +7009,15 @@
             DataRow delMasterRow = BTPUnionFieldManager.GegUnionFieldRowByUserID(this.intUserID);
             if (delMasterRow != null)
             {
-                int num = (byte)delMasterRow["Status"];
+                int num = (byte) delMasterRow["Status"];
                 int num2 = 0;
                 delMasterRow = BTPUnionPolity.GetDelMasterRow(this.intUnionID);
                 if (delMasterRow != null)
                 {
-                    int num3 = (byte)delMasterRow["Status"];
+                    int num3 = (byte) delMasterRow["Status"];
                     if (num3 == 1)
                     {
-                        num2 = (int)delMasterRow["CreateID"];
+                        num2 = (int) delMasterRow["CreateID"];
                     }
                 }
                 if (num2 == this.intUserID)
@@ -6643,10 +7041,10 @@
                 delMasterRow = BTPUnionPolity.GetDelMasterRow(this.intUnionID);
                 if (delMasterRow != null)
                 {
-                    int num5 = (byte)delMasterRow["Status"];
+                    int num5 = (byte) delMasterRow["Status"];
                     if (num5 == 1)
                     {
-                        num4 = (int)delMasterRow["CreateID"];
+                        num4 = (int) delMasterRow["CreateID"];
                     }
                 }
                 if (num4 == this.intUserID)
@@ -6668,10 +7066,10 @@
 
         private void Player3Bid()
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            long num = (long)accountRowByUserID["Money"];
-            int num2 = (byte)accountRowByUserID["Category"];
+            long num = (long) accountRowByUserID["Money"];
+            int num2 = (byte) accountRowByUserID["Category"];
             if ((num >= 0x493e0L) && (num2 != 5))
             {
                 this.strSay = this.strSay = this.strNickName + "经理，您已经有足够的资金，不必让此球员进行选秀！";
@@ -6683,12 +7081,12 @@
             else
             {
                 DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                int intClubID = (int)playerRowByPlayerID["ClubID"];
+                int intClubID = (int) playerRowByPlayerID["ClubID"];
                 DataRow row3 = BTPArrange3Manager.GetCheckArrange3(intClubID, this.longPlayerID);
                 string str = playerRowByPlayerID["Name"].ToString();
-                int num5 = (byte)playerRowByPlayerID["Age"];
-                this.intAbility = (int)playerRowByPlayerID["Ability"];
-                this.intPlayerCategory = (byte)playerRowByPlayerID["Category"];
+                int num4 = (byte) playerRowByPlayerID["Age"];
+                this.intAbility = (int) playerRowByPlayerID["Ability"];
+                this.intPlayerCategory = (byte) playerRowByPlayerID["Category"];
                 if (row3 != null)
                 {
                     this.strSay = this.strNickName + "经理您好，球员" + str + "处于阵容中，请将其移出阵容再设置选秀。";
@@ -6697,7 +7095,7 @@
                 {
                     this.strSay = this.strNickName + "经理，" + str + "正在拍卖中，请返回！";
                 }
-                else if (num5 < 20)
+                else if (num4 < 0x12)
                 {
                     this.strSay = this.strNickName + "经理，" + str + "年龄太小，不能参加选秀。";
                 }
@@ -6709,6 +7107,7 @@
                 {
                     this.tblPlayerBid.Visible = true;
                     this.tbBidPrice.Visible = false;
+                    this.tbBLock.Visible = true;
                     this.strBidMsg = "采用估拍方式";
                     if (!base.IsPostBack)
                     {
@@ -6718,8 +7117,8 @@
                         this.ddlEndBidTime.DataValueField = "Hours";
                         this.ddlEndBidTime.DataBind();
                     }
-                    int num6 = (byte)playerRowByPlayerID["Number"];
-                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定让", num6, "号球员", str, "参加职业选秀吗？" });
+                    int num5 = (byte) playerRowByPlayerID["Number"];
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定让", num5, "号球员", str, "参加职业选秀吗？" });
                     this.btnOK.Visible = true;
                     this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_PLAYER3BID);
                 }
@@ -6728,7 +7127,7 @@
 
         private void Player3Fire()
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             if (BTPPlayer3Manager.GetPlayer3CountByClubID(this.intClubID3) < 5)
             {
                 this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过少，您不能再将其下放！";
@@ -6736,7 +7135,7 @@
             else
             {
                 DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                int intClubID = (int)playerRowByPlayerID["ClubID"];
+                int intClubID = (int) playerRowByPlayerID["ClubID"];
                 string str = playerRowByPlayerID["Name"].ToString();
                 if (BTPArrange3Manager.GetCheckArrange3(intClubID, this.longPlayerID) != null)
                 {
@@ -6748,19 +7147,19 @@
                 }
                 else
                 {
-                    byte num1 = (byte)playerRowByPlayerID["Age"];
-                    byte num5 = (byte)playerRowByPlayerID["Pos"];
-                    float single1 = ((float)((int)playerRowByPlayerID["Ability"])) / 10f;
-                    int num6 = (int)playerRowByPlayerID["PV"];
-                    int num3 = (byte)playerRowByPlayerID["Category"];
-                    int num4 = (byte)playerRowByPlayerID["Number"];
-                    if (num3 != 1)
+                    byte num1 = (byte) playerRowByPlayerID["Age"];
+                    byte num4 = (byte) playerRowByPlayerID["Pos"];
+                    float single1 = ((float) ((int) playerRowByPlayerID["Ability"])) / 10f;
+                    int num5 = (int) playerRowByPlayerID["PV"];
+                    int num2 = (byte) playerRowByPlayerID["Category"];
+                    int num3 = (byte) playerRowByPlayerID["Number"];
+                    if (num2 != 1)
                     {
                         this.strSay = this.strNickName + "经理，" + str + "正在拍卖中，您不能将其下放。";
                     }
                     else
                     {
-                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，下放", num4, "号球员", str, "您可以得到大约为球员身价70%的补偿金。下放后，", str, "将离开XBA，不再为您的球队效命，您确定要将其下放吗？" });
+                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，下放", num3, "号球员", str, "您可以得到大约为球员身价70%的补偿金。下放后，", str, "将离开XBA，不再为您的球队效命，您确定要将其下放吗？" });
                         this.btnOK.Visible = true;
                         this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_PLAYER3FIRE);
                     }
@@ -6770,84 +7169,84 @@
 
         private void Player5Bid()
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             int num = BTPPlayer5Manager.GetPlayer5CountByClubID(this.intClubID5);
             DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
             if (playerRowByPlayerID == null)
             {
                 this.strSay = this.strNickName + "经理，拍卖的球员不存在。";
-                return;
-            }
-
-            int suspend = Convert.ToInt32(playerRowByPlayerID["Suspend"]);
-
-            if (((int)BTPClubManager.GetClubRowByID(this.intClubID5)["Devision"]) == 0)
-            {
-                this.strSay = this.strNickName + "经理，您还未进入职业联赛，无法拍卖职业球员。";
-            }
-            else if (num < 9 && suspend == 0)
-            {
-                this.strSay = string.Concat(new object[] { this.strNickName, "经理，现在", this.strClubName5, "中可上场比赛的球员只有", num, "个，您不能再将其挂牌出售！" });
             }
             else
             {
-                int intClubID = (int)playerRowByPlayerID["ClubID"];
-                string str = playerRowByPlayerID["Name"].ToString();
-                this.intPlayerCategory = (byte)playerRowByPlayerID["Category"];
-                int num4 = (int)playerRowByPlayerID["TeamDay"];
-                if (((bool)playerRowByPlayerID["IsRetire"]) && (BTPGameManager.GetTurn() > 0x17))
+                int num2 = Convert.ToInt32(playerRowByPlayerID["Suspend"]);
+                if (((int) BTPClubManager.GetClubRowByID(this.intClubID5)["Devision"]) == 0)
                 {
-                    this.strSay = this.strNickName + "经理您好，球员" + str + "即将在赛季末退役，无法挂牌出售。";
+                    this.strSay = this.strNickName + "经理，您还未进入职业联赛，无法拍卖职业球员。";
+                }
+                else if ((num < 9) && (num2 == 0))
+                {
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，现在", this.strClubName5, "中可上场比赛的球员只有", num, "个，您不能再将其挂牌出售！" });
                 }
                 else
                 {
-                    DataRow row3 = BTPArrange5Manager.GetCheckArrange5(intClubID, this.longPlayerID);
-                    long num6 = BTPPlayer5Manager.GetSellMoneyPlayer5(this.intUserID, this.longPlayerID);
-                    if (num6 < 1)
+                    int intClubID = (int) playerRowByPlayerID["ClubID"];
+                    string str = playerRowByPlayerID["Name"].ToString();
+                    this.intPlayerCategory = (byte) playerRowByPlayerID["Category"];
+                    int num4 = (int) playerRowByPlayerID["TeamDay"];
+                    if (((bool) playerRowByPlayerID["IsRetire"]) && (BTPGameManager.GetTurn() > 0x17))
                     {
-                        this.strSay = this.strNickName + "经理您好，球员" + str + "不在您队中效力，您无法将其买出。";
-                    }
-                    else if (row3 != null)
-                    {
-                        this.strSay = this.strNickName + "经理您好，球员" + str + "处于阵容中，请将其移出阵容再设置出售。";
-                    }
-                    else if (this.intPlayerCategory != 1)
-                    {
-                        this.strSay = this.strNickName + "经理，" + str + "正在拍卖中，请返回！";
-                    }
-                    else if (intClubID != this.intClubID5)
-                    {
-                        this.strSay = this.strNickName + "经理，" + str + "不是" + this.strClubName5 + "中的球员您无权将其出售。";
-                    }
-                    else if (num4 < 3)
-                    {
-                        this.strSay = this.strNickName + "经理，" + str + "在您的球队必须满3天才能出售！";
+                        this.strSay = this.strNickName + "经理您好，球员" + str + "即将在赛季末退役，无法挂牌出售。";
                     }
                     else
                     {
-                        this.strBidMsg = "";
-                        if (!base.IsPostBack)
+                        DataRow row2 = BTPArrange5Manager.GetCheckArrange5(intClubID, this.longPlayerID);
+                        long num5 = BTPPlayer5Manager.GetSellMoneyPlayer5(this.intUserID, this.longPlayerID);
+                        if (num5 < 1L)
                         {
-                            DataView view = new DataView(PlayerItem.GetEndBidTime());
-                            this.ddlEndBidTime5.DataSource = view;
-                            this.ddlEndBidTime5.DataTextField = "Hours";
-                            this.ddlEndBidTime5.DataValueField = "Hours";
-                            this.ddlEndBidTime5.DataBind();
+                            this.strSay = this.strNickName + "经理您好，球员" + str + "不在您队中效力，您无法将其买出。";
                         }
-                        DataRow parameterRow = BTPParameterManager.GetParameterRow();
-                        this.intCess = (int)parameterRow["Cess"];
-                        byte num1 = (byte)playerRowByPlayerID["Age"];
-                        byte num8 = (byte)playerRowByPlayerID["Pos"];
-                        float single1 = ((float)((int)playerRowByPlayerID["Ability"])) / 10f;
-                        this.intPV = (int)playerRowByPlayerID["PV"];
-                        this.intHeight = (byte)playerRowByPlayerID["Height"];
-                        int num7 = (byte)playerRowByPlayerID["Number"];
-                        MarketZone.GetZoneCode(BTPDevManager.GetDevCodeByUserID(this.intUserID));
-                        this.strPlayer5Name = str;
-                        this.intPlayer5Number = num7;
-                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定出售", num7, "号球员", str, "吗？<br>出售价为", num6 });
-                        this.btnOK.Visible = true;
-                        this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_PLAYER5BID);
+                        else if (row2 != null)
+                        {
+                            this.strSay = this.strNickName + "经理您好，球员" + str + "处于阵容中，请将其移出阵容再设置出售。";
+                        }
+                        else if (this.intPlayerCategory != 1)
+                        {
+                            this.strSay = this.strNickName + "经理，" + str + "正在拍卖中，请返回！";
+                        }
+                        else if (intClubID != this.intClubID5)
+                        {
+                            this.strSay = this.strNickName + "经理，" + str + "不是" + this.strClubName5 + "中的球员您无权将其出售。";
+                        }
+                        else if (num4 < 3)
+                        {
+                            this.strSay = this.strNickName + "经理，" + str + "在您的球队必须满3天才能出售！";
+                        }
+                        else
+                        {
+                            this.strBidMsg = "";
+                            if (!base.IsPostBack)
+                            {
+                                DataView view = new DataView(PlayerItem.GetEndBidTime());
+                                this.ddlEndBidTime5.DataSource = view;
+                                this.ddlEndBidTime5.DataTextField = "Hours";
+                                this.ddlEndBidTime5.DataValueField = "Hours";
+                                this.ddlEndBidTime5.DataBind();
+                            }
+                            DataRow parameterRow = BTPParameterManager.GetParameterRow();
+                            this.intCess = (int) parameterRow["Cess"];
+                            byte num1 = (byte) playerRowByPlayerID["Age"];
+                            byte num7 = (byte) playerRowByPlayerID["Pos"];
+                            float single1 = ((float) ((int) playerRowByPlayerID["Ability"])) / 10f;
+                            this.intPV = (int) playerRowByPlayerID["PV"];
+                            this.intHeight = (byte) playerRowByPlayerID["Height"];
+                            int num6 = (byte) playerRowByPlayerID["Number"];
+                            MarketZone.GetZoneCode(BTPDevManager.GetDevCodeByUserID(this.intUserID));
+                            this.strPlayer5Name = str;
+                            this.intPlayer5Number = num6;
+                            this.strSay = string.Concat(new object[] { this.strNickName, "经理，您确定出售", num6, "号球员", str, "吗？<br>出售价为", num5 });
+                            this.btnOK.Visible = true;
+                            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_PLAYER5BID);
+                        }
                     }
                 }
             }
@@ -6855,7 +7254,7 @@
 
         private void Player5Fire()
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             if (BTPPlayer5Manager.GetPlayer5CountByClubID(this.intClubID5) < 9)
             {
                 this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName5 + "中球员过少，您不能再将其下放！";
@@ -6863,7 +7262,7 @@
             else
             {
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                int intClubID = (int)playerRowByPlayerID["ClubID"];
+                int intClubID = (int) playerRowByPlayerID["ClubID"];
                 string str = playerRowByPlayerID["Name"].ToString();
                 if (BTPArrange5Manager.GetCheckArrange5(intClubID, this.longPlayerID) != null)
                 {
@@ -6875,19 +7274,19 @@
                 }
                 else
                 {
-                    byte num1 = (byte)playerRowByPlayerID["Age"];
-                    byte num6 = (byte)playerRowByPlayerID["Pos"];
-                    float single1 = ((float)((int)playerRowByPlayerID["Ability"])) / 10f;
-                    int num3 = (BTPPlayer5Manager.GetPlayer5Cost(this.longPlayerID) * 7) / 10;
-                    int num4 = (byte)playerRowByPlayerID["Category"];
-                    int num5 = (byte)playerRowByPlayerID["Number"];
-                    if (num4 != 1)
+                    byte num1 = (byte) playerRowByPlayerID["Age"];
+                    byte num5 = (byte) playerRowByPlayerID["Pos"];
+                    float single1 = ((float) ((int) playerRowByPlayerID["Ability"])) / 10f;
+                    int num2 = (BTPPlayer5Manager.GetPlayer5Cost(this.longPlayerID) * 7) / 10;
+                    int num3 = (byte) playerRowByPlayerID["Category"];
+                    int num4 = (byte) playerRowByPlayerID["Number"];
+                    if (num3 != 1)
                     {
                         this.strSay = this.strNickName + "经理，" + str + "正在拍卖中，您不能将其下放。";
                     }
                     else
                     {
-                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，下放", num5, "号球员", str, "您可以得到", num3, "元的补偿金。下放后，", str, "将离开XBA，不再为您的球队效命，您确定要将其下放吗？" });
+                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，下放", num4, "号球员", str, "您可以得到", num2, "元的补偿金。下放后，", str, "将离开XBA，不再为您的球队效命，您确定要将其下放吗？" });
                         this.btnOK.Visible = true;
                         this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_PLAYER5FIRE);
                     }
@@ -6898,14 +7297,14 @@
         private void PlayerContract()
         {
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            long request = (long)SessionItem.GetRequest("PID", 3);
-            int num2 = (int)SessionItem.GetRequest("Status", 0);
+            long request = SessionItem.GetRequest("PID", 3);
+            int num2 = SessionItem.GetRequest("Status", 0);
             if (accountRowByUserID != null)
             {
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(request);
-                int num3 = (int)accountRowByUserID["ClubID5"];
-                int num4 = (int)playerRowByPlayerID["ClubID"];
-                bool flag = (bool)playerRowByPlayerID["ContractType"];
+                int num3 = (int) accountRowByUserID["ClubID5"];
+                int num4 = (int) playerRowByPlayerID["ClubID"];
+                bool flag = (bool) playerRowByPlayerID["ContractType"];
                 if (num3 != num4)
                 {
                     this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?Type=5\";'>";
@@ -6914,9 +7313,9 @@
                 else if (num2 == 4)
                 {
                     this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?Type=5\";'>";
-                    int num5 = (int)BTPParameterManager.GetParameterRow()["VIPContract"];
-                    long longMoney = (long)accountRowByUserID["Money"];
-                    if (longMoney >= num5)
+                    int num5 = (int) BTPParameterManager.GetParameterRow()["VIPContract"];
+                    long num6 = (long) accountRowByUserID["Money"];
+                    if (num6 >= num5)
                     {
                         BTPPlayer5Manager.UpdateContractByPlayerID(request, 3, 4);
                         this.strSay = "本次续约成功！3轮之内该球员的工资要求为正常工资的80%！";
@@ -6959,16 +7358,16 @@
         private void Prearrange()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             DataRow devMRowByDevMatchID = BTPDevMatchManager.GetDevMRowByDevMatchID(request);
             if (devMRowByDevMatchID != null)
             {
-                int num2 = (int)devMRowByDevMatchID["ClubAID"];
-                int num3 = (int)devMRowByDevMatchID["ClubHID"];
+                int num2 = (int) devMRowByDevMatchID["ClubAID"];
+                int num3 = (int) devMRowByDevMatchID["ClubHID"];
                 string str = devMRowByDevMatchID["ArrangeH"].ToString().Trim();
                 string str2 = devMRowByDevMatchID["ArrangeA"].ToString().Trim();
                 int turn = BTPGameManager.GetTurn();
-                int num5 = (int)devMRowByDevMatchID["Round"];
+                int num5 = (int) devMRowByDevMatchID["Round"];
                 if ((num5 == (turn + 1)) || (num5 == (turn + 2)))
                 {
                     if (num2 == this.intClubID5)
@@ -7026,16 +7425,16 @@
         private void PrearrangeXBA()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Tag", 0);
+            int request = SessionItem.GetRequest("Tag", 0);
             DataRow xGroupMatchRowByID = BTPXGroupMatchManager.GetXGroupMatchRowByID(request);
             if (xGroupMatchRowByID != null)
             {
-                int num2 = (int)xGroupMatchRowByID["ClubBID"];
-                int num3 = (int)xGroupMatchRowByID["ClubAID"];
+                int num2 = (int) xGroupMatchRowByID["ClubBID"];
+                int num3 = (int) xGroupMatchRowByID["ClubAID"];
                 string str = xGroupMatchRowByID["ArrangeH"].ToString().Trim();
                 string str2 = xGroupMatchRowByID["ArrangeA"].ToString().Trim();
-                int num4 = (byte)xGroupMatchRowByID["Round"];
-                int num5 = (byte)BTPXGameManager.GetLastGameRowByCategory(1)["Round"];
+                int num4 = (byte) xGroupMatchRowByID["Round"];
+                int num5 = (byte) BTPXGameManager.GetLastGameRowByCategory(1)["Round"];
                 if ((num4 == num5) || (num4 == (num5 + 1)))
                 {
                     if (num2 == this.intClubID5)
@@ -7093,10 +7492,10 @@
         private void PrivateSkill()
         {
             DataRow playerRowByPlayerID;
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             this.tblShowSkill.Visible = true;
-            this.intCheckType = (int)SessionItem.GetRequest("CheckType", 0);
-            this.intType = (int)SessionItem.GetRequest("PlayerType", 0);
+            this.intCheckType = SessionItem.GetRequest("CheckType", 0);
+            this.intType = SessionItem.GetRequest("PlayerType", 0);
             if (this.intType == 3)
             {
                 playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
@@ -7105,8 +7504,8 @@
             {
                 playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
             }
-            int num = (int)playerRowByPlayerID["ClubID"];
-            this.intPlayerCategory = (byte)playerRowByPlayerID["Category"];
+            int num = (int) playerRowByPlayerID["ClubID"];
+            this.intPlayerCategory = (byte) playerRowByPlayerID["Category"];
             if (((this.intType == 3) && (num != this.intClubID3)) && (this.intPlayerCategory == 1))
             {
                 this.strToolMsg = "<p align='left' style=\"line-height:20px;\">此球员不在我们的球队中效力，无法了解他的潜力。</p>";
@@ -7131,53 +7530,63 @@
         private void QuickBuy()
         {
             this.tbSay.Visible = true;
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             this.CanUseTool(3);
             long num = this.CheckCanBid(3, 3);
             this.btnOK.Visible = false;
-            switch (num)
+            long num5 = num;
+            if ((num5 <= -3L) && (num5 >= -9L))
             {
-                case -3:
-                    this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                    return;
+                switch (((int) (num5 - -9L)))
+                {
+                    case 0:
+                        this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！(使用外挂购买球员将会导致永久禁止一口价球员)";
+                        BTPBidderManager.BidBlockRecord(this.intUserID);
+                        return;
 
-                case -4:
-                    this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                    return;
+                    case 1:
+                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                        return;
 
-                case -5:
-                    this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                    return;
+                    case 2:
+                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                        return;
 
-                case -6:
-                    this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                    return;
+                    case 3:
+                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                        return;
 
-                case -7:
-                    this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                    return;
+                    case 4:
+                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                        return;
 
-                case -8:
-                    this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                    return;
+                    case 5:
+                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                        return;
 
-                case -9:
-                    this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                    return;
+                    case 6:
+                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                        return;
+                }
             }
             this.strBidMsg = "采用估拍方式";
             DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-            long num2 = (int)playerRowByPlayerID["PV"];
-            long num3 = (long)playerRowByPlayerID["QuickBuy"];
+            long num2 = (int) playerRowByPlayerID["PV"];
+            long num3 = (long) playerRowByPlayerID["QuickBuy"];
+            long num4 = (int) playerRowByPlayerID["LockUserID"];
             if (num3 > 0L)
             {
                 this.strSay = this.strNickName + "经理，您好！这名球员已被其它经理购买！";
             }
+            else if ((num4 > 0L) && (num4 != this.intUserID))
+            {
+                this.strSay = this.strNickName + "经理，您好！这名球员使用一口绑定，您不可以对其出价！";
+            }
             else
             {
-                num2 *= 15000 + (this.longPlayerID % 50L);
+                num2 *= 0x3a98L + (this.longPlayerID % 50L);
                 playerRowByPlayerID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                this.lgMoney = (long)playerRowByPlayerID["Money"];
+                this.lgMoney = (long) playerRowByPlayerID["Money"];
                 if (this.lgMoney >= num2)
                 {
                     this.strSay = "您确定要花 " + num2 + " 资金来购买此球员？";
@@ -7196,8 +7605,8 @@
             DataRow playerRowByPlayerID;
             this.tbSay.Visible = true;
             this.trSafe.Visible = true;
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-            this.intType = (int)SessionItem.GetRequest("PlayerType", 0);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            this.intType = SessionItem.GetRequest("PlayerType", 0);
             if (this.intType == 3)
             {
                 playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
@@ -7209,7 +7618,7 @@
             if (playerRowByPlayerID != null)
             {
                 this.strPlayerName = playerRowByPlayerID["Name"].ToString().Trim();
-                this.intClubID = (int)playerRowByPlayerID["ClubID"];
+                this.intClubID = (int) playerRowByPlayerID["ClubID"];
             }
             else
             {
@@ -7229,8 +7638,8 @@
                 DataRow parameterRow = BTPParameterManager.GetParameterRow();
                 if (parameterRow != null)
                 {
-                    this.intRefashionCost = (int)parameterRow["RefashionCost"];
-                    this.intBadRefashion = (byte)parameterRow["BadRefashion"];
+                    this.intRefashionCost = (int) parameterRow["RefashionCost"];
+                    this.intBadRefashion = (byte) parameterRow["BadRefashion"];
                 }
                 else
                 {
@@ -7245,9 +7654,9 @@
 
         private void RefuseUnion()
         {
-            int request = (int)SessionItem.GetRequest("UnionID", 0);
-            int num = (int)SessionItem.GetRequest("UserID", 0);
-            int num2 = (int)SessionItem.GetRequest("MessageID", 0);
+            int request = SessionItem.GetRequest("UnionID", 0);
+            int num = SessionItem.GetRequest("UserID", 0);
+            int num2 = SessionItem.GetRequest("MessageID", 0);
             if (num == this.intUserID)
             {
                 this.strSay = this.strNickName + "经理，您是否拒绝加入该联盟？";
@@ -7263,11 +7672,11 @@
         private void RegCup()
         {
             this.tblRegCup.Visible = true;
-            this.intCupID = (int)SessionItem.GetRequest("CupID", 0);
+            this.intCupID = SessionItem.GetRequest("CupID", 0);
             DataRow cupRowByCupID = BTPCupManager.GetCupRowByCupID(this.intCupID);
             if (cupRowByCupID != null)
             {
-                int num = (byte)cupRowByCupID["Coin"];
+                int num = (byte) cupRowByCupID["Coin"];
                 this.strSay = "报名此杯赛将花费您<font color='red' style='font-size:14px;'><strong>" + num + "</strong></font>个金币，是否确认报名？";
                 this.btnOK.Visible = true;
                 this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_REGCUP);
@@ -7275,6 +7684,41 @@
             else
             {
                 this.strSay = "您所要报名的杯赛不存在。";
+            }
+        }
+
+        private void RegPoint3Match()
+        {
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            int request = SessionItem.GetRequest("Flg", 0);
+            if (BTPAccountManager.GetAccountRowByUserID(this.intUserID) == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else
+            {
+                DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
+                if (playerRowByPlayerID == null)
+                {
+                    this.strSay = "该球员不存在";
+                }
+                else if (Convert.ToInt32(playerRowByPlayerID["ClubID"]) != this.intClubID5)
+                {
+                    this.strSay = "该球员不在你队中";
+                }
+                else
+                {
+                    if (request == 1)
+                    {
+                        this.strSay = "你确定要报名试投吗?";
+                    }
+                    else
+                    {
+                        this.strSay = "你确定要报名比赛吗?";
+                    }
+                    this.btnOK.Visible = true;
+                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_RegPoint3Match);
+                }
             }
         }
 
@@ -7424,7 +7868,7 @@
         private void SearchAgain()
         {
             this.tbSay.Visible = true;
-            this.strSay = "再次搜索需要消费您100游戏币，您确定吗？";
+            this.strSay = "再次搜索需要消费您100游戏币，您确定吗？<br/>(优先使用活跃积分)";
             this.btnOK.Visible = true;
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SearchAgain);
         }
@@ -7432,8 +7876,8 @@
         private void SetAutoTrain()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Hours", 0);
-            int num2 = (int)SessionItem.GetRequest("DevH", 0);
+            int request = SessionItem.GetRequest("Hours", 0);
+            int num2 = SessionItem.GetRequest("DevH", 0);
             if ((request < 1) && (num2 < 1))
             {
                 this.strSay = "请设置正确的训练时间！";
@@ -7484,9 +7928,9 @@
 
         private void SetFocus()
         {
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
-            int intStatus = (int)SessionItem.GetRequest("Status", 0);
-            int intCategory = (int)SessionItem.GetRequest("Category", 0);
+            long request = SessionItem.GetRequest("PlayerID", 3);
+            int intStatus = SessionItem.GetRequest("Status", 0);
+            int intCategory = SessionItem.GetRequest("Category", 0);
             switch (BTPBidFocusManager.AddFocusValues(this.intUserID, request, intCategory, intStatus))
             {
                 case 0:
@@ -7505,90 +7949,89 @@
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETFOCUS);
         }
 
-        private void SetTrial()
-        {
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
-            switch (BTPPlayer5Manager.SetTrialPlayer(this.intUserID, request))
-            {
-                case 0:
-                    this.strSay = "该球员目前在其它队中试训";
-                    break;
-
-                case 1:
-                    this.strSay = "同时试训的球员不能超过两个";
-                    break;
-                case 3:
-                    this.strSay = "该球员目前已经有人对其选秀，不能再进行试训";
-                    break;
-
-                case 2:
-                    this.strSay = "邀请试训成功，该球员已经到您队中报到";
-                    break;
-                default:
-                    this.strSay = "邀请试训成功失败";
-                    break;
-            }
-            this.btnOK.Visible = true;
-            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETTRIAL);
-        }
-
-        private void UnSetTrial()
-        {
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
-            DataRow row = BTPArrange5Manager.GetCheckArrange5(this.intClubID5, request);
-            if (row != null)
-            {
-                this.strSay = "请将该试训球员从阵容中移出";
-                return;
-            }
-            if (BTPPlayer5Manager.UnSetTrialPlayer(this.intClubID5, request) == 1)
-            {
-                this.strSay = "该球员不在你试训";
-            }
-            else
-            {
-                this.strSay = "该球员已经离队";
-            }
-            this.btnOK.Visible = true;
-            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETTRIAL);
-        }
-
-
         private void SetHonor()
         {
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
-            switch (((int)SessionItem.GetRequest("Category", 0)))
+            long request = SessionItem.GetRequest("PlayerID", 3);
+            switch (((int) SessionItem.GetRequest("Category", 0)))
             {
                 case 3:
-                    {
-                        DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(request);
-                        string str = playerRowByPlayerID["Name"].ToString().Trim();
-                        this.blnIsHonor = (bool)playerRowByPlayerID["IsHonor"];
-                        this.strSay = "您确定要将球队" + this.strClubName3 + "中的球员" + str + "设置为荣誉球员么？";
-                        break;
-                    }
+                {
+                    DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(request);
+                    string str = playerRowByPlayerID["Name"].ToString().Trim();
+                    this.blnIsHonor = (bool) playerRowByPlayerID["IsHonor"];
+                    this.strSay = "您确定要将球队" + this.strClubName3 + "中的球员" + str + "设置为荣誉球员么？";
+                    break;
+                }
                 case 5:
-                    {
-                        DataRow row2 = BTPPlayer5Manager.GetPlayerRowByPlayerID(request);
-                        string str2 = row2["Name"].ToString().Trim();
-                        this.blnIsHonor = (bool)row2["IsHonor"];
-                        this.strSay = "您确定要将球队" + this.strClubName5 + "中的球员" + str2 + "设置为荣誉球员么？";
-                        break;
-                    }
+                {
+                    DataRow row2 = BTPPlayer5Manager.GetPlayerRowByPlayerID(request);
+                    string str2 = row2["Name"].ToString().Trim();
+                    this.blnIsHonor = (bool) row2["IsHonor"];
+                    this.strSay = "您确定要将球队" + this.strClubName5 + "中的球员" + str2 + "设置为荣誉球员么？";
+                    break;
+                }
             }
             this.tblOldPlayer.Visible = true;
             this.btnOK.Visible = true;
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETHONOR);
         }
 
+        private void SetNPC()
+        {
+            this.longNpcID = SessionItem.GetRequest("NpcID", 3);
+            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+            if (accountRowByUserID == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else
+            {
+                int num = Convert.ToInt32(accountRowByUserID["DayNpcMatchCount"]);
+                int num2 = Convert.ToInt32(accountRowByUserID["DayNpc7WinCount"]);
+                int num3 = Convert.ToInt32(accountRowByUserID["DayNpc8WinCount"]);
+                DataRow nPCRow = BTPNPCManager.GetNPCRow(this.longNpcID);
+                if (nPCRow == null)
+                {
+                    this.strSay = "经理，该球队不存在。";
+                }
+                else if ((this.longNpcID == 5L) && (num2 > Config.NpcHurenTimes()))
+                {
+                    this.strSay = "当日战胜湖人次数已超限制，不能挑战湖人队 。";
+                }
+                else if ((this.longNpcID == 6L) && (num3 > Config.NpcBuXinZheTimes()))
+                {
+                    this.strSay = "当日战胜步行者次数已超限制，不能挑战步行者队 。";
+                }
+                else
+                {
+                    string str = Convert.ToString(nPCRow["Name"]);
+                    this.strSay = "你确定要挑战" + str + "吗？";
+                    if (num >= Config.DayNpcFreeTimes())
+                    {
+                        int num5 = (Convert.ToInt32(nPCRow["Level"]) - 1) * 5;
+                        if (num5 > 30)
+                        {
+                            num5 = 30;
+                        }
+                        if (num5 > 0)
+                        {
+                            this.strSay = string.Concat(new object[] { this.strSay, "这将花费你", num5, "游戏币" });
+                        }
+                    }
+                    this.btnOK.Visible = true;
+                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETNPC);
+                }
+            }
+        }
+
         private void SetPosition()
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int num2 = (int)accountRowByUserID["UnionID"];
-            int num3 = (byte)accountRowByUserID["UnionCategory"];
+            int num2 = (int) accountRowByUserID["UnionID"];
+            int num3 = (byte) accountRowByUserID["UnionCategory"];
             DataRow row2 = BTPAccountManager.GetAccountRowByUserID(request);
-            int num4 = (int)row2["UnionID"];
+            int num4 = (int) row2["UnionID"];
             string str = row2["NickName"].ToString().Trim();
             if ((num2 == num4) && (num3 == 1))
             {
@@ -7608,6 +8051,35 @@
             }
         }
 
+        private void SetTrial()
+        {
+            long request = SessionItem.GetRequest("PlayerID", 3);
+            switch (BTPPlayer5Manager.SetTrialPlayer(this.intUserID, request))
+            {
+                case 0:
+                    this.strSay = "该球员目前在其它队中试训";
+                    break;
+
+                case 1:
+                    this.strSay = "同时试训的球员不能超过两个";
+                    break;
+
+                case 2:
+                    this.strSay = "邀请试训成功，该球员已经到您队中报到";
+                    break;
+
+                case 3:
+                    this.strSay = "该球员目前已经有人对其选秀，不能再进行试训";
+                    break;
+
+                default:
+                    this.strSay = "邀请试训成功失败";
+                    break;
+            }
+            this.btnOK.Visible = true;
+            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETTRIAL);
+        }
+
         private void SetUseStaff()
         {
             this.tbSay.Visible = true;
@@ -7619,10 +8091,9 @@
             }
             else
             {
-                this.intWealth = (int)accountRowByUserID["Wealth"];
-                int num = (int)BTPParameterManager.GetParameterRow()["UseStaffWealth"];
-                int num2 = num;
-                int request = (int)SessionItem.GetRequest("DevMatchID", 0);
+                this.intWealth = (int) accountRowByUserID["Wealth"];
+                int num2 = (int) BTPParameterManager.GetParameterRow()["UseStaffWealth"];
+                int request = SessionItem.GetRequest("DevMatchID", 0);
                 accountRowByUserID = BTPDevMatchManager.GetDevMRowByDevMatchID(request);
                 if (accountRowByUserID == null)
                 {
@@ -7630,10 +8101,10 @@
                 }
                 else
                 {
-                    int num4 = (int)accountRowByUserID["ClubHID"];
-                    int num5 = (int)accountRowByUserID["ClubAID"];
-                    bool flag = (bool)accountRowByUserID["UseStaffH"];
-                    bool flag2 = (bool)accountRowByUserID["UseStaffA"];
+                    int num4 = (int) accountRowByUserID["ClubHID"];
+                    int num5 = (int) accountRowByUserID["ClubAID"];
+                    bool flag = (bool) accountRowByUserID["UseStaffH"];
+                    bool flag2 = (bool) accountRowByUserID["UseStaffA"];
                     if ((num4 == this.intClubID5) || (num5 == this.intClubID5))
                     {
                         if (num4 == this.intClubID5)
@@ -7686,9 +8157,9 @@
 
         private void ShowSkill()
         {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
             this.tblShowSkill.Visible = true;
-            this.intCheckType = (int)SessionItem.GetRequest("CheckType", 0);
+            this.intCheckType = SessionItem.GetRequest("CheckType", 0);
             if (this.CanUseShowSkill() == 1)
             {
                 this.strToolMsg = "<p align='left'>您确定要对此球员使用潜力公告吗？使用后将会把此球员的潜力完全公开，所有的经理都将会看到此球员的潜力。</p>";
@@ -7702,6 +8173,21 @@
             }
         }
 
+        private void StarVote()
+        {
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            if (BTPAccountManager.GetAccountRowByUserID(this.intUserID) == null)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=12");
+            }
+            else
+            {
+                this.strSay = "你确定要将可贵的一票投给该名球员吗?";
+                this.btnOK.Visible = true;
+                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_STARVOTE);
+            }
+        }
+
         private void StreetChooseBid()
         {
             if ((this.intCategory != 2) && (this.intCategory != 5))
@@ -7710,40 +8196,44 @@
             }
             else
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
                 this.CanUseTool(3);
                 long num = this.CheckCanBid(3, 3);
                 int num2 = 0;
                 int num3 = 0;
-                switch (num)
+                long num4 = num;
+                if ((num4 <= -3L) && (num4 >= -9L))
                 {
-                    case -3:
-                        this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                        return;
+                    switch (((int) (num4 - -9L)))
+                    {
+                        case 0:
+                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                            return;
 
-                    case -4:
-                        this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                        return;
+                        case 1:
+                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                            return;
 
-                    case -5:
-                        this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                        return;
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
 
-                    case -6:
-                        this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                        return;
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
 
-                    case -7:
-                        this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                        return;
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
 
-                    case -8:
-                        this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                        return;
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
 
-                    case -9:
-                        this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                        return;
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                            return;
+                    }
                 }
                 this.tblFreeBid.Visible = true;
                 this.tbBidPrice.Visible = false;
@@ -7770,101 +8260,98 @@
         private void StreetFreeBid()
         {
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int num = (int)accountRowByUserID["Wealth"];
-            int num2 = (byte)accountRowByUserID["Category"];
-            if ((num2 != 1) && (num2 != 2) && false)
+            int num = (int) accountRowByUserID["Wealth"];
+            byte num1 = (byte) accountRowByUserID["Category"];
+            this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+            this.CanUseTool(1);
+            long num2 = this.CheckCanBid(3, 1);
+            int num3 = 0;
+            int num4 = 0;
+            int num5 = (int) BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID)["BidCount"];
+            if (num5 > 3)
             {
-                base.Response.Redirect("Report.aspx?Parameter=2");
+                num4 = (num5 - 3) * 2;
+                if (num4 > 50)
+                {
+                    num4 = 50;
+                }
+            }
+            if (num < this.intPayWealth)
+            {
+                this.strSay = this.strNickName + "经理，咱们俱乐部已经没有足够的游戏币了，可以先从论坛财富中取出一些。";
             }
             else
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-                this.CanUseTool(1);
-                long num3 = this.CheckCanBid(3, 1);
-                int num4 = 0;
-                int num5 = 0;
-                int num6 = (int)BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID)["BidCount"];
-                if (num6 > 3)
+                long num7 = num2;
+                if ((num7 <= -3L) && (num7 >= -9L))
                 {
-                    num5 = (num6 - 3) * 2;
-                    if (num5 > 50)
+                    switch (((int) (num7 - -9L)))
                     {
-                        num5 = 50;
-                    }
-                }
-                if (num < this.intPayWealth)
-                {
-                    this.strSay = this.strNickName + "经理，咱们俱乐部已经没有足够的游戏币了，可以先从论坛财富中取出一些。";
-                }
-                else
-                {
-                    switch (num3)
-                    {
-                        case -3:
-                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                        case 0:
+                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
                             return;
 
-                        case -4:
-                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                            return;
-
-                        case -5:
-                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                            return;
-
-                        case -6:
-                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                            return;
-
-                        case -7:
-                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                            return;
-
-                        case -8:
+                        case 1:
                             this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
                             return;
 
-                        case -9:
-                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                        case 2:
+                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                            return;
+
+                        case 3:
+                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                            return;
+
+                        case 4:
+                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                            return;
+
+                        case 5:
+                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                            return;
+
+                        case 6:
+                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
                             return;
                     }
-                    this.tblFreeBid.Visible = true;
-                    this.tbBidPrice.Visible = false;
-                    this.strBidMsg = "采用暗拍方式";
-                    long num7 = num3;
-                    num7 = (num7 / 2) + 0x1388;
-                    num7 /= 0x2710;
-                    if (num7 < 1)
-                    {
-                        num7 = 1;
-                    }
-                    if ((num4 == 0) && (num5 == 0))
-                    {
-                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，您好，对于这名球员，建议您出价在", num7, "万以上。" });
-                    }
-                    else if (this.intPayType == 1)
-                    {
-                        this.intPayWealth = 0;
-                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，您好，对于这名球员，建议您出价在", num7, "万以上。非会员将为此次出价付出", num5, "游戏币，您是会员无须缴纳游戏币。" });
-                    }
-                    else
-                    {
-                        this.intPayWealth = num5;
-                        this.strSay = string.Concat(new object[] { this.strNickName, "经理，您好，对于这名球员，建议您出价在", num7, "万以上。您将为此次出价付出", num5, "游戏币，会员免费。" });
-                    }
-                    this.btnOK.Visible = true;
-                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_STREETFREEBID);
                 }
+                this.tblFreeBid.Visible = true;
+                this.tbBidPrice.Visible = false;
+                this.strBidMsg = "采用暗拍方式";
+                long num6 = num2;
+                num6 = (num6 / 2L) + 0x1388L;
+                num6 /= 0x2710L;
+                if (num6 < 1L)
+                {
+                    num6 = 1L;
+                }
+                if ((num3 == 0) && (num4 == 0))
+                {
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您好，对于这名球员，建议您出价在", num6, "万以上。" });
+                }
+                else if (this.intPayType == 1)
+                {
+                    this.intPayWealth = 0;
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您好，对于这名球员，建议您出价在", num6, "万以上。非会员将为此次出价付出", num4, "游戏币，您是会员无须缴纳游戏币。" });
+                }
+                else
+                {
+                    this.intPayWealth = num4;
+                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，您好，对于这名球员，建议您出价在", num6, "万以上。您将为此次出价付出", num4, "游戏币，会员免费。" });
+                }
+                this.btnOK.Visible = true;
+                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_STREETFREEBID);
             }
         }
 
         private void TimeHouse()
         {
             this.tbSay.Visible = true;
-            long request = (long)SessionItem.GetRequest("PlayerID", 3);
-            int num = (int)BTPParameterManager.GetParameterRow()["TimeHouseWealth"];
+            long request = SessionItem.GetRequest("PlayerID", 3);
+            int num = (int) BTPParameterManager.GetParameterRow()["TimeHouseWealth"];
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            this.intWealth = (int)accountRowByUserID["Wealth"];
+            this.intWealth = (int) accountRowByUserID["Wealth"];
             if (this.intWealth < num)
             {
                 this.strSay = "您没有足够的游戏币，进入神之领域需要 " + num + " 游戏币！";
@@ -7880,16 +8367,11 @@
         private void TimeHouse5()
         {
             this.tbSay.Visible = true;
-            int request = (int)SessionItem.GetRequest("Status", 0);
-            long num2 = (long)SessionItem.GetRequest("PlayerID", 3);
+            int request = SessionItem.GetRequest("Status", 0);
+            long num2 = SessionItem.GetRequest("PlayerID", 3);
             this.strBtnCancel = string.Concat(new object[] { "<img src='", SessionItem.GetImageURL(), "button_11.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"PlayerCenter.aspx?PlayerType=5&Type=9&PlayerID=", num2, "\";'>" });
             switch (request)
             {
-                case 1:
-                    this.strSay = "您的球员参加极速特训结束，成长了一岁,请点击确定，并在右侧查看球员的成长情况！";
-                    base.Response.Write("<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=5&Kind=1&Check=1&PlayerID=" + num2 + "\";</script>");
-                    return;
-
                 case -4:
                     this.strSay = "对不起，您的游戏币不足！";
                     return;
@@ -7905,6 +8387,11 @@
                 case -1:
                     this.strSay = "对不起，您输入的训练轮次必须为26轮！";
                     return;
+
+                case 1:
+                    this.strSay = "您的球员参加极速特训结束，成长了一岁,请点击确定，并在右侧查看球员的成长情况！";
+                    base.Response.Write("<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=5&Kind=1&Check=1&PlayerID=" + num2 + "\";</script>");
+                    return;
             }
             this.strSay = "对不起，系统错误请再试一次！";
         }
@@ -7913,39 +8400,39 @@
         {
             if (!base.IsPostBack)
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-                this.intTrainType = (int)SessionItem.GetRequest("TrainType", 0);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+                this.intTrainType = SessionItem.GetRequest("TrainType", 0);
                 DataRow row = BTPPlayer3Manager.TrainPlayer3(this.longPlayerID, this.intTrainType);
-                int num = (int)row["IsTrain"];
+                int num = (int) row["IsTrain"];
                 DataRow playerRowByPlayerID = BTPPlayer3Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                int num2 = (int)playerRowByPlayerID["Speed"];
-                int num3 = (int)playerRowByPlayerID["Jump"];
-                int num4 = (int)playerRowByPlayerID["Strength"];
-                int num5 = (int)playerRowByPlayerID["Stamina"];
-                int num6 = (int)playerRowByPlayerID["Shot"];
-                int num7 = (int)playerRowByPlayerID["Point3"];
-                int num8 = (int)playerRowByPlayerID["Dribble"];
-                int num9 = (int)playerRowByPlayerID["Pass"];
-                int num10 = (int)playerRowByPlayerID["Rebound"];
-                int num11 = (int)playerRowByPlayerID["Steal"];
-                int num12 = (int)playerRowByPlayerID["Block"];
-                int num13 = (int)playerRowByPlayerID["Attack"];
-                int num14 = (int)playerRowByPlayerID["Defense"];
-                int num15 = (int)playerRowByPlayerID["Team"];
-                int num16 = (int)playerRowByPlayerID["SpeedMax"];
-                int num17 = (int)playerRowByPlayerID["JumpMax"];
-                int num18 = (int)playerRowByPlayerID["StrengthMax"];
-                int num19 = (int)playerRowByPlayerID["StaminaMax"];
-                int num20 = (int)playerRowByPlayerID["ShotMax"];
-                int num21 = (int)playerRowByPlayerID["Point3Max"];
-                int num22 = (int)playerRowByPlayerID["DribbleMax"];
-                int num23 = (int)playerRowByPlayerID["PassMax"];
-                int num24 = (int)playerRowByPlayerID["ReboundMax"];
-                int num25 = (int)playerRowByPlayerID["StealMax"];
-                int num26 = (int)playerRowByPlayerID["BlockMax"];
-                int num27 = (int)playerRowByPlayerID["AttackMax"];
-                int num28 = (int)playerRowByPlayerID["DefenseMax"];
-                int num29 = (int)playerRowByPlayerID["TeamMax"];
+                int num2 = (int) playerRowByPlayerID["Speed"];
+                int num3 = (int) playerRowByPlayerID["Jump"];
+                int num4 = (int) playerRowByPlayerID["Strength"];
+                int num5 = (int) playerRowByPlayerID["Stamina"];
+                int num6 = (int) playerRowByPlayerID["Shot"];
+                int num7 = (int) playerRowByPlayerID["Point3"];
+                int num8 = (int) playerRowByPlayerID["Dribble"];
+                int num9 = (int) playerRowByPlayerID["Pass"];
+                int num10 = (int) playerRowByPlayerID["Rebound"];
+                int num11 = (int) playerRowByPlayerID["Steal"];
+                int num12 = (int) playerRowByPlayerID["Block"];
+                int num13 = (int) playerRowByPlayerID["Attack"];
+                int num14 = (int) playerRowByPlayerID["Defense"];
+                int num15 = (int) playerRowByPlayerID["Team"];
+                int num16 = (int) playerRowByPlayerID["SpeedMax"];
+                int num17 = (int) playerRowByPlayerID["JumpMax"];
+                int num18 = (int) playerRowByPlayerID["StrengthMax"];
+                int num19 = (int) playerRowByPlayerID["StaminaMax"];
+                int num20 = (int) playerRowByPlayerID["ShotMax"];
+                int num21 = (int) playerRowByPlayerID["Point3Max"];
+                int num22 = (int) playerRowByPlayerID["DribbleMax"];
+                int num23 = (int) playerRowByPlayerID["PassMax"];
+                int num24 = (int) playerRowByPlayerID["ReboundMax"];
+                int num25 = (int) playerRowByPlayerID["StealMax"];
+                int num26 = (int) playerRowByPlayerID["BlockMax"];
+                int num27 = (int) playerRowByPlayerID["AttackMax"];
+                int num28 = (int) playerRowByPlayerID["DefenseMax"];
+                int num29 = (int) playerRowByPlayerID["TeamMax"];
                 base.Response.Write("<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=3&Kind=1&Check=1&PlayerID=" + this.longPlayerID + "\";</script>");
                 this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_48.GIF' width='40' height='24' style='cursor:pointer' onclick='javascript:window.location=\"TrainPlayerCenter.aspx?Type=3\";'>";
                 switch (num)
@@ -7955,19 +8442,19 @@
                         return;
 
                     case 1:
-                        {
-                            string str = row["PlayerName"].ToString().Trim();
-                            int num30 = (int)row["SpendPoint"];
-                            int num31 = (int)row["TrainAdd"];
-                            float num32 = ((float)num31) / 10f;
-                            int num33 = (int)row["PowerCut"];
-                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"TrainPlayerCenter.aspx?Type=3\";'>";
-                            this.strSay = string.Concat(new object[] { "球员", str, "训练完毕，花费", num30, "点训练点数，提高", num32, "点", PlayerItem.GetPlayerChsTrainType(this.intTrainType), "能力值，消耗", num33, "体力！<br><br><p align='center' style='color:red'>进入“理疗中心”可恢复球员状态！</p>" });
-                            this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_ag.gif";
-                            this.btnOK.Width = 70;
-                            this.btnOK.Visible = true;
-                            goto Label_0542;
-                        }
+                    {
+                        string str = row["PlayerName"].ToString().Trim();
+                        int num30 = (int) row["SpendPoint"];
+                        int num31 = (int) row["TrainAdd"];
+                        float num32 = ((float) num31) / 10f;
+                        int num33 = (int) row["PowerCut"];
+                        this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"TrainPlayerCenter.aspx?Type=3\";'>";
+                        this.strSay = string.Concat(new object[] { "球员", str, "训练完毕，花费", num30, "点训练点数，提高", num32, "点", PlayerItem.GetPlayerChsTrainType(this.intTrainType), "能力值，消耗", num33, "体力！<br><br><p align='center' style='color:red'>进入“理疗中心”可恢复球员状态！</p>" });
+                        this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_ag.gif";
+                        this.btnOK.Width = 70;
+                        this.btnOK.Visible = true;
+                        goto Label_0532;
+                    }
                     case 2:
                         this.strSay = this.strNickName + "经理，此球员的体力不足，无法进行训练了！";
                         return;
@@ -7980,7 +8467,7 @@
                 this.strSay = this.strNickName + "经理，此球员的训练点数不够！";
                 return;
             }
-        Label_0542:
+        Label_0532:
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_TRAINPLAYER3);
         }
 
@@ -7988,39 +8475,39 @@
         {
             if (!base.IsPostBack)
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-                this.intTrainType = (int)SessionItem.GetRequest("TrainType", 0);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+                this.intTrainType = SessionItem.GetRequest("TrainType", 0);
                 DataRow row = BTPPlayer5Manager.TrainPlayer5ByPoint(this.longPlayerID, this.intTrainType);
-                int num = (int)row["IsTrain"];
+                int num = (int) row["IsTrain"];
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-                int num2 = (int)playerRowByPlayerID["Speed"];
-                int num3 = (int)playerRowByPlayerID["Jump"];
-                int num4 = (int)playerRowByPlayerID["Strength"];
-                int num5 = (int)playerRowByPlayerID["Stamina"];
-                int num6 = (int)playerRowByPlayerID["Shot"];
-                int num7 = (int)playerRowByPlayerID["Point3"];
-                int num8 = (int)playerRowByPlayerID["Dribble"];
-                int num9 = (int)playerRowByPlayerID["Pass"];
-                int num10 = (int)playerRowByPlayerID["Rebound"];
-                int num11 = (int)playerRowByPlayerID["Steal"];
-                int num12 = (int)playerRowByPlayerID["Block"];
-                int num13 = (int)playerRowByPlayerID["Attack"];
-                int num14 = (int)playerRowByPlayerID["Defense"];
-                int num15 = (int)playerRowByPlayerID["Team"];
-                int num16 = (int)playerRowByPlayerID["SpeedMax"];
-                int num17 = (int)playerRowByPlayerID["JumpMax"];
-                int num18 = (int)playerRowByPlayerID["StrengthMax"];
-                int num19 = (int)playerRowByPlayerID["StaminaMax"];
-                int num20 = (int)playerRowByPlayerID["ShotMax"];
-                int num21 = (int)playerRowByPlayerID["Point3Max"];
-                int num22 = (int)playerRowByPlayerID["DribbleMax"];
-                int num23 = (int)playerRowByPlayerID["PassMax"];
-                int num24 = (int)playerRowByPlayerID["ReboundMax"];
-                int num25 = (int)playerRowByPlayerID["StealMax"];
-                int num26 = (int)playerRowByPlayerID["BlockMax"];
-                int num27 = (int)playerRowByPlayerID["AttackMax"];
-                int num28 = (int)playerRowByPlayerID["DefenseMax"];
-                int num29 = (int)playerRowByPlayerID["TeamMax"];
+                int num2 = (int) playerRowByPlayerID["Speed"];
+                int num3 = (int) playerRowByPlayerID["Jump"];
+                int num4 = (int) playerRowByPlayerID["Strength"];
+                int num5 = (int) playerRowByPlayerID["Stamina"];
+                int num6 = (int) playerRowByPlayerID["Shot"];
+                int num7 = (int) playerRowByPlayerID["Point3"];
+                int num8 = (int) playerRowByPlayerID["Dribble"];
+                int num9 = (int) playerRowByPlayerID["Pass"];
+                int num10 = (int) playerRowByPlayerID["Rebound"];
+                int num11 = (int) playerRowByPlayerID["Steal"];
+                int num12 = (int) playerRowByPlayerID["Block"];
+                int num13 = (int) playerRowByPlayerID["Attack"];
+                int num14 = (int) playerRowByPlayerID["Defense"];
+                int num15 = (int) playerRowByPlayerID["Team"];
+                int num16 = (int) playerRowByPlayerID["SpeedMax"];
+                int num17 = (int) playerRowByPlayerID["JumpMax"];
+                int num18 = (int) playerRowByPlayerID["StrengthMax"];
+                int num19 = (int) playerRowByPlayerID["StaminaMax"];
+                int num20 = (int) playerRowByPlayerID["ShotMax"];
+                int num21 = (int) playerRowByPlayerID["Point3Max"];
+                int num22 = (int) playerRowByPlayerID["DribbleMax"];
+                int num23 = (int) playerRowByPlayerID["PassMax"];
+                int num24 = (int) playerRowByPlayerID["ReboundMax"];
+                int num25 = (int) playerRowByPlayerID["StealMax"];
+                int num26 = (int) playerRowByPlayerID["BlockMax"];
+                int num27 = (int) playerRowByPlayerID["AttackMax"];
+                int num28 = (int) playerRowByPlayerID["DefenseMax"];
+                int num29 = (int) playerRowByPlayerID["TeamMax"];
                 base.Response.Write("<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=5&Kind=1&Check=1&PlayerID=" + this.longPlayerID + "\";</script>");
                 this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_48.GIF' width='40' height='24' style='cursor:pointer' onclick='javascript:window.location=\"TrainPlayerCenter.aspx?Type=5\";'>";
                 switch (num)
@@ -8030,19 +8517,19 @@
                         return;
 
                     case 1:
-                        {
-                            string str = row["PlayerName"].ToString().Trim();
-                            int num30 = (int)row["SpendPoint"];
-                            int num31 = (int)row["TrainAdd"];
-                            float num32 = ((float)num31) / 10f;
-                            int num33 = (int)row["PowerCut"];
-                            this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"TrainPlayerCenter.aspx?Type=5\";'>";
-                            this.strSay = string.Concat(new object[] { "球员", str, "训练完毕，花费", num30, "点训练点数，提高", num32, "点", PlayerItem.GetPlayerChsTrainType(this.intTrainType), "能力值，消耗", num33, "体力！<br><br><p align='center' style='color:red'>进入“理疗中心”可恢复球员状态！</p>" });
-                            this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_ag.gif";
-                            this.btnOK.Width = 70;
-                            this.btnOK.Visible = true;
-                            goto Label_0542;
-                        }
+                    {
+                        string str = row["PlayerName"].ToString().Trim();
+                        int num30 = (int) row["SpendPoint"];
+                        int num31 = (int) row["TrainAdd"];
+                        float num32 = ((float) num31) / 10f;
+                        int num33 = (int) row["PowerCut"];
+                        this.strBtnCancel = "<img src='" + SessionItem.GetImageURL() + "button_13.GIF' width='40' height='24' style='CURSOR: hand' onclick='javascript:window.location=\"TrainPlayerCenter.aspx?Type=5\";'>";
+                        this.strSay = string.Concat(new object[] { "球员", str, "训练完毕，花费", num30, "点训练点数，提高", num32, "点", PlayerItem.GetPlayerChsTrainType(this.intTrainType), "能力值，消耗", num33, "体力！<br><br><p align='center' style='color:red'>进入“理疗中心”可恢复球员状态！</p>" });
+                        this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_ag.gif";
+                        this.btnOK.Width = 70;
+                        this.btnOK.Visible = true;
+                        goto Label_0532;
+                    }
                     case 2:
                         this.strSay = this.strNickName + "经理，此球员的体力不足，无法进行训练了！";
                         return;
@@ -8055,19 +8542,19 @@
                 this.strSay = this.strNickName + "经理，此球员的训练点数不够！";
                 return;
             }
-        Label_0542:
+        Label_0532:
             this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_TRAINPLAYER5);
         }
 
         private void Unchain()
         {
-            int request = (int)SessionItem.GetRequest("UserID", 0);
+            int request = SessionItem.GetRequest("UserID", 0);
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int num2 = (int)accountRowByUserID["UnionID"];
-            int num3 = (byte)accountRowByUserID["UnionCategory"];
+            int num2 = (int) accountRowByUserID["UnionID"];
+            int num3 = (byte) accountRowByUserID["UnionCategory"];
             DataRow row2 = BTPAccountManager.GetAccountRowByUserID(request);
-            int num4 = (int)row2["UnionID"];
-            int num5 = (byte)row2["UnionCategory"];
+            int num4 = (int) row2["UnionID"];
+            int num5 = (byte) row2["UnionCategory"];
             string str = row2["NickName"].ToString().Trim();
             if ((num3 != 1) && (num3 != 2))
             {
@@ -8100,8 +8587,8 @@
         private void UnlayUnion()
         {
             DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            int intUnionID = (int)accountRowByUserID["UnionID"];
-            int num2 = (byte)accountRowByUserID["UnionCategory"];
+            int intUnionID = (int) accountRowByUserID["UnionID"];
+            int num2 = (byte) accountRowByUserID["UnionCategory"];
             if ((BTPUnionManager.GetUnionUserCountByID(intUnionID) == 1) && (num2 == 1))
             {
                 if (BTPUnionFieldManager.GetUnionFieldRowByUnionID(intUnionID) < 1)
@@ -8121,16 +8608,38 @@
             }
         }
 
+        private void UnSetTrial()
+        {
+            long request = SessionItem.GetRequest("PlayerID", 3);
+            if (BTPArrange5Manager.GetCheckArrange5(this.intClubID5, request) != null)
+            {
+                this.strSay = "请将该试训球员从阵容中移出";
+            }
+            else
+            {
+                if (BTPPlayer5Manager.UnSetTrialPlayer(this.intClubID5, request) == 1)
+                {
+                    this.strSay = "该球员不在你试训";
+                }
+                else
+                {
+                    this.strSay = "该球员已经离队";
+                }
+                this.btnOK.Visible = true;
+                this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETTRIAL);
+            }
+        }
+
         private void UpdatePrice()
         {
-            int num = (byte)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Category"];
+            int num = (byte) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Category"];
             if (num != 1)
             {
                 base.Response.Redirect("Report.aspx?Parameter=698");
             }
             else if (!BTPClubManager.HasBuyClub(this.intUserID))
             {
-                int request = (int)SessionItem.GetRequest("ClubID", 0);
+                int request = SessionItem.GetRequest("ClubID", 0);
                 DataRow clubRowByID = BTPClubManager.GetClubRowByID(request);
                 clubRowByID["Name"].ToString().Trim();
                 long num3 = Convert.ToInt64(clubRowByID["Price"]);
@@ -8148,7 +8657,7 @@
         {
             string str = "";
             int num = 0;
-            switch (((byte)BTPStadiumManager.GetStadiumRowByUserID(this.intUserID)["Levels"]))
+            switch (((byte) BTPStadiumManager.GetStadiumRowByUserID(this.intUserID)["Levels"]))
             {
                 case 1:
                     str = "本次升级您需要花费10000的球队资金，3轮比赛时间。";
@@ -8184,7 +8693,7 @@
                     base.Response.Redirect("Report.aspx?Parameter=1");
                     break;
             }
-            long num2 = (long)BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Money"];
+            long num2 = (long) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Money"];
             if (num2 < num)
             {
                 this.strSay = this.strNickName + "经理您好，您的资金不足以升级球场。";
@@ -8213,20 +8722,21 @@
             }
             else
             {
-                this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-                this.intMarket = (int)SessionItem.GetRequest("Market", 0);
+                this.longPlayerID = SessionItem.GetRequest("PlayerID", 3);
+                this.intMarket = SessionItem.GetRequest("Market", 0);
                 this.CanUseTool(this.intMarket);
                 DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
                 if ((this.intMarket == 4) || (this.intMarket == 6))
                 {
-                    DateTime time = (DateTime)playerRowByPlayerID["EndBidTime"];
+                    DateTime time = (DateTime) playerRowByPlayerID["EndBidTime"];
                     int day = DateTime.Now.Day;
                     int num2 = time.Day;
-                    if ((day >= num2) && ((DateTime.Now.Hour - time.Hour) >= 5))
+                    if (day >= num2)
                     {
+                        int num1 = DateTime.Now.Hour - time.Hour;
                     }
                 }
-                bool flag = (bool)playerRowByPlayerID["SellAss"];
+                bool flag = (bool) playerRowByPlayerID["SellAss"];
                 string str = playerRowByPlayerID["Name"].ToString().Trim();
                 if (flag && (this.intPayType != 1))
                 {
@@ -8235,46 +8745,50 @@
                 else
                 {
                     long num3 = this.CheckCanBid(5, 4);
-                    switch (num3)
+                    long num6 = num3;
+                    if ((num6 <= -3L) && (num6 >= -10L))
                     {
-                        case -3:
-                            this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
-                            return;
+                        switch (((int) (num6 - -10L)))
+                        {
+                            case 0:
+                                this.strSay = this.strNickName + "经理，您好！此球员无法跨等级进行转会！";
+                                return;
 
-                        case -4:
-                            this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
-                            return;
+                            case 1:
+                                this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
+                                return;
 
-                        case -5:
-                            this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
-                            return;
+                            case 2:
+                                this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
+                                return;
 
-                        case -6:
-                            this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
-                            return;
+                            case 3:
+                                this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
+                                return;
 
-                        case -7:
-                            this.strSay = this.strNickName + "经理，您好！这是咱们俱乐部中的球员，您将无法向其出价。";
-                            return;
+                            case 4:
+                                this.strSay = this.strNickName + "经理，您好！这名球员的拍卖时间已过，无法再出价了。";
+                                return;
 
-                        case -8:
-                            this.strSay = this.strNickName + "经理，您好！您已经委托我对另一个球员进行出价了。";
-                            return;
+                            case 5:
+                                this.strSay = this.strNickName + "经理，您好！您在转会市场已经有过拍卖记录，您不能再举牌了，请等待上次拍卖结束。";
+                                return;
 
-                        case -9:
-                            this.strSay = this.strNickName + "经理，您好！这名球员不在拍卖中！";
-                            return;
+                            case 6:
+                                this.strSay = this.strNickName + "经理，您好！您不能对此球员出价，请选择其他球员。";
+                                return;
 
-                        case -10:
-                            this.strSay = this.strNickName + "经理，您好！此球员无法跨等级进行转会！";
-                            return;
+                            case 7:
+                                this.strSay = this.strNickName + "经理，您好！现在" + this.strClubName3 + "中球员过多，您不能再购买球员了！";
+                                return;
+                        }
                     }
                     this.tblFreeBid.Visible = true;
                     this.tbBidPrice.Visible = false;
                     this.strBidMsg = "采用明拍方式";
-                    long num4 = (num3 * 0x66) / 100;
+                    long num4 = (num3 * 0x66L) / 100L;
                     this.strSay = string.Concat(new object[] { this.strNickName, "经理，此次竞拍您至少需要出价", num4, "。" });
-                    int num5 = (byte)Global.drParameter["Duty"];
+                    int num5 = (byte) Global.drParameter["Duty"];
                     if (num5 > 0)
                     {
                         object strSay = this.strSay;
@@ -8285,450 +8799,6 @@
                 }
             }
         }
-
-        /*买入股票*/
-
-        private void BuyStock()
-        {
-            this.intStockUserID = (int)SessionItem.GetRequest("StockUserID", 0);
-            DataRow stockUserRow = BTPAccountManager.GetAccountRowByUserID(this.intStockUserID);
-
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            if (accountRowByUserID == null)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=12");
-            }
-            else
-            {
-                this.lgMoney = (long)accountRowByUserID["Money"];
-            }
-
-            if (intStockUserID <= 0 || stockUserRow == null)
-            {
-                this.strSay = this.strNickName + "经理，您好！请确认要购入的股票！";
-            }
-            else
-            {
-                string stockUserName = (string)stockUserRow["NickName"];
-                int intPayType = Convert.ToInt32(stockUserRow["PayType"]);
-                int intTeamDay = BTPStockManager.GetStockTeamDay(this.intUserID, intStockUserID);
-                int price = BTPStockManager.GetUserStockPrice(intStockUserID);
-                int perPrice = price / 20;
-                if (intTeamDay > 0)
-                {
-                    this.strSay = this.strNickName + "经理您好，您已经拥有" + stockUserName + "经理的股份，不可以再购入";
-
-                }
-                else if (intPayType == 0)
-                {
-                    this.strSay = this.strNickName + "经理您好，" + stockUserName + "经理不是会员，你不可以购入他的股票";
-                }
-                else if (price < 2000000)
-                {
-                    this.strSay = this.strNickName + "经理您好，" + stockUserName + "经理市值小于200万，你不可以购入他的股票";
-                }
-                else if (this.lgMoney < perPrice)
-                {
-                    this.strSay = this.strNickName + "经理您好，您的资金不足以购买该股票" + this.lgMoney;
-                }
-                else
-                {
-                    this.strSay = string.Concat(new object[] { this.strNickName, "经理，购入", stockUserName, "经理的股票将花费你资金:", perPrice, "，您确定要购入吗？" });
-                    this.btnOK.Visible = true;
-                    this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BUYSTOCK);
-
-                }
-            }
-        }
-
-        private void btnOK_Click_BUYSTOCK(object sender, ImageClickEventArgs e)
-        {
-            int intRetValue = BTPStockManager.BuyStock(this.intUserID, this.intStockUserID);
-            switch (intRetValue)
-            {
-                case -1:
-                    base.Response.Redirect("Report.aspx?Parameter=SE01");
-                    break;
-                case -2:
-                    base.Response.Redirect("Report.aspx?Parameter=SE02");
-                    break;
-                case -3:
-                    base.Response.Redirect("Report.aspx?Parameter=SE03");
-                    break;
-                case -4:
-                    base.Response.Redirect("Report.aspx?Parameter=SE04");
-                    break;
-                case -5:
-                    base.Response.Redirect("Report.aspx?Parameter=SE05");
-                    break;
-                case -6:
-                    base.Response.Redirect("Report.aspx?Parameter=SE06");
-                    break;
-                case 1:
-                    base.Response.Redirect("Report.aspx?Parameter=SS01");
-                    break;
-            }
-            //base.Response.Redirect("Report.aspx?Parameter=P102!Type.3");
-        }
-
-        private void BetXGuess()
-        {
-            this.intXGuessID = (int)SessionItem.GetRequest("GuessID", 0);
-
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            if (accountRowByUserID == null)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=12");
-                return;
-            }
-
-            int intRound = BTPXGameManager.GetXGameRound();
-            if (intRound > 1)
-            {
-                this.strSay = "冠军杯决赛阶段已经开始，不能再竞猜";
-                return;
-            }
-
-            this.tblXGuess.Visible = true;
-            this.strSay = "请输入下注金额(大于10W小于100W)";
-            this.btnOK.Visible = true;
-            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_BETXGUESS);
-
-
-
-        }
-
-        /// <summary>
-        /// 全明星投票
-        /// </summary>
-        private void StarVote()
-        {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            if (accountRowByUserID == null)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=12");
-                return;
-            }
-
-
-            this.strSay = "你确定要将可贵的一票投给该名球员吗?";
-
-            this.btnOK.Visible = true;
-            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_STARVOTE);
-
-        }
-
-        /// <summary>
-        /// 挑战NPC
-        /// </summary>
-        private void SetNPC()
-        {
-            this.longNpcID = (long)SessionItem.GetRequest("NpcID", 3);
-
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            if (accountRowByUserID == null)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=12");
-                return;
-            }
-
-
-            int dayNpcMatchCount = Convert.ToInt32(accountRowByUserID["DayNpcMatchCount"]);
-            int dayNpc7WinCount = Convert.ToInt32(accountRowByUserID["DayNpc7WinCount"]);
-            int dayNpc8WinCount = Convert.ToInt32(accountRowByUserID["DayNpc8WinCount"]);
-            
-            DataRow npcRow = BTPNPCManager.GetNPCRow(this.longNpcID);
-
-            if (npcRow == null)
-            {
-                this.strSay = "经理，该球队不存在。";
-                return;
-            }
-
-            if (this.longNpcID == 5 && dayNpc7WinCount > Config.NpcHurenTimes())
-            {
-                this.strSay = "当日战胜湖人次数已超限制，不能挑战湖人队 。";
-                return;
-            }
-            else if (this.longNpcID == 6 && dayNpc8WinCount > Config.NpcBuXinZheTimes())
-            {
-                this.strSay = "当日战胜步行者次数已超限制，不能挑战步行者队 。";
-                return;
-            }
-            
-
-            string name = Convert.ToString(npcRow["Name"]);
-
-            this.strSay = "你确定要挑战" + name + "吗？";
-            if (dayNpcMatchCount >= 10)
-            {
-                int level = Convert.ToInt32(npcRow["Level"]);
-                int cost = (level - 1) * 5;
-                if(cost > 30)
-                {
-                    cost = 30;
-                }
-                if (cost > 0)
-                {
-                    this.strSay = this.strSay + "这将花费你" + cost + "游戏币";
-                }
-            }
-
-
-            this.btnOK.Visible = true;
-            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETNPC);
-
-        }
-
-        private void btnOK_Click_BETXGUESS(object sender, ImageClickEventArgs e)
-        {
-            int intAmount = 0;
-            try
-            {
-                intAmount = Convert.ToInt32(this.tbXGuessAmount.Text);
-            }
-            catch (Exception exception)
-            {
-                intAmount = 0;
-                exception.ToString();
-                this.strSay = this.strNickName + "经理，您这是填写的什么啊，请用半角的数字。";
-                return;
-            }
-
-            if (intAmount < 100000)
-            {
-                this.strSay = this.strNickName + "经理，您最少要下注100000资金。";
-                return;
-
-            }
-            else if (intAmount > 1000000)
-            {
-                this.strSay = this.strNickName + "经理，单次最大只能竞猜1000000资金。";
-                return;
-            }
-
-            int intRetValue = BTPXGuessManager.BetXGuess(this.intUserID, this.intXGuessID, intAmount);
-            switch (intRetValue)
-            {
-                case -1:
-                    this.strSay = this.strNickName + "经理，咱们俱乐部可没这么多资金啊。";
-                    break;
-                case -2:
-                    base.Response.Redirect("Report.aspx?Parameter=XGE02");
-                    break;
-                case -3:
-                    base.Response.Redirect("Report.aspx?Parameter=XGE03");
-                    break;
-                case -4:
-                    base.Response.Redirect("Report.aspx?Parameter=XGE04");
-                    break;
-                case 1:
-                    base.Response.Redirect("Report.aspx?Parameter=XGS01");
-                    break;
-
-            }
-            //base.Response.Redirect("Report.aspx?Parameter=P102!Type.3");
-        }
-
-        private void btnOK_Click_STARVOTE(object sender, ImageClickEventArgs e)
-        {
-
-            int intRetValue = BTPStarMatchManager.VoteStarPlayer(this.intUserID, this.longPlayerID);
-            switch (intRetValue)
-            {
-                case -1:
-                    base.Response.Redirect("Report.aspx?Parameter=SVE01");
-                    break;
-                case -2:
-                    base.Response.Redirect("Report.aspx?Parameter=SVE02");
-                    break;
-                case -3:
-                    base.Response.Redirect("Report.aspx?Parameter=SVE03");
-                    break;
-                case 1:
-                    base.Response.Redirect("Report.aspx?Parameter=SVS01");
-                    break;
-
-            }
-        }
-
-        private void btnOK_Click_SETNPC(object sender, ImageClickEventArgs e)
-        {
-
-            int intRetValue = BTPNPCManager.AddNPCMatch(this.intUserID, (int)this.longNpcID);
-            switch (intRetValue)
-            {
-                case -1:
-                    base.Response.Redirect("Report.aspx?Parameter=SNE01");
-                    break;
-                case -2:
-                    base.Response.Redirect("Report.aspx?Parameter=SNE02");
-                    break;
-                case -3:
-                    base.Response.Redirect("Report.aspx?Parameter=SNE03");
-                    break;
-                case 1:
-                    base.Response.Redirect("Report.aspx?Parameter=SNS01");
-                    break;
-
-            }
-        }
-
-        /// <summary>
-        /// 擂台挑战赛
-        /// </summary>
-        private void SetArena()
-        {
-
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            if (accountRowByUserID == null)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=12");
-                return;
-            }
-
-
-            DataRow arenaRow = BTPArenaManager.GetArenaTable();
-
-            int clubIDA = Convert.ToInt32(arenaRow["ClubID"]);
-            int clubIDB = Convert.ToInt32(arenaRow["ClubBID"]);
-            int round = Convert.ToInt32(arenaRow["Round"]);
-            int wealth = 100;
-            if (round >= 6)
-            {
-                wealth = 300;
-            }
-            else if (round >= 3)
-            {
-                wealth = 200;
-            }
-
-            if (clubIDA > 0)
-            {
-                if (clubIDB > 0)
-                {
-                    this.strSay = "对方正在被挑战中，一会再过来吧";
-                    return;
-                }
-                else if (this.intClubID == clubIDA)
-                {
-                    this.strSay = "你不可以挑战自己";
-                    return;
-                }
-                else
-                {
-                    if (wealth > this.intWealth)
-                    {
-                        this.strSay = "游戏币不足" + wealth;
-                        return;
-                    }
-                    string name = BTPClubManager.GetClubNameByClubID(clubIDA);
-                    this.strSay = "你确定要挑战" + name + "吗？";
-                    this.strSay = this.strSay + "这将花费你" + wealth + "游戏币";
-                }
-            }
-            else
-            {
-                if (wealth > this.intWealth)
-                {
-                    this.strSay = "游戏币不足" + wealth;
-                    return;
-                }
-                this.strSay = "你确定要报名成为擂主吗？";
-                this.strSay = this.strSay + "这将花费你" + wealth + "游戏币";
-            }
-
-            this.btnOK.Visible = true;
-            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_SETARENA);
-
-        }
-
-        private void btnOK_Click_SETARENA(object sender, ImageClickEventArgs e)
-        {
-
-            int intRetValue = BTPArenaManager.AddArenaMatch(this.intUserID);
-            switch (intRetValue)
-            {
-                case -1:
-                    base.Response.Redirect("Report.aspx?Parameter=SANE01");
-                    break;
-                case -2:
-                    base.Response.Redirect("Report.aspx?Parameter=SANE02");
-                    break;
-                case -3:
-                    base.Response.Redirect("Report.aspx?Parameter=SANE03");
-                    break;
-                case 1:
-                    base.Response.Redirect("Report.aspx?Parameter=SANS01");
-                    break;
-
-            }
-        }
-
-        /// <summary>
-        /// 报名三分大赛
-        /// </summary>
-        private void RegPoint3Match()
-        {
-            this.longPlayerID = (long)SessionItem.GetRequest("PlayerID", 3);
-            int flg = (int)SessionItem.GetRequest("Flg", 0);
-
-            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-            if (accountRowByUserID == null)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=12");
-                return;
-            }
-
-            DataRow playerRow = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.longPlayerID);
-
-            if (playerRow == null)
-            {
-                this.strSay = "该球员不存在";
-                return;
-            }
-
-            int playerClubID = Convert.ToInt32(playerRow["ClubID"]);
-            if (playerClubID != this.intClubID5)
-            {
-                this.strSay = "该球员不在你队中";
-                return;
-            }
-
-            if (flg == 1)
-            {
-                this.strSay = "你确定要报名试投吗?";
-            }
-            else
-            {
-                this.strSay = "你确定要报名比赛吗?";
-            }
-
-            this.btnOK.Visible = true;
-            this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click_RegPoint3Match);
-
-        }
-
-        private void btnOK_Click_RegPoint3Match(object sender, ImageClickEventArgs e)
-        {
-
-            int intPlayerID = (int)SessionItem.GetRequest("PlayerID", 0);
-            int flg = (int)SessionItem.GetRequest("Flg", 0);
-
-            int intRetValue = BTPPoint3Manager.RegPoint3Match(intPlayerID, flg);
-            if (intRetValue == 1)
-            {
-               base.Response.Redirect("Report.aspx?Parameter=P3S01");
-            }
-            else
-            {
-               base.Response.Redirect("Report.aspx?Parameter=P3E01");
-            }
-            
-        }
-
     }
 }
 

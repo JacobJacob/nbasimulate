@@ -49,13 +49,7 @@
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='Board.aspx?BoardID=";
-                strArray[1] = this.strBoardID;
-                strArray[2] = "&&Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
+                strArray = new string[] { "<a href='Board.aspx?BoardID=", this.strBoardID, "&&Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
                 str3 = string.Concat(strArray);
                 str = "<a href='Board.aspx?BoardID=" + this.strBoardID + "&&Page=1'>首页</a>";
             }
@@ -198,7 +192,6 @@
                     this.sb.Append(" </td>");
                     this.sb.Append("</tr>");
                 }
-                //listTable.Close();
                 this.sb.Append("<tr><td height='30' colspan='6' align='right' style='padding-right:15px'>" + this.GetViewPage() + "</td></tr>");
             }
             else

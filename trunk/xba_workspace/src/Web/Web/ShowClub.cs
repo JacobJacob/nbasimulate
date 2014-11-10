@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -19,7 +18,7 @@
         private int intCategory;
         private int intClub3ID;
         private int intClub5ID;
-        private int intClubID = 0;
+        private int intClubID;
         private int intClubID3;
         private int intClubID3My;
         private int intClubID5;
@@ -65,7 +64,7 @@
 
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
-            int num7;
+            int num;
             string strNickName = this.tbNickNameF.Text.ToString().Trim();
             string strIn = this.tbIntro.Text.ToString().Trim();
             int intCategory = Convert.ToInt16(this.hidSelectValue.Value);
@@ -77,11 +76,11 @@
             this.strOnload = this.strOnload + "SetRB()";
             if (this.rbS.Checked)
             {
-                num7 = 3;
+                num = 3;
             }
             else
             {
-                num7 = 5;
+                num = 5;
             }
             if (strNickName == "")
             {
@@ -89,139 +88,141 @@
             }
             else
             {
-                switch (num7)
+                switch (num)
                 {
                     case 3:
-                    {
-                        if (BTPPlayer3Manager.GetPlayer3CountByCID(this.intClubID3) < 4)
+                        if (BTPPlayer3Manager.GetPlayer3CountByCID(this.intClubID3) >= 4)
                         {
-                            this.strList = "<font color='red'>您的街球队人数不足，无法发出约战请求！</font>";
-                            return;
+                            int clubIDByNickName = BTPClubManager.GetClubIDByNickName(strNickName, 3);
+                            if (clubIDByNickName == 0)
+                            {
+                                this.strList = "<font color='red'>未找到该球队！</font>";
+                                return;
+                            }
+                            if (BTPPlayer3Manager.GetPlayer3CountByCID(clubIDByNickName) < 4)
+                            {
+                                this.strList = "<font color='red'>对方球队人数不足，无法发出约战请求！</font>";
+                                return;
+                            }
+                            intUserID = BTPClubManager.GetUserIDByClubID(clubIDByNickName);
+                            break;
                         }
-                        int clubIDByNickName = BTPClubManager.GetClubIDByNickName(strNickName, 3);
-                        if (clubIDByNickName == 0)
-                        {
-                            this.strList = "<font color='red'>未找到该球队！</font>";
-                            return;
-                        }
-                        if (BTPPlayer3Manager.GetPlayer3CountByCID(clubIDByNickName) < 4)
-                        {
-                            this.strList = "<font color='red'>对方球队人数不足，无法发出约战请求！</font>";
-                            return;
-                        }
-                        intUserID = BTPClubManager.GetUserIDByClubID(clubIDByNickName);
-                        break;
-                    }
+                        this.strList = "<font color='red'>您的街球队人数不足，无法发出约战请求！</font>";
+                        return;
+
                     case 5:
+                        if (intCategory != 2)
+                        {
+                            if (BTPPlayer5Manager.GetPlayer5CountByClubID(this.intClubID5) < 6)
+                            {
+                                this.strList = "<font color='red'>您的职业球队人数不足，无法发出约战请求！</font>";
+                                return;
+                            }
+                            int intClubIDB = BTPClubManager.GetClubIDByNickName(strNickName, 5);
+                            if (MatchItem.InOnlyOneMatch(this.intClubID5, intClubIDB))
+                            {
+                                this.strList = "<font color='red'>有一方在胜者为王赛中报名，无法发起约战！</font>";
+                                return;
+                            }
+                            if (intClubIDB == 0)
+                            {
+                                this.strList = "<font color='red'>未找到该球队！</font>";
+                                return;
+                            }
+                            if (BTPPlayer5Manager.GetPlayer5CountByClubID(intClubIDB) < 6)
+                            {
+                                this.strList = "<font color='red'>对方球队人数不足，无法发出约战请求！</font>";
+                                return;
+                            }
+                            intUserID = BTPClubManager.GetUserIDByClubID(intClubIDB);
+                            break;
+                        }
+                        this.strList = "<font color='red'>暂时没有开放职业训练赛功能！</font>";
+                        return;
+                }
+                switch (intCategory)
+                {
+                    case 2:
                     {
-                        if (intCategory == 2)
+                        int intClubIDA = this.intClubID3My;
+                        int num11 = BTPClubManager.GetClubIDByNickName(strNickName, 3);
+                        switch (MatchItem.TrainMatchType(intClubIDA, num11, 1))
                         {
-                            this.strList = "<font color='red'>暂时没有开放职业训练赛功能！</font>";
-                            return;
+                            case 2:
+                                this.strList = "<font color='red'>球员训练赛热情不足！</font>";
+                                return;
+
+                            case 3:
+                                this.strList = "<font color='red'>球员训练赛热情不足！</font>";
+                                return;
+
+                            case 4:
+                                this.strList = "<font color='red'>有正在进行或等待进行的比赛，无法进行训练赛！请在约战信息中查看是否有没有接受或者拒绝的训练赛、友谊赛等。</font>";
+                                return;
+
+                            case 5:
+                                this.strList = "<font color='red'>您与此球队在本赛季已经训练过了，不能重复训练！</font>";
+                                return;
+
+                            case 6:
+                                this.strList = "<font color='red'>您或者对方在今日已经不能再打训练赛了！</font>";
+                                return;
                         }
-                        if (BTPPlayer5Manager.GetPlayer5CountByClubID(this.intClubID5) < 6)
-                        {
-                            this.strList = "<font color='red'>您的职业球队人数不足，无法发出约战请求！</font>";
-                            return;
-                        }
-                        int intClubIDB = BTPClubManager.GetClubIDByNickName(strNickName, 5);
-                        if (MatchItem.InOnlyOneMatch(this.intClubID5, intClubIDB))
-                        {
-                            this.strList = "<font color='red'>有一方在胜者为王赛中报名，无法发起约战！</font>";
-                            return;
-                        }
-                        if (intClubIDB == 0)
-                        {
-                            this.strList = "<font color='red'>未找到该球队！</font>";
-                            return;
-                        }
-                        if (BTPPlayer5Manager.GetPlayer5CountByClubID(intClubIDB) < 6)
-                        {
-                            this.strList = "<font color='red'>对方球队人数不足，无法发出约战请求！</font>";
-                            return;
-                        }
-                        intUserID = BTPClubManager.GetUserIDByClubID(intClubIDB);
                         break;
                     }
-                }
-                if (intCategory == 2)
-                {
-                    int intClubIDA = this.intClubID3My;
-                    int num15 = BTPClubManager.GetClubIDByNickName(strNickName, 3);
-                    switch (MatchItem.TrainMatchType(intClubIDA, num15, 1))
+                    case 10:
                     {
-                        case 2:
-                            this.strList = "<font color='red'>球员训练赛热情不足！</font>";
-                            return;
+                        int clubIDByUIDCategory = BTPClubManager.GetClubIDByUIDCategory(this.intUserID, 5);
+                        int num13 = BTPClubManager.GetClubIDByNickName(strNickName, 5);
+                        switch (MatchItem.TrainMatchType5(clubIDByUIDCategory, num13, 1))
+                        {
+                            case 2:
+                                this.strList = "<font color='red'>您有正在等待进行的友谊赛！</font>";
+                                return;
 
-                        case 3:
-                            this.strList = "<font color='red'>球员训练赛热情不足！</font>";
-                            return;
+                            case 3:
+                                this.strList = "<font color='red'>您有正在等待进行的表演赛！</font>";
+                                return;
 
-                        case 4:
-                            this.strList = "<font color='red'>有正在进行或等待进行的比赛，无法进行训练赛！请在约战信息中查看是否有没有接受或者拒绝的训练赛、友谊赛等。</font>";
-                            return;
+                            case 4:
+                                this.strList = "<font color='red'>您有正在等待进行的训练赛！</font>";
+                                return;
 
-                        case 5:
-                            this.strList = "<font color='red'>您与此球队在本赛季已经训练过了，不能重复训练！</font>";
-                            return;
+                            case 5:
+                                this.strList = "<font color='red'>与该球队在本赛季有过训练赛！</font>";
+                                return;
 
-                        case 6:
-                            this.strList = "<font color='red'>您或者对方在今日已经不能再打训练赛了！</font>";
-                            return;
-                    }
-                }
-                if (intCategory == 10)
-                {
-                    int clubIDByUIDCategory = BTPClubManager.GetClubIDByUIDCategory(this.intUserID, 5);
-                    int num18 = BTPClubManager.GetClubIDByNickName(strNickName, 5);
-                    switch (MatchItem.TrainMatchType5(clubIDByUIDCategory, num18, 1))
-                    {
-                        case 2:
-                            this.strList = "<font color='red'>您有正在等待进行的友谊赛！</font>";
-                            return;
+                            case 6:
+                                this.strList = "<font color='red'>您本日的训练赛已经超过三场！</font>";
+                                return;
 
-                        case 3:
-                            this.strList = "<font color='red'>您有正在等待进行的表演赛！</font>";
-                            return;
+                            case 7:
+                                this.strList = "<font color='red'>对方有正在等待进行的友谊赛！</font>";
+                                return;
 
-                        case 4:
-                            this.strList = "<font color='red'>您有正在等待进行的训练赛！</font>";
-                            return;
+                            case 8:
+                                this.strList = "<font color='red'>对方有正在等待进行的表演赛！</font>";
+                                return;
 
-                        case 5:
-                            this.strList = "<font color='red'>与该球队在本赛季有过训练赛！</font>";
-                            return;
+                            case 9:
+                                this.strList = "<font color='red'>对方有正在等待进行的训练赛！</font>";
+                                return;
 
-                        case 6:
-                            this.strList = "<font color='red'>您本日的训练赛已经超过三场！</font>";
-                            return;
+                            case 10:
+                                this.strList = "<font color='red'>您的球队体力不足！</font>";
+                                return;
 
-                        case 7:
-                            this.strList = "<font color='red'>对方有正在等待进行的友谊赛！</font>";
-                            return;
-
-                        case 8:
-                            this.strList = "<font color='red'>对方有正在等待进行的表演赛！</font>";
-                            return;
-
-                        case 9:
-                            this.strList = "<font color='red'>对方有正在等待进行的训练赛！</font>";
-                            return;
-
-                        case 10:
-                            this.strList = "<font color='red'>您的球队体力不足！</font>";
-                            return;
-
-                        case 11:
-                            this.strList = "<font color='red'>对方的球队体力不足！</font>";
-                            return;
+                            case 11:
+                                this.strList = "<font color='red'>对方的球队体力不足！</font>";
+                                return;
+                        }
+                        break;
                     }
                 }
                 if (intCategory == 3)
                 {
-                    int num20 = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
-                    int num21 = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["Wealth"];
+                    int num14 = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
+                    int num15 = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["Wealth"];
                     string str3 = "";
                     string str4 = "";
                     if (StringItem.IsNumber(str3) && StringItem.IsNumber(str4))
@@ -247,12 +248,12 @@
                         this.strList = "请您在游戏币和让分栏中输入正确的半角数字！";
                         return;
                     }
-                    if (intWealthA > num20)
+                    if (intWealthA > num14)
                     {
                         this.strList = "不能超过你取出游戏币！";
                         return;
                     }
-                    if (intWealthB > num21)
+                    if (intWealthB > num15)
                     {
                         this.strList = "<font color='red'>对方现在没有足够游戏币，不能超出他游戏币！</font>";
                         return;
@@ -263,7 +264,7 @@
                         this.strList = "<font color='red'>有20场以上约战在进行中请稍后再约（会员不受此限制）！</font>";
                         return;
                     }
-                    if (num7 == 3)
+                    if (num == 3)
                     {
                         this.strList = "<font color='red'>暂时只对职业队开放！</font>";
                         return;
@@ -271,8 +272,8 @@
                 }
                 if (intCategory == 4)
                 {
-                    int num23 = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
-                    int num24 = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["Wealth"];
+                    int num17 = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
+                    int num18 = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["Wealth"];
                     string str5 = this.tbWealth.Text.ToString();
                     string str6 = this.tbPoint.Text.ToString();
                     if (StringItem.IsNumber(str5) && StringItem.IsNumber(str6))
@@ -316,23 +317,23 @@
                         this.strList = "<font color='red'>请您在游戏币和让分栏中输入正确的半角数字！</font>";
                         return;
                     }
-                    if (intWealthA > num23)
+                    if (intWealthA > num17)
                     {
                         this.strList = "<font color='red'>不能超过你取出游戏币！</font>";
                         return;
                     }
-                    if (intWealthB > num24)
+                    if (intWealthB > num18)
                     {
                         this.strList = "<font color='red'>对方现在没有足够游戏币，不能超出他游戏币！</font>";
                         return;
                     }
-                    int num25 = BTPFriMatchManager.GetRunMatchCount();
-                    if ((this.intPayType != 1) && (num25 >= 20))
+                    int num19 = BTPFriMatchManager.GetRunMatchCount();
+                    if ((this.intPayType != 1) && (num19 >= 20))
                     {
                         this.strList = "<font color='red'>有20场以上约战在进行中请稍后再约（会员不受此限制）！</font>";
                         return;
                     }
-                    if (num7 == 3)
+                    if (num == 3)
                     {
                         this.strList = "<font color='red'>暂时只对职业队开放！</font>";
                         return;
@@ -345,26 +346,10 @@
                 }
                 else
                 {
-                    switch (BTPFriMatchManager.SetFriMatch(strNickName, this.intUserID, intCategory, num7, strIn, intWealthA, intWealthB, intClubAPoint, intClubBPoint))
+                    switch (BTPFriMatchManager.SetFriMatch(strNickName, this.intUserID, intCategory, num, strIn, intWealthA, intWealthB, intClubAPoint, intClubBPoint))
                     {
-                        case 8:
-                            this.strList = "<font color='red'>接收到的约战信息有错误！</font>";
-                            return;
-
-                        case 9:
-                            this.strList = "<font color='red'>您输入的游戏币超出范围请输入10-1000之内的（半角）数字！</font>";
-                            return;
-
-                        case 10:
-                            this.strList = "<font color='red'>您输入的让分超出范围请输入1-100之内（半角）数字！</font>";
-                            return;
-
-                        case 11:
-                            this.strList = "<font color='red'>游戏币不能小于10，让分不能小于1！</font>";
-                            return;
-
-                        case 12:
-                            this.strList = "<font color='red'>游戏币不能小于10！</font>";
+                        case 0:
+                            this.strList = "<font color='red'>您或此球队正在进行一场比赛，暂时不能再次发送请求！</font>";
                             return;
 
                         case 1:
@@ -385,12 +370,28 @@
                             this.strList = "<font color='red'>您本轮已经打过一场职业训练赛了！</font>";
                             return;
 
-                        case 0:
-                            this.strList = "<font color='red'>您或此球队正在进行一场比赛，暂时不能再次发送请求！</font>";
-                            return;
-
                         case 6:
                             this.strList = "<font color='red'>您不能与自己约战！</font>";
+                            return;
+
+                        case 8:
+                            this.strList = "<font color='red'>接收到的约战信息有错误！</font>";
+                            return;
+
+                        case 9:
+                            this.strList = "<font color='red'>您输入的游戏币超出范围请输入10-1000之内的（半角）数字！</font>";
+                            return;
+
+                        case 10:
+                            this.strList = "<font color='red'>您输入的让分超出范围请输入1-100之内（半角）数字！</font>";
+                            return;
+
+                        case 11:
+                            this.strList = "<font color='red'>游戏币不能小于10，让分不能小于1！</font>";
+                            return;
+
+                        case 12:
+                            this.strList = "<font color='red'>游戏币不能小于10！</font>";
                             return;
                     }
                     this.strList = "<font color='red'>您无法对其发送约战请求，请核查！</font>";
@@ -400,34 +401,6 @@
 
         private void btnSend_Click(object sender, ImageClickEventArgs e)
         {
-            /*string text = this.tbNickName.Text;
-            string validWords = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbMsg.Text.ToString().Trim()));
-            text = StringItem.GetValidWords(text);
-            if (StringItem.IsValidName(text, 2, 0x10))
-            {
-                if (!StringItem.IsValidContent(validWords, 2, 500))
-                {
-                    this.strList = "<font color='#FF0000'>消息内容必须在2-500个字符之间！</font>";
-                }
-                else
-                {
-                    BTPMessageManager.SetHasMsg(text);
-                    if (BTPMessageManager.AddMessage(this.intUserID, this.strNickNameA, text, validWords))
-                    {
-                        this.strList = "<font color='#FF0000'>消息发送成功！</font>";
-                        this.tbMsg.Text = "";
-                    }
-                    else
-                    {
-                        this.strList = "<font color='#FF0000'>" + text + "并不存在，请查证是否输入正确，或对方以更改名称！</font>";
-                    }
-                }
-            }
-            else
-            {
-                this.strList = "<font color='#FF0000'>经理昵称不合要求！</font>";
-            }*/
-
             string text = this.tbNickName.Text;
             string validWords = StringItem.GetValidWords(StringItem.GetHtmlEncode(this.tbMsg.Text.ToString().Trim()));
             if (!StringItem.IsValidContent(validWords, 2, 500))
@@ -447,7 +420,6 @@
                     this.strList = "<font color='#FF0000'>" + text + "并不存在，请查证是否输入正确，或对方以更改名称！</font>";
                 }
             }
-            
         }
 
         private void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
@@ -456,7 +428,7 @@
 
         private void FMatchSend()
         {
-            this.intUserIDA = (int) SessionItem.GetRequest("UserID", 0);
+            this.intUserIDA = SessionItem.GetRequest("UserID", 0);
             this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
             this.strList = "";
             if ((this.intCategory != 2) && (this.intCategory != 5))
@@ -486,7 +458,7 @@
         {
             string str;
             string str2;
-            string str8;
+            string str3;
             if (this.intType == 3)
             {
                 str = this.strClubName3;
@@ -503,7 +475,7 @@
             string strNickName = accountRowByUserID["NickName"].ToString().Trim();
             string strCity = accountRowByUserID["City"].ToString().Trim();
             string strProvince = accountRowByUserID["Province"].ToString().Trim();
-            string str5 = accountRowByUserID["Birth"].ToString();
+            string str7 = accountRowByUserID["Birth"].ToString();
             DateTime dtActiveTime = (DateTime) accountRowByUserID["ActiveTime"];
             bool blnSex = (bool) accountRowByUserID["Sex"];
             int intUnionID = (int) accountRowByUserID["UnionID"];
@@ -518,31 +490,31 @@
                     strClubName = unionRowByID["Name"].ToString().Trim();
                 }
             }
-            int num5 = Convert.ToInt32(accountRowByUserID["Category"]);
+            int num4 = Convert.ToInt32(accountRowByUserID["Category"]);
             str = accountRowByUserID["ClubName"].ToString().Trim();
             int intPayType = Convert.ToInt32(accountRowByUserID["PayType"]);
-            if (StringItem.IsNumber(str5.Substring(0, 4)))
+            if (StringItem.IsNumber(str7.Substring(0, 4)))
             {
-                str5 = str5.Substring(0, 4) + "-01-01";
+                str7 = str7.Substring(0, 4) + "-01-01";
             }
             else
             {
-                str5 = "1980-01-01";
+                str7 = "1980-01-01";
             }
-            DateTime time2 = Convert.ToDateTime(str5);
+            DateTime time2 = Convert.ToDateTime(str7);
             int intAge = DateTime.Now.Year - time2.Year;
             string dev = DevCalculator.GetDev(BTPDevManager.GetDevCodeByUserID(this.intUserIDA));
-            if (num5 != 5)
+            if (num4 != 5)
             {
                 dev = "未加入联赛";
             }
             if (((accountRowByUserID["ShortName"].ToString().Trim() == "") || (accountRowByUserID["ShortName"] == null)) || (intUnionID == 0))
             {
-                str8 = "";
+                str3 = "";
             }
             else
             {
-                str8 = accountRowByUserID["ShortName"].ToString().Trim() + "-";
+                str3 = accountRowByUserID["ShortName"].ToString().Trim() + "-";
             }
             if (this.strLogoLink.Trim() == "")
             {
@@ -552,7 +524,7 @@
             {
                 str2 = "<a href='" + this.strLogoLink + "' target='_blank'>" + AccountItem.GetNickLogoCard(strNickName, blnSex, intAge, strCity, strProvince, dev, dtActiveTime, intPayType, strClubName, this.strClubLogo, lngOnlyPoint) + "</a>";
             }
-            this.strClubInfo = "<table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td width='55' height=53 style='padding-left:3px;'　>" + str2 + "</td><td><table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td colspan=2 ><strong>球队</strong>：" + StringItem.GetShortName(str8 + str, 11, ".") + "</td></tr><tr><td width=150><strong>经理</strong>：" + StringItem.GetShortName(strNickName, 8, ".", bytPayType) + "</td><td align=center width=50>" + AccountItem.GetNickCard(strNickName, blnSex, intAge, strCity, strProvince, dev, dtActiveTime, intPayType, strClubName, lngOnlyPoint) + "</td></tr></table></td></tr></table>";
+            this.strClubInfo = "<table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td width='55' height=53 style='padding-left:3px;'　>" + str2 + "</td><td><table width='100%'  border='0' cellspacing='0' cellpadding='0'><tr><td colspan=2 ><strong>球队</strong>：" + StringItem.GetShortName(str3 + str, 11, ".") + "</td></tr><tr><td width=150><strong>经理</strong>：" + StringItem.GetShortName(strNickName, 8, ".", bytPayType) + "</td><td align=center width=50>" + AccountItem.GetNickCard(strNickName, blnSex, intAge, strCity, strProvince, dev, dtActiveTime, intPayType, strClubName, lngOnlyPoint) + "</td></tr></table></td></tr></table>";
         }
 
         private string GetScript(string strCurrentURL)
@@ -577,25 +549,25 @@
             {
                 num2 = 1;
             }
-            string str2 = "<select name='Page' onChange=JumpPage()>";
+            string str = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str2 = str2 + "<option value=" + i;
+                str = str + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str2 = str2 + " selected";
+                    str = str + " selected";
                 }
-                object obj2 = str2;
-                str2 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str;
+                str = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str2 = str2 + "</select>";
-            return string.Concat(new object[] { "共", total, "个记录 跳转", str2 });
+            str = str + "</select>";
+            return string.Concat(new object[] { "共", total, "个记录 跳转", str });
         }
 
         private void HonorList()
         {
             string strCurrentURL = "ShowClub.aspx?Type=6&UserID=" + this.intUserIDA + "&";
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intPerPage = 5;
             int intCount = this.intPerPage * this.intPage;
             int honorCount = BTPHonorManager.GetHonorCount(this.intUserIDA);
@@ -657,10 +629,10 @@
             this.tdMsg.Visible = false;
             this.tdPlayer.Visible = false;
             this.tdFMatch.Visible = false;
-            this.intUserIDA = (int) SessionItem.GetRequest("UserID", 0);
+            this.intUserIDA = SessionItem.GetRequest("UserID", 0);
             if (this.intUserIDA == 0)
             {
-                this.intClubID = (int) SessionItem.GetRequest("ClubID", 0);
+                this.intClubID = SessionItem.GetRequest("ClubID", 0);
                 this.intUserIDA = BTPClubManager.GetUserIDByClubID(this.intClubID);
             }
             this.btnSend.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
@@ -698,7 +670,7 @@
                 this.strClubName5 = StringItem.GetShortName(str + this.strClubName5, 0x11, ".");
                 this.strClubLogo = accountRowByUserID["ClubLogo"].ToString().Trim();
             }
-            this.intType = (int) SessionItem.GetRequest("Type", 0);
+            this.intType = SessionItem.GetRequest("Type", 0);
             if ((this.intCategory != 2) && (this.intCategory != 5))
             {
                 if (this.intCategory != 1)
@@ -711,7 +683,7 @@
                     {
                         base.Response.Redirect("Intro/PlayerCenter.aspx?Type=NONICKINFO");
                     }
-                    goto Label_0A37;
+                    goto Label_0A24;
                 }
                 switch (this.intType)
                 {
@@ -720,29 +692,25 @@
                         this.trPageIntro.Visible = true;
                         this.tdPlayer.Visible = true;
                         this.StreetPlayerList();
-                        goto Label_0A37;
-
-                    case 4:
-                    case 5:
-                        goto Label_0986;
+                        goto Label_0A24;
 
                     case 6:
                         this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1a'><a href='ShowClub.aspx?Type=3&UserID=", this.intUserIDA, "'  title='街球队'>街球</a></li><li class='sqian2a'><font color='#aaaaaa'>职业</font></li><li class='sqian2'>荣誉</li><li class='sqian2a'><a href='ShowClub.aspx?Type=7&UserID=", this.intUserIDA, "' title='短消息'>短信</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=8&UserID=", this.intUserIDA, "&Page=1' title='约战'>约战</a></li></ul>" });
                         this.tdPlayer.Visible = true;
                         this.HonorList();
-                        goto Label_0A37;
+                        goto Label_0A24;
 
                     case 7:
                         this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1a'><a href='ShowClub.aspx?Type=3&UserID=", this.intUserIDA, "'  title='街球队'>街球</a></li><li class='sqian2a'><font color='#aaaaaa'>职业</font></li><li class='sqian2a'><a href='ShowClub.aspx?Type=6&UserID=", this.intUserIDA, "&Page=1' title='球队荣誉'>荣誉</a></li><li class='sqian2'>短信</li><li class='sqian2a'><a href='ShowClub.aspx?Type=8&UserID=", this.intUserIDA, "&Page=1' title='约战'>约战</a></li></ul>" });
                         this.tdMsg.Visible = true;
                         this.SendMsg();
-                        goto Label_0A37;
+                        goto Label_0A24;
 
                     case 8:
                         this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1a'><a href='ShowClub.aspx?Type=3&UserID=", this.intUserIDA, "'  title='街球队'>街球</a></li><li class='sqian2a'><font color='#aaaaaa'>职业</font></li><li class='sqian2a'><a href='ShowClub.aspx?Type=6&UserID=", this.intUserIDA, "&Page=1' title='球队荣誉'>荣誉</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=7&UserID=", this.intUserIDA, "' title='短消息'>短信</a></li><li class='sqian2'>约战</li></ul>" });
                         this.tdFMatch.Visible = true;
                         this.FMatchSend();
-                        goto Label_0A37;
+                        goto Label_0A24;
                 }
             }
             else
@@ -754,26 +722,26 @@
                         this.trPageIntro.Visible = true;
                         this.tdPlayer.Visible = true;
                         this.StreetPlayerList();
-                        goto Label_0A37;
+                        goto Label_0A24;
 
                     case 5:
                         this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1a'><a href='ShowClub.aspx?Type=3&UserID=", this.intUserIDA, "'  title='街球队'>街球</a></li><li class='sqian2'>职业</li><li class='sqian2a'><a href='ShowClub.aspx?Type=6&UserID=", this.intUserIDA, "&Page=1' title='球队荣誉'>荣誉</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=7&UserID=", this.intUserIDA, "' title='短消息'>短信</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=8&UserID=", this.intUserIDA, "&Page=1' title='约战'>约战</a></li></ul>" });
                         this.trPageIntro.Visible = true;
                         this.tdPlayer.Visible = true;
                         this.ProPlayerList();
-                        goto Label_0A37;
+                        goto Label_0A24;
 
                     case 6:
                         this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1a'><a href='ShowClub.aspx?Type=3&UserID=", this.intUserIDA, "'  title='街球队'>街球</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=5&UserID=", this.intUserIDA, "' title='职业队'>职业</a></li><li class='sqian2'>荣誉</li><li class='sqian2a'><a href='ShowClub.aspx?Type=7&UserID=", this.intUserIDA, "' title='短消息'>短信</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=8&UserID=", this.intUserIDA, "&Page=1' title='约战'>约战</a></li></ul>" });
                         this.tdPlayer.Visible = true;
                         this.HonorList();
-                        goto Label_0A37;
+                        goto Label_0A24;
 
                     case 7:
                         this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1a'><a href='ShowClub.aspx?Type=3&UserID=", this.intUserIDA, "'  title='街球队'>街球</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=5&UserID=", this.intUserIDA, "' title='职业队'>职业</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=6&UserID=", this.intUserIDA, "&Page=1' title='球队荣誉'>荣誉</a></li><li class='sqian2'>短信</li><li class='sqian2a'><a href='ShowClub.aspx?Type=8&UserID=", this.intUserIDA, "&Page=1' title='约战'>约战</a></li></ul>" });
                         this.tdMsg.Visible = true;
                         this.SendMsg();
-                        goto Label_0A37;
+                        goto Label_0A24;
 
                     case 8:
                         this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1a'><a href='ShowClub.aspx?Type=3&UserID=", this.intUserIDA, "'  title='街球队'>街球</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=5&UserID=", this.intUserIDA, "' title='职业队'>职业</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=6&UserID=", this.intUserIDA, "&Page=1' title='球队荣誉'>荣誉</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=7&UserID=", this.intUserIDA, "' title='短消息'>短信</a></li><li class='sqian2'>约战</li></ul>" });
@@ -781,20 +749,19 @@
                         this.rbS.Attributes.Add("onclick", "CheckRB(this)");
                         this.rbV.Attributes.Add("onclick", "CheckRB(this)");
                         this.FMatchSend();
-                        goto Label_0A37;
+                        goto Label_0A24;
                 }
                 this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1'>街球</li>//<font color='#FF0000'>街球队</font><li class='sqian2a'><a href='ShowClub.aspx?Type=5&UserID=", this.intUserIDA, "' title='职业队'>职业</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=6&UserID=", this.intUserIDA, "&Page=1' title='球队荣誉'>荣誉</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=7&UserID=", this.intUserIDA, "' title='短消息'>短信</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=8&UserID=", this.intUserIDA, "&Page=1' title='约战'>约战</a></li></ul>" });
                 this.trPageIntro.Visible = true;
                 this.tdPlayer.Visible = true;
                 this.StreetPlayerList();
-                goto Label_0A37;
+                goto Label_0A24;
             }
-        Label_0986:;
             this.strPageIntro = string.Concat(new object[] { "<ul><li class='sqian1'>街球</li><li class='sqian2a'><font color='#aaaaaa'>职业</font></li><li class='sqian2a'><a href='ShowClub.aspx?Type=6&UserID=", this.intUserIDA, "&Page=1' title='球队荣誉'>荣誉</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=7&UserID=", this.intUserIDA, "' title='短消息'>短信</a></li><li class='sqian2a'><a href='ShowClub.aspx?Type=8&UserID=", this.intUserIDA, "&Page=1' title='约战'>约战</a></li></ul>" });
             this.trPageIntro.Visible = true;
             this.tdPlayer.Visible = true;
             this.StreetPlayerList();
-        Label_0A37:
+        Label_0A24:
             this.GetClubInfo();
             this.InitializeComponent();
             base.OnInit(e);
@@ -809,54 +776,39 @@
             DataTable playerTableByClubID = BTPPlayer5Manager.GetPlayerTableByClubID(this.intClub5ID);
             string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(this.intClub5ID);
             this.strToolsImg = string.Concat(new object[] { "<a href='DevisionView.aspx?UserID=", this.intUserIDA, "&Type=MATCHLOOK&Devision=", devCodeByClubID, "&Status=1&Page=1' target='Center'><img src='", SessionItem.GetImageURL(), "MinMatchLook.gif' width='12' height='12' border='0' alt='查看比赛录像'><a>" });
-            DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub5ID, 5);
-            bool flag = false;
-            if (reader != null)
+            DataTable table2 = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub5ID, 5);
+            if (table2 != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table2.Rows)
                 {
-                    this.intCategory = (byte)row["Category"];
-                    if (this.intCategory == 1)
-                    {
-                        flag = true;
-                    }
+                    this.intCategory = (byte) row["Category"];
+                    int intCategory = this.intCategory;
                 }
             }
-            //reader.Close();
-           /** if (flag)
-            {
-                this.strToolsImg = string.Concat(new object[] { this.strToolsImg, "&nbsp;&nbsp;<a href='VArrange.aspx?ClubID=", this.intClub5ID, "&UserID=", this.intUserIDA, "&Type=6' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
-            }
-            else
-            {
-                this.strToolsImg = string.Concat(new object[] { this.strToolsImg, "&nbsp;&nbsp;<a href='SecretaryPage.aspx?ClubID=", this.intClub5ID, "&UserID=", this.intUserIDA, "&Type=MATCHLEV&ClubType=5' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
-            }*/
-            //this.strToolsImg = "";
             if (playerTableByClubID == null)
             {
                 this.strPlayerList = "<tr  class='BarContent'><td colspan='4'>没有任何球员！</td></tr>";
             }
             else
             {
-                foreach (DataRow row in playerTableByClubID.Rows)
+                foreach (DataRow row2 in playerTableByClubID.Rows)
                 {
-                    string str = row["Name"].ToString().Trim();
-                    int intPosition = (byte) row["Pos"];
-                    int num2 = (byte) row["Number"];
-                    int intAbility = (int) row["Ability"];
-                    int intCategory = Convert.ToInt32(row["Category"]);
-                    if (intCategory == 3)
+                    string str2 = row2["Name"].ToString().Trim();
+                    int intPosition = (byte) row2["Pos"];
+                    int num2 = (byte) row2["Number"];
+                    int intAbility = (int) row2["Ability"];
+                    if (Convert.ToInt32(row2["Category"]) == 3)
                     {
-                        intAbility = 999;
+                        intAbility = 0x3e7;
                     }
                     string playerEngPosition = PlayerItem.GetPlayerEngPosition(intPosition);
-                    int num4 = (byte) row["Height"];
-                    int num5 = (byte) row["Weight"];
-                    int num6 = (byte) row["Age"];
-                    long num7 = (long) row["PlayerID"];
+                    int num5 = (byte) row2["Height"];
+                    int num6 = (byte) row2["Weight"];
+                    int num7 = (byte) row2["Age"];
+                    long num8 = (long) row2["PlayerID"];
                     object strPlayerList = this.strPlayerList;
                     this.strPlayerList = string.Concat(new object[] { 
-                        strPlayerList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td width='33'><img width='16' height='19' src='", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif'></td><td height='24' align='left' style='padding-left:4px'><div class=\"DIVPlayerName\"><a title='年龄：", num6, "<br>身高：", num4, " CM<br>体重：", num5, " KG' style='CURSOR: hand;color:#660066' href='ShowPlayer.aspx?Type=5&Kind=1&Check=0&PlayerID=", num7, "'>", str, "</a></div></td><td><a title='", 
+                        strPlayerList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td width='33'><img width='16' height='19' src='", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif'></td><td height='24' align='left' style='padding-left:4px'><div class=\"DIVPlayerName\"><a title='年龄：", num7, "<br>身高：", num5, " CM<br>体重：", num6, " KG' style='CURSOR: hand;color:#660066' href='ShowPlayer.aspx?Type=5&Kind=1&Check=0&PlayerID=", num8, "'>", str2, "</a></div></td><td><a title='", 
                         PlayerItem.GetPlayerChsPosition(intPosition), "' style='CURSOR: hand'>", playerEngPosition, "</a></td><td>", PlayerItem.GetAbilityColor(intAbility), "</td></tr>"
                      });
                 }
@@ -865,7 +817,7 @@
 
         private void SendMsg()
         {
-            this.intUserIDA = (int) SessionItem.GetRequest("UserID", 0);
+            this.intUserIDA = SessionItem.GetRequest("UserID", 0);
             if (this.intUserIDA == 0)
             {
                 this.tbNickName.Text = "";
@@ -879,28 +831,15 @@
 
         private void StreetPlayerList()
         {
-            DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub3ID, 3);
-            bool flag = false;
-            if (reader != null)
+            DataTable table = BTPToolLinkManager.CheckClubLink(this.intUserID, this.intClub3ID, 3);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    this.intCategory = (byte)row["Category"];
-                    if (this.intCategory == 1)
-                    {
-                        flag = true;
-                    }
+                    this.intCategory = (byte) row["Category"];
+                    int intCategory = this.intCategory;
                 }
             }
-            //reader.Close();
-            /*if (flag)
-            {
-                this.strToolsImg = string.Concat(new object[] { "<a href='SArrange.aspx?ClubID=", this.intClub3ID, "&UserID=", this.intUserIDA, "&Type=5' target=Center><img src='", SessionItem.GetImageURL(), "MinMatchLev.gif' width='12' height='12' border='0'  alt='查看战术等级'><a>" });
-            }
-            else
-            {
-                this.strToolsImg = string.Concat(new object[] { "" });
-            }*/
             this.strToolsImg = "";
             DataTable playerTableByClubID = BTPPlayer3Manager.GetPlayerTableByClubID(this.intClub3ID);
             if (playerTableByClubID == null)
@@ -909,17 +848,17 @@
             }
             else
             {
-                foreach (DataRow row in playerTableByClubID.Rows)
+                foreach (DataRow row2 in playerTableByClubID.Rows)
                 {
-                    string str = row["Name"].ToString().Trim();
-                    int intPosition = (byte) row["Pos"];
-                    int num2 = (byte) row["Number"];
-                    int intAbility = (int) row["Ability"];
+                    string str = row2["Name"].ToString().Trim();
+                    int intPosition = (byte) row2["Pos"];
+                    int num2 = (byte) row2["Number"];
+                    int intAbility = (int) row2["Ability"];
                     string playerEngPosition = PlayerItem.GetPlayerEngPosition(intPosition);
-                    int num4 = (byte) row["Height"];
-                    int num5 = (byte) row["Weight"];
-                    int num6 = (byte) row["Age"];
-                    long num7 = (long) row["PlayerID"];
+                    int num4 = (byte) row2["Height"];
+                    int num5 = (byte) row2["Weight"];
+                    int num6 = (byte) row2["Age"];
+                    long num7 = (long) row2["PlayerID"];
                     object strPlayerList = this.strPlayerList;
                     this.strPlayerList = string.Concat(new object[] { 
                         strPlayerList, "<tr  class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td width='33'><img width='16' height='19' src='", SessionItem.GetImageURL(), "Player/Number/", num2, ".gif'></td><td height='25' align='left' style='padding-left:4px'><div class=\"DIVPlayerName\"><a title='年龄：", num6, "<br>身高：", num4, " CM<br>体重：", num5, " KG' style='CURSOR: hand;color:#660066' href='ShowPlayer.aspx?Type=3&Kind=1&Check=0&PlayerID=", num7, "'>", str, "</a></div></td><td><a title='", 

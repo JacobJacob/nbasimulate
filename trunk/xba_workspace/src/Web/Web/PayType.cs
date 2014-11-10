@@ -53,7 +53,7 @@
 
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
-            string str2;
+            string str;
             int num;
             int num2;
             int num3;
@@ -62,40 +62,40 @@
             string strOID = "34107" + StringItem.FormatDate(now, "yyyyMMddhhmmss") + num4;
             if (this.rbA.Checked)
             {
-                str2 = "20枚金币";
+                str = "20枚金币";
                 num = 1;
                 num2 = 10;
                 num3 = 1;
             }
             else if (this.rbB.Checked)
             {
-                str2 = "40枚金币";
+                str = "40枚金币";
                 num = 1;
                 num2 = 20;
                 num3 = 2;
             }
             else if (this.rbC.Checked)
             {
-                str2 = "100枚金币";
+                str = "100枚金币";
                 num = 1;
                 num2 = 0x2d;
                 num3 = 3;
             }
             else if (this.rbD.Checked)
             {
-                str2 = "250枚金币";
+                str = "250枚金币";
                 num = 1;
                 num2 = 100;
                 num3 = 4;
             }
             else
             {
-                str2 = "3000枚金币";
+                str = "3000枚金币";
                 num = 1;
                 num2 = 0x3e8;
                 num3 = 5;
             }
-            ROOTUserManager.AddPayOrder(this.intUserID, this.strUserName, 1, strOID, str2, num3, num, num2);
+            ROOTUserManager.AddPayOrder(this.intUserID, this.strUserName, 1, strOID, str, num3, num, num2);
             string url = "XBAFinance.aspx?Type=ORDER&Page=1";
             base.Response.Redirect(url);
         }
@@ -148,9 +148,9 @@
                     {
                         this.v_mid = "34107";
                         this.key = "stonehenge20031118";
-                        this.v_oid = (string) SessionItem.GetRequest("OID", 1);
-                        this.intOrderCategory = (int) SessionItem.GetRequest("OrderCategory", 0);
-                        int request = (int) SessionItem.GetRequest("OrderID", 0);
+                        this.v_oid = SessionItem.GetRequest("OID", 1);
+                        this.intOrderCategory = SessionItem.GetRequest("OrderCategory", 0);
+                        int request = SessionItem.GetRequest("OrderID", 0);
                         ROOTUserManager.SetOrderStatus(request, 0);
                         if (this.intOrderCategory == 1)
                         {

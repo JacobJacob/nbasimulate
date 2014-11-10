@@ -30,15 +30,15 @@
                         {
                             case 1:
                                 base.Response.Redirect("Report.aspx?Parameter=446");
-                                goto Label_0130;
+                                goto Label_012E;
 
                             case 2:
                                 base.Response.Redirect("Report.aspx?Parameter=447");
-                                goto Label_0130;
+                                goto Label_012E;
 
                             case 3:
                                 base.Response.Redirect("Report.aspx?Parameter=449");
-                                goto Label_0130;
+                                goto Label_012E;
                         }
                         base.Response.Redirect("Report.aspx?Parameter=483");
                     }
@@ -56,7 +56,7 @@
             {
                 base.Response.Redirect("Report.aspx?Parameter=454");
             }
-        Label_0130:
+        Label_012E:
             this.InitializeComponent();
             base.OnInit(e);
         }

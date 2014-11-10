@@ -1,7 +1,5 @@
 ﻿namespace Web
 {
-    using LoginParameter;
-    using ServerManage;
     using System;
     using System.Data;
     using System.Text;
@@ -27,10 +25,10 @@
 
         protected override void OnInit(EventArgs e)
         {
-            this.intTag = (int) SessionItem.GetRequest("Tag", 0);
-            this.intType = (short) SessionItem.GetRequest("Type", 2);
-            this.intClubIDA = (int) SessionItem.GetRequest("A", 0);
-            this.intClubIDB = (int) SessionItem.GetRequest("B", 0);
+            this.intTag = SessionItem.GetRequest("Tag", 0);
+            this.intType = SessionItem.GetRequest("Type", 2);
+            this.intClubIDA = SessionItem.GetRequest("A", 0);
+            this.intClubIDB = SessionItem.GetRequest("B", 0);
             if (this.intType == 2)
             {
                 SessionItem.CheckCanUseAfterUpdate(5);
@@ -105,23 +103,23 @@
             }
             else if (this.intType == 7)
             {
-                DataRow row5 = BTPUnionCupManager.GetUnionCupMatchByID(this.intTag);
-                if (row5 == null)
+                DataRow unionCupMatchByID = BTPUnionCupManager.GetUnionCupMatchByID(this.intTag);
+                if (unionCupMatchByID == null)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=2");
                     return;
                 }
-                path = row5["RepURL"].ToString().Trim();
+                path = unionCupMatchByID["RepURL"].ToString().Trim();
             }
             else if (this.intType == 9)
             {
-                DataRow row5 = BTPStarMatchManager.GetOneStarMatchByID(this.intTag);
-                if (row5 == null)
+                DataRow oneStarMatchByID = BTPStarMatchManager.GetOneStarMatchByID(this.intTag);
+                if (oneStarMatchByID == null)
                 {
                     base.Response.Redirect("Report.aspx?Parameter=2");
                     return;
                 }
-                path = row5["RepURL"].ToString().Trim();
+                path = oneStarMatchByID["RepURL"].ToString().Trim();
             }
             else
             {
@@ -141,7 +139,7 @@
             {
                 XmlDataDocument document = new XmlDataDocument();
                 document.DataSet.ReadXmlSchema(base.Server.MapPath("MatchXML/RepSchema.xsd"));
-                String temp = base.Server.MapPath(path);
+                base.Server.MapPath(path);
                 XmlTextReader reader = new XmlTextReader(base.Server.MapPath(path));
                 try
                 {
@@ -160,30 +158,30 @@
                 DataTable table4 = dataSet.Tables["Player"];
                 DataTable table5 = dataSet.Tables["Script"];
                 DataTable table6 = dataSet.Tables["Intro"];
-                DataRow row7 = XmlHelper.GetRow(dt, "Type=1", "");
-                string str2 = row7["ClubID"].ToString();
-                string str3 = row7["ClubName"].ToString();
-                string str4 = row7["Logo"].ToString();
-                string str5 = row7["Score"].ToString();
+                DataRow row9 = XmlHelper.GetRow(dt, "Type=1", "");
+                string str2 = row9["ClubID"].ToString();
+                string str3 = row9["ClubName"].ToString();
+                string str4 = row9["Logo"].ToString();
+                string str5 = row9["Score"].ToString();
                 int num = 0;
                 try
                 {
-                    num = (int) row7["AllAdd"];
+                    num = (int) row9["AllAdd"];
                 }
                 catch
                 {
                     num = 0;
                 }
                 str4 = Config.GetDomain() + str4;
-                DataRow row8 = XmlHelper.GetRow(dt, "Type=2", "");
-                string str6 = row8["ClubID"].ToString();
-                string str7 = row8["ClubName"].ToString();
-                string str8 = row8["Logo"].ToString();
-                string str9 = row8["Score"].ToString();
+                DataRow row10 = XmlHelper.GetRow(dt, "Type=2", "");
+                string str6 = row10["ClubID"].ToString();
+                string str7 = row10["ClubName"].ToString();
+                string str8 = row10["Logo"].ToString();
+                string str9 = row10["Score"].ToString();
                 int num2 = 0;
                 try
                 {
-                    num2 = (int) row8["AllAdd"];
+                    num2 = (int) row10["AllAdd"];
                 }
                 catch
                 {
@@ -194,10 +192,10 @@
                 str8 = Config.GetDomain() + str8;
                 if (table6.Rows.Count > 0)
                 {
-                    DataRow row9 = XmlHelper.GetRow(table6, "", "");
+                    DataRow row11 = XmlHelper.GetRow(table6, "", "");
                     try
                     {
-                        this.strIntro = row9["Intro"].ToString();
+                        this.strIntro = row11["Intro"].ToString();
                     }
                     catch
                     {
@@ -231,17 +229,17 @@
                 int intNum = 1;
                 foreach (DataRow row12 in table2.Rows)
                 {
-                    string str12 = row12["QuarterID"].ToString();
-                    string str10 = row12["ScoreH"].ToString();
-                    string str11 = row12["ScoreA"].ToString();
+                    string str10 = row12["QuarterID"].ToString();
+                    string str11 = row12["ScoreH"].ToString();
+                    string str12 = row12["ScoreA"].ToString();
                     try
                     {
-                        DataRow row10 = XmlHelper.GetRow(table3, "QuarterID=" + str12 + " AND ClubID=" + str2, "");
-                        DataRow row11 = XmlHelper.GetRow(table3, "QuarterID=" + str12 + " AND ClubID=" + str6, "");
+                        DataRow row13 = XmlHelper.GetRow(table3, "QuarterID=" + str10 + " AND ClubID=" + str2, "");
+                        DataRow row14 = XmlHelper.GetRow(table3, "QuarterID=" + str10 + " AND ClubID=" + str6, "");
                         this.sbList.Append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
                         this.sbList.Append("\t<tr>");
                         this.sbList.Append("\t\t<td height=\"30\" bgcolor=\"#fcc6a4\" style=\"PADDING-RIGHT:4px;PADDING-LEFT:4px;PADDING-BOTTOM:4px;PADDING-TOP:4px\">" + MatchItem.GetQName(intNum, 5) + "&nbsp;&nbsp;&nbsp;&nbsp;");
-                        this.sbList.Append("\t\t\t" + str10 + "：" + str11);
+                        this.sbList.Append("\t\t\t" + str11 + "：" + str12);
                         this.sbList.Append("\t\t</td>");
                         this.sbList.Append("\t</tr>");
                         this.sbList.Append("\t<tr>");
@@ -251,10 +249,10 @@
                         this.sbList.Append("\t\t\t\t</tr>");
                         this.sbList.Append("\t\t\t\t<tr>");
                         this.sbList.Append("\t\t\t\t\t<td height=\"25\" style=\"PADDING-RIGHT:4px;PADDING-LEFT:4px;PADDING-BOTTOM:4px;PADDING-TOP:4px\"><font color=\"#ad1a2c\">" + str3 + "");
-                        this.sbList.Append(string.Concat(new object[] { "\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;", MatchItem.GetVOffName((int) row10["Offense"]), "&nbsp;&nbsp;&nbsp;&nbsp;", MatchItem.GetVDefName((int) row10["Defense"]), "&nbsp;&nbsp;&nbsp;&nbsp;阵容状态：", ((int) row10["OffHard"]) - 10, "%</font></td>" }));
+                        this.sbList.Append(string.Concat(new object[] { "\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;", MatchItem.GetVOffName((int) row13["Offense"]), "&nbsp;&nbsp;&nbsp;&nbsp;", MatchItem.GetVDefName((int) row13["Defense"]), "&nbsp;&nbsp;&nbsp;&nbsp;阵容状态：", ((int) row13["OffHard"]) - 10, "%</font></td>" }));
                         this.sbList.Append("\t\t\t\t\t<td width=\"1\" bgcolor=\"#fcc6a4\"></td>");
                         this.sbList.Append("\t\t\t\t\t<td><font color=\"#ad1a2c\" style=\"PADDING-RIGHT:4px;PADDING-LEFT:4px;PADDING-BOTTOM:4px;PADDING-TOP:4px\">" + str7);
-                        this.sbList.Append(string.Concat(new object[] { "\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;", MatchItem.GetVOffName((int) row11["Offense"]), "&nbsp;&nbsp;&nbsp;&nbsp;", MatchItem.GetVDefName((int) row11["Defense"]), "&nbsp;&nbsp;&nbsp;&nbsp;阵容状态：", ((int) row11["OffHard"]) - 10, "%</font></td>" }));
+                        this.sbList.Append(string.Concat(new object[] { "\t\t\t\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;", MatchItem.GetVOffName((int) row14["Offense"]), "&nbsp;&nbsp;&nbsp;&nbsp;", MatchItem.GetVDefName((int) row14["Defense"]), "&nbsp;&nbsp;&nbsp;&nbsp;阵容状态：", ((int) row14["OffHard"]) - 10, "%</font></td>" }));
                         this.sbList.Append("\t\t\t\t</tr>");
                         this.sbList.Append("\t\t\t\t<tr>");
                         this.sbList.Append("\t\t\t\t\t<td width=\"501\" height=\"25\"><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"PADDING-RIGHT:4px;PADDING-LEFT:4px;PADDING-BOTTOM:4px;PADDING-TOP:4px\">");
@@ -268,7 +266,7 @@
                         this.sbList.Append("\t\t\t\t\t\t\t\t<td width=\"10%\">体力</td>");
                         this.sbList.Append("\t\t\t\t\t\t\t\t<td width=\"15%\">综合能力</td>");
                         this.sbList.Append("\t\t\t\t\t\t\t</tr>");
-                        DataView view = XmlHelper.GetView(table4, "ArrangeID=" + row10["ArrangeID"].ToString().Trim(), "");
+                        DataView view = XmlHelper.GetView(table4, "ArrangeID=" + row13["ArrangeID"].ToString().Trim(), "");
                         for (int i = 0; i < view.Count; i++)
                         {
                             this.sbList.Append("\t\t\t\t\t<tr align=\"center\">");
@@ -303,7 +301,7 @@
                         this.sbList.Append("\t\t\t\t\t\t\t\t<td width=\"10%\">体力</td>");
                         this.sbList.Append("\t\t\t\t\t\t\t\t<td width=\"15%\">综合能力</td>");
                         this.sbList.Append("\t\t\t\t\t\t\t</tr>");
-                        DataView view2 = XmlHelper.GetView(table4, "ArrangeID=" + row11["ArrangeID"].ToString(), "");
+                        DataView view2 = XmlHelper.GetView(table4, "ArrangeID=" + row14["ArrangeID"].ToString(), "");
                         for (int j = 0; j < view2.Count; j++)
                         {
                             this.sbList.Append("\t\t\t\t\t<tr align=\"center\">");
@@ -342,7 +340,7 @@
                         this.sbList.Append("\t\t<td width=\"12%\">主：客</td>");
                         this.sbList.Append("\t\t<td width=\"80%\">描 述</td>");
                         this.sbList.Append("\t</tr>");
-                        DataView view3 = XmlHelper.GetView(table5, "QuarterID=" + str12, "ScriptID ASC");
+                        DataView view3 = XmlHelper.GetView(table5, "QuarterID=" + str10, "ScriptID ASC");
                         for (int k = 0; k < view3.Count; k++)
                         {
                             this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#fcf1eb'\" onmouseout=\"this.style.backgroundColor=''\">");
@@ -356,11 +354,9 @@
                         this.sbList.Append("\t</tr>");
                         this.sbList.Append("</table>");
                         intNum++;
-                        continue;
                     }
                     catch
                     {
-                        continue;
                     }
                 }
                 if (this.strIntro != "")

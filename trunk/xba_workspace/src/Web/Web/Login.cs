@@ -51,31 +51,9 @@
             }
         }
 
-        [AjaxMethod]
-        public int weiboLogin(string uid, int type)
-        {
-            Logger.Debug("微博登录.uid[" + uid + "], type[" + type + "]");
-            DataRow dataRow = BTPAccountManager.WeiboLogin(uid, type);
-            int rc = Convert.ToInt32(dataRow["rc"]);
-            if (rc == 1)
-            {
-                string username = Convert.ToString(dataRow["UserName"]);
-                string password = Convert.ToString(dataRow["Password"]);
-
-                username = StringItem.MD5Encrypt(username, Global.strMD5Key);
-                password = StringItem.MD5Encrypt(password, Global.strMD5Key);
-                SessionItem.SetSelfLogin(username, password, false);
-            }
-
-            return rc;
-            
-        }
-
         private void btnReg_Click(object sender, ImageClickEventArgs e)
         {
-
             base.Response.Redirect(SessionItem.GetMainUrl() + "Register.aspx");
-
         }
 
         private void InitializeComponent()
@@ -120,7 +98,6 @@
                 if (intUserID == -1)
                 {
                     this.tblLogin_01.Visible = true;
-                    //this.tblLogin_02.Visible = false;
                     this.btnLogin.ImageUrl = SessionItem.GetImageURL() + "usa_5.gif";
                     this.btnReg.ImageUrl = SessionItem.GetImageURL() + "usa_2.gif";
                 }
@@ -140,7 +117,6 @@
                         return;
                     }
                     this.tblLogin_01.Visible = false;
-                    //this.tblLogin_02.Visible = true;
                     this.strMsg = string.Concat(new object[] { "<table width='170' border='0' cellpadding='0' cellspacing='0'><tr><td height='40' align='center' width='40%'><div style='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=", str5, "?RndID=", num2, ");width:37px;height:40px'></div></td><td width='60%'>　<a href='Main_P.aspx?Tag=", intUserID, "&Type=MODIFYCLUB' target='Main'><img src='", SessionItem.GetImageURL(), "Setting.gif' width='16' height='16' border='0'></a></td></tr><tr><td height='20' align='center' colspan=2><font class='ForumTime'>", str3, "</font></td></tr><tr><td height='27' align='center' colspan='2'>" });
                     if ((((int) onlineRowByUserID["Category"]) == 0) || (((int) onlineRowByUserID["Category"]) == 4))
                     {
@@ -172,7 +148,24 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            Utility.RegisterTypeForAjax(typeof(Login));
+            Utility.RegisterTypeForAjax(typeof(Web.Login));
+        }
+
+        [AjaxMethod]
+        public int weiboLogin(string uid, int type)
+        {
+            Logger.Debug(string.Concat(new object[] { "微博登录.uid[", uid, "], type[", type, "]" }));
+            DataRow row = BTPAccountManager.WeiboLogin(uid, type);
+            int num = Convert.ToInt32(row["rc"]);
+            if (num == 1)
+            {
+                string pToEncrypt = Convert.ToString(row["UserName"]);
+                string str2 = Convert.ToString(row["Password"]);
+                pToEncrypt = StringItem.MD5Encrypt(pToEncrypt, Global.strMD5Key);
+                str2 = StringItem.MD5Encrypt(str2, Global.strMD5Key);
+                SessionItem.SetSelfLogin(pToEncrypt, str2, false);
+            }
+            return num;
         }
     }
 }

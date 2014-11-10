@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -125,44 +124,44 @@
                         break;
                 }
             }
-            int num23 = 0xff;
-            int num24 = 20;
+            int num4 = 0xff;
+            int num5 = 20;
             foreach (DataRow row2 in BTPPlayer3Manager.GetArrPlayerTable(this.intClubID).Rows)
             {
-                long num4 = (long) row2["PlayerID"];
-                int num10 = (byte) row2["Age"];
+                long num6 = (long) row2["PlayerID"];
+                int num7 = (byte) row2["Age"];
                 string str = row2["Name"].ToString().Trim();
                 int intPosition = (byte) row2["Pos"];
                 string playerChsPosition = PlayerItem.GetPlayerChsPosition(intPosition);
-                int num6 = (byte) row2["Number"];
-                int num7 = (byte) row2["Power"];
+                int num9 = (byte) row2["Number"];
+                int num10 = (byte) row2["Power"];
                 float num11 = ((float) ((int) row2["Ability"])) / 10f;
-                int num8 = (byte) row2["Height"];
-                int num9 = (byte) row2["Weight"];
-                float num12 = ((float) ((int) row2["Speed"])) / 10f;
-                float num13 = ((float) ((int) row2["Jump"])) / 10f;
-                float num14 = ((float) ((int) row2["Strength"])) / 10f;
-                float num15 = ((float) ((int) row2["Stamina"])) / 10f;
-                float num16 = ((float) ((int) row2["Shot"])) / 10f;
-                float num17 = ((float) ((int) row2["Point3"])) / 10f;
-                float num18 = ((float) ((int) row2["Dribble"])) / 10f;
-                float num19 = ((float) ((int) row2["Pass"])) / 10f;
-                float num20 = ((float) ((int) row2["Rebound"])) / 10f;
-                float num21 = ((float) ((int) row2["Steal"])) / 10f;
-                float num22 = ((float) ((int) row2["Block"])) / 10f;
+                int num12 = (byte) row2["Height"];
+                int num13 = (byte) row2["Weight"];
+                float num14 = ((float) ((int) row2["Speed"])) / 10f;
+                float num15 = ((float) ((int) row2["Jump"])) / 10f;
+                float num16 = ((float) ((int) row2["Strength"])) / 10f;
+                float num17 = ((float) ((int) row2["Stamina"])) / 10f;
+                float num18 = ((float) ((int) row2["Shot"])) / 10f;
+                float num19 = ((float) ((int) row2["Point3"])) / 10f;
+                float num20 = ((float) ((int) row2["Dribble"])) / 10f;
+                float num21 = ((float) ((int) row2["Pass"])) / 10f;
+                float num22 = ((float) ((int) row2["Rebound"])) / 10f;
+                float num23 = ((float) ((int) row2["Steal"])) / 10f;
+                float num24 = ((float) ((int) row2["Block"])) / 10f;
                 float single1 = ((float) ((int) row2["Attack"])) / 10f;
                 float single2 = ((float) ((int) row2["Defense"])) / 10f;
                 float single3 = ((float) ((int) row2["Team"])) / 10f;
                 object strPlayerList = this.strPlayerList;
                 this.strPlayerList = string.Concat(new object[] { 
-                    strPlayerList, "<DIV onmouseup=putdown(this);down=false; onmousedown=logpos(this); id='", num4, "' style='Z-INDEX:100;LEFT:", num24, "px;CURSOR:hand;POSITION:absolute;TOP:", num23, "px;HEIGHT:30px;WEIGHT:28px' ondblclick=\"alert('", num4, "');\"><DIV title='姓名：", str, "[", num10, "]<br>位置：", playerChsPosition, "<br>身高：", 
-                    num8, "CM<br>体重：", num9, "KG<br>体力：", num7, "<br>综合：", num11, "<br><br>速度：", num12, "<br>弹跳：", num13, "<br>强壮：", num14, "<br>耐力：", num15, "<br>投篮：", 
-                    num16, "<br>三分：", num17, "<br>运球：", num18, "<br>传球：", num19, "<br>篮板：", num20, "<br>抢断：", num21, "<br>封盖：", num22, "' style='Z-INDEX: 1; BACKGROUND: url(", SessionItem.GetImageURL(), "Player/Number/", 
-                    num6, ".gif); WIDTH: 16px; CURSOR: hand; COLOR: white; HEIGHT: 19px' align='center'></DIV></DIV>"
+                    strPlayerList, "<DIV onmouseup=putdown(this);down=false; onmousedown=logpos(this); id='", num6, "' style='Z-INDEX:100;LEFT:", num5, "px;CURSOR:hand;POSITION:absolute;TOP:", num4, "px;HEIGHT:30px;WEIGHT:28px' ondblclick=\"alert('", num6, "');\"><DIV title='姓名：", str, "[", num7, "]<br>位置：", playerChsPosition, "<br>身高：", 
+                    num12, "CM<br>体重：", num13, "KG<br>体力：", num10, "<br>综合：", num11, "<br><br>速度：", num14, "<br>弹跳：", num15, "<br>强壮：", num16, "<br>耐力：", num17, "<br>投篮：", 
+                    num18, "<br>三分：", num19, "<br>运球：", num20, "<br>传球：", num21, "<br>篮板：", num22, "<br>抢断：", num23, "<br>封盖：", num24, "' style='Z-INDEX: 1; BACKGROUND: url(", SessionItem.GetImageURL(), "Player/Number/", 
+                    num9, ".gif); WIDTH: 16px; CURSOR: hand; COLOR: white; HEIGHT: 19px' align='center'></DIV></DIV>"
                  });
-                num24 += 30;
+                num5 += 30;
                 strPlayerList = this.strPlayerPosArray;
-                this.strPlayerPosArray = string.Concat(new object[] { strPlayerList, "player_pos[\"", num4, "\"] = getpos(document.getElementById(\"", num4, "\"));" });
+                this.strPlayerPosArray = string.Concat(new object[] { strPlayerList, "player_pos[\"", num6, "\"] = getpos(document.getElementById(\"", num6, "\"));" });
             }
         }
 
@@ -205,48 +204,48 @@
                 this.strAName = StringItem.GetValidWords(this.strAName);
                 if (StringItem.IsValidName(this.strAName, 2, 20))
                 {
-                    int num4;
-                    int num5;
+                    int num;
+                    int num2;
                     long longCID = Convert.ToInt64(this.form_c.Value);
                     long longFID = Convert.ToInt64(this.form_f.Value);
                     long longGID = Convert.ToInt64(this.form_g.Value);
                     if (this.rbOff1.Checked)
                     {
-                        num4 = 1;
+                        num = 1;
                     }
                     else if (this.rbOff2.Checked)
                     {
-                        num4 = 2;
+                        num = 2;
                     }
                     else if (this.rbOff3.Checked)
                     {
-                        num4 = 3;
+                        num = 3;
                     }
                     else
                     {
-                        num4 = 4;
+                        num = 4;
                     }
                     if (this.rbDef1.Checked)
                     {
-                        num5 = 1;
+                        num2 = 1;
                     }
                     else if (this.rbDef2.Checked)
                     {
-                        num5 = 2;
+                        num2 = 2;
                     }
                     else if (this.rbDef3.Checked)
                     {
-                        num5 = 3;
+                        num2 = 3;
                     }
                     else
                     {
-                        num5 = 4;
+                        num2 = 4;
                     }
                     int intOffHard = 100;
                     int intDefHard = 100;
-                    if ((num4 == 2) && (num5 == 2))
+                    if ((num == 2) && (num2 == 2))
                     {
-                        BTPArrange3Manager.SetArrange(this.intClubID, this.strAName, this.intType, longCID, longFID, longGID, intOffHard, intDefHard, num4, num5);
+                        BTPArrange3Manager.SetArrange(this.intClubID, this.strAName, this.intType, longCID, longFID, longGID, intOffHard, intDefHard, num, num2);
                         int intRookieOpIndex = AccountItem.SetRookieOp(this.intUserID, 5);
                         if (intRookieOpIndex != 5)
                         {
@@ -296,44 +295,42 @@
         private void MatchLev(int intUserIDA, int intClubIDA)
         {
             this.strList = "";
-            intUserIDA = (int) SessionItem.GetRequest("UserID", 0);
-            intClubIDA = (int) SessionItem.GetRequest("ClubID", 0);
-            DataTable reader = BTPToolLinkManager.CheckClubLink(this.intUserID, intClubIDA, 3);
+            intUserIDA = SessionItem.GetRequest("UserID", 0);
+            intClubIDA = SessionItem.GetRequest("ClubID", 0);
+            DataTable table = BTPToolLinkManager.CheckClubLink(this.intUserID, intClubIDA, 3);
             bool flag = false;
-            if (reader != null)
+            if (table != null)
             {
-                foreach (DataRow dataRow in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    int num = (byte)dataRow["Category"];
+                    int num = (byte) row["Category"];
                     if (num == 1)
                     {
                         flag = true;
                     }
                 }
             }
-            
-            //reader.Close();
             if (flag)
             {
                 this.intUserID = intUserIDA;
             }
-            DataRow row = BTPArrangeLvlManager.GetArrange3(this.intUserID);
-            int intLevel = (byte) row["SOInside"];
-            int num3 = (byte) row["SOCHelp"];
-            int num4 = (byte) row["SOOutside"];
-            int num5 = (byte) row["SOAll"];
-            int num6 = (byte) row["SDOneInside"];
-            int num7 = (byte) row["SDOneOutside"];
-            int num8 = (byte) row["SDOne"];
-            int num9 = (byte) row["SDArea"];
-            int num10 = (int) row["SOInsideP"];
-            int num11 = (int) row["SOCHelpP"];
-            int num12 = (int) row["SOOutsideP"];
-            int num13 = (int) row["SOAllP"];
-            int num14 = (int) row["SDOneInsideP"];
-            int num15 = (int) row["SDOneOutsideP"];
-            int num16 = (int) row["SDOneP"];
-            int num17 = (int) row["SDAreaP"];
+            DataRow row2 = BTPArrangeLvlManager.GetArrange3(this.intUserID);
+            int intLevel = (byte) row2["SOInside"];
+            int num3 = (byte) row2["SOCHelp"];
+            int num4 = (byte) row2["SOOutside"];
+            int num5 = (byte) row2["SOAll"];
+            int num6 = (byte) row2["SDOneInside"];
+            int num7 = (byte) row2["SDOneOutside"];
+            int num8 = (byte) row2["SDOne"];
+            int num9 = (byte) row2["SDArea"];
+            int num10 = (int) row2["SOInsideP"];
+            int num11 = (int) row2["SOCHelpP"];
+            int num12 = (int) row2["SOOutsideP"];
+            int num13 = (int) row2["SOAllP"];
+            int num14 = (int) row2["SDOneInsideP"];
+            int num15 = (int) row2["SDOneOutsideP"];
+            int num16 = (int) row2["SDOneP"];
+            int num17 = (int) row2["SDAreaP"];
             object strList = this.strList;
             this.strList = string.Concat(new object[] { strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td></td><td height='25'><font color='#00cc00'>进攻</font></td><td>内线强攻</td><td>", intLevel, "</td><td>", num10, "/", BTPArrangeLvlManager.Get3ArrangeNeed(intLevel), "</td><td></td></tr>" });
             strList = this.strList;

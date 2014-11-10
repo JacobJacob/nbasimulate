@@ -1,6 +1,5 @@
 ﻿namespace Web
 {
-    using LoginParameter;
     using ServerManage;
     using System;
     using System.Data;
@@ -61,7 +60,7 @@
             this.sbList = new StringBuilder();
             string strCurrentURL = string.Concat(new object[] { "CupList.aspx?Type=CHECK&CupID=", this.intCupID, "&Grade=0&Status=", this.intStatus, "&" });
             this.intPerPage = 5;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             BTPCupRegManager.GetRegCupCountNew(this.intCupID);
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "";
@@ -165,8 +164,8 @@
             {
                 for (int i = 0; i < setIDsTable.Rows.Count; i++)
                 {
-                    DataRow row2 = setIDsTable.Rows[i];
-                    strSetIDs = strSetIDs + row2["SetID"].ToString().Trim();
+                    DataRow row = setIDsTable.Rows[i];
+                    strSetIDs = strSetIDs + row["SetID"].ToString().Trim();
                     if (i < (setIDsTable.Rows.Count - 1))
                     {
                         strSetIDs = strSetIDs + ",";
@@ -184,66 +183,65 @@
             }
             else
             {
-                foreach (DataRow row3 in setIDTable.Rows)
+                foreach (DataRow row2 in setIDTable.Rows)
                 {
-                    int intSetID = (int) row3["SetID"];
-                    DataRow row4 = BTPCupManager.GetCupRowBySetID(this.intUserID, intSetID, strCupIDs);
-                    if (row4 != null)
+                    int intSetID = (int) row2["SetID"];
+                    DataRow row3 = BTPCupManager.GetCupRowBySetID(this.intUserID, intSetID, strCupIDs);
+                    if (row3 != null)
                     {
-                        string str6;
-                        int num3 = (byte) row4["Levels"];
-                        int num4 = (int) row4["RegCount"];
-                        int num5 = (int) row4["Capacity"];
-                        int num6 = (int) row4["MoneyCost"];
-                        string str3 = row4["Name"].ToString().Trim();
-                        string str4 = row4["BigLogo"].ToString().Trim();
-                        DateTime datIn = (DateTime) row4["MatchTime"];
-                        DateTime time2 = (DateTime) row4["EndRegTime"];
-                        int num8 = (int) row4["CupID"];
-                        int num9 = (byte) row4["Category"];
-                        int num7 = (int) row4["UnionID"];
-                        if ((num9 == 2) && (str3 == "新人杯"))
+                        string str3;
+                        int num3 = (byte) row3["Levels"];
+                        int num4 = (int) row3["RegCount"];
+                        int num5 = (int) row3["Capacity"];
+                        int num6 = (int) row3["MoneyCost"];
+                        string str4 = row3["Name"].ToString().Trim();
+                        string str5 = row3["BigLogo"].ToString().Trim();
+                        DateTime datIn = (DateTime) row3["MatchTime"];
+                        DateTime time2 = (DateTime) row3["EndRegTime"];
+                        int num7 = (int) row3["CupID"];
+                        int num8 = (byte) row3["Category"];
+                        int num9 = (int) row3["UnionID"];
+                        if ((num8 == 2) && (str4 == "新人杯"))
                         {
-                            str6 = "alt='新人不要错过训练的机会，报名杯赛可以让街头球员获得更多的训练点。'";
+                            str3 = "alt='新人不要错过训练的机会，报名杯赛可以让街头球员获得更多的训练点。'";
                         }
                         else
                         {
-                            str6 = "alt='报名杯赛可以让街头球员获得更多的训练点。'";
+                            str3 = "alt='报名杯赛可以让街头球员获得更多的训练点。'";
                         }
-                        if ((num7 != 0) && (num7 != this.intUnionID))
+                        if ((num9 != 0) && (num9 != this.intUnionID))
                         {
                             this.strList = this.strList + "";
                         }
                         else
                         {
-                            string str5;
-                            if (num9 == 4)
+                            string str6;
+                            if (num8 == 4)
                             {
-                                str5 = "Union.aspx?Type=UNIONCUP&Kind=IMPERIALCUPCHECK&Page=1&CupID=" + num8;
+                                str6 = "Union.aspx?Type=UNIONCUP&Kind=IMPERIALCUPCHECK&Page=1&CupID=" + num7;
                             }
-                            else if ((num7 == this.intUnionID) && (num7 != 0))
+                            else if ((num9 == this.intUnionID) && (num9 != 0))
                             {
-                                str5 = "Union.aspx?Type=MYUNION&Kind=UNIONCUPCHECK&Page=1&CupID=" + num8;
+                                str6 = "Union.aspx?Type=MYUNION&Kind=UNIONCUPCHECK&Page=1&CupID=" + num7;
                             }
                             else
                             {
-                                str5 = string.Concat(new object[] { "CupList.aspx?Type=CHECK&Status=", num9, "&CupID=", num8, "&Grade=0&Page=1" });
+                                str6 = string.Concat(new object[] { "CupList.aspx?Type=CHECK&Status=", num8, "&CupID=", num7, "&Grade=0&Page=1" });
                             }
                             this.sbList.Append("<tr class='BarContent'>");
-                            this.sbList.Append("<td height='50'><img " + str6 + " src='Images/Cup/" + str4 + "'></td>");
-                            this.sbList.Append("<td>" + str3 + "</td>");
+                            this.sbList.Append("<td height='50'><img " + str3 + " src='Images/Cup/" + str5 + "'></td>");
+                            this.sbList.Append("<td>" + str4 + "</td>");
                             this.sbList.Append("<td>" + num3 + "</td>");
                             this.sbList.Append("<td>" + StringItem.FormatDate(time2, "yy-MM-dd<br>hh:mm:ss") + "</td>");
                             this.sbList.Append("<td>" + StringItem.FormatDate(datIn, "yy-MM-dd<br>hh:mm:ss") + "</td>");
                             this.sbList.Append(string.Concat(new object[] { "<td>", num4, "/", num5, "</td>" }));
                             this.sbList.Append("<td>" + num6 + "</td>");
-                            this.sbList.Append(string.Concat(new object[] { "<td><a href='", str5, "'>查看</a> | <a href='CupList.aspx?Type=REG&Grade=0&Page=1&CupID=", num8, "'>报名</a></td>" }));
+                            this.sbList.Append(string.Concat(new object[] { "<td><a href='", str6, "'>查看</a> | <a href='CupList.aspx?Type=REG&Grade=0&Page=1&CupID=", num7, "'>报名</a></td>" }));
                             this.sbList.Append("</tr>");
                             this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='8'></td></tr>");
                         }
-                        continue;
                     }
-                    if (setIDTable.Rows.Count == 1)
+                    else if (setIDTable.Rows.Count == 1)
                     {
                         this.sbList.Append("<tr><td height='25' class='BarContent' colspan='8'>暂时没有可报名的杯赛！</td></tr>");
                     }
@@ -284,45 +282,39 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", regCupCountNew, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", regCupCountNew, "个记录 跳转", str3 });
         }
 
         private void InitializeComponent()
@@ -368,21 +360,21 @@
                     else
                     {
                         DataTable setIDsTable = BTPCupManager.GetSetIDsTable(BTPAccountManager.GetAccountRowByUserID(this.intUserID)["CupIDs"].ToString().Trim().Replace("|", ","));
-                        int num9 = 0;
+                        int num6 = 0;
                         if (setIDsTable != null)
                         {
                             for (int i = 0; i < setIDsTable.Rows.Count; i++)
                             {
-                                DataRow row3 = setIDsTable.Rows[i];
-                                int num7 = (int) row3["SetID"];
-                                int num8 = (int) BTPCupManager.GetCupRowByCupID(this.intCupID)["SetID"];
-                                if (num8 == num7)
+                                DataRow row2 = setIDsTable.Rows[i];
+                                int num8 = (int) row2["SetID"];
+                                int num9 = (int) BTPCupManager.GetCupRowByCupID(this.intCupID)["SetID"];
+                                if (num9 == num8)
                                 {
-                                    num9 = 1;
+                                    num6 = 1;
                                 }
                             }
                         }
-                        if (num9 == 1)
+                        if (num6 == 1)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=94");
                         }
@@ -433,9 +425,9 @@
             this.intRank = this.intScore;
             this.strClubName = onlineRowByUserID["ClubName3"].ToString().Trim();
             this.strClubLogo = onlineRowByUserID["ClubLogo"].ToString().Trim();
-            this.strType = (string) SessionItem.GetRequest("Type", 1);
-            this.intGrade = (int) SessionItem.GetRequest("Grade", 0);
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.strType = SessionItem.GetRequest("Type", 1);
+            this.intGrade = SessionItem.GetRequest("Grade", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.tblSignUp.Visible = false;
             this.tblView.Visible = false;
             this.tblChampion.Visible = false;
@@ -458,7 +450,7 @@
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.tblSignUp.Visible = true;
                     this.GetSignList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 case "VIEW":
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
@@ -469,7 +461,7 @@
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.tblView.Visible = true;
                     this.SetSmallList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 case "VIEWBIG":
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
@@ -480,7 +472,7 @@
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.tblViewBig.Visible = true;
                     this.SetBigList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 case "KILOCUP":
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
@@ -491,7 +483,7 @@
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.tblKiloCup.Visible = true;
                     this.SetKiloList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 case "CHAMPION":
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
@@ -502,7 +494,7 @@
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.tblChampion.Visible = true;
                     this.SetChampionList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 case "REG":
                     this.sbPageIntro.Append("<ul><li class='qian1'>杯赛报名</li>");
@@ -511,25 +503,26 @@
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=KILOCUP\"' href='CupList.aspx?Type=KILOCUP&Grade=0&Page=1'>经典赛事</a></li>");
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=CHAMPION\"' href='CupList.aspx?Type=CHAMPION&Grade=0&Page=1'>冠军榜</a></li>");
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.intCupID = (int) SessionItem.GetRequest("CupID", 0);
+                    this.intCupID = SessionItem.GetRequest("CupID", 0);
                     this.tblReg.Visible = true;
                     this.GetRegTrueList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 case "CHECK":
-                    this.intStatus = (int) SessionItem.GetRequest("Status", 0);
-                    if (this.intStatus != 2)
+                    this.intStatus = SessionItem.GetRequest("Status", 0);
+                    if (this.intStatus == 2)
                     {
-                        if (this.intStatus == 1)
-                        {
-                            this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
-                            this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=VIEW\"' href='CupList.aspx?Type=VIEW&Grade=0&Page=1'>小杯赛</a></li>");
-                            this.sbPageIntro.Append("<li class='qian2'>大杯赛</li>");
-                            this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=KILOCUP\"' href='CupList.aspx?Type=KILOCUP&Grade=0&Page=1'>经典赛事</a></li>");
-                            this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=CHAMPION\"' href='CupList.aspx?Type=CHAMPION&Grade=0&Page=1'>冠军榜</a></li>");
-                            this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                        }
-                        else if ((this.intStatus == 3) || (this.intStatus == 8))
+                        this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
+                        this.sbPageIntro.Append("<li class='qian2'>小杯赛</li>");
+                        this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=VIEWBIG\"' href='CupList.aspx?Type=VIEWBIG&Grade=0&Page=1'>大杯赛</a></li>");
+                        this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=KILOCUP\"' href='CupList.aspx?Type=KILOCUP&Grade=0&Page=1'>经典赛事</a></li>");
+                        this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=CHAMPION\"' href='CupList.aspx?Type=CHAMPION&Grade=0&Page=1'>冠军榜</a></li>");
+                        this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
+                        break;
+                    }
+                    if (this.intStatus != 1)
+                    {
+                        if ((this.intStatus == 3) || (this.intStatus == 8))
                         {
                             this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
                             this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=VIEW\"' href='CupList.aspx?Type=VIEW&Grade=0&Page=1'>小杯赛</a></li>");
@@ -545,8 +538,8 @@
                         break;
                     }
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
-                    this.sbPageIntro.Append("<li class='qian2'>小杯赛</li>");
-                    this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=VIEWBIG\"' href='CupList.aspx?Type=VIEWBIG&Grade=0&Page=1'>大杯赛</a></li>");
+                    this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=VIEW\"' href='CupList.aspx?Type=VIEW&Grade=0&Page=1'>小杯赛</a></li>");
+                    this.sbPageIntro.Append("<li class='qian2'>大杯赛</li>");
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=KILOCUP\"' href='CupList.aspx?Type=KILOCUP&Grade=0&Page=1'>经典赛事</a></li>");
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=CHAMPION\"' href='CupList.aspx?Type=CHAMPION&Grade=0&Page=1'>冠军榜</a></li>");
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
@@ -559,10 +552,10 @@
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=KILOCUP\"' href='CupList.aspx?Type=KILOCUP&Grade=0&Page=1'>经典赛事</a></li>");
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=CHAMPION\"' href='CupList.aspx?Type=CHAMPION&Grade=0&Page=1'>冠军榜</a></li>");
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.intCupID = (int) SessionItem.GetRequest("CupID", 0);
+                    this.intCupID = SessionItem.GetRequest("CupID", 0);
                     this.tblViewSmallA.Visible = true;
                     this.GetRegTrueList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 case "VIEWBIGA":
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
@@ -571,10 +564,10 @@
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=KILOCUP\"' href='CupList.aspx?Type=KILOCUP&Grade=0&Page=1'>经典赛事</a></li>");
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=CHAMPION\"' href='CupList.aspx?Type=CHAMPION&Grade=0&Page=1'>冠军榜</a></li>");
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.intCupID = (int) SessionItem.GetRequest("CupID", 0);
+                    this.intCupID = SessionItem.GetRequest("CupID", 0);
                     this.tblViewBigA.Visible = true;
                     this.GetRegTrueList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 case "KILOCUPA":
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=SIGNUP\"' href='CupList.aspx?Type=SIGNUP&Grade=0&Page=1'>杯赛报名</a></li>");
@@ -583,10 +576,10 @@
                     this.sbPageIntro.Append("<li class='qian2'>经典赛事</li>");
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=CHAMPION\"' href='CupList.aspx?Type=CHAMPION&Grade=0&Page=1'>冠军榜</a></li>");
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    this.intCupID = (int) SessionItem.GetRequest("CupID", 0);
+                    this.intCupID = SessionItem.GetRequest("CupID", 0);
                     this.tblKiloCupA.Visible = true;
                     this.GetRegTrueList();
-                    goto Label_0AE0;
+                    goto Label_0A9E;
 
                 default:
                     this.sbPageIntro.Append("<ul><li class='qian1'>杯赛报名</li>");
@@ -596,13 +589,13 @@
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/Cup.aspx?Type=CHAMPION\"' href='CupList.aspx?Type=CHAMPION&Grade=0&Page=1'>冠军榜</a></li>");
                     this.sbPageIntro.Append("</ul><a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.tblSignUp.Visible = true;
-                    goto Label_0AE0;
+                    goto Label_0A9E;
             }
-            this.intCupID = (int) SessionItem.GetRequest("CupID", 0);
+            this.intCupID = SessionItem.GetRequest("CupID", 0);
             this.tblCheck.Visible = true;
             this.SetPageInfo();
             this.GetCheckList();
-        Label_0AE0:
+        Label_0A9E:
             this.InitializeComponent();
             base.OnInit(e);
         }
@@ -614,112 +607,112 @@
         private void SetBigList()
         {
             int num;
+            string str;
             string str2;
-            string str3;
             int num2;
-            string str4;
+            string str3;
             DateTime time;
-            string str5;
+            string str4;
+            int num3;
             int num4;
             int num5;
-            int num6;
+            string str5;
             string str6;
-            string str7;
             this.sbList = new StringBuilder();
             string strCurrentURL = "CupList.aspx?Type=VIEWBIG&Grade=0&";
             this.intPerPage = 6;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             BTPCupRegManager.GetRegCupCountUIDCategoryNew(this.intUserID, 1);
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "";
             SqlDataReader reader = BTPCupRegManager.GetRegCupListByUIDCategoryNew(this.intUserID, 1, this.intPage, this.intPerPage);
             if (reader.HasRows)
             {
-                goto Label_04CD;
+                goto Label_02B6;
             }
             this.strList = "<tr class='BarContent'><td height='25' colspan='7'>您暂时还没有报名过大杯赛。</td></tr>";
-            goto Label_04D9;
-        Label_02B0:
-            switch (num6)
+            goto Label_04FE;
+        Label_008B:
+            switch (num5)
             {
+                case 0:
+                    str4 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    break;
+
                 case 2:
-                    str5 = "等待发奖";
+                    str4 = "等待发奖";
                     break;
 
                 case 3:
-                    str5 = "已结束";
-                    break;
-
-                case 0:
-                    str5 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "已结束";
                     break;
 
                 default:
-                    str5 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
                     break;
             }
-            if (num6 == 0)
+            if (num5 == 0)
             {
-                str4 = string.Concat(new object[] { "<a href='CupList.aspx?Type=CHECK&CupID=", num, "&Grade=0&Page=1&Status=1'>查看</a> | <a href='CupList.aspx?Type=VIEWBIGA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='CupList.aspx?Type=CHECK&CupID=", num, "&Grade=0&Page=1&Status=1'>查看</a> | <a href='CupList.aspx?Type=VIEWBIGA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
             }
             else
             {
-                str4 = string.Concat(new object[] { "<a href='", str6, "'>赛程</a> | <a href='CupList.aspx?Type=VIEWBIGA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='", str5, "'>赛程</a> | <a href='CupList.aspx?Type=VIEWBIGA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
             }
             this.sbList.Append("<tr class='BarContent'>");
-            this.sbList.Append("<td height='50'><img src='Images/Cup/" + str2 + "'></td>");
-            this.sbList.Append("<td>" + str3 + "</td>");
+            this.sbList.Append("<td height='50'><img src='Images/Cup/" + str + "'></td>");
+            this.sbList.Append("<td>" + str2 + "</td>");
             this.sbList.Append("<td>" + num2 + "</td>");
-            this.sbList.Append("<td>" + str7 + "</td>");
-            this.sbList.Append(string.Concat(new object[] { "<td>", num4, "/", num5, "</td>" }));
-            this.sbList.Append("<td>" + str5 + "</td>");
+            this.sbList.Append("<td>" + str6 + "</td>");
+            this.sbList.Append(string.Concat(new object[] { "<td>", num3, "/", num4, "</td>" }));
             this.sbList.Append("<td>" + str4 + "</td>");
+            this.sbList.Append("<td>" + str3 + "</td>");
             this.sbList.Append("</tr>");
             this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
-        Label_04CD:
+        Label_02B6:
             if (reader.Read())
             {
                 num = (int) reader["CupID"];
                 int deadRound = BTPCupRegManager.GetDeadRound(num, this.intClubID);
-                str2 = reader["BigLogo"].ToString().Trim();
-                str3 = reader["Name"].ToString().Trim();
+                str = reader["BigLogo"].ToString().Trim();
+                str2 = reader["Name"].ToString().Trim();
                 num2 = (byte) reader["Levels"];
-                int num3 = (byte) reader["Round"];
+                int num7 = (byte) reader["Round"];
                 time = (DateTime) reader["MatchTime"];
                 DataRow cupRowByCupID = BTPCupManager.GetCupRowByCupID(num);
-                num4 = (int) cupRowByCupID["RegCount"];
-                num5 = (int) cupRowByCupID["Capacity"];
-                num6 = (byte) cupRowByCupID["Status"];
-                str6 = cupRowByCupID["LadderURL"].ToString().Trim();
+                num3 = (int) cupRowByCupID["RegCount"];
+                num4 = (int) cupRowByCupID["Capacity"];
+                num5 = (byte) cupRowByCupID["Status"];
+                str5 = cupRowByCupID["LadderURL"].ToString().Trim();
                 if (deadRound == 100)
                 {
-                    deadRound = num3;
+                    deadRound = num7;
                 }
-                if (deadRound < num3)
+                if (deadRound < num7)
                 {
-                    switch (num6)
+                    switch (num5)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num3, "</a></font>" });
-                            goto Label_02B0;
+                            str6 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num7, "</a></font>" });
+                            goto Label_008B;
                     }
-                    str7 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num3, "</a></font>" });
+                    str6 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num7, "</a></font>" });
                 }
                 else
                 {
-                    switch (num6)
+                    switch (num5)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num3, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num3, "</a></font>" });
-                            goto Label_02B0;
+                            str6 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num7, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num7, "</a></font>" });
+                            goto Label_008B;
                     }
-                    str7 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num3, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num3, "</a></font>" });
+                    str6 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num7, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num7, "</a></font>" });
                 }
-                goto Label_02B0;
+                goto Label_008B;
             }
-        Label_04D9:
+        Label_04FE:
             reader.Close();
             this.sbList.Append("<tr><td height='25' align='right' colspan='7'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
         }
@@ -729,7 +722,7 @@
             this.sbList = new StringBuilder();
             string strCurrentURL = "CupList.aspx?Type=CHAMPION&Grade=0&";
             this.intPerPage = 6;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             BTPCupManager.GetChampionUserCountNew();
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "";
@@ -742,28 +735,28 @@
                     string str2 = championListNew["BigLogo"].ToString().Trim();
                     string str3 = championListNew["Name"].ToString().Trim();
                     int num = (byte) championListNew["Levels"];
-                    string str6 = championListNew["ChampionClubName"].ToString().Trim();
-                    string str4 = championListNew["LadderURL"].ToString().Trim();
+                    string str4 = championListNew["ChampionClubName"].ToString().Trim();
+                    string str5 = championListNew["LadderURL"].ToString().Trim();
                     if ((ServerParameter.strCopartner == "XBA") || (ServerParameter.strCopartner == "CGA"))
                     {
-                        if (str4.ToLower().IndexOf("http://") == -1)
+                        if (str5.ToLower().IndexOf("http://") == -1)
                         {
-                            str4 = Config.GetDomain() + str4;
+                            str5 = Config.GetDomain() + str5;
                         }
                     }
-                    else if (str4.ToLower().IndexOf("http://") == -1)
+                    else if (str5.ToLower().IndexOf("http://") == -1)
                     {
-                        str4 = Config.GetDomain() + str4;
+                        str5 = Config.GetDomain() + str5;
                     }
-                    string str5 = "<a href='" + str4 + "'>查看</a>";
+                    string str6 = "<a href='" + str5 + "'>查看</a>";
                     DateTime datIn = (DateTime) championListNew["EndRegTime"];
                     this.sbList.Append("<tr class='BarContent'>");
                     this.sbList.Append("<td height='50'><img src='Images/Cup/" + str2 + "'></td>");
                     this.sbList.Append("<td>" + str3 + "</td>");
                     this.sbList.Append("<td>" + num + "</td>");
                     this.sbList.Append("<td>" + StringItem.FormatDate(datIn, "yyyy-MM-dd<br>hh:mm:ss") + "</td>");
-                    this.sbList.Append("<td>" + str5 + "</td>");
                     this.sbList.Append("<td>" + str6 + "</td>");
+                    this.sbList.Append("<td>" + str4 + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='6'></td></tr>");
                 }
@@ -779,112 +772,112 @@
         private void SetKiloList()
         {
             int num;
+            string str;
             string str2;
-            string str3;
             int num2;
-            string str4;
+            string str3;
             DateTime time;
-            string str5;
+            string str4;
+            int num3;
             int num4;
             int num5;
-            int num6;
+            string str5;
             string str6;
-            string str7;
             this.sbList = new StringBuilder();
             string strCurrentURL = "CupList.aspx?Type=KILOCUP&Grade=0&";
             this.intPerPage = 6;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             BTPCupRegManager.GetRegKiloCupCountNew(this.intUserID);
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "";
             SqlDataReader reader = BTPCupRegManager.GetRegKiloCupListNew(this.intUserID, this.intPage, this.intPerPage);
             if (reader.HasRows)
             {
-                goto Label_04CB;
+                goto Label_02B4;
             }
             this.strList = "<tr class='BarContent'><td height='25' colspan='7'>您暂时还没有报名过千人杯赛。</td></tr>";
-            goto Label_04D7;
-        Label_02AE:
-            switch (num6)
+            goto Label_04FC;
+        Label_0089:
+            switch (num5)
             {
+                case 0:
+                    str4 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    break;
+
                 case 2:
-                    str5 = "等待发奖";
+                    str4 = "等待发奖";
                     break;
 
                 case 3:
-                    str5 = "已结束";
-                    break;
-
-                case 0:
-                    str5 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "已结束";
                     break;
 
                 default:
-                    str5 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
                     break;
             }
-            if (num6 == 0)
+            if (num5 == 0)
             {
-                str4 = string.Concat(new object[] { "<a href='CupList.aspx?Type=CHECK&CupID=", num, "&Grade=0&Page=1&Status=3'>查看</a> | <a href='CupList.aspx?Type=KILOCUPA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='CupList.aspx?Type=CHECK&CupID=", num, "&Grade=0&Page=1&Status=3'>查看</a> | <a href='CupList.aspx?Type=KILOCUPA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
             }
             else
             {
-                str4 = string.Concat(new object[] { "<a href='", str6, "'>赛程</a> | <a href='CupList.aspx?Type=KILOCUPA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='", str5, "'>赛程</a> | <a href='CupList.aspx?Type=KILOCUPA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
             }
             this.sbList.Append("<tr class='BarContent'>");
-            this.sbList.Append("<td height='50'><img src='Images/Cup/" + str2 + "'></td>");
-            this.sbList.Append("<td>" + str3 + "</td>");
+            this.sbList.Append("<td height='50'><img src='Images/Cup/" + str + "'></td>");
+            this.sbList.Append("<td>" + str2 + "</td>");
             this.sbList.Append("<td>" + num2 + "</td>");
-            this.sbList.Append("<td>" + str7 + "</td>");
-            this.sbList.Append(string.Concat(new object[] { "<td>", num4, "/", num5, "</td>" }));
-            this.sbList.Append("<td>" + str5 + "</td>");
+            this.sbList.Append("<td>" + str6 + "</td>");
+            this.sbList.Append(string.Concat(new object[] { "<td>", num3, "/", num4, "</td>" }));
             this.sbList.Append("<td>" + str4 + "</td>");
+            this.sbList.Append("<td>" + str3 + "</td>");
             this.sbList.Append("</tr>");
             this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
-        Label_04CB:
+        Label_02B4:
             if (reader.Read())
             {
                 num = (int) reader["CupID"];
                 int deadRound = BTPCupRegManager.GetDeadRound(num, this.intClubID);
-                str2 = reader["BigLogo"].ToString().Trim();
-                str3 = reader["Name"].ToString().Trim();
+                str = reader["BigLogo"].ToString().Trim();
+                str2 = reader["Name"].ToString().Trim();
                 num2 = (byte) reader["Levels"];
-                int num3 = (byte) reader["Round"];
+                int num7 = (byte) reader["Round"];
                 time = (DateTime) reader["MatchTime"];
                 DataRow cupRowByCupID = BTPCupManager.GetCupRowByCupID(num);
-                num4 = (int) cupRowByCupID["RegCount"];
-                num5 = (int) cupRowByCupID["Capacity"];
-                num6 = (byte) cupRowByCupID["Status"];
-                str6 = cupRowByCupID["LadderURL"].ToString().Trim();
+                num3 = (int) cupRowByCupID["RegCount"];
+                num4 = (int) cupRowByCupID["Capacity"];
+                num5 = (byte) cupRowByCupID["Status"];
+                str5 = cupRowByCupID["LadderURL"].ToString().Trim();
                 if (deadRound == 100)
                 {
-                    deadRound = num3;
+                    deadRound = num7;
                 }
-                if (deadRound < num3)
+                if (deadRound < num7)
                 {
-                    switch (num6)
+                    switch (num5)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num3, "</a></font>" });
-                            goto Label_02AE;
+                            str6 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num7, "</a></font>" });
+                            goto Label_0089;
                     }
-                    str7 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num3, "</a></font>" });
+                    str6 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num7, "</a></font>" });
                 }
                 else
                 {
-                    switch (num6)
+                    switch (num5)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num3, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num3, "</a></font>" });
-                            goto Label_02AE;
+                            str6 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num7, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num7, "</a></font>" });
+                            goto Label_0089;
                     }
-                    str7 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num3, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num3, "</a></font>" });
+                    str6 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num7, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num7, "</a></font>" });
                 }
-                goto Label_02AE;
+                goto Label_0089;
             }
-        Label_04D7:
+        Label_04FC:
             reader.Close();
             this.sbList.Append("<tr><td height='25' align='right' colspan='7'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
         }
@@ -903,123 +896,123 @@
         private void SetSmallList()
         {
             int num;
+            string str;
             string str2;
-            string str3;
             int num2;
-            string str4;
+            string str3;
             DateTime time;
-            string str5;
+            string str4;
+            int num3;
             int num4;
             int num5;
-            int num6;
+            string str5;
             string str6;
-            string str7;
             this.sbList = new StringBuilder();
             string strCurrentURL = "CupList.aspx?Type=VIEW&Grade=0&";
             this.intPerPage = 6;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             BTPCupRegManager.GetRegCupCountUIDCategoryNew(this.intUserID, 2);
             this.strScript = this.GetScript(strCurrentURL);
             this.strList = "";
             SqlDataReader reader = BTPCupRegManager.GetRegCupListByUIDCategoryNew(this.intUserID, 2, this.intPage, this.intPerPage);
             if (reader.HasRows)
             {
-                goto Label_0535;
+                goto Label_02B6;
             }
             this.strList = "<tr class='BarContent'><td height='25' colspan='7'>您暂时还没有报名过小杯赛。</td></tr>";
-            goto Label_0541;
-        Label_0318:
-            switch (num6)
+            goto Label_0566;
+        Label_008B:
+            switch (num5)
             {
+                case 0:
+                    str4 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    break;
+
                 case 2:
-                    str5 = "等待发奖";
+                    str4 = "等待发奖";
                     break;
 
                 case 3:
-                    str5 = "已结束";
-                    break;
-
-                case 0:
-                    str5 = "<a title='赛程排定时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "已结束";
                     break;
 
                 default:
-                    str5 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
+                    str4 = "<a title='下轮比赛时间' style='cursor:hand;'><font color='#660066'>" + StringItem.FormatDate(time, "yy-MM-dd<br>hh:mm:ss") + "</font></a>";
                     break;
             }
-            if (num6 == 0)
+            if (num5 == 0)
             {
-                str4 = string.Concat(new object[] { "<a href='CupList.aspx?Type=CHECK&CupID=", num, "&Grade=0&Page=1&Status=2'>查看</a> | <a href='CupList.aspx?Type=VIEWSMALLA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='CupList.aspx?Type=CHECK&CupID=", num, "&Grade=0&Page=1&Status=2'>查看</a> | <a href='CupList.aspx?Type=VIEWSMALLA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
             }
             else
             {
-                str4 = string.Concat(new object[] { "<a href='", str6, "'>赛程</a> | <a href='CupList.aspx?Type=VIEWSMALLA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
+                str3 = string.Concat(new object[] { "<a href='", str5, "'>赛程</a> | <a href='CupList.aspx?Type=VIEWSMALLA&Grade=0&Page=1&CupID=", num, "'>介绍</a>" });
             }
             this.sbList.Append("<tr class='BarContent'>");
-            this.sbList.Append("<td height='50'><img src='Images/Cup/" + str2 + "'></td>");
-            this.sbList.Append("<td>" + str3 + "</td>");
+            this.sbList.Append("<td height='50'><img src='Images/Cup/" + str + "'></td>");
+            this.sbList.Append("<td>" + str2 + "</td>");
             this.sbList.Append("<td>" + num2 + "</td>");
-            this.sbList.Append("<td>" + str7 + "</td>");
-            this.sbList.Append(string.Concat(new object[] { "<td>", num4, "/", num5, "</td>" }));
-            this.sbList.Append("<td>" + str5 + "</td>");
+            this.sbList.Append("<td>" + str6 + "</td>");
+            this.sbList.Append(string.Concat(new object[] { "<td>", num3, "/", num4, "</td>" }));
             this.sbList.Append("<td>" + str4 + "</td>");
+            this.sbList.Append("<td>" + str3 + "</td>");
             this.sbList.Append("</tr>");
             this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
-        Label_0535:
+        Label_02B6:
             if (reader.Read())
             {
                 num = (int) reader["CupID"];
                 int deadRound = BTPCupRegManager.GetDeadRound(num, this.intClubID);
-                str2 = reader["BigLogo"].ToString().Trim();
-                str3 = reader["Name"].ToString().Trim();
+                str = reader["BigLogo"].ToString().Trim();
+                str2 = reader["Name"].ToString().Trim();
                 num2 = (byte) reader["Levels"];
-                int num3 = (byte) reader["Round"];
+                int num7 = (byte) reader["Round"];
                 time = (DateTime) reader["MatchTime"];
                 DataRow cupRowByCupID = BTPCupManager.GetCupRowByCupID(num);
-                num4 = (int) cupRowByCupID["RegCount"];
-                num5 = (int) cupRowByCupID["Capacity"];
-                num6 = (byte) cupRowByCupID["Status"];
-                str6 = cupRowByCupID["LadderURL"].ToString().Trim();
+                num3 = (int) cupRowByCupID["RegCount"];
+                num4 = (int) cupRowByCupID["Capacity"];
+                num5 = (byte) cupRowByCupID["Status"];
+                str5 = cupRowByCupID["LadderURL"].ToString().Trim();
                 if ((ServerParameter.strCopartner == "XBA") || (ServerParameter.strCopartner == "CGA"))
                 {
-                    if (str6.ToLower().IndexOf("http://") == -1)
+                    if (str5.ToLower().IndexOf("http://") == -1)
                     {
-                        str6 = Config.GetDomain() + str6;
+                        str5 = Config.GetDomain() + str5;
                     }
                 }
-                else if (str6.ToLower().IndexOf("http://") == -1)
+                else if (str5.ToLower().IndexOf("http://") == -1)
                 {
-                    str6 = Config.GetDomain() + str6;
+                    str5 = Config.GetDomain() + str5;
                 }
                 if (deadRound == 100)
                 {
-                    deadRound = num3;
+                    deadRound = num7;
                 }
-                if (deadRound < num3)
+                if (deadRound < num7)
                 {
-                    switch (num6)
+                    switch (num5)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num3, "</a></font>" });
-                            goto Label_0318;
+                            str6 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num7, "</a></font>" });
+                            goto Label_008B;
                     }
-                    str7 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num3, "</a></font>" });
+                    str6 = string.Concat(new object[] { "<font color='red'><a title='淘汰轮数' style='cursor:hand;'>", deadRound, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num7, "</a></font>" });
                 }
                 else
                 {
-                    switch (num6)
+                    switch (num5)
                     {
                         case 2:
                         case 3:
-                            str7 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num3, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num3, "</a></font>" });
-                            goto Label_0318;
+                            str6 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num7, "</a></font> / <font color='red'><a title='比赛结束轮数' style='cursor:hand;'>", num7, "</a></font>" });
+                            goto Label_008B;
                     }
-                    str7 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num3, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num3, "</a></font>" });
+                    str6 = string.Concat(new object[] { "<font color='green'><a title='参赛轮数' style='cursor:hand;'>", num7, "</a></font> / <font color='green'><a title='比赛进行轮数' style='cursor:hand;'>", num7, "</a></font>" });
                 }
-                goto Label_0318;
+                goto Label_008B;
             }
-        Label_0541:
+        Label_0566:
             reader.Close();
             this.sbList.Append("<tr><td height='25' align='right' colspan='7'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
         }

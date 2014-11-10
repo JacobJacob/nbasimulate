@@ -3,7 +3,6 @@
     using AjaxPro;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -81,46 +80,40 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            obj2 = str2 + " " + str3 + " ";
-            return string.Concat(new object[] { obj2, "总数:", total, "  跳转 ", str4 });
+            str3 = str3 + "</select>";
+            obj2 = str + " " + str2 + " ";
+            return string.Concat(new object[] { obj2, "总数:", total, "  跳转 ", str3 });
         }
 
         private void ImgBtnOK_Click(object sender, ImageClickEventArgs e)
@@ -136,10 +129,10 @@
             else
             {
                 DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                int num2 = Convert.ToInt32(accountRowByUserID["Category"]);
-                int num = Convert.ToInt32(accountRowByUserID["DevLvl"]);
+                int num = Convert.ToInt32(accountRowByUserID["Category"]);
+                int num2 = Convert.ToInt32(accountRowByUserID["DevLvl"]);
                 DataRow orderParameter = BTPOrderManager.GetOrderParameter();
-                if (((num > ((int) orderParameter["Level"])) || (num2 != 5)) && (this.intUserID != 1))
+                if (((num2 > ((int) orderParameter["Level"])) || (num != 5)) && (this.intUserID != 1))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=808");
                 }
@@ -180,8 +173,8 @@
             {
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
                 this.strNickName = onlineRowByUserID["NickName"].ToString();
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
-                this.intPage = (int) SessionItem.GetRequest("Page", 0);
+                this.strType = SessionItem.GetRequest("Type", 1);
+                this.intPage = SessionItem.GetRequest("Page", 0);
                 this.intPrePage = 10;
                 this.tblWealthMarket.Visible = false;
                 this.tblBusiness.Visible = false;
@@ -197,7 +190,7 @@
 
         private void SetBusinessList()
         {
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -207,10 +200,10 @@
             this.sbList.Append("<td height=24 width=128 align=center>交易资金</td><td height=24 width=128  align=center>交易时间</td></tr>");
             string str = "";
             string str2 = "";
-            DataTable reader = BTPOrderManager.GetOrderBusinessByUserID(this.intUserID, 0, this.intPage, this.intPrePage);
-            if (reader != null)
+            DataTable table = BTPOrderManager.GetOrderBusinessByUserID(this.intUserID, 0, this.intPage, this.intPrePage);
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     int num = (int) row["SaleUserID"];
                     int num2 = (int) row["BuyUserID"];
@@ -238,7 +231,6 @@
             {
                 this.sbList.Append("<tr class='BarContent'><td height=24 colspan=6 align=center>暂无交易记录</td></tr>");
             }
-            //reader.Close();
             this.strGetViewPage = this.GetViewPage("WealthMarket.aspx?Type=BUSINESS&");
             this.strGetScript = this.GetScript("WealthMarket.aspx?Type=BUSINESS&");
         }
@@ -275,17 +267,17 @@
                 DataTable orderRowByUserID = BTPOrderManager.GetOrderRowByUserID(this.intUserID);
                 if (orderRowByUserID != null)
                 {
-                    foreach (DataRow row in orderRowByUserID.Rows)
+                    foreach (DataRow row2 in orderRowByUserID.Rows)
                     {
                         string str;
                         string str2 = "";
-                        int num3 = (int) row["OrderID"];
-                        int num = Convert.ToInt32(row["Category"]);
-                        int num2 = (int) row["Price"];
-                        long num4 = Convert.ToInt64(row["Wealth"]);
-                        long num5 = Convert.ToInt64(row["Money"]);
-                        DateTime datIn = Convert.ToDateTime(row["DateTime"]);
-                        if (num == 1)
+                        int num = (int) row2["OrderID"];
+                        int num2 = Convert.ToInt32(row2["Category"]);
+                        int num3 = (int) row2["Price"];
+                        long num4 = Convert.ToInt64(row2["Wealth"]);
+                        long num5 = Convert.ToInt64(row2["Money"]);
+                        DateTime datIn = Convert.ToDateTime(row2["DateTime"]);
+                        if (num2 == 1)
                         {
                             str = "买入游戏币";
                             str2 = "<font color=red>-" + num5 + "</font>";
@@ -296,9 +288,9 @@
                             str2 = "<font color=green>+" + num5 + "</font>";
                         }
                         this.sbList.Append("<tr height=24 onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height=24 align=center>" + str + "</td>");
-                        this.sbList.Append(string.Concat(new object[] { "<td height=24 align=center>", num2, "资金/枚</td><td height=24 align=center>", num4, "枚</td>" }));
+                        this.sbList.Append(string.Concat(new object[] { "<td height=24 align=center>", num3, "资金/枚</td><td height=24 align=center>", num4, "枚</td>" }));
                         this.sbList.Append("<td height=24 align=center>" + str2 + "资金</td><td height=24  align=center>" + StringItem.FormatDate(datIn, "yyyy-MM-dd hh:mm") + "</td>");
-                        this.sbList.Append("<td width=40 align=center><a href='SecretaryPage.aspx?Type=CANCELORDER&OrderID=" + num3 + "'>撤销</a></td></tr>");
+                        this.sbList.Append("<td width=40 align=center><a href='SecretaryPage.aspx?Type=CANCELORDER&OrderID=" + num + "'>撤销</a></td></tr>");
                     }
                 }
                 else
@@ -307,7 +299,6 @@
                     this.sbList.Append("<tr class='BarContent'><td height=24 colspan=7 align=center>暂无订单提交</td></tr>");
                     this.sbList.Append("</table>");
                 }
-                //orderRowByUserID.Close();
             }
         }
     }

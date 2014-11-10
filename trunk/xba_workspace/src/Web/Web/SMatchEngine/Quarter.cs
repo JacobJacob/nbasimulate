@@ -2206,37 +2206,37 @@
             int num = this.rnd.Next(0, 0x2ee0);
             if (num < 15)
             {
-                if (this.blnTurn)
+                if (!this.blnTurn)
                 {
-                    if ((this.aAway.pOCP != null) && ((this.aAway.pOCP.intStatus != 2) && (this.rnd.Next(this.aAway.pOCP.intPower, 100) < 90)))
+                    if (((this.aHome.pOCP != null) && (this.aHome.pOCP.intStatus != 2)) && (this.rnd.Next(this.aHome.pOCP.intPower, 100) < 90))
                     {
-                        this.aAway.pOCP.blnInjured = true;
-                        this.aAway.pOCP.intOffAbility /= 2;
-                        this.aAway.pOCP.intDefAbility /= 2;
+                        this.aHome.pOCP.blnInjured = true;
+                        this.aHome.pOCP.intOffAbility /= 2;
+                        this.aHome.pOCP.intDefAbility /= 2;
                         this.sbScript.Append("<Script>");
                         this.sbScript.Append("\t\t<QuarterID>");
                         this.sbScript.Append(this.intQNumC);
                         this.sbScript.Append("</QuarterID>");
                         this.sbScript.Append("\t\t<Time></Time>");
                         this.sbScript.Append("\t\t<Content>&lt;font color=red&gt;");
-                        this.sbScript.Append(this.aAway.pOCP.strName);
+                        this.sbScript.Append(this.aHome.pOCP.strName);
                         this.sbScript.Append("受伤，能力减少50%！&lt;/font&gt;</Content>");
                         this.sbScript.Append("\t\t<Score></Score>");
                         this.sbScript.Append("\t</Script>");
                     }
                 }
-                else if ((this.aHome.pOCP != null) && ((this.aHome.pOCP.intStatus != 2) && (this.rnd.Next(this.aHome.pOCP.intPower, 100) < 90)))
+                else if (((this.aAway.pOCP != null) && (this.aAway.pOCP.intStatus != 2)) && (this.rnd.Next(this.aAway.pOCP.intPower, 100) < 90))
                 {
-                    this.aHome.pOCP.blnInjured = true;
-                    this.aHome.pOCP.intOffAbility /= 2;
-                    this.aHome.pOCP.intDefAbility /= 2;
+                    this.aAway.pOCP.blnInjured = true;
+                    this.aAway.pOCP.intOffAbility /= 2;
+                    this.aAway.pOCP.intDefAbility /= 2;
                     this.sbScript.Append("<Script>");
                     this.sbScript.Append("\t\t<QuarterID>");
                     this.sbScript.Append(this.intQNumC);
                     this.sbScript.Append("</QuarterID>");
                     this.sbScript.Append("\t\t<Time></Time>");
                     this.sbScript.Append("\t\t<Content>&lt;font color=red&gt;");
-                    this.sbScript.Append(this.aHome.pOCP.strName);
+                    this.sbScript.Append(this.aAway.pOCP.strName);
                     this.sbScript.Append("受伤，能力减少50%！&lt;/font&gt;</Content>");
                     this.sbScript.Append("\t\t<Score></Score>");
                     this.sbScript.Append("\t</Script>");
@@ -2246,7 +2246,7 @@
             {
                 if (this.blnTurn)
                 {
-                    if ((this.aHome.pDCP != null) && ((this.aHome.pDCP.intStatus != 2) && (this.rnd.Next(this.aHome.pDCP.intPower, 100) < 90)))
+                    if (((this.aHome.pDCP != null) && (this.aHome.pDCP.intStatus != 2)) && (this.rnd.Next(this.aHome.pDCP.intPower, 100) < 90))
                     {
                         this.aHome.pDCP.blnInjured = true;
                         this.aHome.pDCP.intOffAbility /= 2;
@@ -2263,7 +2263,7 @@
                         this.sbScript.Append("\t</Script>");
                     }
                 }
-                else if ((this.aAway.pDCP != null) && ((this.aAway.pDCP.intStatus != 2) && (this.rnd.Next(this.aAway.pDCP.intPower, 100) < 90)))
+                else if (((this.aAway.pDCP != null) && (this.aAway.pDCP.intStatus != 2)) && (this.rnd.Next(this.aAway.pDCP.intPower, 100) < 90))
                 {
                     this.aAway.pDCP.blnInjured = true;
                     this.aAway.pDCP.intOffAbility /= 2;

@@ -39,15 +39,15 @@
                 }
                 else
                 {
-                    int num2 = (int) onlineRowByUserID["ClubID5"];
+                    int num = (int) onlineRowByUserID["ClubID5"];
                     this.strGuideCode = onlineRowByUserID["GuideCode"].ToString().Trim();
                     DataRow gameRow = BTPGameManager.GetGameRow();
                     int intRound = (int) gameRow["Turn"];
-                    int num4 = (int) gameRow["Days"];
+                    int num3 = (int) gameRow["Days"];
                     int index = new Cuter(Convert.ToString(this.Session["Advance" + this.intUserID])).GetIndex("0");
-                    if ((((intRound > 0x1a) && (num4 > 0x1c)) && ((DateTime.Now.Hour >= Global.intStartUpdate) && (DateTime.Now.Hour < 10))) && (this.intCategory == 5))
+                    if ((((intRound > 0x1a) && (num3 > 0x1c)) && ((DateTime.Now.Hour >= Global.intStartUpdate) && (DateTime.Now.Hour < 10))) && (this.intCategory == 5))
                     {
-                        if (BTPDevMatchManager.GetDevMRowByClubIDRound(num2, intRound) == null)
+                        if (BTPDevMatchManager.GetDevMRowByClubIDRound(num, intRound) == null)
                         {
                             this.strCenterURL = "TopCenter.aspx?Type=DEVNEW&Page=1&UserID=" + this.intUserID;
                         }
@@ -56,9 +56,9 @@
                             this.strCenterURL = "Report.aspx?Parameter=1006b";
                         }
                     }
-                    else if ((((intRound == 14) && (num4 == 15)) && ((DateTime.Now.Hour >= Global.intStartUpdate) && (DateTime.Now.Hour < 10))) && (this.intCategory == 5))
+                    else if ((((intRound == 14) && (num3 == 15)) && ((DateTime.Now.Hour >= Global.intStartUpdate) && (DateTime.Now.Hour < 10))) && (this.intCategory == 5))
                     {
-                        if (BTPDevMatchManager.GetDevMRowByClubIDRound(num2, intRound) == null)
+                        if (BTPDevMatchManager.GetDevMRowByClubIDRound(num, intRound) == null)
                         {
                             this.strCenterURL = "TopCenter.aspx?Type=DEVNEW&Page=1&UserID=" + this.intUserID;
                         }
@@ -67,9 +67,9 @@
                             this.strCenterURL = "Report.aspx?Parameter=1006a";
                         }
                     }
-                    else if ((((intRound == 1) && (num4 == 1)) && ((DateTime.Now.Hour >= Global.intStartUpdate) && (DateTime.Now.Hour < 10))) && (this.intCategory == 5))
+                    else if ((((intRound == 1) && (num3 == 1)) && ((DateTime.Now.Hour >= Global.intStartUpdate) && (DateTime.Now.Hour < 10))) && (this.intCategory == 5))
                     {
-                        if (BTPDevMatchManager.GetDevMRowByClubIDRound(num2, intRound) == null)
+                        if (BTPDevMatchManager.GetDevMRowByClubIDRound(num, intRound) == null)
                         {
                             this.strCenterURL = "TopCenter.aspx?Type=DEVNEW&Page=1&UserID=" + this.intUserID;
                         }
@@ -86,23 +86,23 @@
                         }
                         else
                         {
-                            DataRow devMRowByClubIDRound = BTPDevMatchManager.GetDevMRowByClubIDRound(num2, intRound - 1);
+                            DataRow devMRowByClubIDRound = BTPDevMatchManager.GetDevMRowByClubIDRound(num, intRound - 1);
                             if (devMRowByClubIDRound == null)
                             {
                                 this.strCenterURL = "TopCenter.aspx?Type=DEVNEW&Page=1&UserID=" + this.intUserID;
                             }
                             else
                             {
-                                int num6 = (int) devMRowByClubIDRound["DevMatchID"];
-                                int num7 = (int) devMRowByClubIDRound["ClubHID"];
-                                int num8 = (int) devMRowByClubIDRound["ClubAID"];
-                                if ((num7 == 0) || (num8 == 0))
+                                int num5 = (int) devMRowByClubIDRound["DevMatchID"];
+                                int num6 = (int) devMRowByClubIDRound["ClubHID"];
+                                int num7 = (int) devMRowByClubIDRound["ClubAID"];
+                                if ((num6 == 0) || (num7 == 0))
                                 {
                                     this.strCenterURL = "TopCenter.aspx?Type=LIST&Page=1&UserID=" + this.intUserID;
                                 }
                                 else
                                 {
-                                    this.strCenterURL = string.Concat(new object[] { "TopCenter.aspx?Type=INSTANT&UserID=", this.intUserID, "&Status=2&Tag=", num6, "&A=", num7, "&B=", num8 });
+                                    this.strCenterURL = string.Concat(new object[] { "TopCenter.aspx?Type=INSTANT&UserID=", this.intUserID, "&Status=2&Tag=", num5, "&A=", num6, "&B=", num7 });
                                 }
                             }
                         }
@@ -113,7 +113,7 @@
                     }
                     else if (this.intCategory == 5)
                     {
-                        if (BTPDevMatchManager.GetDevMatchTableByClubID(num2) == null)
+                        if (BTPDevMatchManager.GetDevMatchTableByClubID(num) == null)
                         {
                             this.strCenterURL = "TopCenter.aspx?Type=DEVNEW&UserID=" + this.intUserID;
                         }

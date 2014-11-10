@@ -50,13 +50,7 @@
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='FrameBoard.aspx?BoardID=";
-                strArray[1] = this.strBoardID;
-                strArray[2] = "&&Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
+                strArray = new string[] { "<a href='FrameBoard.aspx?BoardID=", this.strBoardID, "&&Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
                 str3 = string.Concat(strArray);
                 str = "<a href='FrameBoard.aspx?BoardID=" + this.strBoardID + "&&Page=1'>首页</a>";
             }
@@ -127,12 +121,12 @@
         private void SetList()
         {
             this.GetTotal();
-            DataTable reader = ROOTBoardManager.GetBoardTableByBoardIDNew(this.strBoardID, this.intPage, this.intPerPage, 0);
+            DataTable table = ROOTBoardManager.GetBoardTableByBoardIDNew(this.strBoardID, this.intPage, this.intPerPage, 0);
             this.sb.Append("<table width=\"" + this.intTableWidth + "\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\" bordercolor=\"#fcc6a4\" bgcolor=\"#fcf1eb\">");
             this.sb.Append("<tr bgcolor=\"#fcc6a4\"><td height=\"25\" width='30'></td><td width='100' class=\"Forum002\">回复/点击</td><td width='40%' class=\"Forum002\">主 题</td><td width='120' class=\"Forum002\">作者</td><td width='30%' class=\"Forum002\">最后更新</td></tr>");
-            if (reader != null)
+            if (table != null)
             {
-                foreach (DataRow row in reader.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     string str;
                     string str2 = row["Logo"].ToString().Trim();
@@ -201,7 +195,6 @@
                     this.sb.Append(" </td>");
                     this.sb.Append("</tr>");
                 }
-                //reader.Close();
                 this.sb.Append("<tr><td height='30' colspan='6' align='right' style='padding-right:15px'>" + this.GetViewPage() + "</td></tr>");
                 this.sb.Append("</table>");
             }

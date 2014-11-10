@@ -4,7 +4,6 @@
     using ServerManage;
     using System;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Text;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -107,10 +106,38 @@
             {
                 string strShortName = BTPAccountManager.GetAccountRowByUserID(this.intUserID)["ShortName"].ToString().Trim();
                 int num = MatchItem.TrainMatchType(this.intClubID3, 0, 2);
-                if (BTPFriMatchManager.GetRegRowByClubID(this.intClubID3, 3) == null)
+                if (BTPFriMatchManager.GetRegRowByClubID(this.intClubID3, 3) != null)
                 {
+                    base.Response.Redirect("Report.aspx?Parameter=4107");
+                }
+                else
+                {
+                    int num2;
+                    int num3;
                     switch (num)
                     {
+                        case 1:
+                            num2 = 0;
+                            num3 = 1;
+                            if (!this.rbStatus1.Checked)
+                            {
+                                if (this.rbStatus2.Checked)
+                                {
+                                    num3 = 2;
+                                }
+                                else if (this.rbStatus3.Checked)
+                                {
+                                    num3 = 3;
+                                }
+                                else if (this.rbStatus4.Checked)
+                                {
+                                    num3 = 4;
+                                }
+                                break;
+                            }
+                            num3 = 1;
+                            break;
+
                         case 2:
                             base.Response.Redirect("Report.aspx?Parameter=4100");
                             return;
@@ -123,67 +150,49 @@
                             base.Response.Redirect("Report.aspx?Parameter=4102");
                             return;
 
-                        case 1:
+                        default:
+                            base.Response.Redirect("Report.aspx?Parameter=3");
+                            return;
+                    }
+                    if (num3 == 3)
+                    {
+                        if (!StringItem.IsNumber(this.tbTrainWealth.Text))
                         {
-                            int intConsume = 0;
-                            int intType = 1;
-                            if (this.rbStatus1.Checked)
-                            {
-                                intType = 1;
-                            }
-                            else if (this.rbStatus2.Checked)
-                            {
-                                intType = 2;
-                            }
-                            else if (this.rbStatus3.Checked)
-                            {
-                                intType = 3;
-                            }
-                            else if (this.rbStatus4.Checked)
-                            {
-                                intType = 4;
-                            }
-                            if (intType == 3)
-                            {
-                                if (!StringItem.IsNumber(this.tbTrainWealth.Text))
-                                {
-                                    base.Response.Redirect("Report.aspx?Parameter=4108b!Type.TRAINCENTERREG");
-                                    return;
-                                }
-                                intConsume = Convert.ToInt32(this.tbTrainWealth.Text.Trim());
-                                if ((intConsume < 100) || (intConsume > 0x2710))
-                                {
-                                    base.Response.Redirect("Report.aspx?Parameter=4108b!Type.TRAINCENTERREG");
-                                    return;
-                                }
-                            }
-                            if ((intType == 4) && (this.intPayType == 1))
-                            {
-                                base.Response.Redirect("FriMatchMessage.aspx?Type=TRAINCENTER");
-                                return;
-                            }
-                            DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                            if (accountRowByUserID == null)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=12");
-                                return;
-                            }
-                            int num4 = (int) accountRowByUserID["Wealth"];
-                            if (num4 >= intConsume)
-                            {
-                                BTPFriMatchManager.RegTrainCenter(this.intClubID3, this.intLevel, this.strClubName, strShortName, this.strLogo, intType, intConsume, 3);
-                                base.Response.Redirect("Report.aspx?Parameter=4108!Type.TRAINCENTER");
-                                return;
-                            }
-                            base.Response.Redirect("Report.aspx?Parameter=4108d!Type.TRAINCENTERREG");
+                            base.Response.Redirect("Report.aspx?Parameter=4108b!Type.TRAINCENTERREG");
+                            return;
+                        }
+                        num2 = Convert.ToInt32(this.tbTrainWealth.Text.Trim());
+                        if ((num2 < 100) || (num2 > 0x2710))
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=4108b!Type.TRAINCENTERREG");
                             return;
                         }
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=3");
-                }
-                else
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=4107");
+                    if ((num3 == 4) && (this.intPayType == 1))
+                    {
+                        base.Response.Redirect("FriMatchMessage.aspx?Type=TRAINCENTER");
+                    }
+                    else
+                    {
+                        DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                        if (accountRowByUserID == null)
+                        {
+                            base.Response.Redirect("Report.aspx?Parameter=12");
+                        }
+                        else
+                        {
+                            int num4 = (int) accountRowByUserID["Wealth"];
+                            if (num4 >= num2)
+                            {
+                                BTPFriMatchManager.RegTrainCenter(this.intClubID3, this.intLevel, this.strClubName, strShortName, this.strLogo, num3, num2, 3);
+                                base.Response.Redirect("Report.aspx?Parameter=4108!Type.TRAINCENTER");
+                            }
+                            else
+                            {
+                                base.Response.Redirect("Report.aspx?Parameter=4108d!Type.TRAINCENTERREG");
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -321,20 +330,20 @@
             }
             else
             {
-                int num9;
+                int num5;
                 string strNickName = this.tbNickName.Text.ToString().Trim();
                 string strIn = this.tbIntro.Text.ToString().Trim();
                 int intCategory = Convert.ToInt16(this.hidSelectValue.Value);
                 int intUserID = 0;
-                int num7 = 0;
                 int num8 = 0;
+                int num9 = 0;
                 if (this.rbS.Checked)
                 {
-                    num9 = 3;
+                    num5 = 3;
                 }
                 else
                 {
-                    num9 = 5;
+                    num5 = 5;
                 }
                 if (strNickName == "")
                 {
@@ -342,149 +351,151 @@
                 }
                 else
                 {
-                    switch (num9)
+                    switch (num5)
                     {
                         case 3:
-                        {
-                            if (intCategory == 7)
+                            if (intCategory != 7)
                             {
-                                base.Response.Redirect("Report.aspx?Parameter=498c");
-                                return;
+                                if (BTPPlayer3Manager.GetPlayer3CountByCID(this.intClubID3) < 4)
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=495a");
+                                    return;
+                                }
+                                int clubIDByNickName = BTPClubManager.GetClubIDByNickName(strNickName, 3);
+                                if (clubIDByNickName == 0)
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=497a");
+                                    return;
+                                }
+                                if (BTPPlayer3Manager.GetPlayer3CountByCID(clubIDByNickName) < 4)
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=496a");
+                                    return;
+                                }
+                                intUserID = BTPClubManager.GetUserIDByClubID(clubIDByNickName);
+                                break;
                             }
-                            if (BTPPlayer3Manager.GetPlayer3CountByCID(this.intClubID3) < 4)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=495a");
-                                return;
-                            }
-                            int clubIDByNickName = BTPClubManager.GetClubIDByNickName(strNickName, 3);
-                            if (clubIDByNickName == 0)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=497a");
-                                return;
-                            }
-                            if (BTPPlayer3Manager.GetPlayer3CountByCID(clubIDByNickName) < 4)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=496a");
-                                return;
-                            }
-                            intUserID = BTPClubManager.GetUserIDByClubID(clubIDByNickName);
-                            break;
-                        }
+                            base.Response.Redirect("Report.aspx?Parameter=498c");
+                            return;
+
                         case 5:
+                            if (intCategory != 2)
+                            {
+                                if (BTPPlayer5Manager.GetPlayer5CountByClubID(this.intClubID5) < 6)
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=495a");
+                                    return;
+                                }
+                                int intClubIDB = BTPClubManager.GetClubIDByNickName(strNickName, 5);
+                                if (MatchItem.InOnlyOneMatch(this.intClubID5, intClubIDB))
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=491b");
+                                    return;
+                                }
+                                if (intClubIDB == 0)
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=497a");
+                                    return;
+                                }
+                                if (BTPPlayer5Manager.GetPlayer5CountByClubID(intClubIDB) < 6)
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=496a");
+                                    return;
+                                }
+                                intUserID = BTPClubManager.GetUserIDByClubID(intClubIDB);
+                                break;
+                            }
+                            base.Response.Redirect("Report.aspx?Parameter=499");
+                            return;
+                    }
+                    switch (intCategory)
+                    {
+                        case 2:
                         {
-                            if (intCategory == 2)
+                            int clubIDByUIDCategory = BTPClubManager.GetClubIDByUIDCategory(this.intUserID, 3);
+                            int num13 = BTPClubManager.GetClubIDByNickName(strNickName, 3);
+                            switch (MatchItem.TrainMatchType(clubIDByUIDCategory, num13, 1))
                             {
-                                base.Response.Redirect("Report.aspx?Parameter=499");
-                                return;
+                                case 2:
+                                    base.Response.Redirect("Report.aspx?Parameter=4100");
+                                    return;
+
+                                case 3:
+                                    base.Response.Redirect("Report.aspx?Parameter=4101");
+                                    return;
+
+                                case 4:
+                                    base.Response.Redirect("Report.aspx?Parameter=4102");
+                                    return;
+
+                                case 5:
+                                    base.Response.Redirect("Report.aspx?Parameter=4103");
+                                    return;
+
+                                case 6:
+                                    base.Response.Redirect("Report.aspx?Parameter=4106");
+                                    return;
                             }
-                            if (BTPPlayer5Manager.GetPlayer5CountByClubID(this.intClubID5) < 6)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=495a");
-                                return;
-                            }
-                            int intClubIDB = BTPClubManager.GetClubIDByNickName(strNickName, 5);
-                            if (MatchItem.InOnlyOneMatch(this.intClubID5, intClubIDB))
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=491b");
-                                return;
-                            }
-                            if (intClubIDB == 0)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=497a");
-                                return;
-                            }
-                            if (BTPPlayer5Manager.GetPlayer5CountByClubID(intClubIDB) < 6)
-                            {
-                                base.Response.Redirect("Report.aspx?Parameter=496a");
-                                return;
-                            }
-                            intUserID = BTPClubManager.GetUserIDByClubID(intClubIDB);
                             break;
                         }
-                    }
-                    if (intCategory == 2)
-                    {
-                        int clubIDByUIDCategory = BTPClubManager.GetClubIDByUIDCategory(this.intUserID, 3);
-                        int num17 = BTPClubManager.GetClubIDByNickName(strNickName, 3);
-                        switch (MatchItem.TrainMatchType(clubIDByUIDCategory, num17, 1))
+                        case 10:
                         {
-                            case 2:
-                                base.Response.Redirect("Report.aspx?Parameter=4100");
-                                return;
+                            int intClubIDA = BTPClubManager.GetClubIDByUIDCategory(this.intUserID, 5);
+                            int num15 = BTPClubManager.GetClubIDByNickName(strNickName, 5);
+                            switch (MatchItem.TrainMatchType5(intClubIDA, num15, 1))
+                            {
+                                case 2:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112a");
+                                    return;
 
-                            case 3:
-                                base.Response.Redirect("Report.aspx?Parameter=4101");
-                                return;
+                                case 3:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112b");
+                                    return;
 
-                            case 4:
-                                base.Response.Redirect("Report.aspx?Parameter=4102");
-                                return;
+                                case 4:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112c");
+                                    return;
 
-                            case 5:
-                                base.Response.Redirect("Report.aspx?Parameter=4103");
-                                return;
+                                case 5:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112d");
+                                    return;
 
-                            case 6:
-                                base.Response.Redirect("Report.aspx?Parameter=4106");
-                                return;
-                        }
-                    }
-                    if (intCategory == 10)
-                    {
-                        int intClubIDA = BTPClubManager.GetClubIDByUIDCategory(this.intUserID, 5);
-                        int num20 = BTPClubManager.GetClubIDByNickName(strNickName, 5);
-                        switch (MatchItem.TrainMatchType5(intClubIDA, num20, 1))
-                        {
-                            case 2:
-                                base.Response.Redirect("Report.aspx?Parameter=4112a");
-                                return;
+                                case 6:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112e");
+                                    return;
 
-                            case 3:
-                                base.Response.Redirect("Report.aspx?Parameter=4112b");
-                                return;
+                                case 7:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112f");
+                                    return;
 
-                            case 4:
-                                base.Response.Redirect("Report.aspx?Parameter=4112c");
-                                return;
+                                case 8:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112g");
+                                    return;
 
-                            case 5:
-                                base.Response.Redirect("Report.aspx?Parameter=4112d");
-                                return;
+                                case 9:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112h");
+                                    return;
 
-                            case 6:
-                                base.Response.Redirect("Report.aspx?Parameter=4112e");
-                                return;
+                                case 10:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112i");
+                                    return;
 
-                            case 7:
-                                base.Response.Redirect("Report.aspx?Parameter=4112f");
-                                return;
-
-                            case 8:
-                                base.Response.Redirect("Report.aspx?Parameter=4112g");
-                                return;
-
-                            case 9:
-                                base.Response.Redirect("Report.aspx?Parameter=4112h");
-                                return;
-
-                            case 10:
-                                base.Response.Redirect("Report.aspx?Parameter=4112i");
-                                return;
-
-                            case 11:
-                                base.Response.Redirect("Report.aspx?Parameter=4112j");
-                                return;
+                                case 11:
+                                    base.Response.Redirect("Report.aspx?Parameter=4112j");
+                                    return;
+                            }
+                            break;
                         }
                     }
                     if (intCategory == 3)
                     {
-                        if (num9 == 3)
+                        if (num5 == 3)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=500");
                             return;
                         }
-                        num7 = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
-                        num8 = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["Wealth"];
+                        num8 = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
+                        num9 = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["Wealth"];
                         string str3 = this.tbWealthA.Text.ToString();
                         string str4 = this.tbWealthB.Text.ToString();
                         if (StringItem.IsNumber(str3) && StringItem.IsNumber(str4))
@@ -510,12 +521,12 @@
                             base.Response.Redirect("Report.aspx?Parameter=487");
                             return;
                         }
-                        if (intWealthA > num7)
+                        if (intWealthA > num8)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=490");
                             return;
                         }
-                        if (intWealthB > num8)
+                        if (intWealthB > num9)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=488");
                             return;
@@ -529,13 +540,13 @@
                     }
                     if (intCategory == 4)
                     {
-                        if (num9 == 3)
+                        if (num5 == 3)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=500");
                             return;
                         }
-                        num7 = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
-                        num8 = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["Wealth"];
+                        num8 = (int) BTPAccountManager.GetAccountRowByUserID(this.intUserID)["Wealth"];
+                        num9 = (int) BTPAccountManager.GetAccountRowByNickName(strNickName)["Wealth"];
                         string str5 = this.tbWealth.Text.ToString();
                         string str6 = this.tbPoint.Text.ToString();
                         if (StringItem.IsNumber(str5) && StringItem.IsNumber(str6))
@@ -579,18 +590,18 @@
                             base.Response.Redirect("Report.aspx?Parameter=487");
                             return;
                         }
-                        if (intWealthA > num7)
+                        if (intWealthA > num8)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=512");
                             return;
                         }
-                        if (intWealthB > num8)
+                        if (intWealthB > num9)
                         {
                             base.Response.Redirect("Report.aspx?Parameter=488");
                             return;
                         }
-                        int num23 = BTPFriMatchManager.GetRunMatchCount();
-                        if ((this.intPayType != 1) && (num23 >= 20))
+                        int num17 = BTPFriMatchManager.GetRunMatchCount();
+                        if ((this.intPayType != 1) && (num17 >= 20))
                         {
                             base.Response.Redirect("Report.aspx?Parameter=4911");
                             return;
@@ -603,14 +614,31 @@
                     }
                     else
                     {
-                        switch (BTPFriMatchManager.SetFriMatch(strNickName, this.intUserID, intCategory, num9, strIn, intWealthA, intWealthB, intClubAPoint, intClubBPoint))
+                        switch (BTPFriMatchManager.SetFriMatch(strNickName, this.intUserID, intCategory, num5, strIn, intWealthA, intWealthB, intClubAPoint, intClubBPoint))
                         {
-                            case 0x15:
-                                base.Response.Redirect("Report.aspx?Parameter=500");
+                            case 0:
+                                base.Response.Redirect("Report.aspx?Parameter=493");
                                 return;
 
-                            case 0x16:
-                                base.Response.Redirect("Report.aspx?Parameter=500b");
+                            case 1:
+                                DTOnlineManager.SetHasMsgByUserID(intUserID);
+                                base.Response.Redirect("Report.aspx?Parameter=40a");
+                                return;
+
+                            case 2:
+                                base.Response.Redirect("Report.aspx?Parameter=48");
+                                return;
+
+                            case 3:
+                                base.Response.Redirect("Report.aspx?Parameter=491");
+                                return;
+
+                            case 4:
+                                base.Response.Redirect("Report.aspx?Parameter=492");
+                                return;
+
+                            case 6:
+                                base.Response.Redirect("Report.aspx?Parameter=498a");
                                 return;
 
                             case 8:
@@ -633,29 +661,12 @@
                                 base.Response.Redirect("Report.aspx?Parameter=519");
                                 return;
 
-                            case 1:
-                                DTOnlineManager.SetHasMsgByUserID(intUserID);
-                                base.Response.Redirect("Report.aspx?Parameter=40a");
+                            case 0x15:
+                                base.Response.Redirect("Report.aspx?Parameter=500");
                                 return;
 
-                            case 2:
-                                base.Response.Redirect("Report.aspx?Parameter=48");
-                                return;
-
-                            case 3:
-                                base.Response.Redirect("Report.aspx?Parameter=491");
-                                return;
-
-                            case 4:
-                                base.Response.Redirect("Report.aspx?Parameter=492");
-                                return;
-
-                            case 0:
-                                base.Response.Redirect("Report.aspx?Parameter=493");
-                                return;
-
-                            case 6:
-                                base.Response.Redirect("Report.aspx?Parameter=498a");
+                            case 0x16:
+                                base.Response.Redirect("Report.aspx?Parameter=500b");
                                 return;
                         }
                         base.Response.Redirect("Report.aspx?Parameter=47");
@@ -670,7 +681,7 @@
 
         public void DelTrianReg()
         {
-            int request = (int) SessionItem.GetRequest("MType", 0);
+            int request = SessionItem.GetRequest("MType", 0);
             int num2 = this.intClubID5;
             if (request != 5)
             {
@@ -704,37 +715,35 @@
                 this.sbList.Append("<tr><td height='25' colspan='3'><marquee scrollamount=\"3\" scrolldelay=\"90\" loop=\"0\" >");
                 if (tableWealthMatchMsg != null)
                 {
-                    foreach (DataRow row in tableWealthMatchMsg.Rows)
+                    foreach (DataRow row2 in tableWealthMatchMsg.Rows)
                     {
-                        str = row["Content"].ToString().Trim();
+                        str = row2["Content"].ToString().Trim();
                         this.sbList.Append(str + "　　　　　　");
                     }
                 }
                 this.sbList.Append("</marquee></td></tr>");
-                //tableWealthMatchMsg.Close();
             }
             string strCurrentURL = "FriMatchMessage.aspx?Type=FMATCHMSG&";
             this.intPerPage = 10;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.GetMsgTotal();
             this.GetMsgScript(strCurrentURL);
             DataTable friMatchMsgTableNew = BTPFriMatchMsgManager.GetFriMatchMsgTableNew(this.intPage, this.intPerPage);
-            if (friMatchMsgTableNew!=null)
+            if (friMatchMsgTableNew != null)
             {
-                foreach (DataRow row in friMatchMsgTableNew.Rows)
+                foreach (DataRow row3 in friMatchMsgTableNew.Rows)
                 {
-                    string strNickName = row["NickName"].ToString().Trim();
-                    DateTime datIn = (DateTime)row["CreateTime"];
-                    string str3 = StringItem.FormatDate(datIn, "hh:mm:ss");
-                    str = row["Content"].ToString().Trim();
-                    int intUserID = (int)row["UserID"];
-                    row["ClubName"].ToString().Trim();
+                    string strNickName = row3["NickName"].ToString().Trim();
+                    DateTime datIn = (DateTime) row3["CreateTime"];
+                    string str4 = StringItem.FormatDate(datIn, "hh:mm:ss");
+                    str = row3["Content"].ToString().Trim();
+                    int intUserID = (int) row3["UserID"];
+                    row3["ClubName"].ToString().Trim();
                     this.sbList.Append("<tr onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append("<td style='padding:4px' width='560'>[ " + str3 + " ] " + MessageItem.GetNickNameLink(intUserID, strNickName, 1) + "：" + str + "</td>");
+                    this.sbList.Append("<td style='padding:4px' width='560'>[ " + str4 + " ] " + MessageItem.GetNickNameLink(intUserID, strNickName, 1) + "：" + str + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' ></td></tr>");
                 }
-                //friMatchMsgTableNew.Close();
                 this.sbList.Append("<tr><td height='25' align='right'>" + this.GetMsgViewPage2(strCurrentURL) + "</td></tr>");
             }
             else
@@ -747,7 +756,7 @@
 
         private void FMatchSend()
         {
-            this.intRUserID = (int) SessionItem.GetRequest("UserID", 0);
+            this.intRUserID = SessionItem.GetRequest("UserID", 0);
             this.sbList = new StringBuilder();
             this.btnSend.ImageUrl = SessionItem.GetImageURL() + "SendFMatch.gif";
             if ((this.intCategory != 2) && (this.intCategory != 5))
@@ -775,9 +784,9 @@
                     string str = BTPAccountManager.GetNickNameByUserID(this.intRUserID).Trim();
                     this.tbNickName.Text = str;
                 }
-                int request = (int) SessionItem.GetRequest("Category", 0);
-                int num2 = (int) SessionItem.GetRequest("Wealth", 0);
-                int num3 = (int) SessionItem.GetRequest("MatchType", 0);
+                int request = SessionItem.GetRequest("Category", 0);
+                int num2 = SessionItem.GetRequest("Wealth", 0);
+                int num3 = SessionItem.GetRequest("MatchType", 0);
                 if (((request > 0) && (num2 > 0)) && (num3 > 0))
                 {
                     this.ddlCategory.SelectedValue = request.ToString();
@@ -838,7 +847,7 @@
 
         private string GetMsgViewPage2(string strCurrentURL)
         {
-            string str5;
+            string str;
             string[] strArray;
             int msgTotal = this.GetMsgTotal();
             int num2 = (msgTotal / this.intPerPage) + 1;
@@ -865,15 +874,8 @@
             }
             else
             {
-                str5 = str2;
-                strArray = new string[6];
-                strArray[0] = str5;
-                strArray[1] = "<a href='";
-                strArray[2] = strCurrentURL;
-                strArray[3] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[4] = num4.ToString();
-                strArray[5] = "'>上一页</a>";
+                str = str2;
+                strArray = new string[] { str, "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
                 str2 = string.Concat(strArray);
             }
             string str3 = "";
@@ -883,8 +885,8 @@
             }
             else
             {
-                str5 = str3;
-                strArray = new string[] { str5, "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
+                str = str3;
+                strArray = new string[] { str, "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
                 str3 = string.Concat(strArray);
             }
             string str4 = "<select name='Page' onChange=JumpPage()>";
@@ -930,7 +932,6 @@
                 this.btnReg.Click += new ImageClickEventHandler(this.btnReg_Click_AD);
             }
             this.btnReg5.Click += new ImageClickEventHandler(this.btnReg5_Click);
-            //this.btnOK.Click += new ImageClickEventHandler(this.btnOK_Click);
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -939,7 +940,7 @@
             this.sbList = new StringBuilder();
             string strCurrentURL = "FriMatchMessage.aspx?Type=ONLINE&";
             this.intPerPage = 11;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage == 0)
             {
                 this.intPage = 1;
@@ -958,54 +959,54 @@
             {
                 for (int i = num3; i < num4; i++)
                 {
-                    string str6;
-                    string str9;
+                    string str2;
+                    string str3;
                     DataRow row = onlineMRow[i];
                     int intUserID = (int) row["UserID"];
-                    int num6 = (int) row["UnionID"];
-                    if (num6 < 1)
+                    int num7 = (int) row["UnionID"];
+                    if (num7 < 1)
                     {
-                        str6 = "";
+                        str2 = "";
                     }
                     else
                     {
-                        str6 = row["ShortName"].ToString().Trim() + "-";
+                        str2 = row["ShortName"].ToString().Trim() + "-";
                     }
                     string strNickName = row["NickName"].ToString();
-                    string str4 = row["Levels"].ToString();
-                    string str3 = row["ClubLogo"].ToString();
-                    string str5 = row["ClubName3"].ToString();
-                    str3 = SessionItem.GetImageURL() + "Club/Logo/" + str4 + "/" + str3 + ".gif";
-                    str3 = "<img src='" + str3 + "' width='46' height='46' border='0'>";
+                    string str5 = row["Levels"].ToString();
+                    string str6 = row["ClubLogo"].ToString();
+                    string str7 = row["ClubName3"].ToString();
+                    str6 = SessionItem.GetImageURL() + "Club/Logo/" + str5 + "/" + str6 + ".gif";
+                    str6 = "<img src='" + str6 + "' width='46' height='46' border='0'>";
                     bool blnSex = (bool) row["Sex"];
-                    string str7 = row["QQ"].ToString().Trim();
-                    int num9 = (int) row["Category"];
-                    if (num9 == 5)
+                    string str8 = row["QQ"].ToString().Trim();
+                    int num8 = (int) row["Category"];
+                    if (num8 == 5)
                     {
-                        str9 = DevCalculator.GetLevel(row["DevCode"].ToString().Trim()).ToString().Trim();
+                        str3 = DevCalculator.GetLevel(row["DevCode"].ToString().Trim()).ToString().Trim();
                     }
                     else
                     {
-                        str9 = "无";
+                        str3 = "无";
                     }
                     int intWealth = (int) row["Wealth"];
                     string wealthName = AccountItem.GetWealthName(intWealth);
-                    if (str7 != "")
+                    if (str8 != "")
                     {
-                        str7 = "<a href=\"http://wpa.qq.com/msgrd?v=1&uin=" + str7 + "&site=www.xba.com.cn&menu=yes\" target=\"blank\"><img alt=\"有事您Q我！\" src=\"http://wpa.qq.com/pa?p=1:" + str7 + ":5\" border=\"0\" width=\"61\" height=\"15\"></a>";
+                        str8 = "<a href=\"http://wpa.qq.com/msgrd?v=1&uin=" + str8 + "&site=www.xba.com.cn&menu=yes\" target=\"blank\"><img alt=\"有事您Q我！\" src=\"http://wpa.qq.com/pa?p=1:" + str8 + ":5\" border=\"0\" width=\"61\" height=\"15\"></a>";
                     }
                     else
                     {
-                        str7 = "暂无资料";
+                        str8 = "暂无资料";
                     }
                     string str10 = "<a href='FriMatchMessage.aspx?Type=FMATCHSEND&UserID=" + intUserID + "'>约战</a>";
                     this.sbList.Append("<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td>" + wealthName + "</td>");
                     this.sbList.Append("<td height='28' align='left'>" + AccountItem.GetNickNameInfo(intUserID, strNickName, "Right", blnSex) + "</td>");
-                    this.sbList.Append("<td align='left'>" + AccountItem.GetNickNameInfo(intUserID, str6 + str5, "Right", 13) + "</td>");
-                    this.sbList.Append("<td>" + str4 + "</td>");
-                    this.sbList.Append("<td>" + str9 + "</td>");
-                    this.sbList.Append("<td>" + str7 + "</td>");
+                    this.sbList.Append("<td align='left'>" + AccountItem.GetNickNameInfo(intUserID, str2 + str7, "Right", 13) + "</td>");
+                    this.sbList.Append("<td>" + str5 + "</td>");
+                    this.sbList.Append("<td>" + str3 + "</td>");
+                    this.sbList.Append("<td>" + str8 + "</td>");
                     this.sbList.Append("<td>" + str10 + "</td>");
                     this.sbList.Append("</tr>");
                     this.sbList.Append("<tr><td height='1' background='" + SessionItem.GetImageURL() + "RM/Border_07.gif' colspan='7'></td></tr>");
@@ -1062,7 +1063,7 @@
                     this.sbPageIntro.Append("<a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.sbPageIntro.Append("<a style='cursor:hand;' onclick='javascript:window.location.reload();' title='刷新'><img src='" + SessionItem.GetImageURL() + "MenuCard/Refresh.GIF' border='0' height='24' width='19'></a>");
                     this.FMatchMsgList();
-                    goto Label_0E6E;
+                    goto Label_0E06;
 
                 case "ONLINE":
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/OnlineList.aspx?Type=TRAINCENTER\"' href='FriMatchMessage.aspx?Type=TRAINCENTERREG'>街球训练</a></li>");
@@ -1076,7 +1077,7 @@
                     }
                     this.tblOnlineList.Visible = true;
                     this.List();
-                    goto Label_0E6E;
+                    goto Label_0E06;
 
                 case "FMATCHSEND":
                     this.tblFMatchSend.Visible = true;
@@ -1089,7 +1090,7 @@
                     this.rbV.Attributes.Add("onclick", "CheckRB(this)");
                     this.FMatchSend();
                     this.strOnload = "";
-                    goto Label_0E6E;
+                    goto Label_0E06;
 
                 case "TRAINCENTER5":
                     str = SessionItem.GetRequest("CC", 1).ToString().Trim();
@@ -1106,11 +1107,11 @@
                     trainCenterRowByClubID = BTPFriMatchManager.GetTrainCenterRowByClubID(this.intClubID5, 5);
                     if (trainCenterRowByClubID != null)
                     {
-                        byte num = (byte) trainCenterRowByClubID["Type"];
-                        int num2 = (int) trainCenterRowByClubID["Consume"];
-                        if (num == 3)
+                        byte num2 = (byte) trainCenterRowByClubID["Type"];
+                        int num3 = (int) trainCenterRowByClubID["Consume"];
+                        if (num2 == 3)
                         {
-                            this.strTrainMoney = "<a style='margin-left:50px' title='剩余经费余额'>经费余额：" + num2 + "</a>";
+                            this.strTrainMoney = "<a style='margin-left:50px' title='剩余经费余额'>经费余额：" + num3 + "</a>";
                         }
                     }
                     this.sbPageIntro.Append("<span>" + this.strTrainMoney + "</span>");
@@ -1121,10 +1122,9 @@
                     }
                     this.tblTrainCenter.Visible = true;
                     this.TrainCenterRegList5();
-                    goto Label_0E6E;
+                    goto Label_0E06;
 
                 case "TRAINCENTER":
-                {
                     str = SessionItem.GetRequest("CC", 1).ToString().Trim();
                     this.strURL = "";
                     if (str == "AdMatch")
@@ -1139,16 +1139,15 @@
                     trainCenterRowByClubID = BTPFriMatchManager.GetTrainCenterRowByClubID(this.intClubID3, 3);
                     if (trainCenterRowByClubID != null)
                     {
-                        byte num3 = (byte) trainCenterRowByClubID["Type"];
-                        int num4 = (int) trainCenterRowByClubID["Consume"];
-                        if (num3 == 3)
+                        byte num4 = (byte) trainCenterRowByClubID["Type"];
+                        int num5 = (int) trainCenterRowByClubID["Consume"];
+                        if (num4 == 3)
                         {
-                            this.strTrainMoney = "<a style='margin-left:50px' title='剩余经费余额'>经费余额：" + num4 + "</a>";
+                            this.strTrainMoney = "<a style='margin-left:50px' title='剩余经费余额'>经费余额：" + num5 + "</a>";
                         }
                     }
                     this.sbPageIntro.Append("<span>" + this.strTrainMoney + "</span>");
-                    Cuter cuter = new Cuter(Convert.ToString(this.Session["Advance" + this.intUserID]));
-                    index = cuter.GetIndex("0");
+                    index = new Cuter(Convert.ToString(this.Session["Advance" + this.intUserID])).GetIndex("0");
                     if (index == -1)
                     {
                         if ((trainCenterRowByClubID == null) && (this.intPayType != 1))
@@ -1185,48 +1184,45 @@
                     {
                         base.Response.Write("<script>window.top.Main.location='Main_I.aspx';</script>");
                     }
-                    goto Label_0E6E;
-                }
+                    goto Label_0E06;
+
                 case "TRAINCENTERREG5":
                     this.sbPageIntro.Append("<ul><li class='qian1a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/OnlineList.aspx?Type=TRAINCENTER\"' href='FriMatchMessage.aspx?Type=TRAINCENTERREG'>街球训练</a></li>");
                     this.sbPageIntro.Append("<li class='qian2'>职业训练</li>");
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/MatchMy.aspx?Type=FMATCHLIST\"' href='FMatchCenter.aspx?Type=TRAINCENTER&Page=1'>我的约战</a></li>");
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/OnlineList.aspx?Type=ONLINELIST\"' href='FriMatchMessage.aspx?Type=ONLINE&Page=1'>在线经理</a></li></ul>");
                     this.sbPageIntro.Append("<a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
-                    if (this.intClubID5 >= 1)
+                    if (this.intClubID5 < 1)
                     {
-                        index = new Cuter(Convert.ToString(this.Session["Advance" + this.intUserID])).GetIndex("0");
-                        if ((index == 1) && (index != -1))
+                        base.Response.Redirect("Report.aspx?Parameter=4112x");
+                        return;
+                    }
+                    index = new Cuter(Convert.ToString(this.Session["Advance" + this.intUserID])).GetIndex("0");
+                    if ((index != 1) || (index == -1))
+                    {
+                        if (BTPFriMatchManager.GetTrainCenterRowByClubID(this.intClubID5, 5) != null)
                         {
-                            this.rbStatus52.Enabled = false;
-                            this.rbStatus53.Enabled = false;
-                            this.rbStatus54.Enabled = false;
+                            base.Response.Redirect("FriMatchMessage.aspx?Type=TRAINCENTER5");
+                            return;
+                        }
+                        this.rbStatus51.Attributes.Add("onclick", "CheckTrainStatus5(this);");
+                        this.rbStatus52.Attributes.Add("onclick", "CheckTrainStatus5(this);");
+                        this.rbStatus53.Attributes.Add("onclick", "CheckTrainStatus5(this);");
+                        if (this.intPayType == 1)
+                        {
+                            this.rbStatus54.Attributes.Add("onclick", "CheckTrainStatus5(this);");
                         }
                         else
                         {
-                            if (BTPFriMatchManager.GetTrainCenterRowByClubID(this.intClubID5, 5) != null)
-                            {
-                                base.Response.Redirect("FriMatchMessage.aspx?Type=TRAINCENTER5");
-                                return;
-                            }
-                            this.rbStatus51.Attributes.Add("onclick", "CheckTrainStatus5(this);");
-                            this.rbStatus52.Attributes.Add("onclick", "CheckTrainStatus5(this);");
-                            this.rbStatus53.Attributes.Add("onclick", "CheckTrainStatus5(this);");
-                            if (this.intPayType == 1)
-                            {
-                                this.rbStatus54.Attributes.Add("onclick", "CheckTrainStatus5(this);");
-                            }
-                            else
-                            {
-                                this.rbStatus54.Enabled = false;
-                            }
-                            this.tbTrainWealth.Attributes.Add("onkeyup", "CheckText5(this);");
+                            this.rbStatus54.Enabled = false;
                         }
-                        this.tblTrainReg5.Visible = true;
-                        goto Label_0E6E;
+                        this.tbTrainWealth.Attributes.Add("onkeyup", "CheckText5(this);");
+                        break;
                     }
-                    base.Response.Redirect("Report.aspx?Parameter=4112x");
-                    return;
+                    this.rbStatus52.Enabled = false;
+                    this.rbStatus53.Enabled = false;
+                    this.rbStatus54.Enabled = false;
+                    break;
 
                 case "TRAINCENTERREG":
                     this.sbPageIntro.Append("<ul><li class='qian1'>街球训练</li>");
@@ -1235,7 +1231,13 @@
                     this.sbPageIntro.Append("<li class='qian2a'><a onclick='javascript:window.top.Main.Right.location=\"Intro/OnlineList.aspx?Type=ONLINELIST\"' href='FriMatchMessage.aspx?Type=ONLINE&Page=1'>在线经理</a></li></ul>");
                     this.sbPageIntro.Append("<a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     index = new Cuter(Convert.ToString(this.Session["Advance" + this.intUserID])).GetIndex("0");
-                    if ((index != 1) || (index == -1))
+                    if ((index == 1) && (index != -1))
+                    {
+                        this.rbStatus2.Enabled = false;
+                        this.rbStatus3.Enabled = false;
+                        this.rbStatus4.Enabled = false;
+                    }
+                    else
                     {
                         if (BTPFriMatchManager.GetTrainCenterRowByClubID(this.intClubID3, 3) != null)
                         {
@@ -1254,12 +1256,9 @@
                             this.rbStatus4.Enabled = false;
                         }
                         this.tbTrainWealth.Attributes.Add("onkeyup", "CheckText(this);");
-                        break;
                     }
-                    this.rbStatus2.Enabled = false;
-                    this.rbStatus3.Enabled = false;
-                    this.rbStatus4.Enabled = false;
-                    break;
+                    this.tblTrainReg.Visible = true;
+                    goto Label_0E06;
 
                 case "SIFTCENTER":
                     this.sbPageIntro.Append("<ul><li class='qian1'>街球训练</li>");
@@ -1270,19 +1269,19 @@
                     this.sbPageIntro.Append("<a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.tblTrainCenter.Visible = true;
                     this.TrainCenterRegList();
-                    goto Label_0E6E;
+                    goto Label_0E06;
 
                 case "SENDTRAIN":
                     this.SendTrain();
-                    goto Label_0E6E;
+                    goto Label_0E06;
 
                 case "SENDTRAIN5":
                     this.SendTrain5();
-                    goto Label_0E6E;
+                    goto Label_0E06;
 
                 case "DELTRAINREG":
                     this.DelTrianReg();
-                    goto Label_0E6E;
+                    goto Label_0E06;
 
                 default:
                     this.tblFMatchMsg.Visible = true;
@@ -1293,10 +1292,10 @@
                     this.sbPageIntro.Append("<a style='cursor:hand;' onclick=\"javascript:NewHelpWin('03');\"><img src='" + SessionItem.GetImageURL() + "MenuCard/Help.GIF' border='0' height='24' width='19'></a>");
                     this.sbPageIntro.Append("<a style='cursor:hand;' onclick='javascript:window.location.reload();' title='刷新'><img src='" + SessionItem.GetImageURL() + "MenuCard/Refresh.GIF' border='0' height='24' width='19'></a>");
                     this.FMatchMsgList();
-                    goto Label_0E6E;
+                    goto Label_0E06;
             }
-            this.tblTrainReg.Visible = true;
-        Label_0E6E:
+            this.tblTrainReg5.Visible = true;
+        Label_0E06:
             this.InitializeComponent();
             base.OnInit(e);
         }
@@ -1313,7 +1312,7 @@
             }
             else
             {
-                int request = (int) SessionItem.GetRequest("ClubID", 0);
+                int request = SessionItem.GetRequest("ClubID", 0);
                 int intClubID = this.intClubID3;
                 string strNickName = BTPAccountManager.GetAccountRowByClubID(request)["NickName"].ToString().Trim();
                 string strIntro = "";
@@ -1335,47 +1334,17 @@
                 }
                 else
                 {
-                    int num6 = MatchItem.TrainMatchType(intClubID, request, 1);
-                    switch (num6)
+                    int num3 = MatchItem.TrainMatchType(intClubID, request, 1);
+                    switch (num3)
                     {
                         case 3:
                         case 4:
                             BTPFriMatchManager.DeleteFriMatchRowByCIDB(request);
                             break;
                     }
-                    if (num6 == 1)
+                    if (num3 != 1)
                     {
-                        switch (BTPFriMatchManager.SetTrainMatch(strNickName, this.intUserID, 5, 3, strIntro))
-                        {
-                            case 1:
-                                base.Response.Redirect("Report.aspx?Parameter=40");
-                                return;
-
-                            case 2:
-                                base.Response.Redirect("Report.aspx?Parameter=48");
-                                return;
-
-                            case 3:
-                                base.Response.Redirect("Report.aspx?Parameter=491");
-                                return;
-
-                            case 4:
-                                base.Response.Redirect("Report.aspx?Parameter=492");
-                                return;
-
-                            case 0:
-                                base.Response.Redirect("Report.aspx?Parameter=493");
-                                return;
-
-                            case 6:
-                                base.Response.Redirect("Report.aspx?Parameter=498");
-                                return;
-                        }
-                        base.Response.Redirect("Report.aspx?Parameter=47");
-                    }
-                    else
-                    {
-                        switch (num6)
+                        switch (num3)
                         {
                             case 2:
                                 base.Response.Redirect("Report.aspx?Parameter=4100");
@@ -1399,33 +1368,16 @@
                         }
                         base.Response.Redirect("Report.aspx?Parameter=3");
                     }
-                }
-            }
-        }
-
-        public void SendTrain5()
-        {
-            if (this.intClubID5 < 1)
-            {
-                base.Response.Redirect("Report.aspx?Parameter=4112x");
-            }
-            else
-            {
-                int request = (int) SessionItem.GetRequest("ClubID", 0);
-                string strNickName = BTPAccountManager.GetAccountRowByClubID(request)["NickName"].ToString().Trim();
-                if (request == this.intClubID5)
-                {
-                    base.Response.Redirect("Report.aspx?Parameter=4104");
-                }
-                else
-                {
-                    int num2 = MatchItem.TrainMatchType5(this.intClubID5, 0, 2);
-                    if (num2 == 1)
+                    else
                     {
-                        switch (BTPFriMatchManager.SetTrainMatch(strNickName, this.intUserID, 11, 5, ""))
+                        switch (BTPFriMatchManager.SetTrainMatch(strNickName, this.intUserID, 5, 3, strIntro))
                         {
+                            case 0:
+                                base.Response.Redirect("Report.aspx?Parameter=493");
+                                return;
+
                             case 1:
-                                base.Response.Redirect("Report.aspx?Parameter=40a5");
+                                base.Response.Redirect("Report.aspx?Parameter=40");
                                 return;
 
                             case 2:
@@ -1440,17 +1392,34 @@
                                 base.Response.Redirect("Report.aspx?Parameter=492");
                                 return;
 
-                            case 0:
-                                base.Response.Redirect("Report.aspx?Parameter=493");
-                                return;
-
                             case 6:
                                 base.Response.Redirect("Report.aspx?Parameter=498");
                                 return;
                         }
                         base.Response.Redirect("Report.aspx?Parameter=47");
                     }
-                    else
+                }
+            }
+        }
+
+        public void SendTrain5()
+        {
+            if (this.intClubID5 < 1)
+            {
+                base.Response.Redirect("Report.aspx?Parameter=4112x");
+            }
+            else
+            {
+                int request = SessionItem.GetRequest("ClubID", 0);
+                string strNickName = BTPAccountManager.GetAccountRowByClubID(request)["NickName"].ToString().Trim();
+                if (request == this.intClubID5)
+                {
+                    base.Response.Redirect("Report.aspx?Parameter=4104");
+                }
+                else
+                {
+                    int num2 = MatchItem.TrainMatchType5(this.intClubID5, 0, 2);
+                    if (num2 != 1)
                     {
                         switch (num2)
                         {
@@ -1492,8 +1461,38 @@
 
                             case 11:
                                 base.Response.Redirect("Report.aspx?Parameter=4112j");
-                                break;
+                                return;
                         }
+                    }
+                    else
+                    {
+                        switch (BTPFriMatchManager.SetTrainMatch(strNickName, this.intUserID, 11, 5, ""))
+                        {
+                            case 0:
+                                base.Response.Redirect("Report.aspx?Parameter=493");
+                                return;
+
+                            case 1:
+                                base.Response.Redirect("Report.aspx?Parameter=40a5");
+                                return;
+
+                            case 2:
+                                base.Response.Redirect("Report.aspx?Parameter=48");
+                                return;
+
+                            case 3:
+                                base.Response.Redirect("Report.aspx?Parameter=491");
+                                return;
+
+                            case 4:
+                                base.Response.Redirect("Report.aspx?Parameter=492");
+                                return;
+
+                            case 6:
+                                base.Response.Redirect("Report.aspx?Parameter=498");
+                                return;
+                        }
+                        base.Response.Redirect("Report.aspx?Parameter=47");
                     }
                 }
             }
@@ -1508,7 +1507,7 @@
             string str3;
             string str4 = "";
             this.sbList = new StringBuilder();
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -1559,7 +1558,7 @@
                     num2 = (int) row2["Levels"];
                     str = row2["ClubName"].ToString().Trim();
                     str2 = "<a href='FriMatchMessage.aspx?Type=SENDTRAIN&ClubID=" + num + "'>开始比赛</a>";
-                    int num5 = (int) row2["RegID"];
+                    int num3 = (int) row2["RegID"];
                     str3 = row2["ShortName"].ToString().Trim();
                     row2["ClubLogo"].ToString().Trim();
                     Convert.ToInt32(row2["Status"]);
@@ -1601,7 +1600,7 @@
             string str3;
             string str4 = "";
             this.sbList = new StringBuilder();
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             if (this.intPage < 1)
             {
                 this.intPage = 1;
@@ -1653,7 +1652,7 @@
                     num2 = (int) row2["Levels"];
                     str = row2["ClubName"].ToString().Trim();
                     str2 = "<a href='FriMatchMessage.aspx?Type=SENDTRAIN5&ClubID=" + num + "'>开始比赛</a>";
-                    int num5 = (int) row2["RegID"];
+                    int num4 = (int) row2["RegID"];
                     str3 = row2["ShortName"].ToString().Trim();
                     row2["ClubLogo"].ToString().Trim();
                     Convert.ToInt32(row2["Status"]);

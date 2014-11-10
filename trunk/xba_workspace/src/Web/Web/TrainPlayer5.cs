@@ -53,20 +53,23 @@
             {
                 switch (BTPPlayer5Manager.TrainPlayer5ByPlayerID(this.lngPlayerID, this.intClubID5, addAbility))
                 {
-                    case 1:
-                        base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=5&Kind=1&Check=1&PlayerID=", this.lngPlayerID, "\";window.location=\"Report.aspx?Parameter=914!Type.5^UserID.", this.intUserID, "\";</script>" }));
-                        return;
-
-                    case -1:
-                        base.Response.Redirect("Report.aspx?Parameter=913c!PID=" + this.lngPlayerID);
+                    case -3:
+                        base.Response.Redirect("Report.aspx?Parameter=913d!PID=" + this.lngPlayerID);
                         return;
 
                     case -2:
                         base.Response.Redirect("Report.aspx?Parameter=913b!PID=" + this.lngPlayerID);
                         return;
 
-                    case -3:
-                        base.Response.Redirect("Report.aspx?Parameter=913d!PID=" + this.lngPlayerID);
+                    case -1:
+                        base.Response.Redirect("Report.aspx?Parameter=913c!PID=" + this.lngPlayerID);
+                        return;
+
+                    case 0:
+                        return;
+
+                    case 1:
+                        base.Response.Write(string.Concat(new object[] { "<script>window.top.Main.Right.location=\"ShowPlayer.aspx?Type=5&Kind=1&Check=1&PlayerID=", this.lngPlayerID, "\";window.location=\"Report.aspx?Parameter=914!Type.5^UserID.", this.intUserID, "\";</script>" }));
                         return;
                 }
             }
@@ -189,7 +192,7 @@
         {
             this.btnOK.Attributes.Add("onclick", "return CheckOnClick");
             this.btnOK.ImageUrl = SessionItem.GetImageURL() + "baocun.gif";
-            this.lngPlayerID = (long) SessionItem.GetRequest("PID", 3);
+            this.lngPlayerID = SessionItem.GetRequest("PID", 3);
             this.Session.Add("MedicinePID", this.lngPlayerID);
             DataRow playerRowByPlayerID = BTPPlayer5Manager.GetPlayerRowByPlayerID(this.lngPlayerID);
             if (playerRowByPlayerID != null)
@@ -197,133 +200,130 @@
                 int intClubID = (int) playerRowByPlayerID["ClubID"];
                 if (this.intClubID5 == intClubID)
                 {
-                    int num51;
-                    int num52;
-                    string str3;
-                    string str4;
+                    int num2;
+                    int num3;
+                    string str;
+                    string str2;
                     int intAbility = (int) playerRowByPlayerID["Speed"];
-                    int num3 = (int) playerRowByPlayerID["Jump"];
-                    int num4 = (int) playerRowByPlayerID["Strength"];
-                    int num5 = (int) playerRowByPlayerID["Stamina"];
-                    int num6 = (int) playerRowByPlayerID["Shot"];
-                    int num7 = (int) playerRowByPlayerID["Point3"];
-                    int num8 = (int) playerRowByPlayerID["Dribble"];
-                    int num9 = (int) playerRowByPlayerID["Pass"];
-                    int num10 = (int) playerRowByPlayerID["Rebound"];
-                    int num11 = (int) playerRowByPlayerID["Steal"];
-                    int num12 = (int) playerRowByPlayerID["Block"];
-                    int num13 = (int) playerRowByPlayerID["Attack"];
-                    int num14 = (int) playerRowByPlayerID["Defense"];
-                    int num15 = (int) playerRowByPlayerID["Team"];
+                    int num5 = (int) playerRowByPlayerID["Jump"];
+                    int num6 = (int) playerRowByPlayerID["Strength"];
+                    int num7 = (int) playerRowByPlayerID["Stamina"];
+                    int num8 = (int) playerRowByPlayerID["Shot"];
+                    int num9 = (int) playerRowByPlayerID["Point3"];
+                    int num10 = (int) playerRowByPlayerID["Dribble"];
+                    int num11 = (int) playerRowByPlayerID["Pass"];
+                    int num12 = (int) playerRowByPlayerID["Rebound"];
+                    int num13 = (int) playerRowByPlayerID["Steal"];
+                    int num14 = (int) playerRowByPlayerID["Block"];
+                    int num15 = (int) playerRowByPlayerID["Attack"];
+                    int num16 = (int) playerRowByPlayerID["Defense"];
+                    int num17 = (int) playerRowByPlayerID["Team"];
                     int intAbilityMax = (int) playerRowByPlayerID["SpeedMax"];
-                    int num17 = (int) playerRowByPlayerID["JumpMax"];
-                    int num18 = (int) playerRowByPlayerID["StrengthMax"];
-                    int num19 = (int) playerRowByPlayerID["StaminaMax"];
-                    int num20 = (int) playerRowByPlayerID["ShotMax"];
-                    int num21 = (int) playerRowByPlayerID["Point3Max"];
-                    int num22 = (int) playerRowByPlayerID["DribbleMax"];
-                    int num23 = (int) playerRowByPlayerID["PassMax"];
-                    int num24 = (int) playerRowByPlayerID["ReboundMax"];
-                    int num25 = (int) playerRowByPlayerID["StealMax"];
-                    int num26 = (int) playerRowByPlayerID["BlockMax"];
-                    int num27 = (int) playerRowByPlayerID["AttackMax"];
-                    int num28 = (int) playerRowByPlayerID["DefenseMax"];
-                    int num29 = (int) playerRowByPlayerID["TeamMax"];
-                    this.intTeamDay = (int) playerRowByPlayerID["TeamDay"];
-                    int num30 = (int) playerRowByPlayerID["SpeedMax"];
-                    int num31 = (int) playerRowByPlayerID["JumpMax"];
-                    int num32 = (int) playerRowByPlayerID["StrengthMax"];
-                    int num33 = (int) playerRowByPlayerID["StaminaMax"];
-                    int num34 = (int) playerRowByPlayerID["ShotMax"];
-                    int num35 = (int) playerRowByPlayerID["Point3Max"];
-                    int num36 = (int) playerRowByPlayerID["DribbleMax"];
-                    int num37 = (int) playerRowByPlayerID["PassMax"];
-                    int num38 = (int) playerRowByPlayerID["ReboundMax"];
-                    int num39 = (int) playerRowByPlayerID["StealMax"];
-                    int num40 = (int) playerRowByPlayerID["BlockMax"];
+                    int num19 = (int) playerRowByPlayerID["JumpMax"];
+                    int num20 = (int) playerRowByPlayerID["StrengthMax"];
+                    int num21 = (int) playerRowByPlayerID["StaminaMax"];
+                    int num22 = (int) playerRowByPlayerID["ShotMax"];
+                    int num23 = (int) playerRowByPlayerID["Point3Max"];
+                    int num24 = (int) playerRowByPlayerID["DribbleMax"];
+                    int num25 = (int) playerRowByPlayerID["PassMax"];
+                    int num26 = (int) playerRowByPlayerID["ReboundMax"];
+                    int num27 = (int) playerRowByPlayerID["StealMax"];
+                    int num28 = (int) playerRowByPlayerID["BlockMax"];
                     int num1 = (int) playerRowByPlayerID["AttackMax"];
+                    int num50 = (int) playerRowByPlayerID["DefenseMax"];
+                    int num51 = (int) playerRowByPlayerID["TeamMax"];
+                    this.intTeamDay = (int) playerRowByPlayerID["TeamDay"];
+                    int num29 = (int) playerRowByPlayerID["SpeedMax"];
+                    int num30 = (int) playerRowByPlayerID["JumpMax"];
+                    int num31 = (int) playerRowByPlayerID["StrengthMax"];
+                    int num32 = (int) playerRowByPlayerID["StaminaMax"];
+                    int num33 = (int) playerRowByPlayerID["ShotMax"];
+                    int num34 = (int) playerRowByPlayerID["Point3Max"];
+                    int num35 = (int) playerRowByPlayerID["DribbleMax"];
+                    int num36 = (int) playerRowByPlayerID["PassMax"];
+                    int num37 = (int) playerRowByPlayerID["ReboundMax"];
+                    int num38 = (int) playerRowByPlayerID["StealMax"];
+                    int num39 = (int) playerRowByPlayerID["BlockMax"];
+                    int num52 = (int) playerRowByPlayerID["AttackMax"];
                     int num53 = (int) playerRowByPlayerID["DefenseMax"];
                     int num54 = (int) playerRowByPlayerID["TeamMax"];
                     if ((intAbility + 50) < intAbilityMax)
                     {
-                        num30 = 0;
-                    }
-                    if ((num3 + 50) < num17)
-                    {
-                        num31 = 0;
-                    }
-                    if ((num4 + 50) < num18)
-                    {
-                        num32 = 0;
+                        num29 = 0;
                     }
                     if ((num5 + 50) < num19)
                     {
-                        num33 = 0;
+                        num30 = 0;
                     }
                     if ((num6 + 50) < num20)
                     {
-                        num34 = 0;
+                        num31 = 0;
                     }
                     if ((num7 + 50) < num21)
                     {
-                        num35 = 0;
+                        num32 = 0;
                     }
                     if ((num8 + 50) < num22)
                     {
-                        num36 = 0;
+                        num33 = 0;
                     }
                     if ((num9 + 50) < num23)
                     {
-                        num37 = 0;
+                        num34 = 0;
                     }
                     if ((num10 + 50) < num24)
                     {
-                        num38 = 0;
+                        num35 = 0;
                     }
                     if ((num11 + 50) < num25)
                     {
-                        num39 = 0;
+                        num36 = 0;
                     }
                     if ((num12 + 50) < num26)
                     {
-                        num40 = 0;
+                        num37 = 0;
                     }
-                    int num55 = num13 + 50;
-                    int num56 = num14 + 50;
-                    int num57 = num15 + 50;
+                    if ((num13 + 50) < num27)
+                    {
+                        num38 = 0;
+                    }
+                    if ((num14 + 50) < num28)
+                    {
+                        num39 = 0;
+                    }
                     int intPosition = (byte) playerRowByPlayerID["Pos"];
-                    int num42 = (byte) playerRowByPlayerID["Age"];
-                    int num43 = (byte) playerRowByPlayerID["PlayedYear"];
-                    int num44 = (byte) playerRowByPlayerID["Height"];
-                    int num45 = (byte) playerRowByPlayerID["Weight"];
+                    int num41 = (byte) playerRowByPlayerID["Age"];
+                    int num42 = (byte) playerRowByPlayerID["PlayedYear"];
+                    int num43 = (byte) playerRowByPlayerID["Height"];
+                    int num44 = (byte) playerRowByPlayerID["Weight"];
                     this.intPower = (byte) playerRowByPlayerID["Power"];
-                    int num46 = (int) playerRowByPlayerID["Ability"];
+                    int num45 = (int) playerRowByPlayerID["Ability"];
                     int intStatus = (byte) playerRowByPlayerID["Status"];
                     int intSuspend = (byte) playerRowByPlayerID["Suspend"];
                     string strEvent = playerRowByPlayerID["Event"].ToString();
-                    int num58 = (int) playerRowByPlayerID["TeamDay"];
-                    byte num59 = (byte) playerRowByPlayerID["Category"];
-                    string str2 = playerRowByPlayerID["Name"].ToString().Trim();
-                    int num49 = (int) playerRowByPlayerID["Salary"];
+                    int num55 = (int) playerRowByPlayerID["TeamDay"];
+                    byte num56 = (byte) playerRowByPlayerID["Category"];
+                    string str4 = playerRowByPlayerID["Name"].ToString().Trim();
+                    int num48 = (int) playerRowByPlayerID["Salary"];
                     this.strFace = playerRowByPlayerID["Face"].ToString().Trim();
-                    int num50 = (int) playerRowByPlayerID["TrainPoint"];
+                    int num49 = (int) playerRowByPlayerID["TrainPoint"];
                     DataRow accountRowByClubID = BTPAccountManager.GetAccountRowByClubID(intClubID);
-                    this.strPoint = num50.ToString();
+                    this.strPoint = num49.ToString();
                     if (accountRowByClubID == null)
                     {
-                        num51 = 1;
-                        str3 = "无";
-                        num52 = 0;
+                        num2 = 1;
+                        str = "无";
+                        num3 = 0;
                     }
                     else
                     {
-                        num51 = Convert.ToInt16(accountRowByClubID["Shirt"].ToString().Trim());
-                        str3 = accountRowByClubID["NickName"].ToString().Trim();
-                        num52 = (int) accountRowByClubID["UserID"];
-                        str3 = AccountItem.GetNickNameInfo(num52, str3, "", 8);
+                        num2 = Convert.ToInt16(accountRowByClubID["Shirt"].ToString().Trim());
+                        str = accountRowByClubID["NickName"].ToString().Trim();
+                        num3 = (int) accountRowByClubID["UserID"];
+                        str = AccountItem.GetNickNameInfo(num3, str, "", 8);
                     }
                     this.intNumber = (byte) playerRowByPlayerID["Number"];
-                    if (num51 > 15)
+                    if (num2 > 15)
                     {
                         this.strNumber = (0x526c + this.intNumber) + "";
                     }
@@ -331,7 +331,7 @@
                     {
                         this.strNumber = (0x5208 + this.intNumber) + "";
                     }
-                    this.strShirt = (0x4e20 + num51) + "";
+                    this.strShirt = (0x4e20 + num2) + "";
                     this.sbReturn.Append("<table width='92' border='0' cellspacing='0' cellpadding='0'>\n");
                     this.sbReturn.Append("\t<tr>\n");
                     this.sbReturn.Append("\t\t<td width='92' valign='top'><img id='imgCharactor' src='" + SessionItem.GetImageURL() + "Player/Charactor/NewPlayer.png' width='90' height='130'><br>\n");
@@ -339,15 +339,15 @@
                     this.sbReturn.Append("\t\t<td valign='top'>\n");
                     this.sbReturn.Append("\t\t\t<table width='109' border='0' cellspacing='0' cellpadding='2'>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
-                    this.sbReturn.Append("\t\t\t\t\t<td colspan=\"2\" height='30' align='left'>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "&nbsp;<strong>" + str2 + "</strong></td>\n");
+                    this.sbReturn.Append("\t\t\t\t\t<td colspan=\"2\" height='30' align='left'>" + PlayerItem.GetPlayerStatus(intStatus, strEvent, intSuspend) + "&nbsp;<strong>" + str4 + "</strong></td>\n");
                     this.sbReturn.Append("\t\t\t\t</tr>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
                     this.sbReturn.Append("\t\t\t\t\t<td height='18' width='37' align='center'>年龄</td>\n");
-                    this.sbReturn.Append(string.Concat(new object[] { "\t\t\t\t\t<td width='78' align=\"left\"><a title='第", playerRowByPlayerID["BirthTurn"].ToString(), "轮生日' style='CURSOR: hand'>", num42, "</a>&nbsp;<a title='球龄' style='CURSOR: hand'>[", num43, "]</a></td>\n" }));
+                    this.sbReturn.Append(string.Concat(new object[] { "\t\t\t\t\t<td width='78' align=\"left\"><a title='第", playerRowByPlayerID["BirthTurn"].ToString(), "轮生日' style='CURSOR: hand'>", num41, "</a>&nbsp;<a title='球龄' style='CURSOR: hand'>[", num42, "]</a></td>\n" }));
                     this.sbReturn.Append("\t\t\t\t</tr>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
                     this.sbReturn.Append("\t\t\t\t\t<td height='18' align='center'>薪水</td>\n");
-                    this.sbReturn.Append("\t\t\t\t\t<td align=\"left\">" + num49 + "</td>\n");
+                    this.sbReturn.Append("\t\t\t\t\t<td align=\"left\">" + num48 + "</td>\n");
                     this.sbReturn.Append("\t\t\t\t</tr>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
                     this.sbReturn.Append("\t\t\t\t\t<td height='18' width='37' align='center'>位置</td>\n");
@@ -355,11 +355,11 @@
                     this.sbReturn.Append("\t\t\t\t</tr>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
                     this.sbReturn.Append("\t\t\t\t\t<td height='18' align='center'>身高</td>\n");
-                    this.sbReturn.Append("\t\t\t\t\t<td align=\"left\">" + num44 + "CM</td>\n");
+                    this.sbReturn.Append("\t\t\t\t\t<td align=\"left\">" + num43 + "CM</td>\n");
                     this.sbReturn.Append("\t\t\t\t</tr>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
                     this.sbReturn.Append("\t\t\t\t\t<td height='18' align='center'>体重</td>\n");
-                    this.sbReturn.Append("\t\t\t\t\t<td align=\"left\">" + num45 + "KG</td>\n");
+                    this.sbReturn.Append("\t\t\t\t\t<td align=\"left\">" + num44 + "KG</td>\n");
                     this.sbReturn.Append("\t\t\t\t</tr>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
                     this.sbReturn.Append("\t\t\t\t\t<td height='18' align='center'>体力</td>\n");
@@ -367,170 +367,168 @@
                     this.sbReturn.Append("\t\t\t\t</tr>\n");
                     this.sbReturn.Append("\t\t\t\t<tr>\n");
                     this.sbReturn.Append("\t\t\t\t\t<td height='18' align='center'>综合</td>\n");
-                    this.sbReturn.Append("\t\t\t\t\t<td align=\"left\"><span id='Ability'>" + PlayerItem.GetAbilityColor(num46) + "</span></td>\n");
+                    this.sbReturn.Append("\t\t\t\t\t<td align=\"left\"><span id='Ability'>" + PlayerItem.GetAbilityColor(num45) + "</span></td>\n");
                     this.sbReturn.Append("\t\t\t\t</tr>\n");
                     this.sbReturn.Append("\t\t\t</table>\n");
-                    this.sbReturn.Append(string.Concat(new object[] { "<input type='hidden' id='Ability12' value='", num13, "'><input type='hidden' id='Ability13' value='", num14, "'><input type='hidden' id='Ability14' value='", num15, "'></td>\n" }));
+                    this.sbReturn.Append(string.Concat(new object[] { "<input type='hidden' id='Ability12' value='", num15, "'><input type='hidden' id='Ability13' value='", num16, "'><input type='hidden' id='Ability14' value='", num17, "'></td>\n" }));
                     this.sbReturn.Append("\t</tr>\n");
                     this.sbReturn.Append("</table>\n");
                     if (intAbility < intAbilityMax)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
                     this.sbAbility.Append("<table width=\"230\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#fcf2ec\" id=\"tblDetail\">\n");
                     this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td width=\"44\" height=\"22\" align=\"center\"><input type='hidden' id='Ability1' value='", intAbility, "'><input type='hidden' id='AbilityMax1' value='", num30, "'>\n" }));
+                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td width=\"44\" height=\"22\" align=\"center\"><input type='hidden' id='Ability1' value='", intAbility, "'><input type='hidden' id='AbilityMax1' value='", num29, "'>\n" }));
                     this.sbAbility.Append("\t\t\t\t速度</td>\n");
                     this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility1'>" + this.GetHtmlTable(intAbility, intAbilityMax, "tblAbility1") + "</td>");
-                    this.sbAbility.Append("\t\t\t<td width=\"20\" align=\"center\"><img id='btnAdd1' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility.Append("\t\t\t<td width=\"20\" align=\"center\"><img id='btnAdd1' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
                     this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt1'></span></td>");
-                    this.sbAbility.Append("\t\t</tr>\n");
-                    if (num3 < num17)
-                    {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
-                    }
-                    else
-                    {
-                        str4 = "src=\"images/zengjia_C.gif\"";
-                    }
-                    this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">弹跳<input type='hidden' id='Ability2' value='", num3, "'><input type='hidden' id='AbilityMax2' value='", num31, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility2'>" + this.GetHtmlTable(num3, num17, "tblAbility2") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd2' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt2'></span></td>");
-                    this.sbAbility.Append("\t\t</tr>\n");
-                    if (num4 < num18)
-                    {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
-                    }
-                    else
-                    {
-                        str4 = "src=\"images/zengjia_C.gif\"";
-                    }
-                    this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">强壮<input type='hidden' id='Ability3' value='", num4, "'><input type='hidden' id='AbilityMax3' value='", num32, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility3'>" + this.GetHtmlTable(num4, num18, "tblAbility3") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd3' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt3'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num5 < num19)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
                     this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">耐力<input type='hidden' id='Ability4' value='", num5, "'><input type='hidden' id='AbilityMax4' value='", num33, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility4'>" + this.GetHtmlTable(num5, num19, "tblAbility4") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd4' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt4'></span></td>");
+                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">弹跳<input type='hidden' id='Ability2' value='", num5, "'><input type='hidden' id='AbilityMax2' value='", num30, "'></td>\n" }));
+                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility2'>" + this.GetHtmlTable(num5, num19, "tblAbility2") + "\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd2' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt2'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num6 < num20)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
                     this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">投篮<input type='hidden' id='Ability5' value='", num6, "'><input type='hidden' id='AbilityMax5' value='", num34, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility5'>" + this.GetHtmlTable(num6, num20, "tblAbility5") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd5' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt5'></span></td>");
+                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">强壮<input type='hidden' id='Ability3' value='", num6, "'><input type='hidden' id='AbilityMax3' value='", num31, "'></td>\n" }));
+                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility3'>" + this.GetHtmlTable(num6, num20, "tblAbility3") + "\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd3' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt3'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num7 < num21)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
                     this.sbAbility.Append("\t\t<tr>\n");
-                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">三分<input type='hidden' id='Ability6' value='", num7, "'><input type='hidden' id='AbilityMax6' value='", num35, "'></td>\n" }));
-                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility6'>" + this.GetHtmlTable(num7, num21, "tblAbility6") + "\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd6' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt6'></span></td>");
+                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">耐力<input type='hidden' id='Ability4' value='", num7, "'><input type='hidden' id='AbilityMax4' value='", num32, "'></td>\n" }));
+                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility4'>" + this.GetHtmlTable(num7, num21, "tblAbility4") + "\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd4' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt4'></span></td>");
                     this.sbAbility.Append("\t\t</tr>\n");
                     if (num8 < num22)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
-                    this.sbAbility.Append("\t</table>\n");
-
-
-                    this.sbAbility1.Append("<table width=\"230\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#fcf2ec\" id=\"tblDetail2\">\n");
-                    this.sbAbility1.Append("\t\t<tr>\n");
-                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">运球<input type='hidden' id='Ability7' value='", num8, "'><input type='hidden' id='AbilityMax7' value='", num36, "'></td>\n" }));
-                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility7'>" + this.GetHtmlTable(num8, num22, "tblAbility7") + "\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd7' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt7'></span></td>");
-                    this.sbAbility1.Append("\t\t</tr>\n");
+                    this.sbAbility.Append("\t\t<tr>\n");
+                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">投篮<input type='hidden' id='Ability5' value='", num8, "'><input type='hidden' id='AbilityMax5' value='", num33, "'></td>\n" }));
+                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility5'>" + this.GetHtmlTable(num8, num22, "tblAbility5") + "\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd5' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt5'></span></td>");
+                    this.sbAbility.Append("\t\t</tr>\n");
                     if (num9 < num23)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
-                    this.sbAbility1.Append("\t\t<tr>\n");
-                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">传球<input type='hidden' id='Ability8' value='", num9, "'><input type='hidden' id='AbilityMax8' value='", num37, "'></td>\n" }));
-                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility8'>" + this.GetHtmlTable(num9, num23, "tblAbility8") + "\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd8' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt8'></span></td>");
-                    this.sbAbility1.Append("\t\t</tr>\n");
+                    this.sbAbility.Append("\t\t<tr>\n");
+                    this.sbAbility.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">三分<input type='hidden' id='Ability6' value='", num9, "'><input type='hidden' id='AbilityMax6' value='", num34, "'></td>\n" }));
+                    this.sbAbility.Append("\t\t\t<td width=\"157\" id='tdAbility6'>" + this.GetHtmlTable(num9, num23, "tblAbility6") + "\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"center\"><img id='btnAdd6' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility.Append("\t\t\t<td align=\"left\"><span id='alt6'></span></td>");
+                    this.sbAbility.Append("\t\t</tr>\n");
                     if (num10 < num24)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
+                    this.sbAbility.Append("\t</table>\n");
+                    this.sbAbility1.Append("<table width=\"230\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" bgcolor=\"#fcf2ec\" id=\"tblDetail2\">\n");
                     this.sbAbility1.Append("\t\t<tr>\n");
-                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">篮板<input type='hidden' id='Ability9' value='", num10, "'><input type='hidden' id='AbilityMax9' value='", num38, "'></td>\n" }));
-                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility9'>" + this.GetHtmlTable(num10, num24, "tblAbility9") + "\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd9' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt9'></span></td>");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">运球<input type='hidden' id='Ability7' value='", num10, "'><input type='hidden' id='AbilityMax7' value='", num35, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility7'>" + this.GetHtmlTable(num10, num24, "tblAbility7") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd7' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt7'></span></td>");
                     this.sbAbility1.Append("\t\t</tr>\n");
                     if (num11 < num25)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
                     this.sbAbility1.Append("\t\t<tr>\n");
-                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">抢断<input type='hidden' id='Ability10' value='", num11, "'><input type='hidden' id='AbilityMax10' value='", num39, "'></td>\n" }));
-                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility10'>" + this.GetHtmlTable(num11, num25, "tblAbility10") + "\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd10' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt10'></span></td>");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">传球<input type='hidden' id='Ability8' value='", num11, "'><input type='hidden' id='AbilityMax8' value='", num36, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility8'>" + this.GetHtmlTable(num11, num25, "tblAbility8") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd8' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt8'></span></td>");
                     this.sbAbility1.Append("\t\t</tr>\n");
                     if (num12 < num26)
                     {
-                        str4 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
                     }
                     else
                     {
-                        str4 = "src=\"images/zengjia_C.gif\"";
+                        str2 = "src=\"images/zengjia_C.gif\"";
                     }
                     this.sbAbility1.Append("\t\t<tr>\n");
-                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">封盖<input type='hidden' id='Ability11' value='", num12, "'><input type='hidden' id='AbilityMax11' value='", num40, "'></td>\n" }));
-                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility11'>" + this.GetHtmlTable(num12, num26, "tblAbility11") + "\n");
-                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd11' " + str4 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">篮板<input type='hidden' id='Ability9' value='", num12, "'><input type='hidden' id='AbilityMax9' value='", num37, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility9'>" + this.GetHtmlTable(num12, num26, "tblAbility9") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd9' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt9'></span></td>");
+                    this.sbAbility1.Append("\t\t</tr>\n");
+                    if (num13 < num27)
+                    {
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                    }
+                    else
+                    {
+                        str2 = "src=\"images/zengjia_C.gif\"";
+                    }
+                    this.sbAbility1.Append("\t\t<tr>\n");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">抢断<input type='hidden' id='Ability10' value='", num13, "'><input type='hidden' id='AbilityMax10' value='", num38, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility10'>" + this.GetHtmlTable(num13, num27, "tblAbility10") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd10' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt10'></span></td>");
+                    this.sbAbility1.Append("\t\t</tr>\n");
+                    if (num14 < num28)
+                    {
+                        str2 = "onclick=\"AddAbility(this,1)\" src=\"images/zengjia.gif\"";
+                    }
+                    else
+                    {
+                        str2 = "src=\"images/zengjia_C.gif\"";
+                    }
+                    this.sbAbility1.Append("\t\t<tr>\n");
+                    this.sbAbility1.Append(string.Concat(new object[] { "\t\t\t<td height=\"22\" align=\"center\">封盖<input type='hidden' id='Ability11' value='", num14, "'><input type='hidden' id='AbilityMax11' value='", num39, "'></td>\n" }));
+                    this.sbAbility1.Append("\t\t\t<td width=\"157\" id='tdAbility11'>" + this.GetHtmlTable(num14, num28, "tblAbility11") + "\n");
+                    this.sbAbility1.Append("\t\t\t<td align=\"center\"><img id='btnAdd11' " + str2 + " style=\"cursor:pointer;\" width=\"12\" height=\"12\" alt=\"训练提升该项目值\"></td>\n");
                     this.sbAbility1.Append("\t\t\t<td align=\"left\"><span id='alt11'></span></td>");
                     this.sbAbility1.Append("\t\t</tr>\n");
                     this.sbAbility1.Append("\t</table>\n");

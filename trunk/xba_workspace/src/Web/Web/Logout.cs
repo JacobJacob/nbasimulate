@@ -23,36 +23,36 @@
 
         private void Page_Load(object sender, EventArgs e)
         {
-            string str3;
-            string str4;
-            int request = (int) SessionItem.GetRequest("GameCategory", 0);
-            string str = (string) SessionItem.GetRequest("Type", 1);
-            string str2 = (string) SessionItem.GetRequest("JumpURL", 1);
+            string str;
+            string str2;
+            int request = SessionItem.GetRequest("GameCategory", 0);
+            string str3 = SessionItem.GetRequest("Type", 1);
+            string str4 = SessionItem.GetRequest("JumpURL", 1);
             this.intUserID = SessionItem.CheckLogin(0);
             if (this.intUserID > 0)
             {
                 DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
-                str3 = onlineRowByUserID["UserName"].ToString();
-                str4 = onlineRowByUserID["Password"].ToString();
+                str = onlineRowByUserID["UserName"].ToString();
+                str2 = onlineRowByUserID["Password"].ToString();
             }
             else
             {
                 this.intUserID = -1;
-                str3 = "";
-                str4 = "";
+                str = "";
+                str2 = "";
             }
-            if (str == "OnlyJump")
+            if (str3 == "OnlyJump")
             {
-                base.Response.Redirect(ServerItem.ToOtherServerURL(request, str3, str4, "URL=" + str2));
+                base.Response.Redirect(ServerItem.ToOtherServerURL(request, str, str2, "URL=" + str4));
             }
             else
             {
                 if (this.intUserID > 0)
                 {
-                    if (str == "MemberCenter")
+                    if (str3 == "MemberCenter")
                     {
                         SessionItem.SetLogout(this.intUserID);
-                        base.Response.Redirect(ServerItem.ToOtherServerURL(0, str3, str4, "URL=MemberCenter.aspx"));
+                        base.Response.Redirect(ServerItem.ToOtherServerURL(0, str, str2, "URL=MemberCenter.aspx"));
                         return;
                     }
                     SessionItem.SetLogout(this.intUserID);

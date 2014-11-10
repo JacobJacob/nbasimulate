@@ -48,7 +48,7 @@
         private void btnOK_Click(object sender, ImageClickEventArgs e)
         {
             string str = SessionItem.GetRequest("Type", 1).ToString();
-            this.lngPlayerID = (long) SessionItem.GetRequest("PlayerID", 3);
+            this.lngPlayerID = SessionItem.GetRequest("PlayerID", 3);
             if (str == "Model1")
             {
                 int intSpeedAdd = Convert.ToInt32(this.ddlSpeed.SelectedValue);
@@ -192,7 +192,7 @@
                 this.intCategory = (int) onlineRowByUserID["Category"];
                 this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
                 this.btnOK.ImageUrl = SessionItem.GetImageURL() + "button_11.gif";
-                this.lngPlayerID = (long) SessionItem.GetRequest("PlayerID", 3);
+                this.lngPlayerID = SessionItem.GetRequest("PlayerID", 3);
                 if (((this.intCategory != 5) && (this.intCategory != 2)) || (this.lngPlayerID == 0L))
                 {
                     base.Response.Redirect("Report.aspx?Parameter=3");
@@ -240,7 +240,8 @@
         {
             for (int i = 0; i < 0x1b; i++)
             {
-                ListItem item = new ListItem(i.ToString(), i.ToString());
+                string text = i.ToString();
+                ListItem item = new ListItem(text, i.ToString());
                 ddlItem.Items.Add(item);
             }
         }

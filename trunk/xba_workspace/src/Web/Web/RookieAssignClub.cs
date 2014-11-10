@@ -60,8 +60,8 @@
                     BTPPlayer3Manager.ArrangeNumber(numArray[j], numArray2[j]);
                 }
                 BTPArrange3Manager.AddArrange(this.intClubID3, numArray[0], numArray[1], numArray[2], 1, 1, 100, 100);
-                int num5 = (int) BTPArrange3Manager.GetArrByCategory(this.intClubID3, 1)["Arrange3ID"];
-                BTPClubManager.AssignArrange(this.intClubID3, num5);
+                int num4 = (int) BTPArrange3Manager.GetArrByCategory(this.intClubID3, 1)["Arrange3ID"];
+                BTPClubManager.AssignArrange(this.intClubID3, num4);
                 BTPArrangeLvlManager.AddArrangeLvl(this.intUserID);
                 BTPAccountManager.SetAccountCategory(this.intUserID, 2);
                 BTPToolLinkManager.AddTool(this.intUserID, 1, 6, 40, 20);
@@ -70,17 +70,13 @@
                 BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", strContent);
                 string strUserName = StringItem.MD5Encrypt(this.strUserName, Global.strMD5Key);
                 string strPassword = StringItem.MD5Encrypt(this.strPassword, Global.strMD5Key);
-
                 BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", "尊敬的经理您好，欢迎加入无道篮球，如果在游戏中有任何问题，请加入无道篮球经理新手群进行咨询,群号码:180011696,如果想与更多老玩家交流，请加入无道篮球大群，群号码:4269274");
-
-                ///创建填充球员
-                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 634, 709, 24, 1);
-                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 675, 723, 23, 2);
-                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 654, 701, 20, 3);
-                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 681, 706, 23, 4);
-                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 673, 732, 25, 0);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 0x27a, 0x2c5, 0x18, 1);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 0x2a3, 0x2d3, 0x17, 2);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 0x28e, 0x2bd, 20, 3);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 0x2a9, 0x2c2, 0x17, 4);
+                BTPPlayer5Manager.CreatePlayer5ForReg(this.intClubID5, 0x2a1, 0x2dc, 0x19, 0);
                 BTPMessageManager.AddMessage(this.intUserID, 2, 0, "秘书报告", "尊敬的经理您好，董事会对你的能力表示肯定，为了打造一支冠军球队，我们已经从市场上为你买入了五名有实力的球员，他们已经到队，请将他们加入阵容中，检验一下他们的实力吧!");
-
                 SessionItem.SetSelfLogin(strUserName, strPassword, false);
                 int intRookieOpIndex = AccountItem.SetRookieOp(this.intUserID, 4);
                 if (intRookieOpIndex != 4)
@@ -107,10 +103,10 @@
             }
             else
             {
-                DataTable table2 = BTPPlayer3Manager.GetSelectPlayer3Table();
-                if (table2 != null)
+                DataTable table = BTPPlayer3Manager.GetSelectPlayer3Table();
+                if (table != null)
                 {
-                    foreach (DataRow row in table2.Rows)
+                    foreach (DataRow row in table.Rows)
                     {
                         long longPlayerID = (long) row["PlayerID"];
                         string strName = row["Name"].ToString();
@@ -121,11 +117,11 @@
                         int num6 = (byte) row["Weight"];
                         int intAbility = (int) row["Ability"];
                         float single1 = ((float) ((int) row["Ability"])) / 10f;
-                        long num7 = Convert.ToInt64(row["BidPrice"]);
+                        long num8 = Convert.ToInt64(row["BidPrice"]);
                         object strList = this.strList;
                         this.strList = string.Concat(new object[] { 
                             strList, "<tr class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\"><td height='25'>", num2, "</td><td align='left' style='padding-left:3px'>", PlayerItem.GetPlayerNameInfo(longPlayerID, strName, 10, 0, 1), "</td><td>", num3, "</td><td><a title='", PlayerItem.GetPlayerChsPosition(intPosition), "' style='CURSOR: hand'>", PlayerItem.GetPlayerEngPosition(intPosition), "</a></td><td>", num5, "</td><td>", num6, "</td><td>", 
-                            PlayerItem.GetAbilityColor(intAbility), "</td><td><font color='#660066'>", num7, "</font></td><td><input type='checkbox' id='cb", longPlayerID, "' name='cb", longPlayerID, "' onclick='CBChange(this,this.checked)' value='", longPlayerID, "'><input type='hidden' id='PlayerID_", longPlayerID, "' name='PlayerID_", longPlayerID, "' value='", num7, "'></td></tr>"
+                            PlayerItem.GetAbilityColor(intAbility), "</td><td><font color='#660066'>", num8, "</font></td><td><input type='checkbox' id='cb", longPlayerID, "' name='cb", longPlayerID, "' onclick='CBChange(this,this.checked)' value='", longPlayerID, "'><input type='hidden' id='PlayerID_", longPlayerID, "' name='PlayerID_", longPlayerID, "' value='", num8, "'></td></tr>"
                          });
                     }
                 }
@@ -169,7 +165,7 @@
                     this.strUserName = onlineRowByUserID["UserName"].ToString().Trim();
                     this.strPassword = onlineRowByUserID["Password"].ToString().Trim();
                     this.intClubID3 = (int) onlineRowByUserID["ClubID3"];
-                    this.intClubID5 = (int)onlineRowByUserID["ClubID5"];
+                    this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
                     this.strClubName = onlineRowByUserID["ClubName5"].ToString().Trim();
                     DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
                     this.intCategory = (byte) accountRowByUserID["Category"];

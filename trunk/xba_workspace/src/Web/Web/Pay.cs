@@ -54,9 +54,9 @@
                 this.strPassword = userInfoByID["Password"].ToString().Trim();
                 this.v_mid = "34107";
                 this.key = "stonehenge20031118";
-                this.v_oid = (string) SessionItem.GetRequest("OID", 1);
-                this.intOrderCategory = (int) SessionItem.GetRequest("OrderCategory", 0);
-                int request = (int) SessionItem.GetRequest("OrderID", 0);
+                this.v_oid = SessionItem.GetRequest("OID", 1);
+                this.intOrderCategory = SessionItem.GetRequest("OrderCategory", 0);
+                int request = SessionItem.GetRequest("OrderID", 0);
                 ROOTUserManager.SetOrderStatus(request, 0);
                 if (this.intOrderCategory == 1)
                 {

@@ -1,7 +1,5 @@
 ﻿namespace Web
 {
-    using LoginParameter;
-    using ServerManage;
     using System;
     using System.Data;
     using System.Web.UI;
@@ -23,10 +21,10 @@
 
         protected override void OnInit(EventArgs e)
         {
-            this.intType = (int) SessionItem.GetRequest("Type", 0);
-            this.intTag = (int) SessionItem.GetRequest("Tag", 0);
-            this.intA = (int) SessionItem.GetRequest("A", 0);
-            this.intB = (int) SessionItem.GetRequest("B", 0);
+            this.intType = SessionItem.GetRequest("Type", 0);
+            this.intTag = SessionItem.GetRequest("Tag", 0);
+            this.intA = SessionItem.GetRequest("A", 0);
+            this.intB = SessionItem.GetRequest("B", 0);
             DataRow parameterRow = BTPParameterManager.GetParameterRow();
             int num = 0;
             if (parameterRow != null)
@@ -87,8 +85,8 @@
                 str3 = "轮空";
                 str4 = Config.GetDomain() + "Images/Club/Logo/0.gif";
             }
-            string str5 = Config.GetDomain();
-            this.strInfo = "<table width='100%'  border='0' cellspacing='0' cellpadding='0' style=\"background:url(images/teambg.gif) repeat-x; margin:1px 0;\"><tr align='center'><td width='25%' height=\"60\"><strong><font color='#660066'>" + str + "</font></strong></td><td width='10%'><img src='" + str5 + str2 + "' width='46' height='46'></td><td width='30%'><div id='divScore'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/Bar.gif' width='19' height='28'><img src='Images/Score/00.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/Bar.gif' width='19' height='28'></div></td><td width='10%'><img src='" + str5 + str4 + "' width='46' height='46'></td><td width='25%'><strong><font color='#660066'>" + str3 + "</font></strong></td></tr></table>";
+            string domain = Config.GetDomain();
+            this.strInfo = "<table width='100%'  border='0' cellspacing='0' cellpadding='0' style=\"background:url(images/teambg.gif) repeat-x; margin:1px 0;\"><tr align='center'><td width='25%' height=\"60\"><strong><font color='#660066'>" + str + "</font></strong></td><td width='10%'><img src='" + domain + str2 + "' width='46' height='46'></td><td width='30%'><div id='divScore'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/Bar.gif' width='19' height='28'><img src='Images/Score/00.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/99.gif' width='19' height='28'><img src='Images/Score/Bar.gif' width='19' height='28'></div></td><td width='10%'><img src='" + domain + str4 + "' width='46' height='46'></td><td width='25%'><strong><font color='#660066'>" + str3 + "</font></strong></td></tr></table>";
         }
     }
 }

@@ -16,8 +16,8 @@
 
         protected override void OnInit(EventArgs e)
         {
-            this.strUserName = (string) SessionItem.GetRequest("ue3tu23ce3vdmbv", 1);
-            this.strPassword = (string) SessionItem.GetRequest("stey86yi2jfdace", 1);
+            this.strUserName = SessionItem.GetRequest("ue3tu23ce3vdmbv", 1);
+            this.strPassword = SessionItem.GetRequest("stey86yi2jfdace", 1);
             int num = SessionItem.SetSelfLogin(this.strUserName, this.strPassword, true);
             if (num > 0)
             {

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Text;
-    using System.Data;
     using System.Web.UI;
     using Web.DBConnection;
 
@@ -27,7 +26,7 @@
         {
             StringBuilder builder = new StringBuilder();
             string commandText = "SELECT * FROM Main_Index";
-            string str2 = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), CommandType.Text, commandText)["ForumAD01"].ToString();
+            string str2 = SqlHelper.ExecuteDataRow(DBSelector.GetConnection("root"), 1, commandText)["ForumAD01"].ToString();
             builder.Append("<table width='1002' border='0' cellspacing='0' cellpadding='0'>");
             builder.Append("<tr>");
             builder.Append("<td width='202' height='71' align='center' valign='middle'><img src='Images/logo.JPG' width='151' height='68'></td>");

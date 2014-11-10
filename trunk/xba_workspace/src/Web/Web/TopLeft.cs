@@ -28,8 +28,8 @@
             else
             {
                 int num = (int) accountRowByUserID["UCount"];
-                int num3 = (int) accountRowByUserID["UOldCount"];
-                int num2 = (int) accountRowByUserID["CCount"];
+                int num2 = (int) accountRowByUserID["UOldCount"];
+                int num3 = (int) accountRowByUserID["CCount"];
                 int num4 = (int) accountRowByUserID["COldCount"];
                 if (num == 0)
                 {
@@ -38,17 +38,17 @@
                 else
                 {
                     string str3;
-                    if (num > num3)
+                    if (num > num2)
                     {
-                        str3 = "<font color='red'>↓" + (num - num3) + "</font>";
+                        str3 = "<font color='red'>↓" + (num - num2) + "</font>";
                     }
                     else
                     {
-                        str3 = "<font color='green'>↑" + (num3 - num) + "</font>";
+                        str3 = "<font color='green'>↑" + (num2 - num) + "</font>";
                     }
                     str = string.Concat(new object[] { "第", num, "名[", str3, "]" });
                 }
-                if (((DateTime.Now >= DateTime.Today.AddHours((double) Global.intStartUpdate)) && (DateTime.Now <= DateTime.Today.AddHours(10.0))) || (num2 == 0))
+                if (((DateTime.Now >= DateTime.Today.AddHours((double) Global.intStartUpdate)) && (DateTime.Now <= DateTime.Today.AddHours(10.0))) || (num3 == 0))
                 {
                     str2 = "----";
                 }
@@ -59,15 +59,15 @@
                 else
                 {
                     string str4;
-                    if (num2 > num4)
+                    if (num3 > num4)
                     {
-                        str4 = "<font color='red'>↓" + (num2 - num4) + "</font>";
+                        str4 = "<font color='red'>↓" + (num3 - num4) + "</font>";
                     }
                     else
                     {
-                        str4 = "<font color='green'>↑" + (num4 - num2) + "</font>";
+                        str4 = "<font color='green'>↑" + (num4 - num3) + "</font>";
                     }
-                    str2 = string.Concat(new object[] { "第", num2, "名[", str4, "]" });
+                    str2 = string.Concat(new object[] { "第", num3, "名[", str4, "]" });
                 }
                 this.sb.Append("<table width='100%'  border='0' cellspacing='0' cellpadding='0'>");
                 this.sb.Append("<tr width=\"200\">");

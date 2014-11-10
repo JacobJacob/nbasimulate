@@ -98,6 +98,9 @@
                             this.strMsg = "<font color='red'>请正确输入分数！</font>";
                             return;
 
+                        case 1:
+                            break;
+
                         case 2:
                             this.strMsg = "<font color='red'>请正确输入" + this.strHomeName + "分数！</font>";
                             return;
@@ -109,6 +112,9 @@
                         case 4:
                             this.strMsg = "<font color='red'>请正确输入姚明分数！</font>";
                             break;
+
+                        default:
+                            return;
                     }
                 }
             }
@@ -139,13 +145,7 @@
             }
             if (this.intPage != 1)
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
                 string text1 = string.Concat(strArray);
             }
             if (this.intPage != num2)
@@ -153,19 +153,19 @@
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
                 string text2 = string.Concat(strArray);
             }
-            string str2 = "<select name='Page' onChange=JumpPage()>";
+            string str = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str2 = str2 + "<option value=" + i;
+                str = str + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str2 = str2 + " selected";
+                    str = str + " selected";
                 }
-                object obj2 = str2;
-                str2 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str;
+                str = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str2 = str2 + "</select>";
-            return string.Concat(new object[] { "共", msgTotal, "个记录 跳转", str2 });
+            str = str + "</select>";
+            return string.Concat(new object[] { "共", msgTotal, "个记录 跳转", str });
         }
 
         private void GuessList()
@@ -227,7 +227,7 @@
         {
             string strCurrentURL = "RM.aspx?Type=MYRM&";
             this.intPerPage = 12;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             this.intCount = this.intPerPage * this.intPage;
             this.intTotal = this.GetMsgTotal();
             this.strScript = this.GetMsgScript(strCurrentURL);
@@ -301,17 +301,21 @@
             }
             else
             {
-                switch (this.strType)
+                string strType = this.strType;
+                if (strType != null)
                 {
-                    case "MONTH":
-                        this.strPageIntro = "<img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_C_01.gif' border='0' height='14' width='50'><a href='RM.aspx?Type=YEAR'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_02.gif' border='0' height='14' width='50'></a><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_03.gif' border='0' height='14' width='59'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_04.gif' border='0' height='14' width='32'>";
-                        this.MonthList();
-                        return;
+                    switch (strType)
+                    {
+                        case "MONTH":
+                            this.strPageIntro = "<img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_C_01.gif' border='0' height='14' width='50'><a href='RM.aspx?Type=YEAR'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_02.gif' border='0' height='14' width='50'></a><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_03.gif' border='0' height='14' width='59'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_04.gif' border='0' height='14' width='32'>";
+                            this.MonthList();
+                            return;
 
-                    case "YEAR":
-                        this.strPageIntro = "<a href='RM.aspx?Type=MONTH'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_01.gif' border='0' height='14' width='50'></a><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_C_02.gif' border='0' height='14' width='50'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_03.gif' border='0' height='14' width='59'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_04.gif' border='0' height='14' width='32'>";
-                        this.YearList();
-                        return;
+                        case "YEAR":
+                            this.strPageIntro = "<a href='RM.aspx?Type=MONTH'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_01.gif' border='0' height='14' width='50'></a><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_C_02.gif' border='0' height='14' width='50'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_03.gif' border='0' height='14' width='59'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_04.gif' border='0' height='14' width='32'>";
+                            this.YearList();
+                            return;
+                    }
                 }
                 this.strPageIntro = "<img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_C_01.gif' border='0' height='14' width='50'><a href='RM.aspx?Type=YEAR'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_02.gif' border='0' height='14' width='50'></a><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_03.gif' border='0' height='14' width='59'><img src='" + SessionItem.GetImageURL() + "MenuCard/RM/RMmenu_G_04.gif' border='0' height='14' width='32'>";
                 this.MonthList();

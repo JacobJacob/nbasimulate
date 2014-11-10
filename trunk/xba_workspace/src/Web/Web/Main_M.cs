@@ -30,7 +30,7 @@
                 string str;
                 string str2;
                 string str3;
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
+                this.strType = SessionItem.GetRequest("Type", 1);
                 if (this.strType.IndexOf("TOPIC!") >= 0)
                 {
                     str = "FrameTopic.aspx";
@@ -40,18 +40,17 @@
                 {
                     str = "FrameForum.aspx?";
                 }
-                DataRow reader = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
-                if (reader != null)
+                DataRow row = ROOTUserManager.Get40UserRowByUserID(this.intUserID);
+                if (row != null)
                 {
-                    str2 = reader["UserName"].ToString().Trim();
-                    str3 = reader["Password"].ToString().Trim();
+                    str2 = row["UserName"].ToString().Trim();
+                    str3 = row["Password"].ToString().Trim();
                 }
                 else
                 {
                     str2 = "";
                     str3 = "";
                 }
-                //reader.Close();
                 this.strCenterURL = ServerItem.ToFrameTopicURL(0, str2, str3, this.intUserID, str);
                 this.InitializeComponent();
                 base.OnInit(e);

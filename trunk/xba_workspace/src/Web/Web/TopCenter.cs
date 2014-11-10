@@ -1,7 +1,5 @@
 ﻿namespace Web
 {
-    using LoginParameter;
-    using ServerManage;
     using System;
     using System.Data;
     using System.Text;
@@ -110,10 +108,7 @@
                 str = "赛季结束<br><br>";
             }
             int devCount = BTPDevManager.GetDevCount();
-            if (BTPDevManager.GetDevTotal() < devCount)
-            {
-                int num3 = devCount;
-            }
+            BTPDevManager.GetDevTotal();
             DataRow drParameter = Global.drParameter;
             this.intRegPMatchMoney = (int) drParameter["RegPMatchMoney"];
             this.trbOK.Visible = true;
@@ -152,7 +147,7 @@
         {
             string strCurrentURL = "TopCenter.aspx?UserID=" + this.intUserID + "&Type=LIST&";
             this.intPerPage = 10;
-            this.intPage = (int) SessionItem.GetRequest("Page", 0);
+            this.intPage = SessionItem.GetRequest("Page", 0);
             int intCount = this.intPerPage * this.intPage;
             int total = this.GetTotal();
             this.strScript = this.GetScript(strCurrentURL);
@@ -173,58 +168,56 @@
             }
             else
             {
+                string str2 = "";
                 string str3 = "";
-                string str4 = "";
                 foreach (DataRow row in table.Rows)
                 {
+                    string str5;
                     int intClubID = (int) row["ClubID"];
                     row["Name"].ToString().Trim();
                     int intUserID = (int) row["BidderID"];
                     string nickNameByUserID = BTPAccountManager.GetNickNameByUserID(intUserID);
                     DateTime time1 = (DateTime) row["EndBidTime"];
-                    switch (nickNameByUserID)
+                    if (((str5 = nickNameByUserID) == null) || (str5 == ""))
                     {
-                        case null:
-                        case "":
-                            nickNameByUserID = "暂无";
-                            break;
+                        nickNameByUserID = "暂无";
                     }
                     if (this.intCategory == 2)
                     {
-                        str4 = string.Concat(new object[] { "<a href='TopCenter.aspx?Type=VIEW&ClubID=", intClubID, "&UserID=", this.intUserID, "'>查看</a>" });
-                        str3 = "--";
+                        str3 = string.Concat(new object[] { "<a href='TopCenter.aspx?Type=VIEW&ClubID=", intClubID, "&UserID=", this.intUserID, "'>查看</a>" });
+                        str2 = "--";
                     }
                     else if (this.intCategory == 5)
                     {
-                        str4 = "--";
                         str3 = "--";
+                        str2 = "--";
                     }
                     else if (this.intCategory == 1)
                     {
                         if (intUserID == this.intUserID)
                         {
-                            str4 = string.Concat(new object[] { "<a href='TopCenter.aspx?Type=VIEW&ClubID=", intClubID, "&UserID=", this.intUserID, "'>查看</a>" });
-                            str3 = "--";
+                            str3 = string.Concat(new object[] { "<a href='TopCenter.aspx?Type=VIEW&ClubID=", intClubID, "&UserID=", this.intUserID, "'>查看</a>" });
+                            str2 = "--";
                         }
                         else
                         {
-                            str4 = string.Concat(new object[] { "<a href='TopCenter.aspx?Type=VIEW&ClubID=", intClubID, "&UserID=", this.intUserID, "'>查看</a>" });
-                            str3 = "<a href='SecretaryPage.aspx?Type=BUYCLUB&ClubID=" + intClubID + "'>购买</a>";
+                            str3 = string.Concat(new object[] { "<a href='TopCenter.aspx?Type=VIEW&ClubID=", intClubID, "&UserID=", this.intUserID, "'>查看</a>" });
+                            str2 = "<a href='SecretaryPage.aspx?Type=BUYCLUB&ClubID=" + intClubID + "'>购买</a>";
                         }
                     }
                     else
                     {
                         base.Response.Redirect("Report.aspx?Parameter=3");
                     }
-                    int num3 = BTPPlayer5Manager.GetPlayer5CountByClubID(intClubID);
-                    int num4 = (int) row["Price"];
+                    int num5 = BTPPlayer5Manager.GetPlayer5CountByClubID(intClubID);
+                    int num6 = (int) row["Price"];
                     this.sbList.Append("<tr align='center' class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
                     this.sbList.Append("<td height='25'><font color='#660066'>" + intClubID + "</font></td>");
                     this.sbList.Append("<td>职业球队</td>");
-                    this.sbList.Append("<td>" + num3 + "名</td>");
-                    this.sbList.Append("<td>" + num4 + "</td>");
-                    this.sbList.Append("<td>" + str4 + "</td>");
+                    this.sbList.Append("<td>" + num5 + "名</td>");
+                    this.sbList.Append("<td>" + num6 + "</td>");
                     this.sbList.Append("<td>" + str3 + "</td>");
+                    this.sbList.Append("<td>" + str2 + "</td>");
                     this.sbList.Append("</tr>");
                 }
                 this.sbList.Append("<tr><td height='25' align='right' colspan='6'>" + this.GetViewPage(strCurrentURL) + "</td></tr>");
@@ -257,43 +250,43 @@
             else
             {
                 DateTime time1 = (DateTime) BTPClubManager.GetClubRowByID(this.intClubID)["EndBidTime"];
-                string str2 = "";
+                string str = "";
                 if (this.intCategory == 1)
                 {
-                    str2 = "<a href='SecretaryPage.aspx?Type=BUYCLUB&ClubID=" + this.intClubID + "'>出价</a> | <a href='#' onclick='javascript:window.history.back();'>返回</a>";
+                    str = "<a href='SecretaryPage.aspx?Type=BUYCLUB&ClubID=" + this.intClubID + "'>出价</a> | <a href='#' onclick='javascript:window.history.back();'>返回</a>";
                 }
                 else if (this.intCategory == 2)
                 {
-                    str2 = "<a href='#' onclick='javascript:window.history.back();'>返回</a>";
+                    str = "<a href='#' onclick='javascript:window.history.back();'>返回</a>";
                 }
                 else
                 {
                     base.Response.Redirect("Report.aspx?Parameter=3");
                 }
-                foreach (DataRow row2 in table.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string str = row2["Name"].ToString().Trim();
-                    int num = (byte) row2["Age"];
-                    int num2 = (byte) row2["Height"];
-                    int num3 = (byte) row2["Weight"];
-                    int intPosition = (byte) row2["Pos"];
-                    int intAbility = (int) row2["Ability"];
-                    int num6 = (int) row2["Salary"];
+                    string str2 = row["Name"].ToString().Trim();
+                    int num2 = (byte) row["Age"];
+                    int num3 = (byte) row["Height"];
+                    int num4 = (byte) row["Weight"];
+                    int intPosition = (byte) row["Pos"];
+                    int intAbility = (int) row["Ability"];
+                    int num7 = (int) row["Salary"];
                     float single1 = ((float) intAbility) / 10f;
                     this.sbList.Append("<tr align='center' class='BarContent' onmouseover=\"this.style.backgroundColor='#FBE2D4'\" onmouseout=\"this.style.backgroundColor=''\">");
-                    this.sbList.Append("<td height='25'><font color='#660066'>" + str + "</font></td>");
-                    this.sbList.Append("<td>" + num + "</td>");
+                    this.sbList.Append("<td height='25'><font color='#660066'>" + str2 + "</font></td>");
                     this.sbList.Append("<td>" + num2 + "</td>");
                     this.sbList.Append("<td>" + num3 + "</td>");
+                    this.sbList.Append("<td>" + num4 + "</td>");
                     this.sbList.Append("<td><a title='" + PlayerItem.GetPlayerChsPosition(intPosition) + "' style='CURSOR: hand'>" + PlayerItem.GetPlayerEngPosition(intPosition) + "</a></td>");
                     this.sbList.Append("<td>" + PlayerItem.GetAbilityColor(intAbility) + "</td>");
-                    this.sbList.Append("<td>" + num6 + "</td>");
+                    this.sbList.Append("<td>" + num7 + "</td>");
                     this.sbList.Append("</tr>");
                 }
                 clubPrice = BTPClubManager.GetClubPrice(this.intClubID);
                 this.sbList.Append("<tr align='center' class='BarContent'>");
                 this.sbList.Append("<td height='25' colspan='5'>球队现在的竞价是：" + clubPrice + "</td>");
-                this.sbList.Append("<td colspan='2'>" + str2 + "</td>");
+                this.sbList.Append("<td colspan='2'>" + str + "</td>");
                 this.sbList.Append("</tr>");
                 this.sbList.Append("<tr><td height='10' colspan='7'></td></tr>");
                 this.sbList.Append("<tr align='center' class='BarCountent'>");
@@ -315,51 +308,45 @@
             {
                 num2 = 1;
             }
-            string str2 = "";
+            string str = "";
             if (this.intPage == 1)
             {
-                str2 = "上一页";
+                str = "上一页";
             }
             else
             {
-                strArray = new string[5];
-                strArray[0] = "<a href='";
-                strArray[1] = strCurrentURL;
-                strArray[2] = "Page=";
-                int num4 = this.intPage - 1;
-                strArray[3] = num4.ToString();
-                strArray[4] = "'>上一页</a>";
-                str2 = string.Concat(strArray);
+                strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage - 1).ToString(), "'>上一页</a>" };
+                str = string.Concat(strArray);
             }
-            string str3 = "";
+            string str2 = "";
             if (this.intPage == num2)
             {
-                str3 = "下一页";
+                str2 = "下一页";
             }
             else
             {
                 strArray = new string[] { "<a href='", strCurrentURL, "Page=", (this.intPage + 1).ToString(), "'>下一页</a>" };
-                str3 = string.Concat(strArray);
+                str2 = string.Concat(strArray);
             }
-            string str4 = "<select name='Page' onChange=JumpPage()>";
+            string str3 = "<select name='Page' onChange=JumpPage()>";
             for (int i = 1; i <= num2; i++)
             {
-                str4 = str4 + "<option value=" + i;
+                str3 = str3 + "<option value=" + i;
                 if (i == this.intPage)
                 {
-                    str4 = str4 + " selected";
+                    str3 = str3 + " selected";
                 }
-                object obj2 = str4;
-                str4 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
+                object obj2 = str3;
+                str3 = string.Concat(new object[] { obj2, ">第", i, "页</option>" });
             }
-            str4 = str4 + "</select>";
-            return string.Concat(new object[] { str2, " ", str3, " 共", total, "个记录 跳转", str4 });
+            str3 = str3 + "</select>";
+            return string.Concat(new object[] { str, " ", str2, " 共", total, "个记录 跳转", str3 });
         }
 
         private string GetVTList()
         {
-            string str3;
-            int num7;
+            string str;
+            int num;
             int intRound = (int) BTPGameManager.GetGameRow()["Turn"];
             bool flag = true;
             DataRow clubRowByID = BTPClubManager.GetClubRowByID(this.intClubID5);
@@ -371,15 +358,15 @@
             string line = clubRowByID["MainXML"].ToString().Trim();
             if ((bool) BTPDevManager.GetDevRowByClubID(this.intClubID5)["HasNewMsg"])
             {
-                str3 = " [<font color='red'>新</font>]";
+                str = " [<font color='red'>新</font>]";
             }
             else
             {
-                str3 = "";
+                str = "";
             }
             TagReader reader = new TagReader(line);
             int intScore = 0;
-            int num6 = 0;
+            int num7 = 0;
             string str4 = "";
             string str5 = "";
             string str6 = "";
@@ -405,7 +392,7 @@
                 if (intRound == 1)
                 {
                     intScore = 0;
-                    num6 = 0;
+                    num7 = 0;
                     str4 = "";
                     str5 = "";
                     str6 = "";
@@ -424,7 +411,7 @@
                 else
                 {
                     intScore = Convert.ToInt32(reader.GetTagline("ScoreH"));
-                    num6 = Convert.ToInt32(reader.GetTagline("ScoreA"));
+                    num7 = Convert.ToInt32(reader.GetTagline("ScoreA"));
                     str4 = reader.GetTagline("ClubNameH");
                     str5 = reader.GetTagline("ClubNameA");
                     str6 = reader.GetTagline("ClubLogoH");
@@ -468,13 +455,13 @@
             StringBuilder builder = new StringBuilder();
             if (intRound != 1)
             {
-                num7 = intRound - 1;
+                num = intRound - 1;
             }
             else
             {
-                num7 = intRound;
+                num = intRound;
             }
-            if ((BTPDevMatchManager.GetDevMRowByClubIDRound(this.intClubID5, num7) == null) || !flag)
+            if ((BTPDevMatchManager.GetDevMRowByClubIDRound(this.intClubID5, num) == null) || !flag)
             {
                 builder.Append("<table width='536'  border='0' cellspacing='0' cellpadding='0'>");
                 builder.Append("<tr class='BarHead'>");
@@ -497,16 +484,16 @@
                     int num8;
                     int num9;
                     builder.Append("<tr><td width='268'><table width='100%'  border='0' cellspacing='0' cellpadding='0'>");
-                    DataTable table2 = BTPDevManager.GetClubTableByDevCodeTop7(devCodeByClubID);
-                    if (table2 == null)
+                    DataTable table = BTPDevManager.GetClubTableByDevCodeTop7(devCodeByClubID);
+                    if (table == null)
                     {
                         builder.Append("<tr><td></td></tr>");
                     }
                     else
                     {
-                        foreach (DataRow row4 in table2.Rows)
+                        foreach (DataRow row2 in table.Rows)
                         {
-                            num9 = (int) row4["ClubID"];
+                            num9 = (int) row2["ClubID"];
                             if (num9 != 0)
                             {
                                 DataRow clubRowByClubID = BTPClubManager.GetClubRowByClubID(num9);
@@ -540,24 +527,24 @@
                     }
                     builder.Append("</table></td>");
                     builder.Append("<td width='268'><table bgcolor='#FBE2D4' width='100%'  border='0' cellspacing='0' cellpadding='0'>");
-                    DataTable table3 = BTPDevManager.GetClubTableByDevCodeEnd7(devCodeByClubID);
-                    if (table3 == null)
+                    DataTable table2 = BTPDevManager.GetClubTableByDevCodeEnd7(devCodeByClubID);
+                    if (table2 == null)
                     {
                         builder.Append("<tr><td></td></tr>");
                     }
                     else
                     {
-                        foreach (DataRow row6 in table3.Rows)
+                        foreach (DataRow row4 in table2.Rows)
                         {
-                            num9 = (int) row6["ClubID"];
+                            num9 = (int) row4["ClubID"];
                             if (num9 != 0)
                             {
-                                DataRow row7 = BTPClubManager.GetClubRowByClubID(num9);
-                                str24 = row7["ClubLogo"].ToString().Trim();
-                                str25 = row7["ClubName"].ToString().Trim();
-                                int num10 = (int) row7["UserID"];
-                                str26 = row7["NickName"].ToString().Trim();
-                                num8 = (byte) row7["Levels"];
+                                DataRow row5 = BTPClubManager.GetClubRowByClubID(num9);
+                                str24 = row5["ClubLogo"].ToString().Trim();
+                                str25 = row5["ClubName"].ToString().Trim();
+                                int num10 = (int) row5["UserID"];
+                                str26 = row5["NickName"].ToString().Trim();
+                                num8 = (byte) row5["Levels"];
                                 builder.Append("<tr onmouseover=\"this.style.backgroundColor='#fcf1eb'\" onmouseout=\"this.style.backgroundColor=''\">");
                                 builder.Append("<td width='60' height='50' align='center'><img src='");
                                 builder.Append(SessionItem.GetImageURL());
@@ -629,7 +616,7 @@
                         builder2.Append(string.Concat(new object[] { "\t\t\t\t\t<td style='padding-left:5px;' height='25'><a href='Main_P.aspx?Tag=", this.intUserID, "&Type=DEVISION' target='_parent'>查看联赛</a>&nbsp;|&nbsp;<a href='Main_P.aspx?Tag=", this.intUserID, "&Type=VARRANGE' target='_parent'>战术安排</a></td>" }));
                         builder2.Append("\t\t\t\t</tr>");
                         builder2.Append("\t\t\t\t<tr>");
-                        builder2.Append("\t\t\t\t\t<td style='padding-left:5px;' height='25' align='right'><a href='DevMessage.aspx?Type=ADD'>我要留言</a>&nbsp;|&nbsp;<a href='DevMessage.aspx?Type=VIEW&Page=1'>联赛留言</a>" + str3 + "</td>");
+                        builder2.Append("\t\t\t\t\t<td style='padding-left:5px;' height='25' align='right'><a href='DevMessage.aspx?Type=ADD'>我要留言</a>&nbsp;|&nbsp;<a href='DevMessage.aspx?Type=VIEW&Page=1'>联赛留言</a>" + str + "</td>");
                         builder2.Append("\t\t\t\t</tr>");
                         builder2.Append("\t\t\t</table>");
                     }
@@ -668,11 +655,11 @@
                 }
                 else
                 {
-                    DataRow row9 = BTPDevMatchManager.GetDevMRowByClubIDRound(this.intClubID5, intRound - 1);
-                    string str27 = Config.GetDomain() + "VRep.aspx?Tag=" + row9["DevMatchID"].ToString() + "&Type=2&A=" + row9["ClubHID"].ToString() + "&B=" + row9["ClubAID"].ToString();
-                    string str28 = Config.GetDomain() + "VStas.aspx?Tag=" + row9["DevMatchID"].ToString() + "&Type=2&A=" + row9["ClubHID"].ToString() + "&B=" + row9["ClubAID"].ToString();
-                    int num12 = (int) row9["DevMatchID"];
-                    int num13 = (int) row9["MsgCount"];
+                    DataRow row7 = BTPDevMatchManager.GetDevMRowByClubIDRound(this.intClubID5, intRound - 1);
+                    string str27 = Config.GetDomain() + "VRep.aspx?Tag=" + row7["DevMatchID"].ToString() + "&Type=2&A=" + row7["ClubHID"].ToString() + "&B=" + row7["ClubAID"].ToString();
+                    string str28 = Config.GetDomain() + "VStas.aspx?Tag=" + row7["DevMatchID"].ToString() + "&Type=2&A=" + row7["ClubHID"].ToString() + "&B=" + row7["ClubAID"].ToString();
+                    int num12 = (int) row7["DevMatchID"];
+                    int num13 = (int) row7["MsgCount"];
                     builder.Append("\t\t<table width='100%' border='0' cellspacing='0' cellpadding='0'>");
                     builder.Append("\t\t\t\t<tr>");
                     builder.Append("\t\t\t\t\t<td height='50'>");
@@ -680,7 +667,7 @@
                     builder.Append("\t\t\t\t\t\t\t<tr>");
                     builder.Append("\t\t\t\t\t\t\t\t<td width='25%' align='center' valign='top' style='Padding-Top:10px'><font style='line-height:140%'><font color='#660066'><strong>" + str4 + "</strong></font><br><font color='#666666'>" + str8 + "</font></font></td>");
                     builder.Append("\t\t\t\t\t\t\t\t<td width='10%'><img src='Images/Club/Logo/" + str6 + "' border='0' width='46' height='46'></td>");
-                    builder.Append("\t\t\t\t\t\t\t\t<td width='30%' align='center'>" + MatchItem.GetScore(intScore) + "<img src='Images/Score/00.gif' width='19' height='28' border='0'>" + MatchItem.GetScore(num6) + "</td>");
+                    builder.Append("\t\t\t\t\t\t\t\t<td width='30%' align='center'>" + MatchItem.GetScore(intScore) + "<img src='Images/Score/00.gif' width='19' height='28' border='0'>" + MatchItem.GetScore(num7) + "</td>");
                     builder.Append("\t\t\t\t\t\t\t\t<td width='10%' align='center'><img src='Images/Club/Logo/" + str7 + "' border='0' width='46' height='46'></td>");
                     builder.Append("\t\t\t\t\t\t\t\t<td width='25%' align='center' valign='top' style='Padding-Top:10px'><font style='line-height:140%'><font color='#660066'><strong>" + str5 + "</strong></font><br><font color='#666666'>" + str9 + "</font></font></td>");
                     builder.Append("\t\t\t\t\t\t\t</tr>");
@@ -697,7 +684,7 @@
                     builder.Append("\t\t\t\t\t<td style='padding-left:5px;' height='25'><a href='" + str28 + "' target='_blank'>比赛统计</a>&nbsp;|&nbsp;<a href='" + str27 + "' target='_blank'>比赛战报</a></td>");
                     builder.Append("\t\t\t\t</tr>");
                     builder.Append("\t\t\t\t<tr>");
-                    builder.Append("\t\t\t\t\t<td style='padding-left:5px;' height='25' align='right'><a href='DevMessage.aspx?Type=ADD'>我要留言</a>&nbsp;|&nbsp;<a href='DevMessage.aspx?Type=VIEW&Page=1'>联赛留言</a>" + str3 + "</td>");
+                    builder.Append("\t\t\t\t\t<td style='padding-left:5px;' height='25' align='right'><a href='DevMessage.aspx?Type=ADD'>我要留言</a>&nbsp;|&nbsp;<a href='DevMessage.aspx?Type=VIEW&Page=1'>联赛留言</a>" + str + "</td>");
                     builder.Append("\t\t\t\t</tr>");
                     builder.Append("\t\t\t</table>");
                 }
@@ -758,150 +745,153 @@
             if (this.intUserID < 0)
             {
                 base.Response.Redirect("Report.aspx?Parameter=12");
-                return;
             }
-            DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
-            this.intCategory = (int) onlineRowByUserID["Category"];
-            this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
-            this.strGuideCode = onlineRowByUserID["GuideCode"].ToString().Trim();
-            this.strType = SessionItem.GetRequest("Type", 1).ToString();
-            if ((((this.intCategory == 5) && (this.strType != "INSTANT")) && ((this.strType != "NEW") && (this.strType != "DEVNEW"))) && !SessionItem.CanUseAfterUpdate())
+            else
             {
-                base.Response.Redirect("Report.aspx?Parameter=1001a");
-                return;
-            }
-            if (((this.intCategory != 1) && (this.intCategory != 2)) && (this.intCategory != 5))
-            {
-                base.Response.Redirect("Report.aspx?Parameter=3");
-                return;
-            }
-            this.trbOK.Visible = false;
-            this.tblSelectTeam.Visible = false;
-            this.tblViewTeam.Visible = false;
-            this.tblJoinDev.Visible = false;
-            this.tblDevision.Visible = false;
-            this.tblNew.Visible = false;
-            this.tblDevNew.Visible = false;
-            this.trHead.Visible = true;
-            this.lbtnInDev.Visible = false;
-            this.tblInstant.Visible = false;
-            this.strScriptR = this.strScriptR + "<script type=\"text/javascript\"> \nfunction copytoZoneBoard() \n{\nvar clipBoardContent=\"\";\nclipBoardContent=\"http://union.xba.com.cn/zone/" + this.intUserID.ToString() + ".aspx\";\nwindow.clipboardData.setData(\"Text\",clipBoardContent);\nalert(\"复制成功，已经复制到剪贴板，您可以打开QQ或者MSN的对话框，然后使用（Ctrl+V或鼠标右键）粘贴功能给您的好友^_^\");\n}\n</script>\n";
-            switch (this.strType)
-            {
-                case "NEW":
-                    this.trHead.Visible = false;
-                    this.tblNew.Visible = true;
-                    goto Label_0547;
-
-                case "DEVNEW":
-                    this.trHead.Visible = false;
-                    this.tblDevNew.Visible = true;
-                    if (this.intCategory == 2)
+                DataRow onlineRowByUserID = DTOnlineManager.GetOnlineRowByUserID(this.intUserID);
+                this.intCategory = (int) onlineRowByUserID["Category"];
+                this.intClubID5 = (int) onlineRowByUserID["ClubID5"];
+                this.strGuideCode = onlineRowByUserID["GuideCode"].ToString().Trim();
+                this.strType = SessionItem.GetRequest("Type", 1).ToString();
+                if ((((this.intCategory == 5) && (this.strType != "INSTANT")) && ((this.strType != "NEW") && (this.strType != "DEVNEW"))) && !SessionItem.CanUseAfterUpdate())
+                {
+                    base.Response.Redirect("Report.aspx?Parameter=1001a");
+                }
+                else if (((this.intCategory != 1) && (this.intCategory != 2)) && (this.intCategory != 5))
+                {
+                    base.Response.Redirect("Report.aspx?Parameter=3");
+                }
+                else
+                {
+                    this.trbOK.Visible = false;
+                    this.tblSelectTeam.Visible = false;
+                    this.tblViewTeam.Visible = false;
+                    this.tblJoinDev.Visible = false;
+                    this.tblDevision.Visible = false;
+                    this.tblNew.Visible = false;
+                    this.tblDevNew.Visible = false;
+                    this.trHead.Visible = true;
+                    this.lbtnInDev.Visible = false;
+                    this.tblInstant.Visible = false;
+                    this.strScriptR = this.strScriptR + "<script type=\"text/javascript\"> \nfunction copytoZoneBoard() \n{\nvar clipBoardContent=\"\";\nclipBoardContent=\"http://union.xba.com.cn/zone/" + this.intUserID.ToString() + ".aspx\";\nwindow.clipboardData.setData(\"Text\",clipBoardContent);\nalert(\"复制成功，已经复制到剪贴板，您可以打开QQ或者MSN的对话框，然后使用（Ctrl+V或鼠标右键）粘贴功能给您的好友^_^\");\n}\n</script>\n";
+                    string strType = this.strType;
+                    if (strType != null)
                     {
-                        this.lbtnInDev.Visible = true;
-                    }
-                    else
-                    {
-                        this.lbtnInDev.Visible = false;
-                        DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
-                        if (accountRowByUserID != null)
+                        if (strType == "NEW")
                         {
-                            int clubCountByDevCode = BTPDevManager.GetClubCountByDevCode(accountRowByUserID["DevCode"].ToString().Trim());
-                            clubCountByDevCode = 14 - clubCountByDevCode;
-                            if (clubCountByDevCode > 0)
+                            this.trHead.Visible = false;
+                            this.tblNew.Visible = true;
+                        }
+                        else if (strType == "DEVNEW")
+                        {
+                            this.trHead.Visible = false;
+                            this.tblDevNew.Visible = true;
+                            if (this.intCategory == 2)
                             {
-                                this.strDevSay = "距离排定赛程还剩" + clubCountByDevCode + "人，请于排定赛程次日早9点观看比赛直播。";
+                                this.lbtnInDev.Visible = true;
                             }
                             else
                             {
-                                this.strDevSay = "请于排定赛程次日早9点观看比赛直播。";
+                                this.lbtnInDev.Visible = false;
+                                DataRow accountRowByUserID = BTPAccountManager.GetAccountRowByUserID(this.intUserID);
+                                if (accountRowByUserID != null)
+                                {
+                                    int clubCountByDevCode = BTPDevManager.GetClubCountByDevCode(accountRowByUserID["DevCode"].ToString().Trim());
+                                    clubCountByDevCode = 14 - clubCountByDevCode;
+                                    if (clubCountByDevCode > 0)
+                                    {
+                                        this.strDevSay = "距离排定赛程还剩" + clubCountByDevCode + "人，请于排定赛程次日早9点观看比赛直播。";
+                                    }
+                                    else
+                                    {
+                                        this.strDevSay = "请于排定赛程次日早9点观看比赛直播。";
+                                    }
+                                }
+                                else
+                                {
+                                    base.Response.Redirect("Report.aspx?Parameter=3");
+                                }
                             }
                         }
-                        else
+                        else if (strType == "LIST")
                         {
-                            base.Response.Redirect("Report.aspx?Parameter=3");
+                            if (this.intCategory != 1)
+                            {
+                                if (this.intCategory != 2)
+                                {
+                                    if (this.intCategory != 5)
+                                    {
+                                        base.Response.Redirect("Report.aspx?Parameter=3");
+                                        return;
+                                    }
+                                    this.sbList = new StringBuilder();
+                                    this.strList = this.GetVTList();
+                                    this.tblDevision.Visible = true;
+                                }
+                                else
+                                {
+                                    this.sbList = new StringBuilder();
+                                    this.GetLVTList();
+                                    this.tblJoinDev.Visible = true;
+                                }
+                            }
+                            else
+                            {
+                                this.sbList = new StringBuilder();
+                                this.GetSTList();
+                                this.tblSelectTeam.Visible = true;
+                            }
                         }
-                    }
-                    goto Label_0547;
-
-                case "LIST":
-                    if (this.intCategory != 1)
-                    {
-                        if (this.intCategory != 2)
+                        else if (strType == "INSTANT")
                         {
                             if (this.intCategory != 5)
+                            {
+                                base.Response.Redirect("Report.aspx?Parameter=1002");
+                                return;
+                            }
+                            this.intType = SessionItem.GetRequest("Status", 0);
+                            this.intTag = SessionItem.GetRequest("Tag", 0);
+                            this.intA = SessionItem.GetRequest("A", 0);
+                            this.intB = SessionItem.GetRequest("B", 0);
+                            this.strURL = Config.GetDomain();
+                            this.tblInstant.Visible = true;
+                            string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(this.intClubID5);
+                            this.intLevelI = DevCalculator.GetLevel(devCodeByClubID);
+                            this.intDevIndexI = DevCalculator.GetDevIndex(devCodeByClubID);
+                            DataRow clubRowByID = BTPClubManager.GetClubRowByID(this.intClubID5);
+                            if (clubRowByID == null)
                             {
                                 base.Response.Redirect("Report.aspx?Parameter=3");
                                 return;
                             }
-                            this.sbList = new StringBuilder();
-                            this.strList = this.GetVTList();
-                            this.tblDevision.Visible = true;
+                            TagReader reader = new TagReader(clubRowByID["MainXML"].ToString().Trim());
+                            this.strClubNameHI = reader.GetTagline("ClubNameH");
+                            this.strClubNameAI = reader.GetTagline("ClubNameA");
+                            this.strClubLogoHI = reader.GetTagline("ClubLogoH");
+                            this.strClubLogoAI = reader.GetTagline("ClubLogoA");
+                            this.strClubSayHI = reader.GetTagline("ClubSayH");
+                            this.strClubSayAI = reader.GetTagline("ClubSayA");
                         }
-                        else
+                        else if (strType == "VIEW")
                         {
-                            this.sbList = new StringBuilder();
-                            this.GetLVTList();
-                            this.tblJoinDev.Visible = true;
+                            this.intClubID = SessionItem.GetRequest("ClubID", 0);
+                            if (this.intCategory == 1)
+                            {
+                                this.sbList = new StringBuilder();
+                                this.GetViewList();
+                                this.tblViewTeam.Visible = true;
+                            }
+                            else
+                            {
+                                base.Response.Redirect("Report.aspx?Parameter=3");
+                                return;
+                            }
                         }
                     }
-                    else
-                    {
-                        this.sbList = new StringBuilder();
-                        this.GetSTList();
-                        this.tblSelectTeam.Visible = true;
-                    }
-                    goto Label_0547;
-
-                case "INSTANT":
-                {
-                    if (this.intCategory != 5)
-                    {
-                        base.Response.Redirect("Report.aspx?Parameter=1002");
-                        return;
-                    }
-                    this.intType = (int) SessionItem.GetRequest("Status", 0);
-                    this.intTag = (int) SessionItem.GetRequest("Tag", 0);
-                    this.intA = (int) SessionItem.GetRequest("A", 0);
-                    this.intB = (int) SessionItem.GetRequest("B", 0);
-                    this.strURL = Config.GetDomain();
-                    this.tblInstant.Visible = true;
-                    string devCodeByClubID = BTPDevManager.GetDevCodeByClubID(this.intClubID5);
-                    this.intLevelI = DevCalculator.GetLevel(devCodeByClubID);
-                    this.intDevIndexI = DevCalculator.GetDevIndex(devCodeByClubID);
-                    DataRow clubRowByID = BTPClubManager.GetClubRowByID(this.intClubID5);
-                    if (clubRowByID == null)
-                    {
-                        base.Response.Redirect("Report.aspx?Parameter=3");
-                        return;
-                    }
-                    TagReader reader = new TagReader(clubRowByID["MainXML"].ToString().Trim());
-                    this.strClubNameHI = reader.GetTagline("ClubNameH");
-                    this.strClubNameAI = reader.GetTagline("ClubNameA");
-                    this.strClubLogoHI = reader.GetTagline("ClubLogoH");
-                    this.strClubLogoAI = reader.GetTagline("ClubLogoA");
-                    this.strClubSayHI = reader.GetTagline("ClubSayH");
-                    this.strClubSayAI = reader.GetTagline("ClubSayA");
-                    break;
+                    this.InitializeComponent();
+                    base.OnInit(e);
                 }
-                case "VIEW":
-                    this.intClubID = (int) SessionItem.GetRequest("ClubID", 0);
-                    if (this.intCategory == 1)
-                    {
-                        this.sbList = new StringBuilder();
-                        this.GetViewList();
-                        this.tblViewTeam.Visible = true;
-                    }
-                    else
-                    {
-                        base.Response.Redirect("Report.aspx?Parameter=3");
-                        return;
-                    }
-                    break;
             }
-        Label_0547:
-            this.InitializeComponent();
-            base.OnInit(e);
         }
 
         private void Page_Load(object sender, EventArgs e)

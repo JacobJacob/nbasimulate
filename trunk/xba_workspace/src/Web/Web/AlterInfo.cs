@@ -155,20 +155,20 @@
                 this.strUserName = this.dr["UserName"].ToString().Trim();
                 if (this.dr["Birth"].ToString().Trim().IndexOf("-") != -1)
                 {
-                    string str3;
+                    string str;
                     string[] strArray = this.dr["Birth"].ToString().Trim().Split(new char[] { '-' });
-                    string str = strArray[0];
-                    string str2 = strArray[1];
-                    this.intYear = Convert.ToInt32(str);
-                    this.intMonth = Convert.ToInt32(str2);
+                    string str2 = strArray[0];
+                    string str3 = strArray[1];
+                    this.intYear = Convert.ToInt32(str2);
+                    this.intMonth = Convert.ToInt32(str3);
                     try
                     {
-                        str3 = strArray[2];
-                        this.intDay = Convert.ToInt32(str3);
+                        str = strArray[2];
+                        this.intDay = Convert.ToInt32(str);
                     }
                     catch
                     {
-                        str3 = "1";
+                        str = "1";
                         this.intDay = 1;
                     }
                 }

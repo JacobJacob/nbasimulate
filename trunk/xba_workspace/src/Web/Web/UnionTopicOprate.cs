@@ -38,37 +38,37 @@
                     case "DELETE":
                         this.DelTopic();
                         base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=50u!Type.", this.strType, "^UnionID.", this.intUnionID, "^Page.1" }));
-                        goto Label_0305;
+                        goto Label_0352;
 
                     case "ONTOP":
                         this.SetOnTop();
                         base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=51u!Type.", this.strType, "^UnionID.", this.intUnionID, "^Page.1" }));
-                        goto Label_0305;
+                        goto Label_0352;
 
                     case "CANCELONTOP":
                         this.CancelOnTop();
                         base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=52u!Type.", this.strType, "^UnionID.", this.intUnionID, "^Page.1" }));
-                        goto Label_0305;
+                        goto Label_0352;
 
                     case "ELITE":
                         this.SetElite();
                         base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=53u!Type.", this.strType, "^UnionID.", this.intUnionID, "^Page.1" }));
-                        goto Label_0305;
+                        goto Label_0352;
 
                     case "CANCELELITE":
                         this.CancelElite();
                         base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=54u!Type.", this.strType, "^UnionID.", this.intUnionID, "^Page.1" }));
-                        goto Label_0305;
+                        goto Label_0352;
 
                     case "LOCK":
                         this.SetLock();
                         base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=55u!Type.", this.strType, "^UnionID.", this.intUnionID, "^Page.1" }));
-                        goto Label_0305;
+                        goto Label_0352;
 
                     case "UNLOCK":
                         this.SetUnLock();
                         base.Response.Redirect(string.Concat(new object[] { "Report.aspx?Parameter=56u!Type.", this.strType, "^UnionID.", this.intUnionID, "^Page.1" }));
-                        goto Label_0305;
+                        goto Label_0352;
                 }
                 base.Response.Redirect("Report.aspx?Parameter=57u");
             }
@@ -77,7 +77,7 @@
                 base.Response.Redirect("Report.aspx?Parameter=57");
                 return;
             }
-        Label_0305:
+        Label_0352:
             base.Load += new EventHandler(this.Page_Load);
         }
 
@@ -90,10 +90,10 @@
             }
             else
             {
-                this.intTopicID = (int) SessionItem.GetRequest("TopicID", 0);
-                this.strType = (string) SessionItem.GetRequest("Type", 1);
-                this.strOp = (string) SessionItem.GetRequest("OP", 1);
-                this.intUnionID = (int) SessionItem.GetRequest("UnionID", 0);
+                this.intTopicID = SessionItem.GetRequest("TopicID", 0);
+                this.strType = SessionItem.GetRequest("Type", 1);
+                this.strOp = SessionItem.GetRequest("OP", 1);
+                this.intUnionID = SessionItem.GetRequest("UnionID", 0);
                 this.InitializeComponent();
                 base.OnInit(e);
             }
